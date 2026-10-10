@@ -1,0 +1,31 @@
+{
+  "runId": 38040891293,
+  "commit": "bf538166bab414b3bf2c8f81476acd01ea098143",
+  "artifacts": [
+    {
+      "name": "foundation-unit",
+      "id": 11666480285,
+      "digest": "sha256:99bcc4936f1baea85e3d6be2daf23e4dca0d700bc86aaf782f22a5750e7ed1ef"
+    },
+    {
+      "name": "foundation-coverage",
+      "id": 11666196070,
+      "digest": "sha256:cf4b20be65841712af4b726d009b9e08f24dbba89b364c8bceca32c3446246d7"
+    },
+    {
+      "name": "foundation-supply-chain",
+      "id": 11666040688,
+      "digest": "sha256:a7a053ab0092e67ce8c8d42570feeeb61e794063de57f08d6017f498ab9b4672"
+    },
+    {
+      "name": "foundation-PostgreSql",
+      "id": 11665921163,
+      "digest": "sha256:702dcf3809b10df2ea63b63d17b0826620add2114da85998a896e3bccfc6f292"
+    },
+    {
+      "name": "foundation-SqlServer",
+      "id": 11665871465,
+      "digest": "sha256:cd4af10814803ea0c1fd9f45245f8fbe61897c33d9dc09c024fbc45646c7b9f2"
+    }
+  ]
+}

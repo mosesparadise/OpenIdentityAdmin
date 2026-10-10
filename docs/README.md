@@ -15,4 +15,4 @@ Version 0.2 and amendment A-001 are approved; [approval.md](approval.md) is the 
 
 Accepted [A-001](amendments/A-001-certification-sequencing.md) changes certification sequencing while preserving mandatory PKCE and the public-release gate. Current foundation [verification](../specs/001-platform-foundation/verification.md), [tasks](../specs/001-platform-foundation/tasks.md) and [AI evaluation](engineering/ai-evaluation.md) report actual implementation evidence separately.
 
-The current [project layout and native MTP guide](engineering/project-layout.md) records the user-requested responsibility groups and xUnit v3 test runner update.
+The current [project layout and native MTP guide](engineering/project-layout.md) records the user-requested responsibility groups and xUnit v3 test runner update; [its verification](../specs/001-platform-foundation/verification-mtp-layout.md) records the new matrix separately from historical foundation evidence.

@@ -22,7 +22,7 @@ Approval is recorded; feature boundaries, equal provider support, meaningful tes
 
 ## Project Structure
 
-Core/Features/Configuration; Infrastructure/Features/Identity/Persistence and Persistence contexts; separate Migrations.PostgreSql/Migrations.SqlServer; Migrator/Features/Database/Upgrade; ServiceDefaults; AuthServer, Admin.Api, Admin.Bff and Worker composition roots; AppHost. All use the IdentityPlatform prefix under src/. Matching Core.Tests, Persistence.Tests, Architecture.Tests Host.Tests and AppHost.Tests live under tests/. Composition/generated artefacts are the approved structural exceptions to Features.
+Core/Features/Configuration; Infrastructure/Features/Identity/Persistence and Persistence contexts; separate Migrations.PostgreSql/Migrations.SqlServer; Migrator/Features/Database/Upgrade; ServiceDefaults; AuthServer, Admin.Api, Admin.Bff and Worker composition roots; AppHost. All use the IdentityPlatform prefix under src/. Matching Core.Tests, Persistence.Tests, Architecture.Tests, Host.Tests and AppHost.Tests live under the responsibility groups in tests/ described below. Composition/generated artefacts are the approved structural exceptions to Features.
 
 ## Complexity Tracking
 

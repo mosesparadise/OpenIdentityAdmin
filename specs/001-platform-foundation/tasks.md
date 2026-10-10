@@ -58,5 +58,7 @@ Completion record: T001–T024 are complete for the foundation scope. Clean CI r
 - [x] T025 Record native MTP dependency/filter/report decisions and grouped layout in spec.md, plan.md and research.md (FND-009/010).
 - [x] T026 Move projects into responsibility groups; update solution folders, project references, architecture checks and current commands/docs (FND-010).
 - [x] T027 Upgrade all five test projects and locks to xUnit v3/MTP; update verification commands and preserve strict result/provider selection (FND-009).
-- [ ] T028 Validate clean locked restore/build, all three profiles, child-process coverage and supply chain; resolve independent architecture/test review (FND-009/010).
-- [ ] T029 Record new evidence and update the existing draft PR without changing product acceptance scope (FND-009/010).
+- [x] T028 Validate clean locked restore/build, all three profiles, child-process coverage and supply chain; resolve independent architecture/test review (FND-009/010).
+- [x] T029 Record new evidence and update the existing draft PR without changing product acceptance scope (FND-009/010).
+
+Engineering update completion: T025–T029 are complete. CI run 38040891293 accepted implementation commit bf538166bab414b3bf2c8f81476acd01ea098143: native MTP executes all 92 .NET cases, 19 gate regressions pass, both real providers and all nine module coverage gates pass. See verification-mtp-layout.md and evidence-mtp-layout.json. PR #1 now includes grouped layout and runner documentation.
