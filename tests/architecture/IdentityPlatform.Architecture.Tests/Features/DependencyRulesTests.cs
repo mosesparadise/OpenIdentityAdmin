@@ -5,6 +5,11 @@ namespace IdentityPlatform.Architecture.Tests.Features;
 
 public sealed class DependencyRulesTests
 {
+    private static readonly string[] AllowedRuntimeReferences =
+    [
+        "../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj",
+        "../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj"
+    ];
     private static string Repository => FindRepository();
 
     [Fact]
@@ -26,11 +31,7 @@ public sealed class DependencyRulesTests
             var directory = Path.Combine(Repository, $"src/backend/IdentityPlatform.{name}");
             var project = XDocument.Load(Path.Combine(directory, $"IdentityPlatform.{name}.csproj"));
             var references = project.Descendants("ProjectReference").Select(reference => (string)reference.Attribute("Include")!);
-            Assert.All(references, reference => Assert.Contains(reference, new[]
-            {
-                "../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj",
-                "../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj"
-            }));
+            Assert.All(references, reference => Assert.Contains(reference, AllowedRuntimeReferences));
             foreach (var file in Directory.EnumerateFiles(directory, "*.cs", SearchOption.AllDirectories)
                 .Where(file => !file.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}")))
             {
@@ -55,7 +56,13 @@ public sealed class DependencyRulesTests
     private static string FindRepository()
     {
         for (var path = new DirectoryInfo(AppContext.BaseDirectory); path is not null; path = path.Parent)
-            if (File.Exists(Path.Combine(path.FullName, "IdentityPlatform.slnx"))) return path.FullName;
+        {
+            if (File.Exists(Path.Combine(path.FullName, "IdentityPlatform.slnx")))
+            {
+                return path.FullName;
+            }
+        }
+
         throw new InvalidOperationException("Repository root is required for architecture checks.");
     }
 }

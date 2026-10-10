@@ -1,7 +1,7 @@
 using System.Diagnostics;
+using IdentityPlatform.ServiceDefaults.Features.Telemetry;
 using OpenTelemetry;
 using OpenTelemetry.Trace;
-using IdentityPlatform.ServiceDefaults.Features.Telemetry;
 
 namespace IdentityPlatform.Host.Tests.Features.Telemetry;
 
@@ -46,11 +46,22 @@ public sealed class OperationalTraceTests
             span.SetTag("http.route", "/health");
             span.SetTag("http.response.status_code", 503);
             span.SetStatus(ActivityStatusCode.Error, "synthetic-secret");
-            if (payload == "event") span.AddEvent(new ActivityEvent("synthetic-secret"));
-            if (payload == "baggage") span.AddBaggage("secret", "synthetic-secret");
-            if (payload == "link") span.AddLink(new ActivityLink(new ActivityContext(
+            if (payload == "event")
+            {
+                span.AddEvent(new ActivityEvent("synthetic-secret"));
+            }
+
+            if (payload == "baggage")
+            {
+                span.AddBaggage("secret", "synthetic-secret");
+            }
+
+            if (payload == "link")
+            {
+                span.AddLink(new ActivityLink(new ActivityContext(
                 ActivityTraceId.CreateRandom(), ActivitySpanId.CreateRandom(), ActivityTraceFlags.Recorded),
                 new ActivityTagsCollection { ["secret"] = "synthetic-secret" }));
+            }
         }
         Assert.Equal(expected, exported.Count);
         if (expected == 1)

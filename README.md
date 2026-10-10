@@ -6,6 +6,9 @@ A greenfield administration platform built with OpenIddict and ASP.NET Core Iden
 
 ## Approved design
 
+- [Living roadmap and complete task register](docs/roadmap.md)
+- [Code quality and squash-merge policy](docs/engineering/code-quality.md)
+
 - [Approval and amendment record](docs/approval.md)
 - [Detailed PRD](docs/approved-v0.2/00-prd.md)
 - [Architecture and decisions](docs/approved-v0.2/02-architecture.md)

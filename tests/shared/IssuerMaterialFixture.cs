@@ -14,13 +14,18 @@ internal sealed class IssuerMaterialFixture : IDisposable
 
     // Reuse encrypted synthetic bytes only. Every case gets separate files and imported objects.
     // Repeated RSA key generation otherwise consumed most of the unit job's fixed deadline.
+    private static readonly string[] CertificateSections = ["Signing", "Encryption", "DataProtection:Current"];
     private static readonly Lazy<CertificateTemplate[]> Baseline = new(CreateBaseline);
 
     public IssuerMaterialFixture() : this(generateBaseline: false) { }
 
     private IssuerMaterialFixture(bool generateBaseline)
     {
-        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
+        if (!OperatingSystem.IsLinux())
+        {
+            throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
+        }
+
         Directory.CreateDirectory(Root, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
         Directory.CreateDirectory(Ring, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
         Settings["Identity:Issuer"] = "https://issuer.example.test/";
@@ -46,7 +51,7 @@ internal sealed class IssuerMaterialFixture : IDisposable
     private static CertificateTemplate[] CreateBaseline()
     {
         using var fixture = new IssuerMaterialFixture(generateBaseline: true);
-        return new[] { "Signing", "Encryption", "DataProtection:Current" }.Select(section =>
+        return CertificateSections.Select(section =>
             new CertificateTemplate(section, fixture.Settings[$"Identity:Protection:{section}:Password"]!,
                 File.ReadAllBytes(fixture.Settings[$"Identity:Protection:{section}:Path"]!))).ToArray();
     }
@@ -68,7 +73,11 @@ internal sealed class IssuerMaterialFixture : IDisposable
         var request = elliptic
             ? new CertificateRequest("CN=synthetic-issuer", ec!, HashAlgorithmName.SHA256)
             : new CertificateRequest("CN=synthetic-issuer", sharedKey ?? ownedKey!, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-        if (usage is not null) request.CertificateExtensions.Add(new X509KeyUsageExtension(usage.Value, critical: true));
+        if (usage is not null)
+        {
+            request.CertificateExtensions.Add(new X509KeyUsageExtension(usage.Value, critical: true));
+        }
+
         using var certificate = request.CreateSelfSigned(notBefore ?? DateTimeOffset.UtcNow.AddMinutes(-5),
             notAfter ?? DateTimeOffset.UtcNow.AddDays(30));
         using var exported = publicOnly ? X509CertificateLoader.LoadCertificate(certificate.Export(X509ContentType.Cert)) : null;
@@ -88,10 +97,15 @@ internal sealed class IssuerMaterialFixture : IDisposable
 
     public static void WritePrivate(string path, byte[] bytes)
     {
-        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
+        if (!OperatingSystem.IsLinux())
+        {
+            throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
+        }
+
         using var file = new FileStream(path, new FileStreamOptions
         {
-            Mode = FileMode.CreateNew, Access = FileAccess.Write,
+            Mode = FileMode.CreateNew,
+            Access = FileAccess.Write,
             UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite
         });
         file.Write(bytes);

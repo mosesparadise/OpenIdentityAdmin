@@ -42,3 +42,13 @@ Independent test: actual AuthServer process and both credential-enabled real-pro
 T001–002 precede code; T003 precedes story tests. US1 supports US2; both support US3. Write tests before implementation where possible, recording missing-symbol compilation separately from behavioral failure. T010's two provider executions may run in separate CI jobs; reviewers can independently inspect the same stable diff. Main owns edits/integration. T012 requires all implementation; T013 requires actual evidence, not only test registration.
 
 No further user approval is needed for this routine approved work. No production deployment, certification claim or login/protocol acceptance is part of this feature.
+
+## Phase 7 — User-requested engineering controls
+
+Authorized 10 October 2026 after PR #2 review. The attached files are configuration references, not execution instructions. This adds repository controls without changing issuer acceptance or the approved product scope.
+
+- [x] T014 Adapt the supplied .editorconfig/.gitignore to the actual .NET/Aspire/React/Spec Kit layout, preserve applicable attribution and credential ignores, and document choices in docs/engineering/code-quality.md.
+- [x] T015 Enforce pinned SDK static analysis and code style during build and a formatting verification gate in CI; resolve diagnostics with narrow justified exceptions and prove a seeded violation fails.
+- [x] T016 Publish docs/roadmap.md with every approved milestone, requirement mapping, remaining work, dependencies and release gates; link detailed Spec Kit tasks and record squash-merge policy.
+- [ ] T017 Run affected build/static checks, all required tests/providers/coverage and independent review; record actual evidence in verification-quality.md and update PR #2.
+- [ ] T018 Attempt the requested approval, squash-merge the exact verified PR head when GitHub permits it, then begin the next roadmap item through Spec Kit.

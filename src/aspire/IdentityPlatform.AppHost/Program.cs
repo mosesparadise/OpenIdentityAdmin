@@ -1,20 +1,29 @@
-using Microsoft.Extensions.Hosting;
 using IdentityPlatform.Core.Features.Configuration;
-using Aspire.Hosting.ApplicationModel;
+using Microsoft.Extensions.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 if (!builder.Environment.IsDevelopment())
+{
     throw new InvalidOperationException("This AppHost is for local Development only. Production provisioning is external.");
+}
 
 var provider = DatabaseProviderParser.Parse(builder.Configuration["Database:Provider"] ?? "PostgreSql").ToString();
 
 var platformPassword = builder.AddParameter("platform-runtime-password", new GenerateParameterDefault
 {
-    MinLength = 40, MinLower = 2, MinUpper = 2, MinNumeric = 2, Special = false
+    MinLength = 40,
+    MinLower = 2,
+    MinUpper = 2,
+    MinNumeric = 2,
+    Special = false
 }, secret: true, persist: false);
 var sessionsPassword = builder.AddParameter("sessions-runtime-password", new GenerateParameterDefault
 {
-    MinLength = 40, MinLower = 2, MinUpper = 2, MinNumeric = 2, Special = false
+    MinLength = 40,
+    MinLower = 2,
+    MinUpper = 2,
+    MinNumeric = 2,
+    Special = false
 }, secret: true, persist: false);
 
 IResourceBuilder<IResourceWithConnectionString> platform;
@@ -65,10 +74,13 @@ var worker = builder.AddProject<Projects.IdentityPlatform_Worker>("worker")
     .WithHttpsEndpoint(name: "https");
 
 foreach (var service in new[] { auth, api, worker })
+{
     service.WithEnvironment("Database__Provider", provider)
         .WithEnvironment("ConnectionStrings__platform", platformRuntime)
         .WaitForCompletion(migrator)
         .WithHttpHealthCheck("/health", endpointName: "https");
+}
+
 bff.WithEnvironment("Database__Provider", provider)
     .WithEnvironment("ConnectionStrings__adminsessions", sessionsRuntime)
     .WaitForCompletion(migrator)

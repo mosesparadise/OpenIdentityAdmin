@@ -65,17 +65,39 @@ public sealed class CredentialTests
         using var fixture = new IssuerMaterialFixture();
         switch (scenario)
         {
-            case "wrong-password": fixture.Settings["Identity:Protection:Signing:Password"] = "synthetic-private-sentinel"; break;
-            case "missing-file": File.Delete(fixture.Settings["Identity:Protection:Signing:Path"]!); break;
-            case "invalid-file": File.WriteAllText(fixture.Settings["Identity:Protection:Signing:Path"]!, "synthetic-private-sentinel"); break;
-            case "oversize-file": File.WriteAllBytes(fixture.Settings["Identity:Protection:Signing:Path"]!, new byte[1_048_577]); break;
-            case "public-only": fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, publicOnly: true); break;
-            case "weak-key": fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, keySize: 2048); break;
-            case "wrong-usage": fixture.AddCertificate("Signing", X509KeyUsageFlags.KeyEncipherment); break;
-            case "missing-usage": fixture.AddCertificate("Signing", null); break;
-            case "expired": fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, notBefore: DateTimeOffset.UtcNow.AddDays(-2), notAfter: DateTimeOffset.UtcNow.AddDays(-1)); break;
-            case "future": fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, notBefore: DateTimeOffset.UtcNow.AddDays(1)); break;
-            case "elliptic": fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, elliptic: true); break;
+            case "wrong-password":
+                fixture.Settings["Identity:Protection:Signing:Password"] = "synthetic-private-sentinel";
+                break;
+            case "missing-file":
+                File.Delete(fixture.Settings["Identity:Protection:Signing:Path"]!);
+                break;
+            case "invalid-file":
+                File.WriteAllText(fixture.Settings["Identity:Protection:Signing:Path"]!, "synthetic-private-sentinel");
+                break;
+            case "oversize-file":
+                File.WriteAllBytes(fixture.Settings["Identity:Protection:Signing:Path"]!, new byte[1_048_577]);
+                break;
+            case "public-only":
+                fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, publicOnly: true);
+                break;
+            case "weak-key":
+                fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, keySize: 2048);
+                break;
+            case "wrong-usage":
+                fixture.AddCertificate("Signing", X509KeyUsageFlags.KeyEncipherment);
+                break;
+            case "missing-usage":
+                fixture.AddCertificate("Signing", null);
+                break;
+            case "expired":
+                fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, notBefore: DateTimeOffset.UtcNow.AddDays(-2), notAfter: DateTimeOffset.UtcNow.AddDays(-1));
+                break;
+            case "future":
+                fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, notBefore: DateTimeOffset.UtcNow.AddDays(1));
+                break;
+            case "elliptic":
+                fixture.AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature, elliptic: true);
+                break;
         }
         AssertSafeFailure(fixture);
     }
@@ -95,10 +117,20 @@ public sealed class CredentialTests
         contents.AddKeyUnencrypted(key);
         var builder = new Pkcs12Builder();
         builder.AddSafeContentsUnencrypted(contents);
-        if (withMac) builder.SealWithMac(password, HashAlgorithmName.SHA256, 2048);
-        else builder.SealWithoutIntegrity();
+        if (withMac)
+        {
+            builder.SealWithMac(password, HashAlgorithmName.SHA256, 2048);
+        }
+        else
+        {
+            builder.SealWithoutIntegrity();
+        }
+
         var bytes = builder.Encode();
-        try { File.WriteAllBytes(path, bytes); }
+        try
+        {
+            File.WriteAllBytes(path, bytes);
+        }
         finally { CryptographicOperations.ZeroMemory(bytes); }
         AssertSafeFailure(fixture);
     }
@@ -107,8 +139,16 @@ public sealed class CredentialTests
     public void Historical_wrapper_count_accepts_four_and_rejects_five_distinct_keys()
     {
         using var fixture = new IssuerMaterialFixture();
-        for (var index = 0; index < 4; index++) fixture.AddCertificate($"DataProtection:Previous:{index}", X509KeyUsageFlags.KeyEncipherment);
-        using (var provider = CreateProvider(fixture)) provider.VerifyIssuerProtection();
+        for (var index = 0; index < 4; index++)
+        {
+            fixture.AddCertificate($"DataProtection:Previous:{index}", X509KeyUsageFlags.KeyEncipherment);
+        }
+
+        using (var provider = CreateProvider(fixture))
+        {
+            provider.VerifyIssuerProtection();
+        }
+
         fixture.AddCertificate("DataProtection:Previous:4", X509KeyUsageFlags.KeyEncipherment);
         AssertSafeFailure(fixture);
     }
@@ -122,7 +162,10 @@ public sealed class CredentialTests
         using var encryption = X509CertificateLoader.LoadPkcs12FromFile(fixture.Settings["Identity:Protection:Encryption:Path"]!, fixture.Settings["Identity:Protection:Encryption:Password"]!, X509KeyStorageFlags.EphemeralKeySet);
         var collection = new X509Certificate2Collection(new[] { signing, encryption });
         var bytes = collection.Export(X509ContentType.Pfx, password)!;
-        try { File.WriteAllBytes(fixture.Settings["Identity:Protection:Signing:Path"]!, bytes); }
+        try
+        {
+            File.WriteAllBytes(fixture.Settings["Identity:Protection:Signing:Path"]!, bytes);
+        }
         finally { CryptographicOperations.ZeroMemory(bytes); }
         AssertSafeFailure(fixture);
     }
@@ -170,14 +213,21 @@ public sealed class CredentialTests
         var services = new ServiceCollection();
         services.AddLogging();
         var material = services.AddIssuerProtection(fixture.Configuration)!;
-        try { return new OwnedProvider(services.BuildServiceProvider(), material); }
+        try
+        {
+            return new OwnedProvider(services.BuildServiceProvider(), material);
+        }
         catch { material.Dispose(); throw; }
     }
 
     internal sealed class OwnedProvider(ServiceProvider provider, IssuerCredentials material) : IServiceProvider, IDisposable
     {
         public object? GetService(Type type) => provider.GetService(type);
-        public void Dispose() { provider.Dispose(); material.Dispose(); }
+        public void Dispose()
+        {
+            provider.Dispose();
+            material.Dispose();
+        }
     }
 
     internal static void AssertSafeFailure(IssuerMaterialFixture fixture)

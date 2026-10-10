@@ -2,10 +2,10 @@ using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using Microsoft.Data.SqlClient;
 
 namespace IdentityPlatform.Infrastructure.Persistence;
 
@@ -89,7 +89,10 @@ public static class PersistenceRegistration
                     !string.IsNullOrWhiteSpace(value.DataSource) && !string.IsNullOrWhiteSpace(value.InitialCatalog),
                 _ => false
             };
-            if (valid) return;
+            if (valid)
+            {
+                return;
+            }
         }
         catch (ArgumentException) { /* Provider messages can echo the supplied setting. */ }
         throw new ArgumentException("Invalid database connection configuration. An explicit server and database are required.");

@@ -7,8 +7,8 @@ using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace IdentityPlatform.Host.Tests.Features.Issuer;
@@ -38,7 +38,11 @@ public sealed class ProtectionTests
         using var different = CredentialTests.CreateProvider(fixture);
         different.VerifyIssuerProtection();
         Assert.Throws<CryptographicException>(() => Protector(different).Unprotect(payload));
-        foreach (var file in Directory.GetFiles(fixture.Ring)) File.Delete(file);
+        foreach (var file in Directory.GetFiles(fixture.Ring))
+        {
+            File.Delete(file);
+        }
+
         using var lost = CredentialTests.CreateProvider(fixture);
         lost.VerifyIssuerProtection();
         Assert.Throws<CryptographicException>(() => Protector(lost).Unprotect(payload));
@@ -100,7 +104,11 @@ public sealed class ProtectionTests
         oldServices.AddDataProtection().SetApplicationName("IdentityPlatform.AuthServer|" + fixture.Settings["Identity:Issuer"])
             .PersistKeysToFileSystem(new DirectoryInfo(fixture.Ring)).ProtectKeysWithCertificate(old);
         string payload;
-        using (var provider = oldServices.BuildServiceProvider()) payload = Protector(provider).Protect("historical-state");
+        using (var provider = oldServices.BuildServiceProvider())
+        {
+            payload = Protector(provider).Protect("historical-state");
+        }
+
         using (var restored = CredentialTests.CreateProvider(fixture))
         {
             restored.VerifyIssuerProtection();
@@ -161,8 +169,14 @@ public sealed class ProtectionTests
                 xml.Save(file);
                 fixture.AddCertificate("DataProtection:Current", X509KeyUsageFlags.KeyEncipherment);
             }
-            else if (scenario == "wrong-wrapper") fixture.AddCertificate("DataProtection:Current", X509KeyUsageFlags.KeyEncipherment);
-            else if (scenario == "duplicate-key") File.Copy(Directory.GetFiles(fixture.Ring, "*.xml").Single(), Path.Combine(fixture.Ring, "duplicate.xml"));
+            else if (scenario == "wrong-wrapper")
+            {
+                fixture.AddCertificate("DataProtection:Current", X509KeyUsageFlags.KeyEncipherment);
+            }
+            else if (scenario == "duplicate-key")
+            {
+                File.Copy(Directory.GetFiles(fixture.Ring, "*.xml").Single(), Path.Combine(fixture.Ring, "duplicate.xml"));
+            }
             else
             {
                 var file = Directory.GetFiles(fixture.Ring, "key-*.xml").Single();
@@ -170,15 +184,34 @@ public sealed class ProtectionTests
                 var secret = xml.Descendants(XName.Get("encryptedSecret", "http://schemas.asp.net/2015/03/dataProtection")).Single();
                 switch (scenario)
                 {
-                    case "missing-date": xml.Element("creationDate")!.Remove(); break;
-                    case "invalid-date": xml.Element("creationDate")!.Value = "synthetic-private-sentinel"; break;
-                    case "missing-deserializer": xml.Element("descriptor")!.Attribute("deserializerType")!.Remove(); break;
-                    case "unknown-deserializer": xml.Element("descriptor")!.SetAttributeValue("deserializerType", "Unavailable.Type, Unavailable.Assembly"); break;
-                    case "missing-decryptor": secret.Attribute("decryptorType")!.Remove(); break;
-                    case "unknown-decryptor": secret.SetAttributeValue("decryptorType", "Unavailable.Type, Unavailable.Assembly"); break;
-                    case "misplaced-secret": secret.Remove(); xml.Add(secret); break;
-                    case "extra-child": xml.Add(new XElement("unexpected", "synthetic-private-sentinel")); break;
-                    case "corrupt-revoked": secret.Descendants(XName.Get("CipherValue", "http://www.w3.org/2001/04/xmlenc#")).Last().Value = "AA=="; break;
+                    case "missing-date":
+                        xml.Element("creationDate")!.Remove();
+                        break;
+                    case "invalid-date":
+                        xml.Element("creationDate")!.Value = "synthetic-private-sentinel";
+                        break;
+                    case "missing-deserializer":
+                        xml.Element("descriptor")!.Attribute("deserializerType")!.Remove();
+                        break;
+                    case "unknown-deserializer":
+                        xml.Element("descriptor")!.SetAttributeValue("deserializerType", "Unavailable.Type, Unavailable.Assembly");
+                        break;
+                    case "missing-decryptor":
+                        secret.Attribute("decryptorType")!.Remove();
+                        break;
+                    case "unknown-decryptor":
+                        secret.SetAttributeValue("decryptorType", "Unavailable.Type, Unavailable.Assembly");
+                        break;
+                    case "misplaced-secret":
+                        secret.Remove();
+                        xml.Add(secret);
+                        break;
+                    case "extra-child":
+                        xml.Add(new XElement("unexpected", "synthetic-private-sentinel"));
+                        break;
+                    case "corrupt-revoked":
+                        secret.Descendants(XName.Get("CipherValue", "http://www.w3.org/2001/04/xmlenc#")).Last().Value = "AA==";
+                        break;
                 }
                 xml.Save(file);
             }
@@ -199,7 +232,10 @@ public sealed class ProtectionTests
         var target = new ServiceCollection();
         target.AddLogging(options => options.SetMinimumLevel(LogLevel.Trace).AddProvider(logs));
         if (scenario == "specific-logging")
+        {
             target.AddLogging(options => options.AddFilter<CapturedLogger>("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager", LogLevel.Trace));
+        }
+
         using var material = target.AddIssuerProtection(fixture.Configuration);
         using var final = target.BuildServiceProvider();
         Assert.Throws<IssuerProtectionException>(final.VerifyIssuerProtection);
@@ -221,12 +257,14 @@ public sealed class ProtectionTests
         using var provider = services.BuildServiceProvider();
         var factory = provider.GetRequiredService<ILoggerFactory>();
         var logger = factory.CreateLogger("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager");
-        logger.LogDebug("synthetic-private-sentinel");
+        var privateSentinel = LoggerMessage.Define(LogLevel.Debug, new EventId(1), "synthetic-private-sentinel");
+        var publicControl = LoggerMessage.Define(LogLevel.Information, new EventId(2), "public-positive-control");
+        privateSentinel(logger, null);
         configuration["LogLevel:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager"] = "Trace";
         configuration["Capture:LogLevel:Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager"] = "Trace";
         ((IConfigurationRoot)configuration).Reload();
-        logger.LogDebug("synthetic-private-sentinel");
-        factory.CreateLogger("UnrelatedFeature").LogInformation("public-positive-control");
+        privateSentinel(logger, null);
+        publicControl(factory.CreateLogger("UnrelatedFeature"), null);
         Assert.DoesNotContain("synthetic-private-sentinel", capture.Output.ToString());
         Assert.Contains("public-positive-control", capture.Output.ToString());
     }
@@ -245,39 +283,72 @@ public sealed class ProtectionTests
     [InlineData("ring-entry-symlink")]
     public void Unsafe_filesystem_configuration_is_rejected(string scenario)
     {
-        if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
+        if (!OperatingSystem.IsLinux())
+        {
+            throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
+        }
+
         using var fixture = new IssuerMaterialFixture();
         var signingPath = fixture.Settings["Identity:Protection:Signing:Path"]!;
         switch (scenario)
         {
-            case "relative-file": fixture.Settings["Identity:Protection:Signing:Path"] = "relative.pfx"; break;
-            case "relative-ring": fixture.Settings["Identity:Protection:DataProtection:KeyRingPath"] = "relative"; break;
-            case "public-file": File.SetUnixFileMode(signingPath, UnixFileMode.UserRead | UnixFileMode.OtherRead); break;
-            case "unreadable-file": File.SetUnixFileMode(signingPath, UnixFileMode.UserWrite); break;
-            case "public-ring": File.SetUnixFileMode(fixture.Ring, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute | UnixFileMode.OtherExecute); break;
-            case "unwritable-ring": File.SetUnixFileMode(fixture.Ring, UnixFileMode.UserRead | UnixFileMode.UserExecute); break;
-            case "missing-ring": Directory.Delete(fixture.Ring); break;
+            case "relative-file":
+                fixture.Settings["Identity:Protection:Signing:Path"] = "relative.pfx";
+                break;
+            case "relative-ring":
+                fixture.Settings["Identity:Protection:DataProtection:KeyRingPath"] = "relative";
+                break;
+            case "public-file":
+                File.SetUnixFileMode(signingPath, UnixFileMode.UserRead | UnixFileMode.OtherRead);
+                break;
+            case "unreadable-file":
+                File.SetUnixFileMode(signingPath, UnixFileMode.UserWrite);
+                break;
+            case "public-ring":
+                File.SetUnixFileMode(fixture.Ring, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute | UnixFileMode.OtherExecute);
+                break;
+            case "unwritable-ring":
+                File.SetUnixFileMode(fixture.Ring, UnixFileMode.UserRead | UnixFileMode.UserExecute);
+                break;
+            case "missing-ring":
+                Directory.Delete(fixture.Ring);
+                break;
             case "file-symlink":
-                var link = Path.Combine(fixture.Root, "linked.pfx"); File.CreateSymbolicLink(link, signingPath);
-                fixture.Settings["Identity:Protection:Signing:Path"] = link; break;
+                var link = Path.Combine(fixture.Root, "linked.pfx");
+                File.CreateSymbolicLink(link, signingPath);
+                fixture.Settings["Identity:Protection:Signing:Path"] = link;
+                break;
             case "ring-symlink":
-                var linkedRing = Path.Combine(fixture.Root, "linked-ring"); Directory.CreateSymbolicLink(linkedRing, fixture.Ring);
-                fixture.Settings["Identity:Protection:DataProtection:KeyRingPath"] = linkedRing; break;
+                var linkedRing = Path.Combine(fixture.Root, "linked-ring");
+                Directory.CreateSymbolicLink(linkedRing, fixture.Ring);
+                fixture.Settings["Identity:Protection:DataProtection:KeyRingPath"] = linkedRing;
+                break;
             case "ancestor-symlink":
-                var parent = Path.Combine(fixture.Root, "linked-parent"); Directory.CreateSymbolicLink(parent, fixture.Root);
-                fixture.Settings["Identity:Protection:Signing:Path"] = Path.Combine(parent, Path.GetFileName(signingPath)); break;
-            case "ring-entry-symlink": File.CreateSymbolicLink(Path.Combine(fixture.Ring, "key.xml"), signingPath); break;
+                var parent = Path.Combine(fixture.Root, "linked-parent");
+                Directory.CreateSymbolicLink(parent, fixture.Root);
+                fixture.Settings["Identity:Protection:Signing:Path"] = Path.Combine(parent, Path.GetFileName(signingPath));
+                break;
+            case "ring-entry-symlink":
+                File.CreateSymbolicLink(Path.Combine(fixture.Ring, "key.xml"), signingPath);
+                break;
         }
         CredentialTests.AssertSafeFailure(fixture);
         // Restore owner access for deterministic fixture cleanup, including non-root runners.
-        if (Directory.Exists(fixture.Ring)) File.SetUnixFileMode(fixture.Ring, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        if (Directory.Exists(fixture.Ring))
+        {
+            File.SetUnixFileMode(fixture.Ring, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        }
     }
 
     [Fact]
     public void Ring_inventory_bound_rejects_more_than_256_documents()
     {
         using var fixture = new IssuerMaterialFixture();
-        using (var provider = CredentialTests.CreateProvider(fixture)) provider.VerifyIssuerProtection();
+        using (var provider = CredentialTests.CreateProvider(fixture))
+        {
+            provider.VerifyIssuerProtection();
+        }
+
         var original = XElement.Load(Directory.GetFiles(fixture.Ring, "key-*.xml").Single());
         for (var index = 0; index < 256; index++)
         {
@@ -335,6 +406,8 @@ public sealed class ProtectionTests
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
         public bool IsEnabled(LogLevel level) => true;
         public void Log<TState>(LogLevel level, EventId id, TState state, Exception? exception, Func<TState, Exception?, string> format) => Output.AppendLine(format(state, exception));
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
     }
 }

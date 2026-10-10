@@ -42,3 +42,7 @@ All eighteen principles screened before and after design. Approved scope and tra
 Tests precede implementations where practical. Configuration/crypto tests → persisted DP tests → composition/Aspire regression → actual full CI/coverage and independent reviews. Keep strict MTP counts updated. Record exact commits, commands, provider/version scope, reviewer findings and unresolved platform limitations. Targeted mutation checks must demonstrate that purpose separation and plaintext-ring rejection are test-enforced.
 
 No complexity exception or generic credential-provider/repository layer is justified for this single consumer.
+
+## User-requested engineering follow-up
+
+T014–T018 adapt the uploaded EditorConfig/gitignore, enable SDK 10 recommended and selected security/style/naming diagnostics with warnings-as-errors, and add a static-analysis CI job with real positive/negative controls. Formatting/braces/import changes preserve behavior; required analyzer corrections remain narrow and reviewed. Generated EF files alone are marked generated, test scenario naming has a scoped exception, and unused imports are checked by the formatter because Roslyn build enforcement requires XML documentation generation. No new analyzer dependency, schema, endpoint or UI is introduced. Publish a complete living roadmap alongside immutable approved documents; squash the verified PR and continue to first-party login/S256 using Spec Kit.

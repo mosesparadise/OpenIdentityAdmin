@@ -15,7 +15,9 @@ public sealed class MigratorConfigurationTests
     {
         var start = new ProcessStartInfo(Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet")
         {
-            RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false
         };
         start.ArgumentList.Add(typeof(DatabaseUpgrade).Assembly.Location);
         start.Environment["DOTNET_ENVIRONMENT"] = environment;
@@ -35,14 +37,27 @@ public sealed class MigratorConfigurationTests
             start.Environment.Remove("LocalDevelopment__SessionsPassword");
         }
         start.Environment.Remove("LocalDevelopment__ProvisionRuntimeRoles");
-        if (bootstrap is not null) start.Environment["LocalDevelopment__ProvisionRuntimeRoles"] = bootstrap;
+        if (bootstrap is not null)
+        {
+            start.Environment["LocalDevelopment__ProvisionRuntimeRoles"] = bootstrap;
+        }
+
         using var process = Process.Start(start)!;
         var output = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
         var error = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(10));
-        try { await process.WaitForExitAsync(deadline.Token); }
-        finally { if (!process.HasExited) process.Kill(entireProcessTree: true); }
+        try
+        {
+            await process.WaitForExitAsync(deadline.Token);
+        }
+        finally
+        {
+            if (!process.HasExited)
+            {
+                process.Kill(entireProcessTree: true);
+            }
+        }
         var combined = await output + await error;
         Assert.DoesNotContain("synthetic-secret", combined);
         Assert.Equal(2, process.ExitCode);
@@ -65,21 +80,35 @@ public sealed class MigratorConfigurationTests
     {
         var start = new ProcessStartInfo(Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet")
         {
-            RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false
         };
         start.ArgumentList.Add(Path.Combine(AppContext.BaseDirectory, $"IdentityPlatform.{host}.dll"));
         start.Environment["Database__Provider"] = provider;
         start.Environment.Remove("ConnectionStrings__platform");
         start.Environment.Remove("ConnectionStrings__adminsessions");
         if (connection is not null)
+        {
             start.Environment[host == "Admin.Bff" ? "ConnectionStrings__adminsessions" : "ConnectionStrings__platform"] = connection;
+        }
+
         using var process = Process.Start(start)!;
         var output = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
         var error = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(10));
-        try { await process.WaitForExitAsync(deadline.Token); }
-        finally { if (!process.HasExited) process.Kill(entireProcessTree: true); }
+        try
+        {
+            await process.WaitForExitAsync(deadline.Token);
+        }
+        finally
+        {
+            if (!process.HasExited)
+            {
+                process.Kill(entireProcessTree: true);
+            }
+        }
         var combined = await output + await error;
         Assert.DoesNotContain("synthetic-secret", combined);
         Assert.Equal(2, process.ExitCode);

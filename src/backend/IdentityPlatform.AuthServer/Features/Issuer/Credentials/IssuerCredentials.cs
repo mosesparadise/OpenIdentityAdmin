@@ -1,8 +1,8 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
-using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
+using IdentityPlatform.Core.Features.Configuration;
 
 namespace IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 
@@ -16,8 +16,14 @@ public sealed class IssuerCredentials : IDisposable
         KeyRingPath = keyRingPath;
     }
 
-    public Uri Issuer { get; }
-    public string KeyRingPath { get; }
+    public Uri Issuer
+    {
+        get;
+    }
+    public string KeyRingPath
+    {
+        get;
+    }
     public X509Certificate2 Signing => certificates[0];
     public X509Certificate2 Encryption => certificates[1];
     public X509Certificate2 Wrapping => certificates[2];
@@ -37,9 +43,16 @@ public sealed class IssuerCredentials : IDisposable
             material.LoadCertificate(protection.GetSection("Encryption"), X509KeyUsageFlags.KeyEncipherment, now, active: true, fingerprints);
             material.LoadCertificate(protection.GetSection("DataProtection:Current"), X509KeyUsageFlags.KeyEncipherment, now, active: true, fingerprints);
             var previous = protection.GetSection("DataProtection:Previous").GetChildren().ToArray();
-            if (previous.Length > 4) throw new IssuerProtectionException();
+            if (previous.Length > 4)
+            {
+                throw new IssuerProtectionException();
+            }
+
             foreach (var entry in previous)
+            {
                 material.LoadCertificate(entry, X509KeyUsageFlags.KeyEncipherment, now, active: false, fingerprints);
+            }
+
             return material;
         }
         catch (Exception exception) when (IssuerProtectionRegistration.IsConfigurationFailure(exception))
@@ -54,7 +67,11 @@ public sealed class IssuerCredentials : IDisposable
     {
         var path = PrivateStorage.RequireCredentialFile(section["Path"]);
         var password = section["Password"];
-        if (string.IsNullOrWhiteSpace(password)) throw new IssuerProtectionException();
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new IssuerProtectionException();
+        }
+
         var bytes = PrivateStorage.ReadBoundedFile(path);
         try
         {
@@ -69,7 +86,9 @@ public sealed class IssuerCredentials : IDisposable
                 keyUsage is null || (keyUsage.KeyUsages & usage) != usage ||
                 (active && (now < certificate.NotBefore.ToUniversalTime() || now >= certificate.NotAfter.ToUniversalTime())) ||
                 !fingerprints.Add(Convert.ToHexString(SHA256.HashData(publicKey.ExportSubjectPublicKeyInfo()))))
+            {
                 throw new IssuerProtectionException();
+            }
 
             // HasPrivateKey is metadata; a real operation proves that the imported private key is usable.
             var probe = RandomNumberGenerator.GetBytes(32);
@@ -77,12 +96,17 @@ public sealed class IssuerCredentials : IDisposable
             {
                 var signature = key.SignData(probe, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                 if (!publicKey.VerifyData(probe, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
+                {
                     throw new IssuerProtectionException();
+                }
             }
             else
             {
                 var decrypted = key.Decrypt(publicKey.Encrypt(probe, RSAEncryptionPadding.OaepSHA256), RSAEncryptionPadding.OaepSHA256);
-                if (!CryptographicOperations.FixedTimeEquals(probe, decrypted)) throw new IssuerProtectionException();
+                if (!CryptographicOperations.FixedTimeEquals(probe, decrypted))
+                {
+                    throw new IssuerProtectionException();
+                }
             }
         }
         finally { CryptographicOperations.ZeroMemory(bytes); }
@@ -93,23 +117,45 @@ public sealed class IssuerCredentials : IDisposable
         // Run only AFTER the bounded native loader has checked PKCS#12 work/certificate/key limits.
         var info = Pkcs12Info.Decode(bytes, out var consumed, skipCopy: true);
         if (consumed != bytes.Length || info.IntegrityMode != Pkcs12IntegrityMode.Password || !info.VerifyMac(password))
+        {
             throw new IssuerProtectionException();
+        }
+
         var protectedKeys = 0;
         foreach (var contents in info.AuthenticatedSafe)
         {
-            if (contents.ConfidentialityMode == Pkcs12ConfidentialityMode.Password) contents.Decrypt(password);
-            else if (contents.ConfidentialityMode != Pkcs12ConfidentialityMode.None) throw new IssuerProtectionException();
+            if (contents.ConfidentialityMode == Pkcs12ConfidentialityMode.Password)
+            {
+                contents.Decrypt(password);
+            }
+            else if (contents.ConfidentialityMode != Pkcs12ConfidentialityMode.None)
+            {
+                throw new IssuerProtectionException();
+            }
+
             foreach (var bag in contents.GetBags())
             {
-                if (bag is Pkcs12ShroudedKeyBag) protectedKeys++;
-                else if (bag is not Pkcs12CertBag) throw new IssuerProtectionException();
+                if (bag is Pkcs12ShroudedKeyBag)
+                {
+                    protectedKeys++;
+                }
+                else if (bag is not Pkcs12CertBag)
+                {
+                    throw new IssuerProtectionException();
+                }
             }
         }
-        if (protectedKeys != 1) throw new IssuerProtectionException();
+        if (protectedKeys != 1)
+        {
+            throw new IssuerProtectionException();
+        }
     }
 
     public void Dispose()
     {
-        foreach (var certificate in certificates) certificate.Dispose();
+        foreach (var certificate in certificates)
+        {
+            certificate.Dispose();
+        }
     }
 }

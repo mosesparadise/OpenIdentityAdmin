@@ -1,14 +1,15 @@
 using System.Net;
-using IdentityPlatform.Testing;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
+using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.AppHost.Tests.Features;
 
 public sealed class LocalProfilesTests
 {
+    private static readonly string[] HostNames = ["auth", "admin-api", "admin-bff", "worker"];
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -31,12 +32,17 @@ public sealed class LocalProfilesTests
                 auth.WithEnvironment(variable, secret);
             }
             else if (setting.Key == "Identity:Issuer")
+            {
                 auth.WithEnvironment(variable, auth.GetEndpoint("https"));
-            else auth.WithEnvironment(variable, setting.Value!);
+            }
+            else
+            {
+                auth.WithEnvironment(variable, setting.Value!);
+            }
         }
         await using var app = await builder.BuildAsync(cancellationToken);
         await app.StartAsync(cancellationToken);
-        foreach (var name in new[] { "auth", "admin-api", "admin-bff", "worker" })
+        foreach (var name in HostNames)
         {
             await app.ResourceNotifications.WaitForResourceHealthyAsync(name, cancellationToken);
             using var client = new HttpClient { BaseAddress = app.GetEndpoint(name, "https") };
@@ -50,10 +56,12 @@ public sealed class LocalProfilesTests
         using (var issuer = new HttpClient { BaseAddress = app.GetEndpoint("auth", "https") })
         {
             foreach (var path in new[] { "/.well-known/openid-configuration", "/.well-known/jwks", "/connect/authorize", "/account/login" })
+            {
                 Assert.Equal(HttpStatusCode.NotFound, (await issuer.GetAsync(path, cancellationToken)).StatusCode);
+            }
         }
         var model = app.Services.GetRequiredService<DistributedApplicationModel>();
-        var endpoints = new[] { "auth", "admin-api", "admin-bff", "worker" }
+        var endpoints = HostNames
             .Select(name => app.GetEndpoint(name, "https")).ToArray();
         Assert.Equal(endpoints.Length, endpoints.Distinct().Count());
         Assert.DoesNotContain(model.Resources.OfType<ContainerResource>(),
@@ -61,7 +69,7 @@ public sealed class LocalProfilesTests
         await app.Services.GetRequiredService<ResourceCommandService>().ExecuteCommandAsync(
             model.Resources.Single(resource => resource.Name == "database"), KnownResourceCommands.StopCommand, cancellationToken);
         await app.ResourceNotifications.WaitForResourceAsync("database", KnownResourceStates.Exited, cancellationToken);
-        foreach (var name in new[] { "auth", "admin-api", "admin-bff", "worker" })
+        foreach (var name in HostNames)
         {
             using var client = new HttpClient { BaseAddress = app.GetEndpoint(name, "https") };
             using var healthDeadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));

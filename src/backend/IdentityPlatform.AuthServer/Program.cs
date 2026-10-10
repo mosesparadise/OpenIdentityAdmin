@@ -2,7 +2,6 @@ using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Health;
-using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.ServiceDefaults;
 
@@ -24,7 +23,10 @@ catch (ArgumentException)
 }
 
 IssuerCredentials? credentials;
-try { credentials = builder.Services.AddIssuerProtection(builder.Configuration); }
+try
+{
+    credentials = builder.Services.AddIssuerProtection(builder.Configuration);
+}
 catch (IssuerProtectionException)
 {
     Console.Error.WriteLine(IssuerProtectionException.SafeMessage);
@@ -36,7 +38,10 @@ using (credentials)
     await using var app = builder.Build();
     try
     {
-        if (credentials is not null) app.Services.VerifyIssuerProtection();
+        if (credentials is not null)
+        {
+            app.Services.VerifyIssuerProtection();
+        }
     }
     catch (IssuerProtectionException)
     {

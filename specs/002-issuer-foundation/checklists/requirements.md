@@ -2,7 +2,7 @@
 
 This checks documentation quality, not implementation acceptance.
 
-- [x] Scope is a independently verifiable part of approved roadmap milestone 001.
+- [x] Scope is an independently verifiable part of approved roadmap milestone 001.
 - [x] Three user stories have positive/negative independent tests.
 - [x] Six requirements have product/control traces and measurable acceptance.
 - [x] Configuration, historical-key policy, lifetimes, error and filesystem behavior are explicit.

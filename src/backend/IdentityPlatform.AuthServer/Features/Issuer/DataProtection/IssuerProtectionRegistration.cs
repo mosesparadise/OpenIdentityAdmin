@@ -1,11 +1,11 @@
 using System.Security.Cryptography;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
+using Microsoft.Extensions.Options;
 
 namespace IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 
@@ -15,7 +15,11 @@ public static class IssuerProtectionRegistration
     public static IssuerCredentials? AddIssuerProtection(this IServiceCollection services, IConfiguration configuration)
     {
         var identity = configuration.GetSection("Identity");
-        if (!identity.GetSection("Issuer").Exists() && !identity.GetSection("Protection").Exists()) return null;
+        if (!identity.GetSection("Issuer").Exists() && !identity.GetSection("Protection").Exists())
+        {
+            return null;
+        }
+
         var credentials = IssuerCredentials.Load(configuration, DateTimeOffset.UtcNow);
         try
         {
@@ -61,7 +65,11 @@ public static class IssuerProtectionRegistration
             var xmlProbe = new XElement("probe", Convert.ToHexString(RandomNumberGenerator.GetBytes(32)));
             var wrapped = options.XmlEncryptor!.Encrypt(xmlProbe);
             var unwrapped = new EncryptedXmlDecryptor(services).Decrypt(wrapped.EncryptedElement);
-            if (!XNode.DeepEquals(xmlProbe, unwrapped)) throw new IssuerProtectionException();
+            if (!XNode.DeepEquals(xmlProbe, unwrapped))
+            {
+                throw new IssuerProtectionException();
+            }
+
             var keys = services.GetRequiredService<IKeyManager>().GetAllKeys();
             foreach (var key in keys)
             {
@@ -70,13 +78,18 @@ public static class IssuerProtectionRegistration
                 var context = RandomNumberGenerator.GetBytes(16);
                 var encrypted = encryptor.Encrypt(new ArraySegment<byte>(sample), new ArraySegment<byte>(context));
                 var decrypted = encryptor.Decrypt(new ArraySegment<byte>(encrypted), new ArraySegment<byte>(context));
-                if (!CryptographicOperations.FixedTimeEquals(sample, decrypted)) throw new IssuerProtectionException();
+                if (!CryptographicOperations.FixedTimeEquals(sample, decrypted))
+                {
+                    throw new IssuerProtectionException();
+                }
             }
             var protector = services.GetRequiredService<IDataProtectionProvider>().CreateProtector("startup-verification-v1");
             var probe = RandomNumberGenerator.GetBytes(32);
             var protectedProbe = protector.Protect(probe);
             if (!CryptographicOperations.FixedTimeEquals(probe, protector.Unprotect(protectedProbe)))
+            {
                 throw new IssuerProtectionException();
+            }
             // Read again to validate the first native key just persisted by a previously empty ring.
             _ = services.GetRequiredService<IKeyManager>().GetAllKeys();
         }

@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using OpenTelemetry;
 
 namespace IdentityPlatform.ServiceDefaults;
 
@@ -34,7 +34,9 @@ public static class Extensions
                 })
                 .AddProcessor(new OperationalTraceProcessor()));
         if (!string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]))
+        {
             builder.Services.AddOpenTelemetry().UseOtlpExporter();
+        }
         // No default HttpClient retries: security mutations must select their own safe policy.
         return builder;
     }

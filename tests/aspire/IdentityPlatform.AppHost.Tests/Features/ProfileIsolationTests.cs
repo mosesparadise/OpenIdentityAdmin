@@ -68,7 +68,7 @@ public sealed class ProfileIsolationTests
             await connection.OpenAsync(token);
             await using var command = connection.CreateCommand();
             command.CommandText = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'platform' AND TABLE_NAME = 'isolation_probe'";
-            Assert.Equal(0, Convert.ToInt32(await command.ExecuteScalarAsync(token)));
+            Assert.Equal(0, Convert.ToInt32(await command.ExecuteScalarAsync(token), System.Globalization.CultureInfo.InvariantCulture));
         }
         var firstResources = LifecycleEvidence.Capture(first);
         await first.StopAsync(token);

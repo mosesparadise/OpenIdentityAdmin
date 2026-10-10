@@ -22,7 +22,13 @@ public sealed class OperationalTraceProcessor : BaseProcessor<Activity>
             return;
         }
         foreach (var tag in activity.TagObjects.ToArray())
-            if (!AllowedTags.Contains(tag.Key)) activity.SetTag(tag.Key, null);
+        {
+            if (!AllowedTags.Contains(tag.Key))
+            {
+                activity.SetTag(tag.Key, null);
+            }
+        }
+
         activity.SetStatus(activity.Status);
         activity.DisplayName = activity.GetTagItem("http.route") is "/alive" or "/health"
             ? $"GET {activity.GetTagItem("http.route")}" : "operational health";

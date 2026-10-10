@@ -31,6 +31,6 @@ public sealed class NativeModelTests
         Assert.False(runtimePlatform.Database.HasPendingModelChanges());
         Assert.False(runtimeSessions.Database.HasPendingModelChanges());
         Assert.Equal("AspNetUserPasskeys", runtimePlatform.Model.FindEntityType(typeof(IdentityUserPasskey<string>))?.GetTableName());
-        Assert.DoesNotContain(runtimeSessions.Model.GetEntityTypes(), entity => entity.GetTableName()!.StartsWith("AspNet"));
+        Assert.DoesNotContain(runtimeSessions.Model.GetEntityTypes(), entity => entity.GetTableName()!.StartsWith("AspNet", StringComparison.Ordinal));
     }
 }
