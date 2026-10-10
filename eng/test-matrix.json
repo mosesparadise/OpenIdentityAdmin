@@ -29,12 +29,12 @@
     "PostgreSql": {
       "Persistence": 3,
       "AppHost": 4,
-      "Issuer": 72
+      "Issuer": 81
     },
     "SqlServer": {
       "Persistence": 3,
       "AppHost": 4,
-      "Issuer": 72
+      "Issuer": 81
     }
   }
 }

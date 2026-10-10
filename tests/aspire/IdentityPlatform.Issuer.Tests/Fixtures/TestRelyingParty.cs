@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
@@ -40,11 +41,11 @@ public sealed class TestRelyingParty : IAsyncDisposable
     public Func<TestFlow, CancellationToken, Task<(string Subject, long AuthenticatedAt)>> ExpectedIdentity { get; set; } = null!;
     public string Callback => new Uri(BaseUri, "/callback").AbsoluteUri;
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken, X509Certificate2? certificate = null)
     {
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
         builder.Logging.ClearProviders();
-        builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0, listener => listener.UseHttps()));
+        builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0, listener => { if (certificate is null) { listener.UseHttps(); } else { listener.UseHttps(certificate); } }));
         application = builder.Build();
         application.MapGet("/start", (HttpContext context) =>
         {
@@ -176,8 +177,8 @@ public sealed class TestRelyingParty : IAsyncDisposable
         }
         var keys = new JsonWebKeySet(await backchannel.GetStringAsync(jwksUri, cancellationToken)).GetSigningKeys();
         var handler = new JsonWebTokenHandler();
-        var id = await handler.ValidateTokenAsync(tokens.GetProperty("id_token").GetString()!, Parameters("identityplatform-pilot", "JWT", keys));
-        var access = await handler.ValidateTokenAsync(tokens.GetProperty("access_token").GetString()!, Parameters("identityplatform-pilot-api", "at+jwt", keys));
+        var id = await handler.ValidateTokenAsync(tokens.GetProperty("id_token").GetString()!, Parameters(Issuer.AbsoluteUri, "identityplatform-pilot", "JWT", keys));
+        var access = await handler.ValidateTokenAsync(tokens.GetProperty("access_token").GetString()!, Parameters(Issuer.AbsoluteUri, "identityplatform-pilot-api", "at+jwt", keys));
         if (!id.IsValid || !access.IsValid || id.SecurityToken is not JsonWebToken identity || access.SecurityToken is not JsonWebToken api)
         {
             return "Independent JWT validation failed: " + (id.Exception?.GetType().Name ?? "ID valid") + ", " + (access.Exception?.GetType().Name ?? "access valid");
@@ -237,9 +238,9 @@ public sealed class TestRelyingParty : IAsyncDisposable
         token.TryGetClaim("oi_au_id", out var authorization) && authorization.Value.Length is > 0 and <= 100 &&
         token.TryGetClaim("oi_tkn_id", out var entry) && entry.Value.Length is > 0 and <= 100;
 
-    private TokenValidationParameters Parameters(string audience, string type, ICollection<SecurityKey> keys) => new()
+    internal static TokenValidationParameters Parameters(string issuer, string audience, string type, ICollection<SecurityKey> keys) => new()
     {
-        ValidIssuer = Issuer.AbsoluteUri,
+        ValidIssuer = issuer,
         ValidateIssuer = true,
         ValidAudience = audience,
         ValidateAudience = true,

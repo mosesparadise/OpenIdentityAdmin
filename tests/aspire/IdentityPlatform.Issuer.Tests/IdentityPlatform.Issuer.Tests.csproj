@@ -11,6 +11,7 @@
     <ProjectReference Include="../../../src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
+  <ItemGroup><None Update="Features/Browser/Baselines/*.png" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/LifecycleEvidence.cs" Link="Fixtures/LifecycleEvidence.cs" />

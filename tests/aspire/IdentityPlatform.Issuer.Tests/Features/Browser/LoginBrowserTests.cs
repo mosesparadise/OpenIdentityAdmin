@@ -1,3 +1,7 @@
+using System.Net;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using Deque.AxeCore.Playwright;
 using IdentityPlatform.Issuer.Tests.Fixtures;
 using Microsoft.Playwright;
@@ -20,6 +24,30 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Browser_accepts_explicitly_trusted_tls_and_rejects_an_unrelated_certificate(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync();
+        await using var context = await browser.NewContextAsync();
+        var page = await context.NewPageAsync();
+        Assert.Equal(200, (await page.GotoAsync(new Uri(environment.Issuer, "/alive").AbsoluteUri))!.Status);
+        using var key = RSA.Create(2048);
+        var request = new CertificateRequest("CN=identityplatform-untrusted-test", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        var names = new SubjectAlternativeNameBuilder();
+        names.AddIpAddress(IPAddress.Loopback);
+        request.CertificateExtensions.Add(names.Build());
+        request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
+        using var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
+        await using var untrusted = new TestRelyingParty { ClientSecret = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)) };
+        await untrusted.StartAsync(TestContext.Current.CancellationToken, certificate);
+        var error = await Assert.ThrowsAsync<PlaywrightException>(() => page.GotoAsync(untrusted.BaseUri.AbsoluteUri));
+        Assert.Contains("ERR_CERT_", error.Message, StringComparison.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public async Task Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(string provider)
     {
         var environment = await fixture.GetAsync(provider);
@@ -37,7 +65,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         Assert.Equal("/account/login", new Uri(page.Url).AbsolutePath);
         var headers = await response.AllHeadersAsync();
         Assert.Contains("form-action 'self'", headers["content-security-policy"], StringComparison.Ordinal);
-        Assert.Equal("no-store", headers["cache-control"]);
+        Assert.True(CacheControlHeaderValue.Parse(headers["cache-control"]).NoStore);
         Assert.Equal("no-referrer", headers["referrer-policy"]);
         await page.Keyboard.PressAsync("Tab");
         Assert.Equal("Skip to main content", await page.Locator(":focus").InnerTextAsync());
@@ -110,7 +138,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         var root = Environment.GetEnvironmentVariable("IDENTITY_TEST_ARTIFACTS") ?? Path.Combine("artifacts", "tests", provider);
         var path = Path.Combine(root, "screenshots", $"login-{theme}-{width}.png");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-        await page.ScreenshotAsync(new()
+        var screenshot = await page.ScreenshotAsync(new()
         {
             Path = path,
             FullPage = true,
@@ -121,6 +149,8 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         Assert.Equal(["identity-theme"], keys);
         await page.ReloadAsync();
         Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
-        // Screenshots are retained for explicit review; baseline acceptance is tracked separately.
+        var baseline = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "Features", "Browser", "Baselines", $"login-{theme}-{width}.png"), TestContext.Current.CancellationToken);
+        Assert.True(SHA256.HashData(baseline).AsSpan().SequenceEqual(SHA256.HashData(screenshot)),
+            "The reviewed Chromium/Linux login baseline changed. Inspect the retained screenshot; do not automatically replace the baseline.");
     }
 }

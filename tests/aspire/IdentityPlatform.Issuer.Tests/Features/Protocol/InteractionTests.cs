@@ -17,6 +17,96 @@ public sealed class InteractionTests(IssuerFixture fixture)
         from tampering in Tampering
         select new TheoryDataRow<string, string>(provider, tampering).WithTrait("Provider", provider);
 
+    private static readonly string[] FreshnessModes = ["prompt-login", "max-age-zero", "max-age-stale", "max-age-recent"];
+    public static IEnumerable<TheoryDataRow<string, string>> FreshnessCases =>
+        from provider in Providers
+        from mode in FreshnessModes
+        select new TheoryDataRow<string, string>(provider, mode).WithTrait("Provider", provider);
+
+    [Theory]
+    [MemberData(nameof(FreshnessCases))]
+    public async Task Freshness_reuses_only_a_sufficiently_recent_session(string provider, string mode)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var browser = IssuerEnvironment.CreateBrowserClient();
+        var original = await environment.AuthorizeAsync(browser, exchange: true);
+        if (mode == "max-age-stale")
+        {
+            await using var scope = environment.Services.CreateAsyncScope();
+            var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+            await database.Set<LocalIdentitySession>().Where(value => value.Id == original.ExpectedSessionId)
+                .ExecuteUpdateAsync(update => update.SetProperty(value => value.AuthenticatedAt, DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 120), TestContext.Current.CancellationToken);
+        }
+        var next = await environment.AuthorizeAsync(browser, exchange: true,
+            prompt: mode == "prompt-login" ? "login" : null,
+            maximumAge: mode == "max-age-zero" ? "0" : mode.StartsWith("max-age-", StringComparison.Ordinal) ? "60" : null);
+        Assert.True(next.Validated);
+        if (mode == "max-age-recent")
+        {
+            Assert.Equal(original.ExpectedSessionId, next.ExpectedSessionId);
+            Assert.Null(next.InteractionId);
+        }
+        else
+        {
+            Assert.NotEqual(original.ExpectedSessionId, next.ExpectedSessionId);
+            Assert.NotNull(next.InteractionId);
+        }
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Ninth_active_interaction_is_denied_and_expiration_frees_capacity(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var browser = IssuerEnvironment.CreateBrowserClient();
+        var pending = new List<TestLogin>();
+        for (var index = 0; index < 8; index++)
+        {
+            pending.Add(await TestLogin.BeginAsync(environment, browser));
+        }
+        var ninth = environment.RelyingParty.Prepare();
+        using var denied = await browser.GetAsync(environment.RelyingParty.StartUri(ninth), TestContext.Current.CancellationToken);
+        Assert.Equal("temporarily_unavailable", ninth.Error);
+        Assert.Empty(ninth.Code);
+        await using var scope = environment.Services.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        await database.Set<LoginInteraction>().Where(value => value.Id == pending[0].Interaction)
+            .ExecuteUpdateAsync(update => update.SetProperty(value => value.ExpiresAt, 1), TestContext.Current.CancellationToken);
+        var fresh = await TestLogin.BeginAsync(environment, browser);
+        Assert.DoesNotContain(pending, value => value.Interaction == fresh.Interaction);
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Concurrent_form_completion_creates_exactly_one_session_and_audit_intent(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var browser = IssuerEnvironment.CreateBrowserClient();
+        var login = await TestLogin.BeginAsync(environment, browser);
+        await using var scope = environment.Services.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var sessions = await database.Set<LocalIdentitySession>().CountAsync(TestContext.Current.CancellationToken);
+        var audits = await database.Set<SecurityAuditIntent>().CountAsync(value => value.Outcome == "session-created", TestContext.Current.CancellationToken);
+        var start = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        async Task<HttpResponseMessage> Submit()
+        {
+            await start.Task;
+            return await login.SubmitAsync(environment, browser);
+        }
+        var first = Submit();
+        var second = Submit();
+        start.SetResult();
+        var results = await Task.WhenAll(first, second);
+        using var one = results[0];
+        using var two = results[1];
+        Assert.Single(results, response => response.RequestMessage!.RequestUri!.AbsolutePath == "/account/complete");
+        Assert.All(results, response => Assert.True(response.StatusCode is HttpStatusCode.OK or HttpStatusCode.BadRequest));
+        Assert.Equal(sessions + 1, await database.Set<LocalIdentitySession>().CountAsync(TestContext.Current.CancellationToken));
+        Assert.Equal(audits + 1, await database.Set<SecurityAuditIntent>().CountAsync(value => value.Outcome == "session-created", TestContext.Current.CancellationToken));
+    }
+
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
