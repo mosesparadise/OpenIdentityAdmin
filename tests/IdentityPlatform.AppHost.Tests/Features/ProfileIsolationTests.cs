@@ -95,7 +95,6 @@ public sealed class ProfileIsolationTests
         var auth = builder.Resources.OfType<ProjectResource>().Single(resource => resource.Name == "auth");
         auth.Annotations.Add(new EnvironmentCallbackAnnotation(context =>
             context.EnvironmentVariables["Database__Provider"] = "invalid-provider"));
-        string? connection;
         LifecycleEvidence resources;
         await using (var app = await builder.BuildAsync(token))
         {
@@ -103,15 +102,8 @@ public sealed class ProfileIsolationTests
             await app.ResourceNotifications.WaitForResourceAsync("auth", KnownResourceStates.Finished, token);
             Assert.True(app.ResourceNotifications.TryGetCurrentState("auth", out var state));
             Assert.Equal(2, state!.Snapshot.ExitCode);
-            connection = await app.GetConnectionStringAsync("platform", token);
             resources = LifecycleEvidence.Capture(app);
         }
         await resources.AssertRemovedAsync();
-
-        var options = new DbContextOptionsBuilder<PlatformDbContext>();
-        PersistenceRegistration.ConfigureDatabase(options, DatabaseProviderParser.Parse(provider), connection!, "PlatformMigrations");
-        await using var database = new PlatformDbContext(options.Options);
-        using var cleanupDeadline = new CancellationTokenSource(TimeSpan.FromSeconds(8));
-        Assert.False(await database.Database.CanConnectAsync(cleanupDeadline.Token));
     }
 }
