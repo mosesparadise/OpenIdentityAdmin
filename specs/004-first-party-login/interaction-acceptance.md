@@ -1,6 +1,6 @@
 # T024 login and interaction acceptance plan
 
-Status: planned before implementation on `004-interaction-acceptance`, under approved feature004 and T024. Spec Kit prerequisites pass; requirements checklist7/7 checked; no extension hooks. PR #5 was squash-merged as `d4664a3f0222ffda2b0d4ae01d8e6aaedb551b92` after exact-head CI and review with zero open findings.
+Status: T024 verified by [run38073502300](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38073502300), all578 .NET cases and seven gates passed. This plan was recorded before implementation on `004-interaction-acceptance`, under approved feature004 and T024. Spec Kit prerequisites pass; requirements checklist7/7 checked; no extension hooks. PR #5 was squash-merged as `d4664a3f0222ffda2b0d4ae01d8e6aaedb551b92` after exact-head CI and review with zero open findings.
 
 Scope: LOGIN-003/004/005, US2/AC1–3 and T011–015. Complete password-entry eligibility, native five-attempt lockout, original cached-request binding, delayed positive max_age, independent tabs and completion/consumption race evidence. Existing freshness, capacity, forged-form and replaced-session tests remain in the required both-provider matrix. T025–T030 remain separate obligations; this increment does not accept the full pilot or authorize its next PR merge.
 
@@ -43,7 +43,7 @@ Architecture review required a pre-resumption authentication-time snapshot; HTTP
 
 Test review required the lone barrier cancellation control to call the transition with CancellationToken.None, proving that the interceptor's own deadline works independently. A deterministic completed-session mismatch denial followed by genuine matching-session HTTP success complements the mixed race's nondeterministic winner. Native cleanup uses the production connection/command bounds. Security/test review led to full prior-audit preservation, immutable request/predecessor-field checks and independently derived replacement targets.
 
-Current added matrix:44 cases per provider (password entry7, request binding31, database transition6), raising Issuer130→174 and the full expected .NET total490→578. Expected counts are not evidence of a pass. Final source execution and review dispositions follow in verification.md.
+Current added matrix:44 cases per provider (password entry7, request binding31, database transition6), raising Issuer130→174 and the full expected .NET total490→578. The final both-provider578-case pass and bounded review dispositions are recorded in [verification](verification.md#t024-completed-ci-checkpoint).
 
 Final bounded source re-review: architecture, test and security reviewers closed the findings above. Pending consumption retains an earlier ordinary request; completion cases render their form after authentication so antiforgery identity binding remains valid. Reviewers executed no tests.
 

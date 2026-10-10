@@ -146,3 +146,25 @@ Final local source builds with zero warnings/errors; strict unit matrix passes21
 
 
 The first full local168-case PostgreSQL run at `1833ec8` passed162 and failed6. One new assertion incorrectly expected a callback after native request-token redemption; five later cases reached the shared issuer's600/minute rate limit (including an explicit429), causing setup failures/timeouts. The new44-case cohort now owns a separate, nonparallel disposable Aspire fixture; production limits and security-operation behavior remain unchanged. The HTTP race allows only the two legitimate denial stages: exact access_denied callback when validation preceded the winner, or native400 invalid_token after redemption. Explicit replay requires the latter. This correction is test isolation/response evidence, not a product policy change. Initial CI source1833ec8 passed static, unit, assurance and supply-chain jobs; provider results are superseded by the corrected-source run.
+
+
+Corrected source `32d590340fc9b5924b072912428455613f5bde5e` passes the full local PostgreSQL HTTP/database suite168/168, zero skips, in4m18s. Fresh TRX confirms all44 new cases (PasswordEntry7, RequestBinding31, InteractionRace6). Browser cases were explicitly excluded locally. The final local build has zero warnings/errors; static enforcement checks passed, and CI reruns every gate for this exact source. The earlier162/168 failure checkpoint is superseded for local HTTP evidence by this run.
+
+| T024 requirement / scenario | Permanent acceptance coverage | Cases per provider |
+| --- | --- | --- |
+| LOGIN-003, US2/AC1–3: current account eligibility and native lockout | `PasswordEntryTests`: six committed restrictions after form rendering; five-attempt lockout, correct-password denial and genuine expiry recovery | 7 |
+| LOGIN-004/005: cached request, correlation, freshness and tabs | `RequestBindingTests`: GET/POST overlays and client binding, delayed positive max_age, valid-antiforgery cross-browser denial, authenticated tabs, replaced-session direct resume, concurrent HTTP issuance/native replay | 31 |
+| LOGIN-004/005 and bounded cancellation: single winner and coherent persisted state | `InteractionRaceTests`: completion, pending/completed consumption, mixed transition, exact-session denial/recovery, independent deadline cancellation/drain; immutable bindings and full prior audit preservation | 6 |
+
+Existing both-provider `InteractionTests` retain freshness, sequential capacity/expiry, simultaneous form completion, anonymous-tab restart, session replacement/rollback and independent-browser reuse evidence. Atomic concurrent capacity remains T030; broad fault/logging and mutation acceptance remain T026/T028.
+
+
+### T024 completed CI checkpoint
+
+[Run38073502300](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38073502300) passed all seven gates for source `32d590340fc9b5924b072912428455613f5bde5e`, tested through GitHub merge checkout `8bebc97`. All578 .NET cases passed, zero skips:216 unit/architecture plus181 per real provider (Persistence3, AppHost4, Issuer174). Each issuer cell includes168 HTTP/database and6 Chromium cases, including all44 new T024 cases. PostgreSQL issuer duration5m50s and SQL Server6m40s remain below the unchanged660s deadline. No required retry, skip or timeout increase was introduced.
+
+All nine unchanged90% line/80% branch floors passed: Core100/100; Infrastructure99.0/100; ServiceDefaults100/100; Migrator98.1/97.8; AuthServer93.6/98.7; Admin API/BFF/Worker100/100; AppHost98.4/100. Static analysis/formatting and enforcement negative controls, assurance integrity, dependencies/licenses/secrets and strict fresh-report counts all passed. The earlier partial/failed checkpoints are historical and superseded for this corrected source.
+
+T024 is complete. [PR #6](https://github.com/mosesparadise/OpenIdentityAdmin/pull/6), `test(auth): verify login and interaction boundaries`, contains this bounded test increment and remains unmerged for review. The final documentation-only completion commit receives its own CI run; its status is linked from the PR without a self-referential evidence-commit loop. No product or test source changed after the passing source checkpoint. Final exact-head checks remain mandatory before any future merge.
+
+T025 is next. T025–T030 and full M01-D/manual/external acceptance remain open; T030's concurrent browser-capacity gap is not covered by the sequential-capacity result. Independent architecture/test/security reviewers closed their bounded source findings and executed no tests themselves. All345 ASVS rows remain not_assessed; no certification claim is made.
