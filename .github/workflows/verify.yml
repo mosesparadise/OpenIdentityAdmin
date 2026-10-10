@@ -10,6 +10,16 @@ concurrency:
   group: verify-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  assurance:
+    name: Assurance register integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: python3 scripts/check_assurance.py
+      - run: python3 scripts/test_assurance.py
   static-analysis:
     name: Static analysis and formatting
     runs-on: ubuntu-24.04

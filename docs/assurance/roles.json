@@ -1,0 +1,30 @@
+{
+  "ENG": {
+    "responsibility": "Implementation and architecture lead",
+    "named_owner": null
+  },
+  "AUTH": {
+    "responsibility": "Identity and OAuth/OIDC engineering lead",
+    "named_owner": null
+  },
+  "API": {
+    "responsibility": "Admin API and BFF engineering lead",
+    "named_owner": null
+  },
+  "UX": {
+    "responsibility": "React/Razor and accessibility lead",
+    "named_owner": null
+  },
+  "OPS": {
+    "responsibility": "Platform, deployment and operations owner",
+    "named_owner": null
+  },
+  "DATA": {
+    "responsibility": "Data protection and privacy owner",
+    "named_owner": null
+  },
+  "SEC": {
+    "responsibility": "Security-assurance owner for applicability and exception review",
+    "named_owner": null
+  }
+}
