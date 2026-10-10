@@ -34,8 +34,10 @@ The existing issuer runner deadline remains660s. Feature005 SQL issuer observati
 - [x] OP-04 Add observed real database contention/HTTP cancellation tests and bounded drain/recovery evidence.
 - [x] OP-05 Update strict test counts; run local static/unit/targeted provider tests and all required CI gates with zero skips.
 - [x] OP-06 Review source/evidence independently; resolve GitHub findings; record bounded convergence and actual results.
-- [ ] OP-07 Publish a Conventional Commit PR, verify its final head/checks/reviews and squash-merge before T027.
+- [x] OP-07 Publish a Conventional Commit PR, verify its final head/checks/reviews and squash-merge before T027.
 
 Read-only planning analysis: T026's obligations map to OP-02–04 and retained named regressions; all implementation/evidence gates map to OP-05–07. No accepted security contract or test deadline is relaxed. The requirements-quality checklist remains7/7 checked. Original feature tasks remain partial until their complete acceptance is demonstrated; T026 is checked only after its own evidence passes.
 
 Completion evidence: [verification](verification.md#t026-completed-ci-checkpoint),617 cases/zero skips/all seven gates on `d6735cf`. Source reviewers closed every bounded finding. The documentation correction receives final-head CI; OP-07 remains the final authorized merge step. Observed SQL issuer duration10m54.846s leaves about5s; T027 must budget its browser work without dropping cases or extending deadlines.
+
+Final merge: PR #9 squash-merged as `7d1a9bc61a57d4f8f03deb4b789307bb02f7fa18` after all seven checks on `2839a26` in [run38094527063](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38094527063),617 tests and zero skips. This supersedes the pending merge checkpoint above.
