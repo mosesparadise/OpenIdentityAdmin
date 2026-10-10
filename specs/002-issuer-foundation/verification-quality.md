@@ -39,3 +39,7 @@ Dependency/license/secret checks passed. No new package was introduced. [Artifac
 The documentation-only evidence follow-up requires the [PR's latest exact-head checks](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2/checks) before merge; baseline results are not presented as a run of a different commit. T018 records the remaining approval/squash/handoff operation. GitHub may reject author self-approval; do not bypass review protections or impersonate a reviewer.
 
 The living [roadmap](../../docs/roadmap.md), [quality policy](../../docs/engineering/code-quality.md) and [feature tasks](tasks.md) document the requested conventions and remaining work. Production release, formal assessment and external certification remain unfinished.
+
+## Final-head merge evidence
+
+The documentation-only final head `af64c2a1f3ecc1fa59af2d4ac0c4f025f8f2234b` passed all six jobs in [run 38052015465](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38052015465): 151 unit + 7 PostgreSQL + 7 SQL Server tests, no skips; all nine module coverage floors and static/supply-chain gates passed. The review thread was resolved. GitHub rejected self-approval because the connected account authored the PR; ordinary squash merge succeeded as `8079b5e9681ea024937413104f3cd7dec8ead65b`. No review restriction was bypassed. T018 is complete; feature 003 begins the M01-C register baseline.

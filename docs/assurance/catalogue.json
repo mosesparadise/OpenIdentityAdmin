@@ -1,0 +1,16 @@
+{
+  "source": "OWASP Application Security Verification Standard",
+  "version": "5.0.0",
+  "tag": "v5.0.0_release",
+  "commit": "5cf9b032440be53ce345ab3c130fda46ba1ce7a2",
+  "url": "https://raw.githubusercontent.com/OWASP/ASVS/5cf9b032440be53ce345ab3c130fda46ba1ce7a2/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv",
+  "path": "docs/assurance/asvs-5.0.0.csv",
+  "sha256": "98c8fe911b9edb403af8ee05d3ce8201ecac2659e313b053890a62847cdcf680",
+  "row_count": 345,
+  "chapter_count": 17,
+  "section_count": 80,
+  "acquired_on": "2026-10-10",
+  "license": "CC-BY-SA-4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "attribution": "Copyright OWASP Foundation and ASVS contributors. Official catalogue reproduced unchanged. Local assessment and routing are project additions, not OWASP endorsement."
+}

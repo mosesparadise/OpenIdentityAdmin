@@ -1,0 +1,104 @@
+{
+  "THR-01": {
+    "statement": "Attacker-controlled input changes interpreter commands or output structure.",
+    "assets": "Request parsing and output encoding",
+    "boundaries": "HTTP requests, stored data and browser output",
+    "owner": "ENG"
+  },
+  "THR-02": {
+    "statement": "Invalid input, workflow abuse or races bypass business invariants.",
+    "assets": "Feature validation and transactions",
+    "boundaries": "Untrusted input to state-changing feature handlers",
+    "owner": "ENG"
+  },
+  "THR-03": {
+    "statement": "Browser-origin or script attacks steal sessions or perform unauthorized actions.",
+    "assets": "Razor, React, BFF and response headers",
+    "boundaries": "Browser to issuer/BFF and third-party content",
+    "owner": "UX"
+  },
+  "THR-04": {
+    "statement": "Ambiguous HTTP messages or exposed service protocols bypass validation.",
+    "assets": "HTTP APIs and reverse proxy",
+    "boundaries": "Client and proxy to service endpoints",
+    "owner": "API"
+  },
+  "THR-05": {
+    "statement": "Untrusted file content or paths expose files or execute unintended content.",
+    "assets": "File configuration, key ring and exports",
+    "boundaries": "Operator/user file input to storage and downloads",
+    "owner": "ENG"
+  },
+  "THR-06": {
+    "statement": "Credential theft, guessing or recovery abuse impersonates an account.",
+    "assets": "Identity account and authenticator lifecycle",
+    "boundaries": "Browser/IdP to authentication and recovery stores",
+    "owner": "AUTH"
+  },
+  "THR-07": {
+    "statement": "Stolen, stale or fixed sessions retain unauthorized access.",
+    "assets": "Issuer and BFF sessions",
+    "boundaries": "Browser cookies and distributed session stores",
+    "owner": "AUTH"
+  },
+  "THR-08": {
+    "statement": "Privilege escalation or stale policy permits forbidden operations.",
+    "assets": "Current authorization policies",
+    "boundaries": "Identity/session context to protected resources",
+    "owner": "AUTH"
+  },
+  "THR-09": {
+    "statement": "Forged, mis-scoped or wrong-purpose tokens are accepted.",
+    "assets": "Token issuance and validation",
+    "boundaries": "Issuer to client and resource server trust boundary",
+    "owner": "AUTH"
+  },
+  "THR-10": {
+    "statement": "Protocol mix-up, replay or client confusion exposes identity or access.",
+    "assets": "OpenIddict and client/resource-server decisions",
+    "boundaries": "Issuer, relying party, resource server and browser",
+    "owner": "AUTH"
+  },
+  "THR-11": {
+    "statement": "Weak, reused or exposed cryptographic material compromises protected data.",
+    "assets": "Cryptographic providers and key lifecycle",
+    "boundaries": "Key management to cryptographic operations",
+    "owner": "AUTH"
+  },
+  "THR-12": {
+    "statement": "Network interception or peer impersonation breaks confidentiality and trust.",
+    "assets": "Transport and deployment infrastructure",
+    "boundaries": "External and internal network connections",
+    "owner": "OPS"
+  },
+  "THR-13": {
+    "statement": "Unsafe configuration, secret handling or exposed diagnostics enables compromise.",
+    "assets": "Configuration, secrets and deployment",
+    "boundaries": "Operator/deployment to application and dependency configuration",
+    "owner": "OPS"
+  },
+  "THR-14": {
+    "statement": "Excessive collection, retention or disclosure exposes personal/sensitive data.",
+    "assets": "Personal data, retention and exports",
+    "boundaries": "Application to browser, persistence, audit and export",
+    "owner": "DATA"
+  },
+  "THR-15": {
+    "statement": "Unsafe dependencies, coding practices or concurrent operations undermine controls.",
+    "assets": "Architecture, dependencies and shared mechanisms",
+    "boundaries": "Build/dependency and component interaction boundaries",
+    "owner": "ENG"
+  },
+  "THR-16": {
+    "statement": "Missing, tampered or sensitive logs hide attacks or expose secrets.",
+    "assets": "Security logging, audit and error handling",
+    "boundaries": "Security events and failures to logs/audit operators",
+    "owner": "SEC"
+  },
+  "THR-17": {
+    "statement": "Unreviewed real-time media/signaling surfaces could expose data or relay access.",
+    "assets": "Deployment capability inventory",
+    "boundaries": "Conditional WebRTC media, signaling and relay boundaries",
+    "owner": "OPS"
+  }
+}
