@@ -52,6 +52,11 @@ All five test projects use xUnit v3 (`xunit.v3.mtp-v2` 4.0.2) with native Micros
 
 ## Implementation workflow
 
-The repository includes the genuine GitHub Spec Kit 1.1.3 Codex skills integration and ratified constitution. Use `$speckit-specify`, `$speckit-plan`, `$speckit-tasks`, `$speckit-analyze`, `$speckit-implement` and `$speckit-converge` in Codex as applicable; do not reinitialize over the checked-in artifacts. The current feature is recorded in `.specify/feature.json`.
+The repository includes the genuine GitHub Spec Kit 1.1.3 Codex skills integration and ratified constitution. Use `$speckit-specify`, `$speckit-plan`, `$speckit-tasks`, `$speckit-analyze`, `$speckit-implement` and `$speckit-converge` in Codex as applicable; do not reinitialize over the checked-in artifacts. Tracked feature specifications, plans and tasks live under [`specs/`](specs/); the foundation is in [`specs/001-platform-foundation/`](specs/001-platform-foundation/). `.specify/feature.json` is generated, ignored, per-checkout state and is absent from a fresh clone. Select an existing feature before running its Spec Kit commands; this prerequisite command also creates the local pointer:
+
+```sh
+SPECIFY_FEATURE_DIRECTORY="$PWD/specs/001-platform-foundation" \
+  .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+```
 
 Features live within their owning projects. Composition roots and generated migrations are explicit exceptions. Protocol application decisions will use Minimal APIs while OpenIddict owns validation and cryptography. Eight specialized skills and reviewer configurations complement Spec Kit; [their evaluation](docs/engineering/ai-evaluation.md) is bounded evidence, not security or certification assurance.
