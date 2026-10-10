@@ -24,6 +24,7 @@ public sealed class CompositionLifetimeTests
         using var fixture = new IssuerMaterialFixture();
         IssuerCredentials? material = null;
         DisposalProbe? probe = null;
+        var verifiedBeforeContextDisposal = false;
         if (scenario == "protection")
         {
             File.WriteAllText(Path.Combine(fixture.Ring, "invalid.xml"), "<key>invalid</key>");
@@ -68,6 +69,10 @@ public sealed class CompositionLifetimeTests
             finally
             {
                 material = startup.Credentials;
+                if (material is not null)
+                {
+                    verifiedBeforeContextDisposal = VerifySigningKey(material);
+                }
             }
         });
         if (scenario == "configuration")
@@ -87,12 +92,22 @@ public sealed class CompositionLifetimeTests
             Assert.True(failure is null, "Composition produced an unexpected failure.");
         }
         Assert.NotNull(material);
+        Assert.True(verifiedBeforeContextDisposal, "Credentials must remain usable until their startup context is disposed, including early failures.");
         if (scenario is not ("configuration" or "build"))
         {
             Assert.NotNull(probe);
             Assert.True(probe.Verified, "DI-owned objects must be able to use credentials while the application is disposing.");
         }
         Assert.Throws<CryptographicException>(() => material.Signing.GetRSAPrivateKey());
+    }
+
+    private static bool VerifySigningKey(IssuerCredentials credentials)
+    {
+        using var signer = credentials.Signing.GetRSAPrivateKey()!;
+        using var verifier = credentials.Signing.GetRSAPublicKey()!;
+        var data = new byte[] { 1, 2, 3 };
+        var signature = signer.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        return verifier.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
     }
 
     private sealed class DisposalProbe(IssuerCredentials credentials) : IDisposable
@@ -104,11 +119,7 @@ public sealed class CompositionLifetimeTests
 
         public void Dispose()
         {
-            using var signer = credentials.Signing.GetRSAPrivateKey()!;
-            using var verifier = credentials.Signing.GetRSAPublicKey()!;
-            var data = new byte[] { 1, 2, 3 };
-            var signature = signer.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-            Verified = verifier.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            Verified = VerifySigningKey(credentials);
         }
     }
 
