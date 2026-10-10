@@ -14,6 +14,7 @@ public sealed class IssuerStartupTests
     [InlineData("valid")]
     [InlineData("pilot-production")]
     [InlineData("pilot-staging")]
+    [InlineData("initialize-disabled")]
     [InlineData("partial")]
     [InlineData("password")]
     [InlineData("ring")]
@@ -66,6 +67,10 @@ public sealed class IssuerStartupTests
             UseShellExecute = false
         };
         start.ArgumentList.Add(typeof(IssuerCredentials).Assembly.Location);
+        if (scenario == "initialize-disabled")
+        {
+            start.ArgumentList.Add("--initialize-pilot");
+        }
         start.Environment["DOTNET_ENVIRONMENT"] = scenario == "pilot-staging" ? "Staging" : "Production";
         start.Environment["Pilot__Enabled"] = scenario.StartsWith("pilot-", StringComparison.Ordinal) ? "true" : "false";
         start.Environment["Database__Provider"] = "PostgreSql";
@@ -123,7 +128,7 @@ public sealed class IssuerStartupTests
         Assert.False(combined.Contains(fixture.Root, StringComparison.Ordinal), "Startup output disclosed a private material path.");
         if (scenario != "valid")
         {
-            Assert.True(combined.Contains(scenario.StartsWith("pilot-", StringComparison.Ordinal)
+            Assert.True(combined.Contains(scenario.StartsWith("pilot-", StringComparison.Ordinal) || scenario == "initialize-disabled"
                 ? new PilotConfigurationException().Message : IssuerProtectionException.SafeMessage, StringComparison.Ordinal),
                 "Startup must emit the expected fixed configuration error.");
             Assert.False(listening.Task.IsCompletedSuccessfully);

@@ -24,16 +24,20 @@ Independent acceptance: targeted contracts and complete existing provider/browse
 
 - [x] T008 [US2] Extend valid-credential pilot denial and configured JWKS absence in tests/backend/IdentityPlatform.Host.Tests/Features/Issuer/IssuerStartupTests.cs; prove actual composition certificate lifetime through configuration/build/verification failures in that Features/Issuer folder (HC-003/004/005).
 - [x] T009 [US2] Strengthen deferred secret recipients and successful-completion dependencies in tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs (HC-006).
-- [ ] T010 [US2] Prove actual --initialize-pilot success/repeat/conflict exit behavior without HTTP in tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/BootstrapProcessTests.cs using the existing bootstrap provider fixture (HC-003/005/006).
-- [ ] T011 [US2] Run static/unit/architecture/process checks and both-provider HTTP/database/Chromium CI, retain nine-module floors and zero-skips gate, record results in specs/005-host-composition/verification.md and actual test counts in eng/test-matrix.json (HC-007, SC-002).
+- [x] T010 [US2] Prove actual --initialize-pilot success/repeat/conflict exit behavior without HTTP in tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/BootstrapProcessTests.cs using the existing bootstrap provider fixture (HC-003/005/006).
+- [x] T011 [US2] Run static/unit/architecture/process checks and both-provider HTTP/database/Chromium CI, retain nine-module floors and zero-skips gate, record results in specs/005-host-composition/verification.md and actual test counts in eng/test-matrix.json (HC-007, SC-002).
 
 ## Phase 5 — US3: Reviewable delivery
 
 Independent acceptance: owner can navigate scope, evidence and unfinished work from the roadmap; separate Conventional Commit PR.
 
 - [x] T012 [US3] Document ongoing composition conventions in docs/engineering/host-composition.md and AGENTS.md; update docs/roadmap.md and feature 004 sequencing without marking T026 complete (HC-008, SC-001/003).
-- [ ] T013 [US3] Resolve final architecture/test/security/Aspire review findings and publish a separate Conventional Commit PR; record dispositions and PR status in specs/005-host-composition/verification.md (HC-007/008).
+- [x] T013 [US3] Resolve final architecture/test/security/Aspire review findings and publish a separate Conventional Commit PR; record dispositions and PR status in specs/005-host-composition/verification.md (HC-007/008).
 
 ## Dependencies and execution
 
-T001→T002→T003 precede source work. T008/T009/T010 test definitions can precede the corresponding T005/T007 extraction. T004–T007 are separate host increments but main owns all edits; use parallel reviewers, not overlapping edits/builds. T008 lifetime cases depend on the small context API from T005. T011 follows all source/test edits, T012 may proceed while CI runs, T013 requires final review and evidence. No partial structural MVP is proposed for merge: all six hosts are the user's requested deliverable. User-story task counts: US1 four, US2 four, US3 two, plus three preparation tasks; total 13. Every HC and SC maps to at least one task.
+T001→T002→T003 precede source work. T008/T009/T010 test definitions can precede the corresponding T005/T007 extraction. T004–T007 are separate host increments but main owns all edits; use parallel reviewers, not overlapping edits/builds. T008 lifetime cases depend on the small context API from T005. T011 follows all source/test edits, T012 may proceed while CI runs, T013 requires final review and evidence. No partial structural MVP is proposed for merge: all six hosts are the user's requested deliverable. User-story task counts: US1 four, US2 four, US3 two, plus three preparation tasks; initial total 13. Convergence adds one startup regression (T014), for 14 completed tasks. Every HC and SC maps to at least one task.
+
+## Phase 6: Convergence
+
+- [x] T014 Add an actual-process disabled-pilot initialization denial case in tests/backend/IdentityPlatform.Host.Tests/Features/Issuer/IssuerStartupTests.cs, retain fixed diagnostics/no listener, update eng/test-matrix.json and verification.md per HC-003 and US2/AC1 (partial, MEDIUM: this specified startup edge lacked a direct executable assertion).

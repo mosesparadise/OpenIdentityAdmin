@@ -2,7 +2,7 @@
 
 **Feature Branch**: `005-host-composition`
 **Created**: 2026-10-10
-**Status**: Authorized structural work; implementation evidence pending
+**Status**: Implemented and independently reviewed; PR #8 awaiting review, not merged
 **Input**: User confirmed squash PR #7 first, refactor all six production entry points before feature 004 T026, preserve grouped projects and nested features, use Composition extensions and feature Setup classes, and preserve startup/coverage behavior.
 
 ## User Scenarios & Testing
