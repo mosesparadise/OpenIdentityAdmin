@@ -1,5 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="../IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
-  </ItemGroup>
-</Project>

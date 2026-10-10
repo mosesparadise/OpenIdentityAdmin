@@ -1,0 +1,35 @@
+{
+  "projects": {
+    "Core": {
+      "group": "core"
+    },
+    "Host": {
+      "group": "backend"
+    },
+    "Architecture": {
+      "group": "architecture"
+    },
+    "AppHost": {
+      "group": "aspire"
+    },
+    "Persistence": {
+      "group": "persistence"
+    }
+  },
+  "profiles": {
+    "unit": {
+      "Core": 25,
+      "Host": 43,
+      "Architecture": 5,
+      "AppHost": 5
+    },
+    "PostgreSql": {
+      "Persistence": 3,
+      "AppHost": 4
+    },
+    "SqlServer": {
+      "Persistence": 3,
+      "AppHost": 4
+    }
+  }
+}

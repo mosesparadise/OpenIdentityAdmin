@@ -1,5 +1,10 @@
 {
-  "allowedExpressions": ["MIT", "Apache-2.0", "BSD-3-Clause", "PostgreSQL"],
+  "allowedExpressions": [
+    "MIT",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "PostgreSQL"
+  ],
   "reviewedExceptions": {
     "Fractions/7.3.0": {
       "file": "license.txt",
@@ -15,11 +20,6 @@
       "file": "LICENSE",
       "sha256": "0fe665c2ada5962fd01190ab5b2947b9a9d2c625a9f8225577441eb3256e14e3",
       "disposition": "Microsoft proprietary terms. Development use inventoried; review applicable distribution terms before public release."
-    },
-    "xunit.abstractions/2.0.3": {
-      "file": "xunit.abstractions.nuspec",
-      "sha256": "e59191df9e3047dd953b695c886597786ac2771f66897baa40877f643da9f7b1",
-      "disposition": "Test-only legacy package supplies an unpinned license URL. Metadata recorded without asserting a verified SPDX license; resolve immutable license evidence before distributing test tools."
     }
   }
 }

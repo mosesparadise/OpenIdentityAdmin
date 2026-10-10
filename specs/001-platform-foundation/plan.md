@@ -9,7 +9,7 @@ Implement the independent infrastructure portion of approved milestone 001: lock
 ## Technical Context
 
 - Language/runtime: C#/.NET SDK 10.0.401, runtime/EF/Identity 10.0.12.
-- Dependencies: OpenIddict 7.7.1, Npgsql EF 10.0.3, Aspire 13.6.1, xUnit 2.9.3, Testcontainers 4.16.0. Resolve/pin the complete compatible graph.
+- Dependencies: OpenIddict 7.7.1, Npgsql EF 10.0.3, Aspire 13.6.1, xUnit v3 4.0.2/MTP 2.5.1, Testcontainers 4.16.0. Resolve/pin the complete compatible graph.
 - Storage: PostgreSQL 18 and SQL Server 2022, exact tested container digests; separate platform/BFF contexts and migration histories.
 - Tests: unit, architecture, native manager/persistence against both real databases and Aspire.Hosting.Testing. No InMemory/SQLite substitution.
 - Platform: Linux/.NET and a Docker-compatible runtime. Local Aspire does not select production hosting.
@@ -27,3 +27,11 @@ Core/Features/Configuration; Infrastructure/Features/Identity/Persistence and Pe
 ## Complexity Tracking
 
 No constitution exception. Two migration assemblies are required to verify both production providers rather than assuming provider-neutral DDL.
+
+## Authorized tooling/layout update
+
+Execute FND-009/010 on this branch and PR. Place AppHost/ServiceDefaults in src/aspire; four runtime hosts in src/backend; Core in src/core; provider migration assemblies and Migrator in src/migrations; Infrastructure in src/persistence. Reserve src/frontend with a scope README, mirrored as a solution item. Group tests under aspire/backend/core/persistence/architecture. Keep project/assembly names stable.
+
+Use xunit.v3.mtp-v2 4.0.2 (the xUnit v3 product's current stable package version), MTP 2.5.1 and Microsoft.Testing.Extensions.TrxReport 2.5.1. Configure global.json native runner and executable test projects. Replace VSTest command switches with MTP options, preserving provider selection, deadlines, strict reports and external dotnet-coverage child instrumentation. Validate actual runner help and selected cases before treating matrix results as complete. Remove obsolete license exceptions only after inspecting the resolved graph.
+
+Sequence: record requirements/research/tasks; move projects and update graph/solution; migrate dependencies/runner; build and adapt tests for v3; execute all matrix cells/coverage/supply chain; independent review; document evidence and update PR. Approved-v0.2 snapshots and earlier evidence remain immutable.

@@ -7,9 +7,9 @@ dotnet tool restore
 dotnet restore --locked-mode
 dotnet build --no-restore
 dotnet dev-certs https --trust
-dotnet run --project src/IdentityPlatform.AppHost -- --Database:Provider=PostgreSql
+dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=PostgreSql
 # Stop before switching the local dashboard profile:
-dotnet run --project src/IdentityPlatform.AppHost -- --Database:Provider=SqlServer
+dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=SqlServer
 ```
 
 On Linux, trust the dev certificate for OpenSSL/.NET as well as any browser. The SDK prints platform-specific instructions. A certificate-only export to a private scratch directory can be hashed with `openssl rehash`, then that directory added to `SSL_CERT_DIR` **alongside `/usr/lib/ssl/certs` and existing trusted directories**. Do not disable certificate validation. The CI workflow demonstrates certificate-only export; no private key is uploaded.
@@ -23,7 +23,7 @@ python3 scripts/verify.py PostgreSql
 python3 scripts/verify.py SqlServer
 ```
 
-These scripts require a current build and fail on unavailable dependencies. The distributed tests allocate independent endpoints/resources and use health deadlines. The local cloud environment's SQL download-host denial is recorded in [verification.md](verification.md); commands are not proof of execution.
+All five projects use native xUnit v3/MTP; see the [runner and folder guide](../../docs/engineering/project-layout.md) for focused commands and trait filtering. `eng/test-matrix.json` records required case counts. These scripts require a current build and fail on unavailable dependencies. The distributed tests allocate independent endpoints/resources and use health deadlines. The local cloud environment's SQL download-host denial is recorded in [verification.md](verification.md); commands are not proof of execution.
 
 To collect and merge coverage, mirror `.github/workflows/verify.yml`. The `dotnet-coverage` version is in `dotnet-tools.json`. Include all three profiles before calling the aggregate result complete. A missing child-host module or an under-covered module fails the gate; generated-code exclusions are in `eng/coverage-policy.json`.
 

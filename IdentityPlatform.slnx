@@ -1,22 +1,41 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/IdentityPlatform.Core/IdentityPlatform.Core.csproj" />
-    <Project Path="src/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
-    <Project Path="src/IdentityPlatform.Migrations.PostgreSql/IdentityPlatform.Migrations.PostgreSql.csproj" />
-    <Project Path="src/IdentityPlatform.Migrations.SqlServer/IdentityPlatform.Migrations.SqlServer.csproj" />
-    <Project Path="src/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
-    <Project Path="src/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
-    <Project Path="src/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
-    <Project Path="src/IdentityPlatform.Admin.Api/IdentityPlatform.Admin.Api.csproj" />
-    <Project Path="src/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
-    <Project Path="src/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
-    <Project Path="src/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
+  <Folder Name="/src/aspire/">
+    <Project Path="src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
+    <Project Path="src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
   </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/IdentityPlatform.Host.Tests/IdentityPlatform.Host.Tests.csproj" />
-    <Project Path="tests/IdentityPlatform.Core.Tests/IdentityPlatform.Core.Tests.csproj" />
-    <Project Path="tests/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj" />
-    <Project Path="tests/IdentityPlatform.Architecture.Tests/IdentityPlatform.Architecture.Tests.csproj" />
-    <Project Path="tests/IdentityPlatform.AppHost.Tests/IdentityPlatform.AppHost.Tests.csproj" />
+  <Folder Name="/src/backend/">
+    <Project Path="src/backend/IdentityPlatform.Admin.Api/IdentityPlatform.Admin.Api.csproj" />
+    <Project Path="src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
+    <Project Path="src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
+    <Project Path="src/backend/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
+  </Folder>
+  <Folder Name="/src/core/">
+    <Project Path="src/core/IdentityPlatform.Core/IdentityPlatform.Core.csproj" />
+  </Folder>
+  <Folder Name="/src/migrations/">
+    <Project Path="src/migrations/IdentityPlatform.Migrations.PostgreSql/IdentityPlatform.Migrations.PostgreSql.csproj" />
+    <Project Path="src/migrations/IdentityPlatform.Migrations.SqlServer/IdentityPlatform.Migrations.SqlServer.csproj" />
+    <Project Path="src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+  </Folder>
+  <Folder Name="/src/persistence/">
+    <Project Path="src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/architecture/">
+    <Project Path="tests/architecture/IdentityPlatform.Architecture.Tests/IdentityPlatform.Architecture.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/aspire/">
+    <Project Path="tests/aspire/IdentityPlatform.AppHost.Tests/IdentityPlatform.AppHost.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/backend/">
+    <Project Path="tests/backend/IdentityPlatform.Host.Tests/IdentityPlatform.Host.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/core/">
+    <Project Path="tests/core/IdentityPlatform.Core.Tests/IdentityPlatform.Core.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/persistence/">
+    <Project Path="tests/persistence/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/frontend/">
+    <File Path="src/frontend/README.md" />
   </Folder>
 </Solution>

@@ -98,3 +98,12 @@ An engineer runs focused checks and receives reports linking results to requirem
 - It implements the independent infrastructure portion of approved milestone 001. Code-flow acceptance and later milestone advancement remain subject to the approved certification sequencing decision.
 - A supported container runtime and documented local development certificates are prerequisites. Runtime services never generate or install production signing keys automatically.
 - Target repository is https://github.com/mosesparadise/OpenIdentityAdmin, selected by the user on 2026-10-10.
+
+## User-requested engineering update (10 October 2026)
+
+The user requested xUnit v3 + Microsoft Testing Platform and responsibility-based physical and solution folders in the existing PR. This is authorized tooling/layout work within FND-006; original foundation acceptance remains historical evidence until this update passes its own checks.
+
+- **FND-009**: All five test projects use native .NET 10 MTP with stable pinned xUnit v3 packages; legacy VSTest adapters/collectors are removed. Unit/harness and each real-provider profile remain separately selectable. Every existing scenario runs, and missing, empty, failed or skipped results fail verification. Child-process coverage and per-module floors remain mandatory.
+- **FND-010**: Physical project groups and solution folders agree: src/aspire, src/backend, src/core, src/migrations, src/persistence; reserve src/frontend for the future React client. Test groups mirror responsibilities, with tests/architecture for cross-project rules. References, commands and current documentation resolve from a clean checkout. Preserve assembly identities, native schemas and Features organization.
+
+Acceptance: clean locked restore/build; native MTP/TRX execution of all existing cases; unit, PostgreSQL and SQL Server matrix passes; coverage/supply-chain gates pass; solution entries match grouped disk paths; independent architecture/test review resolved. This update adds no product endpoint or frontend implementation.

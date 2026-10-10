@@ -3,7 +3,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 
-def require_complete_trx(path: Path) -> int:
+def require_complete_trx(path: Path, *, expected_count: int | None = None) -> int:
     counters = ET.parse(path).getroot().find('.//{*}Counters')
     if counters is None:
         raise ValueError(f"Missing TRX counters: {path.name}")
@@ -12,4 +12,6 @@ def require_complete_trx(path: Path) -> int:
     executed = int(counters.attrib.get('executed', '0'))
     if total <= 0 or passed != total or executed != total:
         raise ValueError(f"Required test evidence is incomplete: {path.name}; total={total}, executed={executed}, passed={passed}")
+    if expected_count is not None and total != expected_count:
+        raise ValueError(f"Required test selection changed: {path.name}; expected={expected_count}, actual={total}")
     return total

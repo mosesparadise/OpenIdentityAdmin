@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="xunit.v3.mtp-v2" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/core/IdentityPlatform.Core/IdentityPlatform.Core.csproj" />
+    <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

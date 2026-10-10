@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="xunit.v3.mtp-v2" />
+    <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="Testcontainers.MsSql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
+    <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrations.PostgreSql/IdentityPlatform.Migrations.PostgreSql.csproj" />
+    <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrations.SqlServer/IdentityPlatform.Migrations.SqlServer.csproj" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
