@@ -24,7 +24,7 @@ dotnet restore --locked-mode
 python3 scripts/check-static-analysis.py --self-test
 ```
 
-The script builds with analyzers, verifies whitespace and verifies unused imports, then exercises the optional self-tests. CI always supplies `--self-test`. It fails on nonzero results, missing expected defect diagnostics or timeout. These three intentional negative controls are separate from the 165-case .NET matrix and 19 existing Python gate regressions.
+The script builds with analyzers, verifies whitespace and verifies unused imports, then exercises the optional self-tests. CI always supplies `--self-test`. It fails on nonzero results, missing expected defect diagnostics or timeout. These three intentional negative controls are separate from the required .NET matrix in `eng/test-matrix.json` and the Python gate regressions.
 
 Unused imports (IDE0005) are checked with `dotnet format style --severity info --diagnostics IDE0005 --verify-no-changes`: Roslyn build enforcement otherwise requires XML documentation generation. The other selected rules, including IDE1006 naming, are enforced by builds. Web/TypeScript conventions are editor settings until the frontend is implemented; its lint/type/contract/browser gates belong to its feature, not an unexecuted claim here.
 
