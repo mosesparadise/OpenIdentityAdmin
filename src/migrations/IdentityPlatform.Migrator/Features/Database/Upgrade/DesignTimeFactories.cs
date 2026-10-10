@@ -1,11 +1,11 @@
 using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 
 namespace IdentityPlatform.Migrator.Features.Database.Upgrade;
 

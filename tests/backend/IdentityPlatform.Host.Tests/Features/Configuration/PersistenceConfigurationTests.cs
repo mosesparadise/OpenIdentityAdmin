@@ -1,9 +1,9 @@
 using IdentityPlatform.Core.Features.Configuration;
-using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Infrastructure.Features.Health;
+using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.LocalRoles;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Host.Tests.Features.Configuration;
 

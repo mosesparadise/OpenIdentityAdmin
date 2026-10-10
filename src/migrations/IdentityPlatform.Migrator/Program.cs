@@ -1,9 +1,8 @@
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Migrator.Features.Database.LocalRoles;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
-using IdentityPlatform.Migrator.Features.Database.LocalRoles;
 
 var builder = Host.CreateApplicationBuilder(args);
 LocalRuntimeCredentials? localCredentials = null;
@@ -12,11 +11,17 @@ try
     var flag = builder.Configuration["LocalDevelopment:ProvisionRuntimeRoles"];
     var provisionLocalRoles = false;
     if (flag is not null && !bool.TryParse(flag, out provisionLocalRoles))
+    {
         throw new ArgumentException("Invalid local bootstrap flag.");
+    }
+
     if (provisionLocalRoles)
     {
         if (!builder.Environment.IsDevelopment())
+        {
             throw new ArgumentException("Local database bootstrap requires Development.");
+        }
+
         localCredentials = new LocalRuntimeCredentials(
             builder.Configuration["LocalDevelopment:PlatformPassword"] ?? "",
             builder.Configuration["LocalDevelopment:SessionsPassword"] ?? "");

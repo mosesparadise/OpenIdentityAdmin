@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Npgsql;
 
 namespace IdentityPlatform.Infrastructure.Features.Health;
@@ -32,9 +32,16 @@ public sealed class SchemaReadinessCheck<TContext>(IServiceProvider services,
             connection.ConnectionString = connection switch
             {
                 SqlConnection => new SqlConnectionStringBuilder(connection.ConnectionString)
-                    { ConnectTimeout = 3, ConnectRetryCount = 0, Pooling = false }.ConnectionString,
+                {
+                    ConnectTimeout = 3,
+                    ConnectRetryCount = 0,
+                    Pooling = false
+                }.ConnectionString,
                 NpgsqlConnection => new NpgsqlConnectionStringBuilder(connection.ConnectionString)
-                    { Timeout = 3, Pooling = false }.ConnectionString,
+                {
+                    Timeout = 3,
+                    Pooling = false
+                }.ConnectionString,
                 _ => throw new InvalidOperationException("Unsupported readiness provider.")
             };
             await connection.OpenAsync(deadline.Token);
@@ -46,7 +53,11 @@ public sealed class SchemaReadinessCheck<TContext>(IServiceProvider services,
                 : $"SELECT \"MigrationId\" FROM \"{schema}\".\"{table}\" ORDER BY \"MigrationId\"";
             var applied = new List<string>();
             await using var reader = await command.ExecuteReaderAsync(deadline.Token);
-            while (await reader.ReadAsync(deadline.Token)) applied.Add(reader.GetString(0));
+            while (await reader.ReadAsync(deadline.Token))
+            {
+                applied.Add(reader.GetString(0));
+            }
+
             return applied.SequenceEqual(expectedMigrations, StringComparer.Ordinal)
                 ? HealthCheckResult.Healthy()
                 : HealthCheckResult.Unhealthy("Schema is not compatible.");

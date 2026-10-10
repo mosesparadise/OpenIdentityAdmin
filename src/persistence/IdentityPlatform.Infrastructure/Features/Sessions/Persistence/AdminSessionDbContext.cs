@@ -5,9 +5,9 @@ namespace IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 public sealed class AdminSessionDbContext(DbContextOptions<AdminSessionDbContext> options)
     : DbContext(options)
 {
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
-        builder.HasDefaultSchema("bff");
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.HasDefaultSchema("bff");
     }
 }

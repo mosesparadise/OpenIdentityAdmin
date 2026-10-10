@@ -3,12 +3,12 @@ using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Npgsql;
-using Microsoft.Data.SqlClient;
 using Testcontainers.MsSql;
 using Testcontainers.PostgreSql;
 
@@ -28,8 +28,15 @@ public sealed class DatabaseFailureTests
             "postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336").Build();
         await using var sql = new MsSqlBuilder(
             "mcr.microsoft.com/mssql/server:2022-latest@sha256:4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090").Build();
-        if (provider == DatabaseProvider.PostgreSql) await postgres.StartAsync(token);
-        else await sql.StartAsync(token);
+        if (provider == DatabaseProvider.PostgreSql)
+        {
+            await postgres.StartAsync(token);
+        }
+        else
+        {
+            await sql.StartAsync(token);
+        }
+
         var connection = provider == DatabaseProvider.PostgreSql ? postgres.GetConnectionString() : sql.GetConnectionString();
         var broken = provider == DatabaseProvider.PostgreSql
             ? new NpgsqlConnectionStringBuilder(connection) { Port = 1, Timeout = 1, Password = "synthetic-secret" }.ConnectionString
@@ -49,10 +56,17 @@ public sealed class DatabaseFailureTests
         Assert.Equal(0, await DatabaseUpgrade.RunAsync(recovered, token));
         Assert.Equal(1, await DatabaseUpgrade.RunAsync(recovered, new CancellationToken(canceled: true)));
         Assert.DoesNotContain(logs.Messages, message => message.Contains("synthetic-secret") || message.Contains(broken));
-        Assert.Contains(logs.Messages, message => message.StartsWith("Migration failed ("));
+        Assert.Contains(logs.Messages, message => message.StartsWith("Migration failed (", StringComparison.Ordinal));
 
-        if (provider == DatabaseProvider.PostgreSql) await postgres.StopAsync(token);
-        else await sql.StopAsync(token);
+        if (provider == DatabaseProvider.PostgreSql)
+        {
+            await postgres.StopAsync(token);
+        }
+        else
+        {
+            await sql.StopAsync(token);
+        }
+
         var clock = Stopwatch.StartNew();
         var health = await new SchemaReadinessCheck<PlatformDbContext>(recovered, SchemaCatalog.Platform(provider))
             .CheckHealthAsync(new(), token);
@@ -69,7 +83,9 @@ public sealed class DatabaseFailureTests
     {
         public List<string> Messages { get; } = [];
         public ILogger CreateLogger(string categoryName) => new Capture(Messages);
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
         private sealed class Capture(List<string> messages) : ILogger
         {
             public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;

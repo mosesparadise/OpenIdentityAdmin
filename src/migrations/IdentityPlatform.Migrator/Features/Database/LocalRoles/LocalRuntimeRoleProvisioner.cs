@@ -1,11 +1,14 @@
-using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
-using Npgsql;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace IdentityPlatform.Migrator.Features.Database.LocalRoles;
 
-public enum RuntimeStore { Platform, Sessions }
+public enum RuntimeStore
+{
+    Platform, Sessions
+}
 
 public sealed record LocalRuntimeCredentials(string PlatformPassword, string SessionsPassword);
 
@@ -18,7 +21,9 @@ public static class LocalRuntimeRoleProvisioner
         if (password.Length is < 32 or > 128 || !password.All(char.IsAsciiLetterOrDigit) ||
             !password.Any(char.IsAsciiLetterUpper) || !password.Any(char.IsAsciiLetterLower) ||
             !password.Any(char.IsAsciiDigit))
+        {
             throw new ArgumentException("Invalid local runtime password format.", nameof(password));
+        }
     }
 
     public static async Task ProvisionAsync(DbContext database, RuntimeStore store,
@@ -64,15 +69,22 @@ public static class LocalRuntimeRoleProvisioner
                 DENY INSERT, UPDATE, DELETE ON OBJECT::[{schema}].[{history}] TO [{role}];
                 """;
         }
-        else throw new InvalidOperationException("Unsupported local database provider.");
+        else
+        {
+            throw new InvalidOperationException("Unsupported local database provider.");
+        }
 
         // A dedicated, unpooled bootstrap connection avoids EF command diagnostics
         // and prevents local logging overrides leaking into another pooled operation.
         await using DbConnection connection = database.Database.IsNpgsql()
             ? new NpgsqlConnection(new NpgsqlConnectionStringBuilder(database.Database.GetConnectionString())
-                { Pooling = false }.ConnectionString)
+            {
+                Pooling = false
+            }.ConnectionString)
             : new SqlConnection(new SqlConnectionStringBuilder(database.Database.GetConnectionString())
-                { Pooling = false }.ConnectionString);
+            {
+                Pooling = false
+            }.ConnectionString);
         await connection.OpenAsync(cancellationToken);
         await using var command = connection.CreateCommand();
         command.CommandTimeout = 30;

@@ -12,4 +12,5 @@
     <ProjectReference Include="../../../src/backend/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
 </Project>

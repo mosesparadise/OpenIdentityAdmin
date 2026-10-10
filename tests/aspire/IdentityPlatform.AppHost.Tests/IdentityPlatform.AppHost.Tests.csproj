@@ -9,4 +9,5 @@
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
 </Project>

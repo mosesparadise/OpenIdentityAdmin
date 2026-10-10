@@ -1,18 +1,18 @@
+using System.Data.Common;
+using System.Security.Cryptography;
 using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
-using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Migrator.Features.Database.LocalRoles;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
-using Npgsql;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Data.Common;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Npgsql;
 using OpenIddict.Abstractions;
 using Testcontainers.MsSql;
 using Testcontainers.PostgreSql;
@@ -21,6 +21,7 @@ namespace IdentityPlatform.Persistence.Tests.Features;
 
 public sealed class NativePersistenceTests
 {
+    private static readonly int[] SqlPermissionDeniedErrors = [229, 262, 2760];
     [Theory]
     [InlineData(DatabaseProvider.PostgreSql, Traits = ["Provider", "PostgreSql"])]
     [InlineData(DatabaseProvider.SqlServer, Traits = ["Provider", "SqlServer"])]
@@ -64,7 +65,10 @@ public sealed class NativePersistenceTests
         Assert.True((await users.CreateAsync(user)).Succeeded);
         // Synthetic storage data, not a WebAuthn attestation/authentication claim.
         var passkey = new UserPasskeyInfo([1, 2, 3], [4, 5, 6], DateTimeOffset.UtcNow, 0,
-            ["internal"], true, false, false, [], []) { Name = "synthetic-passkey" };
+            ["internal"], true, false, false, [], [])
+        {
+            Name = "synthetic-passkey"
+        };
         Assert.True((await users.AddOrUpdatePasskeyAsync(user, passkey)).Succeeded);
         var scopes = scope.ServiceProvider.GetRequiredService<IOpenIddictScopeManager>();
         await scopes.CreateAsync(new OpenIddictScopeDescriptor { Name = "CaseSensitiveScope" }, cancellationToken);
@@ -112,7 +116,8 @@ public sealed class NativePersistenceTests
             Assert.NotNull(await runtimeApps.FindByClientIdAsync("CaseSensitiveClient", cancellationToken));
             await runtimeApps.CreateAsync(new OpenIddictApplicationDescriptor
             {
-                ClientId = "runtime-created", ClientType = OpenIddictConstants.ClientTypes.Public
+                ClientId = "runtime-created",
+                ClientType = OpenIddictConstants.ClientTypes.Public
             }, cancellationToken);
             AssertPermissionDenied(provider, await Assert.ThrowsAnyAsync<DbException>(() => runtimeDb.Database.ExecuteSqlRawAsync(
                 "CREATE TABLE platform.MustNeverExist (Id integer)", cancellationToken)));
@@ -133,7 +138,8 @@ public sealed class NativePersistenceTests
             var bffDb = bffScope.ServiceProvider.GetRequiredService<AdminSessionDbContext>();
             var entry = new OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken
             {
-                Id = Guid.NewGuid().ToString(), Type = "synthetic-client-state"
+                Id = Guid.NewGuid().ToString(),
+                Type = "synthetic-client-state"
             };
             bffDb.Add(entry);
             await bffDb.SaveChangesAsync(cancellationToken);
@@ -159,12 +165,16 @@ public sealed class NativePersistenceTests
             Assert.NotNull(stale);
             await applications.UpdateAsync(first, new OpenIddictApplicationDescriptor
             {
-                ClientId = "CaseSensitiveClient", ClientType = OpenIddictConstants.ClientTypes.Public, DisplayName = "first-change"
+                ClientId = "CaseSensitiveClient",
+                ClientType = OpenIddictConstants.ClientTypes.Public,
+                DisplayName = "first-change"
             }, cancellationToken);
             await Assert.ThrowsAsync<OpenIddictExceptions.ConcurrencyException>(async () =>
                 await competing.UpdateAsync(stale, new OpenIddictApplicationDescriptor
                 {
-                    ClientId = "CaseSensitiveClient", ClientType = OpenIddictConstants.ClientTypes.Public, DisplayName = "stale-change"
+                    ClientId = "CaseSensitiveClient",
+                    ClientType = OpenIddictConstants.ClientTypes.Public,
+                    DisplayName = "stale-change"
                 }, cancellationToken));
         }
         var incompatible = new SchemaReadinessCheck<PlatformDbContext>(runtimeProvider, ["unknown-version"]);
@@ -192,8 +202,12 @@ public sealed class NativePersistenceTests
     private static void AssertPermissionDenied(DatabaseProvider provider, DbException exception)
     {
         if (provider == DatabaseProvider.PostgreSql)
+        {
             Assert.Equal(PostgresErrorCodes.InsufficientPrivilege, Assert.IsType<PostgresException>(exception).SqlState);
+        }
         else
-            Assert.Contains(Assert.IsType<SqlException>(exception).Number, new[] { 229, 262, 2760 });
+        {
+            Assert.Contains(Assert.IsType<SqlException>(exception).Number, SqlPermissionDeniedErrors);
+        }
     }
 }

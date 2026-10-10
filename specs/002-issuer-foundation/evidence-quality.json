@@ -1,0 +1,32 @@
+{
+  "runId": 38051538407,
+  "commit": "c94ed1de125d8b4d1189c966ed6840047bbd3adc",
+  "scope": "Engineering implementation baseline. Documentation-only evidence follow-up is governed by the PR's exact-head checks.",
+  "artifacts": [
+    {
+      "id": 11670105608,
+      "name": "foundation-coverage",
+      "digest": "sha256:fa962cfba88890141c0756b02e88b8bbe24b20493b3d1281d381c961274fbbbc"
+    },
+    {
+      "id": 11669965836,
+      "name": "foundation-SqlServer",
+      "digest": "sha256:a9bff8ed6494731b0798f72c73e83b2abfd1b8ec7434c91617306eec28782bcb"
+    },
+    {
+      "id": 11669648483,
+      "name": "foundation-supply-chain",
+      "digest": "sha256:893d1c6db28ff2b1a9bf55dd2f219105f1ce7921f238f4b7dfd9abf3221b5558"
+    },
+    {
+      "id": 11669548606,
+      "name": "foundation-unit",
+      "digest": "sha256:bf4db8f7368c3953a10cbc95ade97a3f33241159bc2c4b4e369c16412ed008f4"
+    },
+    {
+      "id": 11669458811,
+      "name": "foundation-PostgreSql",
+      "digest": "sha256:d1e1b6a83e9f90eb8cf5acbc0a0831f70384da97343e75bdbc169437d4218e7f"
+    }
+  ]
+}

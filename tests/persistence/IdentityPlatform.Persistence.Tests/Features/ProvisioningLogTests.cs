@@ -4,8 +4,8 @@ using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.LocalRoles;
 using Microsoft.EntityFrameworkCore;
-using Testcontainers.PostgreSql;
 using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 
 namespace IdentityPlatform.Persistence.Tests.Features;
 
@@ -24,8 +24,15 @@ public sealed class ProvisioningLogTests
             .WithCommand("-c", "log_statement=all", "-c", "log_transaction_sample_rate=1").Build();
         await using var sql = new MsSqlBuilder(
             "mcr.microsoft.com/mssql/server:2022-latest@sha256:4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090").Build();
-        if (provider == DatabaseProvider.PostgreSql) await postgres.StartAsync(token);
-        else await sql.StartAsync(token);
+        if (provider == DatabaseProvider.PostgreSql)
+        {
+            await postgres.StartAsync(token);
+        }
+        else
+        {
+            await sql.StartAsync(token);
+        }
+
         var connection = provider == DatabaseProvider.PostgreSql ? postgres.GetConnectionString() : sql.GetConnectionString();
         var options = new DbContextOptionsBuilder<PlatformDbContext>();
         PersistenceRegistration.ConfigureDatabase(options, provider, connection, "PlatformMigrations");
