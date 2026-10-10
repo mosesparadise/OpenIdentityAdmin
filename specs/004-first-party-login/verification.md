@@ -203,6 +203,10 @@ Architecture/test/security source findings are closed. GitHub's automated review
 T025 is complete in [PR #7](https://github.com/mosesparadise/OpenIdentityAdmin/pull/7), `test(auth): verify code exchange and lost-response recovery`, which remains unmerged for review. No product or test source changed after the passing source checkpoint. This documentation-only completion commit receives its own CI; its status is linked from the PR to avoid a self-referential evidence-commit loop. Exact-head checks remain mandatory before any future merge. T026 is next; T026–T030 and full M01-D/manual/external acceptance remain open. All345 ASVS rows remain not_assessed.
 
 
+### PR #7 squash checkpoint
+
+PR [#7](https://github.com/mosesparadise/OpenIdentityAdmin/pull/7) was subsequently squash-merged as `9c52c2d` after all seven final-head checks passed and its review findings were resolved. The preceding T025 paragraphs describing that PR as unmerged are historical checkpoints, superseded by this merge record. Feature005 then completed in PR #8, squash-merged as `64d8ceb`, before T026 began.
+
 ### T026 operations-acceptance source checkpoint
 
 The [operations plan](operations-acceptance.md) preceded implementation under the user-authorized T026–T028 sequence. The change is limited to tests, fixtures, strict counts and documentation; production policy, packages and database schemas remain unchanged.
@@ -222,3 +226,24 @@ Log canaries include actual password/rejected password, client secret/Basic cred
 Bootstrap creation/no-op audit rollback remains covered by T023's real both-provider regressions. Existing OperationsTests retain password/session replacement audit rollback and stopped-database readiness/liveness with the SC-005 <11-second assertion; T025 retains native lost-response/replay semantics. No prior case is removed or deadline increased. Expected full matrix is617 cases:229 unit/architecture,194 per provider (Persistence3, AppHost4, Issuer187 including6 Chromium cases).
 
 Initial local compilation exposed two test-only API/analyzer issues, corrected before execution. Host190/190 passed with zero skips. The first targeted PostgreSQL run passed4/5 and exposed a log-helper lookup error: the logical name did not resolve the actual DCP instance. The helper now uses the IResource overload, and the corrected run passed5/5 with zero skips in51.397s. Subsequent source review added request-URI and explicit-denial canaries and strengthened cleanup; that revised run and full static/unit/both-provider CI are pending at this checkpoint. Independent reviewers found no production architecture/security regression and requested fixed-message assertions, transaction-aware drain, failure-safe cleanup, all-request concurrency completion and complete canary paths; those bounded findings are being resolved in source. T026 remains unchecked until full evidence and review are complete; T027–T030 remain open.
+
+
+The revised canary run passed5/5 on PostgreSQL in47.380s, zero skips; dispatch-to-observed-database-session-drain was5029ms for the command-timeout case and5044ms for the client-abort case. These are disposable-harness measurements, not production performance benchmarks. After the final component-cleanup and import corrections, local static build/format/import verification and seeded CA5350/IDE0055/IDE1006 enforcement all passed. The strict unit matrix passed229/229, zero skips (Core25, Host190, Architecture5, AppHost9). Assurance and AI-instruction integrity plus diff-whitespace checks passed. Architecture, test and security reviewers closed every bounded source finding; they performed source review only. PR [#9](https://github.com/mosesparadise/OpenIdentityAdmin/pull/9) is open; full exact-head provider/browser/coverage CI and GitHub review remain pre-merge gates. Earlier local failure checkpoints are historical, not claimed as clean passes.
+
+
+### T026 completed CI checkpoint
+
+[Run38093331327](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38093331327) passed all seven gates for source `d6735cf317c1c3c488ba6b77d6f17171d18a9593` (GitHub merge checkout `9bf64b8`). All617 required .NET cases passed, zero skips:229 unit/architecture and194 per provider (Persistence3, AppHost4, Issuer187 including6 Chromium cases). Fresh provider TRX artifacts explicitly confirm all five OperationsAcceptance cases on each provider. No case, retry or timeout relaxation was introduced.
+
+| Provider | Observed native blocked stage | Dispatch to observed DB-session drain: command timeout / client abort | Full issuer duration |
+| --- | --- | --- | --- |
+| PostgreSQL | UPDATE; native invalid_grant after failed redemption | 5032ms / 5027ms | 7m46.397s |
+| SQL Server | Read; fixed503 on command failure | 5011ms / 5024ms | 10m54.846s |
+
+These are disposable CI harness measurements. Both response/persistence paths and permission/transaction cleanup passed. SQL Server leaves only about5s under the unchanged660s issuer deadline; T027 must plan browser isolation and execution cost before adding cases, retaining every existing requirement and deadline. A passing observation is not evidence of stable capacity or production performance.
+
+All nine unchanged90% line/80% branch floors passed: Core100/100, Infrastructure99.0/100, ServiceDefaults100/100, Migrator98.2/90.0, AuthServer95.2/98.4, Admin API/BFF/Worker100/100, AppHost98.8/100. Static build/format/import and seeded enforcement, assurance integrity, dependency/license/secret checks and strict fresh-report counts also passed.
+
+Architecture, test, security and performance/Aspire source reviews are complete. Findings were corrected: safe diagnostics, all-request completion, independent failure-safe drain, actual resource-log lookup, complete denial/request-URI canaries and precise timing language. GitHub review's sole finding was the stale T025 unmerged statement; the explicit PR #7 squash checkpoint above fixes it. Reviewers ran no tests themselves. Bounded T026 acceptance maps LOGIN-008/009 and SC-005 to the new and retained named cases; no additional unallocated T026 work was found. T027–T030 and full-feature/manual/external acceptance remain open; all345 ASVS controls remain not_assessed.
+
+T026 is complete in [PR #9](https://github.com/mosesparadise/OpenIdentityAdmin/pull/9), `test(auth): verify operational failure boundaries`, awaiting its authorized squash merge. This documentation-only completion/review-correction commit changes no tested code and receives its own exact-head CI before merge. That final run and merge status are tracked on the PR to avoid a self-referential evidence-commit loop. Earlier pending statements above are historical checkpoints, superseded for this source by the completed results here. T027 begins only after PR #9 is reviewed, corrected and squash-merged.
