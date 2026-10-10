@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -70,30 +71,54 @@ public sealed partial class PilotRegistrationTests
     {
         var messages = new List<string>();
         using var sink = new CaptureProvider(messages);
+        using var configuration = new ConfigurationManager();
+        configuration.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Logging:LogLevel:IdentityPlatform.ReloadProbe"] = "None"
+        });
         var services = new ServiceCollection();
-        services.AddLogging(logs => logs.SetMinimumLevel(LogLevel.Trace).AddProvider(sink)
+        services.AddLogging(logs => logs.AddConfiguration(configuration.GetSection("Logging")).SetMinimumLevel(LogLevel.Trace).AddProvider(sink)
             .AddFilter<CaptureProvider>("OpenIddict.Server", LogLevel.Trace)
             .AddFilter<CaptureProvider>("Microsoft.AspNetCore", LogLevel.Trace)
             .AddFilter<CaptureProvider>("Microsoft.EntityFrameworkCore", LogLevel.Trace));
         PilotDiagnostics.SuppressProtocolSecrets(services);
         using var provider = services.BuildServiceProvider();
         var factory = provider.GetRequiredService<ILoggerFactory>();
+        var categories = new[] { "OpenIddict.Server", "Microsoft.AspNetCore.Hosting.Diagnostics", "Microsoft.EntityFrameworkCore.Database.Command" };
+        var sensitive = categories.Select(factory.CreateLogger).ToArray();
+        var operational = factory.CreateLogger("IdentityPlatform.Operations");
+        var reloadProbe = factory.CreateLogger("IdentityPlatform.ReloadProbe");
         AssertLogs();
-        provider.GetRequiredService<IOptionsMonitorCache<LoggerFilterOptions>>().Clear();
-        // A rebuilt option graph must apply the post-configuration guard again.
-        var rebuilt = provider.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>().CurrentValue;
-        Assert.Contains(rebuilt.Rules, rule => rule.CategoryName == "OpenIddict" && rule.LogLevel == LogLevel.None);
-        AssertLogs();
-        Assert.Equal(2, messages.Count);
+        SafeEvent(reloadProbe);
+        Assert.Single(messages);
+        var changes = 0;
+        using var subscription = provider.GetRequiredService<IOptionsMonitor<LoggerFilterOptions>>().OnChange(_ => changes++);
+        foreach (var level in new[] { "Debug", "Trace" })
+        {
+            configuration["Logging:LogLevel:Default"] = level;
+            foreach (var category in categories)
+            {
+                configuration["Logging:LogLevel:" + category] = level;
+                configuration["Logging:" + typeof(CaptureProvider).FullName + ":LogLevel:" + category] = "Trace";
+            }
+            configuration["Logging:LogLevel:IdentityPlatform.ReloadProbe"] = level == "Trace" ? "Information" : "None";
+            var before = changes;
+            ((IConfigurationRoot)configuration).Reload();
+            Assert.True(changes > before, "A real configuration reload must notify the logging options monitor.");
+            AssertLogs();
+            var count = messages.Count;
+            SafeEvent(reloadProbe);
+            Assert.Equal(count + (level == "Trace" ? 1 : 0), messages.Count);
+        }
+        Assert.Equal(4, messages.Count);
         Assert.True(messages.All(value => value == "Safe operational event"), "Unexpected diagnostic content.");
 
         void AssertLogs()
         {
-            foreach (var category in new[] { "OpenIddict.Server", "Microsoft.AspNetCore.Hosting.Diagnostics", "Microsoft.EntityFrameworkCore.Database.Command" })
+            foreach (var logger in sensitive)
             {
-                SecretEvent(factory.CreateLogger(category), "synthetic-private-sentinel");
+                SecretEvent(logger, "synthetic-private-sentinel");
             }
-            var operational = factory.CreateLogger("IdentityPlatform.Operations");
             SafeEvent(operational);
         }
     }
