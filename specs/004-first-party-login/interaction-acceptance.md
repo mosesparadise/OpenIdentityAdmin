@@ -46,3 +46,5 @@ Test review required the lone barrier cancellation control to call the transitio
 Current added matrix:44 cases per provider (password entry7, request binding31, database transition6), raising Issuer130→174 and the full expected .NET total490→578. Expected counts are not evidence of a pass. Final source execution and review dispositions follow in verification.md.
 
 Final bounded source re-review: architecture, test and security reviewers closed the findings above. Pending consumption retains an earlier ordinary request; completion cases render their form after authentication so antiforgery identity binding remains valid. Reviewers executed no tests.
+
+Execution-driven correction: the44-case cohort uses its own nonparallel disposable Aspire fixture to avoid unrelated tests exhausting the production600/minute limiter. All real issuer limits remain active. Captured concurrent responses allow one code plus either an exact access_denied callback or native400 invalid_token (depending on whether the loser passed native validation before redemption); an explicit later replay must receive native400 invalid_token. No retry or broadened success condition is introduced.

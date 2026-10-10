@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 
-[Collection("issuer")]
+[Collection("interaction-acceptance")]
 public sealed class RequestBindingTests(IssuerFixture fixture)
 {
     private static readonly string[] Providers = ["PostgreSql", "SqlServer"];
@@ -260,16 +260,39 @@ public sealed class RequestBindingTests(IssuerFixture fixture)
         var results = await Task.WhenAll(Resume(), Resume());
         using var first = results[0];
         using var second = results[1];
-        var callbacks = results.Select(response => Callback(environment, response)).ToArray();
-        var winners = callbacks.Where(uri => !string.IsNullOrEmpty(QueryHelpers.ParseQuery(uri.Query).GetValueOrDefault("code"))).ToArray();
+        var winners = results.Where(response => response.StatusCode == HttpStatusCode.Redirect &&
+            !string.IsNullOrEmpty(QueryHelpers.ParseQuery(Callback(environment, response).Query).GetValueOrDefault("code"))).ToArray();
         Assert.True(winners.Length == 1, "Exactly one issuer response may contain a code.");
-        Assert.True(callbacks.Count(uri => !string.IsNullOrEmpty(QueryHelpers.ParseQuery(uri.Query).GetValueOrDefault("error"))) == 1, "The losing resume must be denied.");
+        foreach (var response in results.Where(response => !ReferenceEquals(response, winners[0])))
+        {
+            if (response.StatusCode == HttpStatusCode.Redirect)
+            {
+                var query = QueryHelpers.ParseQuery(Callback(environment, response).Query);
+                Assert.True(query.GetValueOrDefault("error") == "access_denied" && query.GetValueOrDefault("state") == login.Flow.State &&
+                    string.IsNullOrEmpty(query.GetValueOrDefault("code")), "The application-level losing resume must be denied.");
+            }
+            else
+            {
+                // A later arrival can encounter native request-token redemption before application handling.
+                await AssertRedeemedRequestAsync(response);
+            }
+        }
         Assert.Equal(approvals + 1, await ApprovalCountAsync(environment));
         Assert.False(login.Flow.Completion.Task.IsCompleted, "The RP must not hide duplicate issuer responses.");
-        await DeliverAsync(browser, winners[0], login);
+        await DeliverAsync(browser, Callback(environment, winners[0]), login);
         using var replay = await controlled.GetAsync(continuation, TestContext.Current.CancellationToken);
-        Assert.True(string.IsNullOrEmpty(QueryHelpers.ParseQuery(Callback(environment, replay).Query).GetValueOrDefault("code")), "Consumed continuation replay issued a code.");
+        await AssertRedeemedRequestAsync(replay);
         Assert.Equal(approvals + 1, await ApprovalCountAsync(environment));
+    }
+
+    private static async Task AssertRedeemedRequestAsync(HttpResponseMessage response)
+    {
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Null(response.Headers.Location);
+        Assert.Equal("text/plain", response.Content.Headers.ContentType?.MediaType);
+        var lines = (await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).Split('\n').Select(line => line.TrimEnd('\r')).ToArray();
+        Assert.True(lines.Contains("error:invalid_token", StringComparer.Ordinal) && !lines.Any(line => line.StartsWith("code:", StringComparison.Ordinal)),
+            "Native redeemed request tokens must be rejected locally without a code.");
     }
 
     private static Dictionary<string, string> Parameters(Uri uri) => QueryHelpers.ParseQuery(uri.Query).ToDictionary(value => value.Key, value => value.Value.ToString(), StringComparer.Ordinal);

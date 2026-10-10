@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 
-[Collection("issuer")]
+[Collection("interaction-acceptance")]
 public sealed class PasswordEntryTests(IssuerFixture fixture)
 {
     private static readonly string[] Providers = ["PostgreSql", "SqlServer"];

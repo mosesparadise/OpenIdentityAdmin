@@ -143,3 +143,6 @@ Initial PostgreSQL cohorts passed password7/7 and transition5/5 before final ass
 
 
 Final local source builds with zero warnings/errors; strict unit matrix passes216/216, zero skips. Bounded independent architecture/test/security source reviews closed their findings after the corrections above; reviewers ran no tests. The strengthened full PostgreSQL HTTP suite and final static/CI gates are still running/pending. No test source changed after this checkpoint.
+
+
+The first full local168-case PostgreSQL run at `1833ec8` passed162 and failed6. One new assertion incorrectly expected a callback after native request-token redemption; five later cases reached the shared issuer's600/minute rate limit (including an explicit429), causing setup failures/timeouts. The new44-case cohort now owns a separate, nonparallel disposable Aspire fixture; production limits and security-operation behavior remain unchanged. The HTTP race allows only the two legitimate denial stages: exact access_denied callback when validation preceded the winner, or native400 invalid_token after redemption. Explicit replay requires the latter. This correction is test isolation/response evidence, not a product policy change. Initial CI source1833ec8 passed static, unit, assurance and supply-chain jobs; provider results are superseded by the corrected-source run.

@@ -27,6 +27,10 @@ namespace IdentityPlatform.Issuer.Tests.Fixtures;
 [CollectionDefinition("issuer")]
 public sealed class IssuerTestGroup : ICollectionFixture<IssuerFixture>;
 
+// Keep the growing acceptance cohort isolated without relaxing the real issuer's rate limit.
+[CollectionDefinition("interaction-acceptance", DisableParallelization = true)]
+public sealed class InteractionAcceptanceGroup : ICollectionFixture<IssuerFixture>;
+
 public sealed class IssuerFixture : IAsyncLifetime
 {
     private readonly Dictionary<string, IssuerEnvironment> environments = new(StringComparer.Ordinal);
