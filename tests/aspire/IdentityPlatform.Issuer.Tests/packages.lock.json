@@ -797,6 +797,26 @@
           "OpenIddict.EntityFrameworkCore": "[7.7.1, )"
         }
       },
+      "identityplatform.migrations.postgresql": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Infrastructure": "[1.0.0, )"
+        }
+      },
+      "identityplatform.migrations.sqlserver": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Infrastructure": "[1.0.0, )"
+        }
+      },
+      "identityplatform.migrator": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Infrastructure": "[1.0.0, )",
+          "IdentityPlatform.Migrations.PostgreSql": "[1.0.0, )",
+          "IdentityPlatform.Migrations.SqlServer": "[1.0.0, )"
+        }
+      },
       "identityplatform.servicedefaults": {
         "type": "Project",
         "dependencies": {

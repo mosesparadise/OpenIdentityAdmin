@@ -2,7 +2,7 @@
 
 This is the living view of **all approved work**, as of 10 October 2026. It supplements the immutable [v0.2 plan](approved-v0.2/06-spec-kit-plan.md), [PRD](approved-v0.2/00-prd.md) and [approval record](approval.md). Dates are status dates, not delivery estimates. No estimate is invented before a feature's dependencies and acceptance work are understood.
 
-**Current accepted capability (`main`):** real native persistence, both-provider migrations and Aspire health-only hosts, strict xUnit v3/MTP/coverage/supply-chain gates, AI instructions, and durable issuer credentials/encrypted Data Protection. **There is no usable login, token issuance, Admin BFF, management API or product UI yet.**
+**Current merged capability (`main`):** native persistence, both-provider migrations and default health-only Aspire hosts, strict xUnit v3/MTP/coverage/supply-chain gates, AI instructions, durable issuer credentials/encrypted Data Protection, and an explicitly enabled **Development-only first-party login/code-S256 pilot**. Full pilot acceptance is still in progress; production administration, Admin BFF/React and management APIs are not implemented.
 
 Milestone numbers below come from the approved product roadmap. Local Spec Kit feature numbers are increments: `001-platform-foundation` and `002-issuer-foundation` both contribute to **milestone 001**. They do not complete milestones 001 and 002.
 
@@ -22,7 +22,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | [PR #2](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2) squash-merged as `8079b5e` |
 | Configuration references, static analysis and this roadmap | Done | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Squash-merged in PR #2 as `8079b5e` |
 | Assurance register baseline | Done for bounded scope | [Feature 003 tasks](../specs/003-assurance-register/tasks.md), [register](assurance/README.md) | [PR #3](https://github.com/mosesparadise/OpenIdentityAdmin/pull/3) squash-merged as `df828d6` |
-| First-party login and S256 code flow | In progress; acceptance pending | [Feature 004 spec](../specs/004-first-party-login/spec.md), [29 tasks, including convergence gaps](../specs/004-first-party-login/tasks.md), [evidence](../specs/004-first-party-login/verification.md); [full issuer backlog](engineering/issuer-flow-backlog.md) | [Draft PR #4](https://github.com/mosesparadise/OpenIdentityAdmin/pull/4) |
+| First-party login and S256 code flow | In progress; acceptance pending | [Feature 004 spec](../specs/004-first-party-login/spec.md), [29 tasks, including convergence gaps](../specs/004-first-party-login/tasks.md), [evidence](../specs/004-first-party-login/verification.md); [full issuer backlog](engineering/issuer-flow-backlog.md) | [PR #4](https://github.com/mosesparadise/OpenIdentityAdmin/pull/4) squash-merged as `8a70b02`; [PR #5](https://github.com/mosesparadise/OpenIdentityAdmin/pull/5) completes T023 bootstrap acceptance on both providers and awaits review; T024 is next |
 
 ## Milestone 001 — Platform and issuer foundation (partial)
 

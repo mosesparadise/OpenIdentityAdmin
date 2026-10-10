@@ -97,3 +97,33 @@ Before product changes, the compiled middleware regression failed for its missin
 Independent security source review accepted the bounded conditional audit and fixed incident payload; no new confirmed defect in that diff. Independent test review identified failure-output hazards in collection assertions and test case names; those were corrected. Neither reviewer claims test execution. Actual logging-provider enrichment/scopes remain part of T026's integration evidence, beyond the exact application payload proven by the unit test. No assurance row is promoted.
 
 Corrected-source strict unit matrix:216/216 passed, zero skipped (Core25, Host178, Architecture5, AppHost8), including all eight new incident/assertion cases. Assurance integrity and AI-instruction structure checks passed. Both-provider/Chromium/final combined coverage are mandatory for the review-fix commit and remain pending at this local checkpoint; their exact head/run is recorded in the PR handoff and carried into the next delivery record.
+
+
+### PR #4 merged checkpoint and T023 handoff
+
+[Run38066104676](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38066104676) passed all seven jobs on source `7d7205843db186bc95ae22dd5e5d88c086c22c33`:392 .NET tests, zero skips (216 unit/architecture, plus88 per provider including81 issuer/Chromium). All nine coverage floors passed; AuthServer92.4% lines/98.2% branches. Local corrected-source PostgreSQL75 HTTP cases also passed. Both independent narrow security/test source reviews closed their findings; all seven GitHub threads were resolved.
+
+GitHub rejected the formal approval attempt with422 because the connected account authored PR #4. Normal squash merge succeeded as `8a70b029b8930e330fa1d881bc7839627a39b07d` after verifying exact head, checks and threads, without bypass. This is a Development-only checkpoint, not full M01-D acceptance. The next authorized work is T023, whose detailed [bootstrap acceptance plan](bootstrap-acceptance.md) was documented and architecture-reviewed before implementation. T024–T029 and release gates remain open.
+
+
+### T023 bootstrap acceptance implementation
+
+The [execution plan](bootstrap-acceptance.md) was recorded before code. A separate health-only Aspire fixture applies real migrations to a fresh disposable database per case and invokes the actual PilotBootstrap through least-privileged runtime scopes. Native managers seed account/application/scope conflicts; administrator access is reserved for provisioning, intentional corruption, permission fault injection, inspection and cleanup. No production code or policy changed.
+
+The new BootstrapAcceptanceTests adds49 cases per provider:44 persisted conflicts, valid no-op with existing password-failure count, deterministic two-context first-creation race, single-caller cancellation/drain, and audit INSERT denial during first creation and verification. Comparisons cover all persisted Identity/OpenIddict/pilot records, retain the complete original creation audit on successful no-op/retry, and never put captured values into assertion diagnostics. Successful/empty state checks reject unexpected related records. Test matrix expects130 Issuer cases per provider (existing81 plus49); expected complete matrix is490 .NET cases, not a claimed pass until CI finishes.
+
+Local commands: solution build with --no-restore/--disable-build-servers/-m:1 passed with zero warnings/errors; whitespace and IDE0005 verification passed; scripts/verify.py unit passed216 required cases with zero skips. Initial new-case PostgreSQL run passed49/49 before strengthening the snapshots. Final full PostgreSQL HTTP, SQL Server, browser and combined coverage evidence remains pending at this checkpoint. Assurance integrity and AI-instruction checks pass; all345 ASVS rows remain not_assessed.
+
+Independent architecture and test source review accepted the bounded design after correcting the explicit cancellation deadline, matching pilot Identity policy, and adding complete snapshots/original-audit preservation. Reviewers ran no test suites. T023 remains unchecked until both real providers and CI prove the final assertions. T024–T029, full M01-D acceptance and external release gates remain open.
+
+
+The strengthened-source local PostgreSQL HTTP suite passed124/124 with zero skips, including all49 new bootstrap cases and the previous75 HTTP cases. Browser cases were explicitly excluded locally; CI supplies both-provider Chromium evidence. The build and unit counts above apply to source `7341d16b6fed3ef782827a9cc891ce4e9eebcf2a`.
+
+
+### T023 completed CI checkpoint
+
+[Run38067841270](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38067841270) passed all seven jobs for source `7341d16b6fed3ef782827a9cc891ce4e9eebcf2a`. All490 .NET cases passed with zero skips:216 unit/architecture and137 per real provider (Persistence3, AppHost4, Issuer130). Each issuer cell includes124 HTTP/database cases and6 Chromium cases; all49 new bootstrap cases passed on each provider. SQL Server's issuer cell completed in6m20s, below the existing660s outer deadline. No retry, skip or timeout increase was needed.
+
+All nine unchanged90% line/80% branch module floors passed: Core100/100; Infrastructure99.0/100; ServiceDefaults100/100; Migrator98.1/90.0; AuthServer92.6/97.7; Admin API/BFF/Worker100/100; AppHost98.4/100. Static analysis/formatting and all three enforcement negative controls, assurance integrity, dependency/license/secret gates and strict fresh-report test counts passed. The initial pending statements above are historical checkpoints superseded for this source by this run.
+
+T023 is complete with bounded independent architecture/test source-review dispositions recorded in the execution plan. [PR #5](https://github.com/mosesparadise/OpenIdentityAdmin/pull/5) contains this increment, uses the Conventional Commit title `test(auth): verify bootstrap conflicts and rollback`, and remains unmerged for review. This documentation-only completion commit receives its own final-head CI run; its result is linked in the PR to avoid a self-referential evidence commit loop. No product/test source changes follow the tested source checkpoint. T024 is next; T024–T029 and full M01-D/manual/external acceptance remain open, and no ASVS row is promoted.
