@@ -1,4 +1,5 @@
 using System.Net;
+using IdentityPlatform.Testing;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
@@ -13,11 +14,26 @@ public sealed class LocalProfilesTests
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public async Task Selected_profile_migrates_and_serves_only_healthy_operational_endpoints(string provider)
     {
+        using var credentials = new IssuerMaterialFixture();
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromMinutes(3));
         var cancellationToken = deadline.Token;
         await using var builder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.IdentityPlatform_AppHost>(
             ["--environment=Development", $"--Database:Provider={provider}"], cancellationToken);
+        var auth = builder.CreateResourceBuilder<ProjectResource>("auth");
+        foreach (var setting in credentials.Settings)
+        {
+            var variable = setting.Key.Replace(":", "__");
+            if (setting.Key.EndsWith(":Password", StringComparison.Ordinal))
+            {
+                var name = "issuer-" + setting.Key.Replace(":", "-").ToLowerInvariant();
+                var secret = builder.AddParameter(name, () => setting.Value!, secret: true);
+                auth.WithEnvironment(variable, secret);
+            }
+            else if (setting.Key == "Identity:Issuer")
+                auth.WithEnvironment(variable, auth.GetEndpoint("https"));
+            else auth.WithEnvironment(variable, setting.Value!);
+        }
         await using var app = await builder.BuildAsync(cancellationToken);
         await app.StartAsync(cancellationToken);
         foreach (var name in new[] { "auth", "admin-api", "admin-bff", "worker" })
@@ -29,6 +45,12 @@ public sealed class LocalProfilesTests
             Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/health", cancellationToken)).StatusCode);
             Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync("/connect/token", cancellationToken)).StatusCode);
             Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync("/api/v1/clients", cancellationToken)).StatusCode);
+        }
+        Assert.NotEmpty(Directory.GetFiles(credentials.Ring, "key-*.xml"));
+        using (var issuer = new HttpClient { BaseAddress = app.GetEndpoint("auth", "https") })
+        {
+            foreach (var path in new[] { "/.well-known/openid-configuration", "/.well-known/jwks", "/connect/authorize", "/account/login" })
+                Assert.Equal(HttpStatusCode.NotFound, (await issuer.GetAsync(path, cancellationToken)).StatusCode);
         }
         var model = app.Services.GetRequiredService<DistributedApplicationModel>();
         var endpoints = new[] { "auth", "admin-api", "admin-bff", "worker" }

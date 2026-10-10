@@ -1,3 +1,5 @@
+using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
+using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
@@ -21,7 +23,27 @@ catch (ArgumentException)
     return 2;
 }
 
-var app = builder.Build();
-app.MapPlatformHealthEndpoints();
-await app.RunAsync();
-return 0;
+IssuerCredentials? credentials;
+try { credentials = builder.Services.AddIssuerProtection(builder.Configuration); }
+catch (IssuerProtectionException)
+{
+    Console.Error.WriteLine(IssuerProtectionException.SafeMessage);
+    return 2;
+}
+
+using (credentials)
+{
+    await using var app = builder.Build();
+    try
+    {
+        if (credentials is not null) app.Services.VerifyIssuerProtection();
+    }
+    catch (IssuerProtectionException)
+    {
+        Console.Error.WriteLine(IssuerProtectionException.SafeMessage);
+        return 2;
+    }
+    app.MapPlatformHealthEndpoints();
+    await app.RunAsync();
+    return 0;
+}
