@@ -1,7 +1,10 @@
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using IdentityPlatform.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -68,13 +71,13 @@ public sealed class InteractionTests(IssuerFixture fixture)
         var ninth = environment.RelyingParty.Prepare();
         using var denied = await browser.GetAsync(environment.RelyingParty.StartUri(ninth), TestContext.Current.CancellationToken);
         Assert.Equal("temporarily_unavailable", ninth.Error);
-        Assert.Empty(ninth.Code);
+        Assert.True(string.IsNullOrEmpty(ninth.Code), "A denied flow unexpectedly issued a code.");
         await using var scope = environment.Services.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         await database.Set<LoginInteraction>().Where(value => value.Id == pending[0].Interaction)
             .ExecuteUpdateAsync(update => update.SetProperty(value => value.ExpiresAt, 1), TestContext.Current.CancellationToken);
         var fresh = await TestLogin.BeginAsync(environment, browser);
-        Assert.DoesNotContain(pending, value => value.Interaction == fresh.Interaction);
+        Assert.True(!pending.Any(value => value.Interaction == fresh.Interaction), "Expected a fresh interaction after capacity was freed.");
     }
 
     [Theory]
@@ -101,8 +104,8 @@ public sealed class InteractionTests(IssuerFixture fixture)
         var results = await Task.WhenAll(first, second);
         using var one = results[0];
         using var two = results[1];
-        Assert.Single(results, response => response.RequestMessage!.RequestUri!.AbsolutePath == "/account/complete");
-        Assert.All(results, response => Assert.True(response.StatusCode is HttpStatusCode.OK or HttpStatusCode.BadRequest));
+        Assert.True(results.Count(response => response.RequestMessage!.RequestUri!.AbsolutePath == "/account/complete") == 1, "Exactly one completion must succeed.");
+        Assert.True(results.All(response => response.StatusCode is HttpStatusCode.OK or HttpStatusCode.BadRequest), "Unexpected concurrent completion status.");
         Assert.Equal(sessions + 1, await database.Set<LocalIdentitySession>().CountAsync(TestContext.Current.CancellationToken));
         Assert.Equal(audits + 1, await database.Set<SecurityAuditIntent>().CountAsync(value => value.Outcome == "session-created", TestContext.Current.CancellationToken));
     }
@@ -138,9 +141,9 @@ public sealed class InteractionTests(IssuerFixture fixture)
         Assert.Equal("/account/complete", accepted.RequestMessage!.RequestUri!.AbsolutePath);
         using var rejected = await second.SubmitAsync(environment, browser);
         Assert.Equal(HttpStatusCode.BadRequest, rejected.StatusCode);
-        Assert.Equal("This request cannot be completed. Return to your application and start a new sign-in.",
-            await rejected.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
-        Assert.Empty(second.Flow.Code);
+        Assert.True(await rejected.Content.ReadAsStringAsync(TestContext.Current.CancellationToken) ==
+            "This request cannot be completed. Return to your application and start a new sign-in.", "Unexpected stale form response.");
+        Assert.True(string.IsNullOrEmpty(second.Flow.Code), "A denied flow unexpectedly issued a code.");
         Assert.True((await environment.AuthorizeAsync(browser, exchange: true, prompt: "login")).Validated);
     }
 
@@ -168,7 +171,7 @@ public sealed class InteractionTests(IssuerFixture fixture)
         using var response = await login.SubmitAsync(environment, tampering == "other-browser" ? other : browser,
             antiforgery: tampering == "missing-antiforgery" ? "" : tampering == "wrong-antiforgery" ? "forged" : null);
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.Empty(login.Flow.Code);
+        Assert.True(string.IsNullOrEmpty(login.Flow.Code), "A denied flow unexpectedly issued a code.");
         Assert.Equal(sessions, await database.Set<LocalIdentitySession>().CountAsync(TestContext.Current.CancellationToken));
         await database.Entry(row).ReloadAsync(TestContext.Current.CancellationToken);
         Assert.Null(row.CompletedSessionId);
@@ -189,9 +192,9 @@ public sealed class InteractionTests(IssuerFixture fixture)
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var html = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
-            Assert.Contains("Unable to sign in. Check your details or start a new sign-in request.", html, StringComparison.Ordinal);
-            Assert.DoesNotContain(sentinel, html, StringComparison.Ordinal);
-            Assert.DoesNotContain(environment.Password, html, StringComparison.Ordinal);
+            SafeAssertions.ContainsNoSensitiveMaterial(html, sentinel, environment.Password);
+            Assert.True(html.Contains("Unable to sign in. Check your details or start a new sign-in request.", StringComparison.Ordinal),
+                "Expected the generic sign-in error without disclosing the response body.");
         }
         await using var scope = environment.Services.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -210,9 +213,13 @@ public sealed class InteractionTests(IssuerFixture fixture)
     {
         var environment = await fixture.GetAsync(provider);
         using var browser = IssuerEnvironment.CreateBrowserClient();
+        await using var scope = environment.Services.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var replacements = await database.Set<SecurityAuditIntent>().CountAsync(value => value.Event == "session-replacement", TestContext.Current.CancellationToken);
         var first = await TestLogin.BeginAsync(environment, browser, prompt: "login");
         using var completedFirst = await first.SubmitAsync(environment, browser);
         Assert.Equal("/account/complete", completedFirst.RequestMessage!.RequestUri!.AbsolutePath);
+        Assert.Equal(replacements, await database.Set<SecurityAuditIntent>().CountAsync(value => value.Event == "session-replacement", TestContext.Current.CancellationToken));
         var firstCompletion = completedFirst.RequestMessage.RequestUri;
         // The second form is rendered after the first login so its antiforgery identity is current.
         var second = await TestLogin.BeginAsync(environment, browser, prompt: "login");
@@ -220,12 +227,21 @@ public sealed class InteractionTests(IssuerFixture fixture)
         Assert.Equal("/account/complete", completedSecond.RequestMessage!.RequestUri!.AbsolutePath);
         using var staleTab = await browser.GetAsync(firstCompletion, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.BadRequest, staleTab.StatusCode);
-        await using var scope = environment.Services.CreateAsyncScope();
-        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var oldInteraction = await database.Set<LoginInteraction>().SingleAsync(value => value.Id == first.Interaction, TestContext.Current.CancellationToken);
         var oldSession = await database.Set<LocalIdentitySession>().SingleAsync(value => value.Id == oldInteraction.CompletedSessionId, TestContext.Current.CancellationToken);
         Assert.True(oldSession.Revoked);
-        Assert.Empty(first.Flow.Code);
-        Assert.Empty(second.Flow.Code);
+        var digest = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(oldSession.Id)));
+        var replacement = await database.Set<SecurityAuditIntent>()
+            .Where(value => value.Event == "session-replacement" && value.TargetId == digest)
+            .ToArrayAsync(TestContext.Current.CancellationToken);
+        Assert.True(replacement.Length == 1, "Expected exactly one session replacement audit intent.");
+        Assert.Equal("revoked", replacement[0].Outcome);
+        Assert.Equal("local-session-digest", replacement[0].TargetType);
+        Assert.Equal("account", replacement[0].ActorType);
+        Assert.Equal(oldSession.UserId, replacement[0].ActorId);
+        Assert.NotEqual(Guid.Empty, replacement[0].CorrelationId);
+        Assert.True(replacement[0].OccurredAt >= oldSession.AuthenticatedAt);
+        Assert.True(string.IsNullOrEmpty(first.Flow.Code), "A denied flow unexpectedly issued a code.");
+        Assert.True(string.IsNullOrEmpty(second.Flow.Code), "A denied flow unexpectedly issued a code.");
     }
 }

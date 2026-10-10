@@ -159,7 +159,8 @@ public sealed class PilotPolicyTests
         Assert.Equal(["access_token", "id_token"], principal.FindFirst("sub")!.GetDestinations());
         Assert.Equal(["id_token"], principal.FindFirst("auth_time")!.GetDestinations());
         Assert.Empty(principal.FindFirst(PilotProfile.SessionClaim)!.GetDestinations());
-        Assert.DoesNotContain(principal.Claims, claim => claim.Value == session.SecurityStamp || claim.Type.Contains("role", StringComparison.OrdinalIgnoreCase));
+        Assert.True(!principal.Claims.Any(claim => claim.Value == session.SecurityStamp || claim.Type.Contains("role", StringComparison.OrdinalIgnoreCase)),
+            "The principal must not carry credential or role claims.");
         Assert.Equal(2, principal.Claims.Count(claim => !claim.Type.StartsWith("oi_", StringComparison.Ordinal)));
     }
 

@@ -86,7 +86,7 @@ public sealed partial class PilotRegistrationTests
         Assert.Contains(rebuilt.Rules, rule => rule.CategoryName == "OpenIddict" && rule.LogLevel == LogLevel.None);
         AssertLogs();
         Assert.Equal(2, messages.Count);
-        Assert.All(messages, value => Assert.Equal("Safe operational event", value));
+        Assert.True(messages.All(value => value == "Safe operational event"), "Unexpected diagnostic content.");
 
         void AssertLogs()
         {

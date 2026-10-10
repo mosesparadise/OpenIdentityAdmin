@@ -115,8 +115,12 @@ public sealed class LoginInteractions(PlatformDbContext database, UserManager<Pl
         }
         if (previousSessionId is not null)
         {
-            await database.Set<LocalIdentitySession>().Where(value => value.Id == previousSessionId)
+            var revoked = await database.Set<LocalIdentitySession>().Where(value => value.Id == previousSessionId && !value.Revoked)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(value => value.Revoked, true), cancellationToken);
+            if (revoked == 1)
+            {
+                LoginAudit.SessionReplaced(database, previousSessionId, user.Id, Now);
+            }
         }
         database.Add(session);
         LoginAudit.Add(database, "password-verification", "session-created", Now, user.Id);

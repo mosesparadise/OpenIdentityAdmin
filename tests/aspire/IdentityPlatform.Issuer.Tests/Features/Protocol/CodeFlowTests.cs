@@ -92,8 +92,10 @@ public sealed class CodeFlowTests(IssuerFixture fixture)
         var responses = await Task.WhenAll(first, second);
         using var one = responses[0];
         using var two = responses[1];
-        var winner = Assert.Single(responses, response => response.StatusCode == HttpStatusCode.OK);
-        var loser = Assert.Single(responses, response => response.StatusCode == HttpStatusCode.BadRequest);
+        Assert.True(responses.Count(response => response.StatusCode == HttpStatusCode.OK) == 1 &&
+            responses.Count(response => response.StatusCode == HttpStatusCode.BadRequest) == 1, "Concurrent exchange must have exactly one winner and one denial.");
+        var winner = responses.Single(response => response.StatusCode == HttpStatusCode.OK);
+        var loser = responses.Single(response => response.StatusCode == HttpStatusCode.BadRequest);
         using var lost = JsonDocument.Parse(await loser.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.Equal("invalid_grant", lost.RootElement.GetProperty("error").GetString());
         using var tokens = JsonDocument.Parse(await winner.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));

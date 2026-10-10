@@ -41,12 +41,12 @@ public sealed class DenialTests(IssuerFixture fixture)
         using var response = await browser.GetAsync(environment.RelyingParty.StartUri(flow), TestContext.Current.CancellationToken);
         Assert.NotEqual("/account/login", response.RequestMessage!.RequestUri!.AbsolutePath);
         Assert.True(response.StatusCode is HttpStatusCode.OK or HttpStatusCode.BadRequest);
-        Assert.Empty(flow.Code);
+        Assert.True(string.IsNullOrEmpty(flow.Code), "A denied flow unexpectedly issued a code.");
         if (response.IsSuccessStatusCode)
         {
             Assert.False(await flow.Completion.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken));
             Assert.NotEmpty(flow.Error);
-            Assert.Equal("Request denied", await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
+            Assert.True(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken) == "Request denied", "Unexpected denial response.");
         }
     }
 
@@ -110,7 +110,7 @@ public sealed class DenialTests(IssuerFixture fixture)
         using var response = await browser.GetAsync(environment.RelyingParty.StartUri(flow), TestContext.Current.CancellationToken);
         Assert.Equal("/callback", response.RequestMessage!.RequestUri!.AbsolutePath);
         Assert.Equal("login_required", flow.Error);
-        Assert.Empty(flow.Code);
+        Assert.True(string.IsNullOrEmpty(flow.Code), "A denied flow unexpectedly issued a code.");
         Assert.False(await flow.Completion.Task);
     }
 }

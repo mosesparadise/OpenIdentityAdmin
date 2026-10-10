@@ -13,4 +13,5 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/SafeAssertions.cs" Link="Fixtures/SafeAssertions.cs" /></ItemGroup>
 </Project>

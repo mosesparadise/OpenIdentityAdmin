@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Deque.AxeCore.Playwright;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using IdentityPlatform.Testing;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Browser;
@@ -69,6 +70,10 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         Assert.Equal("no-referrer", headers["referrer-policy"]);
         await page.Keyboard.PressAsync("Tab");
         Assert.Equal("Skip to main content", await page.Locator(":focus").InnerTextAsync());
+        Assert.True(await page.Locator(".wordmark").EvaluateAsync<bool>("element => element.tagName === 'SPAN' && !element.hasAttribute('tabindex') && !element.hasAttribute('role')"),
+            "The wordmark must remain noninteractive text until a home route exists.");
+        await page.Keyboard.PressAsync("Tab");
+        Assert.Equal("theme", await page.Locator(":focus").GetAttributeAsync("id"));
         flow.InteractionId = await page.Locator("input[name=Interaction]").InputValueAsync();
         await page.GetByLabel("Username", new()
         {
@@ -93,19 +98,18 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         await page.Locator("#password").PressAsync("Enter");
         await page.WaitForURLAsync(environment.RelyingParty.Callback + "**");
         Assert.True(await flow.Completion.Task.WaitAsync(TimeSpan.FromSeconds(15), TestContext.Current.CancellationToken), flow.ValidationFailure);
-        Assert.Equal("Signed in successfully", await page.Locator("body").InnerTextAsync());
+        Assert.True(await page.Locator("body").InnerTextAsync() == "Signed in successfully", "Unexpected relying-party result page.");
         Assert.Empty(violations);
         var cookies = await context.CookiesAsync();
-        var session = Assert.Single(cookies, cookie => cookie.Name == "__Host-identity-pilot");
+        var sessions = cookies.Where(cookie => cookie.Name == "__Host-identity-pilot").ToArray();
+        Assert.True(sessions.Length == 1, "Expected exactly one application session cookie.");
+        var session = sessions[0];
         Assert.True(session.Secure);
         Assert.True(session.HttpOnly);
         Assert.Equal(SameSiteAttribute.Lax, session.SameSite);
         var storage = await context.StorageStateAsync();
-        Assert.DoesNotContain("access_token", storage, StringComparison.Ordinal);
-        Assert.DoesNotContain("id_token", storage, StringComparison.Ordinal);
-        Assert.DoesNotContain(environment.Password, storage, StringComparison.Ordinal);
-        Assert.DoesNotContain(environment.ClientSecret, storage, StringComparison.Ordinal);
-        Assert.Empty(await page.EvaluateAsync<string[]>("Object.keys(sessionStorage)"));
+        SafeAssertions.ContainsNoSensitiveMaterial(storage, "access_token", "id_token", environment.Password, environment.ClientSecret);
+        Assert.True(await page.EvaluateAsync<bool>("Object.keys(sessionStorage).length === 0"), "Unexpected session storage content.");
     }
 
     [Theory]
@@ -146,7 +150,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             Caret = ScreenshotCaret.Hide
         });
         var keys = await page.EvaluateAsync<string[]>("Object.keys(localStorage)");
-        Assert.Equal(["identity-theme"], keys);
+        Assert.True(keys.Length == 1 && keys[0] == "identity-theme", "Browser storage must contain only the theme preference.");
         await page.ReloadAsync();
         Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
         var baseline = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "Features", "Browser", "Baselines", $"login-{theme}-{width}.png"), TestContext.Current.CancellationToken);

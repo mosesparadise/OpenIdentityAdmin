@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.Features;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Protection;
 
-public sealed class PilotRequestProtection(RequestDelegate next)
+public sealed partial class PilotRequestProtection(RequestDelegate next, ILogger<PilotRequestProtection> logger)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -47,8 +47,11 @@ public sealed class PilotRequestProtection(RequestDelegate next)
         catch (Exception) when (!context.Response.HasStarted)
         {
             // Never emit exception objects: provider/framework messages may include sensitive input.
+            var incidentId = Guid.NewGuid().ToString("N");
+            RequestFailed(logger, incidentId);
             context.Response.Clear();
             context.Response.StatusCode = 503;
+            context.Response.Headers["X-Identity-Incident"] = incidentId;
             context.Response.Headers.CacheControl = "no-store";
             context.Response.Headers["X-Content-Type-Options"] = "nosniff";
             context.Response.Headers["Referrer-Policy"] = "no-referrer";
@@ -56,4 +59,7 @@ public sealed class PilotRequestProtection(RequestDelegate next)
             await context.Response.WriteAsync("Sign-in is temporarily unavailable. Return to your application and try again.", CancellationToken.None);
         }
     }
+
+    [LoggerMessage(EventId = 1001, Level = LogLevel.Warning, Message = "Pilot request failed. Incident {IncidentId}.")]
+    private static partial void RequestFailed(ILogger logger, string incidentId);
 }
