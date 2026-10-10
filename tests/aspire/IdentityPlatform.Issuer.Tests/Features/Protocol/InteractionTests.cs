@@ -18,6 +18,43 @@ public sealed class InteractionTests(IssuerFixture fixture)
         select new TheoryDataRow<string, string>(provider, tampering).WithTrait("Provider", provider);
 
     [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Independent_browser_login_does_not_change_original_sessions_authentication_time(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var firstBrowser = IssuerEnvironment.CreateBrowserClient();
+        using var secondBrowser = IssuerEnvironment.CreateBrowserClient();
+        var first = await environment.AuthorizeAsync(firstBrowser, exchange: true);
+        await Task.Delay(TimeSpan.FromSeconds(1.1), TestContext.Current.CancellationToken);
+        var second = await environment.AuthorizeAsync(secondBrowser, exchange: true);
+        Assert.NotEqual(first.ExpectedSessionId, second.ExpectedSessionId);
+        var reuse = await environment.AuthorizeAsync(firstBrowser, exchange: true, prompt: "none");
+        Assert.Equal(first.ExpectedSessionId, reuse.ExpectedSessionId);
+        Assert.True(reuse.Validated);
+        Assert.Null(reuse.InteractionId); // No fresh form was rendered to satisfy this silent request.
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Anonymous_second_tab_gets_safe_restart_after_first_tab_changes_antiforgery_identity(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var browser = IssuerEnvironment.CreateBrowserClient();
+        var first = await TestLogin.BeginAsync(environment, browser);
+        var second = await TestLogin.BeginAsync(environment, browser);
+        using var accepted = await first.SubmitAsync(environment, browser);
+        Assert.Equal("/account/complete", accepted.RequestMessage!.RequestUri!.AbsolutePath);
+        using var rejected = await second.SubmitAsync(environment, browser);
+        Assert.Equal(HttpStatusCode.BadRequest, rejected.StatusCode);
+        Assert.Equal("This request cannot be completed. Return to your application and start a new sign-in.",
+            await rejected.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
+        Assert.Empty(second.Flow.Code);
+        Assert.True((await environment.AuthorizeAsync(browser, exchange: true, prompt: "login")).Validated);
+    }
+
+    [Theory]
     [MemberData(nameof(InvalidForms))]
     public async Task Forged_or_stale_form_cannot_create_a_session(string provider, string tampering)
     {

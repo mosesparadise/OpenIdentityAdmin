@@ -117,7 +117,8 @@ jobs:
           sudo apt-get install -y libnss3-tools
           mkdir -p "$HOME/.pki/nssdb"
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
-          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "C,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
+          # This is a self-signed server leaf, not a CA. Chromium requires trusted-peer semantics.
+          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
         run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.profile }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }}
       - name: Retain synthetic test and coverage evidence

@@ -37,7 +37,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
     }
     public Uri BaseUri { get; private set; } = null!;
     public Uri Issuer { get; set; } = null!;
-    public Func<CancellationToken, Task<(string Subject, long AuthenticatedAt)>> ExpectedIdentity { get; set; } = null!;
+    public Func<TestFlow, CancellationToken, Task<(string Subject, long AuthenticatedAt)>> ExpectedIdentity { get; set; } = null!;
     public string Callback => new Uri(BaseUri, "/callback").AbsoluteUri;
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -100,7 +100,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
                 return Results.Content("Exchange denied", "text/plain");
             }
             using var tokens = JsonDocument.Parse(await response.Content.ReadAsStringAsync(context.RequestAborted));
-            flow.ValidationFailure = await ValidateAsync(tokens.RootElement, flow.Nonce, context.RequestAborted);
+            flow.ValidationFailure = await ValidateAsync(tokens.RootElement, flow, context.RequestAborted);
             flow.Validated = flow.ValidationFailure.Length == 0;
             flow.Completion.TrySetResult(flow.Validated);
             return Results.Content(flow.Validated ? "Signed in successfully" : "Validation denied", "text/plain");
@@ -116,9 +116,9 @@ public sealed class TestRelyingParty : IAsyncDisposable
         }
     }
 
-    public TestFlow Prepare(bool exchange = false, string? prompt = null, string? maximumAge = null)
+    public TestFlow Prepare(bool exchange = false, string? prompt = null, string? maximumAge = null, string? verifier = null)
     {
-        var flow = new TestFlow { Exchange = exchange, Prompt = prompt, MaximumAge = maximumAge };
+        var flow = new TestFlow(verifier) { Exchange = exchange, Prompt = prompt, MaximumAge = maximumAge };
         Assert.True(flows.TryAdd(flow.State, flow));
         return flow;
     }
@@ -162,7 +162,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
         return await backchannel.SendAsync(request, cancellationToken);
     }
 
-    public async Task<string> ValidateAsync(JsonElement tokens, string nonce, CancellationToken cancellationToken)
+    public async Task<string> ValidateAsync(JsonElement tokens, TestFlow flow, CancellationToken cancellationToken)
     {
         using var metadata = JsonDocument.Parse(await backchannel.GetStringAsync(new Uri(Issuer, "/.well-known/openid-configuration"), cancellationToken));
         if (metadata.RootElement.GetProperty("issuer").GetString() != Issuer.AbsoluteUri)
@@ -192,8 +192,8 @@ public sealed class TestRelyingParty : IAsyncDisposable
         {
             return "Token time or presenter mismatch.";
         }
-        var expected = await ExpectedIdentity(cancellationToken);
-        if (!identity.TryGetClaim("nonce", out var nonceClaim) || nonceClaim.Value != nonce)
+        var expected = await ExpectedIdentity(flow, cancellationToken);
+        if (!identity.TryGetClaim("nonce", out var nonceClaim) || nonceClaim.Value != flow.Nonce)
         {
             return "Nonce mismatch.";
         }
@@ -263,7 +263,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
     }
 }
 
-public sealed class TestFlow
+public sealed class TestFlow(string? verifier = null)
 {
     private int started;
     public bool TryStart() => ExpiresAt > DateTimeOffset.UtcNow && Interlocked.Exchange(ref started, 1) == 0;
@@ -271,7 +271,7 @@ public sealed class TestFlow
     public DateTimeOffset ExpiresAt { get; } = DateTimeOffset.UtcNow.AddMinutes(5);
     public string State { get; } = NewSecret();
     public string Nonce { get; } = NewSecret();
-    public string Verifier { get; } = NewSecret();
+    public string Verifier { get; } = verifier ?? NewSecret();
     public string BrowserSecret { get; } = NewSecret();
     public bool Exchange
     {
@@ -286,6 +286,14 @@ public sealed class TestFlow
         get; init;
     }
     public Dictionary<string, string?> QueryOverrides { get; } = new(StringComparer.Ordinal);
+    public string? InteractionId
+    {
+        get; set;
+    }
+    public string? ExpectedSessionId
+    {
+        get; set;
+    }
     public string Code { get; set; } = "";
     public string Error { get; set; } = "";
     public string ValidationFailure { get; set; } = "";

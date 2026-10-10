@@ -41,6 +41,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         Assert.Equal("no-referrer", headers["referrer-policy"]);
         await page.Keyboard.PressAsync("Tab");
         Assert.Equal("Skip to main content", await page.Locator(":focus").InnerTextAsync());
+        flow.InteractionId = await page.Locator("input[name=Interaction]").InputValueAsync();
         await page.GetByLabel("Username", new()
         {
             Exact = true

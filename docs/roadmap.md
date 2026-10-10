@@ -22,7 +22,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | [PR #2](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2) squash-merged as `8079b5e` |
 | Configuration references, static analysis and this roadmap | Done | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Squash-merged in PR #2 as `8079b5e` |
 | Assurance register baseline | Done for bounded scope | [Feature 003 tasks](../specs/003-assurance-register/tasks.md), [register](assurance/README.md) | [PR #3](https://github.com/mosesparadise/OpenIdentityAdmin/pull/3) squash-merged as `df828d6` |
-| First-party login and S256 code flow | In progress; acceptance pending | [Feature 004 spec](../specs/004-first-party-login/spec.md), [22 tasks](../specs/004-first-party-login/tasks.md), [evidence](../specs/004-first-party-login/verification.md); [full issuer backlog](engineering/issuer-flow-backlog.md) | Branch `004-first-party-login` |
+| First-party login and S256 code flow | In progress; acceptance pending | [Feature 004 spec](../specs/004-first-party-login/spec.md), [22 tasks](../specs/004-first-party-login/tasks.md), [evidence](../specs/004-first-party-login/verification.md); [full issuer backlog](engineering/issuer-flow-backlog.md) | [Draft PR #4](https://github.com/mosesparadise/OpenIdentityAdmin/pull/4) |
 
 ## Milestone 001 — Platform and issuer foundation (partial)
 

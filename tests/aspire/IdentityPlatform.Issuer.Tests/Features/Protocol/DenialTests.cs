@@ -74,6 +74,17 @@ public sealed class DenialTests(IssuerFixture fixture)
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Maximum_length_unreserved_verifier_succeeds(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var browser = IssuerEnvironment.CreateBrowserClient();
+        var prepared = environment.RelyingParty.Prepare(exchange: true, verifier: new string('~', 128));
+        Assert.True((await environment.AuthorizeAsync(browser, prepared: prepared)).Validated);
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public async Task Matching_sha256_does_not_allow_a_short_verifier(string provider)
     {
         var environment = await fixture.GetAsync(provider);

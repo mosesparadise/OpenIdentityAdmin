@@ -47,7 +47,7 @@ public sealed class CodeFlowTests(IssuerFixture fixture)
         using var lost = JsonDocument.Parse(await loser.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.Equal("invalid_grant", lost.RootElement.GetProperty("error").GetString());
         using var tokens = JsonDocument.Parse(await winner.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
-        Assert.Empty(await environment.RelyingParty.ValidateAsync(tokens.RootElement, flow.Nonce, TestContext.Current.CancellationToken));
+        Assert.Empty(await environment.RelyingParty.ValidateAsync(tokens.RootElement, flow, TestContext.Current.CancellationToken));
         using var replay = await environment.RelyingParty.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.BadRequest, replay.StatusCode);
         using var error = JsonDocument.Parse(await replay.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));

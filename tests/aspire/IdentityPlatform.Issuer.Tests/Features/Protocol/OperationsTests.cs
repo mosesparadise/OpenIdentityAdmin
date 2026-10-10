@@ -1,9 +1,12 @@
 using System.Diagnostics;
 using System.Net;
 using System.Text;
-using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
+using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
@@ -11,6 +14,52 @@ namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 [Collection("issuer")]
 public sealed class OperationsTests(IssuerFixture fixture)
 {
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Audit_insert_failure_rolls_back_password_failure_and_session_creation(string provider)
+    {
+        var environment = await fixture.GetAsync(provider);
+        using var browser = IssuerEnvironment.CreateBrowserClient();
+        var login = await TestLogin.BeginAsync(environment, browser);
+        await using var scope = environment.Services.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<PlatformUser>>();
+        var user = (await users.FindByNameAsync(environment.Username))!;
+        var failures = user.AccessFailedCount;
+        var sessions = await database.Set<LocalIdentitySession>().CountAsync(TestContext.Current.CancellationToken);
+        var audits = await database.Set<SecurityAuditIntent>().CountAsync(TestContext.Current.CancellationToken);
+        var deny = provider == "PostgreSql" ? "REVOKE INSERT ON platform.\"SecurityAuditIntent\" FROM platform_runtime" : "DENY INSERT ON OBJECT::[platform].[SecurityAuditIntent] TO [platform_runtime]";
+        var restore = provider == "PostgreSql" ? "GRANT INSERT ON platform.\"SecurityAuditIntent\" TO platform_runtime" : "REVOKE INSERT ON OBJECT::[platform].[SecurityAuditIntent] FROM [platform_runtime]";
+        try
+        {
+            await database.Database.ExecuteSqlRawAsync(deny, TestContext.Current.CancellationToken);
+            using var wrong = await login.SubmitAsync(environment, browser, password: "incorrect-synthetic-password");
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, wrong.StatusCode);
+            await database.Entry(user).ReloadAsync(TestContext.Current.CancellationToken);
+            Assert.Equal(failures, user.AccessFailedCount);
+            using var correct = await login.SubmitAsync(environment, browser);
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, correct.StatusCode);
+            Assert.Equal(sessions, await database.Set<LocalIdentitySession>().CountAsync(TestContext.Current.CancellationToken));
+            Assert.Equal(audits, await database.Set<SecurityAuditIntent>().CountAsync(TestContext.Current.CancellationToken));
+            var interaction = await database.Set<LoginInteraction>().SingleAsync(value => value.Id == login.Interaction, TestContext.Current.CancellationToken);
+            Assert.Null(interaction.CompletedSessionId);
+            Assert.False(interaction.Consumed);
+            Assert.Empty(login.Flow.Code);
+        }
+        finally
+        {
+            using var restoration = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+            try
+            {
+                await database.Database.ExecuteSqlRawAsync(restore, restoration.Token);
+            }
+            catch (Exception) { environment.Invalidate(); }
+        }
+        Assert.False(environment.Invalidated, "Audit permission restoration failed.");
+        Assert.True((await environment.AuthorizeAsync(browser, exchange: true)).Validated);
+    }
+
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -23,6 +72,7 @@ public sealed class OperationsTests(IssuerFixture fixture)
             using var request = new HttpRequestMessage(HttpMethod.Post, new Uri(environment.Issuer, "/account/login"));
             request.Content = new StringContent("Password=" + new string('x', 17_000), Encoding.UTF8, "application/x-www-form-urlencoded");
             request.Headers.TransferEncodingChunked = chunked;
+            request.Headers.ExpectContinue = true;
             using var response = await browser.SendAsync(request, TestContext.Current.CancellationToken);
             Assert.True(response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.RequestEntityTooLarge);
             Assert.Equal("no-store", response.Headers.CacheControl!.ToString());

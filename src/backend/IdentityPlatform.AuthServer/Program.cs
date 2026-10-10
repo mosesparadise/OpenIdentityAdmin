@@ -96,6 +96,7 @@ using (credentials)
         app.UseRouting();
         app.UseRequestTimeouts();
         app.UseMiddleware<PilotRequestProtection>();
+        app.UseStatusCodePages("text/plain; charset=utf-8", "This request cannot be completed. Return to your application and start a new sign-in.");
         app.UseRateLimiter();
         app.UseAuthentication();
         app.UseAuthorization();

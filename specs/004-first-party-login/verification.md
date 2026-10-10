@@ -50,3 +50,11 @@ Source review corrections: current lockout-enabled/application-type/settings che
 - New CI matrix counts include pending Chromium cases; they are expected counts, not local passes. Draft delivery retains all unfinished task checkboxes and review gates.
 
 - Full static-analysis/formatting gate and its clean/CA5350/IDE0055/IDE1006 enforcement controls passed after removing unused imports. Current source snapshot Gitleaks scan passed. The first outage/body-bound test additions compile cleanly and await execution.
+
+### Third local checkpoint and first draft CI
+
+- Latest full build: zero warnings/errors. PostgreSQL HTTP suite:67/67 passed, zero skipped. Added real audit INSERT-permission denial/transaction rollback, known-length/chunked body bounds, stopped-database503/readiness/liveness, 128-character valid proof, anonymous two-tab antiforgery recovery and A-login/B-login/A-silent-reuse authentication-time regression.
+- Draft PR#4 first head `4eed7bb`: assurance, supply-chain and208 unit cases passed in GitHub Actions run38059292010. PostgreSQL HTTP cases passed but all five Chromium cases failed strict TLS verification at the test RP. Static gate caught one unused import, removed locally. SQL Server run still pending at this checkpoint.
+- Chromium's documented NSS trust flag for a self-signed server leaf is `P,,`; the original workflow incorrectly used CA trust `C,,`. Corrected to peer trust without disabling TLS checks; rerun required. Source: <https://chromium.googlesource.com/chromium/src/+/main/docs/linux/cert_management.md>.
+- Combined first-run unit/PostgreSQL coverage meets AuthServer91.0% lines/87.5% branches and eight module floors; Migrator89.7% lines still needs SQL evidence. This partial merge is diagnostic, not the final combined gate.
+- Architecture review identified a globally newest-session auth_time oracle; expected identity/time now comes from each flow's completed interaction or that browser's previous session, with the passing two-browser regression above. Remaining acceptance includes persisted bootstrap drift/concurrency, expanded freshness/expiry, negative RP validation controls, browser baselines/TLS negative control, Firefox/WebKit cadence, fault/cancellation/log tests and mutations. Existing unchecked tasks remain authoritative.

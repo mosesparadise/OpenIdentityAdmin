@@ -1,4 +1,5 @@
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using Aspire.Hosting;
@@ -56,6 +57,11 @@ public sealed class IssuerFixture : IAsyncLifetime
 
 public sealed partial class IssuerEnvironment : IAsyncDisposable
 {
+    private readonly ConditionalWeakTable<HttpClient, BrowserSession> browserSessions = new();
+    private sealed class BrowserSession(string id)
+    {
+        public string Id { get; } = id;
+    }
     private readonly IssuerMaterialFixture credentials = new();
     private DistributedApplication? application;
     private IDistributedApplicationTestingBuilder? builder;
@@ -143,13 +149,19 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
             .AddLogging(logs => logs.ClearProviders())
             .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), connection!)
             .BuildServiceProvider(validateScopes: true);
-        RelyingParty.ExpectedIdentity = async cancellationToken =>
+        RelyingParty.ExpectedIdentity = async (flow, cancellationToken) =>
         {
             await using var scope = services.CreateAsyncScope();
             var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
             var manifest = await database.Set<PilotManifest>().SingleAsync(cancellationToken);
-            var session = await database.Set<LocalIdentitySession>().Where(value => value.UserId == manifest.UserId && !value.Revoked)
-                .OrderByDescending(value => value.AuthenticatedAt).FirstAsync(cancellationToken);
+            var sessionId = flow.ExpectedSessionId;
+            if (sessionId is null && flow.InteractionId is not null)
+            {
+                var interaction = await database.Set<LoginInteraction>().SingleAsync(value => value.Id == flow.InteractionId, cancellationToken);
+                sessionId = interaction.CompletedSessionId;
+            }
+            Assert.NotNull(sessionId);
+            var session = await database.Set<LocalIdentitySession>().SingleAsync(value => value.Id == sessionId && value.UserId == manifest.UserId, cancellationToken);
             return (manifest.UserId, session.AuthenticatedAt);
         };
     }
@@ -162,11 +174,17 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     public async Task<TestFlow> AuthorizeAsync(HttpClient browser, bool exchange = false, string? prompt = null, string? maximumAge = null, TestFlow? prepared = null)
     {
         var flow = prepared ?? RelyingParty.Prepare(exchange, prompt, maximumAge);
+        if (browserSessions.TryGetValue(browser, out var knownSession))
+        {
+            flow.ExpectedSessionId = knownSession.Id;
+        }
         using var login = await browser.GetAsync(RelyingParty.StartUri(flow), TestContext.Current.CancellationToken);
         var html = await login.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         if (login.RequestMessage!.RequestUri!.AbsolutePath == "/account/login")
         {
             var interaction = InputValue(html, "Interaction");
+            flow.InteractionId = interaction;
+            flow.ExpectedSessionId = null;
             var token = InputValue(html, "__RequestVerificationToken");
             using var form = new FormUrlEncodedContent(new Dictionary<string, string>
             {
@@ -180,6 +198,13 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
             // HTTP tests follow the real no-script continuation; browser tests exercise the actual script.
             if (completed.RequestMessage!.RequestUri!.AbsolutePath == "/account/complete")
             {
+                await using var scope = Services.CreateAsyncScope();
+                var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+                var row = await database.Set<LoginInteraction>().SingleAsync(value => value.Id == interaction, TestContext.Current.CancellationToken);
+                Assert.NotNull(row.CompletedSessionId);
+                flow.ExpectedSessionId = row.CompletedSessionId;
+                browserSessions.Remove(browser);
+                browserSessions.Add(browser, new BrowserSession(row.CompletedSessionId));
                 var match = ContinueLink().Match(completion);
                 Assert.True(match.Success, "The bound login did not produce a safe continuation.");
                 using var callback = await browser.GetAsync(new Uri(Issuer, WebUtility.HtmlDecode(match.Groups[1].Value)), TestContext.Current.CancellationToken);
