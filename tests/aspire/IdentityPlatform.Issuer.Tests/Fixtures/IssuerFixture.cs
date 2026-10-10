@@ -124,6 +124,12 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         builder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.IdentityPlatform_AppHost>(
             ["--environment=Development", $"--Database:Provider={provider}", "--Pilot:Enabled=true"], startup.Token);
         var auth = builder.CreateResourceBuilder<ProjectResource>("auth");
+        // Real child-process diagnostics must withstand provider/category overrides and console scopes.
+        auth.WithEnvironment("Logging__LogLevel__OpenIddict", "Trace")
+            .WithEnvironment("Logging__Console__LogLevel__OpenIddict.Server", "Trace")
+            .WithEnvironment("Logging__Console__LogLevel__Microsoft.AspNetCore.Hosting.Diagnostics", "Trace")
+            .WithEnvironment("Logging__Console__LogLevel__Microsoft.EntityFrameworkCore.Database.Command", "Trace")
+            .WithEnvironment("Logging__Console__FormatterOptions__IncludeScopes", "true");
         var bootstrap = builder.CreateResourceBuilder<ProjectResource>("pilot-bootstrap");
         foreach (var setting in credentials.Settings.Where(setting => setting.Key != "Identity:Issuer"))
         {

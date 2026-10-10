@@ -69,3 +69,8 @@ GitHub review then identified an HC-004 test gap: the configuration/build failur
 After this assertion-only correction, local static build/format/import checks passed with zero warnings/errors, and all 225 unit cases passed with zero skips. It adds no test cases or production changes. The correction is a later commit than the fully passing 603-case checkpoint; its fresh CI remains a pre-merge gate on PR #8. Review evidence must not conflate those commits.
 
 The final read-only convergence assessment covered eight HC requirements, three SC criteria, eight story acceptances, 14 tasks, 11 grouped plan decisions and all 18 constitution principles for applicable obligations: no remaining implementation gaps, contradictions or unrequested additions. No new task was needed. T026 remains pending after this PR's review/merge.
+
+
+### PR #8 squash checkpoint
+
+The user authorized the merge and the next three feature004 acceptance tasks. Final head `3241d15b66572f61e357f980e13b3b24417e04fe` passed all seven checks in [run38090792266](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38090792266):603 required cases, zero skips, and all nine unchanged coverage floors. The review assertion correction was included and its thread resolved. PR #8 squash-merged as `64d8cebd152409e8623991db8de79e38c194af06` using `refactor(host): extract composition and feature setup`. Earlier unmerged/pending statements above are historical checkpoints, superseded by this record. T026, T027 and T028 will each receive their own reviewed and squash-merged PR in that order; T029/T030 and external release gates remain open.
