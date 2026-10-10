@@ -24,6 +24,16 @@ public sealed class MigratorConfigurationTests
         start.Environment["ConnectionStrings__adminsessions"] = "";
         start.Environment["LocalDevelopment__PlatformPassword"] = "";
         start.Environment["LocalDevelopment__SessionsPassword"] = "";
+        if (bootstrap is null)
+        {
+            start.Environment.Remove("ConnectionStrings__platform");
+            start.Environment.Remove("ConnectionStrings__adminsessions");
+        }
+        if (bootstrap == "true" && environment == "Development")
+        {
+            start.Environment.Remove("LocalDevelopment__PlatformPassword");
+            start.Environment.Remove("LocalDevelopment__SessionsPassword");
+        }
         start.Environment.Remove("LocalDevelopment__ProvisionRuntimeRoles");
         if (bootstrap is not null) start.Environment["LocalDevelopment__ProvisionRuntimeRoles"] = bootstrap;
         using var process = Process.Start(start)!;
@@ -37,19 +47,31 @@ public sealed class MigratorConfigurationTests
         Assert.Equal(2, process.ExitCode);
         Assert.Contains("Invalid migration configuration", combined);
     }
+
+    public static IEnumerable<object[]> RuntimeConfigurationCases()
+    {
+        foreach (var host in new[] { "AuthServer", "Admin.Api", "Admin.Bff", "Worker" })
+        {
+            yield return [host, "synthetic-secret", null!];
+            yield return [host, "PostgreSql", null!];
+            yield return [host, "PostgreSql", "Password=synthetic-secret"];
+        }
+    }
+
     [Theory]
-    [InlineData("AuthServer")]
-    [InlineData("Admin.Api")]
-    [InlineData("Admin.Bff")]
-    [InlineData("Worker")]
-    public async Task Actual_runtime_host_rejects_invalid_configuration_without_exposing_it(string host)
+    [MemberData(nameof(RuntimeConfigurationCases))]
+    public async Task Actual_runtime_host_rejects_invalid_configuration_without_exposing_it(string host, string provider, string? connection)
     {
         var start = new ProcessStartInfo(Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet")
         {
             RedirectStandardOutput = true, RedirectStandardError = true, UseShellExecute = false
         };
         start.ArgumentList.Add(Path.Combine(AppContext.BaseDirectory, $"IdentityPlatform.{host}.dll"));
-        start.Environment["Database__Provider"] = "synthetic-secret";
+        start.Environment["Database__Provider"] = provider;
+        start.Environment.Remove("ConnectionStrings__platform");
+        start.Environment.Remove("ConnectionStrings__adminsessions");
+        if (connection is not null)
+            start.Environment[host == "Admin.Bff" ? "ConnectionStrings__adminsessions" : "ConnectionStrings__platform"] = connection;
         using var process = Process.Start(start)!;
         var output = process.StandardOutput.ReadToEndAsync();
         var error = process.StandardError.ReadToEndAsync();

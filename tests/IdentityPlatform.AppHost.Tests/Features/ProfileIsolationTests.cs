@@ -25,14 +25,13 @@ public sealed class ProfileIsolationTests
         LifecycleEvidence resources;
         await using (var app = await builder.BuildAsync(token))
         {
-            await app.StartAsync(token);
-            await app.ResourceNotifications.WaitForResourceHealthyAsync("database", token);
             using var startup = CancellationTokenSource.CreateLinkedTokenSource(token);
-            var readiness = app.ResourceNotifications.WaitForResourceHealthyAsync("auth", startup.Token);
-            Assert.False(readiness.IsCompleted);
+            var starting = app.StartAsync(startup.Token);
+            await app.ResourceNotifications.WaitForResourceHealthyAsync("database", token);
+            Assert.False(starting.IsCompleted);
             resources = LifecycleEvidence.Capture(app);
             startup.Cancel();
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => readiness);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => starting);
         }
         await resources.AssertRemovedAsync();
     }
