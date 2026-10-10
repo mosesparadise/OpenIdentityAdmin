@@ -1,0 +1,12 @@
+<Configuration>
+  <CodeCoverage>
+    <ModulePaths>
+      <Include><ModulePath>(^|.*[/\\])IdentityPlatform\.[^/\\]+\.dll$</ModulePath></Include>
+      <Exclude>
+        <ModulePath>.*\.Tests\.dll$</ModulePath>
+        <ModulePath>.*IdentityPlatform\.Migrations\..*\.dll$</ModulePath>
+      </Exclude>
+    </ModulePaths>
+    <Sources><Exclude><Source>.*[/\\]obj[/\\].*</Source></Exclude></Sources>
+  </CodeCoverage>
+</Configuration>

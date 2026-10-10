@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="Aspire.AppHost.Sdk" Version="13.6.1" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType><IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>openidentityadmin-local-apphost</UserSecretsId>
+    <!-- This .NET AppHost uses the supported pinned NuGet DCP/dashboard distribution.
+         No CLI-bundle-only feature is used. Reassess before the NuGet path is removed. -->
+    <AspireUseCliBundle>false</AspireUseCliBundle>
+    <NoWarn>$(NoWarn);ASPIRE010</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../IdentityPlatform.Core/IdentityPlatform.Core.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="../IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
+    <ProjectReference Include="../IdentityPlatform.Admin.Api/IdentityPlatform.Admin.Api.csproj" />
+    <ProjectReference Include="../IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
+    <ProjectReference Include="../IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
+    <ProjectReference Include="../IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><IsTestProject>true</IsTestProject><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
+    <ProjectReference Include="../../src/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" />
+    <PackageReference Include="OpenTelemetry.Exporter.InMemory" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="coverlet.collector" PrivateAssets="all" />
+    <ProjectReference Include="../../src/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
+    <ProjectReference Include="../../src/IdentityPlatform.Admin.Api/IdentityPlatform.Admin.Api.csproj" />
+    <ProjectReference Include="../../src/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
+    <ProjectReference Include="../../src/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
