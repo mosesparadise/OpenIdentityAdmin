@@ -1,0 +1,14 @@
+{
+  "minimumLineCoverage": 0.9,
+  "minimumBranchCoverage": 0.8,
+  "requiredModules": [
+    "IdentityPlatform.Core", "IdentityPlatform.Infrastructure", "IdentityPlatform.ServiceDefaults",
+    "IdentityPlatform.Migrator", "IdentityPlatform.AuthServer", "IdentityPlatform.Admin.Api",
+    "IdentityPlatform.Admin.Bff", "IdentityPlatform.Worker", "IdentityPlatform.AppHost"
+  ],
+  "exclusions": {
+    "IdentityPlatform.Migrations.*": "Generated EF migration/snapshot code; native integration and model-parity tests verify behavior on both providers.",
+    "**/obj/**": "SDK-generated assembly/project metadata; hand-written composition roots remain included.",
+    "*.Tests": "Test harnesses are evidence producers, not product execution coverage."
+  }
+}
