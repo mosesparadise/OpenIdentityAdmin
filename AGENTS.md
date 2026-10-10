@@ -12,6 +12,8 @@ The approved PRD/ADRs and recorded amendments govern scope. This is a greenfield
 
 Organize use cases under Features within projects; keep composition/generated artefacts as documented exceptions. Use OpenIddict/Identity managers and the named authentication schemes. Minimal APIs supply application protocol decisions; the library owns protocol validation/response cryptography. React uses Admin BFF cookies and never holds OAuth tokens. Preserve current API permission checks, audit atomicity, concurrency and both-provider semantics.
 
+Keep production Programs thin. Use Composition extension methods and explicit Features/Setup plus feature-local Setup classes, preserving the nested hierarchy. Adapt to native Aspire and one-shot Migrator lifecycles; retain safe startup errors, credential disposal order and handwritten composition coverage. See docs/engineering/host-composition.md.
+
 Use stable, pinned compatible dependencies, explicit management API versions and one authoritative OpenAPI contract per API surface, with React generated from the BFF browser contract. Keep protocol routes separate. Apply shared slate/indigo light/dark tokens across React/Razor. Aspire is the local/distributed test harness. Do not add blanket retries to security mutations.
 
 ## Verification and reviews

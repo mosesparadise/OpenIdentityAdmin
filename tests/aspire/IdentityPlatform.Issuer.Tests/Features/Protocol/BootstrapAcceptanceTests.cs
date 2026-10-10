@@ -15,7 +15,7 @@ using OpenIddict.EntityFrameworkCore.Models;
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 
 [Collection("bootstrap")]
-public sealed class BootstrapAcceptanceTests(BootstrapFixture fixture)
+public sealed partial class BootstrapAcceptanceTests(BootstrapFixture fixture)
 {
     private static readonly string[] Providers = ["PostgreSql", "SqlServer"];
     private static readonly bool[] ExistingStates = [false, true];

@@ -2,11 +2,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace IdentityPlatform.AppHost.Features.Pilot;
 
-public static class PilotComposition
+internal static class Setup
 {
     private static readonly string[] PilotKeys = ["UserName", "RedirectUri", "Password", "ClientSecret"];
 
-    public static void AddPilot(this IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> auth,
+    internal static void AddPilot(this IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> auth,
         IResourceBuilder<ProjectResource> migrator, ReferenceExpression platformRuntime, string provider)
     {
         var enabled = builder.Configuration["Pilot:Enabled"];

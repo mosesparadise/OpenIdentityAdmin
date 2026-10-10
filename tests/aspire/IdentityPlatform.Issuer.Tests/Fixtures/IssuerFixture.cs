@@ -9,7 +9,6 @@ using Aspire.Hosting.Testing;
 using IdentityPlatform.AppHost.Tests.Features;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
-using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.AuthServer.Features.Protocol.Policy;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;

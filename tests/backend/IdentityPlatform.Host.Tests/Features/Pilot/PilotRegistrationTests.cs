@@ -1,6 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.AuthServer.Features.Pilot;
-using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Persistence;

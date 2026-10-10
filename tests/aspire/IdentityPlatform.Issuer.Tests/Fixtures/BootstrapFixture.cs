@@ -172,6 +172,7 @@ public sealed class BootstrapDatabase : IAsyncDisposable
     private readonly Func<Task> drop;
     private readonly DatabaseProvider provider;
     private readonly string runtimeConnection;
+    internal string RuntimeConnection => runtimeConnection;
     public string Username { get; } = "bootstrap.synthetic";
     public string Password { get; } = "aA1" + Convert.ToHexString(RandomNumberGenerator.GetBytes(24));
     public string ClientSecret { get; } = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
