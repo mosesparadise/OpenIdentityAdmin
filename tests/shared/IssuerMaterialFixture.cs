@@ -12,16 +12,51 @@ internal sealed class IssuerMaterialFixture : IDisposable
     public Dictionary<string, string?> Settings { get; } = new(StringComparer.OrdinalIgnoreCase);
     public IConfiguration Configuration => new ConfigurationBuilder().AddInMemoryCollection(Settings).Build();
 
-    public IssuerMaterialFixture()
+    // Reuse encrypted synthetic bytes only. Every case gets separate files and imported objects.
+    // Repeated RSA key generation otherwise consumed most of the unit job's fixed deadline.
+    private static readonly Lazy<CertificateTemplate[]> Baseline = new(CreateBaseline);
+
+    public IssuerMaterialFixture() : this(generateBaseline: false) { }
+
+    private IssuerMaterialFixture(bool generateBaseline)
     {
         if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("Issuer filesystem tests require Linux.");
         Directory.CreateDirectory(Root, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
         Directory.CreateDirectory(Ring, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
         Settings["Identity:Issuer"] = "https://issuer.example.test/";
         Settings["Identity:Protection:DataProtection:KeyRingPath"] = Ring;
-        AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature);
-        AddCertificate("Encryption", X509KeyUsageFlags.KeyEncipherment);
-        AddCertificate("DataProtection:Current", X509KeyUsageFlags.KeyEncipherment);
+        if (generateBaseline)
+        {
+            AddCertificate("Signing", X509KeyUsageFlags.DigitalSignature);
+            AddCertificate("Encryption", X509KeyUsageFlags.KeyEncipherment);
+            AddCertificate("DataProtection:Current", X509KeyUsageFlags.KeyEncipherment);
+        }
+        else
+        {
+            foreach (var template in Baseline.Value)
+            {
+                var path = Path.Combine(Root, Guid.NewGuid().ToString("N") + ".pfx");
+                WritePrivate(path, template.Bytes.ToArray());
+                Settings[$"Identity:Protection:{template.Section}:Path"] = path;
+                Settings[$"Identity:Protection:{template.Section}:Password"] = template.Password;
+            }
+        }
+    }
+
+    private static CertificateTemplate[] CreateBaseline()
+    {
+        using var fixture = new IssuerMaterialFixture(generateBaseline: true);
+        return new[] { "Signing", "Encryption", "DataProtection:Current" }.Select(section =>
+            new CertificateTemplate(section, fixture.Settings[$"Identity:Protection:{section}:Password"]!,
+                File.ReadAllBytes(fixture.Settings[$"Identity:Protection:{section}:Path"]!))).ToArray();
+    }
+
+    // A class deliberately avoids a record's generated password-bearing ToString().
+    private sealed class CertificateTemplate(string section, string password, byte[] bytes)
+    {
+        public string Section { get; } = section;
+        public string Password { get; } = password;
+        public byte[] Bytes { get; } = bytes;
     }
 
     public void AddCertificate(string section, X509KeyUsageFlags? usage, int keySize = 3072,

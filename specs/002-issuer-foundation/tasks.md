@@ -34,8 +34,8 @@ Independent test: actual AuthServer process and both credential-enabled real-pro
 
 ## Phase 6 — Verification and convergence
 
-- [ ] T012 Execute unit and both real-provider profiles, strict MTP evidence, child-process per-module coverage and supply-chain gates; perform targeted purpose-separation/plaintext-ring mutations and record results in specs/002-issuer-foundation/verification.md (KEY-001–006).
-- [ ] T013 Obtain independent architecture/test/security implementation reviews, resolve findings, reconcile all task/requirement evidence and create the next reviewable PR; preserve issuer backlog and A-001 limits in specs/002-issuer-foundation/verification.md (KEY-001–006).
+- [x] T012 Execute unit and both real-provider profiles, strict MTP evidence, child-process per-module coverage and supply-chain gates; perform targeted purpose-separation/plaintext-ring mutations and record results in specs/002-issuer-foundation/verification.md (KEY-001–006).
+- [x] T013 Obtain independent architecture/test/security implementation reviews, resolve findings, reconcile all task/requirement evidence and create the next reviewable PR; preserve issuer backlog and A-001 limits in specs/002-issuer-foundation/verification.md (KEY-001–006).
 
 ## Dependencies and execution strategy
 

@@ -1,0 +1,32 @@
+{
+  "runId": 38048127515,
+  "commit": "d3d84785eb7dab9d4db7557528f2ca28beef4289",
+  "scope": "Initial implementation baseline; fixture-only optimization and documentation follow-up are verified by the PR head checks.",
+  "artifacts": [
+    {
+      "id": 11668941384,
+      "name": "foundation-SqlServer",
+      "digest": "sha256:c70bb6165056be2d010fecf19c4a82adc96dbaf412288642bb4f0b377f46c7a0"
+    },
+    {
+      "id": 11668248154,
+      "name": "foundation-unit",
+      "digest": "sha256:8d459c29f63060092a7edbbda23d0c2f66a5d8fa470921e2ad811c536d2dfeae"
+    },
+    {
+      "id": 11668232849,
+      "name": "foundation-supply-chain",
+      "digest": "sha256:c6271d5f04a2bbcc760394987497edde8b4ccda291ad68a291c1d7d798a90408"
+    },
+    {
+      "id": 11667898830,
+      "name": "foundation-coverage",
+      "digest": "sha256:81b8b51d8671776a4fe7d2eecafdd1ffb2c8c9e7ee012b42d01b2fb60b2ed3c0"
+    },
+    {
+      "id": 11667783807,
+      "name": "foundation-PostgreSql",
+      "digest": "sha256:35c044a5ebc106e6ca4abaa2751b1a541031b4397912837e15baf7fcfab873fa"
+    }
+  ]
+}
