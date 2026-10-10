@@ -150,10 +150,11 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         await page.ReloadAsync();
         Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
         var baseline = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "Features", "Browser", "Baselines", $"login-{theme}-{width}.png"), TestContext.Current.CancellationToken);
-        var difference = await page.EvaluateAsync<Dictionary<string, int>>(ComparePixels, new[] { Convert.ToBase64String(baseline), Convert.ToBase64String(screenshot) });
-        Assert.Equal(1, difference["sameSize"]);
-        Assert.InRange(difference["maxDelta"], 0, 1);
-        Assert.InRange(difference["changedPixels"], 0, 100);
+        var difference = await page.EvaluateAsync<int[]>(ComparePixels, new[] { Convert.ToBase64String(baseline), Convert.ToBase64String(screenshot) });
+        Assert.Equal(3, difference.Length);
+        Assert.Equal(1, difference[0]);
+        Assert.InRange(difference[1], 0, 1);
+        Assert.InRange(difference[2], 0, 100);
     }
 
     // Decode pixels with the already-pinned browser. No image library or relaxed browser policy is required.
@@ -173,7 +174,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             };
             const [expected, actual] = await Promise.all(images.map(decode));
             if (expected.width !== actual.width || expected.height !== actual.height)
-                return {sameSize: 0, maxDelta: 255, changedPixels: 2147483647};
+                return [0, 255, 2147483647];
             let maxDelta = 0, changedPixels = 0;
             for (let index = 0; index < expected.pixels.length; index += 4) {
                 let changed = false;
@@ -184,7 +185,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
                 }
                 if (changed) changedPixels++;
             }
-            return {sameSize: 1, maxDelta, changedPixels};
+            return [1, maxDelta, changedPixels];
         }
         """;
 
