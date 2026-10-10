@@ -3,6 +3,7 @@ using System.Net;
 using System.Xml.Linq;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
+using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Host.Tests.Features.Issuer;
@@ -11,6 +12,9 @@ public sealed class IssuerStartupTests
 {
     [Theory]
     [InlineData("valid")]
+    [InlineData("pilot-production")]
+    [InlineData("pilot-staging")]
+    [InlineData("initialize-disabled")]
     [InlineData("partial")]
     [InlineData("password")]
     [InlineData("ring")]
@@ -63,7 +67,12 @@ public sealed class IssuerStartupTests
             UseShellExecute = false
         };
         start.ArgumentList.Add(typeof(IssuerCredentials).Assembly.Location);
-        start.Environment["DOTNET_ENVIRONMENT"] = "Production";
+        if (scenario == "initialize-disabled")
+        {
+            start.ArgumentList.Add("--initialize-pilot");
+        }
+        start.Environment["DOTNET_ENVIRONMENT"] = scenario == "pilot-staging" ? "Staging" : "Production";
+        start.Environment["Pilot__Enabled"] = scenario.StartsWith("pilot-", StringComparison.Ordinal) ? "true" : "false";
         start.Environment["Database__Provider"] = "PostgreSql";
         start.Environment["ConnectionStrings__platform"] = "Host=localhost;Port=1;Database=fixture;Username=fixture;Password=synthetic";
         // A real listener allocates its port; no free-port check/bind race.
@@ -85,7 +94,7 @@ public sealed class IssuerStartupTests
                 var address = await listening.Task.WaitAsync(deadline.Token);
                 using var client = new HttpClient { BaseAddress = address };
                 Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/alive", deadline.Token)).StatusCode);
-                foreach (var path in new[] { "/.well-known/openid-configuration", "/.well-known/jwks", "/connect/authorize", "/connect/token", "/account/login" })
+                foreach (var path in new[] { "/.well-known/openid-configuration", "/.well-known/jwks", "/connect/jwks", "/connect/authorize", "/connect/token", "/account/login" })
                 {
                     Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync(path, deadline.Token)).StatusCode);
                 }
@@ -110,18 +119,20 @@ public sealed class IssuerStartupTests
             await process.WaitForExitAsync(cleanup.Token);
         }
         var combined = await output + await errors;
-        Assert.DoesNotContain("synthetic-private-sentinel", combined);
+        Assert.False(combined.Contains("synthetic-private-sentinel", StringComparison.Ordinal), "Startup output disclosed private material.");
         foreach (var secret in fixture.Settings.Where(pair => pair.Key.EndsWith(":Password", StringComparison.Ordinal)).Select(pair => pair.Value!))
         {
-            Assert.DoesNotContain(secret, combined);
+            Assert.False(combined.Contains(secret, StringComparison.Ordinal), "Startup output disclosed a certificate password.");
         }
 
-        Assert.DoesNotContain(fixture.Root, combined);
+        Assert.False(combined.Contains(fixture.Root, StringComparison.Ordinal), "Startup output disclosed a private material path.");
         if (scenario != "valid")
         {
-            Assert.Contains(IssuerProtectionException.SafeMessage, combined);
+            Assert.True(combined.Contains(scenario.StartsWith("pilot-", StringComparison.Ordinal) || scenario == "initialize-disabled"
+                ? new PilotConfigurationException().Message : IssuerProtectionException.SafeMessage, StringComparison.Ordinal),
+                "Startup must emit the expected fixed configuration error.");
             Assert.False(listening.Task.IsCompletedSuccessfully);
-            Assert.DoesNotContain("Now listening on:", combined);
+            Assert.False(combined.Contains("Now listening on:", StringComparison.Ordinal), "Invalid startup configuration must not open a listener.");
         }
     }
 

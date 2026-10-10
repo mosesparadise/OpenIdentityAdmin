@@ -22,19 +22,19 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 178,
+      "Host": 186,
       "Architecture": 5,
-      "AppHost": 8
+      "AppHost": 9
     },
     "PostgreSql": {
       "Persistence": 3,
       "AppHost": 4,
-      "Issuer": 181
+      "Issuer": 182
     },
     "SqlServer": {
       "Persistence": 3,
       "AppHost": 4,
-      "Issuer": 181
+      "Issuer": 182
     }
   }
 }

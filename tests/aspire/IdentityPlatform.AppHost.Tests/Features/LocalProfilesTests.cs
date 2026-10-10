@@ -55,7 +55,7 @@ public sealed class LocalProfilesTests
         Assert.NotEmpty(Directory.GetFiles(credentials.Ring, "key-*.xml"));
         using (var issuer = new HttpClient { BaseAddress = app.GetEndpoint("auth", "https") })
         {
-            foreach (var path in new[] { "/.well-known/openid-configuration", "/.well-known/jwks", "/connect/authorize", "/account/login" })
+            foreach (var path in new[] { "/.well-known/openid-configuration", "/.well-known/jwks", "/connect/jwks", "/connect/authorize", "/account/login" })
             {
                 Assert.Equal(HttpStatusCode.NotFound, (await issuer.GetAsync(path, cancellationToken)).StatusCode);
             }
