@@ -45,6 +45,7 @@ The dedicated migrator initializes the two stores and provisions separate runtim
 
 ```sh
 python3 scripts/check-ai-instructions.py
+python3 scripts/check-static-analysis.py --self-test
 python3 scripts/verify.py unit
 python3 scripts/verify.py PostgreSql
 python3 scripts/verify.py SqlServer
@@ -55,6 +56,8 @@ All five test projects use xUnit v3 (`xunit.v3.mtp-v2` 4.0.2) with native Micros
 [CI run 38040891293](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38040891293) verified the xUnit v3/MTP and grouped-layout implementation: **92 .NET tests** across unit/PostgreSQL/SQL Server and **19 verification-script regressions** passed, with no skipped required cases. All nine handwritten modules passed their coverage floors, including child hosts; dependency, license and secret checks passed. The managed local environment blocks Microsoft's redirected SQL image hostname, so real SQL Server acceptance is established by GitHub CI. See the [current verification record](specs/001-platform-foundation/verification-mtp-layout.md) for the exact commit, artifact references, coverage and review dispositions.
 
 The subsequent [issuer-protection CI run 38048127515](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38048127515) passed **165 .NET tests** and the same **19 gate regressions**, including both credential-enabled database profiles. All nine modules and supply-chain checks passed. See its [verification record](specs/002-issuer-foundation/verification.md) for scope, artifacts, reviews and the fixture/evidence follow-up; the latest PR-head checks govern that follow-up. Login and protocol endpoints remain unimplemented.
+
+The [static-analysis and roadmap follow-up](specs/002-issuer-foundation/verification-quality.md) adds an enforced build/formatting CI job and three deliberately failing controls; its six-job implementation run also passed both providers and all existing regression/coverage gates.
 
 ## Implementation workflow
 

@@ -50,5 +50,5 @@ Authorized 10 October 2026 after PR #2 review. The attached files are configurat
 - [x] T014 Adapt the supplied .editorconfig/.gitignore to the actual .NET/Aspire/React/Spec Kit layout, preserve applicable attribution and credential ignores, and document choices in docs/engineering/code-quality.md.
 - [x] T015 Enforce pinned SDK static analysis and code style during build and a formatting verification gate in CI; resolve diagnostics with narrow justified exceptions and prove a seeded violation fails.
 - [x] T016 Publish docs/roadmap.md with every approved milestone, requirement mapping, remaining work, dependencies and release gates; link detailed Spec Kit tasks and record squash-merge policy.
-- [ ] T017 Run affected build/static checks, all required tests/providers/coverage and independent review; record actual evidence in verification-quality.md and update PR #2.
+- [x] T017 Run affected build/static checks, all required tests/providers/coverage and independent review; record actual evidence in verification-quality.md and update PR #2.
 - [ ] T018 Attempt the requested approval, squash-merge the exact verified PR head when GitHub permits it, then begin the next roadmap item through Spec Kit.

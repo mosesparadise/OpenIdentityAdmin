@@ -19,8 +19,8 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | Feature / change | Status | Detailed tasks and evidence | Merge state |
 | --- | --- | --- | --- |
 | Platform foundation, grouped layout, xUnit v3/MTP | Done for bounded scope | [Tasks](../specs/001-platform-foundation/tasks.md), [foundation evidence](../specs/001-platform-foundation/verification.md), [MTP/layout evidence](../specs/001-platform-foundation/verification-mtp-layout.md) | PR #1 merged |
-| Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | PR #2; current engineering follow-up pending |
-| Configuration references, static analysis and this roadmap | In progress | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Part of PR #2 |
+| Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | [PR #2](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2); see its live checks/merge state |
+| Configuration references, static analysis and this roadmap | Done; evidence follow-up in review | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Part of PR #2 |
 | First-party login and S256 code flow | Planned next | [Complete issuer acceptance backlog](engineering/issuer-flow-backlog.md) | New feature/PR after #2 |
 
 ## Milestone 001 — Platform and issuer foundation (partial)
@@ -33,7 +33,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | M01-D | Planned next | One real non-administrator first-party login/S256 code flow: safe explicit synthetic bootstrap, protected themed Razor form, bound browser interactions, named authentication schemes, OpenIddict validation/crypto, Minimal API application decisions, current eligibility and deliberate claims. Prove discovery/JWKS, positive/negative protocol and browser journeys, code replay denial and single-winner concurrent redemption on both providers. |
 | M01-E | Planned | Real session/code/token restart and two-instance behavior; single-use code concurrency/replay; staged public JWKS and signing/encryption overlap/retirement. Retain every unbuilt ISS-001–012 acceptance item explicitly. |
 | M01-F | Planned | Pin compatible API-versioning/OpenAPI tooling; establish authoritative versioned Admin API and BFF contracts, Scalar/Swagger and generated-client/compatibility gates. Protocol routes remain unversioned. |
-| M01-G | In progress | Adapt reference configuration, enforce static analysis/formatting, document the full roadmap, and adopt squash merges. Verify seeded rule failures and both-provider regression before merging PR #2. |
+| M01-G | Done | Adapt reference configuration, enforce static analysis/formatting, document the full roadmap, and adopt squash merges. Seeded rule failures and both-provider regression passed; see [quality evidence](../specs/002-issuer-foundation/verification-quality.md). |
 
 Dependencies: M01-A/B enable M01-D/E. M01-C starts with the next security feature and continues throughout. M01-F can proceed independently but remains required before accepted management endpoints. Milestone 001 remains partial until its whole approved acceptance passes.
 
