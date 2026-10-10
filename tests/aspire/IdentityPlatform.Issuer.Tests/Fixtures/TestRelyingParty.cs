@@ -295,6 +295,10 @@ public sealed class TestFlow(string? verifier = null)
     {
         get; set;
     }
+    public long? ExpectedAuthenticatedAt
+    {
+        get; set;
+    }
     public string Code { get; set; } = "";
     public string Error { get; set; } = "";
     public string ValidationFailure { get; set; } = "";

@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -6,7 +7,9 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using IdentityPlatform.AppHost.Tests.Features;
+using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.AuthServer.Features.Protocol.Policy;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -14,6 +17,7 @@ using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -58,9 +62,10 @@ public sealed class IssuerFixture : IAsyncLifetime
 public sealed partial class IssuerEnvironment : IAsyncDisposable
 {
     private readonly ConditionalWeakTable<HttpClient, BrowserSession> browserSessions = new();
-    private sealed class BrowserSession(string id)
+    private sealed class BrowserSession(string id, long authenticatedAt)
     {
         public string Id { get; } = id;
+        public long AuthenticatedAt { get; } = authenticatedAt;
     }
     private readonly IssuerMaterialFixture credentials = new();
     private DistributedApplication? application;
@@ -68,6 +73,10 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     private ServiceProvider? services;
     private TestRelyingParty? relyingParty;
     private LifecycleEvidence? lifecycle;
+    private DatabaseProvider databaseProvider;
+    private string runtimeConnection = "";
+    private IConfiguration runtimeConfiguration = null!;
+    private IssuerCredentials? runtimeCredentials;
     public string Password { get; } = Convert.ToHexString(RandomNumberGenerator.GetBytes(24));
     public string ClientSecret { get; } = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
     public string Username { get; } = "pilot.user";
@@ -136,6 +145,17 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         Issuer = application.GetEndpoint("auth", "https");
         relyingParty.Issuer = Issuer;
         var connection = await application.GetConnectionStringAsync("platform", startup.Token);
+        databaseProvider = DatabaseProviderParser.Parse(provider);
+        var model = application.Services.GetRequiredService<DistributedApplicationModel>();
+        var runtimePassword = await model.Resources.OfType<ParameterResource>()
+            .Single(value => value.Name == "platform-runtime-password").GetValueAsync(startup.Token);
+        var runtime = new DbConnectionStringBuilder { ConnectionString = connection! };
+        runtime[databaseProvider == DatabaseProvider.PostgreSql ? "Username" : "User ID"] = "platform_runtime";
+        runtime["Password"] = runtimePassword;
+        runtimeConnection = runtime.ConnectionString;
+        runtimeConfiguration = new ConfigurationBuilder().AddInMemoryCollection(credentials.Settings)
+            .AddInMemoryCollection(new Dictionary<string, string?> { ["Identity:Issuer"] = Issuer.AbsoluteUri }).Build();
+        runtimeCredentials = IssuerCredentials.Load(runtimeConfiguration, DateTimeOffset.UtcNow);
         var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
         {
             ["Pilot:UserName"] = Username,
@@ -162,11 +182,30 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
             }
             Assert.NotNull(sessionId);
             var session = await database.Set<LocalIdentitySession>().SingleAsync(value => value.Id == sessionId && value.UserId == manifest.UserId, cancellationToken);
-            return (manifest.UserId, session.AuthenticatedAt);
+            if (flow.ExpectedAuthenticatedAt is { } expectedTime)
+            {
+                Assert.True(session.AuthenticatedAt == expectedTime, "Authorization changed the completed session authentication time.");
+            }
+            return (manifest.UserId, flow.ExpectedAuthenticatedAt ?? session.AuthenticatedAt);
         };
     }
 
-    public static HttpClient CreateBrowserClient() => new(new HttpClientHandler { CookieContainer = new CookieContainer(), AllowAutoRedirect = true })
+    public ServiceProvider RuntimeServices(DbCommandInterceptor? interceptor = null)
+    {
+        var registrations = new ServiceCollection().AddLogging(logs => logs.ClearProviders())
+            .AddSingleton(runtimeConfiguration).AddIdentityPersistence(databaseProvider, runtimeConnection);
+        registrations.AddFirstPartyPilot(runtimeCredentials!);
+        registrations.ConfigureDbContext<PlatformDbContext>(options =>
+        {
+            if (interceptor is not null)
+            {
+                options.AddInterceptors(interceptor);
+            }
+        });
+        return registrations.BuildServiceProvider(validateScopes: true);
+    }
+
+    public static HttpClient CreateBrowserClient(CookieContainer? cookies = null, bool autoRedirect = true) => new(new HttpClientHandler { CookieContainer = cookies ?? new CookieContainer(), AllowAutoRedirect = autoRedirect })
     {
         Timeout = TimeSpan.FromSeconds(15)
     };
@@ -177,6 +216,7 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         if (browserSessions.TryGetValue(browser, out var knownSession))
         {
             flow.ExpectedSessionId = knownSession.Id;
+            flow.ExpectedAuthenticatedAt = knownSession.AuthenticatedAt;
         }
         using var login = await browser.GetAsync(RelyingParty.StartUri(flow), TestContext.Current.CancellationToken);
         var html = await login.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
@@ -185,6 +225,7 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
             var interaction = InputValue(html, "Interaction");
             flow.InteractionId = interaction;
             flow.ExpectedSessionId = null;
+            flow.ExpectedAuthenticatedAt = null;
             var token = InputValue(html, "__RequestVerificationToken");
             using var form = new FormUrlEncodedContent(new Dictionary<string, string>
             {
@@ -202,12 +243,8 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
                 var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
                 var row = await database.Set<LoginInteraction>().SingleAsync(value => value.Id == interaction, TestContext.Current.CancellationToken);
                 Assert.NotNull(row.CompletedSessionId);
-                flow.ExpectedSessionId = row.CompletedSessionId;
-                browserSessions.Remove(browser);
-                browserSessions.Add(browser, new BrowserSession(row.CompletedSessionId));
-                var match = ContinueLink().Match(completion);
-                Assert.True(match.Success, "The bound login did not produce a safe continuation.");
-                using var callback = await browser.GetAsync(new Uri(Issuer, WebUtility.HtmlDecode(match.Groups[1].Value)), TestContext.Current.CancellationToken);
+                await RecordSessionAsync(browser, flow, row.CompletedSessionId);
+                using var callback = await browser.GetAsync(Continuation(completion), TestContext.Current.CancellationToken);
                 Assert.True(callback.IsSuccessStatusCode, "The relying-party callback failed.");
             }
         }
@@ -223,6 +260,27 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         var match = expression.Match(html);
         Assert.True(match.Success, "The protected login form is missing a required field.");
         return WebUtility.HtmlDecode(match.Groups[1].Value);
+    }
+
+    public async Task RecordSessionAsync(HttpClient browser, TestFlow flow, string sessionId)
+    {
+        await using var scope = Services.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var session = await database.Set<LocalIdentitySession>().AsNoTracking().SingleAsync(value => value.Id == sessionId, TestContext.Current.CancellationToken);
+        flow.ExpectedSessionId = sessionId;
+        flow.ExpectedAuthenticatedAt = session.AuthenticatedAt;
+        browserSessions.Remove(browser);
+        browserSessions.Add(browser, new BrowserSession(sessionId, session.AuthenticatedAt));
+    }
+
+    public Uri Continuation(string html)
+    {
+        var match = ContinueLink().Match(html);
+        Assert.True(match.Success, "The bound login did not produce a safe continuation.");
+        var uri = new Uri(Issuer, WebUtility.HtmlDecode(match.Groups[1].Value));
+        Assert.True(uri.GetLeftPart(UriPartial.Authority) == Issuer.GetLeftPart(UriPartial.Authority) && uri.AbsolutePath == "/connect/authorize",
+            "Continuation must remain on the issuer authorization endpoint.");
+        return uri;
     }
 
     [GeneratedRegex("id=\"continue-link\" href=\"([^\"]+)\"", RegexOptions.CultureInvariant)]
@@ -253,6 +311,7 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         {
             await Attempt(() => relyingParty.DisposeAsync().AsTask());
         }
+        await Attempt(() => { runtimeCredentials?.Dispose(); return Task.CompletedTask; });
         if (builder is not null)
         {
             await Attempt(() => builder.DisposeAsync().AsTask());
