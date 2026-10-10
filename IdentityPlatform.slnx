@@ -24,6 +24,7 @@
     <Project Path="tests/architecture/IdentityPlatform.Architecture.Tests/IdentityPlatform.Architecture.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/aspire/">
+    <Project Path="tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj" />
     <Project Path="tests/aspire/IdentityPlatform.AppHost.Tests/IdentityPlatform.AppHost.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/backend/">
@@ -34,6 +35,9 @@
   </Folder>
   <Folder Name="/tests/persistence/">
     <Project Path="tests/persistence/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/tooling/">
+    <Project Path="tests/tooling/IdentityPlatform.BrowserInstaller/IdentityPlatform.BrowserInstaller.csproj" />
   </Folder>
   <Folder Name="/src/frontend/">
     <File Path="src/frontend/README.md" />

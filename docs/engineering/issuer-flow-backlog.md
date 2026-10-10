@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-issuer-foundation`  
 **Created**: 2026-10-10  
-**Status**: Planned follow-on work, not the acceptance scope of feature 002. Feature 002 first establishes durable credentials and Data Protection. Convert these scenarios into a subsequent Spec Kit feature before implementing login/protocol endpoints. No issuer acceptance claimed yet.  
+**Status**: M01-D login/code-flow work is now specified and in progress under [feature 004](../../specs/004-first-party-login/spec.md). Restart/two-instance/key overlap remains M01-E. This was not the acceptance scope of feature 002. Feature 002 first establishes durable credentials and Data Protection. The remaining scenarios must retain their own Spec Kit scope and acceptance evidence. No complete issuer acceptance is claimed yet.
 **Input**: Continue after merged PR #1 with the unfinished issuer portion of approved roadmap milestone 001. The local feature number 002 does not mean roadmap milestone 002 (secure administrator BFF), which depends on this work.
 
 ## User Scenarios & Testing

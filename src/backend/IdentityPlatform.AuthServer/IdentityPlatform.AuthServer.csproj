@@ -1,7 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
     <PackageReference Include="System.Security.Cryptography.Pkcs" />
+    <PackageReference Include="OpenIddict.Server.AspNetCore" />
     <ProjectReference Include="../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
     <ProjectReference Include="../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/tokens.css" LogicalName="IdentityPlatform.AccountAssets.tokens.css" />
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/theme.js" LogicalName="IdentityPlatform.AccountAssets.theme.js" />
+    <EmbeddedResource Include="Features/Accounts/Shared/login.css" LogicalName="IdentityPlatform.AccountAssets.login.css" />
+    <EmbeddedResource Include="Features/Accounts/Shared/login.js" LogicalName="IdentityPlatform.AccountAssets.login.js" />
   </ItemGroup>
 </Project>

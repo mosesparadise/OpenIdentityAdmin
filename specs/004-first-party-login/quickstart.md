@@ -1,0 +1,12 @@
+# Validation quickstart
+
+Prerequisites: pinned .NET SDK/tools, Docker with supported provider image access, browser dependencies, trusted local development HTTPS certificate (including browser trust) and synthetic credential material. Never disable certificate checks. Use existing issuer protection operations instructions for externally provisioned distinct certificates and private key ring.
+
+1. Restore locked packages/tools and build the solution using normal repository commands.
+2. Provision the pinned Playwright browsers explicitly using the installer entry point `dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps chromium`; no download during discovery/tests.
+3. Run `python3 scripts/verify.py unit`, then `python3 scripts/verify.py PostgreSql` and `python3 scripts/verify.py SqlServer` using the finalized CLI syntax in the verification record. Both provider cells are required; a locally blocked container image is not a pass.
+4. Start the explicit Aspire pilot profile. Its one-shot initialization must complete before AuthServer readiness. Visit the test application's login entry point and complete the actual protected form using supplied synthetic credentials.
+5. Verify the relying party confirms independent issuer/signature/audience/nonce/lifetime checks without displaying tokens. Exercise wrong credentials, a second tab, fresh login and expired interaction.
+6. Run normal static-analysis, assurance, supply-chain and combined-coverage gates. Read the feature verification record for exact executed counts/provider/browser versions and unresolved manual/release gates.
+
+Do not treat planned commands above as executed evidence. The [implementation runbook](../../docs/operations/first-party-pilot.md) supplies configuration, installer syntax and cleanup boundaries. Teardown removes containers and private fixture material; retain only sanitized test results/reviewed screenshots.

@@ -1,0 +1,52 @@
+# Feature 004 verification and review record
+
+Status: implementation in progress; full acceptance pending. Partial executed evidence below does not establish release readiness or a control pass.
+
+## Handoff
+
+PR #3 was squash-merged to main as `df828d6f7a38ca142f44e4e7b4caac3a2be9df19` after checking head `a76789c1503e811b9704d7df46cbbe264e867e0b`, all seven successful checks and resolved review threads. GitHub rejected self-approval (422); normal squash merge succeeded, without bypass. Baseline:165 .NET /46 Python regressions and nine covered modules; these are PR #3 results, not feature004 results.
+
+## Spec Kit and design review
+
+Pinned Spec Kit1.1.3 specify template resolution, feature pointer, setup-plan, setup-tasks and check-prerequisites ran on branch004. No extension hook file exists. Requirements checklist reviewed before planning. Clarification used existing approval and explicit conservative pilot assumptions, without a new scope gate.
+
+Independent architecture, security, test and UX reviewers inspected the design/native source. Lead dispositions:
+
+| Finding | Disposition |
+| --- | --- |
+| Hard10s promise conflicted with native cancellation | Spec/plan distinguish cooperative application budget, per-operation bounds and measured stopped-DB case with1s scheduling tolerance. No abandoned task or native rollback claim. |
+| Audit ownership/fields incomplete | Enumerate application atomic mutations including consume; add safe actor/target/outcome/independent correlation fields. Native lifecycle remains native-owned. |
+| Existing-session transition absent | Pending→Consumed explicitly allowed only for current eligible existing session without freshness requirement; credential completion remains distinct. |
+| Bootstrap matching vague | Versioned singleton binds native identities and immutable manifest; partial/drifted/ineligible records fail without repair. |
+| Shared test state unsafe | Serialized collection, fresh contexts, exact manager-based restore, abort/recreate on cleanup failure; outage separate environment. |
+| RP fixture ordered after browser tests | T015 now depends explicitly on T016/T017; fixture implemented before real callback acceptance. |
+| Two-tab promise ambiguous | Delayed replaced-session completion denies; independent completed flows succeed, never subject switch. |
+| Client authentication unspecified | Only client_secret_basic, explicit discovery and missing/wrong/body/conflicting-credential tests. |
+| Long expiry tests unexecutable | Persisted expiry mutations plus deterministic application-clock tests; native code lifetime has one bounded real60s wait/provider. |
+| Generated migration paths inaccurate | Corrected to existing provider Platform directories and Features/Health/SchemaCatalog. |
+
+Read-only analysis after corrections:9 requirements,22 tasks,100% task coverage; no unmapped implementation task, unresolved clarification, duplicate requirement or remaining critical design inconsistency identified by lead. All18 constitution principles reviewed; no exception. This analysis is design evidence, not a substitute for actual independent code review or tests. Manual screen-reader/password-manager, official certification and M01-E restart/overlap remain explicit later evidence.
+
+## Executed implementation checks
+
+Local Linux/.NET10.0.401, actual PostgreSQL through Aspire13.6.1, OpenIddict7.7.1:
+
+- Full solution build passed with zero warnings/errors at the first 53-case HTTP checkpoint.
+- `dotnet test --project tests/backend/IdentityPlatform.Host.Tests --no-build --no-restore --no-progress`:159 passed, zero skipped at that checkpoint. Eleven newer proof-key syntax cases still require the next run.
+- `dotnet test --project tests/aspire/IdentityPlatform.Issuer.Tests --no-build --no-restore --filter-trait Provider=PostgreSql --filter-not-trait Category=Browser --no-progress`:53 passed, zero skipped in41.6s. This explicitly excludes browser acceptance. Covers bootstrap/no-op/drift input, discovery/public JWKS, genuine protected form/callback, independent JWT validation, exact concurrent winner/invalid_grant loser, replay/linked native token revocation, after-code account/session/client/scope changes, malformed request/proof/client binding and silent-login denials.
+- Earlier runs exposed a builder-lifetime fixture defect, broad native-claim rejection and missing short-challenge rejection. These were corrected; the failures are not represented as passes. The source-reviewed one-character matching-verifier case now has a passing permanent HTTP regression.
+- Both provider migrations were generated using EF tooling. SQL Server execution is pending CI; its image download has been locally blocked by network policy.
+- Pinned Playwright1.63.0 Chromium download was denied by this workspace network policy (`cdn.playwright.dev`, HTTP403). No browser execution is claimed. CI browser provisioning/TLS trust remains mandatory; no certificate bypass or substitute browser was used.
+- Static full-gate scripts, updated exact-count matrix, combined per-module90/80 coverage, expanded form/fault/browser tests, visual review, mutation evidence and final independent reviews remain pending.
+
+Source review corrections: current lockout-enabled/application-type/settings checks; bounded correlation-cookie querying and concurrency; cancellation propagation; positive max_age recheck after completion; anonymous denied actor versus victim target; request-rejection headers/status; separate native/public claims catalogue; RFC7636 syntax guard; test-RP backchannel redirect refusal/correlation consumption/terminal failures; cleanup attempts for all resources and fixture invalidation on failed restoration. Revised paths still need the final complete suite/re-review. No ASVS row is promoted from not_assessed by this partial record.
+
+### Second local checkpoint (still incomplete)
+
+- Strict `python3 scripts/verify.py unit`:208 required cases passed (Core25, Host170, Architecture5, AppHost8), zero skipped; fresh exact-count TRX validation passed.
+- Expanded PostgreSQL HTTP suite:60 passed, zero skipped in44.2s before adding the noncanonical challenge HTTP case. Includes forged/stale forms, generic credential errors, password non-echo and replaced-tab denial. Browser cases remained explicitly excluded.
+- All46 Python assurance/evidence/supply-chain/coverage-gate regressions passed; all345 ASVS rows remain not_assessed. License inventory now covers221 locked package/version pairs with the test-only MPL exception documented.
+- Canonical challenge negative control exposed .NET's `TryDecodeFromChars` throwing for invalid source encoding; switched to its OperationStatus overload. Its permanent unit regression now passes.
+- New CI matrix counts include pending Chromium cases; they are expected counts, not local passes. Draft delivery retains all unfinished task checkboxes and review gates.
+
+- Full static-analysis/formatting gate and its clean/CA5350/IDE0055/IDE1006 enforcement controls passed after removing unused imports. Current source snapshot Gitleaks scan passed. The first outage/body-bound test additions compile cleanly and await execution.

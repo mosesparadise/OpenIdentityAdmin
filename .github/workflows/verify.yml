@@ -109,6 +109,15 @@ jobs:
           dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - name: Install pinned Chromium and trust the local HTTPS certificate
+        if: matrix.profile != 'unit'
+        shell: bash
+        run: |
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps chromium
+          sudo apt-get install -y libnss3-tools
+          mkdir -p "$HOME/.pki/nssdb"
+          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
+          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "C,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
         run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.profile }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }}
       - name: Retain synthetic test and coverage evidence

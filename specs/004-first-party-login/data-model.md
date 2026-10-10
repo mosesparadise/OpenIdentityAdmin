@@ -1,0 +1,15 @@
+# Data model and transitions
+
+All records use the existing platform schema and scoped PlatformDbContext. Both providers receive native migrations; runtime hosts still do not load executable migration assemblies. Existing native Identity/OpenIddict tables remain manager-owned.
+
+| Record | Fields and constraints | Transitions |
+| --- | --- | --- |
+| PlatformUser | Existing native identity plus IsEnabled boolean, default true for existing rows. | Eligibility reads include enabled, native lockout, security stamp, second-factor flag and absence of roles. |
+| PilotManifest | Singleton profile/version, native user/application/scope IDs, exact username and HTTPS callback; bounded strings. | Created with all native pilot records and audit in one transaction; never adopted from partial records or silently repaired. |
+| LocalSession | Opaque256-bit ID, userID, security-stamp binding, authenticatedUTC, expiresUTC, revoked flag. User/expiry index; bounded strings. | Created only after credential verification; 15-minute non-sliding expiry. Replacement/revocation invalidates subsequent decisions; no browser sliding renewal. |
+| LoginInteraction | Opaque256-bit ID, unique native request-token ID, original requestURI/clientID, correlationSHA256, created/expiresUTC, completed sessionID/subject/authentication time, consumed flag; guarded conditional updates provide one-winner completion/consumption. | Pending→Completed→Consumed for credential login; Pending→Consumed for an eligible existing session after browser correlation proof when freshness is not required. Expiry terminal. Atomic conditional completion/consumption must affect exactly one row. Tombstone retained until expiry; no recreation from replayed native request. |
+| SecurityAuditIntent | Generated ID, fixed event code, bounded actor type/ID and target type/ID, fixed outcome, independent random correlation ID, occurredUTC. Unknown-user failures use no attacker-supplied identifier; session targets use digests. No username, credential, token, requestURI, raw path/query or exception text. | Append within application security transaction; no public read endpoint. Later M08 adds investigation/delivery/retention. |
+
+Native application properties identify fixed pilot profile and enabled status; exact confidential client, one HTTPS callback and code/token/authorization/scope permissions. Native scope properties identify enabled pilot scope and exactly one resource. Bootstrap never overwrites existing registrations to hide drift. Unique manager checks and database constraints prevent duplicates; a racing initialization fails safely and can be explicitly rerun.
+
+Identifiers/secret digests are compared ordinally; SQL Server uses binary collation where required. UTC timestamps use provider-portable representation and a TimeProvider seam. Password-attempt/completion/consumption/session/audit mutations are one transaction; no per-entity optimistic retry. Native token concurrency remains OpenIddict-owned. No native foreign-key cascade may silently delete audit evidence.

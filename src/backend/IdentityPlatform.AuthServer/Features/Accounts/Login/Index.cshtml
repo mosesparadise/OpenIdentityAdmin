@@ -1,0 +1,35 @@
+@page "/account/login"
+@model IdentityPlatform.AuthServer.Features.Accounts.Login.IndexModel
+@{ ViewData["Title"] = "Sign in"; }
+<section class="card" aria-labelledby="heading">
+  <div class="card-icon" aria-hidden="true">↗</div>
+  @if (Model.Unavailable)
+  {
+    <p class="eyebrow">A fresh start</p>
+    <h1 id="heading">Start a new sign-in</h1>
+    <p>This sign-in request is no longer available. Return to your application and start again.</p>
+  }
+  else
+  {
+    <p class="eyebrow">Welcome back</p>
+    <h1 id="heading">Sign in</h1>
+    <p class="subtitle">Continue to <strong>IdentityPlatform pilot</strong></p>
+    @if (Model.Error is not null)
+    {
+      <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+    }
+    <form method="post" id="login-form">
+      <input type="hidden" name="Interaction" value="@Model.Interaction" />
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="Username" type="text" value="@Model.Username" required maxlength="128" autocomplete="username" autocapitalize="none" spellcheck="false" aria-describedby="@(Model.Error is null ? null : "error-summary")" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-field"><input id="password" name="Password" type="password" required maxlength="256" autocomplete="current-password" aria-describedby="@(Model.Error is null ? null : "error-summary")" /><button id="show-password" type="button" hidden>Show password</button></div>
+      </div>
+      <button type="submit" class="primary" id="submit">Sign in <span aria-hidden="true">→</span></button>
+    </form>
+    <p class="footnote">Your credentials stay with IdentityPlatform.</p>
+  }
+</section>

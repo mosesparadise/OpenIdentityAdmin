@@ -20,6 +20,11 @@
       "file": "LICENSE",
       "sha256": "0fe665c2ada5962fd01190ab5b2947b9a9d2c625a9f8225577441eb3256e14e3",
       "disposition": "Microsoft proprietary terms. Development use inventoried; review applicable distribution terms before public release."
+    },
+    "Deque.AxeCore.Commons/4.13.0": {
+      "file": "LICENSE.txt",
+      "sha256": "af175b9d96ee93c21a036152e1b905b0b95304d4ae8c2c921c7609100ba8df7e",
+      "disposition": "MPL-2.0, unmodified test-only accessibility engine/bindings. Preserve license/notices and applicable source availability on redistribution; do not bundle in product hosts. Distribution review remains a release obligation."
     }
   }
 }

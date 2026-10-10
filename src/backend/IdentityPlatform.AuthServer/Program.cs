@@ -1,11 +1,19 @@
+using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
+using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.AuthServer.Features.Protocol;
+using IdentityPlatform.AuthServer.Features.Protocol.Authorize;
+using IdentityPlatform.AuthServer.Features.Protocol.Protection;
+using IdentityPlatform.AuthServer.Features.Protocol.Token;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.ServiceDefaults;
+using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+var initializePilot = args.Contains("--initialize-pilot", StringComparer.Ordinal);
+var builder = WebApplication.CreateBuilder(args.Where(value => value != "--initialize-pilot").ToArray());
 builder.AddPlatformServiceDefaults();
 try
 {
@@ -35,6 +43,24 @@ catch (IssuerProtectionException)
 
 using (credentials)
 {
+    bool pilot;
+    try
+    {
+        pilot = PilotConfiguration.IsEnabled(builder.Configuration, builder.Environment, credentials);
+        if (initializePilot && !pilot)
+        {
+            throw new PilotConfigurationException();
+        }
+        if (pilot)
+        {
+            builder.Services.AddFirstPartyPilot(credentials!);
+        }
+    }
+    catch (PilotConfigurationException exception)
+    {
+        Console.Error.WriteLine(exception.Message);
+        return 2;
+    }
     await using var app = builder.Build();
     try
     {
@@ -47,6 +73,36 @@ using (credentials)
     {
         Console.Error.WriteLine(IssuerProtectionException.SafeMessage);
         return 2;
+    }
+    if (initializePilot)
+    {
+        try
+        {
+            await using var scope = app.Services.CreateAsyncScope();
+            PilotDatabaseBounds.Apply(scope.ServiceProvider.GetRequiredService<PlatformDbContext>());
+            using var deadline = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+            await scope.ServiceProvider.GetRequiredService<PilotBootstrap>().InitializeAsync(deadline.Token);
+            Console.WriteLine("First-party pilot initialization verified.");
+            return 0;
+        }
+        catch (Exception)
+        {
+            Console.Error.WriteLine("First-party pilot initialization failed. Existing state was not repaired or re-enabled.");
+            return 2;
+        }
+    }
+    if (pilot)
+    {
+        app.UseRouting();
+        app.UseRequestTimeouts();
+        app.UseMiddleware<PilotRequestProtection>();
+        app.UseRateLimiter();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapMethods("/connect/authorize", ["GET", "POST"], AuthorizeEndpoint.HandleAsync);
+        app.MapPost("/connect/token", TokenEndpoint.HandleAsync);
+        app.MapRazorPages();
+        app.MapAccountAssets();
     }
     app.MapPlatformHealthEndpoints();
     await app.RunAsync();

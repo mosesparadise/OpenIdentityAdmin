@@ -38,3 +38,7 @@ REG-001/002 and SC-001/003 trace to the source/inventory and routing tests. REG-
 GitHub review then requested exact source/attribution metadata protection and current lifecycle wording. Two attribution-mutation subcases failed before correction, then all 27 methods passed after adding canonical source/attribution to the independent pin. The test reviewer independently reran and closed that correction. The final follow-up changes those pins, expands the mutation matrix and updates documentation; it does not change runtime code. This baseline evidence is not a claim that the later head ran the same jobs: use PR #3's live checks for the exact final head, and require them to pass before merge.
 
 Spec Kit convergence inspected all six requirements, four success criteria, the plan decisions and all 18 constitution principles: no remaining buildable-scope finding. The convergence operation left tasks.md unchanged; subsequent implementation closeout marks the publication/verification task complete. Final review/merge remains the PR workflow. M01-C remains partial: named owners, final applicability, complete normative OAuth/NIST crosswalks, product/deployment evidence and independent assessment are ongoing work. Feature 003 acceptance is the bounded register/tooling baseline.
+
+## Merge handoff
+
+PR #3 was squash-merged as `df828d6f7a38ca142f44e4e7b4caac3a2be9df19` after exact-head/check/review verification. GitHub rejected author self-approval (422); normal merge succeeded without bypass. Feature004 continues M01-D.
