@@ -149,10 +149,15 @@ public sealed class TestRelyingParty : IAsyncDisposable
     }
 
     public async Task<HttpResponseMessage> ExchangeAsync(string code, string verifier, string? clientSecret = null,
-        string? redirect = null, string clientId = "identityplatform-pilot", CancellationToken cancellationToken = default)
+        string? redirect = null, string clientId = "identityplatform-pilot", HttpClient? transport = null,
+        string? cookie = null, CancellationToken cancellationToken = default)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, new Uri(Issuer, "/connect/token"));
         request.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(clientId + ":" + (clientSecret ?? ClientSecret))));
+        if (cookie is not null)
+        {
+            request.Headers.Add("Cookie", cookie);
+        }
         request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
         {
             ["grant_type"] = "authorization_code",
@@ -160,7 +165,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
             ["code_verifier"] = verifier,
             ["redirect_uri"] = redirect ?? Callback
         });
-        return await backchannel.SendAsync(request, cancellationToken);
+        return await (transport ?? backchannel).SendAsync(request, cancellationToken);
     }
 
     public async Task<string> ValidateAsync(JsonElement tokens, TestFlow flow, CancellationToken cancellationToken)

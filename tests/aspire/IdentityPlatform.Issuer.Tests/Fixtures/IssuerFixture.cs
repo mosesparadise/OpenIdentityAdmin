@@ -31,6 +31,9 @@ public sealed class IssuerTestGroup : ICollectionFixture<IssuerFixture>;
 [CollectionDefinition("interaction-acceptance", DisableParallelization = true)]
 public sealed class InteractionAcceptanceGroup : ICollectionFixture<IssuerFixture>;
 
+[CollectionDefinition("exchange-acceptance", DisableParallelization = true)]
+public sealed class ExchangeAcceptanceGroup : ICollectionFixture<IssuerFixture>;
+
 public sealed class IssuerFixture : IAsyncLifetime
 {
     private readonly Dictionary<string, IssuerEnvironment> environments = new(StringComparer.Ordinal);

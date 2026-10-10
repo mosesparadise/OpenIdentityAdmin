@@ -168,3 +168,25 @@ All nine unchanged90% line/80% branch floors passed: Core100/100; Infrastructure
 T024 is complete. [PR #6](https://github.com/mosesparadise/OpenIdentityAdmin/pull/6), `test(auth): verify login and interaction boundaries`, contains this bounded test increment and remains unmerged for review. The final documentation-only completion commit receives its own CI run; its status is linked from the PR without a self-referential evidence-commit loop. No product or test source changed after the passing source checkpoint. Final exact-head checks remain mandatory before any future merge.
 
 T025 is next. T025–T030 and full M01-D/manual/external acceptance remain open; T030's concurrent browser-capacity gap is not covered by the sequential-capacity result. Independent architecture/test/security reviewers closed their bounded source findings and executed no tests themselves. All345 ASVS rows remain not_assessed; no certification claim is made.
+
+### PR #6 squash checkpoint
+
+The chronology finding was corrected at `bd4992c88154aa2ff9c98af71a75f107245dc658`; its review thread is resolved. [Run38082495623](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38082495623) passed all seven gates on that exact head, including578 .NET cases with zero skips and all nine unchanged coverage floors. The user-authorized normal expected-head squash merge completed as `5aa330cdff0b94f5854ff2ff0bee47fe7480bd2a`, using Conventional Commit title `test(auth): verify login and interaction boundaries`. No review restriction was bypassed.
+
+### T025 exchange-acceptance source checkpoint
+
+The [execution plan](exchange-acceptance.md) preceded source changes. The increment adds seven real-provider cases in `Features/Protocol/ExchangeAcceptanceTests.cs`; all changes are tests, fixtures, matrix or documentation. Runtime-role Identity/OpenIddict managers own security mutations. Each code is identified from the fresh token-ID set and linked to its original subject/client/authorization/session, with unchanged authentication time and stamp and sufficient remaining lifetime. Denials compare exact post-mutation token IDs and the complete audit history. Native authorization deletion legitimately removes linked tokens; its case proves denial after that removal, not isolated execution of the Minimal endpoint's authorization check.
+
+| T025 requirement / scenario | Permanent test method | Cases per provider |
+| --- | --- | --- |
+| LOGIN-005, US3 current account deletion | `Deleted_code_subject_cannot_exchange_in_owned_disposable_environment` | 1 |
+| LOGIN-005, role added after code | `Committed_role_addition_invalidates_code_without_changing_security_stamp` | 1 |
+| LOGIN-005/006, native authorization invalidation | `Native_authorization_revocation_or_deletion_prevents_exchange` | 2 |
+| LOGIN-005/006, named code-principal isolation | `Unrelated_genuine_cookie_cannot_replace_or_rescue_the_code_subject` | 2 |
+| LOGIN-006/009, lost response/replay/recovery | `Lost_successful_response_is_not_retried_and_recovery_requires_new_authorization` | 1 |
+
+Cookie cases obtain a genuine B login through temporary test-database manifest ownership; they do not introduce a multi-user product mode. Positive exchange restores A's eligibility and verifies A's tokens despite B's genuine cookie; negative exchange keeps B eligible and proves that its cookie cannot rescue A. The actual token POST header is observed without printing it. Temporary manifest/account cleanup uses fresh bounded scopes and invalidates failed restoration. The disposable fixture retains synthetic history; cleanup does not claim to erase all B session/audit/native records.
+
+The lost-response transport drains and disposes a real HTTP200 then throws a fixed injected exception before delivery to application code. It asserts one attempt, exact native redemption and exactly one valid access/ID entry, then explicitly tests adversarial replay and linked-entry revocation. Normal recovery uses a distinct authorization/code. This is deterministic application-delivery loss, not a claim of physical TCP loss or immediate invalidation at offline JWT validators.
+
+Architecture/test/security source reviews passed after closing the captured-response diagnostic assertions and narrowing completion wording to the T025 gaps. Reviewers ran no tests. Local strict build passed with zero warnings/errors; static formatting/style and seeded CA5350/IDE0055/IDE1006 rejection controls passed. The strict unit matrix passed216/216, zero skips. Initial new PostgreSQL cases passed7/7 in1m21s, zero skips; final full HTTP/database regression and both-provider Chromium/coverage CI are pending. Existing real61-second expiry, concurrent redemption/replay and independent wrong issuer/audience/type/signature/nonce controls remain mandatory in the full suite. Expected matrix:181 issuer cases/provider and592 total. T025 remains unchecked at this source checkpoint; T026–T030, full pilot acceptance and external release gates remain open. All345 ASVS rows remain not_assessed.
