@@ -37,9 +37,9 @@ public sealed class TestLogin
         };
     }
 
-    public async Task<Uri> CompleteAsync(IssuerEnvironment environment, HttpClient browser)
+    public async Task<Uri> CompleteAsync(IssuerEnvironment environment, HttpClient browser, string? username = null)
     {
-        using var response = await SubmitAsync(environment, browser);
+        using var response = await SubmitAsync(environment, browser, username: username);
         Assert.True(response.IsSuccessStatusCode && response.RequestMessage!.RequestUri!.AbsolutePath == "/account/complete",
             "The genuine protected form did not complete.");
         await using var scope = environment.Services.CreateAsyncScope();
