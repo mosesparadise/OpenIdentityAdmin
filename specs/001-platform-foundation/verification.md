@@ -1,56 +1,71 @@
 # Foundation verification — 10 October 2026
 
-**State: implementation/review in progress; not foundation acceptance, issuer acceptance, R1 completion or certification.** Version 0.2 and A-001 are approved. Basic OP suite compatibility remains the accepted external certification dependency; it is not reapplied as an implementation blocker.
+**State: foundation acceptance checks passed.** This accepts feature 001's infrastructure scope only. It does not accept a working issuer, complete approved milestone 001, complete R1 or establish certification. Version 0.2 and A-001 are approved; mandatory PKCE and the external public-release certification gate remain unchanged.
 
-## Reproducibility
+## Accepted execution
 
-- Genuine GitHub Spec Kit 1.1.3 initialized the Codex skills integration; `specify check` passed. Annotated tag/source commit are recorded in research.md.
-- .NET SDK 10.0.401/runtime 10.0.12; EF/Identity 10.0.12, OpenIddict 7.7.1, Npgsql EF 10.0.3, Aspire 13.6.1; dependencies have lock files.
-- Docker 28.4.0. PostgreSQL 18 image digest `74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336` pulled and executed.
-- SQL Server 2022 image manifest digest `4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090` resolved. Download redirects to `centralus.data.mcr.microsoft.com`, which the environment proxy denies. The required SQL cell failed startup; no SQL Server test has passed locally. The hostname enablement question remains pending.
-- Aspire uses its supported pinned NuGet DCP/dashboard distribution, not CLI-bundle-only features. ASPIRE010 alone is suppressed with the reason in the AppHost project. The optional CLI bundle was unavailable; its absence is not a test pass.
-- Local Linux HTTPS uses the actual dev certificate and its OpenSSL trust directory plus system trust. HTTP clients use standard TLS validation; no accept-any callback or protocol authentication bypass exists.
+[GitHub Actions run 38016602794](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38016602794) passed all five jobs for implementation commit `55a6f766a821a587a3b802d975470e22e790aba1`: unit, PostgreSQL, SQL Server, supply chain and per-module coverage. [Draft PR #1](https://github.com/mosesparadise/OpenIdentityAdmin/pull/1) contains the reviewable change. Subsequent documentation reconciliation does not change product or test code.
 
-## Executed evidence
-
-Commands were run in the selected repository with the installed SDK on PATH. `artifacts/` contains local synthetic reports, excluded from source control. CI retains test/coverage evidence for seven days under repository access controls.
-
-| Boundary / requirement | Actual result | Scope/limit |
+| Requirement / boundary | Passed evidence | Scope |
 |---|---|---|
-| Solution build, FND-006 | Passed, zero warnings/errors | Latest completed 16-project solution build |
-| Core configuration, FND-005/008 | 25 passed, zero skipped | Provider spelling/invalid enum and safe HTTPS issuer URI parsing; no issuer is configured yet |
-| Host/configuration/telemetry seams, FND-004/005/008 | 43 passed, zero skipped | Real configuration-error child processes for all four hosts and migrator; safe health, deadlines, cache behavior and exporter redaction |
-| Aspire harness/configuration | 5 passed, zero skipped | Missing PID rejection, explicit terminal-state metadata and Development-only AppHost guard |
-| Architecture/model parity, FND-002/006/008 | 5 passed, zero skipped | Pure Core, reference/schema-change rules, both-provider generated/runtime model parity and schema catalog; model checks do not execute SQL Server |
-| Native PostgreSQL storage, FND-002/003 | 3 passed, zero skipped | Migrator initialization/repetition/partial failure/recovery/cancellation; native users/passkeys/clients/scopes; case, concurrency, runtime/BFF privileges, outage bounds and failed-provisioning log safety |
-| PostgreSQL Aspire process profile, FND-001/004 | Health/outage scenario passed | Actual migrator, four HTTPS hosts; 503 readiness and live liveness after database stop |
-| Additional Aspire overlap/failure cleanup | Both passed in the full three-case PostgreSQL profile | Captured container IDs/processes removed; second overlapping environment remained healthy. Stricter PID assertions passed in the three-case run; corrected startup cancellation passed separately |
-| SQL Server persistence/distributed profile | Locally blocked; second CI persistence run: 3 passed; distributed 3 passed, 1 harness failure | Outage deadline fix passed. Distributed health/outage, overlap and cancellation passed; cleanup resource assertions passed before a redundant EF probe threw cancellation. Probe removed; clean matrix rerun required |
-| AI structure/fixture evaluation, FND-007 | Structure passed; eight bounded reviewer evaluations completed | See docs/engineering/ai-evaluation.md; not system assurance or proof of native discovery/sandbox enforcement |
-| Execution coverage, FND-006 | Collection includes child host processes | Diagnostic merge of second-run artifacts meets every floor (98.6–100% lines, 97.8–100% branches). Aggregate acceptance remains blocked until the cleanup harness rerun passes |
-| GitHub CI | [Draft PR #1](https://github.com/mosesparadise/OpenIdentityAdmin/pull/1), [first run](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38015582489) | [Second run](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38016023869): unit, supply-chain and PostgreSQL jobs passed; SQL product checks passed, but redundant cleanup probe failed. Final clean rerun pending |
-| Supply chain | 16-project advisory lookup clean; 205 NuGet package/version pairs inventoried; Gitleaks 8.30.1 source scan clean | Time/feed/tool-bounded evidence; proprietary/legacy license exceptions recorded for release review |
-| Verification gates | 15 Python regression tests passed | TRX completeness, advisory/license rejection and per-module coverage thresholds |
+| FND-005/008: Core configuration | 25 tests | Provider and HTTPS issuer parsing; issuer is not yet configured in a protocol host |
+| FND-004/005/008: hosts/configuration/telemetry | 43 tests | Real startup-error child processes, safe health responses/deadlines and actual exporter redaction |
+| FND-002/006/008: architecture/model parity | 5 tests | Project boundaries, no runtime schema mutation/controllers, both-provider runtime/design parity and Identity V3/passkey schema |
+| FND-001/006: Aspire harness/configuration | 5 tests | Required process metadata and Development-only composition guard |
+| FND-002/003: PostgreSQL native persistence | 3 tests | Repeated/partial initialization, recovery/cancellation, users/passkeys/clients/scopes, case/concurrency, runtime/BFF permissions, outages and provisioning-log safety |
+| FND-002/003: SQL Server native persistence | 3 tests | Same real-provider scenarios; no SQLite/InMemory substitution |
+| FND-001/004: PostgreSQL distributed profile | 4 tests | Four HTTPS hosts, outage/liveness, overlapping isolated environments, configuration-failure cleanup and cancelled-startup cleanup |
+| FND-001/004: SQL Server distributed profile | 4 tests | Same actual Aspire process scenarios |
+| FND-006: verification gate regressions | 15 Python tests | Four TRX completeness, eight advisory/license and three coverage-gate cases |
+| FND-007: AI instructions | Structure passed; eight bounded reviewer evaluations | Eight skills and eight reviewer configurations; effectiveness limits in the AI evaluation record |
+| FND-006: supply chain | Passed | 16-project advisory lookup reports no known vulnerable packages; 205 NuGet package/version pairs inventoried; Gitleaks 8.30.1 source-snapshot scan clean |
 
-`python3 scripts/verify.py unit` runs the three unit/host/architecture projects. Provider profiles run Persistence.Tests then AppHost.Tests with the matching theory filter. `dotnet coverage collect -s eng/coverage.xml ... python3 scripts/verify.py <profile>` collects parent and child processes. `scripts/check-coverage.py` requires each named handwritten module, including composition roots, to reach 90% lines and 80% branches. Generated migrations remain behaviorally tested, even though excluded from numeric coverage.
+**Total: 92 .NET tests passed, zero failed or skipped, plus 15 distinct Python verification-gate regressions.** Multiple assertions inside integration scenarios cover their named boundaries; this count does not imply product-wide E2E acceptance. Locked restores and 16-project builds passed with zero warnings/errors on the clean CI matrix.
 
-## Before/after and review evidence
+## Per-module execution coverage
 
-- Initial configuration tests failed because types did not yet compile; this was not a behavioral regression result.
-- Before initial migrations, real PostgreSQL failed with missing `platform.OpenIddictApplications`; generated schema then passed the same native-manager scenario.
-- Security review identified trace state escaping redaction and malformed bootstrap flags echoing input. The new regressions ran against the faulty code: **2 failed, 8 passed**. After the fixes: **10 passed**, subsequently expanded to 43 host tests. Exporter tests preserve useful safe spans and suppress immutable unsafe payloads.
-- Architecture review found Identity V1 omitted the promised passkey table. Runtime/design-time now share explicit Identity V3 options. Unpublished initial platform migrations were regenerated; disposable tests alone had used the old initial files. Native synthetic passkey persistence is not a WebAuthn enrollment/login claim.
-- Test review prompted successful BFF-state operations before provider-specific isolation denials, fresh-scope account reads, scope-name case tests, competing native manager updates and actual migration-runner failure/recovery tests.
-- Scope and disposition detail: [AI evaluation and implementation reviews](../../docs/engineering/ai-evaluation.md).
+The successful aggregate job merged all three profiles, including child host processes. Every required handwritten module meets the approved 90% line / 80% branch floor. Tests, SDK-generated metadata and generated migrations are excluded from numeric product coverage; model parity and real-provider integration still verify the generated schema. Policy: `eng/coverage-policy.json`.
 
-## Open acceptance work
+| Module | Lines | Branches |
+|---|---:|---:|
+| Core | 100% | 100% |
+| Infrastructure | 98.6% | 100% |
+| ServiceDefaults | 100% | 100% |
+| Migrator | 98.6% | 90.0% |
+| AuthServer | 100% | 100% |
+| Admin.Api | 100% | 100% |
+| Admin.Bff | 100% | 100% |
+| Worker | 100% | 100% |
+| AppHost | 100% | 100% |
 
-Both-provider execution remains mandatory. Locked restore and the 16-project build passed. One parallel MSBuild attempt exited prematurely without retained diagnostic files; a serial build with build servers disabled completed with zero warnings/errors. No failed-build test run is used as evidence for changed source.
+Numeric coverage is a floor; it is not a claim that all possible behavior is proven. The artifact IDs and SHA256 digests for this exact successful run are recorded in [evidence-manifest.json](evidence-manifest.json). CI retains synthetic reports for seven days under repository access controls; hashes preserve provenance but do not guarantee continued artifact availability. Release assurance requires its own evidence retention policy.
 
-The failed-provisioning PostgreSQL regression was observed failing before the fix and passing afterward with a diagnostic positive control. The transaction-sampled PostgreSQL regression and SQL Server log capture control have also passed. The three existing PostgreSQL Aspire cases passed with strict PID cleanup; the new cancellation case initially failed because it awaited completion of intentionally held startup before canceling it. The corrected test starts the wait concurrently and relies on disposal for underlying lifecycle cancellation. SQL Server CI exposed EF history/existence probing exceeding readiness bounds; readiness now uses one direct read-only history query with explicit connection/command timeouts and disabled reconnects. PostgreSQL persistence passes after that change; Corrected startup cancellation passed separately in 15 seconds; SQL re-execution then passed the observed readiness defect. Its sole remaining failure was an EF CanConnectAsync probe after exact container/process removal had already passed; independent test review approved removing that redundant probe. A clean complete rerun remains required. Phase 7 convergence tasks T021–T024 retain these acceptance gaps. See docs/engineering/supply-chain.md for license exceptions and release evidence still required.
+## Reproducibility and local scope
 
-No browser UI, OAuth/OIDC journey, BFF session lifecycle, API contract/docs UI, performance benchmark, accessibility audit, conformance suite, independent penetration test or external certification has been completed by this foundation slice. Their approved feature plans remain required. No production deployment or external certification action was performed.
+- Genuine GitHub Spec Kit 1.1.3 initialized the Codex integration; `specify check` passed. Source/tag provenance is in research.md and third-party attribution is preserved.
+- .NET SDK 10.0.401/runtime 10.0.12; EF/Identity 10.0.12, OpenIddict 7.7.1, Npgsql EF 10.0.3 and Aspire 13.6.1; dependencies have lock files.
+- PostgreSQL 18 digest `74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336`; SQL Server 2022 digest `4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090`. Both executed in GitHub CI.
+- The local managed environment blocks the SQL image redirect host `centralus.data.mcr.microsoft.com`; no local SQL execution is claimed. GitHub's real SQL execution supplies the required provider evidence. No network restriction was bypassed.
+- Aspire uses its pinned supported NuGet DCP/dashboard distribution; only ASPIRE010 is suppressed with a documented reason. CLI-bundle-only features are not used.
+- Normal HTTPS validation is used throughout. Local Linux and CI trust the actual development certificate alongside system trust; no accept-any callback exists.
+- The documented standalone PostgreSQL launch served the authenticated dashboard (302 redirect) over trusted HTTPS, then stopped with exit 0 on terminal-style Ctrl+C. No containers remained. This dashboard smoke is separate from the distributed four-service tests.
 
-## Additional reproducibility checks
+Run `python3 scripts/verify.py unit`, `PostgreSql` and `SqlServer` after a current build. The scripts reject absent/empty/skipped/failed reports and impose outer process deadlines. CI's exact coverage collection and merge commands are in `.github/workflows/verify.yml`.
 
-The documented standalone PostgreSQL `dotnet run` command served the authenticated dashboard over normally validated HTTPS (302 login redirect), and terminal-style Ctrl+C to the foreground process group exited successfully. The initial smoke harness sent SIGINT only to the `dotnet run` launcher, which did not emulate terminal delivery; that harness was corrected. No local containers remained after shutdown. This dashboard smoke is separate from the four-service health/outage checks in the distributed tests.
+## Defects and review dispositions
+
+- Initial types and migrations were absent: initial configuration tests did not compile, then native persistence failed on a missing table. Compilation failures were not represented as behavioral regression evidence; generated schema subsequently passed.
+- Trace state escaped redaction and malformed bootstrap flags echoed input. Two regressions failed before fixes; explicit safe parsing and exporter-level redaction/suppression tests now pass.
+- Identity V1 omitted the promised passkey table. Runtime/design options now use V3; unpublished initial platform migrations were regenerated. Only disposable test databases had used the earlier schema. Native passkey storage is not WebAuthn enrollment/login acceptance.
+- Persistence tests now exercise the actual migrator, prove successful BFF state operations before permission denials, read through fresh scopes and verify case/concurrency through native managers.
+- Verbose PostgreSQL bootstrap logging exposed a synthetic password. A strengthened regression failed before the dedicated unpooled connection/logging protections, then passed including transaction sampling and a diagnostic capture control. SQL Server's log regression passed for its normal server error log; arbitrary auditing/tracing is outside that evidence.
+- First CI SQL outage readiness exceeded the eight-second assertion because EF history/existence probing used different connection behavior. Readiness now performs one fixed, read-only history query with explicit connection/command timeouts and no SQL reconnect retries. The real SQL outage regression passed. These are cooperative provider/deadline controls, not a universal hard real-time guarantee for every network failure.
+- Aspire configuration-failure observation originally awaited the wrong process state; it now observes Finished and exit 2. Cancellation initially awaited intentionally held startup; it now cancels the concurrent caller wait and then disposes the underlying lifecycle. Both scenarios pass on both providers.
+- Cleanup now verifies exact container-ID absence and captured process termination. Missing PID evidence for running/unknown states fails. A redundant EF CanConnect probe against already removed storage caused the second SQL workflow failure; independent test review approved its removal while retaining direct cleanup assertions.
+- Build/test evidence rejects stale outputs. One local parallel MSBuild attempt exited prematurely; the subsequent serial build with build servers disabled passed. The standalone smoke initially signalled only the launcher; terminal-style process-group signal delivery corrected that harness.
+
+Read-only architecture, test and security reviews and dispositions are recorded in [AI evaluation](../../docs/engineering/ai-evaluation.md). All current foundation findings are resolved. AI review is not independent certification or a penetration test.
+
+## Remaining product and release work
+
+Login/token issuance, BFF session lifecycle, management APIs, React/Razor themes, Scalar/Swagger, product browser E2E, accessibility audits, load benchmarks, mutation campaigns, independent penetration testing and official conformance/certification remain later approved work. No production deployment or external certification action occurred. Proprietary/legacy license exceptions and a complete deployment SBOM remain release obligations in [supply-chain evidence](../../docs/engineering/supply-chain.md).

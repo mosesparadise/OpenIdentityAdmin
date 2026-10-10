@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-10
 
-**Status**: Ready for infrastructure planning; issuer acceptance remains separately gated
+**Status**: Foundation acceptance verified; issuer acceptance remains separately scoped
 
 **Input**: Approved v0.2 milestone 001, infrastructure portion: reproducible local composition, equal database support, safe configuration, engineering/test infrastructure and reviewed AI instructions.
 

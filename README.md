@@ -2,7 +2,7 @@
 
 A greenfield administration platform built with OpenIddict and ASP.NET Core Identity. The approved product includes client/resource and user/role management, security, auditing and operational health through a React/TypeScript Admin BFF and a Razor Pages authentication service.
 
-**Current state: foundation implementation in progress.** This branch contains native persistence, provider migrations, safe configuration/health, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. Hosts currently expose operational health only. Login/token issuance, the usable BFF, management APIs, React/Razor themes and Scalar/Swagger are later approved slices, not completed capabilities. This is not a deployable or certified identity product.
+**Current state: foundation verified; product features remain in development.** This branch contains native persistence, provider migrations, safe configuration/health, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. Hosts currently expose operational health only. Login/token issuance, the usable BFF, management APIs, React/Razor themes and Scalar/Swagger are later approved slices, not completed capabilities. This is not a deployable or certified identity product.
 
 ## Approved design
 
@@ -44,7 +44,7 @@ python3 scripts/verify.py SqlServer
 
 Build first: these scripts deliberately use `--no-build`/`--no-restore`. Each provider profile includes native persistence and actual Aspire process tests. An unavailable required provider fails; it is never substituted or skipped. The GitHub workflow runs all three profiles and merges child-process coverage, enforcing 90% lines/80% branches for each handwritten module. No overall average can conceal an untested host. CI also checks current NuGet advisories, locked license evidence and the source snapshot for secrets; see [supply-chain evidence](docs/engineering/supply-chain.md). See `eng/coverage-policy.json` for generated-code exclusions.
 
-The current managed development environment blocks Microsoft's redirected SQL image download hostname. PostgreSQL results do not establish SQL Server acceptance. Read the verification record for exact passed, failed, blocked and unmeasured cases; coverage and broader acceptance are still being completed.
+The current managed development environment blocks Microsoft's redirected SQL image download hostname. PostgreSQL results do not establish SQL Server acceptance. GitHub CI executed both real database profiles successfully: 92 .NET tests passed with no skips, all 15 verification-gate regressions passed, and every handwritten module met its coverage floor. Read the verification record for exact scope and remaining product/release work.
 
 ## Implementation workflow
 
