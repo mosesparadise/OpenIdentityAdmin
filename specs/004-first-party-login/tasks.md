@@ -27,7 +27,7 @@ Independent acceptance: INIT tests on both actual providers plus startup policy 
 
 Independent acceptance: real browser form plus durable state transitions; no mocked Identity authentication. LOGIN tests reference the contract's five-minute interaction/15-minute session policy.
 
-- [ ] T011 [US2] Add expiry/one-use/concurrent completion/session-replacement/current-eligibility/eight-interaction-limit tests under Issuer.Tests `Features/Protocol/InteractionTests.cs` and pure freshness/input tests under Host.Tests `Features/Accounts/`. LOGIN-003/004/005/008.
+- [ ] T011 [US2] Add expiry/one-use/concurrent completion/session-replacement/current-eligibility/eight-interaction-limit tests under Issuer.Tests `Features/Protocol/{Interaction,PasswordEntry,RequestBinding,InteractionRace}Tests.cs` and pure freshness/input tests under Host.Tests `Features/Accounts/`. LOGIN-003/004/005/008.
 - [ ] T012 [US2] Implement bound durable interaction/session/password/audit transitions and Razor feature-root discovery under AuthServer `Features/Accounts/Login/` and `Features/Accounts/Shared/`. LOGIN-003/004/008.
 - [ ] T013 [P] [US2] Implement canonical tokens/theme assets at `src/frontend/IdentityPlatform.DesignTokens/`, linked publish assets, accessible Razor shell/form/errors and strict CSP under AuthServer `Features/Accounts/`. LOGIN-007.
 - [ ] T014 [US2] Implement Minimal authorization decisions under AuthServer `Features/Protocol/Authorize/`: original cached request, exact browser/completed-session binding, prompt/max_age rules and one-use consume. LOGIN-002/004/005/006.
@@ -75,12 +75,12 @@ Chapter routing does not assert every chapter control applies or passes. Individ
 Assessment: nine LOGIN requirements, five SC criteria, twelve story acceptance scenarios, eight plan decision areas, all22 existing tasks and all18 constitution principles. Seven partial findings (six high, one medium); no new scope or acceptance relaxation. Draft status means missing evidence is not an asserted control pass.
 
 - [x] T023 ([execution plan](bootstrap-acceptance.md)) Complete persisted partial-record/descriptor/account-state conflicts, first-creation concurrency and audit-failure rollback in `Features/Protocol/BootstrapAcceptanceTests.cs`; verify neither provider repairs or partially initializes state, per LOGIN-001/008, US1/AC1–2 and T007/008 (partial, HIGH).
-- [ ] T024 Complete current eligibility at password entry, five-attempt lockout, cached-request overlay, delayed max_age, independent tabs and completion/consumption race evidence under Issuer.Tests `Features/Protocol/InteractionTests.cs`; execute added freshness/capacity/concurrent-completion cases on both providers, per LOGIN-003/004/005, US2/AC1–3 and T011–015 (partial, HIGH).
+- [x] T024 ([execution plan](interaction-acceptance.md)) Complete current eligibility at password entry, five-attempt lockout, cached-request overlay, delayed max_age, independent tabs and completion/consumption race evidence under Issuer.Tests `Features/Protocol/{Interaction,PasswordEntry,RequestBinding,InteractionRace}Tests.cs`; execute added freshness/capacity/concurrent-completion cases on both providers, per LOGIN-003/004/005, US2/AC1–3 and T011–015 (partial, HIGH).
 - [ ] T025 Complete account deletion, role addition, authorization revocation, unrelated-cookie subject isolation and lost-response exchange tests under Issuer.Tests `Features/Protocol/`; execute actual60s expiry and negative RP issuer/audience/type/signature/nonce controls, per LOGIN-005/006/009, US3/AC1–4 and T017/018 (partial, HIGH).
 - [ ] T026 Complete delayed-command/cancellation/rate/concurrency/log-sentinel tests, actual configuration-reload diagnostic guards and audit-failure consumption/bootstrap tests under Issuer.Tests `Features/Protocol/OperationsTests.cs` and Host.Tests `Features/Pilot/`; record native consumption outcomes and measured bounds, per LOGIN-008/009, SC-005 and T009/019 (partial, HIGH).
 - [ ] T027 Complete trusted/untrusted Chromium TLS controls, both-provider login/theme/error/system/freshness browser journeys, review deterministic visual baselines and wire Firefox/WebKit both-provider nightly/dependency execution in `.github/workflows/verify.yml` and Issuer.Tests `Features/Browser/`, per LOGIN-007/009, SC-004, plan browser cadence and T006/015/021 (partial, HIGH).
 - [ ] T028 Run seeded critical-decision mutations and exact-final-head static/assurance/supply-chain/unit/both-provider/browser/combined90/80 coverage; obtain evidence-based specialist dispositions in `verification.md`, per LOGIN-009, SC-001/002/003 and T020/021 (partial, HIGH).
-- [ ] T029 Reconcile requirement-to-test evidence, control-register references, roadmap/runbook/quickstart and PR readiness after T023–028; retain M01-E and all manual/external gates, per SC-003, constitution principles1/12/17/18 and T022 (partial, MEDIUM).
+- [ ] T029 Reconcile requirement-to-test evidence, control-register references, roadmap/runbook/quickstart and PR readiness after T023–028 and T030; retain M01-E and all manual/external gates, per SC-003, constitution principles1/12/17/18 and T022 (partial, MEDIUM).
 
 ## Review checkpoint and next delivery
 
@@ -88,3 +88,10 @@ PR #4's seven review findings are tracked in [verification](verification.md#pr-4
 
 
 T023 completion: [run38067841270](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38067841270) passed all seven gates for `7341d16b6fed3ef782827a9cc891ce4e9eebcf2a`, including49 new bootstrap cases on each provider and490 total .NET cases, with zero skips. See [verification](verification.md#t023-completed-ci-checkpoint). The next item is T024; T024–T029 and full feature acceptance remain open.
+
+
+## Phase 8 — Discovered acceptance work
+
+- [ ] T030 Resolve the concurrent browser-capacity gap in LoginInteractions.CreateAsync: two requests presenting seven active interactions can both allocate another. Implement and test an atomic eight-live-interaction budget consistent with LOGIN-004/plan/issuer contract, or obtain explicit approval for a concrete contract amendment. Cover simultaneous admission, completion/expiry capacity recovery, browser binding and both providers. Existing sequential capacity evidence is insufficient for the concurrent cap (partial, MEDIUM; discovered during T024 security review). Full M01-D acceptance remains blocked on this item.
+
+Current delivery: PR #5 squash-merged as `d4664a3` after final-head490-case CI and zero open findings. T024 is complete in [PR #6](https://github.com/mosesparadise/OpenIdentityAdmin/pull/6): [run38073502300](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38073502300) passed all seven gates and578 .NET cases with zero skips, including all44 new cases on each provider. PR #6 remains unmerged for review. T025 is next; T025–T030 remain outstanding, including the concurrent-capacity obligation.
