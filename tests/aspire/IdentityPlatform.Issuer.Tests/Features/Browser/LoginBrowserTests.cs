@@ -150,7 +150,42 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         await page.ReloadAsync();
         Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
         var baseline = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "Features", "Browser", "Baselines", $"login-{theme}-{width}.png"), TestContext.Current.CancellationToken);
-        Assert.True(SHA256.HashData(baseline).AsSpan().SequenceEqual(SHA256.HashData(screenshot)),
-            "The reviewed Chromium/Linux login baseline changed. Inspect the retained screenshot; do not automatically replace the baseline.");
+        var difference = await page.EvaluateAsync<Dictionary<string, int>>(ComparePixels, new[] { Convert.ToBase64String(baseline), Convert.ToBase64String(screenshot) });
+        Assert.Equal(1, difference["sameSize"]);
+        Assert.InRange(difference["maxDelta"], 0, 1);
+        Assert.InRange(difference["changedPixels"], 0, 100);
     }
+
+    // Decode pixels with the already-pinned browser. No image library or relaxed browser policy is required.
+    // Native select-border rasterization differed by one channel unit at30 pixels across CI runners.
+    private const string ComparePixels = """
+        async images => {
+            const decode = async base64 => {
+                const bytes = Uint8Array.from(atob(base64), value => value.charCodeAt(0));
+                const bitmap = await createImageBitmap(new Blob([bytes], {type: 'image/png'}));
+                const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+                const context = canvas.getContext('2d', {willReadFrequently: true});
+                context.drawImage(bitmap, 0, 0);
+                const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+                const result = {width: bitmap.width, height: bitmap.height, pixels};
+                bitmap.close();
+                return result;
+            };
+            const [expected, actual] = await Promise.all(images.map(decode));
+            if (expected.width !== actual.width || expected.height !== actual.height)
+                return {sameSize: 0, maxDelta: 255, changedPixels: 2147483647};
+            let maxDelta = 0, changedPixels = 0;
+            for (let index = 0; index < expected.pixels.length; index += 4) {
+                let changed = false;
+                for (let channel = 0; channel < 4; channel++) {
+                    const delta = Math.abs(expected.pixels[index + channel] - actual.pixels[index + channel]);
+                    maxDelta = Math.max(maxDelta, delta);
+                    changed ||= delta !== 0;
+                }
+                if (changed) changedPixels++;
+            }
+            return {sameSize: 1, maxDelta, changedPixels};
+        }
+        """;
+
 }
