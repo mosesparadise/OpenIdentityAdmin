@@ -9,6 +9,7 @@
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
     <ProjectReference Include="../../../src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
+    <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup><None Update="Features/Browser/Baselines/*.png" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>

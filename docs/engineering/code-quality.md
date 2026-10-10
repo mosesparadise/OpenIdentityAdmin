@@ -37,3 +37,7 @@ Unused imports (IDE0005) are checked with `dotnet format style --severity info -
 - Ignore checks verify local keys/IDE/build/test outputs are excluded while lock files, native migrations, Spec Kit files and AI configurations remain trackable. Public PEM test certificates can be deliberately admitted by a reviewed specific exception if a later feature needs them.
 
 See [quality verification](../../specs/002-issuer-foundation/verification-quality.md) and the PR's latest checks for actual execution evidence. CI enforcement does not claim that GitHub branch-protection settings were changed.
+
+## Pull request titles and squash commits
+
+Use Conventional Commits for every PR title: `type(scope): imperative description`, with an optional scope and `!` only for an actual breaking change documented in the body. Choose the type for the final change (`feat`, `fix`, `test`, `docs`, `refactor`, `perf`, `build`, `ci` or `chore`). For example: `feat(auth): add first-party login` or `test(auth): verify bootstrap conflicts and rollback`. Update the title when scope changes, and use that title for the squash commit. Do not rewrite already merged history to retrofit this convention.
