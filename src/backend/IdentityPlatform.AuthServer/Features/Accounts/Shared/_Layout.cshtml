@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>@ViewData["Title"] · IdentityPlatform</title>
+  <script nonce="@Context.Items["CspNonce"]" src="/assets/theme.js"></script>
+  <link rel="stylesheet" href="/assets/tokens.css" />
+  <link rel="stylesheet" href="/assets/login.css" />
+  <script nonce="@Context.Items["CspNonce"]" src="/assets/login.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <span class="wordmark"><span class="brand-mark" aria-hidden="true">I</span> IdentityPlatform</span>
+    <div class="header-tools"><span class="badge">Development</span><label id="theme-control" hidden>Theme <select id="theme" aria-label="Theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
+  </header>
+  <main id="main" tabindex="-1">@RenderBody()</main>
+  <footer>Protected access, thoughtfully designed.</footer>
+</body>
+</html>

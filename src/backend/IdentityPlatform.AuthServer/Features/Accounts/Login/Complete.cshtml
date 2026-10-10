@@ -1,0 +1,17 @@
+@page "/account/complete"
+@model IdentityPlatform.AuthServer.Features.Accounts.Login.CompleteModel
+@{ ViewData["Title"] = "Continue"; }
+<section class="card" aria-labelledby="heading">
+  @if (Model.ContinueUri is null)
+  {
+    <h1 id="heading">Start a new sign-in</h1>
+    <p>This sign-in request is no longer available. Return to your application and start again.</p>
+  }
+  else
+  {
+    <p class="eyebrow">You're signed in</p>
+    <h1 id="heading">One moment</h1>
+    <p>Continuing to IdentityPlatform pilot.</p>
+    <a class="primary" id="continue-link" href="@Model.ContinueUri">Continue to application <span aria-hidden="true">→</span></a>
+  }
+</section>

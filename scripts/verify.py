@@ -27,7 +27,8 @@ for project in projects:
         command += ["--filter-trait", "Category=Harness"]
     environment = os.environ.copy()
     environment["TESTINGPLATFORM_TELEMETRY_OPTOUT"] = "1"
-    if project == "AppHost":
+    environment["IDENTITY_TEST_ARTIFACTS"] = str(results)
+    if project in ("AppHost", "Issuer"):
         environment["DOTNET_ENVIRONMENT"] = "Development"
     report = results / f"{project}.trx"
     report.unlink(missing_ok=True)

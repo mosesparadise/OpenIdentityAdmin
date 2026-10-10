@@ -1,3 +1,4 @@
+using IdentityPlatform.AppHost.Features.Pilot;
 using IdentityPlatform.Core.Features.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -85,5 +86,7 @@ bff.WithEnvironment("Database__Provider", provider)
     .WithEnvironment("ConnectionStrings__adminsessions", sessionsRuntime)
     .WaitForCompletion(migrator)
     .WithHttpHealthCheck("/health", endpointName: "https");
+
+builder.AddPilot(auth, migrator, platformRuntime, provider);
 
 builder.Build().Run();

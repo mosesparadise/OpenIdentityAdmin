@@ -14,22 +14,27 @@
     },
     "Persistence": {
       "group": "persistence"
+    },
+    "Issuer": {
+      "group": "aspire"
     }
   },
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 116,
+      "Host": 178,
       "Architecture": 5,
-      "AppHost": 5
+      "AppHost": 8
     },
     "PostgreSql": {
       "Persistence": 3,
-      "AppHost": 4
+      "AppHost": 4,
+      "Issuer": 81
     },
     "SqlServer": {
       "Persistence": 3,
-      "AppHost": 4
+      "AppHost": 4,
+      "Issuer": 81
     }
   }
 }
