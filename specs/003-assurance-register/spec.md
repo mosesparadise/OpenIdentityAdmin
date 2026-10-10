@@ -2,7 +2,7 @@
 
 **Feature Branch**: `003-assurance-register`
 **Created**: 2026-10-10
-**Status**: Ready for planning; within approved v0.2 scope
+**Status**: Implemented; verification evidence recorded; PR review in progress
 **Input**: Continue the next roadmap item after PR #2: establish M01-C's official security control inventory, ownership, delivery links and truthful evidence tracking before the first login feature.
 
 ## User Scenarios & Testing

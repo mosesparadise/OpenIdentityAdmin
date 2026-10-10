@@ -1,0 +1,53 @@
+{
+  "scope": "Feature 003 initial full CI baseline; final provenance/review follow-up must use PR live checks",
+  "head": "9d21f7c2b8e963879c83ecc7cdc6b37afe17f069",
+  "run_id": 38053344105,
+  "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38053344105",
+  "jobs": {
+    "assurance": 114216752986,
+    "static": 114216752809,
+    "supply_chain": 114216752916,
+    "unit": 114216752926,
+    "PostgreSql": 114216752970,
+    "SqlServer": 114216753012,
+    "coverage": 114217835451
+  },
+  "counts": {
+    "dotnet": 165,
+    "assurance_regressions": 27,
+    "existing_gate_regressions": 19,
+    "skipped": 0
+  },
+  "artifacts": [
+    {
+      "id": 11670317116,
+      "name": "foundation-supply-chain",
+      "digest": "sha256:21819275641f84cc0072aa4fe498790c25075660b03a069c4968d3616dd80f5f",
+      "expires_at": "2026-10-17T12:49:47Z"
+    },
+    {
+      "id": 11670247817,
+      "name": "foundation-coverage",
+      "digest": "sha256:1c1bfbfc89bf822a2a57f12da98e525301c958c8c5b25e05def3cb7ec2d3d5a4",
+      "expires_at": "2026-10-17T12:55:13Z"
+    },
+    {
+      "id": 11670057594,
+      "name": "foundation-unit",
+      "digest": "sha256:b5d62d719b25ee87233e153174a9a22ee02b745bff94a3d7b0eab20188d9acc2",
+      "expires_at": "2026-10-17T12:50:32Z"
+    },
+    {
+      "id": 11669872970,
+      "name": "foundation-SqlServer",
+      "digest": "sha256:f2ae60f9350b0ffea721cfcc3f6ccd5e032014ba41f99068c882b48c3aba97ef",
+      "expires_at": "2026-10-17T12:54:56Z"
+    },
+    {
+      "id": 11669763040,
+      "name": "foundation-PostgreSql",
+      "digest": "sha256:8619f02ce61f69d08981ba0d1c5e866017d8e56cb8b80f24f03c96a905272ccc",
+      "expires_at": "2026-10-17T12:52:56Z"
+    }
+  ]
+}

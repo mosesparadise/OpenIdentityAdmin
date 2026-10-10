@@ -21,7 +21,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | Platform foundation, grouped layout, xUnit v3/MTP | Done for bounded scope | [Tasks](../specs/001-platform-foundation/tasks.md), [foundation evidence](../specs/001-platform-foundation/verification.md), [MTP/layout evidence](../specs/001-platform-foundation/verification-mtp-layout.md) | PR #1 merged |
 | Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | [PR #2](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2) squash-merged as `8079b5e` |
 | Configuration references, static analysis and this roadmap | Done | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Squash-merged in PR #2 as `8079b5e` |
-| Assurance register baseline | In progress | [Feature 003 tasks](../specs/003-assurance-register/tasks.md), [register](assurance/README.md) | New PR after #2 |
+| Assurance register baseline | Done for bounded scope | [Feature 003 tasks](../specs/003-assurance-register/tasks.md), [register](assurance/README.md) | [PR #3](https://github.com/mosesparadise/OpenIdentityAdmin/pull/3), open for review |
 | First-party login and S256 code flow | Planned after register baseline | [Complete issuer acceptance backlog](engineering/issuer-flow-backlog.md) | New feature/PR after #2 |
 
 ## Milestone 001 — Platform and issuer foundation (partial)
@@ -30,7 +30,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | --- | --- | --- |
 | M01-A | Done | Grouped solution/Features, native Identity/OpenIddict stores, both provider migrations, isolated Aspire, health/telemetry, test/report/coverage infrastructure and evaluated AI instructions. See feature 001 evidence. |
 | M01-B | Done | External distinct RSA credentials, encrypted issuer-specific DP, safe startup, reload/wrapper rollover and operator runbook. See feature 002. This does not prove cookie/code/token restart or public-key overlap. |
-| M01-C | Partial; baseline in progress | [Feature 003](../specs/003-assurance-register/spec.md) imports the complete official catalogue and adds register integrity checks. Final named ownership, applicability, normative crosswalks and product evidence remain pending. Determine applicability across L1–L3, create threat/control/requirement/evidence registers with owners and exceptions; maintain throughout delivery. Do not invent control identifiers or defer mapping until release. |
+| M01-C | Partial; baseline verified | [Feature 003](../specs/003-assurance-register/spec.md) imports the complete official catalogue and adds register integrity checks. Final named ownership, applicability, normative crosswalks and product evidence remain pending. Determine applicability across L1–L3, create threat/control/requirement/evidence registers with owners and exceptions; maintain throughout delivery. Do not invent control identifiers or defer mapping until release. |
 | M01-D | Planned next | One real non-administrator first-party login/S256 code flow: safe explicit synthetic bootstrap, protected themed Razor form, bound browser interactions, named authentication schemes, OpenIddict validation/crypto, Minimal API application decisions, current eligibility and deliberate claims. Prove discovery/JWKS, positive/negative protocol and browser journeys, code replay denial and single-winner concurrent redemption on both providers. |
 | M01-E | Planned | Real session/code/token restart and two-instance behavior; single-use code concurrency/replay; staged public JWKS and signing/encryption overlap/retirement. Retain every unbuilt ISS-001–012 acceptance item explicitly. |
 | M01-F | Planned | Pin compatible API-versioning/OpenAPI tooling; establish authoritative versioned Admin API and BFF contracts, Scalar/Swagger and generated-client/compatibility gates. Protocol routes remain unversioned. |
@@ -161,7 +161,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-22 engineering | Every task, M01-G | Ongoing |
 | FR-23 AI instructions | M01-A; evaluation per feature | Initial install/evaluation done; ongoing use |
 | FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: hosts/providers tested; browser/mail/federation absent |
-| FR-25 assurance | M01-C, M07-D, M09-D/E/F | Register baseline in progress; no assessed controls or certification |
+| FR-25 assurance | M01-C, M07-D, M09-D/E/F | Register baseline verified; no assessed controls or certification |
 | NFR-01 security findings | M01-C, feature controls/reviews, M09-D | Scoped checks exist; independent assessment pending |
 | NFR-02 equal providers | Every persistence/E2E task, M09-F | Partial |
 | NFR-03 reference workload | M09-C | Planned |

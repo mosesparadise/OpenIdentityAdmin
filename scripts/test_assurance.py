@@ -107,7 +107,7 @@ class AssuranceTests(unittest.TestCase):
     def test_manifest_identity_cannot_change(self):
         path = self.root / 'docs/assurance/catalogue.json'
         original = json.loads(path.read_text())
-        for key in ['version', 'commit', 'tag', 'url', 'path', 'row_count', 'section_count', 'chapter_count']:
+        for key in ['source', 'attribution', 'version', 'commit', 'tag', 'url', 'path', 'row_count', 'section_count', 'chapter_count', 'license', 'license_url']:
             with self.subTest(key=key):
                 obj = dict(original)
                 obj[key] = 'changed'

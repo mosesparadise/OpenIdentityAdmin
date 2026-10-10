@@ -34,7 +34,7 @@ Independent test: review that release tensions, ownership gaps and remaining ass
 ## Phase 6 — Verification and convergence
 
 - [x] T011 Execute scripts/check_assurance.py and scripts/test_assurance.py, existing tooling regressions and source/format checks; obtain architecture/test/compliance implementation review, resolve findings and record commands/results/limits in specs/003-assurance-register/verification.md (REG-001–006).
-- [ ] T012 Run Spec Kit convergence, publish the reviewable feature PR and inspect all required CI results; record the exact head and pending broader assurance work in specs/003-assurance-register/verification.md (REG-006).
+- [x] T012 Run Spec Kit convergence, publish the reviewable feature PR and inspect all required CI results; record the exact head and pending broader assurance work in specs/003-assurance-register/verification.md (REG-006).
 
 ## Dependencies and parallel opportunities
 

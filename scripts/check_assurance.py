@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = 'docs/assurance/'
 # Reviewed release trust anchor, independent of editable catalogue metadata.
 PIN = {
+    'source': 'OWASP Application Security Verification Standard',
+    'attribution': 'Copyright OWASP Foundation and ASVS contributors. Official catalogue reproduced unchanged. Local assessment and routing are project additions, not OWASP endorsement.',
     'version': '5.0.0', 'tag': 'v5.0.0_release',
     'commit': '5cf9b032440be53ce345ab3c130fda46ba1ce7a2',
     'url': 'https://raw.githubusercontent.com/OWASP/ASVS/5cf9b032440be53ce345ab3c130fda46ba1ce7a2/5.0/docs_en/OWASP_Application_Security_Verification_Standard_5.0.0_en.csv',
@@ -104,7 +106,6 @@ def validate(root=ROOT, today=None):
     manifest = read_json(root / BASE / 'catalogue.json')
     for key, expected in PIN.items():
         require(type(manifest.get(key)) is type(expected) and manifest[key] == expected, 'catalogue ' + key)
-    require(text(manifest.get('source')) and text(manifest.get('attribution')), 'catalogue attribution/source')
     require(calendar(manifest.get('acquired_on', ''), 'catalogue acquired_on') <= today, 'catalogue acquired_on future')
     source_path = local_file(root, PIN['path'], 'catalogue path')
     require(hashlib.sha256(source_path.read_bytes()).hexdigest() == PIN['sha256'], 'source digest mismatch')
