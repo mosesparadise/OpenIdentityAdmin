@@ -1,6 +1,7 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Authorize;
+using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
 using OpenIddict.Abstractions;
 
@@ -38,6 +39,7 @@ internal static class Setup
                 configuration.ClientAuthenticationMethods.Clear();
                 configuration.ClientAuthenticationMethods.Add(OpenIddictConstants.ClientAuthenticationMethods.ClientSecretBasic);
             });
+            options.AddFormExtractionProtection().AddTokenExtraction();
             options.EnableAuthorizationRequestCaching();
             options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();
         });
