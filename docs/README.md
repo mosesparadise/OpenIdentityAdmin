@@ -1,6 +1,6 @@
 # Approved documentation index
 
-Start with the living [delivery roadmap and task register](roadmap.md) for completed work, the next item, every remaining milestone, requirement mapping and external gates. [Code quality and squash-merge conventions](engineering/code-quality.md) describe repository enforcement.
+Start with the [current pilot evidence and gaps](../specs/004-first-party-login/acceptance-matrix.md) and the living [delivery roadmap and task register](roadmap.md) for completed work, the next item, every remaining milestone, requirement mapping and external gates. [Code quality and squash-merge conventions](engineering/code-quality.md) describe repository enforcement.
 
 Version 0.2 and amendment A-001 are approved; [approval.md](approval.md) is the authority record. The baseline snapshot retains its original status wording and is superseded by that approval. These documents specify the complete intended product, not the current implemented capability.
 

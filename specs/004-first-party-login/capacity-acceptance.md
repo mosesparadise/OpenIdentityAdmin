@@ -1,6 +1,6 @@
 # T030 atomic interaction capacity
 
-Status: implementation and local regression complete; full CI acceptance pending, 11 October 2026. This plan was recorded before production changes. The user authorized continuing after PR #11 squash-merged as `bdd45e5`; its final head passed all 17 checks and 793 ordinary cases in run 38140816571. T030 implements the existing LOGIN-004 eight-live-interaction limit, with LOGIN-008/009 and SC-001/003/005 verification. T029 follows a reviewed, verified squash merge. No acceptance threshold or approved scope changes.
+Status: accepted and squash-merged in PR #12 as `fca82fb`, 11 October 2026. Final head `4cdb043` passed all 17 checks/845 ordinary cases with zero failures/skips in run 38148540658; see the [current acceptance matrix](acceptance-matrix.md). Historical implementation checkpoints below retain their original scope. This plan was recorded before production changes. The user authorized continuing after PR #11 squash-merged as `bdd45e5`; its final head passed all 17 checks and 793 ordinary cases in run 38140816571. T030 implements the existing LOGIN-004 eight-live-interaction limit, with LOGIN-008/009 and SC-001/003/005 verification. T029 follows a reviewed, verified squash merge. No acceptance threshold or approved scope changes.
 
 Spec Kit: feature `004-first-party-login`, existing spec/plan/contracts/tasks and constitution reviewed; prerequisites pass, requirements checklist 7/7, no extension hooks. Preserve the grouped projects, Features hierarchy, explicit Setup classes and thin entry points.
 
@@ -39,8 +39,8 @@ Use synthetic identities and safe boolean/fixed-message assertions. Exercise the
 
 - [x] CAP-A Record independent architecture/security/test design dispositions and before-fix regression evidence.
 - [x] CAP-B Implement atomic admission, both migrations, compatibility contract and permanent boundary/fault regressions.
-- [ ] CAP-C Verify exact discovery, static/build, unit, both providers, all required browser cells, mutations and coverage; inspect safe evidence and resolve independent review findings.
-- [ ] CAP-D Update tasks/roadmap/runbook/evidence, create the Conventional Commit PR, verify its exact final head and review state, then squash-merge. Record final delivery on the PR to avoid a self-referential evidence-commit loop.
+- [x] CAP-C Verify exact discovery, static/build, unit, both providers, all required browser cells, mutations and coverage; inspect safe evidence and resolve independent review findings.
+- [x] CAP-D Update tasks/roadmap/runbook/evidence, create the Conventional Commit PR, verify its exact final head and review state, then squash-merge. Record final delivery on the PR to avoid a self-referential evidence-commit loop.
 
 Architecture and security design review accept the bounded design and confirm the snapshot race and the need for durable cohort ownership. Their findings add post-lock clock/native-expiry checks, server-side budget expiry, completion-versus-consumption distinction, legacy no-adoption rules and explicit stop/migrate/replace compatibility. Reviewers ran no tests. Independent architecture, security, test and performance source re-reviews accepted the corrections below; full provider/browser evidence review remains pending. This work does not complete T029, full M01-D/M01-E, manual accessibility or external certification; no ASVS assessment is promoted.
 

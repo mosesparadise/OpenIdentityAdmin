@@ -10,12 +10,14 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from datetime import date
+from datetime import date, timedelta
 
-from check_assurance import validate
+from check_assurance import local_file, validate
 
 ROOT = Path(__file__).resolve().parents[1]
-TODAY = date(2026, 10, 10)
+# Capture once: synthetic boundary cases stay relative to the same validation clock,
+# while real dated evidence must remain valid as the register evolves.
+TODAY = date.today()
 
 
 def clean_result(result):
@@ -37,6 +39,13 @@ class AssuranceTests(unittest.TestCase):
             reader = csv.DictReader(stream)
             self.fields = reader.fieldnames
             self.rows = list(reader)
+        references = {value for row in self.rows for field in ['implementation', 'evidence']
+                      for value in row[field].split('|') if value}
+        for reference in references:
+            source = local_file(ROOT, reference, 'fixture reference')
+            destination = self.root / reference
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, destination)
         self.assertEqual(345, validate(self.root, TODAY)['not_assessed'])
 
     def save(self, rows=None):
@@ -53,13 +62,13 @@ class AssuranceTests(unittest.TestCase):
         row = copy.deepcopy(self.rows[0])
         row.update(applicability='applicable', result=result,
                    implementation='synthetic evidence.md', evidence='synthetic evidence.md',
-                   evidence_date='2026-10-10', evidence_scope='Synthetic revision/configuration; no product assessment.',
-                   assessed_by='Synthetic reviewer', reviewed_on='2026-10-10',
+                   evidence_date=TODAY.isoformat(), evidence_scope='Synthetic revision/configuration; no product assessment.',
+                   assessed_by='Synthetic reviewer', reviewed_on=TODAY.isoformat(),
                    automated_tests='SYNTHETIC-001')
         if result in {'exception', 'not_applicable'}:
             row.update(exception_approver='Synthetic approver', exception_reason='Synthetic decision only.')
         if result == 'exception':
-            row['exception_expiry'] = '2026-10-10'
+            row['exception_expiry'] = TODAY.isoformat()
         if result == 'not_applicable':
             row['applicability'] = 'not_applicable'
         return row
@@ -242,7 +251,7 @@ class AssuranceTests(unittest.TestCase):
                     self.reject(field)
 
     def test_exception_expiry_and_risk(self):
-        for field, value in [('exception_expiry', ''), ('exception_expiry', '2026-10-09'), ('residual_risk', '')]:
+        for field, value in [('exception_expiry', ''), ('exception_expiry', (TODAY - timedelta(days=1)).isoformat()), ('residual_risk', '')]:
             with self.subTest(field=field, value=value):
                 rows = copy.deepcopy(self.rows)
                 rows[0] = self.assessed('exception')
@@ -258,13 +267,13 @@ class AssuranceTests(unittest.TestCase):
             self.save(rows)
             self.reject('exception metadata')
         rows[0] = self.assessed('not_applicable')
-        rows[0]['exception_expiry'] = '2026-10-10'
+        rows[0]['exception_expiry'] = TODAY.isoformat()
         self.save(rows)
         self.reject('exclusion expiry')
 
     def test_dates_are_canonical_real_and_not_future(self):
         for field in ['evidence_date', 'reviewed_on']:
-            for value in ['20261010', '2026-02-30', '2026-10-11', '2026-1-1']:
+            for value in ['20261010', '2026-02-30', (TODAY + timedelta(days=1)).isoformat(), '2026-1-1']:
                 with self.subTest(field=field, value=value):
                     rows = copy.deepcopy(self.rows)
                     rows[0][field] = value
@@ -278,7 +287,7 @@ class AssuranceTests(unittest.TestCase):
     def test_assessment_cannot_precede_evidence(self):
         rows = copy.deepcopy(self.rows)
         rows[0] = self.assessed()
-        rows[0]['reviewed_on'] = '2026-10-09'
+        rows[0]['reviewed_on'] = (TODAY - timedelta(days=1)).isoformat()
         self.save(rows)
         self.reject('chronology')
 

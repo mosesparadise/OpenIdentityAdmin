@@ -1,6 +1,6 @@
 # Foundation quickstart
 
-Use the SDK in `global.json`, Python 3.11+ and Docker-compatible containers. Both image registries must be reachable; SQL Server needs an x64 host with adequate memory. The AppHost uses disposable databases and separate per-run runtime passwords; there are no seeded administrator accounts or OAuth endpoints yet.
+Use the SDK in `global.json`, Python 3.11+ and Docker-compatible containers. Both image registries must be reachable; SQL Server needs an x64 host with adequate memory. The AppHost uses disposable databases and separate per-run runtime passwords; there are no seeded administrator accounts, and the default profile exposes no OAuth endpoints. The separately enabled [Development pilot](../../docs/operations/first-party-pilot.md) supplies the current login/code flow.
 
 ```sh
 dotnet tool restore
@@ -23,8 +23,8 @@ python3 scripts/verify.py PostgreSql
 python3 scripts/verify.py SqlServer
 ```
 
-All five projects use native xUnit v3/MTP; see the [runner and folder guide](../../docs/engineering/project-layout.md) for focused commands and trait filtering. `eng/test-matrix.json` records required case counts. These scripts require a current build and fail on unavailable dependencies. The distributed tests allocate independent endpoints/resources and use health deadlines. The local cloud environment's SQL download-host denial is recorded in [verification.md](verification.md); commands are not proof of execution.
+All test projects use native xUnit v3/MTP; see the [runner and folder guide](../../docs/engineering/project-layout.md) for focused commands and trait filtering. `eng/test-matrix.json` records required case counts. These scripts require a current build and fail on unavailable dependencies. The distributed tests allocate independent endpoints/resources and use health deadlines. The local cloud environment's SQL download-host denial is recorded in [verification.md](verification.md); commands are not proof of execution.
 
-To collect and merge coverage, mirror `.github/workflows/verify.yml`. The `dotnet-coverage` version is in `dotnet-tools.json`. Include all three profiles before calling the aggregate result complete. A missing child-host module or an under-covered module fails the gate; generated-code exclusions are in `eng/coverage-policy.json`.
+To collect and merge coverage, mirror `.github/workflows/verify.yml`. The `dotnet-coverage` version is in `dotnet-tools.json`. Include all required unit/provider and selected browser profiles before calling the aggregate result complete; the pilot expands the original foundation-only matrix. A missing child-host module or an under-covered module fails the gate; generated-code exclusions are in `eng/coverage-policy.json`.
 
-The NuGet-distributed Aspire DCP/dashboard package path is pinned and currently supported. CLI-bundle-only Aspire features are not used. Production provisioning, signing/encryption keys, backup/recovery, product users, browser authentication and release certification belong to their later approved features; this development AppHost cannot provision production principals.
+The NuGet-distributed Aspire DCP/dashboard package path is pinned and currently supported. CLI-bundle-only Aspire features are not used. Externally supplied signing/encryption credentials and bounded browser authentication are implemented in later features 002/004. Production provisioning, backup/recovery, administration and release certification remain pending; this development AppHost cannot provision production principals.

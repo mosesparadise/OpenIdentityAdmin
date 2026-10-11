@@ -4,7 +4,7 @@ This is the living view of **all approved work**, as of 11 October 2026. It supp
 
 **Current merged capability (`main`):** native persistence, both-provider migrations and default health-only Aspire hosts, strict xUnit v3/MTP/coverage/supply-chain gates, AI instructions, durable issuer credentials/encrypted Data Protection, and an explicitly enabled **Development-only first-party login/code-S256 pilot**. Full pilot acceptance is still in progress; production administration, Admin BFF/React and management APIs are not implemented.
 
-**Active delivery:** T030 [atomic interaction capacity](../specs/004-first-party-login/capacity-acceptance.md) is in progress; T029 evidence reconciliation follows its reviewed squash merge. [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) completed T027/T028 and squash-merged as `bdd45e5`: final head `5ec4367` passed all 17 checks/793 ordinary cases with zero failures/skips in [run 38140816571](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38140816571), alongside the focused regression, both mutation jobs and all coverage floors. [Accepted evidence and limits](../specs/004-first-party-login/verification.md#completed-corrected-source-acceptance-and-disposition) distinguish the theme correction from the expired A-002 exception. Full pilot/manual/external acceptance remains open.
+**Current delivery:** T029 source evidence reconciliation and independent review are complete; final-head checks and squash delivery are recorded on its PR. It follows completed T030. [PR #12](https://github.com/mosesparadise/OpenIdentityAdmin/pull/12) squash-merged atomic interaction capacity as `fca82fb`: final head `4cdb043` passed all 17 checks/845 ordinary cases with zero failures/skips in [run 38148540658](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38148540658), plus focused rendering, both mutation jobs and all coverage floors. The [current acceptance matrix](../specs/004-first-party-login/acceptance-matrix.md) separates tested behavior from the newly reconciled T031 transport and T032 authorization-state verification gaps. Those are the next implementation tasks, followed by remaining M01-D/manual work and M01-E/M01-F. T027's reproduced theme finding was corrected in PR #11; A-002 remains expired. Full pilot and release acceptance remain open.
 
 Milestone numbers below come from the approved product roadmap. Local Spec Kit feature numbers are increments: `001-platform-foundation` and `002-issuer-foundation` both contribute to **milestone 001**. They do not complete milestones 001 and 002.
 
@@ -24,7 +24,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | [PR #2](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2) squash-merged as `8079b5e` |
 | Configuration references, static analysis and this roadmap | Done | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Squash-merged in PR #2 as `8079b5e` |
 | Assurance register baseline | Done for bounded scope | [Feature 003 tasks](../specs/003-assurance-register/tasks.md), [register](assurance/README.md) | [PR #3](https://github.com/mosesparadise/OpenIdentityAdmin/pull/3) squash-merged as `df828d6` |
-| First-party login and S256 code flow | Partial; T027/T028 source acceptance complete | [Feature 004 spec](../specs/004-first-party-login/spec.md), [30 tasks and acceptance gaps](../specs/004-first-party-login/tasks.md), [current evidence](../specs/004-first-party-login/verification.md#current-delivery-checkpoint--11-october-2026), [full issuer backlog](engineering/issuer-flow-backlog.md) | Pilot and T023–T026 merged through PRs #4–#9. PR #10 merged under A-002; its contrast finding is corrected in [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11), alongside accepted T028 mutations. The PR records final documentation-head verification and squash delivery. T030 concurrent capacity and T029 reconciliation remain open. |
+| First-party login and S256 code flow | Partial; bounded implementation and T023–T028/T030 merged | [Feature 004 spec](../specs/004-first-party-login/spec.md), [32 tasks and acceptance gaps](../specs/004-first-party-login/tasks.md), [current evidence matrix](../specs/004-first-party-login/acceptance-matrix.md), [full issuer backlog](engineering/issuer-flow-backlog.md) | Pilot/operations through PRs #4–#9; corrected browser/mutation acceptance in PR #11 (`bdd45e5`); atomic capacity in PR #12 (`fca82fb`). T029 source reconciliation is complete, with final delivery on its PR; T031/T032 and manual/full-feature acceptance remain open. |
 | Explicit host and feature composition | Complete; merged | [Feature 005 spec](../specs/005-host-composition/spec.md), [plan](../specs/005-host-composition/plan.md), [14 completed tasks](../specs/005-host-composition/tasks.md), [evidence](../specs/005-host-composition/verification.md), [convention](engineering/host-composition.md) | [PR #8](https://github.com/mosesparadise/OpenIdentityAdmin/pull/8) squash-merged as `64d8ceb`; final head `3241d15` passed all seven gates in [run38090792266](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38090792266), including603 cases with zero skips and all nine coverage floors |
 
 ## Milestone 001 — Platform and issuer foundation (partial)
@@ -34,7 +34,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | M01-A | Done | Grouped solution/Features, native Identity/OpenIddict stores, both provider migrations, isolated Aspire, health/telemetry, test/report/coverage infrastructure and evaluated AI instructions. See feature 001 evidence. |
 | M01-B | Done | External distinct RSA credentials, encrypted issuer-specific DP, safe startup, reload/wrapper rollover and operator runbook. See feature 002. This does not prove cookie/code/token restart or public-key overlap. |
 | M01-C | Partial; baseline verified | [Feature 003](../specs/003-assurance-register/spec.md) imports the complete official catalogue and adds register integrity checks. Final named ownership, applicability, normative crosswalks and product evidence remain pending. Determine applicability across L1–L3, create threat/control/requirement/evidence registers with owners and exceptions; maintain throughout delivery. Do not invent control identifiers or defer mapping until release. |
-| M01-D | In progress, feature 004 | One real non-administrator first-party login/S256 code flow: safe explicit synthetic bootstrap, protected themed Razor form, bound browser interactions, named authentication schemes, OpenIddict validation/crypto, Minimal API application decisions, current eligibility and deliberate claims. Prove discovery/JWKS, positive/negative protocol and browser journeys, code replay denial and single-winner concurrent redemption on both providers. |
+| M01-D | Partial, feature 004 | One real non-administrator first-party login/S256 code flow: safe explicit synthetic bootstrap, protected themed Razor form, bound browser interactions, named authentication schemes, OpenIddict validation/crypto, Minimal API application decisions, current eligibility and deliberate claims. These implemented paths have both-provider evidence. T031/T032 must close the remaining specified HTTP transport/current-authorization denials; qualified manual UI acceptance and full convergence remain open. |
 | M01-E | Planned | Real session/code/token restart and two-instance behavior; single-use code concurrency/replay; staged public JWKS and signing/encryption overlap/retirement. Retain every unbuilt ISS-001–012 acceptance item explicitly. |
 | M01-F | Planned | Pin compatible API-versioning/OpenAPI tooling; establish authoritative versioned Admin API and BFF contracts, Scalar/Swagger and generated-client/compatibility gates. Protocol routes remain unversioned. |
 | M01-G | Done | Adapt reference configuration, enforce static analysis/formatting, document the full roadmap, and adopt squash merges. Seeded rule failures and both-provider regression passed; see [quality evidence](../specs/002-issuer-foundation/verification-quality.md). |
@@ -141,14 +141,14 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | Requirement | Owning tasks | Current product status |
 | --- | --- | --- |
 | FR-01 applications | M04-A/E | Planned |
-| FR-02 client profiles | M01-D, M02-B, M04-B/E, M07-A/B/D | Planned |
+| FR-02 client profiles | M01-D, M02-B, M04-B/E, M07-A/B/D | Partial: one fixed confidential S256 pilot client; management and remaining profiles planned |
 | FR-03 credentials | M04-C/E, M07-A | Planned |
-| FR-04 scopes/audiences/claims | M03-A/B/C, M06-A/B | Planned |
+| FR-04 scopes/audiences/claims | M01-D, M03-A/B/C, M06-A/B | Partial: one pilot resource/scope and deliberate claims; management planned |
 | FR-05 users | M05-A/B, M06-B/C | Planned |
 | FR-06 roles/permissions | M02-A/D, M05-A | Planned |
-| FR-07 account/authenticator journeys | M01-D, M02-A, M05-B/C, M07-C | Planned |
+| FR-07 account/authenticator journeys | M01-D, M02-A, M05-B/C, M07-C | Partial: synthetic password login/lockout; administrator MFA, enrollment and recovery planned |
 | FR-08 consent/grants | M06-A/C | Planned |
-| FR-09 protocol | M01-D/E, M02-B/C, M03-C, M06-B, M07-A/B/C/D | Planned; credential groundwork is not protocol acceptance |
+| FR-09 protocol | M01-D/E, M02-B/C, M03-C, M06-B, M07-A/B/C/D | Partial: genuine pilot code/S256 flow and denials; T031/T032, M01-E and broader protocols remain |
 | FR-10 access visibility/revocation | M06-C | Planned |
 | FR-11 BFF/API protection | M02-A/B/C/D/E | Planned |
 | FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: pilot security transitions have atomic audit evidence; administration audit remains planned |
@@ -160,7 +160,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-18 installation/recovery | M01-A/B/E, M02-A, M09-B | Partial: local schemas/provisioning and DP; production operations unfinished |
 | FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared tokens/themed Razor pilot; React and full manual acceptance remain planned |
 | FR-20 later parity | M10-A | Outside R1 |
-| FR-21 comprehensive tests | Every task, M09-F | Partial: implemented scope tested |
+| FR-21 comprehensive tests | Every task, M09-F | Partial: 845-case accepted pilot checkpoint; named T031/T032 gaps and full product/manual matrix remain |
 | FR-22 engineering | Every task, M01-G | Ongoing |
 | FR-23 AI instructions | M01-A; evaluation per feature | Initial install/evaluation done; ongoing use |
 | FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: hosts/providers and pilot browser journeys tested; mail/federation pending |
@@ -173,10 +173,10 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | NFR-06 RPO/RTO | M01-B/E, M09-B | Building blocks only; timed recovery pending |
 | NFR-07 availability | M09-B/C/E | Deployment/operating evidence required |
 | NFR-08 no secret leakage | Every feature, M02, M04-C/E, M09-D/E/F | Scoped evidence exists |
-| NFR-09 usability/accessibility | Every UI, M09-A | Planned |
+| NFR-09 usability/accessibility | Every UI, M09-A | Partial: pilot keyboard/reflow/automated accessibility; qualified manual assessment and timed journeys pending |
 | NFR-10 retention | M08-A/B, M09-E | Planned |
 | NFR-11 traceability/coverage | Every task, M01-C, M09-F | Partial |
-| NFR-12 visual/browser regression | Feature/nightly gates, M09-A/F | T027 pilot browser source acceptance is complete with the reproduced WebKit defect corrected; PR #11 records final documentation-head checks and squash delivery. Wider product regression remains planned |
+| NFR-12 visual/browser regression | Feature/nightly gates, M09-A/F | T027 pilot browser work is merged with its reproduced WebKit defect corrected; PR #12 reverified all six browser cells. Wider product/manual acceptance remains planned |
 | NFR-13 independent assurance | M01-C, M07-D, M09-D | Planned; Basic OP external dependency |
 | NFR-14 reproducibility/contracts | M01-A/F, M02-E, M04-D, M09-F | Foundation evidence exists |
 

@@ -1,6 +1,16 @@
 # First-party issuer pilot
 
-Feature 004 is a Development-only, non-administrator integration pilot. Its acceptance status and outstanding checks are in the [verification record](../../specs/004-first-party-login/verification.md). It does not complete production authentication, the administrator BFF, React administration, MFA, consent or certification.
+Feature 004 is a Development-only, non-administrator integration pilot. Its [current acceptance matrix](../../specs/004-first-party-login/acceptance-matrix.md) records merged implementation through PR #12, executed tests and remaining T031/T032/manual gaps; the [verification record](../../specs/004-first-party-login/verification.md) retains history. It does not complete production authentication, the administrator BFF, React administration, MFA, consent or certification.
+
+## Windows with WSL2
+
+Run the pilot and its .NET/Docker commands **inside a Linux WSL2 distribution**. The current private credential/key-ring adapter rejects non-Linux platforms. Use a Linux working directory such as `~/work/OpenIdentityAdmin`; keep private PFX/key-ring material outside the repository on the WSL Linux filesystem, not under `/mnt/c`. Follow the protection runbook's directory/file modes (0700 and 0600/0400). Windows ACLs on a mounted drive are not a substitute for that adapter's checks.
+
+Enable Docker Desktop's Linux engine and integration for that distribution, or use a supported Docker engine in WSL2. Confirm `docker info` from the same WSL shell. SQL Server's pinned image requires an appropriate x64 container host and adequate memory. Install the SDK selected by `global.json`, Python 3.11+ and the explicit pinned browser dependencies in WSL. First run the default health-only AppHost from the [README](../../README.md#local-foundation); it requires no pilot account or issuer-key provisioning. Stopping AppHost removes its disposable database state.
+
+HTTPS trust has separate consumers. Trust the ASP.NET development certificate in WSL's .NET/OpenSSL trust, preserving existing system roots; browser tests also require the exact Linux Chromium/NSS, Firefox and WebKit setup in `.github/workflows/verify.yml`. If opening the Aspire dashboard from a **Windows** browser, import only the exported public development certificate into that user's appropriate Windows trust store according to local policy. Linux trust does not automatically establish Windows trust. Never export an issuer private PFX for browser trust or disable certificate checks. Use the authenticated `https://localhost:17100` dashboard link printed by AppHost; normal WSL localhost forwarding must work. This is operating guidance, not a claim of an executed Windows/WSL2 manual assessment.
+
+For the controlled login journey, the automated issuer/browser suites below provision their own synthetic credentials, callback server and temporary issuer material. A manually started pilot requires the private configuration below **and a separately configured HTTPS relying party**. There is no shipped interactive test-client URL or Admin BFF yet.
 
 ## Enable and initialize
 
@@ -39,13 +49,15 @@ dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build 
 python3 scripts/verify.py unit
 python3 scripts/verify.py PostgreSql
 python3 scripts/verify.py SqlServer
+python3 scripts/verify.py PostgreSql --browser chromium
+python3 scripts/verify.py SqlServer --browser chromium
 ```
 
 Trust the local HTTPS development certificate in both .NET and the browser trust store before provider runs. The CI workflow provisions OpenSSL and NSS trust explicitly. Never set `IgnoreHTTPSErrors`, accept every certificate, substitute an unpinned browser, or silently skip a blocked provider. The fixture keeps its test client on `127.0.0.1` and issuer on `localhost`; the development certificate must cover both, and host-only cookies remain separate.
 
 Tests generate private temporary issuer material, synthetic passwords and disposable databases. Tokens, state, nonce and verifier stay in the test client server. Browser responses contain only protocol code/state at the registered callback and a sanitized completion message. Screenshots capture empty login pages; do not capture filled credentials. Teardown attempts every resource, checks captured container/process removal, and removes private fixture files. Required runs fail on missing browser/provider infrastructure.
 
-The normal workflow also runs static analysis, assurance integrity, advisory/license/secret checks and combined per-module90% line/80% branch coverage. Partial HTTP runs are useful diagnostics but do not replace browser or provider matrix acceptance. Manual assistive-technology/password-manager checks and external certification remain separate release obligations.
+The [validation quickstart](../../specs/004-first-party-login/quickstart.md) adds Firefox/WebKit, the focused regression and mutation commands. The normal workflow also runs static analysis, assurance integrity, advisory/license/secret checks and combined per-module90% line/80% branch coverage. Partial HTTP runs are useful diagnostics but do not replace browser or provider matrix acceptance. Manual assistive-technology/password-manager checks and external certification remain separate release obligations.
 
 ## Failure and lifecycle boundaries
 
@@ -61,6 +73,6 @@ For the T030 schema upgrade, stop the Development pilot, run the Migrator for th
 
 ## Safe pilot incident diagnostics
 
-An unexpected request failure that can still return a response produces503 with a random `X-Identity-Incident` identifier. Find Warning event1001 under `IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection` using that same identifier. Its application payload is only `Pilot request failed. Incident {IncidentId}.`; it contains no exception, URL, OAuth state, account or credential. Do not enable suppressed framework categories to investigate a failure. Deployment logging sinks/enrichment require their own secrecy checks (T026 remains open).
+An unexpected request failure that can still return a response produces503 with a random `X-Identity-Incident` identifier. Find Warning event1001 under `IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection` using that same identifier. Its application payload is only `Pilot request failed. Incident {IncidentId}.`; it contains no exception, URL, OAuth state, account or credential. Do not enable suppressed framework categories to investigate a failure. T026 verified the configured pilot formatter/filter/reload and process-log paths; additional deployment sinks/enrichment require their own secrecy assessment.
 
 Successful replacement records `session-replacement/revoked` alongside the password-verification intent in the same transaction. Its `local-session-digest` target is SHA-256 of the revoked opaque session identifier, not the raw cookie/session value. Treat this stable pseudonymous identifier as restricted audit data; it is not anonymization. No replacement event is emitted for initial login or a session row that was already revoked. Audit failure prevents the replacement and preserves the previous session.
