@@ -1,6 +1,6 @@
 # Delivery roadmap and task register
 
-This is the living view of **all approved work**, as of 10 October 2026. It supplements the immutable [v0.2 plan](approved-v0.2/06-spec-kit-plan.md), [PRD](approved-v0.2/00-prd.md) and [approval record](approval.md). Dates are status dates, not delivery estimates. No estimate is invented before a feature's dependencies and acceptance work are understood.
+This is the living view of **all approved work**, as of 11 October 2026. It supplements the immutable [v0.2 plan](approved-v0.2/06-spec-kit-plan.md), [PRD](approved-v0.2/00-prd.md) and [approval record](approval.md). Dates are status dates, not delivery estimates. No estimate is invented before a feature's dependencies and acceptance work are understood.
 
 **Current merged capability (`main`):** native persistence, both-provider migrations and default health-only Aspire hosts, strict xUnit v3/MTP/coverage/supply-chain gates, AI instructions, durable issuer credentials/encrypted Data Protection, and an explicitly enabled **Development-only first-party login/code-S256 pilot**. Full pilot acceptance is still in progress; production administration, Admin BFF/React and management APIs are not implemented.
 
@@ -149,19 +149,19 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-09 protocol | M01-D/E, M02-B/C, M03-C, M06-B, M07-A/B/C/D | Planned; credential groundwork is not protocol acceptance |
 | FR-10 access visibility/revocation | M06-C | Planned |
 | FR-11 BFF/API protection | M02-A/B/C/D/E | Planned |
-| FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: safe foundation logs; product atomic audit absent |
+| FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: pilot security transitions have atomic audit evidence; administration audit remains planned |
 | FR-13 rules/dashboard | M08-B | Planned |
 | FR-14 federation | M05-D | Planned |
 | FR-15 keys/inventory | M01-B/E, M08-C, M09-B | Partial: credential/protection adapter |
 | FR-16 API/docs/contracts | M01-F, M04-D | Planned |
 | FR-17 provider equivalence | M01-A, every affected feature, M09-B/F | Partial: implemented scope tested |
 | FR-18 installation/recovery | M01-A/B/E, M02-A, M09-B | Partial: local schemas/provisioning and DP; production operations unfinished |
-| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Planned |
+| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared tokens/themed Razor pilot; React and full manual acceptance remain planned |
 | FR-20 later parity | M10-A | Outside R1 |
 | FR-21 comprehensive tests | Every task, M09-F | Partial: implemented scope tested |
 | FR-22 engineering | Every task, M01-G | Ongoing |
 | FR-23 AI instructions | M01-A; evaluation per feature | Initial install/evaluation done; ongoing use |
-| FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: hosts/providers tested; browser/mail/federation absent |
+| FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: hosts/providers and pilot browser journeys tested; mail/federation pending |
 | FR-25 assurance | M01-C, M07-D, M09-D/E/F | Register baseline verified; no assessed controls or certification |
 | NFR-01 security findings | M01-C, feature controls/reviews, M09-D | Scoped checks exist; independent assessment pending |
 | NFR-02 equal providers | Every persistence/E2E task, M09-F | Partial |
@@ -174,7 +174,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | NFR-09 usability/accessibility | Every UI, M09-A | Planned |
 | NFR-10 retention | M08-A/B, M09-E | Planned |
 | NFR-11 traceability/coverage | Every task, M01-C, M09-F | Partial |
-| NFR-12 visual/browser regression | Feature/nightly gates, M09-A/F | Native CI exists; browser matrix absent |
+| NFR-12 visual/browser regression | Feature/nightly gates, M09-A/F | Pilot browser matrix implemented; final T027 evidence pending, wider product regression remains planned |
 | NFR-13 independent assurance | M01-C, M07-D, M09-D | Planned; Basic OP external dependency |
 | NFR-14 reproducibility/contracts | M01-A/F, M02-E, M04-D, M09-F | Foundation evidence exists |
 

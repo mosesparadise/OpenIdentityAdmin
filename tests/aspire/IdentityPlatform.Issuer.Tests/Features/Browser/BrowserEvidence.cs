@@ -4,7 +4,8 @@ namespace IdentityPlatform.Issuer.Tests.Features.Browser;
 
 internal enum BrowserPhase
 {
-    Journey, Creation, Ready, TrustedIssuer, TrustedRelyingParty, UntrustedCertificate
+    Journey, Creation, Ready, TrustedIssuer, TrustedRelyingParty, UntrustedCertificate,
+    CredentialEntry, CredentialSubmission, ManualContinuation, Callback, StorageInspection
 }
 
 internal static class BrowserEvidence

@@ -30,13 +30,13 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             var ownerFlow = environment.RelyingParty.Prepare(exchange: true);
             await ownerPage.GotoAsync(environment.RelyingParty.StartUri(ownerFlow).AbsoluteUri);
             var ownerId = await ownerPage.Locator("input[name=Interaction]").InputValueAsync();
-            await using var other = await BrowserSession.CreateAsync();
+            await using var other = change == "foreign-interaction" ? await BrowserSession.CreateAsync() : null;
             var page = ownerPage;
             var flow = ownerFlow;
             var context = owner.Context;
             if (change == "foreign-interaction")
             {
-                page = await other.Context.NewPageAsync();
+                page = await other!.Context.NewPageAsync();
                 context = other.Context;
                 flow = environment.RelyingParty.Prepare(exchange: true);
                 await page.GotoAsync(environment.RelyingParty.StartUri(flow).AbsoluteUri);

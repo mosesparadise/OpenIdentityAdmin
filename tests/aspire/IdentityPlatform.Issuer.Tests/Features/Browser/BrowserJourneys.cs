@@ -16,6 +16,9 @@ internal static class BrowserJourneys
 
     public static async Task LoginAsync(IPage page, IssuerEnvironment environment, TestFlow flow, bool javaScript = true)
     {
+        BrowserEvidence.Mark(BrowserPhase.CredentialEntry);
+        // Model the user selecting the tab before entering credentials; background-tab scheduling differs by engine.
+        await page.BringToFrontAsync();
         var callbackNavigations = 0;
         var credentialSnapshots = 0;
         void ObserveCallback(object? sender, IRequest request)
@@ -42,14 +45,17 @@ internal static class BrowserJourneys
         });
         await page.Locator("#username").FillAsync(environment.Username);
         await page.Locator("#password").FillAsync(environment.Password);
+        BrowserEvidence.Mark(BrowserPhase.CredentialSubmission);
         await page.Locator("#password").PressAsync("Enter");
         if (!javaScript)
         {
+            BrowserEvidence.Mark(BrowserPhase.ManualContinuation);
             await Assertions.Expect(page.Locator("#continue-link")).ToBeVisibleAsync();
             var target = await page.Locator("#continue-link").GetAttributeAsync("href");
             Assert.True(target is not null && new Uri(environment.Issuer, target).GetLeftPart(UriPartial.Authority) == environment.Issuer.GetLeftPart(UriPartial.Authority), "Manual continuation must remain on the issuer origin.");
             await page.Locator("#continue-link").ClickAsync();
         }
+        BrowserEvidence.Mark(BrowserPhase.Callback);
         await page.WaitForURLAsync(environment.RelyingParty.Callback + "**");
         Assert.True(await flow.Completion.Task.WaitAsync(TimeSpan.FromSeconds(15), TestContext.Current.CancellationToken), "The relying party must independently validate the code exchange.");
         Assert.Equal(1, Volatile.Read(ref credentialSnapshots));
@@ -63,6 +69,8 @@ internal static class BrowserJourneys
 
     public static async Task RequireNoTokensAsync(IPage page, IBrowserContext context, IssuerEnvironment environment, params TestFlow[] flows)
     {
+        BrowserEvidence.Mark(BrowserPhase.StorageInspection);
+        await page.BringToFrontAsync();
         await RequireEmptyStorageAsync(page);
         var state = await context.StorageStateAsync(new()
         {

@@ -9,14 +9,14 @@ The user requested this organization on 10 October 2026 (FND-009/010). Physical 
 | `src/core` | `IdentityPlatform.Core`: transport/provider-independent policy and configuration |
 | `src/migrations` | `IdentityPlatform.Migrator`, `IdentityPlatform.Migrations.PostgreSql`, `IdentityPlatform.Migrations.SqlServer`: controlled schema changes |
 | `src/persistence` | `IdentityPlatform.Infrastructure`: native Identity/OpenIddict contexts, provider registration and schema readiness |
-| `src/frontend` | Reserved React/TypeScript admin client; README is a solution item until the application is implemented |
+| `src/frontend` | Shared `IdentityPlatform.DesignTokens` assets used by the Razor pilot; React/TypeScript admin client remains planned |
 | `tests/architecture` | `IdentityPlatform.Architecture.Tests`: dependency and native model boundaries |
-| `tests/aspire` | `IdentityPlatform.AppHost.Tests`: distributed lifecycle and harness checks |
+| `tests/aspire` | `IdentityPlatform.AppHost.Tests`: distributed lifecycle/harness; `IdentityPlatform.Issuer.Tests`: real HTTP/protocol/database and browser journeys |
 | `tests/backend` | `IdentityPlatform.Host.Tests`: host configuration, health and telemetry |
 | `tests/core` | `IdentityPlatform.Core.Tests`: core policy/configuration |
 | `tests/persistence` | `IdentityPlatform.Persistence.Tests`: real database/native-manager behavior |
 
-The BFF stays in backend: it holds browser sessions and tokens server-side. Future STS Razor Pages stay in AuthServer. This reorganization creates no new runtime capability and changes no native schema or migration history. The approved v0.2 snapshots and earlier evidence retain historical paths; current quickstart commands use this layout.
+The BFF stays in backend: it holds browser sessions and tokens server-side. STS Razor Pages live in AuthServer; the Development-only pilot already uses the shared theme. The original grouping change created no runtime capability or schema changes; later feature increments are recorded separately. The approved v0.2 snapshots and earlier evidence retain historical paths; current quickstart commands use this layout.
 
 ## Native MTP
 

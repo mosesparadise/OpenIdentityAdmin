@@ -2,7 +2,7 @@
 
 A greenfield administration platform built with OpenIddict and ASP.NET Core Identity. The approved product includes client/resource and user/role management, security, auditing and operational health through a React/TypeScript Admin BFF and a Razor Pages authentication service.
 
-**Current state: foundation verified; product features remain in development.** This branch contains native persistence, provider migrations, safe configuration/health, optional durable issuer protection, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. Hosts currently expose operational health only. Login/token issuance, the usable BFF, management APIs, React/Razor themes and Scalar/Swagger are later approved slices, not completed capabilities. This is not a deployable or certified identity product.
+**Current state: foundation verified; product features remain in development.** This branch contains native persistence, provider migrations, safe configuration/health, optional durable issuer protection, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. The default profile exposes operational health only. An explicitly enabled Development-only pilot supports a themed Razor login and an OpenIddict S256 authorization-code flow; its full acceptance remains in progress. The usable Admin BFF, management APIs, React client and Scalar/Swagger remain planned. This is not a deployable or certified identity product.
 
 ## Approved design
 
@@ -38,7 +38,7 @@ dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=
 dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=SqlServer
 ```
 
-The dashboard uses `https://localhost:17100`. Use its generated authenticated login link printed locally. Each application receives a dynamically allocated HTTPS endpoint. Only `/alive` and `/health` are currently available. On Linux, follow the dev-certificate tool's `SSL_CERT_DIR` guidance while preserving the system trust directory; see the [quickstart](specs/001-platform-foundation/quickstart.md).
+The dashboard uses `https://localhost:17100`. Use its generated authenticated login link printed locally. Each application receives a dynamically allocated HTTPS endpoint. The default profile exposes `/alive` and `/health`; the separate Development-only login pilot requires explicit configuration from its [quickstart](specs/004-first-party-login/quickstart.md). On Linux, follow the dev-certificate tool's `SSL_CERT_DIR` guidance while preserving the system trust directory; see the [quickstart](specs/001-platform-foundation/quickstart.md).
 
 The dedicated migrator initializes the two stores and provisions separate runtime principals for disposable local development. Runtime hosts do not receive migration credentials. Admin BFF receives only session-store credentials. Production keys, database principals and hosting are not created by this AppHost. AuthServer can load an explicitly configured durable protection profile; its private Linux storage requirements and wrapping-certificate rollover are in the [protection runbook](docs/operations/issuer-protection.md). Credential-enabled Aspire verification injects synthetic external material; the ordinary local profile remains health-only.
 
@@ -72,4 +72,4 @@ SPECIFY_FEATURE_DIRECTORY="$PWD/specs/001-platform-foundation" \
   .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
 ```
 
-Features live within their owning projects. Composition roots and generated migrations are explicit exceptions. Protocol application decisions will use Minimal APIs while OpenIddict owns validation and cryptography. Eight specialized skills and reviewer configurations complement Spec Kit; [their evaluation](docs/engineering/ai-evaluation.md) is bounded evidence, not security or certification assurance.
+Features live within their owning projects. Composition roots and generated migrations are explicit exceptions. The pilot uses Minimal APIs for protocol application decisions while OpenIddict owns validation and cryptography. Eight specialized skills and reviewer configurations complement Spec Kit; [their evaluation](docs/engineering/ai-evaluation.md) is bounded evidence, not security or certification assurance.
