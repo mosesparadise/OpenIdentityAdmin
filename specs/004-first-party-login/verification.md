@@ -2,6 +2,12 @@
 
 Status: implementation in progress; full acceptance pending. Partial executed evidence below does not establish release readiness or a control pass.
 
+## Current delivery checkpoint — 11 October 2026
+
+T026 is merged in PR #9. T027 remains open in [PR #10](https://github.com/mosesparadise/OpenIdentityAdmin/pull/10): the historical PostgreSQL/WebKit dark/error contrast finding is not reproduced and its cause is undetermined. The diagnostic/control corrections are independently reviewed; current exact-head CI is tracked on the PR. T028 has not started because the user requires each task's reviewed squash merge before the next task. T029/T030 and manual/external acceptance remain separate open work.
+
+Required current scope is 749 .NET cases across all six browser/provider cells (24 per browser cell), with zero skips and the unchanged nine module coverage floors. Passing diagnostic probes do not by themselves resolve the historical finding. The following sections preserve chronological evidence, including superseded completion checkpoints.
+
 ## Handoff
 
 PR #3 was squash-merged to main as `df828d6f7a38ca142f44e4e7b4caac3a2be9df19` after checking head `a76789c1503e811b9704d7df46cbbe264e867e0b`, all seven successful checks and resolved review threads. GitHub rejected self-approval (422); normal squash merge succeeded, without bypass. Baseline:165 .NET /46 Python regressions and nine covered modules; these are PR #3 results, not feature004 results.
@@ -351,4 +357,6 @@ Independent test review closed three source findings: each scalar/chained/unknow
 
 Independent UX review calculated substantial contrast margins for the intended token pairs (primary light/dark 6.29/5.98, error 5.91/8.51; calculated hover brightness remains above 4.5). These are source calculations, not rendered acceptance. Inspection of pinned axe 4.13.0 found synchronous color-contrast evaluation after an immediately resolved default external-internals microtask; a native `pageshow` event cannot interrupt that sequence. Therefore an artificially asynchronous scan hook would not reproduce this execution path and is not introduced. Neither an arbitrary wait nor a product-color change is justified by this evidence.
 
-A separate low-priority LOGIN-007 follow-up was identified: `login.js` replaces the submit button's `textContent` on `pageshow`, deleting the Razor decorative `aria-hidden` arrow span. The button retains a meaningful name and no unusable action or specific WCAG failure was demonstrated. Track a focused accessible-name/submit/reset regression and individually reviewed pixels when correcting it; this is not the cause or resolution of the historical contrast finding. T027/BR-05 remain open, and T028 still follows the reviewed squash merge.
+A separate low-priority LOGIN-007 follow-up was identified: `login.js` replaces the submit button's `textContent` on `pageshow`, deleting the Razor decorative `aria-hidden` arrow span. The button retains a meaningful name and no unusable action or specific WCAG failure was demonstrated. Track a focused accessible-name/submit/reset regression and individually reviewed pixels when correcting it; this has not been linked to the historical contrast finding and does not resolve it. T027/BR-05 remain open, and T028 still follows the reviewed squash merge.
+
+The completed `ec1f442` browser matrix in [run 38119857707](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38119857707) passed 23/24 in every cell, with zero skips; the only failure was the corrected static control page. All application probes passed. The 100-context WebKit invocations, including added hover/pointer-away scans, took PostgreSQL 9m 21.102s and SQL Server 10m 17.683s under the unchanged 660-second bound. These timings are diagnostic harness evidence, not product performance measurements or resolution of the historical contrast finding. The control/hover review corrections need their own exact-head CI; current results are tracked on PR #10.
