@@ -25,9 +25,9 @@ Chromium × PostgreSQL/SQL Server is required on every PR and main push. Firefox
 ## Acceptance checklist
 
 - [x] BR-01 Review this bounded design for test completeness, architecture, security and UX/Aspire execution cost.
-- [ ] BR-02 Implement browser selection/trust controls and strict test/CI partition with regression checks.
-- [ ] BR-03 Implement meaningful error, theme, terminal recovery and freshness journeys on both providers.
-- [ ] BR-04 Inspect and approve every new canonical baseline; retain accessibility/manual limits.
+- [x] BR-02 Implement browser selection/trust controls and strict test/CI partition with regression checks.
+- [ ] BR-03 Implement meaningful error, theme, terminal recovery, freshness and browser-boundary journeys on both providers.
+- [x] BR-04 Inspect and approve every new canonical baseline; retain accessibility/manual limits.
 - [ ] BR-05 Pass static, assurance, supply-chain, unit, HTTP providers, six selected browser cells and combined coverage with zero skips; correct independent and GitHub findings.
 - [ ] BR-06 Record exact source evidence, publish a Conventional Commit PR and squash its verified final head before T028.
 
@@ -36,3 +36,9 @@ No automated result constitutes complete WCAG conformance or password-manager/sc
 Design dispositions: independent architecture, test, security and UX/Aspire reviewers accepted this bounded design. Incorporated explicit engine trust, test-identity partition validation, fail-closed cadence, known-user lockout isolation, same-tab issuer storage checks, token canaries kept only in the test RP, pre-continuation session/time oracles, and sanitized browser failures. Added two representative terminal layouts and JavaScript-disabled manual continuation. These are source-design dispositions; execution remains pending.
 
 First binary feedback: Firefox does not honor NSS peer trust as a trust anchor. Its private profile now imports the exact synthetic certificate with `C,,`, while Chromium retains `P,,`; unrelated certificate rejection remains mandatory. No global Firefox policy or product trust changes. Chromium/WebKit exposed a redirected-request interception mistake in the freshness oracle; observe the newly initiated resumed authorization instead, require one unconsumed credential snapshot and nonempty session/time.
+
+Browser-source acceptance: all six17-case provider/browser cells passed with zero skips at `cb1f628` in [run38097427534](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38097427534). This includes Firefox explicit-anchor trust plus rejection of the valid unrelated-CA leaf, genuine credential-event snapshots, no-JavaScript continuation and repeated canonical image comparisons. BR-05/06 remain pending full HTTP provider/coverage evidence and final PR merge.
+
+## Final requirement reconciliation before closure
+
+Re-reading T015 and US2 AC2–3 identified named browser-boundary obligations currently proven only through HttpClient. Close them in this same T027 increment before checking completion: missing/invalid antiforgery, another browser's interaction with its own valid antiforgery context, authenticated concurrent tabs retaining independent correlations, and a completed tab safely denied after session replacement. Use real browser forms/cookies/continuation/callbacks, fixed safe assertions and genuine recovery; no new product hook. Establish an initial session before the two simultaneously pending successful tabs, because anonymous forms correctly become invalid after their antiforgery identity changes. Cover stale completed continuation separately with JavaScript disabled and the genuine manual link. Five additional cases per provider/engine make22 browser cases, retaining181 HTTP cases and the660-second deadline. The earlier17-case browser checkpoint remains valid historical evidence but does not close this reconciled scope.
