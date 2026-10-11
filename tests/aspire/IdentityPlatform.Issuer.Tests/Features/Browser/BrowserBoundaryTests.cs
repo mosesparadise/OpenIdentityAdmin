@@ -91,12 +91,15 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             var first = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             BrowserEvidence.Mark(BrowserPhase.FirstTabNavigation);
             await firstPage.GotoAsync(environment.RelyingParty.StartUri(first).AbsoluteUri);
+            var firstAntiforgery = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == "__Host-pilot-antiforgery").Value;
             var secondPage = await session.Context.NewPageAsync();
             var second = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             BrowserEvidence.Mark(BrowserPhase.SecondTabNavigation);
             await secondPage.GotoAsync(environment.RelyingParty.StartUri(second).AbsoluteUri);
             var firstId = await firstPage.Locator("input[name=Interaction]").InputValueAsync();
             var secondId = await secondPage.Locator("input[name=Interaction]").InputValueAsync();
+            var secondAntiforgery = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == "__Host-pilot-antiforgery").Value;
+            Assert.True(firstAntiforgery.Length > 0 && firstAntiforgery == secondAntiforgery, "Opening another pending form must preserve the first form's antiforgery cookie.");
             Assert.True(firstId != secondId && first.State != second.State && first.Nonce != second.Nonce, "Tabs must retain independent request bindings.");
             await BrowserJourneys.LoginAsync(firstPage, environment, first, role: BrowserJourneyRole.FirstTab);
             var cookies = await session.Context.CookiesAsync();
