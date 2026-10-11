@@ -33,20 +33,23 @@ public sealed class InteractionAcceptanceGroup : ICollectionFixture<IssuerFixtur
 [CollectionDefinition("exchange-acceptance", DisableParallelization = true)]
 public sealed class ExchangeAcceptanceGroup : ICollectionFixture<IssuerFixture>;
 
+[CollectionDefinition("transport-acceptance", DisableParallelization = true)]
+public sealed class TransportAcceptanceGroup : ICollectionFixture<IssuerFixture>;
+
 public sealed class IssuerFixture : IAsyncLifetime
 {
-    private readonly Dictionary<string, IssuerEnvironment> environments = new(StringComparer.Ordinal);
+    private readonly Dictionary<(string Provider, bool HttpProbe), IssuerEnvironment> environments = new();
     public ValueTask InitializeAsync() => ValueTask.CompletedTask;
 
-    public async Task<IssuerEnvironment> GetAsync(string provider)
+    public async Task<IssuerEnvironment> GetAsync(string provider, bool httpProbe = false)
     {
-        if (environments.TryGetValue(provider, out var existing))
+        if (environments.TryGetValue((provider, httpProbe), out var existing))
         {
             Assert.False(existing.Invalidated, "Earlier state restoration failed; refusing to reuse the issuer.");
             return existing;
         }
-        var environment = await IssuerEnvironment.CreateAsync(provider, TestContext.Current.CancellationToken);
-        environments.Add(provider, environment);
+        var environment = await IssuerEnvironment.CreateAsync(provider, TestContext.Current.CancellationToken, httpProbe);
+        environments.Add((provider, httpProbe), environment);
         return environment;
     }
 
@@ -87,6 +90,10 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     public string ClientSecret { get; } = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
     public string Username { get; } = "pilot.user";
     public Uri Issuer { get; private set; } = null!;
+    public Uri? HttpProbe
+    {
+        get; private set;
+    }
     public TestRelyingParty RelyingParty => relyingParty!;
     public IServiceProvider Services => services!;
     public DistributedApplication Application => application!;
@@ -96,12 +103,12 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     }
     public void Invalidate() => Invalidated = true;
 
-    public static async Task<IssuerEnvironment> CreateAsync(string provider, CancellationToken cancellationToken)
+    public static async Task<IssuerEnvironment> CreateAsync(string provider, CancellationToken cancellationToken, bool httpProbe = false)
     {
         var environment = new IssuerEnvironment();
         try
         {
-            await environment.StartAsync(provider, cancellationToken);
+            await environment.StartAsync(provider, httpProbe, cancellationToken);
             return environment;
         }
         catch
@@ -115,7 +122,7 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         }
     }
 
-    private async Task StartAsync(string provider, CancellationToken cancellationToken)
+    private async Task StartAsync(string provider, bool httpProbe, CancellationToken cancellationToken)
     {
         using var startup = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         startup.CancelAfter(TimeSpan.FromMinutes(3));
@@ -124,6 +131,17 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         builder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.IdentityPlatform_AppHost>(
             ["--environment=Development", $"--Database:Provider={provider}", "--Pilot:Enabled=true"], startup.Token);
         var auth = builder.CreateResourceBuilder<ProjectResource>("auth");
+        Assert.All(auth.Resource.Annotations.OfType<EndpointAnnotation>(), endpoint => Assert.Equal("https", endpoint.UriScheme));
+        Assert.DoesNotContain(auth.Resource.Annotations.OfType<EndpointAnnotation>(), endpoint => endpoint.Name == "transport-http");
+        if (httpProbe)
+        {
+            // Test-only listener: exercise the real HTTPS requirement without altering the canonical issuer.
+            auth.WithHttpEndpoint(name: "transport-http");
+            var endpoint = Assert.Single(auth.Resource.Annotations.OfType<EndpointAnnotation>(), endpoint => endpoint.Name == "transport-http");
+            endpoint.TargetHost = "127.0.0.1";
+            Assert.Equal("127.0.0.1", endpoint.TargetHost);
+        }
+        Assert.Equal(httpProbe ? 1 : 0, auth.Resource.Annotations.OfType<EndpointAnnotation>().Count(endpoint => endpoint.UriScheme == "http"));
         // Real child-process diagnostics must withstand provider/category overrides and console scopes.
         auth.WithEnvironment("Logging__LogLevel__OpenIddict", "Trace")
             .WithEnvironment("Logging__Console__LogLevel__OpenIddict.Server", "Trace")
@@ -155,6 +173,9 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         await application.ResourceNotifications.WaitForResourceHealthyAsync("auth", startup.Token);
         lifecycle = LifecycleEvidence.Capture(application);
         Issuer = application.GetEndpoint("auth", "https");
+        HttpProbe = httpProbe ? application.GetEndpoint("auth", "transport-http") : null;
+        Assert.True(HttpProbe is null || (HttpProbe.IsLoopback && HttpProbe.Scheme == Uri.UriSchemeHttp),
+            "The plaintext transport probe must remain a loopback-only test endpoint.");
         relyingParty.Issuer = Issuer;
         var connection = await application.GetConnectionStringAsync("platform", startup.Token);
         databaseProvider = DatabaseProviderParser.Parse(provider);
