@@ -1,6 +1,6 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **restart design confirmed; implementation pending review**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
+Status: **restart implemented; final both-provider/CI acceptance pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
@@ -8,28 +8,28 @@ Status: **restart design confirmed; implementation pending review**. Approved ba
 - [x] T002 Resolve the user's project/solution-folder and PR-sequencing choices in `plan.md`; finalize source-sharing ownership and exact runner/coverage design before code. Complete `checklists/requirements.md` and Spec Kit analysis.
 - [x] T003 Independently review the concrete design with architecture, security and test/Aspire reviewers; record findings/dispositions in `verification.md`. Source research is not a runtime pass.
 
-## Phase 2 — Restart foundation (proposed PR 1)
+## Phase 2 — Restart foundation (PR #17)
 
-- [ ] T004 Add `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/IdentityPlatform.Issuer.Lifecycle.Tests.csproj`, its package lock and matching Aspire test solution grouping after T002. Reuse native MTP and explicit source-linked fixture support under `Fixtures/`; do not inherit an executable test project or copy browser test cases. LIFE-009.
-- [ ] T005 Separate reusable issuer environment support from old xUnit collection declarations in the existing `tests/aspire/IdentityPlatform.Issuer.Tests/Fixtures/` and link only the required environment/RP/form/protection sources into the chosen project. Preserve original suite identities/behavior and credential lifetime ownership. LIFE-001/009.
-- [ ] T006 Add `Fixtures/IssuerProcessLifecycle.cs` and extend shared `LifecycleEvidence.cs` for accumulated process generations, explicit stop/start, stable issuer/store proof, failure-path capture and bounded cleanup. Test stale-health/no-op/reused-PID predicates with meaningful controls. LIFE-001/008/009.
-- [ ] T007 Wire the lifecycle invocation into `eng/test-matrix.json`, `scripts/verify.py`, exact provider discovery/name gates and `.github/workflows/verify.yml`/coverage evidence as required by the selected design. Keep every existing case and the unchanged 660s invocation deadline; test omitted/skipped/duplicate/wrong-provider evidence rejection. LIFE-009.
+- [x] T004 Add `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/IdentityPlatform.Issuer.Lifecycle.Tests.csproj`, its package lock and matching Aspire test solution grouping after T002. Reuse native MTP and explicit source-linked fixture support under `Fixtures/`; do not inherit an executable test project or copy browser test cases. LIFE-009.
+- [x] T005 Separate reusable issuer environment support from old xUnit collection declarations in the existing `tests/aspire/IdentityPlatform.Issuer.Tests/Fixtures/` and link only the required environment/RP/form/protection sources into the chosen project. Preserve original suite identities/behavior and credential lifetime ownership. LIFE-001/009.
+- [x] T006 Add `Fixtures/IssuerProcessLifecycle.cs` and extend shared `LifecycleEvidence.cs` for accumulated process generations, explicit stop/start, stable issuer/store proof, failure-path capture and bounded cleanup. Test stale-health/no-op/reused-PID and orphaned-child predicates plus concurrent accumulation with meaningful controls. LIFE-001/008/009.
+- [x] T007 Wire the lifecycle invocation into `eng/test-matrix.json`, `scripts/verify.py`, exact provider discovery/name gates and `.github/workflows/verify.yml`/coverage evidence as required by the selected design. Keep every existing case and the unchanged 660s invocation deadline; test omitted/skipped/duplicate/wrong-provider evidence rejection. LIFE-009.
 
-## Phase 3 — US1 restart acceptance (proposed PR 1)
+## Phase 3 — US1 restart acceptance (PR #17)
 
-- [ ] T008 Implement `Features/Restart/SessionContinuityTests.cs`: original eligible cookie via controlled silent flow, pending original antiforgery form, completed continuation and browser-binding negatives; prohibit automatic credential fallback. LIFE-001/002/004/008, RST-01/02/03.
-- [ ] T009 Implement `Features/Restart/CodeContinuityTests.cs`: exact unredeemed code survival, wrong-proof control, previously redeemed but still-unexpired native replay denial/revocation, original-code actual expiry and valid recovery. Capture native identity/expiry without emitting secrets. LIFE-003/005, RST-04/05/08.
-- [ ] T010 Implement `Features/Restart/ProtectionContinuityTests.cs`: old token bytes validated using fresh post-restart public JWKS and new tokens validated with retained public keys; tamper/wrong-key controls; populated-ring missing-wrapper failure and safe recovery. LIFE-004/008, RST-06/09.
-- [ ] T011 Implement `Features/Restart/EligibilityContinuityTests.cs`: preexisting session expiry/revocation and representative account restriction, including a committed restriction while auth is stopped; both positive controls and explicit fresh recovery. LIFE-005, RST-07.
+- [x] T008 Implement `Features/Restart/SessionContinuityTests.cs`: original eligible cookie via controlled silent flow, pending original antiforgery form, completed continuation and browser-binding negatives; prohibit automatic credential fallback. LIFE-001/002/004/008, RST-01/02/03.
+- [x] T009 Implement `Features/Restart/CodeContinuityTests.cs`: exact unredeemed code survival, wrong-proof control, previously redeemed but still-unexpired native replay denial/revocation, original-code actual expiry and valid recovery. Capture native identity/expiry without emitting secrets. LIFE-003/005, RST-04/05/08.
+- [x] T010 Implement `Features/Restart/ProtectionContinuityTests.cs`: old token bytes validated using fresh post-restart public JWKS and new tokens validated with retained public keys; tamper/wrong-key controls; populated-ring missing-wrapper failure and safe recovery. LIFE-004/008, RST-06/09.
+- [x] T011 Implement `Features/Restart/EligibilityContinuityTests.cs`: preexisting session expiry/revocation and representative account restriction, including a committed restriction while auth is stopped; both positive controls and explicit fresh recovery. LIFE-005, RST-07.
 - [ ] T012 Run focused actual-provider experiments and full normal required gates, record failures before fixes, case identities/counts, timing margin, teardown, source/merge trees and independent source/evidence reviews in `verification.md`. Update `docs/roadmap.md`, `docs/engineering/issuer-flow-backlog.md` and `docs/operations/issuer-protection.md`; normally squash-merge the reviewed restart PR. LIFE-009/010. Mark only US1 accepted if it passes.
 
-## Phase 4 — US2 two-instance behavior (proposed PR 2; not started)
+## Phase 4 — US2 two-instance behavior (PR 2; not started)
 
 - [ ] T013 Write `contracts/distribution.md` and a detailed implementation plan for canonical HTTPS routing, node provenance, shared store/DP material, explicit topology and trust boundaries before changing AppHost/test composition. Confirm structural changes; independently review. LIFE-006/008.
 - [ ] T014 Implement `Features/Distribution/` and required `Fixtures/` topology support: cross-node original form/antiforgery/cookie/continuation/code, concurrent code winner/replay consequences, committed eligibility and surviving-node cases. Use actual processes with provable dispatch, no generic mutation retries. LIFE-002/003/005/006/008.
 - [ ] T015 Execute both providers, full required regression/coverage and independent reviews; update `verification.md`, roadmap/backlog/runbook and squash-merge the distribution PR. M01-E remains partial while overlap is pending. LIFE-009/010.
 
-## Phase 5 — US3 staged key overlap (proposed PR 3; not started)
+## Phase 5 — US3 staged key overlap (PR 3; not started)
 
 - [ ] T016 Write `contracts/key-lifecycle.md` and detailed plan for backward-compatible active/staged/retiring configuration, signing prepublication, explicit selection, retained decryption, per-artifact lifetime/skew/cache retirement bounds and operator rollback/rollout; independently review native library behavior before implementation. LIFE-007/008.
 - [ ] T017 Implement only the reviewed credential/protocol/composition changes under existing production `Features/Issuer/` and `Features/Protocol/` plus `Features/KeyRotation/` tests. Prove publish→activate→overlap→safe-retire and premature-removal negatives on both real provider topologies. Native crypto/validation remains library-owned. LIFE-004/007/008.

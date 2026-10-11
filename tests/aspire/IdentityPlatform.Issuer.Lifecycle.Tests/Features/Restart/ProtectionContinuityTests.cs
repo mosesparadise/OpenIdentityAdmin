@@ -25,6 +25,10 @@ public sealed class ProtectionContinuityTests(LifecycleFixture fixture)
         await environment.RestartIssuerAsync();
         var current = new JsonWebKeySet(await http.GetStringAsync(new Uri(environment.Issuer, "/connect/jwks"), TestContext.Current.CancellationToken));
         Assert.True(PublicKeys(retained).SetEquals(PublicKeys(current)), "Restart changed public signing material.");
+        var privateControl = new JsonWebKeySet();
+        var publicKey = current.Keys[0];
+        privateControl.Keys.Add(new JsonWebKey { Kty = "RSA", N = publicKey.N, E = publicKey.E, Oth = { "synthetic-private-component" } });
+        Assert.ThrowsAny<Exception>(() => PublicKeys(privateControl));
         Assert.True((await environment.RelyingParty.ValidateAsync(original.RootElement, evidence.Flow, TestContext.Current.CancellationToken)).Length == 0,
             "Original token bytes failed fresh metadata/public-key validation.");
         using var recovery = IssuerEnvironment.CreateBrowserClient();
@@ -65,7 +69,7 @@ public sealed class ProtectionContinuityTests(LifecycleFixture fixture)
     {
         Assert.NotEmpty(keys.Keys);
         Assert.True(keys.Keys.All(key => key.Kty == "RSA" && string.IsNullOrEmpty(key.D) && string.IsNullOrEmpty(key.P) && string.IsNullOrEmpty(key.Q) &&
-            string.IsNullOrEmpty(key.DP) && string.IsNullOrEmpty(key.DQ) && string.IsNullOrEmpty(key.QI) && string.IsNullOrEmpty(key.K) && !string.IsNullOrEmpty(key.N) && !string.IsNullOrEmpty(key.E)),
+            string.IsNullOrEmpty(key.DP) && string.IsNullOrEmpty(key.DQ) && string.IsNullOrEmpty(key.QI) && string.IsNullOrEmpty(key.K) && key.Oth.Count == 0 && !string.IsNullOrEmpty(key.N) && !string.IsNullOrEmpty(key.E)),
             "JWKS must contain public RSA signing material only.");
         return keys.Keys.Select(key => JsonSerializer.Serialize(new { key.Kid, key.Kty, key.Alg, key.Use, key.N, key.E, key.X5c })).ToHashSet(StringComparer.Ordinal);
     }

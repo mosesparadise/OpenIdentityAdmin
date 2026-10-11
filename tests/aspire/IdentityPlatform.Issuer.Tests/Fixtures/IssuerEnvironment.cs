@@ -36,7 +36,7 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     private IDistributedApplicationTestingBuilder? builder;
     private ServiceProvider? services;
     private TestRelyingParty? relyingParty;
-    private LifecycleEvidence? lifecycle;
+    private readonly LifecycleEvidenceRecorder lifecycle = new();
     private DatabaseProvider databaseProvider;
     private string runtimeConnection = "";
     private IConfiguration runtimeConfiguration = null!;
@@ -280,8 +280,7 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
 
     private void CaptureLifecycle()
     {
-        var current = LifecycleEvidence.Capture(Application);
-        lifecycle = lifecycle is null ? current : lifecycle.Merge(current);
+        lifecycle.Add(LifecycleEvidence.Capture(Application));
     }
 
     public async ValueTask DisposeAsync()
@@ -317,9 +316,9 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
             await Attempt(() => builder.DisposeAsync().AsTask());
         }
         await Attempt(() => { credentials.Dispose(); return Task.CompletedTask; });
-        if (lifecycle is not null)
+        if (lifecycle.Snapshot is { } captured)
         {
-            await Attempt(lifecycle.AssertRemovedAsync);
+            await Attempt(captured.AssertRemovedAsync);
         }
         Assert.False(failed || Invalidated, "Issuer cleanup failed or the environment was invalidated; every remaining resource was still attempted.");
     }

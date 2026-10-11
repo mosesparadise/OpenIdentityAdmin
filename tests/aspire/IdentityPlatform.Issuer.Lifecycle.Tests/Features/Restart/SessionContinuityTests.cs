@@ -1,8 +1,8 @@
 using System.Net;
-using Microsoft.AspNetCore.WebUtilities;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Features.Restart;
 

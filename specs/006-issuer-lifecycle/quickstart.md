@@ -1,7 +1,38 @@
-# Lifecycle verification quickstart — pending implementation
+# Lifecycle verification quickstart
 
-No lifecycle test project or command exists yet. Use the established [pilot quickstart](../004-first-party-login/quickstart.md) for the existing suite and [issuer protection runbook](../../docs/operations/issuer-protection.md) for its durable-key prerequisites. These commands do not prove M01-E.
+This is a synthetic automated test harness, not a production restart command or the interactive pilot UI. Use Linux or Windows with WSL2, the pinned .NET SDK, Docker, and trusted development HTTPS as described in the [pilot quickstart](../004-first-party-login/quickstart.md). PostgreSQL and SQL Server run as isolated real containers. The [issuer protection runbook](../../docs/operations/issuer-protection.md) explains the existing durable-key requirements.
 
-The planned lifecycle harness uses the pinned SDK, Linux/WSL2 private key adapter, real PostgreSQL and SQL Server, trusted development HTTPS and ephemeral Aspire environments. It replaces only the issuer child while retaining databases and private material, then verifies all process/container cleanup. Do not use production identities or secrets, disable TLS, increase artifact lifetimes or restart the entire disposable AppHost to simulate issuer continuity.
+From the repository root:
 
-The exact project/runner/CI commands and report paths will be documented during implementation of the confirmed dedicated project. First acceptance is planned for restart continuity; two-node and overlap cases remain separate pending work under the confirmed three-PR sequence. The [plan](plan.md) records the proposed cases and gates. No manual Windows/assistive-technology, backup-restore, two-node or key-rotation evidence is claimed by this draft.
+```bash
+dotnet tool restore
+dotnet restore --locked-mode
+dotnet build --no-restore --nologo
+python3 scripts/test_lifecycle_selection.py
+```
+
+The ordinary provider runner includes the existing persistence/AppHost/issuer cases and the separate lifecycle invocation. It verifies exact discovered/executed test identities and rejects missing, skipped, duplicated or contradictory results:
+
+```bash
+python3 scripts/verify.py PostgreSql
+python3 scripts/verify.py SqlServer
+```
+
+CI collects child-process coverage around each complete profile with `dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/<provider>.cobertura.xml -f cobertura python3 scripts/verify.py <provider>`. It retains the existing nine required coverage inputs and module floors. Every provider invocation remains bounded by 660 seconds and its whole CI job by 20 minutes.
+
+For a focused development experiment, use the exact project and explicit provider selection:
+
+```bash
+dotnet test --project tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/IdentityPlatform.Issuer.Lifecycle.Tests.csproj \
+  --no-build --no-restore --no-progress --pre-enumerate-theories on \
+  --filter 'Provider=PostgreSql' --report-trx --report-trx-filename Issuer.Lifecycle.trx \
+  --results-directory artifacts/tests/PostgreSql
+```
+
+Replace `PostgreSql` with `SqlServer` for the other provider. A focused command is diagnostic only: it does not run the complete profile, exact discovery/evidence gates, browser regression or coverage acceptance. The runner expects 13 lifecycle cases per provider, with no browser cases. Required reports are `artifacts/tests/<provider>/Issuer.Lifecycle.trx`.
+
+The harness replaces only the issuer child while retaining its original origin, database containers, completed migrator/bootstrap generations, HTTPS relying party, private files and populated DP ring. It verifies old-process exit, new generation, fresh health and a real HTTPS response. It tests original artifacts; a fresh credential login cannot substitute for old-cookie continuity. Native authorization-code lifetime remains 60 seconds. Failed setup/restart invalidates the environment; required cases cannot silently skip or retry.
+
+All application generations and containers must be removed before private material is disposed. Do not use production identities/secrets, disable TLS, enlarge artifact lifetimes, or restart the entire disposable AppHost as a substitute for issuer continuity. Do not publish raw diagnostic output containing local infrastructure details.
+
+Restart acceptance is pending the evidence in [verification.md](verification.md). Two-node and key-rotation cases are later sequential PRs; no Windows assistive-technology, backup restore, production RTO or certification acceptance follows from this harness.

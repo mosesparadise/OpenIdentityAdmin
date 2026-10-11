@@ -9,6 +9,7 @@ using IdentityPlatform.AppHost.Tests.Features;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace IdentityPlatform.Issuer.Tests.Fixtures;
 
@@ -24,6 +25,8 @@ public sealed partial class IssuerEnvironment
         var auth = Application.Services.GetRequiredService<DistributedApplicationModel>().Resources.Single(value => value.Name == "auth");
         var before = LifecycleEvidence.Capture(Application);
         var old = CaptureIssuerProcess();
+        var originalTree = ProcessTreeEvidence.Capture(old.Id);
+        var originalServer = ProcessTreeEvidence.RequireExecutable(originalTree, "IdentityPlatform.AuthServer");
         var oneShots = OneShotSnapshot();
         var material = ProtectionSnapshot();
         var issuer = Issuer;
@@ -37,6 +40,7 @@ public sealed partial class IssuerEnvironment
             await Application.ResourceNotifications.WaitForResourceAsync("auth", change =>
                 change.Snapshot.State?.Text == KnownResourceStates.Exited || change.Snapshot.State?.Text == KnownResourceStates.Finished, token);
             Assert.True(HasExited(old), "The original issuer process did not exit.");
+            await ProcessTreeEvidence.WaitForTerminationAsync(originalTree, token);
             if (whileStopped is not null)
             {
                 await whileStopped(token);
@@ -49,10 +53,16 @@ public sealed partial class IssuerEnvironment
             CaptureLifecycle(); // Capture the new generation before readiness can fail.
             var current = CaptureIssuerProcess();
             LifecycleEvidence.RequireReplacement(old, current, HasExited(old));
-            await Application.ResourceNotifications.WaitForResourceHealthyAsync("auth", token);
+            await Application.ResourceNotifications.WaitForResourceAsync("auth", change =>
+                change.Snapshot.State?.Text == KnownResourceStates.Running && !change.Snapshot.HealthReports.IsEmpty &&
+                change.Snapshot.HealthReports.All(report => LifecycleEvidence.HasFreshHealth(current.Started, report.LastRunAt, report.Status == HealthStatus.Healthy)), token);
             using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
             using var ready = await http.GetAsync(new Uri(issuer, "/health"), token);
             Assert.Equal(HttpStatusCode.OK, ready.StatusCode);
+            var replacementTree = ProcessTreeEvidence.Capture(current.Id);
+            var replacementServer = ProcessTreeEvidence.RequireExecutable(replacementTree, "IdentityPlatform.AuthServer");
+            Assert.True(replacementServer != originalServer, "The actual AuthServer child was not replaced.");
+            CaptureLifecycle();
             Assert.True(Application.GetEndpoint("auth", "https") == issuer && RelyingParty.Callback == callback,
                 "Restart changed the canonical issuer or registered callback.");
             var after = LifecycleEvidence.Capture(Application);
@@ -113,6 +123,7 @@ public sealed partial class IssuerEnvironment
             }, deadline.Token);
             using var probeCancellation = CancellationTokenSource.CreateLinkedTokenSource(deadline.Token);
             var probe = ObserveReadinessAsync(probeCancellation.Token);
+            var reachedReadiness = false;
             try
             {
                 Assert.True((await commands.ExecuteCommandAsync(auth, KnownResourceCommands.StartCommand, deadline.Token)).Success,
@@ -141,8 +152,16 @@ public sealed partial class IssuerEnvironment
             finally
             {
                 await probeCancellation.CancelAsync();
-                Assert.False(await probe, "Invalid populated protection ring reached HTTP readiness.");
+                await deadline.CancelAsync();
+                try
+                {
+                    await observed;
+                }
+                catch (OperationCanceledException) when (deadline.IsCancellationRequested) { /* Drain the owned state observer. */ }
+                catch (Exception) { Invalidate(); } // Preserve the primary start/observation failure.
+                reachedReadiness = await probe;
             }
+            Assert.False(reachedReadiness, "Invalid populated protection ring reached HTTP readiness.");
         }
         finally
         {
@@ -161,6 +180,7 @@ public sealed partial class IssuerEnvironment
             {
                 try
                 {
+                    CaptureLifecycle();
                     using var response = await http.GetAsync(new Uri(Issuer, "/health"), cancellationToken);
                     ready |= response.IsSuccessStatusCode;
                 }

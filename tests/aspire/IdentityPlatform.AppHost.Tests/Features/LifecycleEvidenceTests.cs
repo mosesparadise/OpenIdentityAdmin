@@ -1,5 +1,6 @@
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
+using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.AppHost.Tests.Features;
 
@@ -34,6 +35,10 @@ public sealed class LifecycleEvidenceTests
         Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, original, true));
         Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, replacement, false));
         Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, (0, started), true));
+        Assert.False(LifecycleEvidence.HasFreshHealth(started, started.AddSeconds(-1), true));
+        Assert.False(LifecycleEvidence.HasFreshHealth(started, null, true));
+        Assert.False(LifecycleEvidence.HasFreshHealth(started, started.AddSeconds(1), false));
+        Assert.True(LifecycleEvidence.HasFreshHealth(started, started.AddSeconds(1), true));
         LifecycleEvidence.RequireReplacement(original, replacement, true);
         LifecycleEvidence.RequireReplacement(original, (original.Id, started.AddSeconds(1)), true);
     }
@@ -45,7 +50,26 @@ public sealed class LifecycleEvidenceTests
         var original = (Id: 100, Started: started);
         var replacement = (Id: 100, Started: started.AddSeconds(1));
         var evidence = new LifecycleEvidence(["database"], [original]);
-        var merged = evidence.Merge(new LifecycleEvidence(["database", "second-database"], [original, replacement]));
+        var child = new ProcessGeneration(200, 10);
+        var replacementChild = new ProcessGeneration(201, 20);
+        evidence = evidence with
+        {
+            Descendants = [child]
+        };
+        var merged = evidence.Merge(new LifecycleEvidence(["database", "second-database"], [original, replacement], [replacementChild]));
+        Assert.True(merged.Descendants!.ToHashSet().SetEquals([child, replacementChild]));
+        Assert.False(ProcessTreeEvidence.Terminated(child, new(child, 1, 100, 'S')), "An orphaned live child cannot count as terminated.");
+        Assert.True(ProcessTreeEvidence.Terminated(child, new(child, 1, 100, 'Z')));
+        Assert.True(ProcessTreeEvidence.Terminated(child, new(new(child.Id, child.Started + 1), 1, 100, 'S')));
+        Assert.True(ProcessTreeEvidence.Terminated(child, null));
+        var parsed = ProcessTreeEvidence.Parse(200, "200 (name with ) parentheses) S 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10");
+        Assert.Equal(child, parsed.Generation);
+        Assert.Equal(100, parsed.Parent);
+        Assert.ThrowsAny<Exception>(() => ProcessTreeEvidence.Parse(200, "malformed"));
+        var recorder = new LifecycleEvidenceRecorder();
+        Parallel.For(1, 65, id => recorder.Add(new LifecycleEvidence([], [], [new(id, (ulong)id)])));
+        Assert.True(recorder.Snapshot!.Descendants!.ToHashSet().SetEquals(Enumerable.Range(1, 64).Select(id => new ProcessGeneration(id, (ulong)id))),
+            "Concurrent captures lost a process generation.");
         Assert.Equal(2, merged.Containers.Length);
         Assert.Equal(2, merged.Processes.Length);
         Assert.Contains(original, merged.Processes);
