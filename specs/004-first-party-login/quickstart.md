@@ -54,6 +54,10 @@ python3 scripts/verify_mutations.py SqlServer --disposable-checkout
 
 The runner requires passing baseline/restored controls, exact test identities and demonstrated behavioral failures; a build error or skipped case is not a killed mutant. Keep only sanitized reports/reviewed empty-page screenshots. [Manual/product/release gaps](acceptance-matrix.md#next-work-and-release-gates) remain open even when the currently selected suite passes.
 
+## Manual assessment
+
+The [T021 assessment pack](../../docs/operations/pilot-manual-assessment.md) documents the interactive-client prerequisite, Windows/WSL2 human matrix, manual steps and [results template](manual-assessment-results.md). No manual assessment has been executed or accepted by preparing these documents.
+
 ## Optional manual AppHost pilot
 
 Starting the default AppHost supplies only health endpoints. To enable the issuer pilot, follow the [private configuration/initialization runbook](../../docs/operations/first-party-pilot.md#enable-and-initialize) and [issuer protection](../../docs/operations/issuer-protection.md) for distinct externally provisioned credentials and a private key ring. Initialization must finish before AuthServer readiness. A manual browser journey needs a separately configured HTTPS relying party matching the one exact registered callback and the fixed client/S256/Basic profile. `/account/login` is bound to a validated authorization request and is not a direct login entry point. The automated test relying party and future Admin BFF are different components; no usable BFF/React client is shipped yet.

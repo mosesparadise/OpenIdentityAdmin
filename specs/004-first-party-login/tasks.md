@@ -1,6 +1,6 @@
 # Tasks: First-party login and S256 code flow
 
-Current status: T023–T031 and bounded T018 are merged; T031/PR #14 squash is `44a0e90`. T032 has verified source acceptance; PR #15 records final-head checks and squash delivery. T021 and full feature/manual acceptance remain open. Start with the [current acceptance matrix](acceptance-matrix.md).
+Current status: T023–T032 and bounded T018 are merged; T032/PR #15 squash is `f1b1a4f`, with final 17-check/1,017-case acceptance in run 38163339126. T021 is next: the [manual execution plan](manual-acceptance.md), [assessment instructions](../../docs/operations/pilot-manual-assessment.md) and [blank results template](manual-assessment-results.md) prepare the human handoff. No manual results are recorded; T021 and full feature/manual acceptance remain open. Start with the [current acceptance matrix](acceptance-matrix.md).
 
 Input: [spec](spec.md), [plan](plan.md), [research](research.md), [data model](data-model.md), [contracts](contracts/issuer.md). Tests are mandatory. An implementation checkbox requires its stated evidence; planned test identifiers are not passes.
 
@@ -47,7 +47,7 @@ Independent acceptance: HTTP protocol cases start from codes obtained through th
 ## Phase 6 — Convergence and reviewable delivery
 
 - [x] T020 Run meaningful critical-decision mutation/negative controls for S256, interaction/session binding, eligibility and replay; record before/after results in `specs/004-first-party-login/verification.md`. LOGIN-009, SC-002/003.
-- [ ] T021 Run full static/assurance/supply-chain/unit/both-provider/browser/combined-coverage gates; retain unchanged per-module90/80 floors and exact no-skips reports. Record browser/provider matrix and independent reviews in `verification.md`. All LOGIN/SC requirements.
+- [ ] T021 ([manual handoff and remaining subtasks](manual-acceptance.md)) Run full static/assurance/supply-chain/unit/both-provider/browser/combined-coverage gates; retain unchanged per-module90/80 floors and exact no-skips reports. Record browser/provider matrix and independent reviews in `verification.md`. All LOGIN/SC requirements.
 - [x] T022 Update `docs/roadmap.md`, `docs/engineering/issuer-flow-backlog.md`, `docs/operations/first-party-pilot.md`, `docs/assurance/controls.csv` references and this feature's quickstart/evidence; preserve unbuilt M01-E/API/BFF/manual/certification tasks explicitly. Publish one coherent PR for review; do not merge the next PR without authorization. All LOGIN/SC requirements.
 
 ## Dependencies and parallel opportunities
@@ -95,7 +95,7 @@ T018 is complete for its denial/expiry/replay/response-loss and **after-code** c
 
 ## Current delivery and history
 
-T030 squash-merged as `fca82fb` in PR #12 and T029 as `237afa5` in PR #13. T031/PR #14 squash-merged as `44a0e90` after final source `d8bce059484d2ab84a23801972554ecee2214bde` passed all 17 checks/943 cases in run 38159757185. T032 has the verified source acceptance recorded below; T021 and qualified manual obligations are next. Full M01-D, M01-E/M01-F, manual and external requirements remain open.
+T030 squash-merged as `fca82fb` in PR #12 and T029 as `237afa5` in PR #13. T031/PR #14 squash-merged as `44a0e90` after final source `d8bce059484d2ab84a23801972554ecee2214bde` passed all 17 checks/943 cases in run 38159757185. T032/PR #15 squash-merged as `f1b1a4f` after final head `4237252` passed all 17 checks/1,017 cases in run 38163339126. T021 and qualified manual obligations are next; handoff preparation does not complete their execution. Full M01-D, M01-E/M01-F, manual and external requirements remain open.
 
 | Delivered work | PR / squash | Evidence boundary |
 | --- | --- | --- |
@@ -110,7 +110,7 @@ T030 squash-merged as `fca82fb` in PR #12 and T029 as `237afa5` in PR #13. T031/
 | T030 atomic capacity | #12 / `fca82fb` | Accepted 17-check/845-case checkpoint |
 | T029 evidence reconciliation | #13 / `237afa5` | Final 17-check/845-case acceptance; gaps retained |
 | T031 transport | #14 / `44a0e90` | Final 17-check/943-case acceptance; T018 closes |
-| T032 authorization state | #15 / final delivery on PR | Verified 17-check/1,017-case source; representative committed-state matrix closes |
+| T032 authorization state | #15 / `f1b1a4f` | Final 17-check/1,017-case acceptance; representative committed-state matrix closes |
 
 Detailed failed/superseded checkpoints and review dispositions remain in [verification.md](verification.md); their old pending statuses describe their dates, not the current state. A-002 is expired, with its reproduced finding corrected through the existing closure criteria. A-001 and all certification release gates remain unchanged. Each next task must be independently reviewed, verified and squash-merged before the following one begins.
 
