@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
@@ -28,7 +29,8 @@ public sealed class DenialTests(IssuerFixture fixture)
     public static IEnumerable<TheoryDataRow<string, string>> Exchanges =>
         from provider in Providers
         from failure in ExchangeFailures
-        select new TheoryDataRow<string, string>(provider, failure).WithTrait("Provider", provider);
+        select new TheoryDataRow<string, string>(provider, failure).WithTrait("Provider", provider)
+            .WithTrait("CriticalDecision", failure == "wrong-verifier" ? "pkce-proof" : "none");
 
     [Theory]
     [MemberData(nameof(Requests))]
@@ -63,6 +65,12 @@ public sealed class DenialTests(IssuerFixture fixture)
             redirect: failure == "wrong-redirect" ? environment.RelyingParty.Callback + "/changed" : null,
             clientId: failure == "wrong-client" ? "unknown-client" : "identityplatform-pilot",
             cancellationToken: TestContext.Current.CancellationToken);
+        if (failure == "wrong-verifier")
+        {
+            await CriticalDecisionAssertions.DeniedTokensAsync(response,
+                async tokens => string.IsNullOrEmpty(await environment.RelyingParty.ValidateAsync(tokens, flow, TestContext.Current.CancellationToken)),
+                "Critical decision bypass: pkce-proof.");
+        }
         Assert.Equal(failure is "wrong-secret" or "wrong-client" ? HttpStatusCode.Unauthorized : HttpStatusCode.BadRequest, response.StatusCode);
         using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.True(body.RootElement.TryGetProperty("error", out _));
@@ -85,6 +93,7 @@ public sealed class DenialTests(IssuerFixture fixture)
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    [Trait("CriticalDecision", "pkce-syntax")]
     public async Task Matching_sha256_does_not_allow_a_short_verifier(string provider)
     {
         var environment = await fixture.GetAsync(provider);
@@ -93,6 +102,9 @@ public sealed class DenialTests(IssuerFixture fixture)
         prepared.QueryOverrides["code_challenge"] = WebEncoders.Base64UrlEncode(SHA256.HashData(Encoding.ASCII.GetBytes("x")));
         var flow = await environment.AuthorizeAsync(browser, prepared: prepared);
         using var response = await environment.RelyingParty.ExchangeAsync(flow.Code, "x", cancellationToken: TestContext.Current.CancellationToken);
+        await CriticalDecisionAssertions.DeniedTokensAsync(response,
+            async tokens => string.IsNullOrEmpty(await environment.RelyingParty.ValidateAsync(tokens, flow, TestContext.Current.CancellationToken)),
+            "Critical decision bypass: pkce-syntax.");
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.Equal("invalid_grant", body.RootElement.GetProperty("error").GetString());

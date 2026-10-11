@@ -18,4 +18,5 @@
   <ItemGroup>
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/LifecycleEvidence.cs" Link="Fixtures/LifecycleEvidence.cs" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/CriticalDecisionAssertions.cs" Link="Fixtures/CriticalDecisionAssertions.cs" /></ItemGroup>
 </Project>

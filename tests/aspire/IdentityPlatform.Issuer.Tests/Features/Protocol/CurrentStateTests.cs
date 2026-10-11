@@ -4,6 +4,7 @@ using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,13 @@ public sealed class CurrentStateTests(IssuerFixture fixture)
     public static IEnumerable<TheoryDataRow<string, string>> Cases =>
         from provider in Providers
         from mutation in Mutations
-        select new TheoryDataRow<string, string>(provider, mutation).WithTrait("Provider", provider);
+        select new TheoryDataRow<string, string>(provider, mutation).WithTrait("Provider", provider)
+            .WithTrait("CriticalDecision", mutation switch
+            {
+                "disabled" => "account-eligibility",
+                "session-revoked" => "session-eligibility",
+                _ => "none"
+            });
 
     [Theory]
     [MemberData(nameof(Cases))]
@@ -107,6 +114,12 @@ public sealed class CurrentStateTests(IssuerFixture fixture)
             await applications.UpdateAsync(application, appChange, TestContext.Current.CancellationToken);
             await scopes.UpdateAsync(apiScope, scopeChange, TestContext.Current.CancellationToken);
             using var response = await environment.RelyingParty.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
+            if (mutation is "disabled" or "session-revoked")
+            {
+                await CriticalDecisionAssertions.DeniedTokensAsync(response,
+                    async tokens => string.IsNullOrEmpty(await environment.RelyingParty.ValidateAsync(tokens, flow, TestContext.Current.CancellationToken)),
+                    mutation == "disabled" ? "Critical decision bypass: account-eligibility." : "Critical decision bypass: session-eligibility.");
+            }
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
             using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
             Assert.True(body.RootElement.TryGetProperty("error", out _));
@@ -131,7 +144,7 @@ public sealed class CurrentStateTests(IssuerFixture fixture)
             {
                 environment.Invalidate();
             }
+            Assert.False(environment.Invalidated, "Baseline state could not be restored.");
         }
-        Assert.False(environment.Invalidated, "Baseline state could not be restored.");
     }
 }

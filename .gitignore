@@ -5,6 +5,7 @@
 .vscode/
 TestResults/
 artifacts/
+/work/
 coverage/
 *.user
 *.suo

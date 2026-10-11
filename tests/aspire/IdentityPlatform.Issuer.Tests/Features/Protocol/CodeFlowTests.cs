@@ -2,6 +2,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text.Json;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -75,6 +76,7 @@ public sealed class CodeFlowTests(IssuerFixture fixture)
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    [Trait("CriticalDecision", "native-replay")]
     public async Task Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string provider)
     {
         var environment = await fixture.GetAsync(provider);
@@ -92,8 +94,9 @@ public sealed class CodeFlowTests(IssuerFixture fixture)
         var responses = await Task.WhenAll(first, second);
         using var one = responses[0];
         using var two = responses[1];
-        Assert.True(responses.Count(response => response.StatusCode == HttpStatusCode.OK) == 1 &&
-            responses.Count(response => response.StatusCode == HttpStatusCode.BadRequest) == 1, "Concurrent exchange must have exactly one winner and one denial.");
+        await CriticalDecisionAssertions.SingleWinnerAsync(responses,
+            async tokens => string.IsNullOrEmpty(await environment.RelyingParty.ValidateAsync(tokens, flow, TestContext.Current.CancellationToken)),
+            "Critical decision bypass: native-replay.");
         var winner = responses.Single(response => response.StatusCode == HttpStatusCode.OK);
         var loser = responses.Single(response => response.StatusCode == HttpStatusCode.BadRequest);
         using var lost = JsonDocument.Parse(await loser.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
