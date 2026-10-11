@@ -23,8 +23,9 @@ public sealed class BrowserEvidenceTests
             Assert.True(safe.InnerException is null, "Original browser diagnostics must not survive as an inner exception.");
         }
         var callbackFailure = BrowserJourneys.CallbackFailure("https://example.invalid/" + sentinel + "?value=" + sentinel,
-            BrowserJourneyRole.SecondTab, 400, 0, 0, false);
-        Assert.True(callbackFailure.Message.Contains("SecondTab at other", StringComparison.Ordinal) &&
+            BrowserJourneyRole.Recovery, 302, 1, 1, true, false, true);
+        Assert.True(callbackFailure.Message.Contains("Recovery at other", StringComparison.Ordinal) &&
+            callbackFailure.Message.Contains("completion True, validated result False, exact callback True", StringComparison.Ordinal) &&
             !callbackFailure.ToString().Contains(sentinel, StringComparison.Ordinal) && callbackFailure.InnerException is null,
             "Callback diagnostics must contain only fixed categories and counters.");
         var phased = await Record.ExceptionAsync(() => BrowserEvidence.RunAsync(async () =>
@@ -67,6 +68,77 @@ public sealed class BrowserEvidenceTests
         Assert.Equal("chromium", BrowserSession.SelectEngine(null));
         Assert.Equal("firefox", BrowserSession.SelectEngine("firefox"));
         Assert.Equal("webkit", BrowserSession.SelectEngine("webkit"));
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Callback_document_requires_exact_flow_and_full_readiness_even_when_navigation_already_completed(string provider)
+    {
+        Assert.True(provider is "PostgreSql" or "SqlServer");
+        await BrowserEvidence.RunAsync(async () =>
+        {
+            await using var session = await BrowserSession.CreateAsync(javaScript: false);
+            var page = await session.Context.NewPageAsync();
+            const string callback = "https://callback.example.invalid/callback";
+            const string state = "synthetic-callback-control";
+            var requested = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            await page.RouteAsync("https://callback.example.invalid/**", async route =>
+            {
+                if (new Uri(route.Request.Url).AbsolutePath == "/pending")
+                {
+                    requested.TrySetResult();
+                    await release.Task;
+                    await route.FulfillAsync(new()
+                    {
+                        ContentType = "image/svg+xml",
+                        Body = "<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/>"
+                    });
+                }
+                else
+                {
+                    await route.FulfillAsync(new()
+                    {
+                        ContentType = "text/html",
+                        Body = "<!doctype html><html lang='en'><title>Callback control</title><body><img src='/pending' alt=''>Control</body></html>"
+                    });
+                }
+            });
+            try
+            {
+                await page.GotoAsync(callback + "?state=" + state, new()
+                {
+                    WaitUntil = WaitUntilState.DOMContentLoaded
+                });
+                await requested.Task.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+                Assert.True(await page.EvaluateAsync<string>("document.readyState") != "complete", "The control must hold a real document subresource open.");
+                await Assert.ThrowsAsync<TimeoutException>(() => BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state, 250));
+                release.TrySetResult();
+                await BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state);
+                // Invoke after completion again: no future navigation/load event is required.
+                await BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state);
+                foreach (var (expectedCallback, expectedState) in new[]
+                {
+                    ("https://foreign.example.invalid/callback", state),
+                    ("https://callback.example.invalid/other", state),
+                    (callback, "wrong-state")
+                })
+                {
+                    await Assert.ThrowsAsync<TimeoutException>(() => BrowserJourneys.WaitForCallbackDocumentAsync(page, expectedCallback, expectedState, 250));
+                }
+                await page.GotoAsync(callback + "?state=" + state + "&state=" + state);
+                await Assert.ThrowsAsync<TimeoutException>(() => BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state, 250));
+            }
+            finally
+            {
+                release.TrySetResult();
+                await page.UnrouteAllAsync(new()
+                {
+                    Behavior = UnrouteBehavior.Wait
+                });
+            }
+        });
     }
 
     [Theory]

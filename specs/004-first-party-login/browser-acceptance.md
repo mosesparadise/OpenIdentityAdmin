@@ -1,5 +1,7 @@
 # T027 — Browser and theme acceptance
 
+**Current status:** T027 remains unresolved and release-blocking. SQL Server/WebKit reproduced the dark/1280 contrast finding on PR #11 head `7b6b936` in run 38129076793, expiring A-002 before T028 merged. T028 acceptance and PR #11 merge are blocked. See the [captured recurrence and investigation limits](verification.md#a-002-expiry-and-captured-contrast-recurrence). Earlier approved-sequence entries below are historical.
+
 The user authorized T026–T028 sequentially, each with a reviewed, corrected and squash-merged PR. T026 merged in PR #9 as `7d1a9bc`; this increment completes only T027 under approved LOGIN-003/004/007/009, SC-004 and the existing browser cadence. Requirements checklist remains 7/7. T028–T030 and manual/external acceptance stay open.
 
 ## Execution design before implementation
