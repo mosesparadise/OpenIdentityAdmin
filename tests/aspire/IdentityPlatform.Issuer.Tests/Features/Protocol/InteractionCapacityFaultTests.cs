@@ -1,4 +1,5 @@
 using System.Data.Common;
+using System.Globalization;
 using System.Net;
 using IdentityPlatform.AuthServer.Features.Accounts.Login;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
@@ -177,15 +178,28 @@ public sealed partial class InteractionCapacityTests
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(10));
         var context = new DefaultHttpContext();
-        var attempt = Record.ExceptionAsync(async () => await AdmitAsync(runtime, blocked.BudgetCookie(environment), deadline.Token, observed: context)).AsTask();
+        var attempt = Record.ExceptionAsync(async () =>
+        {
+            // Pin only this synthetic call's driver diagnostic resource, not application culture.
+            var previous = CultureInfo.CurrentUICulture;
+            try
+            {
+                CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+                await AdmitAsync(runtime, blocked.BudgetCookie(environment), deadline.Token, observed: context);
+            }
+            finally { CultureInfo.CurrentUICulture = previous; }
+        }).AsTask();
         DatabaseRowLock.BlockedCommand? waiting = null;
         try
         {
             waiting = await held.WaitForRuntimeAsync(deadline.Token);
             Assert.True(waiting.IsUpdate, "Admission must be blocked on its budget update.");
             Assert.NotNull((await AdmitAsync(other, independent.BudgetCookie(environment), deadline.Token)).Interaction);
+            Assert.False(deadline.IsCancellationRequested, "The caller deadline elapsed before explicit cancellation.");
+            Assert.False(attempt.IsCompleted, "The blocked admission finished before explicit cancellation.");
             await deadline.CancelAsync();
-            Assert.True(await attempt is OperationCanceledException, "A blocked admission must observe cancellation.");
+            var failure = await attempt;
+            Assert.True(IsExpectedCancellation(provider, deadline.IsCancellationRequested, failure), CancellationDiagnostic(failure));
             Assert.Equal(0, context.Response.Headers.SetCookie.Count);
         }
         finally
