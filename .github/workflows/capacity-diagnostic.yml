@@ -41,7 +41,9 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
           from verify_mutations import run
+          from verify_contrast_experiment import install_cancellation_handler
           from test_evidence import require_complete_trx
+          install_cancellation_handler()
           output = Path('artifacts/capacity-diagnostic').resolve()
           output.mkdir(parents=True)
           report = output / 'cancellation.trx'
