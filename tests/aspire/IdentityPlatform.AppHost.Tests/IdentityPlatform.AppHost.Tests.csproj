@@ -10,4 +10,5 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/ProcessTreeEvidence.cs" Link="Fixtures/ProcessTreeEvidence.cs" /></ItemGroup>
 </Project>

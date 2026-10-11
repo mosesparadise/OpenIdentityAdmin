@@ -1,6 +1,6 @@
 # Issuer protection operations
 
-This runbook covers the first Linux local-filesystem adapter, not a deployable identity product. The default host profile remains health-only. The separately enabled [Development pilot](first-party-pilot.md) now implements authentication, cookies, tokens and discovery/JWKS. Public signing/encryption overlap and full session/code/token restart/two-instance acceptance remain M01-E; they are not established by this protection adapter. See [the configuration contract](../../specs/002-issuer-foundation/contracts/configuration.md) and [remaining issuer work](../engineering/issuer-flow-backlog.md).
+This runbook covers the Linux local-filesystem adapter and controlled Development pilot, not a deployable identity product. The default host profile remains health-only. The separately enabled [Development pilot](first-party-pilot.md) implements authentication, cookies, tokens and discovery/JWKS. [Feature 006 restart verification](../../specs/006-issuer-lifecycle/verification.md) adds real process-continuity evidence, with its current acceptance state recorded there. Two-instance behavior and public signing/encryption overlap remain later M01-E increments. See [the configuration contract](../../specs/002-issuer-foundation/contracts/configuration.md) and [remaining issuer work](../engineering/issuer-flow-backlog.md).
 
 ## Provision and start
 
@@ -40,7 +40,19 @@ Data Protection diagnostics are suppressed even when configuration enables more-
 5. Verify restored protected state using a fresh instance. The regression suite explicitly creates a second DP key and asserts both its payload key ID and wrapper certificate; it then reloads and decrypts both generations.
 6. Retain every historical private wrapping key needed by any retained key file (including revoked files) or supported backup. Expired historical wrapping certificates can decrypt; they cannot become active. Do not remove a wrapper merely because its certificate or a DP key expired. Deleting a ring can invalidate all protected state.
 
-Updates require restart; no hot-reload/automatic activation guarantee is made. Token signing/encryption key overlap, staged public JWKS publication and actual cookie/code survival belong to the next protocol feature. Native OpenIddict certificate selection sorts by validity/expiry, so registration order must not be used as an activation policy.
+Updates require restart; no hot-reload/automatic activation guarantee is made. Actual cookie/code survival is covered by the separate lifecycle verification below. Token signing/encryption key overlap and staged public JWKS publication remain planned. Native OpenIddict certificate selection sorts by validity/expiry, so registration order must not be used as an activation policy.
+
+## Controlled restart verification
+
+Use the [lifecycle quickstart](../../specs/006-issuer-lifecycle/quickstart.md) on Linux or WSL2 with trusted development HTTPS. It creates disposable synthetic resources; it must not be pointed at production stores or credentials. Each provider has 13 restart cases in the dedicated xUnit v3/MTP Aspire project. The exact case-to-requirement mapping, measured results and current acceptance limits are in [verification.md](../../specs/006-issuer-lifecycle/verification.md).
+
+The harness retains the canonical HTTPS issuer, exact relying-party callback, original database containers/connections, completed bootstrap/migrator generations, credential files and populated encrypted key ring. Only the issuer process is replaced. It requires the original launcher and actual AuthServer child to stop, distinct new process generations, a fresh healthy report and successful HTTPS response before presenting retained artifacts.
+
+Eligible original cookies, pending antiforgery forms, completed continuations and native authorization codes must work within their original validity. No replacement login, ticket refresh, reissued code or bootstrap rerun may substitute for continuity. Invalid binding, replay, expiry and committed session/account restrictions must remain denied. Original public tokens are validated using fresh public keys; this does not imply immediate offline-token revocation.
+
+A valid unrelated wrapping certificate without the historical decryptor must fail startup with the fixed safe protection diagnostic and exit code 2, without readiness. The test restores the original wrapping material, verifies unchanged ring/credential content and proves original-cookie recovery. Operational recovery must likewise retain the correct ring and decryptors; generating fresh keys cannot repair old protected state.
+
+The test helper has a 45-second restart budget; live-code controls require more than 10 seconds of remaining original validity. These are verification bounds, not production availability or recovery objectives. CI runs standard and lifecycle jobs separately for both providers and requires both lifecycle coverage artifacts. Interrupted/cancelled runs do not establish continuity or clean teardown. Two-node failover, public-key rotation, backup restore/RPO/RTO, human accessibility and certification remain separate acceptance obligations.
 
 ## Recovery and evidence
 

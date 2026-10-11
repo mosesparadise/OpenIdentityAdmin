@@ -7,18 +7,22 @@ from pathlib import Path
 import subprocess
 import signal
 from test_evidence import require_complete_trx
-from test_selection import catalogue, require_partition, require_execution_names
+from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_partition, require_lifecycle_execution, select_projects
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
+parser.add_argument("--partition", choices=["all", "standard", "lifecycle"], default="all")
 args = parser.parse_args()
 if args.browser and args.profile == "unit":
     parser.error("Browser verification requires a real provider")
 matrix = json.loads((ROOT / "eng" / "test-matrix.json").read_text())
-projects = matrix["browser"] if args.browser else matrix["profiles"][args.profile]
-label = args.profile + ("-" + args.browser if args.browser else "")
+try:
+    projects = select_projects(matrix, args.profile, args.browser, args.partition)
+except ValueError as error:
+    parser.error(str(error))
+label = args.profile + ("-" + args.browser if args.browser else "-lifecycle" if args.partition == "lifecycle" else "")
 results = ROOT / "artifacts" / "tests" / label
 results.mkdir(parents=True, exist_ok=True)
 for project in projects:
@@ -27,21 +31,28 @@ for project in projects:
                "--no-build", "--no-restore", "--no-progress", "--report-trx", "--report-trx-filename", f"{project}.trx",
                "--results-directory", str(results), "--pre-enumerate-theories", "on"]
     selected = None
-    if project == "Issuer":
+    if project in ("Issuer", "Issuer.Lifecycle"):
         # Invoke the native executable: the SDK's discovery transport does not forward JSON output.
         discovery = ["dotnet", "run", "--project", command[3], "--no-build", "--no-restore", "--",
                      "--pre-enumerate-theories", "on", "--list-tests", "json"]
         def discover(expression=None):
             invocation = discovery + (["--filter", expression] if expression else [])
             result = subprocess.run(invocation, cwd=ROOT, capture_output=True, text=True, timeout=60, check=True)
-            return catalogue(result.stdout)
+            return catalogue(result.stdout, lifecycle=project == "Issuer.Lifecycle")
         all_tests = discover()
-        http_filter = f"Provider={args.profile}&Category!=Browser"
-        browser_filter = f"Provider={args.profile}&Category=Browser"
-        http, browser = discover(http_filter), discover(browser_filter)
-        require_partition(all_tests, http, browser, args.profile, matrix["profiles"][args.profile]["Issuer"], matrix["browser"]["Issuer"])
-        selected = browser if args.browser else http
-        command += ["--filter", browser_filter if args.browser else http_filter]
+        if project == "Issuer.Lifecycle":
+            expression = f"Provider={args.profile}"
+            selected = discover(expression)
+            require_lifecycle_partition(all_tests, selected, args.profile,
+                {provider: matrix["profiles"][provider][project] for provider in ("PostgreSql", "SqlServer")})
+            command += ["--filter", expression]
+        else:
+            http_filter = f"Provider={args.profile}&Category!=Browser"
+            browser_filter = f"Provider={args.profile}&Category=Browser"
+            http, browser = discover(http_filter), discover(browser_filter)
+            require_partition(all_tests, http, browser, args.profile, matrix["profiles"][args.profile]["Issuer"], matrix["browser"]["Issuer"])
+            selected = browser if args.browser else http
+            command += ["--filter", browser_filter if args.browser else http_filter]
     elif args.profile != "unit":
         command += ["--filter-trait", f"Provider={args.profile}"]
     elif project == "AppHost":
@@ -51,7 +62,7 @@ for project in projects:
     environment["IDENTITY_TEST_ARTIFACTS"] = str(results)
     if args.browser:
         environment["IDENTITY_TEST_BROWSER"] = args.browser
-    if project in ("AppHost", "Issuer"):
+    if project in ("AppHost", "Issuer", "Issuer.Lifecycle"):
         environment["DOTNET_ENVIRONMENT"] = "Development"
     report = results / f"{project}.trx"
     report.unlink(missing_ok=True)
@@ -71,4 +82,6 @@ for project in projects:
     count = require_complete_trx(report, expected_count=projects[project])
     if selected is not None:
         require_execution_names(report, selected)
+        if project == "Issuer.Lifecycle":
+            require_lifecycle_execution(report, selected)
     print(f"Verified {project}/{label}: {count} required tests passed; none skipped", flush=True)

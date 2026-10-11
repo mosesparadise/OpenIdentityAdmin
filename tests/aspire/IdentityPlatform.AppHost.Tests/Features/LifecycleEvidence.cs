@@ -1,17 +1,31 @@
 using System.Diagnostics;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.AppHost.Tests.Features;
 
-internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime Started)[] Processes)
+internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime Started)[] Processes, ProcessGeneration[]? Descendants = null)
 {
+    public LifecycleEvidence Merge(LifecycleEvidence other) => new(
+        Containers.Concat(other.Containers).Distinct(StringComparer.Ordinal).ToArray(),
+        Processes.Concat(other.Processes).Distinct().ToArray(),
+        (Descendants ?? []).Concat(other.Descendants ?? []).Distinct().ToArray());
+
+    internal static bool HasFreshHealth(DateTime processStarted, DateTimeOffset? checkedAt, bool healthy) =>
+        healthy && checkedAt > new DateTimeOffset(processStarted.ToUniversalTime());
+
+    internal static void RequireReplacement((int Id, DateTime Started) original, (int Id, DateTime Started) replacement, bool originalExited) =>
+        Assert.True(original.Id > 0 && replacement.Id > 0 && originalExited && original != replacement,
+            "Restart requires original process exit and a distinct live process generation.");
+
     public static LifecycleEvidence Capture(DistributedApplication app)
     {
         var model = app.Services.GetRequiredService<DistributedApplicationModel>();
         var containers = new List<string>();
         var processes = new List<(int, DateTime)>();
+        var descendants = new List<ProcessGeneration>();
         foreach (var resource in model.Resources)
         {
             if (resource is not ContainerResource and not ProjectResource)
@@ -38,6 +52,7 @@ internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime 
                 }
 
                 var id = capturedId.Value;
+                descendants.AddRange(ProcessTreeEvidence.Capture(id));
                 try
                 {
                     using var process = Process.GetProcessById(id);
@@ -50,7 +65,7 @@ internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime 
             }
         }
         Assert.NotEmpty(containers);
-        return new(containers.ToArray(), processes.ToArray());
+        return new(containers.ToArray(), processes.ToArray(), descendants.Distinct().ToArray());
     }
 
     internal static int? RequireProcessId(string? state, object? value)
@@ -68,6 +83,8 @@ internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime 
 
     public async Task AssertRemovedAsync()
     {
+        using var descendantDeadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        await ProcessTreeEvidence.WaitForTerminationAsync(Descendants ?? [], descendantDeadline.Token);
         foreach (var id in Containers)
         {
             var start = new ProcessStartInfo("docker")
@@ -108,6 +125,31 @@ internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime 
                 Assert.True(process.HasExited || process.StartTime != started, "A captured application process survived disposal.");
             }
             catch (ArgumentException) { /* Captured PID no longer exists. */ }
+        }
+    }
+}
+
+internal sealed class LifecycleEvidenceRecorder
+{
+    private readonly Lock gate = new();
+    private LifecycleEvidence? evidence;
+
+    public void Add(LifecycleEvidence current)
+    {
+        lock (gate)
+        {
+            evidence = evidence is null ? current : evidence.Merge(current);
+        }
+    }
+
+    public LifecycleEvidence? Snapshot
+    {
+        get
+        {
+            lock (gate)
+            {
+                return evidence;
+            }
         }
     }
 }
