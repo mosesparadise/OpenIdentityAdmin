@@ -2,7 +2,7 @@
 
 **Feature Branch**: `014-issuer-lifecycle`
 **Created**: 11 October 2026
-**Status**: Approved M01-E scope; the user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. Restart source acceptance is recorded in verification.md and delivered through PR #17; distribution and rotation remain unbuilt.
+**Status**: Approved M01-E scope; the user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. Restart is delivered through PR #17. Distribution source acceptance (21 checks / 1,097 ordinary cases) is recorded in verification.md for PR #18, whose final delivery gate remains separate. Key overlap/retirement is still unbuilt.
 **Input**: Proceed after the T021 handoff in PR #16 to M01-E: real issuer restart, two-instance behavior and staged signing/encryption overlap.
 
 ## User Scenarios & Testing

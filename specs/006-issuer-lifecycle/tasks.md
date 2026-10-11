@@ -1,6 +1,6 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution source implemented/reviewed; T015 full CI acceptance in progress; rotation pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
+Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution source and T015 evidence accepted (21 checks / 1,097 cases), PR #18 final delivery pending; rotation pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
@@ -29,7 +29,9 @@ Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); d
 
 - [x] T013 Write `contracts/distribution.md` and a detailed implementation plan for canonical HTTPS routing, node provenance, shared store/DP material, explicit topology and trust boundaries before changing AppHost/test composition. Confirm structural changes; independently review. LIFE-006/008.
 - [x] T014 Implement `Features/Distribution/` and required `Fixtures/` topology support: cross-node original form/antiforgery/cookie/continuation/code, concurrent code winner/replay consequences, committed eligibility and surviving-node cases. Use actual processes with provable dispatch, no generic mutation retries. LIFE-002/003/005/006/008.
-- [ ] T015 Execute both providers, full required regression/coverage and independent reviews; update `verification.md`, roadmap/backlog/runbook and squash-merge the distribution PR. M01-E remains partial while overlap is pending. LIFE-009/010.
+- [x] T015 Execute both providers, full required regression/coverage and independent reviews; update `verification.md`, roadmap/backlog/runbook. Accepted source checkpoint: `12ae110`, run `38181828768`, 21 checks / 1,097 ordinary passes with no failures/skips. M01-E remains partial while overlap is pending. LIFE-009/010. Squash delivery is the separate gate below.
+
+**PR #18 delivery gate pending:** verify the final documentation head, all normal required checks and no unresolved review findings, then perform an expected-head squash merge. Record the final run, head and squash on [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18); do not start T016 before that merge.
 
 ## Phase 5 — US3 staged key overlap (PR 3; not started)
 
