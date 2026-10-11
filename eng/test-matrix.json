@@ -27,22 +27,32 @@
       "Core": 25,
       "Host": 204,
       "Architecture": 5,
-      "AppHost": 11
+      "AppHost": 17
     },
     "PostgreSql": {
       "Persistence": 4,
       "AppHost": 4,
       "Issuer": 292,
-      "Issuer.Lifecycle": 13
+      "Issuer.Lifecycle": 36
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 4,
       "Issuer": 292,
-      "Issuer.Lifecycle": 13
+      "Issuer.Lifecycle": 36
     }
   },
   "browser": {
     "Issuer": 29
+  },
+  "lifecycle_stories": {
+    "Restart": {
+      "PostgreSql": 13,
+      "SqlServer": 13
+    },
+    "Distribution": {
+      "PostgreSql": 23,
+      "SqlServer": 23
+    }
   }
 }

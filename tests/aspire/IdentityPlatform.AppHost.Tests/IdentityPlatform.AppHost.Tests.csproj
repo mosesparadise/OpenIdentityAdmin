@@ -11,4 +11,8 @@
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/ProcessTreeEvidence.cs" Link="Fixtures/ProcessTreeEvidence.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../IdentityPlatform.Issuer.Lifecycle.Tests/Fixtures/NodeTransport.cs" Link="Fixtures/NodeTransport.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Lifecycle.Tests/Fixtures/ProcessListener.cs" Link="Fixtures/ProcessListener.cs" />
+  </ItemGroup>
 </Project>

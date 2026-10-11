@@ -1,6 +1,6 @@
 # Lifecycle research — design evidence only
 
-Status: 11 October 2026, no lifecycle tests executed.
+Historical design checkpoint: 11 October 2026, before lifecycle execution. The findings below describe that initial source state. Restart has since been implemented and squash-merged in PR #17; current executed evidence is in [verification.md](verification.md). Distribution design is in [contracts/distribution.md](contracts/distribution.md).
 
 | Finding | Local source / implication |
 | --- | --- |

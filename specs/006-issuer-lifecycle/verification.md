@@ -106,3 +106,36 @@ The standard PostgreSQL job took 11m01s; issuer module 453.597s. The standard SQ
 Architecture, security and test reviews corrected the source/evidence issues listed above and accepted the resulting bounded restart implementation. Final documentation-head checks, review-thread state, expected head and normal squash delivery must still be verified on PR #17. No branch protection bypass, GitHub self-approval, production deployment, formal accessibility acceptance or certification is implied.
 
 **Disposition:** US1 / SC-L01 and the restart portions of SC-L02/05/06 are accepted at the corrected source checkpoint. LIFE-006 / US2 / SC-L03 (two actual nodes) and LIFE-007 / US3 / SC-L04 (staged signing/encryption overlap) remain unbuilt. M01-E / ISS-003 stays partial. T021 human assessment, M01-F, wider R1, backup recovery and all external/public-release obligations remain open. The next authorized increment begins only after PR #17 is normally squash-merged and its concrete topology/structure is confirmed and reviewed.
+
+
+## Distribution design checkpoint (T013)
+
+Restart PR #17 is squash-merged as `a6b4dfbde660162197e188715a4ba4056cd14772`; final head `3870ffaba5bb8f202fa1cff7ded89d7a78af0903` passed all 19 checks in run `38178327657`, with 1,045 ordinary passes and no failures/skips. The tested merge and delivered squash share tree `97df4e105983271cd6f10644596824d277417860`.
+
+The user confirmed test-only routing, a second real issuer in the test Aspire graph and the existing lifecycle Fixtures structure. Architecture review accepted direct process-owned listener proof, immutable per-generation transports and an explicit environment allowlist. Security findings added per-request/redirect guards, explicit token/JWKS transport, authorization as well as exchange after committed restrictions, valid incompatible encryption-key recovery, TLS rejection and accurate concurrent/replay semantics. Test/Aspire design review passes the updated contract; exact catalogue union and mandatory story coverage are implementation obligations. These are design dispositions, not executed distribution results.
+
+Spec Kit prerequisites resolved feature006; all eight requirements-quality checklist items are checked and no extension hooks exist. Read-only consistency analysis: all 11 LIFE requirements map to T001–T018; US2 cases DST-01–09 cover LIFE-002/003/004/005/006/008 and T014, with T015 carrying LIFE-009/010 execution. US1 is delivered and US3 remains explicitly deferred until US2 merge. No constitution conflict, unmapped task or unresolved critical design finding was found. Implementation proceeds only within the reviewed contract; any experiment contradicting it must be investigated, not accepted by widening an oracle.
+
+
+## Distribution implementation and evidence (in progress)
+
+The implementation adds no production source or dependency. Six helper cases raise the unit inventory from 245 to 251. The lifecycle project contains the unchanged 13 Restart and 23 Distribution cases per provider; the complete ordinary matrix is 1,097 cases, pending full CI acceptance. Separate story invocations retain the 660-second deadline and 20-minute CI jobs. The full coverage matrix now requires 13 inputs.
+
+| Cases | Distribution test methods | Cases/provider |
+| --- | --- | --- |
+| DST-01; LIFE-002/006/008 | `Original_form_crosses_nodes_with_antiforgery_and_browser_binding` | 2 directions |
+| DST-02; LIFE-002/003/006 | `Original_completed_continuation_crosses_nodes_once_for_its_owner` | 2 directions |
+| DST-03; LIFE-002/004/006 | `Original_cookie_silently_crosses_nodes_without_reauthentication` | 2 directions |
+| DST-04; LIFE-003/006 | `Exact_live_code_crosses_nodes_with_original_proof_and_single_use` | 2 directions |
+| DST-05; LIFE-003/005/006 | `Concurrent_node_redemptions_have_one_native_winner_and_replay_revokes_issued_tokens` | 1 |
+| DST-06; LIFE-005/006 | `Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange` | 8: account/session/client/scope, both directions |
+| DST-07; LIFE-001/002/006/009 | `Surviving_node_uses_original_state_while_opposite_process_is_stopped` | 2 directions |
+| DST-08; LIFE-006/008 | `Unsuitable_secondary_material_fails_safely_while_original_cookie_survives` | 2: wrong wrapper/missing credential |
+| DST-09; LIFE-003/006/008 | `Healthy_but_incompatible_encryption_denies_then_exact_original_code_recovers` | 1 |
+| LIFE-008/009 transport control | `Selected_socket_preserves_certificate_validation_and_canonical_authority` | 1 |
+
+Initial source experiments: compilation exposed cancellation-parameter ordering, nonconstant Aspire state patterns, required static arrays and formatting violations; corrected without disabling analysis. The first actual PostgreSQL topology experiment passed both cookie directions (2/2, zero skipped, 45.340s). The first complete distribution experiment passed 23/23, zero skipped, 171.858s. These precede the final source-review corrections and do not accept them.
+
+Independent architecture/security/test source findings tightened: per-request process-generation binding, Running/current-PID-before-fresh-health ordering, guarded credential-file moves and all-path restoration, invalidation after ambiguous concurrent client failure, authorization-denial snapshots including native authorizations and excluding only request-token bookkeeping, exact winner-only token inventory, current-launch diagnostic attribution, bounded concurrent readiness observation, and safe failure messages instead of formatting unexpected HTTP response objects. Corrected source and both-provider regression acceptance remain pending below.
+
+The race rendezvous proves deliberately concurrent requests to distinct processes, not a forced native database interleaving. The loser must reach native ID2010. After both finish, persisted code status determines the explicit replay oracle: redeemed → ID2010; already revoked → ID2016, with more than ten seconds of original code validity. OpenIddict's `RevokeByAuthorizationIdAsync` updates the redeemed code as well as linked issued tokens; requiring ID2010 unconditionally after revocation would contradict the native library. The final linked access/ID token entries must be revoked; no claim of offline JWT invalidation follows.

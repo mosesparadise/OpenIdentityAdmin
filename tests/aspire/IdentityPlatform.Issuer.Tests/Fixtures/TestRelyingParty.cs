@@ -172,9 +172,9 @@ public sealed class TestRelyingParty : IAsyncDisposable
         return await (transport ?? backchannel).SendAsync(request, cancellationToken);
     }
 
-    public async Task<string> ValidateAsync(JsonElement tokens, TestFlow flow, CancellationToken cancellationToken)
+    public async Task<string> ValidateAsync(JsonElement tokens, TestFlow flow, CancellationToken cancellationToken, HttpClient? transport = null)
     {
-        using var metadata = JsonDocument.Parse(await backchannel.GetStringAsync(new Uri(Issuer, "/.well-known/openid-configuration"), cancellationToken));
+        using var metadata = JsonDocument.Parse(await (transport ?? backchannel).GetStringAsync(new Uri(Issuer, "/.well-known/openid-configuration"), cancellationToken));
         if (metadata.RootElement.GetProperty("issuer").GetString() != Issuer.AbsoluteUri)
         {
             return "Metadata or token validation failed.";
@@ -184,7 +184,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
         {
             return "Metadata or token validation failed.";
         }
-        var keys = new JsonWebKeySet(await backchannel.GetStringAsync(jwksUri, cancellationToken)).GetSigningKeys();
+        var keys = new JsonWebKeySet(await (transport ?? backchannel).GetStringAsync(jwksUri, cancellationToken)).GetSigningKeys();
         var handler = new JsonWebTokenHandler();
         var id = await handler.ValidateTokenAsync(tokens.GetProperty("id_token").GetString()!, Parameters(Issuer.AbsoluteUri, "identityplatform-pilot", "JWT", keys));
         var access = await handler.ValidateTokenAsync(tokens.GetProperty("access_token").GetString()!, Parameters(Issuer.AbsoluteUri, "identityplatform-pilot-api", "at+jwt", keys));

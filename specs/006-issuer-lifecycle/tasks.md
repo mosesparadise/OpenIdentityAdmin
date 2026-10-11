@@ -1,6 +1,6 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **restart source accepted (19 checks / 1,045 cases); final PR #17 delivery gate below; distribution/rotation pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
+Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution implementation T014 in progress; rotation pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
@@ -23,11 +23,11 @@ Status: **restart source accepted (19 checks / 1,045 cases); final PR #17 delive
 - [x] T011 Implement `Features/Restart/EligibilityContinuityTests.cs`: preexisting session expiry/revocation and representative account restriction, including a committed restriction while auth is stopped; both positive controls and explicit fresh recovery. LIFE-005, RST-07.
 - [x] T012 Run focused actual-provider experiments and full normal required gates, record failures before fixes, case identities/counts, timing margin, teardown, source/merge trees and independent source/evidence reviews in `verification.md`. Update `docs/roadmap.md`, `docs/engineering/issuer-flow-backlog.md` and `docs/operations/issuer-protection.md`. LIFE-009/010. Only US1 is accepted at the corrected source checkpoint. Final PR delivery is the gate below.
 
-**PR #17 delivery gate:** verify all required checks at the final documentation head, resolve review findings, then normally squash-merge using the expected head and Conventional Commit title. The authoritative final run/head/merge record is [PR #17](https://github.com/mosesparadise/OpenIdentityAdmin/pull/17). Do not begin T013 until that merge completes.
+**PR #17 delivery gate completed:** final head `3870ffaba5bb8f202fa1cff7ded89d7a78af0903`, final run `38178327657` (all 19 checks), squash `a6b4dfbde660162197e188715a4ba4056cd14772`. Tested merge and squash have tree `97df4e105983271cd6f10644596824d277417860`. No unresolved review findings. [PR #17](https://github.com/mosesparadise/OpenIdentityAdmin/pull/17) records exact evidence.
 
-## Phase 4 — US2 two-instance behavior (PR 2; not started)
+## Phase 4 — US2 two-instance behavior (PR 2; design in progress)
 
-- [ ] T013 Write `contracts/distribution.md` and a detailed implementation plan for canonical HTTPS routing, node provenance, shared store/DP material, explicit topology and trust boundaries before changing AppHost/test composition. Confirm structural changes; independently review. LIFE-006/008.
+- [x] T013 Write `contracts/distribution.md` and a detailed implementation plan for canonical HTTPS routing, node provenance, shared store/DP material, explicit topology and trust boundaries before changing AppHost/test composition. Confirm structural changes; independently review. LIFE-006/008.
 - [ ] T014 Implement `Features/Distribution/` and required `Fixtures/` topology support: cross-node original form/antiforgery/cookie/continuation/code, concurrent code winner/replay consequences, committed eligibility and surviving-node cases. Use actual processes with provable dispatch, no generic mutation retries. LIFE-002/003/005/006/008.
 - [ ] T015 Execute both providers, full required regression/coverage and independent reviews; update `verification.md`, roadmap/backlog/runbook and squash-merge the distribution PR. M01-E remains partial while overlap is pending. LIFE-009/010.
 

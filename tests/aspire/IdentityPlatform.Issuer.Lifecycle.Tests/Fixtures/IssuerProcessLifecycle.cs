@@ -174,7 +174,7 @@ public sealed partial class IssuerEnvironment
         }
     }
 
-    private async Task<bool> ObserveReadinessAsync(CancellationToken cancellationToken)
+    private async Task<bool> ObserveReadinessAsync(CancellationToken cancellationToken, Uri? origin = null)
     {
         using var http = new HttpClient { Timeout = TimeSpan.FromSeconds(1) };
         var ready = false;
@@ -185,7 +185,7 @@ public sealed partial class IssuerEnvironment
                 try
                 {
                     CaptureLifecycle();
-                    using var response = await http.GetAsync(new Uri(Issuer, "/health"), cancellationToken);
+                    using var response = await http.GetAsync(new Uri(origin ?? Issuer, "/health"), cancellationToken);
                     ready |= response.IsSuccessStatusCode;
                 }
                 catch (HttpRequestException) { /* Expected: no issuer listener. */ }

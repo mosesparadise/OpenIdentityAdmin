@@ -59,3 +59,14 @@ The test helper has a 45-second restart budget; live-code controls require more 
 Restore the entire ring and its retained wrappers under the same canonical issuer and protection purposes; preserve revocations. A different issuer/application discriminator or missing master key cannot decrypt existing payloads. Do not generate a fresh ring to conceal a failed restore. Restores and production changes need their normal operational authorization.
 
 Run the [feature quickstart](../../specs/002-issuer-foundation/quickstart.md). It includes native MTP unit/actual-host checks and both credential-enabled Aspire database profiles. Test fixtures are synthetic and temporary; never substitute production credentials. Coverage and test results do not establish external security assessment or OIDF certification.
+
+
+## Controlled two-instance verification
+
+The lifecycle project’s Distribution story uses two real AuthServer processes on one disposable Aspire graph, with one canonical HTTPS issuer/callback, least-privileged platform connection and retained private material. Its acceptance state is recorded in [lifecycle evidence](../../specs/006-issuer-lifecycle/verification.md); implemented cases alone do not establish both-provider acceptance.
+
+Run `python3 scripts/verify.py PostgreSql --partition lifecycle --story Distribution` (or `SqlServer`) after the [quickstart](../../specs/006-issuer-lifecycle/quickstart.md). The test-only transport routes to a listener proved to belong to the selected process generation while preserving canonical Host, normal TLS, cookies and protocol validation. It validates every request and redirect; a client bound to an old process is rejected after replacement. Tests create a fresh pinned client for the new process, without changing its issuer identity.
+
+The suite checks genuine cross-node browser/code state, concurrent native single-use decisions, committed eligibility at authorization and token exchange, and either-node loss. Bad/missing credential controls prove safe startup failure and original-cookie recovery. A valid incompatible encryption certificate starts successfully but must reject the other node’s original code; restoration must recover that exact code before its unchanged expiry. This demonstrates why operational readiness alone cannot establish shared cryptographic identity.
+
+Never infer a production proxy or shared rate-limit design from this harness. Rate/concurrency limits remain per process. There is no automatic retry of an ambiguous security mutation, production load-balancer configuration, throughput/SLA claim or backup-restore evidence. Signing/encryption staging and retirement remain the next sequential increment.

@@ -51,7 +51,7 @@ internal static class RestartEvidence
         return Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(rows)));
     }
 
-    public static async Task<string> StateAsync(IssuerEnvironment environment)
+    public static async Task<string> StateAsync(IssuerEnvironment environment, bool includeRequestTokens = true)
     {
         await using var scope = environment.Services.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -59,7 +59,9 @@ internal static class RestartEvidence
         {
             Sessions = await database.Set<LocalIdentitySession>().AsNoTracking().OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken),
             Interactions = await database.Set<LoginInteraction>().AsNoTracking().OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken),
-            Tokens = await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken),
+            Tokens = await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken>().AsNoTracking()
+                .Where(value => includeRequestTokens || value.Type != OpenIddict.Abstractions.OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken).OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken),
+            Authorizations = await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization>().AsNoTracking().OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken),
             Audits = await database.Set<SecurityAuditIntent>().AsNoTracking().OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken)
         };
         return Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(state)));
