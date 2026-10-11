@@ -45,7 +45,15 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
             request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment, true));
             request.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(new OidCollection { new Oid("1.3.6.1.5.5.7.3.1") }, true));
-            using var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
+            // A separately issued leaf produces a precise unknown-issuer error even when Firefox's
+            // pinned transport cannot name newer self-signed-certificate error codes.
+            using var authorityKey = RSA.Create(2048);
+            var authorityRequest = new CertificateRequest("CN=identityplatform-untrusted-authority", authorityKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            authorityRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
+            authorityRequest.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyCertSign | X509KeyUsageFlags.CrlSign, true));
+            using var authority = authorityRequest.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
+            using var issued = request.Create(authority, DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(4), RandomNumberGenerator.GetBytes(16));
+            using var certificate = issued.CopyWithPrivateKey(key);
             await using var untrusted = new TestRelyingParty { ClientSecret = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)) };
             await untrusted.StartAsync(TestContext.Current.CancellationToken, certificate);
             BrowserEvidence.Mark(BrowserPhase.UntrustedCertificate);
@@ -58,7 +66,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
                 "webkit" => error.Message.Contains("Unacceptable TLS certificate", StringComparison.Ordinal),
                 _ => false
             };
-            Assert.True(certificateFailure, "The unrelated certificate must fail specifically at certificate validation.");
+            Assert.True(certificateFailure, "The unrelated certificate must fail specifically at certificate validation (" + BrowserEvidence.Classify(error) + ").");
         });
     }
 
