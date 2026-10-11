@@ -8,6 +8,12 @@ The explicitly enabled **Development-only non-administrator pilot** has transact
 
 The default Aspire profile remains health-only. The test relying party keeps tokens server-side and exists inside the automated fixture; it is not a shipped demo application or Admin BFF. Usable administration, React, administrator MFA and management API contracts remain unbuilt. Passing the current suite does not establish complete coverage of every specified edge: T032 below proves its representative committed authorization-time matrix; manual and full-feature obligations remain.
 
+## Current next item: T021 manual assessment
+
+T032 final head `423725281a0a674b0f4916fd2eb4e1363ba8f9d6` passed all 17 checks and 1,017 ordinary cases in [run 38163339126](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38163339126), then squash-merged in PR #15 as `f1b1a4fe040a7e425557ed51ce835572264fda78`. Tested merge `918ff03` and squash share tree `e3d2ee235c54433d03362dca26571c7b1d9b37df`. Final issuer durations were PostgreSQL 452.210s and SQL Server 570.363s. The earlier source checkpoint below remains historical evidence.
+
+The [manual handoff plan](manual-acceptance.md), [assessment instructions](../../docs/operations/pilot-manual-assessment.md) and [unexecuted result template](manual-assessment-results.md) prepare the next obligation. Named assessors and a separately configured interactive HTTPS client are still needed. No Windows/WSL2, screen-reader, password-manager or qualified WCAG results are claimed. T021/full M01-D remain open. The NFR-09 five-minute **administrator application-creation** criterion remains in M09-A; it is not a pilot-login target.
+
 ## Accepted merged checkpoint
 
 T030 squash-merged in [PR #12](https://github.com/mosesparadise/OpenIdentityAdmin/pull/12) as `fca82fb`; T029 evidence reconciliation followed in [PR #13](https://github.com/mosesparadise/OpenIdentityAdmin/pull/13) as `237afa5`. T029 source `87492cd` passed all 17 checks and 845 ordinary cases, zero failures/skips, in [run 38151249880](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38151249880). These are prior checkpoints; the expanded T031 acceptance below supersedes their test scope.
@@ -97,7 +103,7 @@ T031's concrete HTTP evidence is [TransportAcceptanceTests](../../tests/aspire/I
 
 | Work | Required result / owner role |
 | --- | --- |
-| Full M01-D / T021 | Complete qualified manual password-manager/screen-reader/accessibility work; preserve timed usability under NFR-09/M09-A. QA/UX; named human assessors still pending. |
+| Full M01-D / T021 | Execute the [manual assessment pack](../../docs/operations/pilot-manual-assessment.md) with qualified password-manager/screen-reader/accessibility review, findings/retests and full-feature convergence. QA/UX; named human assessors and configured interactive HTTPS relying party still pending. Timed administrator application-creation usability remains NFR-09/M09-A, not a pilot-login threshold. |
 | M01-E | Actual session/code/token restart and two deployed instances, cross-node one-use behavior, staged public signing/encryption overlap/retirement. ENG/OPS; use a new Spec Kit increment before code. |
 | M01-F | Versioned Admin API/BFF contracts, compatible current OpenAPI tooling, Scalar and Swagger, generated-client/compatibility gates; keep protocol routes unversioned. ENG/API. |
 | M02–M08 | Administrator enrollment/MFA/BFF/React, management, remaining protocol/account/federation journeys, operational UI, audit pipeline and retention. [Full roadmap](../../docs/roadmap.md). |

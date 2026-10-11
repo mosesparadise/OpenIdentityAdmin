@@ -12,6 +12,10 @@ HTTPS trust has separate consumers. Trust the ASP.NET development certificate in
 
 For the controlled login journey, the automated issuer/browser suites below provision their own synthetic credentials, callback server and temporary issuer material. A manually started pilot requires the private configuration below **and a separately configured HTTPS relying party**. There is no shipped interactive test-client URL or Admin BFF yet.
 
+## Manual acceptance handoff
+
+Use the [manual assessment pack](pilot-manual-assessment.md) for Windows/WSL2 preflight, the required interactive HTTPS client profile, proposed human test matrix, keyboard/screen-reader/password-manager cases and a blank results template. It is preparation, not evidence that those checks ran. T021 stays open pending named assessors, client setup, actual observations and qualified review.
+
 ## Enable and initialize
 
 Follow [issuer protection](issuer-protection.md) to supply distinct durable signing/encryption/wrapping credentials and a private Data Protection ring. Runtime never generates replacement issuer keys. Select `Database:Provider` as `PostgreSql` or `SqlServer` and use disposable local databases through Aspire.
