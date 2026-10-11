@@ -40,7 +40,9 @@ internal static class Setup
             options.Cookie.Path = "/";
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.HttpOnly = true;
-            options.Cookie.SameSite = SameSiteMode.Strict;
+            // Cross-site authorization GETs must reuse this cookie so another tab cannot replace it.
+            // Native Razor antiforgery validation still protects every unsafe form submission.
+            options.Cookie.SameSite = SameSiteMode.Lax;
         });
         services.Configure<FormOptions>(options =>
         {

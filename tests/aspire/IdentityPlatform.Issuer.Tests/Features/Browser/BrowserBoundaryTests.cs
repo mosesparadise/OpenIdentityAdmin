@@ -3,6 +3,7 @@ using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
 using IdentityPlatform.Testing;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Playwright;
@@ -82,6 +83,7 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
         await BrowserEvidence.RunAsync(async () =>
         {
             var environment = await fixture.GetAsync(provider);
+            RequireDifferentSites(environment);
             await using var session = await BrowserSession.CreateAsync();
             var firstPage = await session.Context.NewPageAsync();
             var original = environment.RelyingParty.Prepare(exchange: true);
@@ -90,12 +92,15 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             await BrowserJourneys.LoginAsync(firstPage, environment, original, role: BrowserJourneyRole.InitialSession);
             var first = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             BrowserEvidence.Mark(BrowserPhase.FirstTabNavigation);
-            await firstPage.GotoAsync(environment.RelyingParty.StartUri(first).AbsoluteUri);
-            var firstAntiforgery = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == "__Host-pilot-antiforgery").Value;
+            await StartFromRelyingPartyAsync(firstPage, environment, first);
+            var antiforgeryCookie = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == "__Host-pilot-antiforgery");
+            Assert.True(antiforgeryCookie.Secure && antiforgeryCookie.HttpOnly && antiforgeryCookie.Path == "/" && antiforgeryCookie.SameSite == SameSiteAttribute.Lax,
+                "Antiforgery must retain protected host-cookie attributes and safe cross-site navigation semantics.");
+            var firstAntiforgery = antiforgeryCookie.Value;
             var secondPage = await session.Context.NewPageAsync();
             var second = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             BrowserEvidence.Mark(BrowserPhase.SecondTabNavigation);
-            await secondPage.GotoAsync(environment.RelyingParty.StartUri(second).AbsoluteUri);
+            await StartFromRelyingPartyAsync(secondPage, environment, second);
             var firstId = await firstPage.Locator("input[name=Interaction]").InputValueAsync();
             var secondId = await secondPage.Locator("input[name=Interaction]").InputValueAsync();
             var secondAntiforgery = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == "__Host-pilot-antiforgery").Value;
@@ -112,6 +117,71 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             Assert.Equal(2, await database.Set<LoginInteraction>().CountAsync(value => (value.Id == firstId || value.Id == secondId) && value.Consumed, TestContext.Current.CancellationToken));
             await BrowserJourneys.RequireNoTokensAsync(firstPage, session.Context, environment, original, first, second);
             await BrowserJourneys.RequireNoTokensAsync(secondPage, session.Context, environment, original, first, second);
+        });
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Cross_site_post_with_a_copied_valid_form_token_cannot_authenticate_or_consume_the_interaction(string provider)
+    {
+        await BrowserEvidence.RunAsync(async () =>
+        {
+            var environment = await fixture.GetAsync(provider);
+            RequireDifferentSites(environment);
+            await using var session = await BrowserSession.CreateAsync();
+            var owner = await session.Context.NewPageAsync();
+            var flow = environment.RelyingParty.Prepare(exchange: true);
+            await StartFromRelyingPartyAsync(owner, environment, flow);
+            var id = await owner.Locator("input[name=Interaction]").InputValueAsync();
+            var token = await owner.Locator("input[name=__RequestVerificationToken]").InputValueAsync();
+            var before = await SessionCountAsync(environment);
+            var hostile = await session.Context.NewPageAsync();
+            await hostile.GotoAsync(new Uri(environment.RelyingParty.BaseUri, "/alive").AbsoluteUri);
+            await hostile.SetContentAsync("<!doctype html><html lang='en'><title>Cross-site form control</title><body></body></html>");
+            await hostile.EvaluateAsync("""
+                values => {
+                    const form = document.createElement('form');
+                    form.method = 'post'; form.action = values.action;
+                    for (const [name, value] of Object.entries(values.fields)) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden'; input.name = name; input.value = value;
+                        form.append(input);
+                    }
+                    const submit = document.createElement('button');
+                    submit.id = 'submit'; submit.type = 'submit'; submit.textContent = 'Submit';
+                    form.append(submit); document.body.append(form);
+                }
+                """, new
+            {
+                action = new Uri(environment.Issuer, "/account/login").AbsoluteUri,
+                fields = new Dictionary<string, string>
+                {
+                    ["Interaction"] = id,
+                    ["__RequestVerificationToken"] = token,
+                    ["Username"] = environment.Username,
+                    ["Password"] = environment.Password
+                }
+            });
+            var response = await hostile.RunAndWaitForResponseAsync(() => hostile.Locator("#submit").ClickAsync(),
+                value => value.Request.Method == "POST" && new Uri(value.Url) == new Uri(environment.Issuer, "/account/login"));
+            var headers = await response.Request.AllHeadersAsync();
+            var posted = QueryHelpers.ParseQuery(response.Request.PostData ?? "");
+            Assert.True(posted.Count == 4 && posted.GetValueOrDefault("Interaction") == id && posted.GetValueOrDefault("__RequestVerificationToken") == token &&
+                posted.GetValueOrDefault("Username") == environment.Username && posted.GetValueOrDefault("Password") == environment.Password,
+                "The cross-site control must transmit the exact legitimate form token, interaction and synthetic credentials.");
+            Assert.True(headers.GetValueOrDefault("origin") == environment.RelyingParty.BaseUri.GetLeftPart(UriPartial.Authority), "The unsafe request must originate at the distinct relying-party site.");
+            Assert.True(!headers.GetValueOrDefault("cookie", "").Contains("__Host-pilot-antiforgery=", StringComparison.Ordinal), "The cross-site unsafe request must not carry the protected antiforgery cookie.");
+            Assert.Equal(400, response.Status);
+            Assert.True(response.Headers.GetValueOrDefault("content-type", "").StartsWith("text/plain", StringComparison.Ordinal), "Native antiforgery rejection must use the generic plaintext response.");
+            var body = await response.TextAsync();
+            Assert.True(body == "This request cannot be completed. Return to your application and start a new sign-in.", "The unsafe request must receive the native generic rejection.");
+            SafeAssertions.ContainsNoSensitiveMaterial(body, token, environment.Password);
+            Assert.Equal(before, await SessionCountAsync(environment));
+            Assert.True(!(await session.Context.CookiesAsync()).Any(cookie => cookie.Name == PilotProfile.SessionCookie), "Cross-site rejection must not authenticate the browser.");
+            Assert.True(flow.Code.Length == 0 && flow.ExchangeCount == 0, "Cross-site rejection must not issue or exchange a code.");
+            await RequirePendingAsync(environment, id);
+            await BrowserJourneys.LoginAsync(owner, environment, flow);
         });
     }
 
@@ -173,6 +243,19 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
     {
         await page.Locator("#username").FillAsync(environment.Username);
         await page.Locator("#password").FillAsync(environment.Password);
+    }
+
+    private static void RequireDifferentSites(IssuerEnvironment environment) =>
+        Assert.True(environment.Issuer.Host == "localhost" && environment.RelyingParty.BaseUri.Host == "127.0.0.1", "This regression requires the issuer and relying party to use distinct loopback sites.");
+
+    private static async Task StartFromRelyingPartyAsync(IPage page, IssuerEnvironment environment, TestFlow flow)
+    {
+        await page.BringToFrontAsync();
+        await page.GotoAsync(new Uri(environment.RelyingParty.BaseUri, "/alive").AbsoluteUri);
+        await page.SetContentAsync("<!doctype html><html lang='en'><title>Relying party</title><body><a id='start'>Sign in</a></body></html>");
+        await page.Locator("#start").EvaluateAsync("(element, value) => element.href = value", environment.RelyingParty.StartUri(flow).AbsoluteUri);
+        await page.Locator("#start").ClickAsync();
+        await Assertions.Expect(page.Locator("input[name=Interaction]")).ToBeAttachedAsync();
     }
 
     private static async Task<int> SessionCountAsync(IssuerEnvironment environment)
