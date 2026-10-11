@@ -22,6 +22,10 @@ public sealed class LoginInteraction
     {
         get; set;
     }
+    public string? BudgetId
+    {
+        get; set;
+    }
     public long CreatedAt
     {
         get; set;

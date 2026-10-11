@@ -8,8 +8,8 @@ public static class SchemaCatalog
 {
     public static IReadOnlyList<string> Platform(DatabaseProvider provider) => provider switch
     {
-        DatabaseProvider.PostgreSql => ["20261010012841_InitialPlatform", "20261010134307_FirstPartyLogin"],
-        DatabaseProvider.SqlServer => ["20261010012848_InitialPlatform", "20261010134320_FirstPartyLogin"],
+        DatabaseProvider.PostgreSql => ["20261010012841_InitialPlatform", "20261010134307_FirstPartyLogin", "20261011131900_BrowserInteractionBudget"],
+        DatabaseProvider.SqlServer => ["20261010012848_InitialPlatform", "20261010134320_FirstPartyLogin", "20261011131926_BrowserInteractionBudget"],
         _ => throw new ArgumentOutOfRangeException(nameof(provider))
     };
 

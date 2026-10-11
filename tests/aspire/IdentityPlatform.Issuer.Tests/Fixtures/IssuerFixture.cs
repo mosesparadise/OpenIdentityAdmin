@@ -202,11 +202,15 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         };
     }
 
-    public ServiceProvider RuntimeServices(DbCommandInterceptor? interceptor = null)
+    public ServiceProvider RuntimeServices(DbCommandInterceptor? interceptor = null, TimeProvider? time = null)
     {
         var registrations = new ServiceCollection().AddLogging(logs => logs.ClearProviders())
             .AddSingleton(runtimeConfiguration).AddIdentityPersistence(databaseProvider, runtimeConnection);
         registrations.AddFirstPartyPilot(runtimeCredentials!);
+        if (time is not null)
+        {
+            registrations.AddSingleton(time);
+        }
         registrations.ConfigureDbContext<PlatformDbContext>(options =>
         {
             if (interceptor is not null)

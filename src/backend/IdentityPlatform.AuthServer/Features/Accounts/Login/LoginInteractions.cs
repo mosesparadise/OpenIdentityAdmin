@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IdentityPlatform.AuthServer.Features.Accounts.Login;
 
 public sealed class LoginInteractions(PlatformDbContext database, UserManager<PlatformUser> users,
-    SignInManager<PlatformUser> signIn, PilotEligibility eligibility, DummyPassword dummy, TimeProvider time)
+    SignInManager<PlatformUser> signIn, PilotEligibility eligibility, DummyPassword dummy, TimeProvider time, LoginInteractionAdmission admission)
 {
     public async Task<LoginInteraction?> BoundAsync(HttpContext context, string? id)
     {
@@ -25,50 +25,8 @@ public sealed class LoginInteractions(PlatformDbContext database, UserManager<Pl
     public async Task<LoginInteraction?> FindAsync(string requestTokenId, CancellationToken cancellationToken) =>
         await database.Set<LoginInteraction>().AsNoTracking().SingleOrDefaultAsync(value => value.RequestTokenId == requestTokenId, cancellationToken);
 
-    public async Task<LoginInteraction?> CreateAsync(HttpContext context, string tokenId, string requestUri, long nativeExpiry)
-    {
-        var candidates = context.Request.Cookies.Keys.Where(name => name.StartsWith(PilotProfile.CorrelationPrefix, StringComparison.Ordinal)).Take(9).ToArray();
-        if (candidates.Length > 8)
-        {
-            return null;
-        }
-        var ids = candidates.Select(name => name[PilotProfile.CorrelationPrefix.Length..]).Where(InteractionSecrets.IsIdentifier).ToArray();
-        var active = await database.Set<LoginInteraction>().AsNoTracking()
-            .Where(value => ids.Contains(value.Id) && !value.Consumed && value.ExpiresAt > Now)
-            .ToDictionaryAsync(value => value.Id, context.RequestAborted);
-        var count = 0;
-        foreach (var cookie in candidates)
-        {
-            var id = cookie[PilotProfile.CorrelationPrefix.Length..];
-            if (active.TryGetValue(id, out var current) && InteractionSecrets.Matches(context.Request.Cookies[cookie], current.BrowserDigest))
-            {
-                count++;
-            }
-            else
-            {
-                context.Response.Cookies.Delete(cookie, CookieOptions());
-            }
-        }
-        if (count >= 8 || tokenId.Length > 100 || requestUri.Length > 512 || nativeExpiry <= Now)
-        {
-            return null;
-        }
-        var secret = InteractionSecrets.Create();
-        var interaction = new LoginInteraction
-        {
-            Id = InteractionSecrets.Create(),
-            RequestTokenId = tokenId,
-            RequestUri = requestUri,
-            ClientId = PilotProfile.ClientId,
-            BrowserDigest = InteractionSecrets.Digest(secret),
-            CreatedAt = Now,
-            ExpiresAt = Math.Min(Now + PilotProfile.InteractionSeconds, nativeExpiry)
-        };
-        database.Add(interaction);
-        await database.SaveChangesAsync(context.RequestAborted);
-        context.Response.Cookies.Append(PilotProfile.CorrelationPrefix + interaction.Id, secret, CookieOptions());
-        return interaction;
-    }
+    public Task<LoginInteraction?> CreateAsync(HttpContext context, string tokenId, string requestUri, long nativeExpiry) =>
+        admission.CreateAsync(context, tokenId, requestUri, nativeExpiry);
 
     public async Task<LocalIdentitySession?> CompleteAsync(LoginInteraction interaction, string username, string password, string? previousSessionId, CancellationToken cancellationToken)
     {

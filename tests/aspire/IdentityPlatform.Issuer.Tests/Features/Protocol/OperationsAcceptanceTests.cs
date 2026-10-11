@@ -157,15 +157,15 @@ public sealed class OperationsAcceptanceTests(IssuerFixture fixture, ITestOutput
         var before = await ExchangeSnapshot.CaptureAsync(environment);
         var application = await ApplicationSnapshotAsync(environment);
         var elapsed = new Stopwatch();
-        await using (var held = await NativeCodeLock.AcquireAsync(environment, provider, code.CodeId))
+        await using (var held = await DatabaseRowLock.AcquireNativeCodeAsync(environment, provider, code.CodeId))
         {
             using var caller = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
             elapsed.Start();
             var request = environment.RelyingParty.ExchangeAsync(code.Flow.Code, code.Flow.Verifier, cancellationToken: caller.Token);
-            NativeCodeLock.BlockedCommand? blocked = null;
+            DatabaseRowLock.BlockedCommand? blocked = null;
             try
             {
-                blocked = await held.WaitForIssuerAsync(TestContext.Current.CancellationToken);
+                blocked = await held.WaitForRuntimeAsync(TestContext.Current.CancellationToken);
                 if (cancelClient)
                 {
                     caller.Cancel();

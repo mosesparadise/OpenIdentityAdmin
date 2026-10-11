@@ -97,6 +97,9 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             Assert.True(antiforgeryCookie.Secure && antiforgeryCookie.HttpOnly && antiforgeryCookie.Path == "/" && antiforgeryCookie.SameSite == SameSiteAttribute.Lax,
                 "Antiforgery must retain protected host-cookie attributes and safe cross-site navigation semantics.");
             var firstAntiforgery = antiforgeryCookie.Value;
+            var firstBudget = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == PilotProfile.BudgetCookie);
+            Assert.True(firstBudget.Secure && firstBudget.HttpOnly && firstBudget.Path == "/" && firstBudget.SameSite == SameSiteAttribute.Lax,
+                "Admission continuity must retain protected host-cookie attributes.");
             var secondPage = await session.Context.NewPageAsync();
             var second = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             BrowserEvidence.Mark(BrowserPhase.SecondTabNavigation);
@@ -104,6 +107,8 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             var firstId = await firstPage.Locator("input[name=Interaction]").InputValueAsync();
             var secondId = await secondPage.Locator("input[name=Interaction]").InputValueAsync();
             var secondAntiforgery = (await session.Context.CookiesAsync()).Single(cookie => cookie.Name == "__Host-pilot-antiforgery").Value;
+            Assert.True((await session.Context.CookiesAsync()).Single(cookie => cookie.Name == PilotProfile.BudgetCookie).Value == firstBudget.Value,
+                "Cross-site tab starts must retain the same admission budget.");
             Assert.True(firstAntiforgery.Length > 0 && firstAntiforgery == secondAntiforgery, "Opening another pending form must preserve the first form's antiforgery cookie.");
             Assert.True(firstId != secondId && first.State != second.State && first.Nonce != second.Nonce, "Tabs must retain independent request bindings.");
             await BrowserJourneys.LoginAsync(firstPage, environment, first, role: BrowserJourneyRole.FirstTab);

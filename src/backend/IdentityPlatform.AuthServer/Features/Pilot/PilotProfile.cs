@@ -12,6 +12,8 @@ public static class PilotProfile
     public const string SessionClaim = "oi_pilot_session";
     public const string SessionCookie = "__Host-identity-pilot";
     public const string CorrelationPrefix = "__Host-pilot-flow-";
+    public const string BudgetCookie = "__Host-pilot-budget";
+    public const int MaximumInteractions = 8;
     public const int InteractionSeconds = 300;
     public const int SessionSeconds = 900;
 

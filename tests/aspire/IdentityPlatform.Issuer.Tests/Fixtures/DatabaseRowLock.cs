@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Issuer.Tests.Fixtures;
 
-// A real independently owned transaction blocks the child issuer; no in-process interceptor is used.
-public sealed class NativeCodeLock : IAsyncDisposable
+// Independent provider-observed row locks for native redemption and application admission tests.
+public sealed class DatabaseRowLock : IAsyncDisposable
 {
     private readonly IssuerEnvironment environment;
     private readonly string provider;
@@ -18,7 +18,7 @@ public sealed class NativeCodeLock : IAsyncDisposable
     private IDbContextTransaction? transaction;
     private int blocker;
 
-    private NativeCodeLock(IssuerEnvironment environment, string provider)
+    private DatabaseRowLock(IssuerEnvironment environment, string provider)
     {
         this.environment = environment;
         this.provider = provider;
@@ -32,9 +32,15 @@ public sealed class NativeCodeLock : IAsyncDisposable
 
     public sealed record BlockedCommand(int Session, bool IsUpdate);
 
-    public static async Task<NativeCodeLock> AcquireAsync(IssuerEnvironment environment, string provider, string codeId)
+    public static Task<DatabaseRowLock> AcquireNativeCodeAsync(IssuerEnvironment environment, string provider, string codeId) =>
+        AcquireAsync(environment, provider, codeId, budget: false);
+
+    public static Task<DatabaseRowLock> AcquireBudgetAsync(IssuerEnvironment environment, string provider, string budgetId) =>
+        AcquireAsync(environment, provider, budgetId, budget: true);
+
+    private static async Task<DatabaseRowLock> AcquireAsync(IssuerEnvironment environment, string provider, string rowId, bool budget)
     {
-        var held = new NativeCodeLock(environment, provider);
+        var held = new DatabaseRowLock(environment, provider);
         try
         {
             held.transaction = await held.database.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
@@ -44,10 +50,13 @@ public sealed class NativeCodeLock : IAsyncDisposable
                 command.CommandTimeout = 5;
                 command.CommandText = provider == "PostgreSql" ? "SELECT pg_backend_pid()" : "SELECT @@SPID";
                 held.blocker = Convert.ToInt32(await command.ExecuteScalarAsync(TestContext.Current.CancellationToken), System.Globalization.CultureInfo.InvariantCulture);
-                command.CommandText = provider == "PostgreSql" ?
+                command.CommandText = budget ? provider == "PostgreSql"
+                    ? "UPDATE platform.\"LoginBrowserBudget\" SET \"LastAdmissionAt\"=\"LastAdmissionAt\" WHERE \"Id\"=@id"
+                    : "UPDATE [platform].[LoginBrowserBudget] SET [LastAdmissionAt]=[LastAdmissionAt] WHERE [Id]=@id"
+                    : provider == "PostgreSql" ?
                     "UPDATE platform.\"OpenIddictTokens\" SET \"ConcurrencyToken\"=\"ConcurrencyToken\" WHERE \"Id\"=@id" :
                     "UPDATE [platform].[OpenIddictTokens] SET [ConcurrencyToken]=[ConcurrencyToken] WHERE [Id]=@id";
-                AddParameter(command, "id", codeId);
+                AddParameter(command, "id", rowId);
                 Assert.Equal(1, await command.ExecuteNonQueryAsync(TestContext.Current.CancellationToken));
             }
             await held.observations.Database.OpenConnectionAsync(TestContext.Current.CancellationToken);
@@ -60,7 +69,7 @@ public sealed class NativeCodeLock : IAsyncDisposable
         }
     }
 
-    public async Task<BlockedCommand> WaitForIssuerAsync(CancellationToken cancellationToken)
+    public async Task<BlockedCommand> WaitForRuntimeAsync(CancellationToken cancellationToken)
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(4));
@@ -108,7 +117,7 @@ public sealed class NativeCodeLock : IAsyncDisposable
         command.Parameters.Add(parameter);
     }
 
-    public async ValueTask DisposeAsync()
+    public async Task ReleaseAsync()
     {
         using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(15));
         try
@@ -116,9 +125,20 @@ public sealed class NativeCodeLock : IAsyncDisposable
             if (transaction is not null)
             {
                 await transaction.RollbackAsync(cleanup.Token);
+                await transaction.DisposeAsync();
+                transaction = null;
             }
         }
         catch (Exception) { environment.Invalidate(); }
+        Assert.False(environment.Invalidated, "Database row lock release failed.");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await ReleaseAsync();
+        }
         finally
         {
             try
@@ -127,6 +147,5 @@ public sealed class NativeCodeLock : IAsyncDisposable
             }
             finally { await observer.DisposeAsync(); }
         }
-        Assert.False(environment.Invalidated, "Native code lock cleanup failed.");
     }
 }
