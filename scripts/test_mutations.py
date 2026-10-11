@@ -35,6 +35,13 @@ def clean_result(result):
     return result.wasSuccessful() and result.testsRun > 0 and not result.skipped and not result.expectedFailures
 
 
+def terminated(pid):
+    try:
+        return Path(f'/proc/{pid}/stat').read_text().split()[2] == 'Z'
+    except FileNotFoundError:
+        return True  # The OS may reap the child between observations.
+
+
 class MutationEvidenceTests(unittest.TestCase):
     def check(self, root, *, code=2, failed=True):
         with tempfile.TemporaryDirectory() as directory:
@@ -210,11 +217,10 @@ time.sleep(60)
                         run([sys.executable, '-c', program, str(path), str(stubborn), str(redirected)], 0.5, os.environ.copy(), cleanup_timeout=0.5)
                     self.assertLess(time.monotonic() - started, 4)
                     pid = int(path.read_text())
-                    status = Path(f'/proc/{pid}/stat')
                     deadline = time.monotonic() + 1
-                    while status.exists() and status.read_text().split()[2] != 'Z' and time.monotonic() < deadline:
+                    while not terminated(pid) and time.monotonic() < deadline:
                         time.sleep(0.01)  # Observe signal delivery; never rerun the command being verified.
-                    self.assertTrue(not status.exists() or status.read_text().split()[2] == 'Z')
+                    self.assertTrue(terminated(pid))
                 finally:
                     if path.exists():
                         try:
@@ -229,6 +235,10 @@ time.sleep(60)
                 require_clean_checkout({})
         with patch('verify_mutations.run', return_value=(0, '')):
             require_clean_checkout({})
+
+    def test_reaped_child_is_a_completed_termination(self):
+        with patch.object(Path, 'read_text', side_effect=FileNotFoundError()):
+            self.assertTrue(terminated(123))
 
     def test_python_gate_rejects_empty_skipped_expected_failures_and_errors(self):
         result = unittest.TestResult()
