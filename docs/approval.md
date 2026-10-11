@@ -7,3 +7,5 @@ This approves the complete ten-document v0.2 package and its AI skills/subagents
 Production deployment, external certification publication/payment and legal declarations remain separately authorized actions. The mandatory-PKCE/Basic OP compatibility gate is not waived.
 
 Amendment A-001 was approved on 2026-10-10: implementation proceeds with mandatory PKCE; Basic OP suite compatibility is tracked separately and remains a public-release certification dependency. Target repository: https://github.com/mosesparadise/OpenIdentityAdmin.
+
+Amendment [A-002](amendments/A-002-browser-investigation-sequencing.md) was approved on 2026-10-11: **“I approve A-002: merge PR #10 and complete T028 under the documented conditions, keeping T027 unresolved and release-blocking.”** This permits the reviewed PR #10 squash merge after exact-head gates and T028 through its own reviewed squash merge. It expires immediately after T028 merges or on recurrence of the contrast finding, whichever occurs first. T027 remains incomplete and release-blocking; no existing test, coverage floor, deadline, external gate or certification criterion is waived.

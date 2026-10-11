@@ -4,7 +4,9 @@ Status: implementation in progress; full acceptance pending. Partial executed ev
 
 ## Current delivery checkpoint — 11 October 2026
 
-T026 is merged in PR #9. T027 remains open in [PR #10](https://github.com/mosesparadise/OpenIdentityAdmin/pull/10): the historical PostgreSQL/WebKit dark/error contrast finding is not reproduced and its cause is undetermined. The diagnostic/control corrections are independently reviewed; current exact-head CI is tracked on the PR. T028 has not started because the user requires each task's reviewed squash merge before the next task. T029/T030 and manual/external acceptance remain separate open work.
+T026 is merged in PR #9. T027 remains incomplete: the historical PostgreSQL/WebKit dark/error contrast finding is not reproduced and its cause is undetermined. The user approved [A-002](../../docs/amendments/A-002-browser-investigation-sequencing.md) on 11 October 2026, permitting the reviewed PR #10 squash merge after exact-head gates, then T028 through its own reviewed squash merge. This supersedes the earlier sequence blocker without closing T027. The exception expires after T028 merges or on recurrence, whichever occurs first. T027/full M01-D/public release remain blocked; T029/T030 and manual/external acceptance remain separate open work.
+
+Source `ef0464c2ab40c7855bacaba2decf463f7eda7ebe` passed all 14 checks and 749 .NET cases, zero skips, in [run 38120855109](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38120855109): 229 unit/architecture, 188 HTTP/provider cases on each database and 24 cases in each of six browser/provider cells. All nine module coverage floors passed. This approval-record commit receives its own final-head gates before merge; passing results do not resolve the historical finding.
 
 Required current scope is 749 .NET cases across all six browser/provider cells (24 per browser cell), with zero skips and the unchanged nine module coverage floors. Passing diagnostic probes do not by themselves resolve the historical finding. The following sections preserve chronological evidence, including superseded completion checkpoints.
 
