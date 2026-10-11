@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-issuer-foundation`  
 **Created**: 2026-10-10  
-**Status**: Feature 004 implements the bounded Development login/code pilot. T029 merged in PR #13; T031 has 17-check/943-case source acceptance, with final delivery on PR #14. T032 and manual/full M01-D acceptance remain open. ISS-003 restart/two-instance/key overlap remains M01-E. Feature 002 established durable credentials/Data Protection only. See the [current evidence matrix](../../specs/004-first-party-login/acceptance-matrix.md); no complete issuer or release acceptance is claimed.
+**Status**: Feature 004 implements the bounded Development login/code pilot. T031/PR #14 is merged; T032 has verified 17-check/1,017-case source acceptance with final delivery on PR #15. Manual/full M01-D acceptance remains open. ISS-003 restart/two-instance/key overlap remains M01-E. See the [current matrix](../../specs/004-first-party-login/acceptance-matrix.md). No complete issuer or release acceptance is claimed.
 **Input**: Continue after merged PR #1 with the unfinished issuer portion of approved roadmap milestone 001. The local feature number 002 does not mean roadmap milestone 002 (secure administrator BFF), which depends on this work.
 
 ## Current allocation of this original issuer backlog
@@ -17,10 +17,10 @@
 | ISS-006 | Minimal API decisions preserve OpenIddict validation/native state; T031 proves the specified transport denials and forwarding-header invariants. |
 | ISS-007 | Mandatory S256 and downgrade/proof controls pass; A-001 certification compatibility is still external. |
 | ISS-008 | Bound/fresh/one-use interactions, tabs and atomic capacity accepted through T030. |
-| ISS-009 | Password/redemption current-state evidence exists; **T032** must directly prove changed eligibility at new/resumed authorization. |
+| ISS-009 | Password/redemption current-state evidence and T032 representative new/resumed/silent authorization restrictions pass on both providers; no concurrent administration/offline revocation guarantee. |
 | ISS-010 | Independent public-key token/claim/binding validation accepted for the fixed pilot; native lifecycle claims follow the contract. |
 | ISS-011 | Six-cell automated UI/visual evidence accepted; qualified screen-reader/password-manager/WCAG and timed usability remain. |
-| ISS-012 | Accepted 943-case checkpoint plus mutations/coverage; **T032**, full manual/product/operational acceptance remain. |
+| ISS-012 | Accepted 1,017-case checkpoint plus mutations/coverage; full manual/product/operational acceptance remains. |
 
 The original scenarios below remain requirements. In particular, SC-004 restart/overlap is still unexecuted M01-E scope. The current component concurrency tests and single-host replay tests do not establish cross-node behavior. M01-F versioned management contracts, Scalar/Swagger and generated clients remain a separate obligation.
 

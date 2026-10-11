@@ -29,12 +29,12 @@
     "PostgreSql": {
       "Persistence": 4,
       "AppHost": 4,
-      "Issuer": 255
+      "Issuer": 292
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 4,
-      "Issuer": 255
+      "Issuer": 292
     }
   },
   "browser": {

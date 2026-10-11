@@ -36,6 +36,9 @@ public sealed class ExchangeAcceptanceGroup : ICollectionFixture<IssuerFixture>;
 [CollectionDefinition("transport-acceptance", DisableParallelization = true)]
 public sealed class TransportAcceptanceGroup : ICollectionFixture<IssuerFixture>;
 
+[CollectionDefinition("authorization-state", DisableParallelization = true)]
+public sealed class AuthorizationStateGroup : ICollectionFixture<IssuerFixture>;
+
 public sealed class IssuerFixture : IAsyncLifetime
 {
     private readonly Dictionary<(string Provider, bool HttpProbe), IssuerEnvironment> environments = new();
