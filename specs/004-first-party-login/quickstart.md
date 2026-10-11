@@ -41,7 +41,7 @@ Chromium remains required on both providers for every PR. `scripts/browser_matri
 
 ## Remaining gates and evidence
 
-Run the normal static-analysis, assurance and supply-chain gates; mirror `.github/workflows/verify.yml` for child-process coverage collection/merging across **every selected** partition. Preserve all nine per-module90% line/80% branch floors. Selected browser counts vary by change scope; do not copy the historical 845 total onto a documentation-only run without inspecting its selected matrix and reports.
+Run the normal static-analysis, assurance and supply-chain gates; mirror `.github/workflows/verify.yml` for child-process coverage collection/merging across **every selected** partition. Preserve all nine per-module90% line/80% branch floors. Selected browser counts vary by change scope; do not copy the historical checkpoint total onto a documentation-only run without inspecting its selected matrix and reports.
 
 Critical mutation verification deliberately changes source. Use a **separate clean disposable checkout for each provider**, restore/build there, and never run it in the working checkout holding local changes:
 
@@ -52,7 +52,7 @@ python3 scripts/verify_mutations.py PostgreSql --disposable-checkout
 python3 scripts/verify_mutations.py SqlServer --disposable-checkout
 ```
 
-The runner requires passing baseline/restored controls, exact test identities and demonstrated behavioral failures; a build error or skipped case is not a killed mutant. Keep only sanitized reports/reviewed empty-page screenshots. [T031/T032 and manual/release gaps](acceptance-matrix.md#next-work-and-release-gates) remain open even when the currently selected suite passes.
+The runner requires passing baseline/restored controls, exact test identities and demonstrated behavioral failures; a build error or skipped case is not a killed mutant. Keep only sanitized reports/reviewed empty-page screenshots. [T032 and manual/release gaps](acceptance-matrix.md#next-work-and-release-gates) remain open even when the currently selected suite passes.
 
 ## Optional manual AppHost pilot
 

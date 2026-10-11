@@ -1,6 +1,6 @@
 # T028 — Critical-decision verification
 
-Current delivery: T028 is merged in PR #11, and T030 is merged in PR #12. Use the [reconciled acceptance matrix](acceptance-matrix.md) for current counts and T031/T032/manual gaps. The plan and checkpoint entries below retain the T028 execution chronology.
+Current delivery: T028 is merged in PR #11, and T030 is merged in PR #12. Use the [reconciled acceptance matrix](acceptance-matrix.md) for current counts and T032/manual gaps. The plan and checkpoint entries below retain the T028 execution chronology.
 
 T028 source acceptance is complete in [run 38139630540](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38139630540), source `7dc6086`: all 17 checks, 793 ordinary cases with zero failures/skips, both seven-mutation jobs, the focused regression and all nine coverage floors. [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) records the separate required final documentation-head checks and squash delivery. Implementation began under approved v0.2/A-002; that sequencing exception expired on recurrence and is not renewed. The [reproduced theme defect now has an accepted disposition](verification.md#completed-corrected-source-acceptance-and-disposition). This bounded task does not finish the whole pilot or change production security policy. Earlier reopened checkpoints below are historical.
 
