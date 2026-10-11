@@ -47,6 +47,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
         builder.Logging.ClearProviders();
         builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0, listener => { if (certificate is null) { listener.UseHttps(); } else { listener.UseHttps(certificate); } }));
         application = builder.Build();
+        application.MapGet("/alive", () => Results.Ok());
         application.MapGet("/start", (HttpContext context) =>
         {
             var id = context.Request.Query["flow"].ToString();
@@ -81,6 +82,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
             return Results.BadRequest("Invalid callback correlation.");
         }
         context.Response.Cookies.Delete("__Host-rp-" + state, new CookieOptions { Secure = true, HttpOnly = true, SameSite = SameSiteMode.Lax, Path = "/" });
+        flow.RecordCallback();
         try
         {
             flow.Error = context.Request.Query["error"].ToString();
@@ -94,6 +96,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
                 flow.Completion.TrySetResult(true);
                 return Results.Content("Authorization received", "text/plain");
             }
+            flow.RecordExchange();
             using var response = await ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: context.RequestAborted);
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -101,6 +104,7 @@ public sealed class TestRelyingParty : IAsyncDisposable
                 return Results.Content("Exchange denied", "text/plain");
             }
             using var tokens = JsonDocument.Parse(await response.Content.ReadAsStringAsync(context.RequestAborted));
+            flow.RememberTokens(tokens.RootElement);
             flow.ValidationFailure = await ValidateAsync(tokens.RootElement, flow, context.RequestAborted);
             flow.Validated = flow.ValidationFailure.Length == 0;
             flow.Completion.TrySetResult(flow.Validated);
@@ -272,6 +276,15 @@ public sealed class TestRelyingParty : IAsyncDisposable
 public sealed class TestFlow(string? verifier = null)
 {
     private int started;
+    private int callbacks;
+    private int exchanges;
+    private string[] tokenCanaries = [];
+    public int CallbackCount => Volatile.Read(ref callbacks);
+    public int ExchangeCount => Volatile.Read(ref exchanges);
+    public void RecordCallback() => Interlocked.Increment(ref callbacks);
+    public void RecordExchange() => Interlocked.Increment(ref exchanges);
+    public void RememberTokens(JsonElement tokens) => tokenCanaries = [tokens.GetProperty("access_token").GetString()!, tokens.GetProperty("id_token").GetString()!];
+    public bool ContainsNoTokens(string value) => tokenCanaries.Length == 2 && tokenCanaries.All(token => token.Length > 0 && !value.Contains(token, StringComparison.Ordinal));
     public bool TryStart() => ExpiresAt > DateTimeOffset.UtcNow && Interlocked.Exchange(ref started, 1) == 0;
     public bool Started => Volatile.Read(ref started) == 1;
     public DateTimeOffset ExpiresAt { get; } = DateTimeOffset.UtcNow.AddMinutes(5);

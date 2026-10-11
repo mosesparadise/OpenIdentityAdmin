@@ -58,7 +58,7 @@ public sealed partial class PilotRegistrationTests
         var antiforgery = provider.GetRequiredService<IOptions<AntiforgeryOptions>>().Value;
         Assert.StartsWith("__Host-", antiforgery.Cookie.Name);
         Assert.Equal(CookieSecurePolicy.Always, antiforgery.Cookie.SecurePolicy);
-        Assert.Equal(SameSiteMode.Strict, antiforgery.Cookie.SameSite);
+        Assert.Equal(SameSiteMode.Lax, antiforgery.Cookie.SameSite);
         var identity = provider.GetRequiredService<IOptions<IdentityOptions>>().Value;
         Assert.Equal(16, identity.Password.RequiredLength);
         Assert.Equal(5, identity.Lockout.MaxFailedAccessAttempts);

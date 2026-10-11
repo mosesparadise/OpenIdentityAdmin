@@ -4,12 +4,28 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '23 2 * * *'
 permissions:
   contents: read
 concurrency:
   group: verify-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  browser-plan:
+    name: Browser matrix selection
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - run: python3 scripts/test_browser_matrix.py
+      - id: matrix
+        run: python3 scripts/browser_matrix.py
   assurance:
     name: Assurance register integrity
     runs-on: ubuntu-24.04
@@ -109,16 +125,6 @@ jobs:
           dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-      - name: Install pinned Chromium and trust the local HTTPS certificate
-        if: matrix.profile != 'unit'
-        shell: bash
-        run: |
-          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps chromium
-          sudo apt-get install -y libnss3-tools
-          mkdir -p "$HOME/.pki/nssdb"
-          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
-          # This is a self-signed server leaf, not a CA. Chromium requires trusted-peer semantics.
-          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
         run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.profile }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }}
       - name: Retain synthetic test and coverage evidence
@@ -131,9 +137,67 @@ jobs:
             artifacts/coverage/
           retention-days: 7
           if-no-files-found: error
+  browser:
+    needs: browser-plan
+    name: Browser ${{ matrix.provider }} / ${{ matrix.browser }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.browser-plan.outputs.matrix) }}
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+      - run: dotnet tool restore
+      - run: dotnet restore --locked-mode
+      - run: dotnet build --no-restore --nologo
+      - run: python3 scripts/check-ai-instructions.py
+      - run: python3 scripts/test_verify_evidence.py
+      - run: python3 scripts/test_coverage_gate.py
+      - name: Trust local HTTPS certificate
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/identity-https-trust"
+          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
+          openssl rehash "$RUNNER_TEMP/identity-https-trust"
+          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - name: Install pinned browser and provision explicit trust
+        shell: bash
+        run: |
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps ${{ matrix.browser }}
+          sudo apt-get install -y libnss3-tools
+          # WebKit uses the ephemeral runner's OS bundle; trust only this public synthetic leaf.
+          sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
+          sudo update-ca-certificates
+          echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
+          # Chromium uses NSS peer trust. Firefox imports the exact leaf as an explicit anchor in its private profile.
+          mkdir -p "$HOME/.pki/nssdb"
+          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
+          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
+      - name: Test with child-process coverage
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.provider }}-${{ matrix.browser }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --browser ${{ matrix.browser }}
+      - name: Retain synthetic test and coverage evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: foundation-${{ matrix.provider }}-${{ matrix.browser }}
+          path: |
+            artifacts/tests/
+            artifacts/coverage/
+          retention-days: 7
+          if-no-files-found: error
   coverage:
     name: Per-module coverage
-    needs: verify
+    needs: [verify, browser, browser-plan]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -152,6 +216,10 @@ jobs:
         with:
           pattern: foundation-*
           path: artifacts/input
+      - name: Require evidence from every selected cell
+        env:
+          BROWSER_MATRIX: ${{ needs.browser-plan.outputs.matrix }}
+        run: python3 scripts/check_coverage_inputs.py artifacts/input "$BROWSER_MATRIX"
       - run: dotnet coverage merge 'artifacts/input/**/coverage/*.cobertura.xml' -o artifacts/coverage/merged.cobertura.xml -f cobertura
       - run: python3 scripts/check-coverage.py artifacts/coverage/merged.cobertura.xml
       - name: Retain merged evidence

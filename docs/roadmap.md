@@ -1,6 +1,6 @@
 # Delivery roadmap and task register
 
-This is the living view of **all approved work**, as of 10 October 2026. It supplements the immutable [v0.2 plan](approved-v0.2/06-spec-kit-plan.md), [PRD](approved-v0.2/00-prd.md) and [approval record](approval.md). Dates are status dates, not delivery estimates. No estimate is invented before a feature's dependencies and acceptance work are understood.
+This is the living view of **all approved work**, as of 11 October 2026. It supplements the immutable [v0.2 plan](approved-v0.2/06-spec-kit-plan.md), [PRD](approved-v0.2/00-prd.md) and [approval record](approval.md). Dates are status dates, not delivery estimates. No estimate is invented before a feature's dependencies and acceptance work are understood.
 
 **Current merged capability (`main`):** native persistence, both-provider migrations and default health-only Aspire hosts, strict xUnit v3/MTP/coverage/supply-chain gates, AI instructions, durable issuer credentials/encrypted Data Protection, and an explicitly enabled **Development-only first-party login/code-S256 pilot**. Full pilot acceptance is still in progress; production administration, Admin BFF/React and management APIs are not implemented.
 
@@ -22,7 +22,7 @@ The implementation lead owns code/tasks/evidence; architecture, test and relevan
 | Durable issuer credentials and Data Protection | Done for bounded scope | [Tasks](../specs/002-issuer-foundation/tasks.md), [evidence](../specs/002-issuer-foundation/verification.md), [operations](operations/issuer-protection.md) | [PR #2](https://github.com/mosesparadise/OpenIdentityAdmin/pull/2) squash-merged as `8079b5e` |
 | Configuration references, static analysis and this roadmap | Done | [T014–T018](../specs/002-issuer-foundation/tasks.md), [quality policy](engineering/code-quality.md) | Squash-merged in PR #2 as `8079b5e` |
 | Assurance register baseline | Done for bounded scope | [Feature 003 tasks](../specs/003-assurance-register/tasks.md), [register](assurance/README.md) | [PR #3](https://github.com/mosesparadise/OpenIdentityAdmin/pull/3) squash-merged as `df828d6` |
-| First-party login and S256 code flow | In progress; acceptance pending | [Feature 004 spec](../specs/004-first-party-login/spec.md), [30 tasks, including acceptance gaps](../specs/004-first-party-login/tasks.md), [evidence](../specs/004-first-party-login/verification.md); [full issuer backlog](engineering/issuer-flow-backlog.md) | [PR #4](https://github.com/mosesparadise/OpenIdentityAdmin/pull/4) squash-merged as `8a70b02`; [PR #5](https://github.com/mosesparadise/OpenIdentityAdmin/pull/5) squash-merged as `d4664a3`, completing T023; T024 completed in [PR #6](https://github.com/mosesparadise/OpenIdentityAdmin/pull/6), squash-merged as `5aa330c` after all seven exact-head gates passed (578 tests, zero skips); T025 exchange acceptance is complete in [PR #7](https://github.com/mosesparadise/OpenIdentityAdmin/pull/7), squash-merged as `9c52c2d` (592 tests, zero skips; [plan](../specs/004-first-party-login/exchange-acceptance.md), [CI evidence](../specs/004-first-party-login/verification.md#t025-completed-ci-checkpoint)). Feature 005 is merged; T026 operations acceptance passed617 cases/zero skips and all seven gates in [PR #9](https://github.com/mosesparadise/OpenIdentityAdmin/pull/9), awaiting its authorized squash merge; separate T027 and T028 PRs follow; concurrent capacity remains T030 |
+| First-party login and S256 code flow | In progress; acceptance pending | [Feature 004 spec](../specs/004-first-party-login/spec.md), [30 tasks, including acceptance gaps](../specs/004-first-party-login/tasks.md), [evidence](../specs/004-first-party-login/verification.md); [full issuer backlog](engineering/issuer-flow-backlog.md) | [PR #4](https://github.com/mosesparadise/OpenIdentityAdmin/pull/4) squash-merged as `8a70b02`; [PR #5](https://github.com/mosesparadise/OpenIdentityAdmin/pull/5) squash-merged as `d4664a3`, completing T023; T024 completed in [PR #6](https://github.com/mosesparadise/OpenIdentityAdmin/pull/6), squash-merged as `5aa330c` after all seven exact-head gates passed (578 tests, zero skips); T025 exchange acceptance is complete in [PR #7](https://github.com/mosesparadise/OpenIdentityAdmin/pull/7), squash-merged as `9c52c2d` (592 tests, zero skips; [plan](../specs/004-first-party-login/exchange-acceptance.md), [CI evidence](../specs/004-first-party-login/verification.md#t025-completed-ci-checkpoint)). Feature 005 is merged; T026 operations acceptance passed617 cases/zero skips and all seven gates in [PR #9](https://github.com/mosesparadise/OpenIdentityAdmin/pull/9), squash-merged as `7d1a9bc` after final-head checks; T027 initially passed all 14 checks/743 tests/zero skips but acceptance reopened after a final-head WebKit contrast finding in [PR #10](https://github.com/mosesparadise/OpenIdentityAdmin/pull/10), reviewed development merge authorized by [A-002](amendments/A-002-browser-investigation-sequencing.md) after exact-head gates, while T027 remains unresolved and release-blocking ([plan](../specs/004-first-party-login/browser-acceptance.md), [evidence](../specs/004-first-party-login/verification.md#t027-completed-source-checkpoint)); a separate T028 PR follows its merge under A-002, which expires after T028 merges or on recurrence; concurrent capacity remains T030 |
 | Explicit host and feature composition | Complete; merged | [Feature 005 spec](../specs/005-host-composition/spec.md), [plan](../specs/005-host-composition/plan.md), [14 completed tasks](../specs/005-host-composition/tasks.md), [evidence](../specs/005-host-composition/verification.md), [convention](engineering/host-composition.md) | [PR #8](https://github.com/mosesparadise/OpenIdentityAdmin/pull/8) squash-merged as `64d8ceb`; final head `3241d15` passed all seven gates in [run38090792266](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38090792266), including603 cases with zero skips and all nine coverage floors |
 
 ## Milestone 001 — Platform and issuer foundation (partial)
@@ -149,19 +149,19 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-09 protocol | M01-D/E, M02-B/C, M03-C, M06-B, M07-A/B/C/D | Planned; credential groundwork is not protocol acceptance |
 | FR-10 access visibility/revocation | M06-C | Planned |
 | FR-11 BFF/API protection | M02-A/B/C/D/E | Planned |
-| FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: safe foundation logs; product atomic audit absent |
+| FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: pilot security transitions have atomic audit evidence; administration audit remains planned |
 | FR-13 rules/dashboard | M08-B | Planned |
 | FR-14 federation | M05-D | Planned |
 | FR-15 keys/inventory | M01-B/E, M08-C, M09-B | Partial: credential/protection adapter |
 | FR-16 API/docs/contracts | M01-F, M04-D | Planned |
 | FR-17 provider equivalence | M01-A, every affected feature, M09-B/F | Partial: implemented scope tested |
 | FR-18 installation/recovery | M01-A/B/E, M02-A, M09-B | Partial: local schemas/provisioning and DP; production operations unfinished |
-| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Planned |
+| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared tokens/themed Razor pilot; React and full manual acceptance remain planned |
 | FR-20 later parity | M10-A | Outside R1 |
 | FR-21 comprehensive tests | Every task, M09-F | Partial: implemented scope tested |
 | FR-22 engineering | Every task, M01-G | Ongoing |
 | FR-23 AI instructions | M01-A; evaluation per feature | Initial install/evaluation done; ongoing use |
-| FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: hosts/providers tested; browser/mail/federation absent |
+| FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: hosts/providers and pilot browser journeys tested; mail/federation pending |
 | FR-25 assurance | M01-C, M07-D, M09-D/E/F | Register baseline verified; no assessed controls or certification |
 | NFR-01 security findings | M01-C, feature controls/reviews, M09-D | Scoped checks exist; independent assessment pending |
 | NFR-02 equal providers | Every persistence/E2E task, M09-F | Partial |
@@ -174,7 +174,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | NFR-09 usability/accessibility | Every UI, M09-A | Planned |
 | NFR-10 retention | M08-A/B, M09-E | Planned |
 | NFR-11 traceability/coverage | Every task, M01-C, M09-F | Partial |
-| NFR-12 visual/browser regression | Feature/nightly gates, M09-A/F | Native CI exists; browser matrix absent |
+| NFR-12 visual/browser regression | Feature/nightly gates, M09-A/F | Pilot browser matrix implemented; final T027 WebKit contrast finding remains open, wider product regression remains planned |
 | NFR-13 independent assurance | M01-C, M07-D, M09-D | Planned; Basic OP external dependency |
 | NFR-14 reproducibility/contracts | M01-A/F, M02-E, M04-D, M09-F | Foundation evidence exists |
 
