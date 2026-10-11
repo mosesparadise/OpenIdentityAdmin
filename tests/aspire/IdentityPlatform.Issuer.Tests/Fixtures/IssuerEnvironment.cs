@@ -58,12 +58,13 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     }
     public void Invalidate() => Invalidated = true;
 
-    public static async Task<IssuerEnvironment> CreateAsync(string provider, CancellationToken cancellationToken, bool httpProbe = false)
+    public static async Task<IssuerEnvironment> CreateAsync(string provider, CancellationToken cancellationToken, bool httpProbe = false,
+        Func<IDistributedApplicationTestingBuilder, CancellationToken, Task>? configureBeforeBuild = null)
     {
         var environment = new IssuerEnvironment();
         try
         {
-            await environment.StartAsync(provider, httpProbe, cancellationToken);
+            await environment.StartAsync(provider, httpProbe, configureBeforeBuild, cancellationToken);
             return environment;
         }
         catch
@@ -77,7 +78,8 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         }
     }
 
-    private async Task StartAsync(string provider, bool httpProbe, CancellationToken cancellationToken)
+    private async Task StartAsync(string provider, bool httpProbe,
+        Func<IDistributedApplicationTestingBuilder, CancellationToken, Task>? configureBeforeBuild, CancellationToken cancellationToken)
     {
         using var startup = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         startup.CancelAfter(TimeSpan.FromMinutes(3));
@@ -123,6 +125,10 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
             .WithEnvironment("Pilot__RedirectUri", RelyingParty.Callback)
             .WithEnvironment("Pilot__Password", builder.AddParameter("fixture-user-password", () => Password, secret: true))
             .WithEnvironment("Pilot__ClientSecret", builder.AddParameter("fixture-client-secret", () => ClientSecret, secret: true));
+        if (configureBeforeBuild is not null)
+        {
+            await configureBeforeBuild(builder, startup.Token);
+        }
         application = await builder.BuildAsync(startup.Token);
         await application.StartAsync(startup.Token);
         await application.ResourceNotifications.WaitForResourceHealthyAsync("auth", startup.Token);

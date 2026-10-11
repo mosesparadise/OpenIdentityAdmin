@@ -1,6 +1,8 @@
-# Issuer lifecycle verification — restart source accepted
+# Issuer lifecycle verification — restart delivered; distribution source accepted
 
-The user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. PR #17 implements restart only. The corrected source checkpoint below passed all 19 checks and 1,045 ordinary cases; final documentation-head checks and normal squash delivery are recorded on [PR #17](https://github.com/mosesparadise/OpenIdentityAdmin/pull/17). This record does not claim its own future merge. Distribution, rotation, T021 human assessment, M01-F and public-release gates remain open.
+The user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. PR #17 delivered restart as squash `a6b4dfb`. Distribution source acceptance is recorded in [run 108 below](#distribution-source-acceptance--run-108): all 21 checks and 1,097 ordinary cases passed. Final documentation-head checks and normal squash delivery remain the [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18) delivery gate. Key overlap/retirement, full M01-E, T021 human assessment, M01-F and public-release gates remain open.
+
+Earlier sections retain historical experiments and checkpoints; their counts and pending statements describe those earlier stages. The latest disposition is the run 108 section.
 
 Spec Kit template resolution, setup-plan/setup-tasks and prerequisites ran. No extension hooks exist. The requirements checklist and independent design review are complete. The prior accepted checkpoint is PR #16 squash `559380e952059383741a7bc75c259b5bb39ed1e1`; its 13 checks/901 ordinary cases do not establish lifecycle behavior.
 
@@ -106,3 +108,70 @@ The standard PostgreSQL job took 11m01s; issuer module 453.597s. The standard SQ
 Architecture, security and test reviews corrected the source/evidence issues listed above and accepted the resulting bounded restart implementation. Final documentation-head checks, review-thread state, expected head and normal squash delivery must still be verified on PR #17. No branch protection bypass, GitHub self-approval, production deployment, formal accessibility acceptance or certification is implied.
 
 **Disposition:** US1 / SC-L01 and the restart portions of SC-L02/05/06 are accepted at the corrected source checkpoint. LIFE-006 / US2 / SC-L03 (two actual nodes) and LIFE-007 / US3 / SC-L04 (staged signing/encryption overlap) remain unbuilt. M01-E / ISS-003 stays partial. T021 human assessment, M01-F, wider R1, backup recovery and all external/public-release obligations remain open. The next authorized increment begins only after PR #17 is normally squash-merged and its concrete topology/structure is confirmed and reviewed.
+
+
+## Distribution design checkpoint (T013)
+
+Restart PR #17 is squash-merged as `a6b4dfbde660162197e188715a4ba4056cd14772`; final head `3870ffaba5bb8f202fa1cff7ded89d7a78af0903` passed all 19 checks in run `38178327657`, with 1,045 ordinary passes and no failures/skips. The tested merge and delivered squash share tree `97df4e105983271cd6f10644596824d277417860`.
+
+The user confirmed test-only routing, a second real issuer in the test Aspire graph and the existing lifecycle Fixtures structure. Architecture review accepted direct process-owned listener proof, immutable per-generation transports and an explicit environment allowlist. Security findings added per-request/redirect guards, explicit token/JWKS transport, authorization as well as exchange after committed restrictions, valid incompatible encryption-key recovery, TLS rejection and accurate concurrent/replay semantics. Test/Aspire design review passes the updated contract; exact catalogue union and mandatory story coverage are implementation obligations. These are design dispositions, not executed distribution results.
+
+Spec Kit prerequisites resolved feature006; all eight requirements-quality checklist items are checked and no extension hooks exist. Read-only consistency analysis: all 11 LIFE requirements map to T001–T018; US2 cases DST-01–09 cover LIFE-002/003/004/005/006/008 and T014, with T015 carrying LIFE-009/010 execution. US1 is delivered and US3 remains explicitly deferred until US2 merge. No constitution conflict, unmapped task or unresolved critical design finding was found. Implementation proceeds only within the reviewed contract; any experiment contradicting it must be investigated, not accepted by widening an oracle.
+
+
+## Distribution implementation and evidence
+
+The implementation adds no production source or dependency. Six helper cases raise the unit inventory from 245 to 251. The lifecycle project contains the unchanged 13 Restart and 23 Distribution cases per provider; the complete ordinary matrix is 1,097 cases, pending full CI acceptance. Separate story invocations retain the 660-second deadline and 20-minute CI jobs. The full coverage matrix now requires 13 inputs.
+
+| Cases | Distribution test methods | Cases/provider |
+| --- | --- | --- |
+| DST-01; LIFE-002/006/008 | `Original_form_crosses_nodes_with_antiforgery_and_browser_binding` | 2 directions |
+| DST-02; LIFE-002/003/006 | `Original_completed_continuation_crosses_nodes_once_for_its_owner` | 2 directions |
+| DST-03; LIFE-002/004/006 | `Original_cookie_silently_crosses_nodes_without_reauthentication` | 2 directions |
+| DST-04; LIFE-003/006 | `Exact_live_code_crosses_nodes_with_original_proof_and_single_use` | 2 directions |
+| DST-05; LIFE-003/005/006 | `Concurrent_node_redemptions_have_one_native_winner_and_replay_revokes_issued_tokens` | 1 |
+| DST-06; LIFE-005/006 | `Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange` | 8: account/session/client/scope, both directions |
+| DST-07; LIFE-001/002/006/009 | `Surviving_node_uses_original_state_while_opposite_process_is_stopped` | 2 directions |
+| DST-08; LIFE-006/008 | `Unsuitable_secondary_material_fails_safely_while_original_cookie_survives` | 2: wrong wrapper/missing credential |
+| DST-09; LIFE-003/006/008 | `Healthy_but_incompatible_encryption_denies_then_exact_original_code_recovers` | 1 |
+| LIFE-008/009 transport control | `Selected_socket_preserves_certificate_validation_and_canonical_authority` | 1 |
+
+Initial source experiments: compilation exposed cancellation-parameter ordering, nonconstant Aspire state patterns, required static arrays and formatting violations; corrected without disabling analysis. The first actual PostgreSQL topology experiment passed both cookie directions (2/2, zero skipped, 45.340s). The first complete distribution experiment passed 23/23, zero skipped, 171.858s. These precede the final source-review corrections and do not accept them.
+
+Independent architecture/security/test source findings tightened: per-request process-generation binding, Running/current-PID-before-fresh-health ordering, guarded credential-file moves and all-path restoration, invalidation after ambiguous concurrent client failure, authorization-denial snapshots including native authorizations and excluding only request-token bookkeeping, exact winner-only token inventory, current-launch diagnostic attribution, bounded concurrent readiness observation, and safe failure messages instead of formatting unexpected HTTP response objects. Corrected source and both-provider regression acceptance remain pending below.
+
+The race rendezvous proves deliberately concurrent requests to distinct processes, not a forced native database interleaving. The loser must reach native ID2010. After both finish, persisted code status determines the explicit replay oracle: redeemed → ID2010; already revoked → ID2016, with more than ten seconds of original code validity. OpenIddict's `RevokeByAuthorizationIdAsync` updates the redeemed code as well as linked issued tokens; requiring ID2010 unconditionally after revocation would contradict the native library. The final linked access/ID token entries must be revoked; no claim of offline JWT invalidation follows.
+
+
+Source-review checkpoint: architecture and test reviewers passed the corrected implementation; security follow-up passed after readiness-probe faults were made to invalidate the fixture, still attempt final lifecycle capture and preserve primary exceptions. The local reviewed suite passed 251 unit/harness cases and all 23 PostgreSQL distribution cases (zero failures/skips; distribution outer summary 180.895s). These executions precede the final expiry-at-response assertion and probe-fault cleanup correction. The corrected full solution builds with zero warnings/errors and passes whitespace plus IDE0005 checks at info severity.
+
+CI run `38181285056` at `f0ce52453e6eb62abeaa3f59ec38d972c4152224` passed both distribution providers and both restart providers, but static analysis rejected an unused import. That import was removed; this run is not full-matrix acceptance. The subsequent exact-head required matrix must pass before T015 delivery. No provider requirement, diagnostic severity, coverage floor or test deadline was relaxed.
+
+
+## Distribution source acceptance — run 108
+
+Run [38181828768](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38181828768) passed **all 21 checks** at source `12ae1108097cdf90db3319007effd3cec70b6194`, tested merge `ff2ab4cfb1532ee640f21dff13e260138eac6216`. Both commits have tree `ddd54a4b683faec77925452a12cdeb348ae3ec32`. Artifact association comes from GitHub run/head metadata, not a SHA embedded in TRX. Downloaded ZIP digests matched GitHub SHA-256 metadata.
+
+The retained 20 ordinary reports reconcile to **1,097 passes, zero failures/skips/incomplete cases**: 251 unit/architecture/harness, 300 standard per provider, 13 Restart plus 23 Distribution per provider, and 29 browser cases in each of six provider/browser cells. Strict lifecycle checks match discovered identities, definitions, entries, execution IDs and all counters; no run/fixture errors were present. Independent test and security reviewers accepted both corrected distribution artifacts. Architecture source review also passed.
+
+Distribution TRX intervals were **190.146s PostgreSQL / 211.281s SQL Server**; Restart intervals were **326.702s / 354.503s**. Standard issuer TRX intervals were **392.538s / 583.755s**. These are report intervals, not whole-job timings or SLA guarantees; every invocation kept its 660-second outer deadline. No provider, case, coverage floor or timeout was relaxed.
+
+All **13** required child-process coverage inputs were nonempty, including every provider/story and all six browser cells. Nine production-module floors (90% line / 80% branch) passed:
+
+| Module | Lines | Branches |
+| --- | --- | --- |
+| Core | 100.0% | 100.0% |
+| ServiceDefaults | 100.0% | 100.0% |
+| AuthServer | 96.0% | 98.5% |
+| Infrastructure | 99.1% | 100.0% |
+| Admin.Api | 100.0% | 100.0% |
+| Admin.Bff | 100.0% | 100.0% |
+| Worker | 100.0% | 100.0% |
+| Migrator | 98.2% | 100.0% |
+| AppHost | 98.8% | 100.0% |
+
+Separately, both providers passed seven mutation baselines, demonstrated seven behavioral kills and passed seven restored cases. Exact original/mutant source hashes and the tested merge identity match, and sources were restored. The focused WebKit experiment completed 60 observations with zero findings. These are separate assurance checks, not extra ordinary cases or formal accessibility acceptance.
+
+All successful fixture runs completed mandatory capture/disposal/container/process-removal assertions; distribution TRXs have no standalone cleanup ledger or captured stdout/stderr. The final local inspection found no remaining test containers or executing IdentityPlatform applications. Source review establishes the exceptional probe-fault correction; the normal passing run does not claim to have deliberately injected every cleanup exception. The race proves concurrent attempts and native outcomes, not a forced internal database interleaving. Offline JWT invalidation, production load balancing/shared rate limits, throughput, backup recovery and certification are not established.
+
+**Disposition:** LIFE-006 / US2 / SC-L03 is accepted at this corrected source checkpoint, together with its cross-node LIFE-002/003/005/008/009 obligations. All source findings are resolved. Copilot reported an exhausted requester quota and supplied no review; no GitHub approval is claimed. Final documentation-head checks, review threads, expected head and normal squash delivery remain the [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18) delivery gate. T016 begins only after that merge. LIFE-007 / US3 / SC-L04, full M01-E, T021 human assessment, M01-F, wider R1 and external/public-release obligations remain open.

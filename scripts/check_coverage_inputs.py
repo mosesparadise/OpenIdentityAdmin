@@ -6,7 +6,8 @@ import sys
 
 
 def require_inputs(root, matrix):
-    labels = ['unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle', 'SqlServer-lifecycle'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
+    labels = ['unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+              'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
     if len(labels) != len(set(labels)):
         raise ValueError('Duplicate required coverage cell')
     for label in labels:

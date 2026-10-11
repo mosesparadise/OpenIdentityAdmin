@@ -1,6 +1,6 @@
 # Issuer protection operations
 
-This runbook covers the Linux local-filesystem adapter and controlled Development pilot, not a deployable identity product. The default host profile remains health-only. The separately enabled [Development pilot](first-party-pilot.md) implements authentication, cookies, tokens and discovery/JWKS. [Feature 006 restart verification](../../specs/006-issuer-lifecycle/verification.md) adds real process-continuity evidence, with its current acceptance state recorded there. Two-instance behavior and public signing/encryption overlap remain later M01-E increments. See [the configuration contract](../../specs/002-issuer-foundation/contracts/configuration.md) and [remaining issuer work](../engineering/issuer-flow-backlog.md).
+This runbook covers the Linux local-filesystem adapter and controlled Development pilot, not a deployable identity product. The default host profile remains health-only. The separately enabled [Development pilot](first-party-pilot.md) implements authentication, cookies, tokens and discovery/JWKS. [Feature 006 lifecycle verification](../../specs/006-issuer-lifecycle/verification.md) adds real restart and two-instance evidence, with exact acceptance/delivery states recorded there. Public signing/encryption overlap remains the next M01-E increment. See [the configuration contract](../../specs/002-issuer-foundation/contracts/configuration.md) and [remaining issuer work](../engineering/issuer-flow-backlog.md).
 
 ## Provision and start
 
@@ -52,10 +52,21 @@ Eligible original cookies, pending antiforgery forms, completed continuations an
 
 A valid unrelated wrapping certificate without the historical decryptor must fail startup with the fixed safe protection diagnostic and exit code 2, without readiness. The test restores the original wrapping material, verifies unchanged ring/credential content and proves original-cookie recovery. Operational recovery must likewise retain the correct ring and decryptors; generating fresh keys cannot repair old protected state.
 
-The test helper has a 45-second restart budget; live-code controls require more than 10 seconds of remaining original validity. These are verification bounds, not production availability or recovery objectives. CI runs standard and lifecycle jobs separately for both providers and requires both lifecycle coverage artifacts. Interrupted/cancelled runs do not establish continuity or clean teardown. Two-node failover, public-key rotation, backup restore/RPO/RTO, human accessibility and certification remain separate acceptance obligations.
+The test helper has a 45-second restart budget; live-code controls require more than 10 seconds of remaining original validity. These are verification bounds, not production availability or recovery objectives. CI runs standard, Restart and Distribution jobs separately for both providers and requires all four lifecycle coverage artifacts. Interrupted/cancelled runs do not establish continuity or clean teardown. Controlled two-node loss is covered below; production failover guarantees, public-key rotation, backup restore/RPO/RTO, human accessibility and certification remain separate acceptance obligations.
 
 ## Recovery and evidence
 
 Restore the entire ring and its retained wrappers under the same canonical issuer and protection purposes; preserve revocations. A different issuer/application discriminator or missing master key cannot decrypt existing payloads. Do not generate a fresh ring to conceal a failed restore. Restores and production changes need their normal operational authorization.
 
 Run the [feature quickstart](../../specs/002-issuer-foundation/quickstart.md). It includes native MTP unit/actual-host checks and both credential-enabled Aspire database profiles. Test fixtures are synthetic and temporary; never substitute production credentials. Coverage and test results do not establish external security assessment or OIDF certification.
+
+
+## Controlled two-instance verification
+
+The lifecycle project’s Distribution story uses two real AuthServer processes on one disposable Aspire graph, with one canonical HTTPS issuer/callback, least-privileged platform connection and retained private material. All 23 distribution cases passed on each provider at the reviewed source checkpoint, alongside the complete 1,097-case ordinary matrix. Its exact source evidence and final PR delivery gate are recorded in [lifecycle evidence](../../specs/006-issuer-lifecycle/verification.md).
+
+Run `python3 scripts/verify.py PostgreSql --partition lifecycle --story Distribution` (or `SqlServer`) after the [quickstart](../../specs/006-issuer-lifecycle/quickstart.md). The test-only transport routes to a listener proved to belong to the selected process generation while preserving canonical Host, normal TLS, cookies and protocol validation. It validates every request and redirect; a client bound to an old process is rejected after replacement. Tests create a fresh pinned client for the new process, without changing its issuer identity.
+
+The suite checks genuine cross-node browser/code state, concurrent native single-use decisions, committed eligibility at authorization and token exchange, and either-node loss. Bad/missing credential controls prove safe startup failure and original-cookie recovery. A valid incompatible encryption certificate starts successfully but must reject the other node’s original code; restoration must recover that exact code before its unchanged expiry. This demonstrates why operational readiness alone cannot establish shared cryptographic identity.
+
+Never infer a production proxy or shared rate-limit design from this harness. Rate/concurrency limits remain per process. There is no automatic retry of an ambiguous security mutation, production load-balancer configuration, throughput/SLA claim or backup-restore evidence. Signing/encryption staging and retirement remain the next sequential increment.

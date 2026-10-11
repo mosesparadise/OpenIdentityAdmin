@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import unittest
 import xml.etree.ElementTree as E
-from test_selection import catalogue, require_lifecycle_partition, require_lifecycle_execution, select_projects
+from test_selection import catalogue, require_lifecycle_partition, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story
 from test_evidence import require_complete_trx
 
 
@@ -18,8 +18,8 @@ class LifecycleSelectionTests(unittest.TestCase):
             self.assertFalse(standard.keys() & lifecycle.keys())
             self.assertEqual(complete, standard | lifecycle)
             self.assertEqual(300, sum(standard.values()))
-            self.assertEqual({'Issuer.Lifecycle': 13}, lifecycle)
-            self.assertEqual(313, sum(complete.values()))
+            self.assertEqual({'Issuer.Lifecycle': 36}, lifecycle)
+            self.assertEqual(336, sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
         self.assertEqual(matrix['browser'], select_projects(matrix, 'SqlServer', 'webkit'))
         for profile, browser, partition in [('unit', None, 'standard'), ('unit', None, 'lifecycle'),
@@ -48,7 +48,7 @@ class LifecycleSelectionTests(unittest.TestCase):
         matrix = json.loads((Path(__file__).resolve().parents[1] / 'eng/test-matrix.json').read_text())
         self.assertEqual(matrix['projects']['Issuer.Lifecycle'], {'group': 'aspire'})
         for provider in ('PostgreSql', 'SqlServer'):
-            self.assertEqual(matrix['profiles'][provider]['Issuer.Lifecycle'], 13)
+            self.assertEqual(matrix['profiles'][provider]['Issuer.Lifecycle'], 36)
         self.assertNotIn('Issuer.Lifecycle', matrix['profiles']['unit'])
         self.assertNotIn('Issuer.Lifecycle', matrix['browser'])
 
@@ -59,6 +59,42 @@ class LifecycleSelectionTests(unittest.TestCase):
         test['type']['namespace'] = 'IdentityPlatform.Issuer.Lifecycle.Tests.Features.Browser'
         with self.assertRaises(ValueError):
             catalogue(json.dumps({'schemaVersion': 1, 'tests': [test]}), lifecycle=True)
+
+    def test_story_partitions_are_exact_disjoint_exhaustive_and_fail_closed(self):
+        matrix = json.loads((Path(__file__).resolve().parents[1] / 'eng/test-matrix.json').read_text())
+        tests = {}
+        for story, counts in matrix['lifecycle_stories'].items():
+            for provider, count in counts.items():
+                for i in range(count):
+                    uid = f'{story}-{provider}-{i}'
+                    tests[uid] = (uid, provider, False, 'IdentityPlatform.Issuer.Lifecycle.Tests.Features.' + story)
+        for provider in ('PostgreSql', 'SqlServer'):
+            self.assertEqual([('Restart', 13), ('Distribution', 23)], lifecycle_invocations(matrix, provider))
+            subsets = []
+            for story in matrix['lifecycle_stories']:
+                selected = {uid: t for uid, t in tests.items() if t[1] == provider and t[3].endswith('.' + story)}
+                subsets.append(selected)
+                require_lifecycle_story(tests, selected, provider, story, matrix)
+                for substitute in ({}, dict(selected, unrelated=next(iter(tests.values())))):
+                    with self.assertRaises(ValueError):
+                        require_lifecycle_story(tests, substitute, provider, story, matrix)
+                key = next(iter(selected))
+                for corrupt in [dict(tests, **{key: (*tests[key][:3], 'Unreviewed.Namespace')}),
+                                dict(tests, **{key: (tests[key][0], 'Unknown', False, tests[key][3])}),
+                                dict(tests, **{key: (tests[key][0], provider, True, tests[key][3])}),
+                                {k: v for k, v in tests.items() if k != key}]:
+                    with self.assertRaises(ValueError):
+                        require_lifecycle_story(corrupt, selected, provider, story, matrix)
+            self.assertFalse(subsets[0].keys() & subsets[1].keys())
+            self.assertEqual({uid: t for uid, t in tests.items() if t[1] == provider}, subsets[0] | subsets[1])
+        for mutate in ('omitted', 'total', 'unknown', 'provider'):
+            corrupt = copy.deepcopy(matrix)
+            if mutate == 'omitted': del corrupt['lifecycle_stories']['Restart']
+            elif mutate == 'total': corrupt['profiles']['PostgreSql']['Issuer.Lifecycle'] += 1
+            elif mutate == 'unknown': corrupt['lifecycle_stories']['Unreviewed'] = {'PostgreSql': 1, 'SqlServer': 1}
+            else: del corrupt['lifecycle_stories']['Distribution']['SqlServer']
+            with self.assertRaises(ValueError): lifecycle_invocations(corrupt, 'PostgreSql')
+        with self.assertRaises(ValueError): lifecycle_invocations(matrix, 'PostgreSql', 'Unknown')
 
     def test_contradictory_results_cannot_pass_with_successful_counters(self):
         original = E.fromstring('''<TestRun><Results><UnitTestResult testId="t" executionId="e" testName="A" outcome="Passed"/></Results>

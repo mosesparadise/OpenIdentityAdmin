@@ -35,7 +35,7 @@ def catalogue(raw, lifecycle=False):
             raise ValueError('Lifecycle catalogue contains a browser namespace or trait')
         if browser != (test['type']['namespace'] == 'IdentityPlatform.Issuer.Tests.Features.Browser'):
             raise ValueError('Browser namespace and trait disagree')
-        result[uid] = (name, providers[0], browser)
+        result[uid] = (name, providers[0], browser, test['type']['namespace']) if lifecycle else (name, providers[0], browser)
         names.add(name)
     if not result:
         raise ValueError('Empty discovery document')
@@ -105,3 +105,34 @@ def require_lifecycle_execution(path, selected):
         execution = definition.find('./{*}Execution')
         if execution is None or (definition.get('id'), execution.get('id')) not in bindings:
             raise ValueError('Lifecycle definition execution is inconsistent')
+
+
+def lifecycle_invocations(matrix, profile, story=None):
+    stories = matrix['lifecycle_stories']
+    if set(stories) != {'Restart', 'Distribution'}:
+        raise ValueError('Lifecycle stories must be explicitly reviewed')
+    if story is not None and story not in stories:
+        raise ValueError('Unknown lifecycle story')
+    for provider in ('PostgreSql', 'SqlServer'):
+        if any(set(counts) != {'PostgreSql', 'SqlServer'} or any(n <= 0 for n in counts.values()) for counts in stories.values()):
+            raise ValueError('Each lifecycle story requires both providers')
+        if sum(counts[provider] for counts in stories.values()) != matrix['profiles'][provider]['Issuer.Lifecycle']:
+            raise ValueError('Lifecycle stories do not exhaust the provider profile')
+    return [(name, stories[name][profile]) for name in stories if story is None or name == story]
+
+
+def require_lifecycle_story(all_tests, selected, provider, story, matrix):
+    lifecycle_invocations(matrix, provider, story)
+    namespaces = {name: 'IdentityPlatform.Issuer.Lifecycle.Tests.Features.' + name for name in matrix['lifecycle_stories']}
+    if any(len(test) != 4 or test[3] not in namespaces.values() or test[2] for test in all_tests.values()):
+        raise ValueError('Lifecycle case has an unreviewed story namespace')
+    complete = {uid: test for uid, test in all_tests.items() if test[1] == provider}
+    require_lifecycle_partition(all_tests, complete, provider,
+        {p: matrix['profiles'][p]['Issuer.Lifecycle'] for p in ('PostgreSql', 'SqlServer')})
+    for name, namespace in namespaces.items():
+        for p, count in matrix['lifecycle_stories'][name].items():
+            if sum(test[1] == p and test[3] == namespace for test in all_tests.values()) != count:
+                raise ValueError('Lifecycle story catalogue count changed without review')
+    expected = {uid: test for uid, test in complete.items() if test[3] == namespaces[story]}
+    if selected != expected:
+        raise ValueError('Lifecycle story selection overlaps, omits or substitutes identities')

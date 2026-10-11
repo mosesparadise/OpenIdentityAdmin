@@ -7,14 +7,17 @@ from pathlib import Path
 import subprocess
 import signal
 from test_evidence import require_complete_trx
-from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_partition, require_lifecycle_execution, select_projects
+from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
 parser.add_argument("--partition", choices=["all", "standard", "lifecycle"], default="all")
+parser.add_argument("--story", choices=["Restart", "Distribution"])
 args = parser.parse_args()
+if args.story and args.partition != "lifecycle":
+    parser.error("Story selection requires the lifecycle partition")
 if args.browser and args.profile == "unit":
     parser.error("Browser verification requires a real provider")
 matrix = json.loads((ROOT / "eng" / "test-matrix.json").read_text())
@@ -22,10 +25,16 @@ try:
     projects = select_projects(matrix, args.profile, args.browser, args.partition)
 except ValueError as error:
     parser.error(str(error))
-label = args.profile + ("-" + args.browser if args.browser else "-lifecycle" if args.partition == "lifecycle" else "")
-results = ROOT / "artifacts" / "tests" / label
-results.mkdir(parents=True, exist_ok=True)
-for project in projects:
+invocations = []
+for project, count in projects.items():
+    if project == "Issuer.Lifecycle":
+        invocations.extend((project, expected, story) for story, expected in lifecycle_invocations(matrix, args.profile, args.story))
+    else:
+        invocations.append((project, count, None))
+for project, expected_count, story in invocations:
+    label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower() if story else "")
+    results = ROOT / "artifacts" / "tests" / label
+    results.mkdir(parents=True, exist_ok=True)
     name = f"IdentityPlatform.{project}.Tests"
     command = ["dotnet", "test", "--project", str(ROOT / "tests" / matrix["projects"][project]["group"] / name / f"{name}.csproj"),
                "--no-build", "--no-restore", "--no-progress", "--report-trx", "--report-trx-filename", f"{project}.trx",
@@ -41,10 +50,9 @@ for project in projects:
             return catalogue(result.stdout, lifecycle=project == "Issuer.Lifecycle")
         all_tests = discover()
         if project == "Issuer.Lifecycle":
-            expression = f"Provider={args.profile}"
+            expression = f"Provider={args.profile}&FullyQualifiedName~IdentityPlatform.Issuer.Lifecycle.Tests.Features.{story}."
             selected = discover(expression)
-            require_lifecycle_partition(all_tests, selected, args.profile,
-                {provider: matrix["profiles"][provider][project] for provider in ("PostgreSql", "SqlServer")})
+            require_lifecycle_story(all_tests, selected, args.profile, story, matrix)
             command += ["--filter", expression]
         else:
             http_filter = f"Provider={args.profile}&Category!=Browser"
@@ -79,7 +87,7 @@ for project in projects:
             raise RuntimeError(f"{project}/{args.profile} exceeded its outer execution deadline") from None
         if exit_code:
             raise subprocess.CalledProcessError(exit_code, command)
-    count = require_complete_trx(report, expected_count=projects[project])
+    count = require_complete_trx(report, expected_count=expected_count)
     if selected is not None:
         require_execution_names(report, selected)
         if project == "Issuer.Lifecycle":
