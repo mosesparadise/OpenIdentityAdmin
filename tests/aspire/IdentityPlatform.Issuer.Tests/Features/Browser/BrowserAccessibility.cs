@@ -64,9 +64,7 @@ internal static class BrowserAccessibility
             var rule = violation.GetProperty("id").GetString() == "color-contrast" ? "color-contrast" : "other accessibility rule";
             foreach (var node in violation.GetProperty("nodes").EnumerateArray())
             {
-                var target = node.GetProperty("target").EnumerateArray()
-                    .Where(value => value.ValueKind == JsonValueKind.String)
-                    .Select(value => Targets.FirstOrDefault(known => known == value.GetString()) ?? "other element");
+                var target = DescribeTarget(node.GetProperty("target"));
                 var checks = new List<string>();
                 foreach (var check in node.GetProperty("any").EnumerateArray())
                 {
@@ -75,11 +73,19 @@ internal static class BrowserAccessibility
                         checks.Add($"foreground={Color(data, "fgColor")}, background={Color(data, "bgColor")}, contrast={Ratio(data)}");
                     }
                 }
-                details.Add($"{rule}: {string.Join("/", target)} ({string.Join("; ", checks)})");
+                details.Add($"{rule}: {target} ({string.Join("; ", checks)})");
             }
         }
         return "Automated accessibility violations: " + string.Join("; ", details);
     }
+
+    // AxeSelector serializes a single selector as a string and frame/shadow chains as arrays.
+    private static string DescribeTarget(JsonElement target) => target.ValueKind switch
+    {
+        JsonValueKind.String => Targets.FirstOrDefault(known => known == target.GetString()) ?? "other element",
+        JsonValueKind.Array => string.Join("/", target.EnumerateArray().Select(DescribeTarget)),
+        _ => "other element"
+    };
 
     internal static string DescribeStyles(JsonElement styles)
     {

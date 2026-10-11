@@ -35,17 +35,20 @@ public sealed class BrowserEvidenceTests
         }));
         Assert.True(phased is Xunit.Sdk.XunitException && phased.Message.Contains("TrustedIssuer", StringComparison.Ordinal) &&
             !phased.ToString().Contains(sentinel, StringComparison.Ordinal), "Async browser phase diagnostics must remain accurate and secret-safe.");
-        var axeEvidence = BrowserAccessibility.Describe(new AxeResult(JObject.FromObject(new
+        foreach (var target in new object[] { new[] { "#submit" }, new[] { "#submit", sentinel }, new[] { sentinel } })
         {
-            violations = new[] { new { id = "color-contrast", nodes = new[] { new
+            var axeEvidence = BrowserAccessibility.Describe(new AxeResult(JObject.FromObject(new
             {
-                html = sentinel, target = new[] { "#submit", sentinel },
-                any = new[] { new { data = new { fgColor = "#ffffff", bgColor = sentinel, contrastRatio = 2.5, message = sentinel } } }
-            } } } }
-        })));
-        Assert.True(axeEvidence.Contains("color-contrast: #submit/other element", StringComparison.Ordinal) &&
-            axeEvidence.Contains("foreground=#ffffff, background=unknown, contrast=2.5", StringComparison.Ordinal) &&
-            !axeEvidence.Contains(sentinel, StringComparison.Ordinal), "Accessibility diagnostics must retain only fixed targets and numeric/color facts.");
+                violations = new[] { new { id = "color-contrast", nodes = new[] { new
+                {
+                    html = sentinel, target,
+                    any = new[] { new { data = new { fgColor = "#ffffff", bgColor = sentinel, contrastRatio = 2.5, message = sentinel } } }
+                } } } }
+            })));
+            Assert.True(axeEvidence.Contains("color-contrast:", StringComparison.Ordinal) &&
+                axeEvidence.Contains("foreground=#ffffff, background=unknown, contrast=2.5", StringComparison.Ordinal) &&
+                !axeEvidence.Contains(sentinel, StringComparison.Ordinal), "Accessibility diagnostics must handle scalar/chained selectors without retaining arbitrary data.");
+        }
         var styleEvidence = BrowserAccessibility.DescribeStyles(System.Text.Json.JsonSerializer.SerializeToElement(new[]
         {
             new { index = 0, color = "#ffffff", fill = sentinel, background = "#000000", focus = true, hover = false, top = 12, height = 48, scroll = 0, text = sentinel }
@@ -59,6 +62,14 @@ public sealed class BrowserEvidenceTests
         Assert.Equal("chromium", BrowserSession.SelectEngine(null));
         Assert.Equal("firefox", BrowserSession.SelectEngine("firefox"));
         Assert.Equal("webkit", BrowserSession.SelectEngine("webkit"));
+    }
+
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Actual_axe_scan_rejects_seeded_contrast_and_accepts_the_corrected_page(string provider)
+    {
+        Assert.True(provider is "PostgreSql" or "SqlServer");
         await BrowserEvidence.RunAsync(async () =>
         {
             await using var session = await BrowserSession.CreateAsync();

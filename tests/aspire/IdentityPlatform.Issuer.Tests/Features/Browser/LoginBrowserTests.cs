@@ -185,6 +185,11 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
                 Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
                 await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
                 Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
+                // Keep the original first scan, then check interactive contrast with and without button hover.
+                await page.Locator("#submit").HoverAsync();
+                await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+                await page.Mouse.MoveAsync(0, 0);
+                await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
                 await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
                 if (width == 1280)
                 {
