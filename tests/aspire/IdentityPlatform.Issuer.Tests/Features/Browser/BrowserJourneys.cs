@@ -105,9 +105,9 @@ internal static class BrowserJourneys
     internal static async Task WaitForCallbackDocumentAsync(IPage page, string callback, string state, float timeout = 20_000)
     {
         var target = new Uri(callback);
-        // Observe current browser state atomically, without a cached-state/event-subscription gap.
-        await using var result = await page.WaitForFunctionAsync("""
-            expected => {
+        // Driver polling keeps observing when page JavaScript (and its animation/timer callbacks) is disabled.
+        await page.Locator("html").WaitForFunctionAsync("""
+            (element, expected) => {
                 const states = new URLSearchParams(location.search).getAll('state');
                 return location.origin === expected.origin && location.pathname === expected.path &&
                     states.length === 1 && states[0] === expected.state && document.readyState === 'complete';

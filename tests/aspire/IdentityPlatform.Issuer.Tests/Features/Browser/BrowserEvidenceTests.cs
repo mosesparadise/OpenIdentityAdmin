@@ -107,6 +107,7 @@ public sealed class BrowserEvidenceTests
             });
             try
             {
+                BrowserEvidence.Mark(BrowserPhase.InitialNavigation);
                 await page.GotoAsync(callback + "?state=" + state, new()
                 {
                     WaitUntil = WaitUntilState.DOMContentLoaded
@@ -115,9 +116,11 @@ public sealed class BrowserEvidenceTests
                 Assert.True(await page.EvaluateAsync<string>("document.readyState") != "complete", "The control must hold a real document subresource open.");
                 await Assert.ThrowsAsync<TimeoutException>(() => BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state, 250));
                 release.TrySetResult();
+                BrowserEvidence.Mark(BrowserPhase.Callback);
                 await BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state);
                 // Invoke after completion again: no future navigation/load event is required.
                 await BrowserJourneys.WaitForCallbackDocumentAsync(page, callback, state);
+                BrowserEvidence.Mark(BrowserPhase.CallbackValidation);
                 foreach (var (expectedCallback, expectedState) in new[]
                 {
                     ("https://foreign.example.invalid/callback", state),
