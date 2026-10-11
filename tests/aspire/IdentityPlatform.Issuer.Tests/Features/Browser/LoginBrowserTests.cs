@@ -172,17 +172,18 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             Assert.True(keys.Length == 1 && keys[0] == "identity-theme", "Browser storage must contain only the theme preference.");
             await page.ReloadAsync();
             Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
-            await page.Locator("#username").FillAsync("unknown.visual.user");
-            await page.Locator("#password").FillAsync("synthetic-invalid-password");
-            await page.Locator("#submit").ClickAsync();
-            await RequireGenericErrorAsync(page);
-            Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
-            await page.Locator("#username").FillAsync("");
-            await page.Locator("#error-summary").FocusAsync();
-            Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-            // Diagnose intermittent engine findings without retrying or accepting a failed scan.
-            for (var scan = 0; scan < 20; scan++)
+            // Exercise each newly rendered response; rescanning an already stable document is insufficient.
+            // Every first scan must pass. No failed response is retried or accepted.
+            for (var response = 0; response < 20; response++)
             {
+                await page.Locator("#username").FillAsync("unknown.visual.user");
+                await page.Locator("#password").FillAsync("synthetic-invalid-password");
+                await page.Locator("#submit").ClickAsync();
+                await RequireGenericErrorAsync(page);
+                Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
+                await page.Locator("#username").FillAsync("");
+                await page.Locator("#error-summary").FocusAsync();
+                Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
                 await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
             }
             await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
