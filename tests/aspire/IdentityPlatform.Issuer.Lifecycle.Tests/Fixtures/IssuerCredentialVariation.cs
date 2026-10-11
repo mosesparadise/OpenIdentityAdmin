@@ -1,5 +1,5 @@
 using System.Globalization;
-using System.Net;
+using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Aspire.Hosting;
@@ -88,6 +88,7 @@ public sealed partial class IssuerEnvironment
         using var probeCancellation = CancellationTokenSource.CreateLinkedTokenSource(deadline.Token);
         var probe = ObserveReadinessAsync(probeCancellation.Token, Application.GetEndpoint("auth-secondary", "https"));
         var reachedReadiness = false;
+        ExceptionDispatchInfo? probeFailure = null;
         var observed = Application.ResourceNotifications.WaitForResourceAsync("auth-secondary", change =>
         {
             if (change.Snapshot.State?.Text == KnownResourceStates.Running && change.Snapshot.Properties.Any(value => value.Name == "executable.pid" && value.Value is not null))
@@ -147,13 +148,22 @@ public sealed partial class IssuerEnvironment
             }
             catch (OperationCanceledException) when (deadline.IsCancellationRequested) { /* Drain the owned observer. */ }
             catch (Exception) { Invalidate(); }
-            reachedReadiness = await probe;
+            try
+            {
+                reachedReadiness = await probe;
+            }
+            catch (Exception exception)
+            {
+                Invalidate();
+                probeFailure = ExceptionDispatchInfo.Capture(exception);
+            }
             try
             {
                 CaptureLifecycle();
             }
             catch (Exception) { Invalidate(); }
         }
+        probeFailure?.Throw();
         Assert.False(reachedReadiness, "Invalid secondary material briefly served HTTP readiness.");
     }
 }
