@@ -9,10 +9,10 @@ from test_evidence import require_complete_trx
 from test_selection import catalogue, require_execution_names
 
 ROOT = Path(__file__).resolve().parents[1]
-TEST = 'IdentityPlatform.Issuer.Tests.Features.Browser.ContrastExperimentTests.Synthetic_dark_error_page_preserves_contrast_across_scanner_and_page_lifecycles'
+TEST = 'IdentityPlatform.Issuer.Tests.Features.Browser.ContrastBoundaryTests.Synthetic_error_page_observations_isolate_navigation_target_scan_and_finishing_page'
 EXPRESSION = f'Provider=PostgreSql&FullyQualifiedName={TEST}'
-SAMPLES = 40
-MARKER = f'CONTRAST_EXPERIMENT_COMPLETE samples={SAMPLES} arms=5 contexts={SAMPLES * 5}'
+SAMPLES = 20
+MARKER = f'CONTRAST_BOUNDARIES_COMPLETE samples={SAMPLES} arms=3 contexts={SAMPLES * 3} findings=0'
 
 
 def require_selection(all_tests, selected):
@@ -38,9 +38,9 @@ def require_completion(report):
     lines = [line.strip() for node in outputs for line in (node.text or '').splitlines()]
     if lines.count(MARKER) != 1:
         raise ValueError('Focused contrast evidence lacks the complete bounded cohort')
-    arms = ('Reference', 'NoInitialScan', 'PartialScan', 'PageLifecycle', 'NoInitialScreenshot')
-    expected = {f'Contrast sample {sample}/{SAMPLES}: {arm} passed' for sample in range(1, SAMPLES + 1) for arm in arms}
-    actual = [line for line in lines if line.startswith('Contrast sample ') and line.endswith(' passed')]
+    arms = ('NoScan', 'TargetPartial', 'FullWrapper')
+    expected = {f'Boundary sample {sample}/{SAMPLES}: {arm} observed finding=false' for sample in range(1, SAMPLES + 1) for arm in arms}
+    actual = [line for line in lines if line.startswith('Boundary sample ') and ' observed finding=' in line]
     if len(actual) != len(expected) or set(actual) != expected:
         raise ValueError('Focused contrast evidence drops, duplicates or substitutes an arm/sample')
 
@@ -110,7 +110,7 @@ def main():
     require_complete_trx(report, expected_count=1)
     require_execution_names(report, selected)
     require_completion(report)
-    print(f'Focused WebKit cohort complete: {SAMPLES} samples per arm, 5 arms, {SAMPLES * 5} fresh sessions; no provider/coverage claim', flush=True)
+    print(f'Focused WebKit boundary cohort complete: {SAMPLES} samples per arm, 3 arms, {SAMPLES * 3} fresh sessions, zero findings; no provider/coverage claim', flush=True)
 
 
 if __name__ == '__main__':

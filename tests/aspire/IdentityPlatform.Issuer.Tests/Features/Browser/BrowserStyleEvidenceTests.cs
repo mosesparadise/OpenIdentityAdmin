@@ -41,6 +41,7 @@ public sealed class BrowserStyleEvidenceTests
             });
             await page.GotoAsync("https://style.example.invalid/");
             var healthy = await BrowserAccessibility.ReadStylesAsync(page);
+            Assert.True(ContrastBoundaryTests.HasHealthyCanvas(healthy), "The actual healthy CSS must satisfy the boundary observation oracle.");
             RequireCanvas(healthy, "body-background-kind=opaque", "page-token=#020617", "text-token=#f8fafc",
                 "body-scheme=dark", "root-scheme=dark", "theme=dark", "ready=complete", "body-connected=true", "single-body=true",
                 "stylesheet=available", "sheet-disabled=false", "body-rule=true", "rule-background=true", "rule-color=true",
@@ -56,6 +57,7 @@ public sealed class BrowserStyleEvidenceTests
                 }
                 """);
             var absent = await BrowserAccessibility.ReadStylesAsync(page);
+            Assert.False(ContrastBoundaryTests.HasHealthyCanvas(absent), "A missing body rule must remain a boundary finding.");
             RequireCanvas(absent, "body-background-kind=transparent", "page-token=#020617", "text-token=#f8fafc",
                 "stylesheet=available", "body-rule=false", "rule-background=false", "rule-color=false", "rule-base=false",
                 "inline-override=false", "zero-margin=false", "font-applied=false", "line-height-applied=false", "min-height-applied=false");
@@ -64,6 +66,7 @@ public sealed class BrowserStyleEvidenceTests
             await page.ReloadAsync();
             await page.Locator("body").EvaluateAsync("element => { element.style.background = '#ffffff'; element.style.color = '#000000'; }");
             var overridden = await BrowserAccessibility.ReadStylesAsync(page);
+            Assert.False(ContrastBoundaryTests.HasHealthyCanvas(overridden), "White/black inline colors with unchanged dark tokens must remain a boundary finding.");
             RequireCanvas(overridden, "body-background-kind=opaque", "stylesheet=available", "body-rule=true", "rule-background=true",
                 "rule-color=true", "rule-base=true", "inline-override=true", "zero-margin=true", "font-applied=true");
             RequireStyle(overridden, "body: color=#000000, fill=#000000, background=#ffffff");

@@ -19,6 +19,8 @@ internal static class BrowserStyleEvidence
             "body-background-kind=" + Category(state, "bodyBackgroundKind", "opaque", "transparent", "partial", "unsupported"),
             "root-background-kind=" + Category(state, "rootBackgroundKind", "opaque", "transparent", "partial", "unsupported"),
             "page-token=" + Color(state, "pageToken"), "text-token=" + Color(state, "textToken"),
+            "root-page-token=" + Color(state, "rootPageToken"), "root-text-token=" + Color(state, "rootTextToken"),
+            "body-color=" + Color(state, "bodyColor"), "body-background=" + Color(state, "bodyBackground"),
             "body-scheme=" + Category(state, "bodyScheme", "light", "dark", "light dark", "normal"),
             "root-scheme=" + Category(state, "rootScheme", "light", "dark", "light dark", "normal"),
             "theme=" + Category(state, "theme", "light", "dark", "system"),
@@ -77,6 +79,8 @@ internal static class BrowserStyleEvidence
             const canvas = {
                 bodyBackgroundKind: color(bodyStyle.backgroundColor).kind, rootBackgroundKind: color(rootStyle.backgroundColor).kind,
                 pageToken: bodyStyle.getPropertyValue('--page').trim(), textToken: bodyStyle.getPropertyValue('--text').trim(),
+                rootPageToken: rootStyle.getPropertyValue('--page').trim(), rootTextToken: rootStyle.getPropertyValue('--text').trim(),
+                bodyColor: color(bodyStyle.color).hex, bodyBackground: color(bodyStyle.backgroundColor).hex,
                 bodyScheme: bodyStyle.colorScheme, rootScheme: rootStyle.colorScheme,
                 theme: root.getAttribute('data-theme') ?? 'system', ready: document.readyState,
                 visibility: document.visibilityState, focus: document.hasFocus(),

@@ -90,6 +90,16 @@ public sealed class ContrastExperimentTests(ITestOutputHelper output)
         {
             await CaptureAsync(page);
         }
+        await NavigateToErrorAsync(page);
+        // The decisive check is unchanged: no screenshot/style probe/retry precedes this full scan.
+        await BrowserAccessibility.RequireNoViolationsAsync(page, () => CaptureAsync(page, $"contrast-{arm}-{sample}"));
+        Assert.True(await page.Locator("html").GetAttributeAsync("data-theme") == "dark", "The error page must preserve the dark theme.");
+        Assert.Equal(1, fixture.Posts);
+        Assert.Equal(0, fixture.UnexpectedRequests);
+    }
+
+    internal static async Task NavigateToErrorAsync(IPage page)
+    {
         var keys = await page.EvaluateAsync<string[]>("Object.keys(localStorage)");
         Assert.True(keys.Length == 1 && keys[0] == "identity-theme", "The synthetic page must persist only its theme preference.");
         await page.ReloadAsync();
@@ -101,14 +111,9 @@ public sealed class ContrastExperimentTests(ITestOutputHelper output)
         await page.Locator("#username").FillAsync("");
         await page.Locator("#error-summary").FocusAsync();
         Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-        // The decisive check is unchanged: no screenshot/style probe/retry precedes this full scan.
-        await BrowserAccessibility.RequireNoViolationsAsync(page, () => CaptureAsync(page, $"contrast-{arm}-{sample}"));
-        Assert.True(await page.Locator("html").GetAttributeAsync("data-theme") == "dark", "The error page must preserve the dark theme.");
-        Assert.Equal(1, fixture.Posts);
-        Assert.Equal(0, fixture.UnexpectedRequests);
     }
 
-    private static async Task RunPartialAsync(IPage page)
+    internal static async Task<JsonElement> RunPartialAsync(IPage page)
     {
         // Match DefaultAxeCoreWrapper at 46f4556d, through the pinned public script provider/JS API.
         // This initial intervention intentionally omits finishRun and is not an acceptance scan.
@@ -131,9 +136,10 @@ public sealed class ContrastExperimentTests(ITestOutputHelper output)
             "The native partial intervention must return populated rule results.");
         Assert.True(await page.EvaluateAsync<string>("() => JSON.stringify(axe.utils.getFrameContexts(null))") == "[]",
             "The synthetic partial intervention must not contain frame contexts.");
+        return partial.Clone();
     }
 
-    private static async Task CaptureAsync(IPage page, string? name = null)
+    internal static async Task CaptureAsync(IPage page, string? name = null)
     {
         Assert.True(await page.Locator("input[name=Password], input[name=Username]").EvaluateAllAsync<bool>("elements => elements.every(element => element.value === '')"),
             "Synthetic captures must not contain form values.");

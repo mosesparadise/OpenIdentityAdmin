@@ -93,6 +93,26 @@ public sealed class BrowserEvidenceTests
             canvas = sentinel
         }));
         Assert.Equal("; computed styles: ; canvas evidence unavailable", malformedNodes);
+        var partialEvidence = BrowserAccessibility.DescribePartial(System.Text.Json.JsonSerializer.SerializeToElement(new
+        {
+            results = new[] { new { id = "color-contrast", nodes = new[]
+            {
+                new { node = new { selector = new[] { ".wordmark", sentinel }, html = sentinel }, any = new[]
+                {
+                    new { id = "color-contrast", result = (bool?)false, data = new { fgColor = "#f8fafc", bgColor = "#ffffff", contrastRatio = 1.04, secret = sentinel } },
+                    new { id = "color-contrast", result = (bool?)null, data = new { fgColor = sentinel, bgColor = sentinel, contrastRatio = 0.0, secret = sentinel } }
+                } }
+            } } }
+        }));
+        Assert.Equal(1, partialEvidence.Failures);
+        Assert.Equal(1, partialEvidence.Incomplete);
+        Assert.True(partialEvidence.Evidence.Contains("foreground=#f8fafc, background=#ffffff, contrast=1.04", StringComparison.Ordinal) &&
+            !partialEvidence.Evidence.Contains(sentinel, StringComparison.Ordinal), "Raw partial diagnostics must preserve failed checks without arbitrary values.");
+        foreach (var malformed in new object[] { sentinel, new { }, new { canvas = sentinel }, new { canvas = new { bodyBackgroundKind = "opaque" } } })
+        {
+            Assert.False(ContrastBoundaryTests.HasHealthyCanvas(System.Text.Json.JsonSerializer.SerializeToElement(malformed)),
+                "Missing/malformed canvas observations must remain findings.");
+        }
         var assertion = new Xunit.Sdk.XunitException("Expected invariant failure");
         var preserved = await Assert.ThrowsAsync<Xunit.Sdk.XunitException>(() => BrowserEvidence.RunAsync(() => Task.FromException(assertion)));
         Assert.Same(assertion, preserved);
