@@ -38,7 +38,7 @@ def clean_result(result):
 def terminated(pid):
     try:
         return Path(f'/proc/{pid}/stat').read_text().split()[2] == 'Z'
-    except FileNotFoundError:
+    except (FileNotFoundError, ProcessLookupError):
         return True  # The OS may reap the child between observations.
 
 
@@ -237,8 +237,9 @@ time.sleep(60)
             require_clean_checkout({})
 
     def test_reaped_child_is_a_completed_termination(self):
-        with patch.object(Path, 'read_text', side_effect=FileNotFoundError()):
-            self.assertTrue(terminated(123))
+        for error in (FileNotFoundError(), ProcessLookupError()):
+            with patch.object(Path, 'read_text', side_effect=error):
+                self.assertTrue(terminated(123))
 
     def test_python_gate_rejects_empty_skipped_expected_failures_and_errors(self):
         result = unittest.TestResult()
