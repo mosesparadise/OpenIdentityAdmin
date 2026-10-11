@@ -35,7 +35,12 @@ public sealed class BrowserEvidenceTests
         }));
         Assert.True(phased is Xunit.Sdk.XunitException && phased.Message.Contains("TrustedIssuer", StringComparison.Ordinal) &&
             !phased.ToString().Contains(sentinel, StringComparison.Ordinal), "Async browser phase diagnostics must remain accurate and secret-safe.");
-        foreach (var target in new object[] { new[] { "#submit" }, new[] { "#submit", sentinel }, new[] { sentinel } })
+        foreach (var (target, expected) in new (object Target, string Expected)[]
+        {
+            (new[] { "#submit" }, "#submit"),
+            (new[] { "#submit", sentinel }, "#submit/other element"),
+            (new[] { sentinel }, "other element")
+        })
         {
             var axeEvidence = BrowserAccessibility.Describe(new AxeResult(JObject.FromObject(new
             {
@@ -45,7 +50,7 @@ public sealed class BrowserEvidenceTests
                     any = new[] { new { data = new { fgColor = "#ffffff", bgColor = sentinel, contrastRatio = 2.5, message = sentinel } } }
                 } } } }
             })));
-            Assert.True(axeEvidence.Contains("color-contrast:", StringComparison.Ordinal) &&
+            Assert.True(axeEvidence.Contains("color-contrast: " + expected + " (", StringComparison.Ordinal) &&
                 axeEvidence.Contains("foreground=#ffffff, background=unknown, contrast=2.5", StringComparison.Ordinal) &&
                 !axeEvidence.Contains(sentinel, StringComparison.Ordinal), "Accessibility diagnostics must handle scalar/chained selectors without retaining arbitrary data.");
         }
@@ -74,7 +79,7 @@ public sealed class BrowserEvidenceTests
         {
             await using var session = await BrowserSession.CreateAsync();
             var page = await session.Context.NewPageAsync();
-            await page.SetContentAsync("<!doctype html><html lang='en'><head><title>Contrast control</title></head><body><main><p id='contrast-probe' style='color:#aaaaaa;background:#ffffff'>Synthetic contrast control</p></main></body></html>");
+            await page.SetContentAsync("<!doctype html><html lang='en'><head><title>Contrast control</title></head><body><main><h1>Contrast control</h1><p id='contrast-probe' style='color:#aaaaaa;background:#ffffff'>Synthetic contrast control</p></main></body></html>");
             var contrast = await Assert.ThrowsAnyAsync<Xunit.Sdk.XunitException>(() => BrowserAccessibility.RequireNoViolationsAsync(page));
             Assert.True(contrast.Message.Contains("color-contrast: #contrast-probe", StringComparison.Ordinal) &&
                 contrast.Message.Contains("foreground=#aaaaaa, background=#ffffff", StringComparison.Ordinal),
