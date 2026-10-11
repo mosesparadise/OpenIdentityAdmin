@@ -29,7 +29,7 @@ internal static class BrowserAccessibility
                 var styles = await page.EvaluateAsync<JsonElement>(StyleSnapshot, Targets);
                 message += DescribeStyles(styles);
             }
-            catch (PlaywrightException)
+            catch (Exception exception) when (exception is PlaywrightException or TimeoutException or InvalidOperationException)
             {
                 message += "; style snapshot unavailable";
             }
@@ -86,7 +86,7 @@ internal static class BrowserAccessibility
         var details = new List<string>();
         foreach (var node in styles.EnumerateArray())
         {
-            if (!node.TryGetProperty("index", out var indexValue) || !indexValue.TryGetInt32(out var index) || index < 0 || index >= Targets.Length)
+            if (!node.TryGetProperty("index", out var indexValue) || indexValue.ValueKind != JsonValueKind.Number || !indexValue.TryGetInt32(out var index) || index < 0 || index >= Targets.Length)
             {
                 continue;
             }
