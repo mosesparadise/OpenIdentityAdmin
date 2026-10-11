@@ -100,6 +100,14 @@ public sealed class BrowserEvidenceTests
         Assert.Equal("chromium", BrowserSession.SelectEngine(null));
         Assert.Equal("firefox", BrowserSession.SelectEngine("firefox"));
         Assert.Equal("webkit", BrowserSession.SelectEngine("webkit"));
+        Assert.Equal(1, ContrastExperimentTests.ParseSamples(null));
+        Assert.Equal(1, ContrastExperimentTests.ParseSamples("1"));
+        Assert.Equal(40, ContrastExperimentTests.ParseSamples("40"));
+        foreach (var invalid in new[] { "", "0", "41", "-1", "1.0", " 1", "+1", sentinel })
+        {
+            var rejected = Assert.Throws<InvalidOperationException>(() => ContrastExperimentTests.ParseSamples(invalid));
+            Assert.Equal("Contrast samples must be an integer from 1 to 40.", rejected.Message);
+        }
     }
 
     [Theory]

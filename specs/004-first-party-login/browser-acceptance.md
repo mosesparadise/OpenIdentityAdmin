@@ -4,6 +4,8 @@
 
 ## Authorized recurrence investigation
 
+Next focused phase: the user authorized the [minimal rendering experiment](contrast-experiment.md). It compares the initial scanner, separate-page lifecycle and screenshot boundary while keeping the final scan and existing full pilot acceptance unchanged. The plan defines a bounded cohort and an explicit inconclusive outcome; it does not renew A-002.
+
 The user accepted the recommendation to resolve the finding before PR #11 merges, without another sequencing exception. The callback observer correction has since passed all 16 checks and 769 ordinary cases, with zero skips, in [run 38131012339](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38131012339) at `97360e9`. That green run does not dispose of the earlier contrast finding.
 
 Before changing product CSS or scanner behavior, extend failure-only evidence with fixed body/root color classifications, semantic token values, stylesheet availability and body-rule markers, inline override flags, base-style markers and document visibility/identity. Read colors before geometry/CSSOM inspection; preserve the original axe result if diagnostics fail. Do not retain HTML, CSS text, URLs, arbitrary selectors or exception messages. An unavailable stylesheet inspection is distinct from an absent rule; unsupported color serialization is distinct from transparency; a rule's presence does not prove application. This later snapshot does not prove the earlier scan's state.
