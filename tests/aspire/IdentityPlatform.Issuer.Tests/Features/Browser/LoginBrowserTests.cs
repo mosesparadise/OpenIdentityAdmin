@@ -186,13 +186,16 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
                 await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
                 Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
                 await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
-                // Keep the original first scan, then check interactive contrast with and without button hover.
-                await page.Locator("#submit").HoverAsync();
-                Assert.True(await page.Locator("#submit").EvaluateAsync<bool>("element => element.matches(':hover')"));
-                await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
-                await page.Mouse.MoveAsync(0, 0);
-                Assert.False(await page.Locator("#submit").EvaluateAsync<bool>("element => element.matches(':hover')"));
-                await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+                // The fresh-context probe repeats the original scan; interactive states need one check per visual case.
+                if (iteration == 0)
+                {
+                    await page.Locator("#submit").HoverAsync();
+                    Assert.True(await page.Locator("#submit").EvaluateAsync<bool>("element => element.matches(':hover')"));
+                    await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+                    await page.Mouse.MoveAsync(0, 0);
+                    Assert.False(await page.Locator("#submit").EvaluateAsync<bool>("element => element.matches(':hover')"));
+                    await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+                }
                 if (width == 1280)
                 {
                     await page.SetViewportSizeAsync(768, 900);
