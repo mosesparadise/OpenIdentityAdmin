@@ -32,7 +32,8 @@ public sealed class RequestBindingTests(IssuerFixture fixture)
     public static IEnumerable<TheoryDataRow<string, bool>> CorrelationCases =>
         from provider in Providers
         from wrong in Flags
-        select new TheoryDataRow<string, bool>(provider, wrong).WithTrait("Provider", provider);
+        select new TheoryDataRow<string, bool>(provider, wrong).WithTrait("Provider", provider)
+            .WithTrait("CriticalDecision", wrong ? "browser-binding" : "none");
 
     private static IEnumerable<TheoryDataRow<string, string, string>> Rows(string[] cases) =>
         from provider in Providers
@@ -185,6 +186,15 @@ public sealed class RequestBindingTests(IssuerFixture fixture)
         var before = await SessionCountAsync(environment);
         using (var denied = await first.SubmitAsync(environment, secondBrowser, antiforgery: second.Antiforgery))
         {
+            if (denied.StatusCode == HttpStatusCode.OK)
+            {
+                var completed = await InteractionAsync(environment, first);
+                Assert.True(completed.CompletedSessionId is not null && completed.CompletedUserId is not null && !completed.Consumed &&
+                    await SessionCountAsync(environment) == before + 1 &&
+                    cookies.GetCookies(environment.Issuer).Cast<Cookie>().Any(value => value.Name == PilotProfile.SessionCookie),
+                    "Unexpected form success lacked foreign-interaction completion and session evidence.");
+                Assert.Fail("Critical decision bypass: browser-binding.");
+            }
             Assert.Equal(HttpStatusCode.BadRequest, denied.StatusCode);
         }
         var row = await InteractionAsync(environment, first);

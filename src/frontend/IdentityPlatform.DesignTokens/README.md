@@ -1,3 +1,5 @@
 # Shared identity design tokens
 
 Canonical slate/indigo semantic colors and focus/motion behavior for STS Razor and later React. AuthServer embeds these exact source files and serves narrow same-origin asset routes; no manually maintained palette copy or remote asset. Theme storage contains only the allowlisted preference and fails safely when unavailable. System mode uses CSS media queries, including OS changes. Initial visual/accessibility acceptance is recorded under feature004; token values alone do not prove conformance.
+
+Theme mode is selected on `html`. The canonical package declares theme values on both the document root and body, preserving body styling across the reproduced WebKit navigation boundary. Document-wide customization must update both scopes consistently; changing only `:root` does not override values declared directly on body. Maintain one authoritative palette for React and Razor. See the [paired reproduction and correction evidence](../../../specs/004-first-party-login/contrast-experiment.md#paired-result-and-corrective-implementation-plan).

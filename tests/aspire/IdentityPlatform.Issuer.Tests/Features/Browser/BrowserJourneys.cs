@@ -1,6 +1,7 @@
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Playwright;
@@ -9,7 +10,7 @@ namespace IdentityPlatform.Issuer.Tests.Features.Browser;
 
 internal enum BrowserJourneyRole
 {
-    Ordinary, InitialSession, FirstTab, SecondTab
+    Ordinary, InitialSession, FirstTab, SecondTab, Recovery
 }
 
 internal static class BrowserJourneys
@@ -74,14 +75,19 @@ internal static class BrowserJourneys
             BrowserEvidence.Mark(BrowserPhase.Callback);
             try
             {
-                await page.WaitForURLAsync(environment.RelyingParty.Callback + "**");
+                await WaitForCallbackDocumentAsync(page, environment.RelyingParty.Callback, flow.State);
             }
             catch (Exception exception) when (exception is PlaywrightException or TimeoutException)
             {
-                throw CallbackFailure(page.Url, role, Volatile.Read(ref loginStatus), Volatile.Read(ref credentialSnapshots), Volatile.Read(ref callbackNavigations), flow.Completion.Task.IsCompleted);
+                var current = new Uri(page.Url);
+                var states = QueryHelpers.ParseQuery(current.Query).GetValueOrDefault("state");
+                var matches = current.GetLeftPart(UriPartial.Path) == environment.RelyingParty.Callback && states.Count == 1 && states[0] == flow.State;
+                throw CallbackFailure(page.Url, role, Volatile.Read(ref loginStatus), Volatile.Read(ref credentialSnapshots), Volatile.Read(ref callbackNavigations),
+                    flow.Completion.Task.IsCompleted, flow.Completion.Task.IsCompletedSuccessfully && flow.Completion.Task.Result, matches);
             }
             BrowserEvidence.Mark(BrowserPhase.CallbackValidation);
             Assert.True(await flow.Completion.Task.WaitAsync(TimeSpan.FromSeconds(15), TestContext.Current.CancellationToken), "The relying party must independently validate the code exchange.");
+            Assert.True(await page.Locator("body").InnerTextAsync() == "Signed in successfully", "The callback document must contain the relying party's validated success response.");
             Assert.Equal(1, Volatile.Read(ref credentialSnapshots));
             Assert.True(!string.IsNullOrEmpty(flow.ExpectedSessionId) && flow.ExpectedAuthenticatedAt.HasValue, "The credential event snapshot must exist before token validation.");
             Assert.Equal(1, Volatile.Read(ref callbackNavigations));
@@ -96,7 +102,28 @@ internal static class BrowserJourneys
         }
     }
 
-    internal static Xunit.Sdk.XunitException CallbackFailure(string url, BrowserJourneyRole role, int loginStatus, int snapshots, int callbacks, bool completed)
+    internal static async Task WaitForCallbackDocumentAsync(IPage page, string callback, string state, float timeout = 20_000)
+    {
+        var target = new Uri(callback);
+        // Driver polling keeps observing when page JavaScript (and its animation/timer callbacks) is disabled.
+        await page.Locator("html").WaitForFunctionAsync("""
+            (element, expected) => {
+                const states = new URLSearchParams(location.search).getAll('state');
+                return location.origin === expected.origin && location.pathname === expected.path &&
+                    states.length === 1 && states[0] === expected.state && document.readyState === 'complete';
+            }
+            """, new
+        {
+            origin = target.GetLeftPart(UriPartial.Authority),
+            path = target.AbsolutePath,
+            state
+        }, new()
+        {
+            Timeout = timeout
+        });
+    }
+
+    internal static Xunit.Sdk.XunitException CallbackFailure(string url, BrowserJourneyRole role, int loginStatus, int snapshots, int callbacks, bool completed, bool validated, bool matches)
     {
         var location = new Uri(url).AbsolutePath switch
         {
@@ -106,7 +133,7 @@ internal static class BrowserJourneys
             "/callback" => "callback",
             _ => "other"
         };
-        return new Xunit.Sdk.XunitException($"Browser callback wait failed for {role} at {location}; login status {loginStatus}, credential snapshots {snapshots}, callback navigations {callbacks}, relying-party completion {completed}. Sensitive diagnostics suppressed.");
+        return new Xunit.Sdk.XunitException($"Browser callback wait failed for {role} at {location}; login status {loginStatus}, credential snapshots {snapshots}, callback navigations {callbacks}, relying-party completion {completed}, validated result {validated}, exact callback {matches}. Sensitive diagnostics suppressed.");
     }
 
     public static async Task RequireNoTokensAsync(IPage page, IBrowserContext context, IssuerEnvironment environment, params TestFlow[] flows)

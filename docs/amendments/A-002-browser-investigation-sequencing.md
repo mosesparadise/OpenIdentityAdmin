@@ -1,6 +1,6 @@
 # Browser investigation sequencing amendment A-002
 
-Status: Approved by the requesting user on 11 October 2026. A-001 is a separate amendment.
+Status: Approved by the requesting user on 11 October 2026; the sequencing exception expired on the SQL Server/WebKit contrast recurrence in run 38129076793, while PR #11 was unmerged. The [recurrence record](../../specs/004-first-party-login/verification.md#a-002-expiry-and-captured-contrast-recurrence) remains historical evidence. The finding now has an [accepted corrected-source disposition](../../specs/004-first-party-login/verification.md#completed-corrected-source-acceptance-and-disposition) under the closure criteria below; final documentation-head checks and authorized squash delivery are recorded on PR #11. The exception is not renewed. A-001 is separate.
 
 ## Approved decision
 

@@ -83,6 +83,7 @@ public sealed class InteractionRaceTests(IssuerFixture fixture)
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    [Trait("CriticalDecision", "completed-session")]
     public async Task Completed_interaction_consumption_requires_its_exact_new_session(string provider)
     {
         var environment = await fixture.GetAsync(provider);
@@ -93,8 +94,14 @@ public sealed class InteractionRaceTests(IssuerFixture fixture)
         var before = await SnapshotAsync(environment, login.Interaction, original.ExpectedSessionId!);
         await using var runtime = environment.RuntimeServices();
         var denied = await TransitionAsync(environment, runtime, login.Interaction, original.ExpectedSessionId!, complete: false, TestContext.Current.CancellationToken);
-        Assert.False(denied.Consumed);
         var after = await SnapshotAsync(environment, login.Interaction, original.ExpectedSessionId!);
+        if (denied.Consumed)
+        {
+            Assert.True(after.Interaction.Consumed, "Unexpected consumption result lacked persisted evidence.");
+            AssertAudits(before, after, created: 0, replaced: 0, approved: 1);
+            Assert.Fail("Critical decision bypass: completed-session.");
+        }
+        Assert.False(denied.Consumed);
         Assert.Equal(before.Sessions, after.Sessions);
         Assert.True(!after.Interaction.Consumed && after.Interaction.CompletedSessionId == before.Interaction.CompletedSessionId &&
             after.Interaction.CompletedUserId == before.Interaction.CompletedUserId && after.Previous.Revoked == before.Previous.Revoked,

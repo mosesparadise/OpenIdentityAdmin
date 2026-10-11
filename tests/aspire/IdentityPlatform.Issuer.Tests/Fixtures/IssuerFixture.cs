@@ -333,6 +333,6 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
         {
             await Attempt(lifecycle.AssertRemovedAsync);
         }
-        Assert.False(failed, "Issuer cleanup failed; every remaining resource was still attempted.");
+        Assert.False(failed || Invalidated, "Issuer cleanup failed or the environment was invalidated; every remaining resource was still attempted.");
     }
 }

@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "commit": "1848842dfb96947575e2cab81f5a02f639b23c4f",
+  "provider": "PostgreSql",
+  "source_sha256": [
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs",
+      "sha256": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs",
+      "sha256": "315dddd7187aafd6f10094c4f7ab8f47e5c2afc2d6b81030ab8a67449e62239c"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs",
+      "sha256": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs",
+      "sha256": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
+      "sha256": "f9b4d7f7734fd00df50ea7245a789de92f3dc26a6695368617e48dafb79dec43"
+    }
+  ],
+  "mutations": [
+    {
+      "id": "pkce-syntax",
+      "mutant_sha256": "6dc6a0e10e64c8bc23d1fed7f53befa8ad427f95019f05116f952e95688876f6",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 36.782,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"PostgreSql\")"
+      ]
+    },
+    {
+      "id": "pkce-proof",
+      "mutant_sha256": "067796095ae9d4affffde77a7ec550ab5bb777634dd7cfe65a2069fc7efcc8d5",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 35.281,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"PostgreSql\", failure: \"wrong-verifier\")"
+      ]
+    },
+    {
+      "id": "browser-binding",
+      "mutant_sha256": "b9df8c9ebf425f0804a0d24efc66c4c33531647afcd8edc4d0f2a0bdaa83e1ad",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 35.919,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"PostgreSql\", wrongCookie: True)"
+      ]
+    },
+    {
+      "id": "completed-session",
+      "mutant_sha256": "28a0599f98f21843d6b624b7bc0f517431bf3db2a7f43a183da704e6f7764986",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 36.765,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"PostgreSql\")"
+      ]
+    },
+    {
+      "id": "account-eligibility",
+      "mutant_sha256": "f5b190ca1025e5e9271a64f8bb89fe1f9d75d3c095f2ced94802799ba5b419ae",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 35.903,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"disabled\")"
+      ]
+    },
+    {
+      "id": "session-eligibility",
+      "mutant_sha256": "2e1dddafc47d25ff06bc36d8f3426236998c52f5c3b07440306d855b66afefc6",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 35.079,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"session-revoked\")"
+      ]
+    },
+    {
+      "id": "native-replay",
+      "mutant_sha256": "ffdbd8efebbf00244f9d42d56e72307b4b7fa4e234dcecbf240bf8c5fa232642",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 35.417,
+      "tests": [
+        "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"PostgreSql\")"
+      ]
+    }
+  ],
+  "baseline": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 75.433,
+    "tests": [
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"PostgreSql\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"disabled\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"session-revoked\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"PostgreSql\", failure: \"wrong-verifier\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"PostgreSql\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"PostgreSql\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"PostgreSql\", wrongCookie: True)"
+    ]
+  },
+  "restored": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 64.404,
+    "tests": [
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"PostgreSql\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"disabled\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"session-revoked\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"PostgreSql\", failure: \"wrong-verifier\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"PostgreSql\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"PostgreSql\")",
+      "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"PostgreSql\", wrongCookie: True)"
+    ]
+  },
+  "source_restored": true
+}

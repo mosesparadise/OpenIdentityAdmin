@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "pkce-syntax",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs",
+      "before": "Length: >= 43 and <= 128",
+      "after": "Length: >= 1 and <= 128",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier",
+      "marker": "Critical decision bypass: pkce-syntax."
+    },
+    {
+      "id": "pkce-proof",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
+      "before": "options.RequireProofKeyForCodeExchange();",
+      "after": "options.RequireProofKeyForCodeExchange();\n            options.RemoveEventHandler(OpenIddict.Server.OpenIddictServerHandlers.Exchange.ValidateCodeVerifier.Descriptor);",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings",
+      "marker": "Critical decision bypass: pkce-proof."
+    },
+    {
+      "id": "browser-binding",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs",
+      "before": "CryptographicOperations.FixedTimeEquals(Encoding.ASCII.GetBytes(Digest(value!)), Encoding.ASCII.GetBytes(expectedDigest))",
+      "after": "!string.IsNullOrEmpty(expectedDigest)",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding",
+      "marker": "Critical decision bypass: browser-binding."
+    },
+    {
+      "id": "completed-session",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs",
+      "before": "value.CompletedSessionId == session.Id && value.CompletedUserId == session.UserId",
+      "after": "value.CompletedUserId == session.UserId",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session",
+      "marker": "Critical decision bypass: completed-session."
+    },
+    {
+      "id": "account-eligibility",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs",
+      "before": "return user.IsEnabled && user.LockoutEnabled",
+      "after": "return user.LockoutEnabled",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter",
+      "marker": "Critical decision bypass: account-eligibility."
+    },
+    {
+      "id": "session-eligibility",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs",
+      "before": "session is null || session.Revoked || session.ExpiresAt",
+      "after": "session is null || session.ExpiresAt",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter",
+      "marker": "Critical decision bypass: session-eligibility."
+    },
+    {
+      "id": "native-replay",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
+      "before": "options.RequireProofKeyForCodeExchange();",
+      "after": "options.RequireProofKeyForCodeExchange();\n            options.RemoveEventHandler(OpenIddict.Server.OpenIddictServerHandlers.RedeemTokenEntry.Descriptor);",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails",
+      "marker": "Critical decision bypass: native-replay."
+    }
+  ]
+}

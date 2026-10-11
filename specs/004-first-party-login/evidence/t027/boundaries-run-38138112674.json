@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "commit": "e7dfd1969a273351a1e01396e6b30414084c7d6c",
+  "run": 38138112674,
+  "job": 114466094406,
+  "artifact": 11702202080,
+  "browser": "webkit",
+  "scope": "synthetic rendering; no provider/authentication evidence",
+  "durationSeconds": 58.784,
+  "completedSessions": 60,
+  "findings": 59,
+  "arms": {
+    "NoScan": {
+      "observations": 20,
+      "findings": 19
+    },
+    "TargetPartial": {
+      "observations": 20,
+      "findings": 20
+    },
+    "FullWrapper": {
+      "observations": 20,
+      "findings": 20
+    }
+  },
+  "rawPartial": {
+    "scans": 20,
+    "failedContrastChecksPerScan": 3,
+    "incompleteChecksPerScan": 0
+  },
+  "observedState": {
+    "rootPageToken": "#020617",
+    "rootTextToken": "#f8fafc",
+    "rootScheme": "dark",
+    "bodyPageToken": "unknown",
+    "bodyTextToken": "unknown",
+    "bodyScheme": "normal",
+    "bodyColor": "#000000",
+    "bodyBackgroundKind": "transparent",
+    "bodyRulePresent": true,
+    "bodyLiteralStylesApplied": true,
+    "bodyFontApplied": false
+  },
+  "disposition": "The anomaly occurs without axe; exact engine trigger and rendered-pixel impact remain unresolved."
+}

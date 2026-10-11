@@ -26,8 +26,8 @@ internal static class BrowserAccessibility
             var message = Describe(result);
             try
             {
-                var styles = await page.EvaluateAsync<JsonElement>(StyleSnapshot, Targets);
-                message += DescribeStyles(styles);
+                var snapshot = await ReadStylesAsync(page);
+                message += DescribeSnapshot(snapshot);
             }
             catch (Exception exception) when (exception is PlaywrightException or TimeoutException or InvalidOperationException)
             {
@@ -38,8 +38,10 @@ internal static class BrowserAccessibility
                 try
                 {
                     await captureFailure();
+                    var later = await ReadStylesAsync(page);
+                    message += "; after diagnostic capture (later state)" + DescribeSnapshot(later);
                 }
-                catch (Exception exception) when (exception is PlaywrightException or TimeoutException or Xunit.Sdk.XunitException or IOException)
+                catch (Exception exception) when (exception is PlaywrightException or TimeoutException or Xunit.Sdk.XunitException or IOException or InvalidOperationException)
                 {
                     message += "; diagnostic capture failed";
                 }
@@ -48,6 +50,12 @@ internal static class BrowserAccessibility
         }
     }
 
+    internal static Task<JsonElement> ReadStylesAsync(IPage page) => page.EvaluateAsync<JsonElement>(BrowserStyleEvidence.Snapshot, Targets);
+
+    internal static string DescribeSnapshot(JsonElement snapshot) =>
+        snapshot.ValueKind == JsonValueKind.Object && snapshot.TryGetProperty("styles", out var styles) && styles.ValueKind == JsonValueKind.Array &&
+        snapshot.TryGetProperty("canvas", out var canvas) ? DescribeStyles(styles) + BrowserStyleEvidence.Describe(canvas) : "; style snapshot unavailable";
+
     internal static string Describe(AxeResult result)
     {
         // Respect the library's Newtonsoft converters, including its selector and JObject data shapes.
@@ -55,7 +63,27 @@ internal static class BrowserAccessibility
         return DescribeJson(json.RootElement);
     }
 
-    private static string DescribeJson(JsonElement result)
+    internal static (string Evidence, int Failures, int Incomplete) DescribePartial(JsonElement partial)
+    {
+        var rule = partial.GetProperty("results").EnumerateArray().Single(value => value.GetProperty("id").GetString() == "color-contrast");
+        var nodes = rule.GetProperty("nodes").EnumerateArray().ToArray();
+        Assert.NotEmpty(nodes);
+        var checks = nodes.SelectMany(node => node.GetProperty("any").EnumerateArray())
+            .Where(check => check.GetProperty("id").GetString() == "color-contrast").ToArray();
+        Assert.NotEmpty(checks);
+        var failures = checks.Count(check => check.GetProperty("result").ValueKind == JsonValueKind.False);
+        var incomplete = checks.Count(check => check.GetProperty("result").ValueKind is not (JsonValueKind.True or JsonValueKind.False));
+        var evidence = DescribeJson(System.Text.Json.JsonSerializer.SerializeToElement(new
+        {
+            violations = new[] { new { id = "color-contrast", nodes = nodes.Select(node => new
+            {
+                target = node.GetProperty("node").GetProperty("selector"), any = node.GetProperty("any")
+            }) } }
+        }), "Raw partial contrast measurements: ");
+        return (evidence, failures, incomplete);
+    }
+
+    private static string DescribeJson(JsonElement result, string prefix = "Automated accessibility violations: ")
     {
         // Never retain axe HTML, URLs, text, selectors outside this fixed set, or arbitrary check data.
         var details = new List<string>();
@@ -76,7 +104,7 @@ internal static class BrowserAccessibility
                 details.Add($"{rule}: {target} ({string.Join("; ", checks)})");
             }
         }
-        return "Automated accessibility violations: " + string.Join("; ", details);
+        return prefix + string.Join("; ", details);
     }
 
     // AxeSelector serializes a single selector as a string and frame/shadow chains as arrays.
@@ -92,7 +120,7 @@ internal static class BrowserAccessibility
         var details = new List<string>();
         foreach (var node in styles.EnumerateArray())
         {
-            if (!node.TryGetProperty("index", out var indexValue) || indexValue.ValueKind != JsonValueKind.Number || !indexValue.TryGetInt32(out var index) || index < 0 || index >= Targets.Length)
+            if (node.ValueKind != JsonValueKind.Object || !node.TryGetProperty("index", out var indexValue) || indexValue.ValueKind != JsonValueKind.Number || !indexValue.TryGetInt32(out var index) || index < 0 || index >= Targets.Length)
             {
                 continue;
             }
@@ -105,23 +133,6 @@ internal static class BrowserAccessibility
     private static bool Flag(JsonElement node, string key) => node.TryGetProperty(key, out var value) && value.ValueKind == JsonValueKind.True;
     private static string Coordinate(JsonElement node, string key) => node.TryGetProperty(key, out var value) && value.ValueKind == JsonValueKind.Number &&
         value.TryGetInt32(out var number) && number is >= -100000 and <= 100000 ? number.ToString(CultureInfo.InvariantCulture) : "unknown";
-
-    // Read only: never move focus, pointer or scroll before preserving the failing computed state.
-    private const string StyleSnapshot = """
-        selectors => selectors.flatMap((selector, index) => {
-            const element = document.querySelector(selector);
-            if (!element) return [];
-            const style = getComputedStyle(element), rect = element.getBoundingClientRect();
-            const hex = value => {
-                const match = /^rgba?\((\d+), (\d+), (\d+)(?:, ([\d.]+))?\)$/.exec(value);
-                if (!match || (match[4] !== undefined && Number(match[4]) !== 1)) return 'unknown';
-                return '#' + match.slice(1, 4).map(channel => Number(channel).toString(16).padStart(2, '0')).join('');
-            };
-            return [{index, color: hex(style.color), fill: hex(style.webkitTextFillColor), background: hex(style.backgroundColor),
-                focus: element === document.activeElement, hover: element.matches(':hover'),
-                top: Math.round(rect.top), height: Math.round(rect.height), scroll: Math.round(scrollY)}];
-        })
-        """;
 
     private static string Color(JsonElement data, string name)
     {

@@ -218,7 +218,7 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             var second = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             BrowserEvidence.Mark(BrowserPhase.SecondTabNavigation);
             await secondPage.GotoAsync(environment.RelyingParty.StartUri(second).AbsoluteUri);
-            await BrowserJourneys.LoginAsync(secondPage, environment, second, javaScript: false);
+            await BrowserJourneys.LoginAsync(secondPage, environment, second, javaScript: false, role: BrowserJourneyRole.SecondTab);
             Assert.Equal(400, (await firstPage.ReloadAsync())!.Status);
             Assert.Equal(0, await firstPage.Locator("#continue-link").CountAsync());
             await firstPage.GotoAsync(new Uri(environment.Issuer, continuation!).AbsoluteUri);
@@ -235,7 +235,7 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             }
             var recovery = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
             await firstPage.GotoAsync(environment.RelyingParty.StartUri(recovery).AbsoluteUri);
-            await BrowserJourneys.LoginAsync(firstPage, environment, recovery, javaScript: false);
+            await BrowserJourneys.LoginAsync(firstPage, environment, recovery, javaScript: false, role: BrowserJourneyRole.Recovery);
         });
     }
 

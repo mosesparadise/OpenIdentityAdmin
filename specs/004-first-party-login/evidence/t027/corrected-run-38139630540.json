@@ -1,0 +1,337 @@
+{
+  "schema": 1,
+  "commit": "7dc608673de1be0c7a92ec1c2bce40be9abdf60f",
+  "run": 38139630540,
+  "job": 114470681771,
+  "artifact": 11702341650,
+  "artifactDigest": "sha256:cbaa8a50dbf99d09600bbbae864fa96bf8dd24b0e3e8e4e2597ef924242b29b4",
+  "browser": "webkit",
+  "scope": "permanent shipped-asset rendering regression; no provider/authentication evidence",
+  "duration": "00:01:11.9790000",
+  "completedSessions": 60,
+  "findings": 0,
+  "arms": {
+    "NoScan": {
+      "observations": 20,
+      "findings": 0
+    },
+    "TargetPartial": {
+      "observations": 20,
+      "findings": 0
+    },
+    "FullWrapper": {
+      "observations": 20,
+      "findings": 0
+    }
+  },
+  "rawPartial": {
+    "scans": 20,
+    "failedContrastChecksPerScan": 0,
+    "incompleteChecksPerScan": 0
+  },
+  "observations": [
+    {
+      "sample": 1,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 1,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 1,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 2,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 2,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 2,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 3,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 3,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 3,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 4,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 4,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 4,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 5,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 5,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 5,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 6,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 6,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 6,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 7,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 7,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 7,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 8,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 8,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 8,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 9,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 9,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 9,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 10,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 10,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 10,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 11,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 11,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 11,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 12,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 12,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 12,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 13,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 13,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 13,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 14,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 14,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 14,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 15,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 15,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 15,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 16,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 16,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 16,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 17,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 17,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 17,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 18,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 18,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 18,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 19,
+      "arm": "NoScan",
+      "finding": false
+    },
+    {
+      "sample": 19,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 19,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 20,
+      "arm": "TargetPartial",
+      "finding": false
+    },
+    {
+      "sample": 20,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 20,
+      "arm": "NoScan",
+      "finding": false
+    }
+  ],
+  "disposition": "Corrected canonical asset passes every original observation boundary; full ordinary/provider/mutation/coverage evidence is recorded separately.",
+  "commitKind": "pull-request source head",
+  "checkoutCommit": "bc99deed137e76fb4a516609fcbdfbc35278a9f9"
+}
