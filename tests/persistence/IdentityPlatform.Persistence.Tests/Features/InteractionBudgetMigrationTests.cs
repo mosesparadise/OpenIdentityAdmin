@@ -4,11 +4,13 @@ using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Npgsql;
 using Testcontainers.MsSql;
 using Testcontainers.PostgreSql;
 
@@ -80,13 +82,31 @@ public sealed class InteractionBudgetMigrationTests
         };
         database.Add(owned);
         await database.SaveChangesAsync(cancellationToken);
-        await Assert.ThrowsAnyAsync<DbException>(() => database.Set<LoginBrowserBudget>().Where(value => value.Id == digest).ExecuteDeleteAsync(cancellationToken));
-        owned.BudgetId = digest.ToLowerInvariant();
-        await Assert.ThrowsAsync<DbUpdateException>(() => database.SaveChangesAsync(cancellationToken));
+        var deleteError = await Assert.ThrowsAnyAsync<DbException>(() => database.Set<LoginBrowserBudget>().Where(value => value.Id == digest).ExecuteDeleteAsync(cancellationToken));
+        RequireConstraintViolation(provider, deleteError, PostgresErrorCodes.RestrictViolation);
+        var wrongCase = digest.ToLowerInvariant();
+        Assert.Equal(0, await database.Set<LoginBrowserBudget>().CountAsync(value => value.Id == wrongCase, cancellationToken));
+        // SQL Server's EF key comparer ignores case even with binary database collation.
+        // Execute the update directly so the database, rather than change detection, rejects it.
+        var ownerError = await Assert.ThrowsAnyAsync<DbException>(() => database.Set<LoginInteraction>().Where(value => value.Id == owned.Id)
+            .ExecuteUpdateAsync(update => update.SetProperty(value => value.BudgetId, wrongCase), cancellationToken));
+        RequireConstraintViolation(provider, ownerError, PostgresErrorCodes.ForeignKeyViolation);
         database.ChangeTracker.Clear();
         Assert.Equal(1, await database.Set<LoginBrowserBudget>().CountAsync(cancellationToken));
         Assert.Equal(2, await database.Set<LoginInteraction>().CountAsync(cancellationToken));
         Assert.True((await database.Set<LoginInteraction>().SingleAsync(value => value.Id == owned.Id, cancellationToken)).BudgetId == digest,
             "Foreign-key rejection changed the persisted, case-sensitive owner.");
+    }
+    private static void RequireConstraintViolation(DatabaseProvider provider, DbException exception, string postgresCode)
+    {
+        // Provider error codes are safe diagnostics; exception text can contain row values.
+        if (provider == DatabaseProvider.PostgreSql)
+        {
+            Assert.Equal(postgresCode, (exception as PostgresException)?.SqlState);
+        }
+        else
+        {
+            Assert.Equal(547, (exception as SqlException)?.Number);
+        }
     }
 }

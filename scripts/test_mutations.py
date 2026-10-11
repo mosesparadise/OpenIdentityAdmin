@@ -37,9 +37,21 @@ def clean_result(result):
 
 def terminated(pid):
     try:
-        return Path(f'/proc/{pid}/stat').read_text().split()[2] == 'Z'
+        record = Path(f'/proc/{pid}/stat').read_text().rsplit(') ', 1)
+        fields = record[1].split() if len(record) == 2 else []
+        return bool(fields) and fields[0] in ('Z', 'X')
     except (FileNotFoundError, ProcessLookupError):
         return True  # The OS may reap the child between observations.
+
+
+def wait_for_termination(pid, timeout=1):
+    deadline = time.monotonic() + timeout
+    while True:
+        if terminated(pid):
+            return True  # Preserve the terminal observation; the PID can subsequently disappear/recycle.
+        if time.monotonic() >= deadline:
+            return False
+        time.sleep(0.01)
 
 
 class MutationEvidenceTests(unittest.TestCase):
@@ -225,10 +237,7 @@ time.sleep(60)
                         run([sys.executable, '-c', program, str(path), str(stubborn), str(redirected)], 0.5, os.environ.copy(), cleanup_timeout=0.5)
                     self.assertLess(time.monotonic() - started, 4)
                     pid = int(path.read_text())
-                    deadline = time.monotonic() + 1
-                    while not terminated(pid) and time.monotonic() < deadline:
-                        time.sleep(0.01)  # Observe signal delivery; never rerun the command being verified.
-                    self.assertTrue(terminated(pid))
+                    self.assertTrue(wait_for_termination(pid))
                 finally:
                     if path.exists():
                         try:
@@ -243,6 +252,25 @@ time.sleep(60)
                 require_clean_checkout({})
         with patch('verify_mutations.run', return_value=(0, '')):
             require_clean_checkout({})
+
+    def test_only_terminal_proc_states_count_as_termination(self):
+        for state in ('Z', 'X', 'R', 'S', 'D', 'T', 't', 'P', 'I', '?'):
+            for name in ('python3', 'worker (with spaces)'):
+                with self.subTest(state=state, name=name), patch.object(Path, 'read_text', return_value=f'123 ({name}) {state} 1 2 3'):
+                    self.assertEqual(state in ('Z', 'X'), terminated(123))
+        for malformed in ('', '123 no delimiter', '123 (python3)'):
+            with self.subTest(malformed=malformed), patch.object(Path, 'read_text', return_value=malformed):
+                self.assertFalse(terminated(123))
+
+    def test_first_terminal_observation_is_preserved(self):
+        records = ['123 (python3) R 1 2', '123 (python3) Z 1 2', '123 (python3) X 1 2']
+        with patch.object(Path, 'read_text', side_effect=records) as reader, patch('time.monotonic', return_value=0), patch('time.sleep'):
+            self.assertTrue(wait_for_termination(123))
+            self.assertEqual(2, reader.call_count)
+
+    def test_live_process_until_deadline_is_not_termination(self):
+        with patch.object(Path, 'read_text', return_value='123 (python3) S 1 2'), patch('time.monotonic', side_effect=[0, 0, 1]), patch('time.sleep'):
+            self.assertFalse(wait_for_termination(123))
 
     def test_reaped_child_is_a_completed_termination(self):
         for error in (FileNotFoundError(), ProcessLookupError()):
