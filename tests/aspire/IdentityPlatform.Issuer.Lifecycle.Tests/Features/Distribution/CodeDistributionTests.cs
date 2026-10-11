@@ -49,6 +49,14 @@ public sealed class CodeDistributionTests(DistributionFixture fixture)
         var environment = await fixture.GetAsync(provider);
         using var browser = environment.NodeClient("auth", autoRedirect: true);
         var evidence = await ExchangeEvidence.IssueAsync(environment, browser);
+        DateTime originalExpiration;
+        await using (var scope = environment.Services.CreateAsyncScope())
+        {
+            var original = await ExchangeEvidence.Tokens(scope.ServiceProvider.GetRequiredService<PlatformDbContext>())
+                .SingleAsync(value => value.Id == evidence.CodeId, TestContext.Current.CancellationToken);
+            Assert.True(original.ExpirationDate is not null && original.ExpirationDate - original.CreationDate <= TimeSpan.FromSeconds(60));
+            originalExpiration = original.ExpirationDate.Value;
+        }
         using var primary = environment.NodeClient("auth");
         using var secondary = environment.NodeClient("auth-secondary");
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
@@ -120,12 +128,14 @@ public sealed class CodeDistributionTests(DistributionFixture fixture)
             var code = await ExchangeEvidence.Tokens(scope.ServiceProvider.GetRequiredService<PlatformDbContext>())
                 .SingleAsync(value => value.Id == evidence.CodeId, TestContext.Current.CancellationToken);
             Assert.True(code.Status is OpenIddictConstants.Statuses.Redeemed or OpenIddictConstants.Statuses.Revoked &&
-                code.RedemptionDate is not null && code.ExpirationDate > DateTime.UtcNow.AddSeconds(10), "Concurrent code outcome lost its native identity or lifetime.");
+                code.RedemptionDate is not null && code.ExpirationDate == originalExpiration && originalExpiration > DateTime.UtcNow.AddSeconds(10),
+                "Concurrent code outcome lost its native identity or lifetime.");
             expectedReplayError = code.Status == OpenIddictConstants.Statuses.Redeemed ? "ID2010" : "ID2016";
         }
         var before = await ExchangeSnapshot.CaptureAsync(environment);
         using var replay = await environment.RelyingParty.ExchangeAsync(evidence.Flow.Code, evidence.Flow.Verifier, transport: primary,
             cancellationToken: TestContext.Current.CancellationToken);
+        Assert.True(originalExpiration > DateTime.UtcNow, "Replay response arrived after the original code expired.");
         await evidence.AssertDeniedAsync(environment, replay, before);
         await DistributionEvidence.NativeErrorAsync(replay, expectedReplayError);
         await RequireIssuedRevokedAsync(environment, tokens.RootElement);
