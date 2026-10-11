@@ -63,8 +63,17 @@ public sealed partial class InteractionCapacityTests
     {
         null => "Blocked admission returned successfully after cancellation.",
         OperationCanceledException => "Cancellation outcome had no requested caller cancellation.",
-        SqlException { Errors.Count: > 0 } sql => $"Unexpected cancellation outcome: sql count={sql.Errors.Count}, number={sql.Number}, state={sql.State}, class={sql.Class}, canonical={IsExpectedCancellation("SqlServer", true, sql)}.",
+        SqlException { Errors.Count: > 0 } sql => $"Unexpected cancellation outcome: sql count={sql.Errors.Count}, inner={sql.InnerException is not null}; " +
+            string.Join("; ", sql.Errors.Cast<SqlError>().Take(8).Select(error =>
+                $"number={error.Number}, state={error.State}, class={error.Class}, line={error.LineNumber}, emptyProcedure={string.IsNullOrEmpty(error.Procedure)}, kind={ErrorCategory(error.Message)}")),
         SqlException => "Unexpected cancellation outcome: sql with no errors.",
         _ => "Unexpected cancellation outcome: other exception category."
+    };
+    private static string ErrorCategory(string message) => message switch
+    {
+        "Operation cancelled by user." => "attention",
+        "A severe error occurred on the current command.  The results, if any, should be discarded." => "severe",
+        "The statement has been terminated." => "statement-terminated",
+        _ => "other"
     };
 }

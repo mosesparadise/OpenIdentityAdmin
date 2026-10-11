@@ -190,6 +190,7 @@ public sealed partial class InteractionCapacityTests
             finally { CultureInfo.CurrentUICulture = previous; }
         }).AsTask();
         DatabaseRowLock.BlockedCommand? waiting = null;
+        Exception? failure = null;
         try
         {
             waiting = await held.WaitForRuntimeAsync(deadline.Token);
@@ -198,8 +199,7 @@ public sealed partial class InteractionCapacityTests
             Assert.False(deadline.IsCancellationRequested, "The caller deadline elapsed before explicit cancellation.");
             Assert.False(attempt.IsCompleted, "The blocked admission finished before explicit cancellation.");
             await deadline.CancelAsync();
-            var failure = await attempt;
-            Assert.True(IsExpectedCancellation(provider, deadline.IsCancellationRequested, failure), CancellationDiagnostic(failure));
+            failure = await attempt;
             Assert.Equal(0, context.Response.Headers.SetCookie.Count);
         }
         finally
@@ -218,6 +218,7 @@ public sealed partial class InteractionCapacityTests
         Assert.Equal(before.Audits, after.Audits);
         Assert.Equal(budget, await BudgetAsync(environment, blocked.Id));
         Assert.NotNull((await AdmitAsync(other, blocked.Header(environment), TestContext.Current.CancellationToken)).Interaction);
+        Assert.True(IsExpectedCancellation(provider, deadline.IsCancellationRequested, failure), CancellationDiagnostic(failure));
     }
 
     [Theory]
