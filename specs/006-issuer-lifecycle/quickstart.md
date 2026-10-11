@@ -18,7 +18,7 @@ python3 scripts/verify.py PostgreSql
 python3 scripts/verify.py SqlServer
 ```
 
-CI collects child-process coverage around each complete profile with `dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/<provider>.cobertura.xml -f cobertura python3 scripts/verify.py <provider>`. It retains the existing nine required coverage inputs and module floors. Every provider invocation remains bounded by 660 seconds and its whole CI job by 20 minutes.
+CI schedules `python3 scripts/verify.py <provider> --partition standard` (300 cases) separately from `--partition lifecycle` (13 cases). Omitting `--partition` keeps the complete 313-case local profile. Each CI job uses `dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/<label>.cobertura.xml -f cobertura` around its runner command, where labels are `<provider>` and `<provider>-lifecycle`. Coverage requires both new lifecycle artifacts plus every existing input: eleven with all six browser cells. The nine production-module floors are unchanged. Every provider test invocation remains bounded by 660 seconds and each CI job by 20 minutes; splitting jobs addresses the measured combined SQL job timeout.
 
 For a focused development experiment, use the exact project and explicit provider selection:
 

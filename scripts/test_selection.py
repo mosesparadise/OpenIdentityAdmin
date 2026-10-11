@@ -3,6 +3,19 @@ import json
 import xml.etree.ElementTree as ET
 
 
+def select_projects(matrix, profile, browser=None, partition='all'):
+    if partition not in ('all', 'standard', 'lifecycle'):
+        raise ValueError('Unknown test partition')
+    if partition != 'all' and (profile == 'unit' or browser):
+        raise ValueError('Partitions apply only to ordinary provider profiles')
+    projects = matrix['browser'] if browser else matrix['profiles'][profile]
+    if partition == 'standard':
+        return {name: count for name, count in projects.items() if name != 'Issuer.Lifecycle'}
+    if partition == 'lifecycle':
+        return {'Issuer.Lifecycle': projects['Issuer.Lifecycle']}
+    return dict(projects)
+
+
 def catalogue(raw, lifecycle=False):
     value = json.loads(raw)
     if value.get('schemaVersion') != 1 or not isinstance(value.get('tests'), list):

@@ -58,14 +58,14 @@ class BrowserMatrixTests(unittest.TestCase):
 
     def test_coverage_requires_each_selected_report_and_rejects_empty_or_duplicate_cells(self):
         matrix = select('schedule', [])
-        labels = ['unit', 'PostgreSql', 'SqlServer'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
+        labels = ['unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle', 'SqlServer-lifecycle'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(9, require_inputs(root, matrix))
+            self.assertEqual(11, require_inputs(root, matrix))
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.unlink()

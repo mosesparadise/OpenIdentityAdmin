@@ -92,13 +92,18 @@ jobs:
           retention-days: 7
           if-no-files-found: error
   verify:
-    name: ${{ matrix.profile }}
+    name: ${{ matrix.label }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
-        profile: [unit, PostgreSql, SqlServer]
+        include:
+          - { profile: unit, partition: all, label: unit }
+          - { profile: PostgreSql, partition: standard, label: PostgreSql }
+          - { profile: SqlServer, partition: standard, label: SqlServer }
+          - { profile: PostgreSql, partition: lifecycle, label: PostgreSql-lifecycle }
+          - { profile: SqlServer, partition: lifecycle, label: SqlServer-lifecycle }
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
@@ -128,12 +133,12 @@ jobs:
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.profile }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: foundation-${{ matrix.profile }}
+          name: foundation-${{ matrix.label }}
           path: |
             artifacts/tests/
             artifacts/coverage/

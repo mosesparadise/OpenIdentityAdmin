@@ -4,11 +4,30 @@ from pathlib import Path
 import tempfile
 import unittest
 import xml.etree.ElementTree as E
-from test_selection import catalogue, require_lifecycle_partition, require_lifecycle_execution
+from test_selection import catalogue, require_lifecycle_partition, require_lifecycle_execution, select_projects
 from test_evidence import require_complete_trx
 
 
 class LifecycleSelectionTests(unittest.TestCase):
+    def test_scheduled_partitions_preserve_every_provider_case_without_overlap(self):
+        matrix = json.loads((Path(__file__).resolve().parents[1] / 'eng/test-matrix.json').read_text())
+        for provider in ('PostgreSql', 'SqlServer'):
+            complete = select_projects(matrix, provider)
+            standard = select_projects(matrix, provider, partition='standard')
+            lifecycle = select_projects(matrix, provider, partition='lifecycle')
+            self.assertFalse(standard.keys() & lifecycle.keys())
+            self.assertEqual(complete, standard | lifecycle)
+            self.assertEqual(300, sum(standard.values()))
+            self.assertEqual({'Issuer.Lifecycle': 13}, lifecycle)
+            self.assertEqual(313, sum(complete.values()))
+        self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
+        self.assertEqual(matrix['browser'], select_projects(matrix, 'SqlServer', 'webkit'))
+        for profile, browser, partition in [('unit', None, 'standard'), ('unit', None, 'lifecycle'),
+                                             ('PostgreSql', 'chromium', 'standard'), ('SqlServer', 'webkit', 'lifecycle'),
+                                             ('SqlServer', None, 'unknown')]:
+            with self.assertRaises(ValueError):
+                select_projects(matrix, profile, browser, partition)
+
     def test_exact_provider_catalogues_cannot_be_omitted_substituted_or_contaminated(self):
         all_tests = {'a': ('A', 'PostgreSql', False), 'b': ('B', 'SqlServer', False)}
         selected = {'a': all_tests['a']}

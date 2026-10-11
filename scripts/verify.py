@@ -7,18 +7,22 @@ from pathlib import Path
 import subprocess
 import signal
 from test_evidence import require_complete_trx
-from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_partition, require_lifecycle_execution
+from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_partition, require_lifecycle_execution, select_projects
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
+parser.add_argument("--partition", choices=["all", "standard", "lifecycle"], default="all")
 args = parser.parse_args()
 if args.browser and args.profile == "unit":
     parser.error("Browser verification requires a real provider")
 matrix = json.loads((ROOT / "eng" / "test-matrix.json").read_text())
-projects = matrix["browser"] if args.browser else matrix["profiles"][args.profile]
-label = args.profile + ("-" + args.browser if args.browser else "")
+try:
+    projects = select_projects(matrix, args.profile, args.browser, args.partition)
+except ValueError as error:
+    parser.error(str(error))
+label = args.profile + ("-" + args.browser if args.browser else "-lifecycle" if args.partition == "lifecycle" else "")
 results = ROOT / "artifacts" / "tests" / label
 results.mkdir(parents=True, exist_ok=True)
 for project in projects:

@@ -106,6 +106,10 @@ public sealed partial class IssuerEnvironment
         try
         {
             IssuerMaterialFixture.WritePrivate(path, replacement.Export(X509ContentType.Pfx, password));
+            using (var validReplacement = IssuerCredentials.Load(runtimeConfiguration, DateTimeOffset.UtcNow))
+            {
+                Assert.Equal(replacement.Thumbprint, validReplacement.Wrapping.Thumbprint);
+            }
             using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             deadline.CancelAfter(TimeSpan.FromSeconds(20));
             var auth = Application.Services.GetRequiredService<DistributedApplicationModel>().Resources.Single(value => value.Name == "auth");
