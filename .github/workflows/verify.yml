@@ -179,7 +179,7 @@ jobs:
           sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
           sudo update-ca-certificates
           echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
-          # Chromium uses NSS. Firefox imports this leaf into each private disposable profile.
+          # Chromium uses NSS peer trust. Firefox imports the exact leaf as an explicit anchor in its private profile.
           mkdir -p "$HOME/.pki/nssdb"
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"

@@ -21,6 +21,7 @@ internal sealed class BrowserSession : IAsyncDisposable
 
     public static async Task<BrowserSession> CreateAsync(int width = 1280, bool javaScript = true)
     {
+        BrowserEvidence.Mark(BrowserPhase.Creation);
         var session = new BrowserSession(await Playwright.CreateAsync());
         try
         {
@@ -41,9 +42,12 @@ internal sealed class BrowserSession : IAsyncDisposable
                     throw new InvalidOperationException("Firefox requires the explicitly provisioned public test certificate.");
                 }
                 await ImportAsync(["-N", "-d", "sql:" + session.profile, "--empty-password"]);
-                await ImportAsync(["-A", "-d", "sql:" + session.profile, "-n", "identityplatform-development", "-t", "P,,", "-i", certificate]);
+                // Firefox certverifier requires an explicit trust anchor; peer trust alone is not honored.
+                // This exact synthetic leaf is trusted only inside this disposable private profile.
+                await ImportAsync(["-A", "-d", "sql:" + session.profile, "-n", "identityplatform-development", "-t", "C,,", "-i", certificate]);
                 session.Context = await session.playwright.Firefox.LaunchPersistentContextAsync(session.profile, new()
                 {
+                    Headless = true,
                     ViewportSize = new()
                     {
                         Width = width,
@@ -69,6 +73,7 @@ internal sealed class BrowserSession : IAsyncDisposable
             }
             session.Context.SetDefaultTimeout(15_000);
             session.Context.SetDefaultNavigationTimeout(20_000);
+            BrowserEvidence.Mark(BrowserPhase.Ready);
             return session;
         }
         catch

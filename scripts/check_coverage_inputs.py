@@ -4,11 +4,18 @@ import json
 from pathlib import Path
 import sys
 
-root = Path(sys.argv[1])
-matrix = json.loads(sys.argv[2])
-labels = ['unit', 'PostgreSql', 'SqlServer'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
-for label in labels:
-    report = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
-    if not report.is_file() or report.stat().st_size == 0:
-        raise SystemExit('Missing required coverage input: ' + label)
-print(f'All {len(labels)} required coverage inputs exist.')
+
+def require_inputs(root, matrix):
+    labels = ['unit', 'PostgreSql', 'SqlServer'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
+    if len(labels) != len(set(labels)):
+        raise ValueError('Duplicate required coverage cell')
+    for label in labels:
+        report = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
+        if not report.is_file() or report.stat().st_size == 0:
+            raise ValueError('Missing required coverage input: ' + label)
+    return len(labels)
+
+
+if __name__ == '__main__':
+    count = require_inputs(Path(sys.argv[1]), json.loads(sys.argv[2]))
+    print(f'All {count} required coverage inputs exist.')

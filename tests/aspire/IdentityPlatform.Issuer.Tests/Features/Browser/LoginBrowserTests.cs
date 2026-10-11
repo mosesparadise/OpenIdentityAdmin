@@ -33,7 +33,9 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             await using var session = await BrowserSession.CreateAsync();
             var context = session.Context;
             var page = await context.NewPageAsync();
+            BrowserEvidence.Mark(BrowserPhase.TrustedIssuer);
             Assert.Equal(200, (await page.GotoAsync(new Uri(environment.Issuer, "/alive").AbsoluteUri))!.Status);
+            BrowserEvidence.Mark(BrowserPhase.TrustedRelyingParty);
             Assert.Equal(200, (await page.GotoAsync(new Uri(environment.RelyingParty.BaseUri, "/alive").AbsoluteUri))!.Status);
             using var key = RSA.Create(2048);
             var request = new CertificateRequest("CN=identityplatform-untrusted-test", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
@@ -46,11 +48,13 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             using var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
             await using var untrusted = new TestRelyingParty { ClientSecret = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)) };
             await untrusted.StartAsync(TestContext.Current.CancellationToken, certificate);
+            BrowserEvidence.Mark(BrowserPhase.UntrustedCertificate);
             var error = await Assert.ThrowsAsync<PlaywrightException>(() => page.GotoAsync(new Uri(untrusted.BaseUri, "/alive").AbsoluteUri));
             var certificateFailure = BrowserSession.Engine switch
             {
                 "chromium" => error.Message.Contains("ERR_CERT_AUTHORITY_INVALID", StringComparison.Ordinal),
-                "firefox" => error.Message.Contains("SEC_ERROR_UNKNOWN_ISSUER", StringComparison.Ordinal),
+                "firefox" => error.Message.Contains("SEC_ERROR_UNKNOWN_ISSUER", StringComparison.Ordinal) ||
+                    error.Message.Contains("MOZILLA_PKIX_ERROR_SELF_SIGNED_CERT", StringComparison.Ordinal),
                 "webkit" => error.Message.Contains("Unacceptable TLS certificate", StringComparison.Ordinal),
                 _ => false
             };

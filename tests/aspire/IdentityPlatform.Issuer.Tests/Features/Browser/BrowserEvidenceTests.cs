@@ -20,6 +20,14 @@ public sealed class BrowserEvidenceTests
             Assert.True(!safe!.ToString().Contains(sentinel, StringComparison.Ordinal), "Sensitive browser diagnostic reached test evidence.");
             Assert.True(safe.InnerException is null, "Original browser diagnostics must not survive as an inner exception.");
         }
+        var phased = await Record.ExceptionAsync(() => BrowserEvidence.RunAsync(async () =>
+        {
+            await Task.Yield();
+            BrowserEvidence.Mark(BrowserPhase.TrustedIssuer);
+            throw new PlaywrightException(sentinel);
+        }));
+        Assert.True(phased is Xunit.Sdk.XunitException && phased.Message.Contains("TrustedIssuer", StringComparison.Ordinal) &&
+            !phased.ToString().Contains(sentinel, StringComparison.Ordinal), "Async browser phase diagnostics must remain accurate and secret-safe.");
         var assertion = new Xunit.Sdk.XunitException("Expected invariant failure");
         var preserved = await Assert.ThrowsAsync<Xunit.Sdk.XunitException>(() => BrowserEvidence.RunAsync(() => Task.FromException(assertion)));
         Assert.Same(assertion, preserved);

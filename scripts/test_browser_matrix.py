@@ -5,6 +5,7 @@ import unittest
 from unittest.mock import patch
 from browser_matrix import select, changed_paths
 from test_selection import catalogue, require_partition, require_execution_names
+from check_coverage_inputs import require_inputs
 
 
 class BrowserMatrixTests(unittest.TestCase):
@@ -54,6 +55,28 @@ class BrowserMatrixTests(unittest.TestCase):
                 catalogue(json.dumps({'schemaVersion': 1, 'tests': rows}))
         with self.assertRaises(ValueError):
             catalogue('invalid')
+
+    def test_coverage_requires_each_selected_report_and_rejects_empty_or_duplicate_cells(self):
+        matrix = select('schedule', [])
+        labels = ['unit', 'PostgreSql', 'SqlServer'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for label in labels:
+                path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
+                path.parent.mkdir(parents=True)
+                path.write_text('<coverage/>')
+            self.assertEqual(9, require_inputs(root, matrix))
+            for label in labels:
+                path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
+                path.unlink()
+                with self.assertRaises(ValueError):
+                    require_inputs(root, matrix)
+                path.touch()
+                with self.assertRaises(ValueError):
+                    require_inputs(root, matrix)
+                path.write_text('<coverage/>')
+            with self.assertRaises(ValueError):
+                require_inputs(root, {'include': matrix['include'] + [matrix['include'][0]]})
 
     def test_execution_rejects_equal_count_wrong_identity_and_duplicates(self):
         with tempfile.TemporaryDirectory() as root:
