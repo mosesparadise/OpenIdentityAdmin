@@ -28,7 +28,7 @@ Chromium × PostgreSQL/SQL Server is required on every PR and main push. Firefox
 - [x] BR-02 Implement browser selection/trust controls and strict test/CI partition with regression checks.
 - [x] BR-03 Implement meaningful error, theme, terminal recovery, freshness and browser-boundary journeys on both providers.
 - [x] BR-04 Inspect and approve every new canonical baseline; retain accessibility/manual limits.
-- [x] BR-05 Pass static, assurance, supply-chain, unit, HTTP providers, six selected browser cells and combined coverage with zero skips; correct independent and GitHub findings.
+- [ ] BR-05 Pass static, assurance, supply-chain, unit, HTTP providers, six selected browser cells and combined coverage with zero skips; correct independent and GitHub findings.
 - [ ] BR-06 Record exact source evidence, publish a Conventional Commit PR and squash its verified final head before T028.
 
 No automated result constitutes complete WCAG conformance or password-manager/screen-reader acceptance. Qualified manual review, external certification and T030 concurrent interaction capacity remain explicit obligations. Local browser downloads are blocked by the managed network policy; CI execution and retained artifact inspection provide browser evidence without bypassing that policy.
@@ -54,3 +54,5 @@ If the browser continuity assertion confirms replacement, explicitly use Lax for
 At `b268c9c`, [run 38100113749](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38100113749) passed all 23 cases in each of the six browser/provider cells, with zero skips. This includes genuine RP link initiation, preserved pending-form antiforgery cookies, both original submissions, native denial of a cross-site POST carrying the exact copied valid token, and untouched-form recovery. The existing TLS, visual, accessibility, theme, freshness, storage and no-JavaScript cases also passed. The slowest browser invocation was SQL Server Firefox at 3m 47.039s, below the unchanged 660-second limit. Source reviews have no open findings. Full HTTP/coverage and final-head merge checks remain pending at this checkpoint.
 
 Full corrected-source acceptance subsequently passed all 14 checks and 743 .NET cases, zero skips, in the same run, including both HTTP providers and all nine coverage floors. See the [completed checkpoint](verification.md#t027-completed-source-checkpoint). BR-06 retains the final-head/merge obligation; completion documentation receives its own CI before squash.
+
+Final-head follow-up: `82f2cd2` failed one PostgreSQL/WebKit dark/1280 error-page axe color-contrast check while the other five browser cells passed. BR-05/T027 are reopened. Add a typed, fixed-selector/hex-color/numeric-ratio diagnostic with a secrecy canary; preserve the original scan and capture the empty form only on failure. Twenty consecutive error-page scans fail on the first violation, with no retry or rule exclusion. This is diagnostic evidence, not a confirmed fix.

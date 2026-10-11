@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using Deque.AxeCore.Playwright;
 using IdentityPlatform.Issuer.Tests.Fixtures;
 using IdentityPlatform.Testing;
 using Microsoft.Playwright;
@@ -167,8 +166,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             }).SelectOptionAsync(theme);
             Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
             Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-            var axe = await page.RunAxe();
-            Assert.Empty(axe.Violations.Select(value => value.Id));
+            await BrowserAccessibility.RequireNoViolationsAsync(page);
             await BrowserVisuals.CaptureAsync(page, $"login-{theme}-{width}");
             var keys = await page.EvaluateAsync<string[]>("Object.keys(localStorage)");
             Assert.True(keys.Length == 1 && keys[0] == "identity-theme", "Browser storage must contain only the theme preference.");
@@ -178,10 +176,15 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
             await page.Locator("#password").FillAsync("synthetic-invalid-password");
             await page.Locator("#submit").ClickAsync();
             await RequireGenericErrorAsync(page);
+            Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
             await page.Locator("#username").FillAsync("");
             await page.Locator("#error-summary").FocusAsync();
             Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-            Assert.Empty((await page.RunAxe()).Violations.Select(value => value.Id));
+            // Diagnose intermittent engine findings without retrying or accepting a failed scan.
+            for (var scan = 0; scan < 20; scan++)
+            {
+                await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+            }
             await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
             if (width == 1280)
             {

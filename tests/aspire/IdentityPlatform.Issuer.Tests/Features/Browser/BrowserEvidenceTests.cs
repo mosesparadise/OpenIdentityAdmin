@@ -1,4 +1,6 @@
+using Deque.AxeCore.Commons;
 using Microsoft.Playwright;
+using Newtonsoft.Json.Linq;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Browser;
 
@@ -33,6 +35,17 @@ public sealed class BrowserEvidenceTests
         }));
         Assert.True(phased is Xunit.Sdk.XunitException && phased.Message.Contains("TrustedIssuer", StringComparison.Ordinal) &&
             !phased.ToString().Contains(sentinel, StringComparison.Ordinal), "Async browser phase diagnostics must remain accurate and secret-safe.");
+        var axeEvidence = BrowserAccessibility.Describe(new AxeResult(JObject.FromObject(new
+        {
+            violations = new[] { new { id = "color-contrast", nodes = new[] { new
+            {
+                html = sentinel, target = new[] { "#submit", sentinel },
+                any = new[] { new { data = new { fgColor = "#ffffff", bgColor = sentinel, contrastRatio = 2.5, message = sentinel } } }
+            } } } }
+        })));
+        Assert.True(axeEvidence.Contains("color-contrast: #submit/other element", StringComparison.Ordinal) &&
+            axeEvidence.Contains("foreground=#ffffff, background=unknown, contrast=2.5", StringComparison.Ordinal) &&
+            !axeEvidence.Contains(sentinel, StringComparison.Ordinal), "Accessibility diagnostics must retain only fixed targets and numeric/color facts.");
         var assertion = new Xunit.Sdk.XunitException("Expected invariant failure");
         var preserved = await Assert.ThrowsAsync<Xunit.Sdk.XunitException>(() => BrowserEvidence.RunAsync(() => Task.FromException(assertion)));
         Assert.Same(assertion, preserved);

@@ -1,4 +1,3 @@
-using Deque.AxeCore.Playwright;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
@@ -137,7 +136,7 @@ public sealed class BrowserAcceptanceTests(IssuerFixture fixture)
             Assert.Equal(0, await page.Locator("form").CountAsync());
             Assert.True(expired.Code.Length == 0, "Expired interaction issued a code.");
             Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-            Assert.Empty((await page.RunAxe()).Violations.Select(value => value.Id));
+            await BrowserAccessibility.RequireNoViolationsAsync(page);
             await BrowserVisuals.CaptureAsync(page, $"unavailable-{theme}-{width}");
             var fresh = environment.RelyingParty.Prepare(exchange: true);
             await page.GotoAsync(environment.RelyingParty.StartUri(fresh).AbsoluteUri);
