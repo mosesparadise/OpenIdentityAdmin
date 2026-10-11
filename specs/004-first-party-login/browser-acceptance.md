@@ -2,6 +2,18 @@
 
 **Current status:** T027 remains unresolved and release-blocking. SQL Server/WebKit reproduced the dark/1280 contrast finding on PR #11 head `7b6b936` in run 38129076793, expiring A-002 before T028 merged. T028 acceptance and PR #11 merge are blocked. See the [captured recurrence and investigation limits](verification.md#a-002-expiry-and-captured-contrast-recurrence). Earlier approved-sequence entries below are historical.
 
+## Authorized recurrence investigation
+
+The user accepted the recommendation to resolve the finding before PR #11 merges, without another sequencing exception. The callback observer correction has since passed all 16 checks and 769 ordinary cases, with zero skips, in [run 38131012339](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38131012339) at `97360e9`. That green run does not dispose of the earlier contrast finding.
+
+Before changing product CSS or scanner behavior, extend failure-only evidence with fixed body/root color classifications, semantic token values, stylesheet availability and body-rule markers, inline override flags, base-style markers and document visibility/identity. Read colors before geometry/CSSOM inspection; preserve the original axe result if diagnostics fail. Do not retain HTML, CSS text, URLs, arbitrary selectors or exception messages. An unavailable stylesheet inspection is distinct from an absent rule; unsupported color serialization is distinct from transparency; a rule's presence does not prove application. This later snapshot does not prove the earlier scan's state.
+
+Use the actual embedded theme/login assets in a synthetic empty-page browser control. Compare healthy dark styling, removal of only the body rule, and an inline body override; prove diagnostic redaction with malformed/canary values. Keep the original 100 fresh-context WebKit journeys, scan order, all axe rules, fatal first finding and existing deadlines. The controls diagnose observation quality rather than claiming to reproduce the historical defect. Independent test and UX design reviews support this bounded plan. No specification/constitution conflict or missing requirement mapping was found for this extension of LOGIN-007/009 and T027; A-002's expired gate remains in force.
+
+Pinned source inspection found no intentional body-color reset in axe. The .NET wrapper collects target partial results before creating a separate 1×1 page to finish the report. A previous scan's page/context lifecycle is an unproven engine-state candidate; the current report's finishing page cannot explain its already-collected colors. Do not infer a scanner defect or introduce delays, exclusions or speculative color changes from that observation.
+
+Further pinned Playwright 1.63 inspection identified a concrete observation limit: WebKit screenshot preparation deliberately inserts `body {}`, reads root geometry and removes that stylesheet to synchronize animations. Capture the same safe tuple after the existing failure screenshot and explicitly label it as later state. Preserve the original failed result even if this known style/layout invalidation is followed by corrected colors. A seeded control must prove that a diagnostic callback changing contrast cannot convert the original failed scan into a pass. This establishes an investigation boundary, not the defect's cause or a proposed workaround.
+
 The user authorized T026–T028 sequentially, each with a reviewed, corrected and squash-merged PR. T026 merged in PR #9 as `7d1a9bc`; this increment completes only T027 under approved LOGIN-003/004/007/009, SC-004 and the existing browser cadence. Requirements checklist remains 7/7. T028–T030 and manual/external acceptance stay open.
 
 ## Execution design before implementation

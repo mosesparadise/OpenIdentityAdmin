@@ -61,6 +61,38 @@ public sealed class BrowserEvidenceTests
         }));
         Assert.True(styleEvidence.Contains("#submit: color=#ffffff, fill=unknown, background=#000000", StringComparison.Ordinal) &&
             !styleEvidence.Contains(sentinel, StringComparison.Ordinal), "Computed-style diagnostics must exclude arbitrary values.");
+        var canvasEvidence = BrowserStyleEvidence.Describe(System.Text.Json.JsonSerializer.SerializeToElement(new
+        {
+            bodyBackgroundKind = "transparent",
+            rootBackgroundKind = "unsupported",
+            pageToken = "#020617",
+            textToken = sentinel,
+            bodyScheme = sentinel,
+            stylesheet = "unavailable",
+            bodyRule = sentinel,
+            sheetDisabled = 1,
+            inlineOverride = false,
+            ready = sentinel,
+            theme = sentinel,
+            bodyConnected = true,
+            cssText = sentinel,
+            url = sentinel
+        }));
+        Assert.True(canvasEvidence.Contains("body-background-kind=transparent, root-background-kind=unsupported, page-token=#020617, text-token=unknown", StringComparison.Ordinal) &&
+            canvasEvidence.Contains("stylesheet=unavailable, sheet-disabled=unknown, body-rule=unknown", StringComparison.Ordinal) &&
+            canvasEvidence.Contains("inline-override=false", StringComparison.Ordinal) && !canvasEvidence.Contains(sentinel, StringComparison.Ordinal),
+            "Canvas diagnostics must distinguish unknown values and unavailable CSSOM without retaining arbitrary data.");
+        Assert.Equal("; canvas evidence unavailable", BrowserStyleEvidence.Describe(System.Text.Json.JsonSerializer.SerializeToElement(sentinel)));
+        foreach (var malformed in new object[] { sentinel, new { }, new { styles = sentinel, canvas = sentinel }, new { styles = Array.Empty<object>() } })
+        {
+            Assert.Equal("; style snapshot unavailable", BrowserAccessibility.DescribeSnapshot(System.Text.Json.JsonSerializer.SerializeToElement(malformed)));
+        }
+        var malformedNodes = BrowserAccessibility.DescribeSnapshot(System.Text.Json.JsonSerializer.SerializeToElement(new
+        {
+            styles = new object?[] { null, sentinel, new { index = sentinel } },
+            canvas = sentinel
+        }));
+        Assert.Equal("; computed styles: ; canvas evidence unavailable", malformedNodes);
         var assertion = new Xunit.Sdk.XunitException("Expected invariant failure");
         var preserved = await Assert.ThrowsAsync<Xunit.Sdk.XunitException>(() => BrowserEvidence.RunAsync(() => Task.FromException(assertion)));
         Assert.Same(assertion, preserved);
@@ -155,11 +187,14 @@ public sealed class BrowserEvidenceTests
             await using var session = await BrowserSession.CreateAsync();
             var page = await session.Context.NewPageAsync();
             await page.SetContentAsync("<!doctype html><html lang='en'><head><title>Contrast control</title></head><body><main><h1>Contrast control</h1><p id='contrast-probe' style='color:#aaaaaa;background:#ffffff'>Synthetic contrast control</p></main></body></html>");
-            var contrast = await Assert.ThrowsAnyAsync<Xunit.Sdk.XunitException>(() => BrowserAccessibility.RequireNoViolationsAsync(page));
+            // Simulate a later diagnostic changing styles: it must never turn the original failed scan into a pass.
+            var contrast = await Assert.ThrowsAnyAsync<Xunit.Sdk.XunitException>(() => BrowserAccessibility.RequireNoViolationsAsync(page,
+                () => page.Locator("#contrast-probe").EvaluateAsync("element => element.style.color = '#000000'")));
             Assert.True(contrast.Message.Contains("color-contrast: #contrast-probe", StringComparison.Ordinal) &&
-                contrast.Message.Contains("foreground=#aaaaaa, background=#ffffff", StringComparison.Ordinal),
+                contrast.Message.Contains("foreground=#aaaaaa, background=#ffffff", StringComparison.Ordinal) &&
+                contrast.Message.Contains("after diagnostic capture (later state)", StringComparison.Ordinal) &&
+                contrast.Message.Contains("#contrast-probe: color=#000000", StringComparison.Ordinal),
                 "The actual axe scan must detect the seeded contrast fault and preserve its safe color evidence.");
-            await page.Locator("#contrast-probe").EvaluateAsync("element => element.style.color = '#000000'");
             await BrowserAccessibility.RequireNoViolationsAsync(page);
         });
     }

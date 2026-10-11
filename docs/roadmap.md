@@ -4,6 +4,8 @@ This is the living view of **all approved work**, as of 11 October 2026. It supp
 
 **Current merged capability (`main`):** native persistence, both-provider migrations and default health-only Aspire hosts, strict xUnit v3/MTP/coverage/supply-chain gates, AI instructions, durable issuer credentials/encrypted Data Protection, and an explicitly enabled **Development-only first-party login/code-S256 pilot**. Full pilot acceptance is still in progress; production administration, Admin BFF/React and management APIs are not implemented.
 
+**Active work:** [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) is open. Its callback correction passed all 16 checks/769 tests at `97360e9`, but the earlier WebKit contrast recurrence keeps T027 unresolved and blocks merge under expired A-002. The user authorized the [focused contrast investigation](../specs/004-first-party-login/browser-acceptance.md#authorized-recurrence-investigation); failure-only CSS diagnostics and controlled observation tests are being verified. T028 final acceptance and T029/T030 remain pending. A green rerun alone does not resolve the finding.
+
 Milestone numbers below come from the approved product roadmap. Local Spec Kit feature numbers are increments: `001-platform-foundation` and `002-issuer-foundation` both contribute to **milestone 001**. They do not complete milestones 001 and 002.
 
 ## Status, ownership and evidence
