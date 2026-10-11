@@ -12,7 +12,7 @@ internal sealed class ContrastExperimentPage
     internal int Posts => posts;
     internal int UnexpectedRequests => unexpectedRequests;
 
-    internal async Task AttachAsync(IPage page)
+    internal async Task AttachAsync(IPage page, bool ownedTokens = false)
     {
         foreach (var name in new[] { "tokens.css", "login.css", "theme.js", "login.js" })
         {
@@ -20,6 +20,10 @@ internal sealed class ContrastExperimentPage
                 ?? throw new InvalidOperationException("The experiment requires the shipped account assets.");
             using var reader = new StreamReader(stream);
             assets["/assets/" + name] = await reader.ReadToEndAsync(TestContext.Current.CancellationToken);
+        }
+        if (ownedTokens)
+        {
+            assets["/assets/tokens.css"] = OwnTokens(assets["/assets/tokens.css"]);
         }
         await page.RouteAsync("**/*", async route =>
         {
@@ -56,6 +60,22 @@ internal sealed class ContrastExperimentPage
                 await route.AbortAsync();
             }
         });
+    }
+
+    internal static string OwnTokens(string css)
+    {
+        // Diagnostic asset only; the stylesheet declarations and scripts are unchanged.
+        foreach (var (before, after) in new[]
+        {
+            (":root {", ":root, body {"),
+            (":root:not([data-theme=\"light\"]) {", ":root:not([data-theme=\"light\"]), :root:not([data-theme=\"light\"]) body {"),
+            (":root[data-theme=\"dark\"] {", ":root[data-theme=\"dark\"], :root[data-theme=\"dark\"] body {")
+        })
+        {
+            Assert.True(css.Split(before, StringSplitOptions.None).Length == 2, "Token ownership experiment requires each reviewed selector exactly once.");
+            css = css.Replace(before, after, StringComparison.Ordinal);
+        }
+        return css;
     }
 
     // Fixed synthetic layout: no issuer/cookie/token/antiforgery data. Asset bytes and script order are shipped unchanged.

@@ -23,6 +23,10 @@ internal static class BrowserStyleEvidence
             "body-color=" + Color(state, "bodyColor"), "body-background=" + Color(state, "bodyBackground"),
             "body-scheme=" + Category(state, "bodyScheme", "light", "dark", "light dark", "normal"),
             "root-scheme=" + Category(state, "rootScheme", "light", "dark", "light dark", "normal"),
+            "theme-page-token=" + Color(state, "themePageToken"), "theme-control-page-token=" + Color(state, "themeControlPageToken"),
+            "theme-scheme=" + Category(state, "themeScheme", "light", "dark", "light dark", "normal"),
+            "theme-control-scheme=" + Category(state, "themeControlScheme", "light", "dark", "light dark", "normal"),
+            "theme-font-applied=" + Flag(state, "themeFontApplied"), "theme-control-font-applied=" + Flag(state, "themeControlFontApplied"),
             "theme=" + Category(state, "theme", "light", "dark", "system"),
             "ready=" + Category(state, "ready", "loading", "interactive", "complete"),
             "visibility=" + Category(state, "visibility", "visible", "hidden"),
@@ -76,12 +80,18 @@ internal static class BrowserStyleEvidence
             });
             const body = document.body, root = document.documentElement;
             const bodyStyle = getComputedStyle(body), rootStyle = getComputedStyle(root);
+            const theme = document.getElementById('theme'), themeControl = document.getElementById('theme-control');
+            const themeStyle = theme ? getComputedStyle(theme) : null, themeControlStyle = themeControl ? getComputedStyle(themeControl) : null;
             const canvas = {
                 bodyBackgroundKind: color(bodyStyle.backgroundColor).kind, rootBackgroundKind: color(rootStyle.backgroundColor).kind,
                 pageToken: bodyStyle.getPropertyValue('--page').trim(), textToken: bodyStyle.getPropertyValue('--text').trim(),
                 rootPageToken: rootStyle.getPropertyValue('--page').trim(), rootTextToken: rootStyle.getPropertyValue('--text').trim(),
                 bodyColor: color(bodyStyle.color).hex, bodyBackground: color(bodyStyle.backgroundColor).hex,
                 bodyScheme: bodyStyle.colorScheme, rootScheme: rootStyle.colorScheme,
+                themePageToken: themeStyle?.getPropertyValue('--page').trim(), themeControlPageToken: themeControlStyle?.getPropertyValue('--page').trim(),
+                themeScheme: themeStyle?.colorScheme, themeControlScheme: themeControlStyle?.colorScheme,
+                themeFontApplied: themeStyle?.fontFamily.split(',')[0].trim() === 'Inter',
+                themeControlFontApplied: themeControlStyle?.fontFamily.split(',')[0].trim() === 'Inter',
                 theme: root.getAttribute('data-theme') ?? 'system', ready: document.readyState,
                 visibility: document.visibilityState, focus: document.hasFocus(),
                 bodyConnected: body.isConnected && body.ownerDocument === document && root.contains(body),

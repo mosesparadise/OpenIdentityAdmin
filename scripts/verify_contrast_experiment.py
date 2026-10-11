@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TEST = 'IdentityPlatform.Issuer.Tests.Features.Browser.ContrastBoundaryTests.Synthetic_error_page_observations_isolate_navigation_target_scan_and_finishing_page'
 EXPRESSION = f'Provider=PostgreSql&FullyQualifiedName={TEST}'
 SAMPLES = 20
-MARKER = f'CONTRAST_BOUNDARIES_COMPLETE samples={SAMPLES} arms=3 contexts={SAMPLES * 3} findings=0'
+MARKER = f'CONTRAST_BOUNDARIES_COMPLETE samples={SAMPLES} arms=2 contexts={SAMPLES * 2} findings=0'
 
 
 def require_selection(all_tests, selected):
@@ -38,7 +38,7 @@ def require_completion(report):
     lines = [line.strip() for node in outputs for line in (node.text or '').splitlines()]
     if lines.count(MARKER) != 1:
         raise ValueError('Focused contrast evidence lacks the complete bounded cohort')
-    arms = ('NoScan', 'TargetPartial', 'FullWrapper')
+    arms = ('FullWrapper', 'OwnedWrapper')
     expected = {f'Boundary sample {sample}/{SAMPLES}: {arm} observed finding=false' for sample in range(1, SAMPLES + 1) for arm in arms}
     actual = [line for line in lines if line.startswith('Boundary sample ') and ' observed finding=' in line]
     if len(actual) != len(expected) or set(actual) != expected:
@@ -92,7 +92,7 @@ def main():
     report.unlink(missing_ok=True)
     project = ROOT / 'tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj'
     environment = os.environ.copy()
-    environment.update(IDENTITY_TEST_BROWSER='webkit', IDENTITY_CONTRAST_SAMPLES=str(SAMPLES),
+    environment.update(IDENTITY_TEST_BROWSER='webkit', IDENTITY_CONTRAST_SAMPLES=str(SAMPLES), IDENTITY_CONTRAST_OWNERSHIP_COMPARISON='enabled',
                        TESTINGPLATFORM_TELEMETRY_OPTOUT='1', IDENTITY_TEST_ARTIFACTS=str(results))
     discovery = ['dotnet', 'run', '--project', str(project), '--no-build', '--no-restore', '--',
                  '--pre-enumerate-theories', 'on', '--list-tests', 'json']
@@ -110,7 +110,7 @@ def main():
     require_complete_trx(report, expected_count=1)
     require_execution_names(report, selected)
     require_completion(report)
-    print(f'Focused WebKit boundary cohort complete: {SAMPLES} samples per arm, 3 arms, {SAMPLES * 3} fresh sessions, zero findings; no provider/coverage claim', flush=True)
+    print(f'Focused WebKit ownership cohort complete: {SAMPLES} samples per arm, 2 arms, {SAMPLES * 2} fresh sessions, zero findings; no provider/coverage claim', flush=True)
 
 
 if __name__ == '__main__':

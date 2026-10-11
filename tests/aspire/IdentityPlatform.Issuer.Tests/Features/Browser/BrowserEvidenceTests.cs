@@ -123,6 +123,17 @@ public sealed class BrowserEvidenceTests
         Assert.Equal(1, ContrastExperimentTests.ParseSamples(null));
         Assert.Equal(1, ContrastExperimentTests.ParseSamples("1"));
         Assert.Equal(40, ContrastExperimentTests.ParseSamples("40"));
+        Assert.False(ContrastBoundaryTests.UseOwnershipComparison(null));
+        Assert.True(ContrastBoundaryTests.UseOwnershipComparison("enabled"));
+        Assert.Equal("Unknown contrast ownership experiment mode.", Assert.Throws<InvalidOperationException>(
+            () => ContrastBoundaryTests.UseOwnershipComparison(sentinel)).Message);
+        const string selectors = ":root { --page: #f8fafc; } :root:not([data-theme=\"light\"]) { --page: #020617; } :root[data-theme=\"dark\"] { --page: #020617; }";
+        var owned = ContrastExperimentPage.OwnTokens(selectors);
+        Assert.Equal(":root, body { --page: #f8fafc; } :root:not([data-theme=\"light\"]), :root:not([data-theme=\"light\"]) body { --page: #020617; } :root[data-theme=\"dark\"], :root[data-theme=\"dark\"] body { --page: #020617; }", owned);
+        foreach (var drift in new[] { sentinel, selectors + selectors, owned })
+        {
+            await Assert.ThrowsAnyAsync<Xunit.Sdk.XunitException>(() => Task.FromResult(ContrastExperimentPage.OwnTokens(drift)));
+        }
         foreach (var invalid in new[] { "", "0", "41", "-1", "1.0", " 1", "+1", sentinel })
         {
             var rejected = Assert.Throws<InvalidOperationException>(() => ContrastExperimentTests.ParseSamples(invalid));

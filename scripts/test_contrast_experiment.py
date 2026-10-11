@@ -23,7 +23,7 @@ class ContrastExperimentEvidenceTests(unittest.TestCase):
             require_selection(other, other)
 
     def test_complete_cohort_and_marker_are_both_required(self):
-        arms = ('NoScan', 'TargetPartial', 'FullWrapper')
+        arms = ('FullWrapper', 'OwnedWrapper')
         lines = [f'Boundary sample {sample}/{SAMPLES}: {arm} observed finding=false' for sample in range(1, SAMPLES + 1) for arm in arms]
         with tempfile.TemporaryDirectory() as directory:
             report = Path(directory) / 'contrast.trx'
@@ -36,7 +36,7 @@ class ContrastExperimentEvidenceTests(unittest.TestCase):
 
             check(lines + [MARKER])
             for invalid in ([], lines, lines[:-1] + [MARKER], lines + [MARKER, MARKER],
-                            lines[:-1] + [lines[0], MARKER], lines + ['Boundary sample 21/20: NoScan observed finding=false', MARKER],
+                            lines[:-1] + [lines[0], MARKER], lines + ['Boundary sample 21/20: FullWrapper observed finding=false', MARKER],
                             [lines[0].replace('finding=false', 'finding=true')] + lines[1:] + [MARKER],
                             lines + [MARKER.replace('findings=0', 'findings=1')]):
                 with self.assertRaises(ValueError):
