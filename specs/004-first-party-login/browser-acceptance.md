@@ -1,6 +1,6 @@
 # T027 — Browser and theme acceptance
 
-**Current status:** T027 is accepted and merged with the reproduced theme inheritance correction in PR #11 (`bdd45e5`). PR #12 subsequently reverified all six browser cells and the separate 60-observation regression while completing T030. The [current acceptance matrix](acceptance-matrix.md) records counts, versions and remaining T032/manual obligations. A-002 remains expired; closure used its reproduced-defect criteria. The earlier plan and checkpoint entries below are historical, including their then-open T030 references. Full pilot/manual/external acceptance remains separate.
+**Current status:** T027 is accepted and merged with the reproduced theme inheritance correction in PR #11 (`bdd45e5`). PR #12 subsequently reverified all six browser cells and the separate 60-observation regression while completing T030. The [current acceptance matrix](acceptance-matrix.md) records counts, versions and remaining manual/product obligations. A-002 remains expired; closure used its reproduced-defect criteria. The earlier plan and checkpoint entries below are historical, including their then-open T030 references. Full pilot/manual/external acceptance remains separate.
 
 ## Authorized recurrence investigation
 

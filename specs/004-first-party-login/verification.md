@@ -4,9 +4,9 @@ Status: merged Development-pilot implementation with bounded automated evidence;
 
 ## Current delivery checkpoint — 11 October 2026
 
-T023–T030 are merged, including T029/PR #13 (`237afa5`). PR #11 (`bdd45e5`) corrected the reproduced WebKit theme inheritance defect; A-002 remains expired. T031 has verified source acceptance and closes bounded T018 transport work. Corrected source `b7e6332b45a26713be168519d1ce12be48f39efa` passed all 17 checks and 943 ordinary cases with zero failures/skips in [run 38158500106](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38158500106). Final documentation-head checks and normal squash delivery are recorded on [PR #14](https://github.com/mosesparadise/OpenIdentityAdmin/pull/14); this source checkpoint does not claim its own future merge. See the [current evidence matrix](acceptance-matrix.md#t031-verified-source-checkpoint) for partitions, coverage, versions and review limits.
+T032 source `8b8f12ac6095593b392738eb5592a3255ffe3a6d` passed all 17 checks and 1,017 ordinary cases with zero failures/skips in [run 38162030027](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38162030027). Final documentation-head verification and normal squash delivery are recorded on [PR #15](https://github.com/mosesparadise/OpenIdentityAdmin/pull/15); this source checkpoint does not claim its own future merge.
 
-T031 reproduced three conflicting-identity issuance cases and two malformed-media server errors on each provider before adding native extraction guards. Both-provider before/after details are in [transport-acceptance.md](transport-acceptance.md). Its 98 added provider cases do not substitute for T032 authorization-time state changes. T021, qualified manual UI acceptance and full M01-D remain open. M01-E restart/two-instance/key overlap, M01-F management contracts/API docs, BFF/React and broader R1 work remain unbuilt. All 345 ASVS controls remain unassessed; A-001 retains actual certification as a public-release gate.
+All 74 new provider cases passed. PostgreSQL issuer 445.764s; SQL Server 577.695s. The [current matrix](acceptance-matrix.md#t032-verified-source-checkpoint) records counts, coverage, source/tree evidence and scope. T021/full M01-D, qualified manual password-manager/screen-reader/accessibility and timed usability, M01-E/M01-F, Admin BFF/React and the wider R1 product remain open. A-001 retains actual certification as a public-release gate; all 345 ASVS controls remain pending/not_assessed.
 
 ## Historical evidence
 
@@ -537,3 +537,24 @@ The corrected exact-shape implementation at `3d8fbfc` passed the one-case real S
 Corrected source `b7e6332b45a26713be168519d1ce12be48f39efa` passed all 17 checks and 943 ordinary cases with zero failures/skips in [run 38158500106](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38158500106). Final documentation-head checks and normal squash delivery are recorded on [PR #14](https://github.com/mosesparadise/OpenIdentityAdmin/pull/14); this source checkpoint does not claim its own future merge. Before-fix run 38157375368 on `c65c684` executed all 255 issuer cases per provider: 250 passed, the same five demonstrated defects failed, no skipped/aborted cases. New transport subset: 44/49 before, 49/49 after. PostgreSQL baseline issuer duration 403.799s; SQL Server 566.974s. Local corrected PostgreSQL passed all 263 provider cases and all 243 unit/architecture cases, zero skips; local issuer duration 449.668s.
 
 The guards preserve native parameter multiplicity/ordinal equality around Basic decoding and reject malformed form-prefix media before native parsing. They retain library response/crypto ownership. Initial test-source findings (credential canaries, response disposal, navigation allowlists, cookie attributes and listener isolation) and an import-order diagnostic were corrected. Independent architecture/security/test reviews pass; documentation review confirms T018's after-code scope closes while T032's authorization-time scope remains open. Exact source/merge identity, final checks and delivery are recorded on PR #14. No timeout, rate, coverage, TLS or certification exception was introduced.
+
+
+## T032 verified source checkpoint
+
+T032 source `8b8f12ac6095593b392738eb5592a3255ffe3a6d` passed all 17 checks and 1,017 ordinary cases with zero failures/skips in [run 38162030027](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38162030027). Final documentation-head verification and normal squash delivery are recorded on [PR #15](https://github.com/mosesparadise/OpenIdentityAdmin/pull/15); this source checkpoint does not claim its own future merge.
+
+Source `8b8f12ac6095593b392738eb5592a3255ffe3a6d` and tested merge `e90740b124b1418313a16cb44a2a1f51c445f878` share tree `e9f148e7f780e3d198cba34f98e4a52807f01e31`.
+
+The 37 new cases per provider cross eight representative committed restrictions with new ordinary, new silent, pending cached silent and completed fresh-login authorization. Four unchanged-state controls and a distinct current eligible subject's genuine cookie prove success and completed-subject isolation. Denials preserve existing issuance/session/interaction/audit state; ordinary reauthentication renders the actual protected form. Every restriction case restores shared metadata and completes a fresh independently validated login/exchange. Case-owned revoked/expired sessions remain terminal. No production code changed.
+
+| Ordinary partition | Passing cases | Scope |
+| --- | ---: | --- |
+| Unit/architecture | 243 | Core25, Host204, Architecture5, AppHost9 |
+| PostgreSQL | 300 | Persistence4, Aspire4, HTTP issuer292, including37 T032 |
+| SQL Server | 300 | Same required partition |
+| Chromium, Firefox, WebKit × both providers | 174 | 29 in each of six cells |
+| **Total** | **1,017** | **Zero failures/skips/incomplete cases** |
+
+Separate from that count: 60 focused WebKit observations; seven passing baseline, seven demonstrated behavioral mutation kills and seven restored passes per provider. All nine unchanged 90% line/80% branch coverage floors passed. AuthServer 96.0%/97.6%, Infrastructure 99.1%/100%, Migrator 98.2%/100%, AppHost 98.8%/100% line/branch; the other five modules 100%/100%. Issuer durations: PostgreSQL 445.764s; SQL Server 577.695s, both within the unchanged 660s deadline. Existing [pinned versions and Ubuntu/Linux execution scope](acceptance-matrix.md#t031-verified-source-checkpoint) remain unchanged; no Windows/WSL2 manual execution or performance SLA is claimed.
+
+Architecture, security and test source/evidence reviews resolved all bounded findings; documentation reconciliation retains the manual/product gaps. AI review is not an independent security assessment or GitHub self-approval. The initial local fixture rate-budget failure and corrected execution are preserved in [the execution plan](authorization-state-acceptance.md). T021/full M01-D, qualified manual password-manager/screen-reader/accessibility and timed usability, M01-E/M01-F, Admin BFF/React and the wider R1 product remain open. A-001 retains actual certification as a public-release gate; all 345 ASVS controls remain pending/not_assessed.

@@ -52,7 +52,7 @@ python3 scripts/verify_mutations.py PostgreSql --disposable-checkout
 python3 scripts/verify_mutations.py SqlServer --disposable-checkout
 ```
 
-The runner requires passing baseline/restored controls, exact test identities and demonstrated behavioral failures; a build error or skipped case is not a killed mutant. Keep only sanitized reports/reviewed empty-page screenshots. [T032 and manual/release gaps](acceptance-matrix.md#next-work-and-release-gates) remain open even when the currently selected suite passes.
+The runner requires passing baseline/restored controls, exact test identities and demonstrated behavioral failures; a build error or skipped case is not a killed mutant. Keep only sanitized reports/reviewed empty-page screenshots. [Manual/product/release gaps](acceptance-matrix.md#next-work-and-release-gates) remain open even when the currently selected suite passes.
 
 ## Optional manual AppHost pilot
 
