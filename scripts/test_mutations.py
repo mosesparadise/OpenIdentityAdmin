@@ -185,25 +185,35 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(7, len(manifest(ROOT)))
 
     def test_exited_parent_pipe_holder_and_stubborn_child_are_terminated(self):
-        for stubborn in (False, True):
-            with self.subTest(stubborn=stubborn), tempfile.TemporaryDirectory() as directory:
+        for stubborn, redirected in ((False, False), (True, False), (True, True)):
+            with self.subTest(stubborn=stubborn, redirected=redirected), tempfile.TemporaryDirectory() as directory:
                 path = Path(directory) / 'child.pid'
                 program = '''import os,signal,time,sys
 from pathlib import Path
 if os.fork():
+    if sys.argv[3] == 'True':
+        time.sleep(60)
     os._exit(0)
 if sys.argv[2] == 'True':
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
+if sys.argv[3] == 'True':
+    fd = os.open(os.devnull, os.O_WRONLY)
+    os.dup2(fd, 1)
+    os.dup2(fd, 2)
+    os.close(fd)
 Path(sys.argv[1]).write_text(str(os.getpid()))
 time.sleep(60)
 '''
                 started = time.monotonic()
                 try:
                     with self.assertRaises(subprocess.TimeoutExpired):
-                        run([sys.executable, '-c', program, str(path), str(stubborn)], 0.5, os.environ.copy(), cleanup_timeout=0.5)
+                        run([sys.executable, '-c', program, str(path), str(stubborn), str(redirected)], 0.5, os.environ.copy(), cleanup_timeout=0.5)
                     self.assertLess(time.monotonic() - started, 4)
                     pid = int(path.read_text())
                     status = Path(f'/proc/{pid}/stat')
+                    deadline = time.monotonic() + 1
+                    while status.exists() and status.read_text().split()[2] != 'Z' and time.monotonic() < deadline:
+                        time.sleep(0.01)  # Observe signal delivery; never rerun the command being verified.
                     self.assertTrue(not status.exists() or status.read_text().split()[2] == 'Z')
                 finally:
                     if path.exists():

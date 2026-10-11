@@ -112,7 +112,7 @@ def run(command, timeout, environment, *, cleanup_timeout=10):
                 pass
             try:
                 process.communicate(timeout=cleanup_timeout)
-                break
+                # Still send SIGKILL next: a stubborn child may have redirected its pipes.
             except subprocess.TimeoutExpired:
                 continue
         # An escaped descendant must not make exception cleanup wait forever on a pipe.
