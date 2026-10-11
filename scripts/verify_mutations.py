@@ -7,7 +7,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import re
 import signal
 import subprocess
 import tempfile
@@ -18,6 +17,7 @@ from test_selection import catalogue
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = 'tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj'
+FAILURE_DIAGNOSTIC = "Exit code indicates failure: '2'. Please refer to https://aka.ms/testingplatform/exitcodes for more information."
 
 
 class MutationError(ValueError):
@@ -80,17 +80,16 @@ def validate_report(path, selected, exit_code, *, marker=None, method=None):
         raise MutationError('Mutation report contains unexpected result outcomes')
     if exit_code != (2 if marker else 0):
         raise MutationError('Mutation process exit code is not the expected native MTP result')
-    # xUnit/MTP also emits one exact failure-name echo as a RunInfo. No other run error is permitted.
+    # Native MTP emits its fixed exit-code diagnostic, not the older xUnit failure-name echo.
     infos = root.findall('.//{*}RunInfo')
     if len(infos) != len(failures) or summary.findall('.//{*}ErrorInfo'):
         raise MutationError('Mutation run contains fixture or run-level errors')
-    for info, failure in zip(infos, failures):
-        pattern = r'\[xUnit\.net [0-9:.]{1,15}\]\s+' + re.escape(failure.attrib['testName']) + r' \[FAIL\]'
-        if info.attrib.get('outcome') != 'Error' or not re.fullmatch(pattern, info.findtext('{*}Text', '').strip()):
+    for info in infos:
+        if info.attrib.get('outcome') != 'Error' or info.findtext('{*}Text', '').strip() != FAILURE_DIAGNOSTIC:
             raise MutationError('Mutation run contains an unexpected run-level diagnostic')
     if marker:
         error = failures[0].find('./{*}Output/{*}ErrorInfo')
-        if len(root.findall('.//{*}ErrorInfo')) != 1 or error is None or len(error.findall('{*}Message')) != 1 or len(error.findall('{*}StackTrace')) != 1 or error.findtext('{*}Message', '').strip() != marker or method not in error.findtext('{*}StackTrace', ''):
+        if len(root.findall('.//{*}ErrorInfo')) != 1 or error is None or len(error.findall('{*}Message')) != 1 or len(error.findall('{*}StackTrace')) != 1 or error.findtext('{*}Message', '').strip() != marker or method + '(' not in error.findtext('{*}StackTrace', ''):
             raise MutationError('Mutation failed outside its demonstrated behavioral bypass assertion')
     elif root.findall('.//{*}ErrorInfo'):
         raise MutationError('Passing mutation control contains errors')

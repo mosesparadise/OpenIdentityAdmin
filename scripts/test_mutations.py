@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from verify_mutations import changed_source, execute, validate_report, manifest, run, require_clean_checkout, ROOT
+from verify_mutations import changed_source, execute, validate_report, manifest, run, require_clean_checkout, ROOT, FAILURE_DIAGNOSTIC
 
 NAME = 'IdentityPlatform.Issuer.Tests.Features.Protocol.DecisionTests.Denies(provider: "PostgreSql")'
 METHOD = NAME.split('(')[0]
@@ -27,7 +27,7 @@ def report(*, failed=True):
         ET.SubElement(error, 'Message').text = MARKER
         ET.SubElement(error, 'StackTrace').text = 'at ' + METHOD + '(String provider)'
         info = ET.SubElement(ET.SubElement(summary, 'RunInfos'), 'RunInfo', outcome='Error')
-        ET.SubElement(info, 'Text').text = '[xUnit.net 00:00:01.20]     ' + NAME + ' [FAIL]'
+        ET.SubElement(info, 'Text').text = FAILURE_DIAGNOSTIC
     return root
 
 
@@ -112,6 +112,14 @@ class MutationEvidenceTests(unittest.TestCase):
         value.find('.//RunInfo/Text').text = 'Fixture cleanup failed'
         with self.assertRaises(ValueError):
             self.check(value)
+
+    def test_only_the_observed_native_mtp_failure_diagnostic_is_accepted(self):
+        for text in (FAILURE_DIAGNOSTIC.replace("'2'", "'3'"), FAILURE_DIAGNOSTIC + ' Cleanup failed',
+                     '[xUnit.net 00:00:01.20]     ' + NAME + ' [FAIL]'):
+            value = report()
+            value.find('.//RunInfo/Text').text = text
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                self.check(value)
 
     def test_run_summary_error_cannot_hide_behind_expected_kill(self):
         value = report()
