@@ -1,6 +1,6 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **restart implemented; final both-provider/CI acceptance pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
+Status: **restart source accepted (19 checks / 1,045 cases); final PR #17 delivery gate below; distribution/rotation pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
@@ -21,7 +21,9 @@ Status: **restart implemented; final both-provider/CI acceptance pending**. Appr
 - [x] T009 Implement `Features/Restart/CodeContinuityTests.cs`: exact unredeemed code survival, wrong-proof control, previously redeemed but still-unexpired native replay denial/revocation, original-code actual expiry and valid recovery. Capture native identity/expiry without emitting secrets. LIFE-003/005, RST-04/05/08.
 - [x] T010 Implement `Features/Restart/ProtectionContinuityTests.cs`: old token bytes validated using fresh post-restart public JWKS and new tokens validated with retained public keys; tamper/wrong-key controls; populated-ring missing-wrapper failure and safe recovery. LIFE-004/008, RST-06/09.
 - [x] T011 Implement `Features/Restart/EligibilityContinuityTests.cs`: preexisting session expiry/revocation and representative account restriction, including a committed restriction while auth is stopped; both positive controls and explicit fresh recovery. LIFE-005, RST-07.
-- [ ] T012 Run focused actual-provider experiments and full normal required gates, record failures before fixes, case identities/counts, timing margin, teardown, source/merge trees and independent source/evidence reviews in `verification.md`. Update `docs/roadmap.md`, `docs/engineering/issuer-flow-backlog.md` and `docs/operations/issuer-protection.md`; normally squash-merge the reviewed restart PR. LIFE-009/010. Mark only US1 accepted if it passes.
+- [x] T012 Run focused actual-provider experiments and full normal required gates, record failures before fixes, case identities/counts, timing margin, teardown, source/merge trees and independent source/evidence reviews in `verification.md`. Update `docs/roadmap.md`, `docs/engineering/issuer-flow-backlog.md` and `docs/operations/issuer-protection.md`. LIFE-009/010. Only US1 is accepted at the corrected source checkpoint. Final PR delivery is the gate below.
+
+**PR #17 delivery gate:** verify all required checks at the final documentation head, resolve review findings, then normally squash-merge using the expected head and Conventional Commit title. The authoritative final run/head/merge record is [PR #17](https://github.com/mosesparadise/OpenIdentityAdmin/pull/17). Do not begin T013 until that merge completes.
 
 ## Phase 4 — US2 two-instance behavior (PR 2; not started)
 

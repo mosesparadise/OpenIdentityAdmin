@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-issuer-foundation`  
 **Created**: 2026-10-10  
-**Status**: Feature 004 implements the bounded Development login/code pilot. T031/PR #14 is merged; T032 has verified 17-check/1,017-case source acceptance with final delivery on PR #15. Manual/full M01-D acceptance remains open. ISS-003 restart/two-instance/key overlap remains M01-E. See the [current matrix](../../specs/004-first-party-login/acceptance-matrix.md). No complete issuer or release acceptance is claimed.
+**Status**: Feature 004 implements the bounded Development login/code pilot. T031/PR #14 and T032/PR #15 are merged; PR #16 supplies the T021 human-assessment handoff, whose execution remains open. [Feature 006](../../specs/006-issuer-lifecycle/tasks.md) delivers ISS-003/M01-E through three sequential PRs: restart continuity, two-instance behavior, then key overlap/retirement. PR #17 delivers accepted restart source evidence (19 checks / 1,045 ordinary cases), with final delivery recorded on the PR. See the [current pilot matrix](../../specs/004-first-party-login/acceptance-matrix.md) and [lifecycle evidence](../../specs/006-issuer-lifecycle/verification.md). No complete issuer or release acceptance is claimed.
 **Input**: Continue after merged PR #1 with the unfinished issuer portion of approved roadmap milestone 001. The local feature number 002 does not mean roadmap milestone 002 (secure administrator BFF), which depends on this work.
 
 ## Current allocation of this original issuer backlog
@@ -11,7 +11,7 @@
 | --- | --- |
 | ISS-001 | Feature 004 metadata/JWKS reflects the fixed pilot; future capabilities must have their own acceptance. |
 | ISS-002 | Feature 002 durable distinct credentials/encrypted protection is accepted; this alone does not prove ISS-003. |
-| ISS-003 | **Unbuilt M01-E:** real session/code/token restart, two deployed nodes and public signing/encryption overlap/retirement. |
+| ISS-003 | **M01-E partial:** original cookie/form/continuation/code/token restart source accepted on both providers in [PR #17](https://github.com/mosesparadise/OpenIdentityAdmin/pull/17); final-head checks/merge are recorded there. Two deployed nodes and public signing/encryption overlap/retirement remain unbuilt. |
 | ISS-004 | LOGIN-001/T023 transactional synthetic bootstrap and conflicts/rollback accepted. |
 | ISS-005 | LOGIN-003/008 password, lockout, form/cookie, audit and bounded request evidence; later administrator authentication remains separate. |
 | ISS-006 | Minimal API decisions preserve OpenIddict validation/native state; T031 proves the specified transport denials and forwarding-header invariants. |
@@ -20,9 +20,9 @@
 | ISS-009 | Password/redemption current-state evidence and T032 representative new/resumed/silent authorization restrictions pass on both providers; no concurrent administration/offline revocation guarantee. |
 | ISS-010 | Independent public-key token/claim/binding validation accepted for the fixed pilot; native lifecycle claims follow the contract. |
 | ISS-011 | Six-cell automated UI/visual evidence accepted; qualified screen-reader/password-manager/WCAG and timed usability remain. |
-| ISS-012 | Accepted 1,017-case checkpoint plus mutations/coverage; full manual/product/operational acceptance remains. |
+| ISS-012 | Accepted 1,045-case restart checkpoint plus both-provider mutations/eleven-input coverage; full manual/product/operational acceptance remains. |
 
-The original scenarios below remain requirements. In particular, SC-004 restart/overlap is still unexecuted M01-E scope. The current component concurrency tests and single-host replay tests do not establish cross-node behavior. M01-F versioned management contracts, Scalar/Swagger and generated clients remain a separate obligation.
+The original scenarios below remain requirements. SC-004 restart/overlap is only complete when all feature 006 stories have accepted evidence; a restart pass alone cannot close it. The current component concurrency tests and single-host replay tests do not establish cross-node behavior. M01-F versioned management contracts, Scalar/Swagger and generated clients remain a separate obligation.
 
 ## User Scenarios & Testing
 

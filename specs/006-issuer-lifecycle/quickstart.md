@@ -29,10 +29,10 @@ dotnet test --project tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Ident
   --results-directory artifacts/tests/PostgreSql
 ```
 
-Replace `PostgreSql` with `SqlServer` for the other provider. A focused command is diagnostic only: it does not run the complete profile, exact discovery/evidence gates, browser regression or coverage acceptance. The runner expects 13 lifecycle cases per provider, with no browser cases. Required reports are `artifacts/tests/<provider>/Issuer.Lifecycle.trx`.
+Replace `PostgreSql` with `SqlServer` for the other provider. A focused command is diagnostic only: it does not run the complete profile, exact discovery/evidence gates, browser regression or coverage acceptance. The runner expects 13 lifecycle cases per provider, with no browser cases. Default/focused reports are `artifacts/tests/<provider>/Issuer.Lifecycle.trx`; CI and `--partition lifecycle` use `artifacts/tests/<provider>-lifecycle/Issuer.Lifecycle.trx`.
 
 The harness replaces only the issuer child while retaining its original origin, database containers, completed migrator/bootstrap generations, HTTPS relying party, private files and populated DP ring. It verifies old-process exit, new generation, fresh health and a real HTTPS response. It tests original artifacts; a fresh credential login cannot substitute for old-cookie continuity. Native authorization-code lifetime remains 60 seconds. Failed setup/restart invalidates the environment; required cases cannot silently skip or retry.
 
 All application generations and containers must be removed before private material is disposed. Do not use production identities/secrets, disable TLS, enlarge artifact lifetimes, or restart the entire disposable AppHost as a substitute for issuer continuity. Do not publish raw diagnostic output containing local infrastructure details.
 
-Restart acceptance is pending the evidence in [verification.md](verification.md). Two-node and key-rotation cases are later sequential PRs; no Windows assistive-technology, backup restore, production RTO or certification acceptance follows from this harness.
+Restart source acceptance and its final PR delivery gate are recorded in [verification.md](verification.md). Two-node and key-rotation cases are later sequential PRs; no Windows assistive-technology, backup restore, production RTO or certification acceptance follows from this harness.
