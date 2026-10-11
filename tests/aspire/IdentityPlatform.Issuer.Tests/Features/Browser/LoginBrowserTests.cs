@@ -180,11 +180,11 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
                 await page.Locator("#password").FillAsync("synthetic-invalid-password");
                 await page.Locator("#submit").ClickAsync();
                 await RequireGenericErrorAsync(page);
-                Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
                 await page.Locator("#username").FillAsync("");
                 await page.Locator("#error-summary").FocusAsync();
                 Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
                 await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+                Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
                 await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
                 if (width == 1280)
                 {
