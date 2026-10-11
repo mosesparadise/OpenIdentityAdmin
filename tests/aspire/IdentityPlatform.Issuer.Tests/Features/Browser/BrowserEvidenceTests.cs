@@ -64,7 +64,7 @@ public sealed class BrowserEvidenceTests
             await using var session = await BrowserSession.CreateAsync();
             var page = await session.Context.NewPageAsync();
             await page.SetContentAsync("<!doctype html><html lang='en'><head><title>Contrast control</title></head><body><main><p id='contrast-probe' style='color:#aaaaaa;background:#ffffff'>Synthetic contrast control</p></main></body></html>");
-            var contrast = await Assert.ThrowsAsync<Xunit.Sdk.XunitException>(() => BrowserAccessibility.RequireNoViolationsAsync(page));
+            var contrast = await Assert.ThrowsAnyAsync<Xunit.Sdk.XunitException>(() => BrowserAccessibility.RequireNoViolationsAsync(page));
             Assert.True(contrast.Message.Contains("color-contrast: #contrast-probe", StringComparison.Ordinal) &&
                 contrast.Message.Contains("foreground=#aaaaaa, background=#ffffff", StringComparison.Ordinal),
                 "The actual axe scan must detect the seeded contrast fault and preserve its safe color evidence.");
