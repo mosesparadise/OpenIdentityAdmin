@@ -60,3 +60,5 @@ Final-head follow-up: `82f2cd2` failed one PostgreSQL/WebKit dark/1280 error-pag
 The stable-document probe passed all six cells at `efa77bd` without a reproduction. Refine it to twenty fresh error responses (genuine protected unknown-user submissions), with the original first-scan ordering and immediate failure. This remains diagnostic work; the prior intermittent finding is not closed by passing rescans.
 
 The fresh-response probe also passed all six cells at `1688e6c`. The next bounded probe repeats thirty fresh disposable contexts only for dark/1280, retaining each original first-scan journey and the unchanged outer deadline. Safe computed-style/geometry facts are captured read-only after any failing scan. This is still diagnostic work, with no assertion or rule relaxed.
+
+Both WebKit cells passed the restored-order thirty-context probe. Focus the next experiment on one hundred fresh WebKit dark/1280 contexts under the unchanged deadline; other engines retain their original journeys. Add a real bad-contrast/corrected-page control for the diagnostic path. The product finding remains unresolved and no arbitrary readiness wait is introduced.

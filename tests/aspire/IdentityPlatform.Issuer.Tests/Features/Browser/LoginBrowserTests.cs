@@ -156,7 +156,7 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         {
             var environment = await fixture.GetAsync(provider);
             // Reproduce the reported initial-context dark desktop finding; each context must pass its first scan.
-            var repetitions = theme == "dark" && width == 1280 ? 30 : 1;
+            var repetitions = BrowserSession.Engine == "webkit" && theme == "dark" && width == 1280 ? 100 : 1;
             for (var iteration = 0; iteration < repetitions; iteration++)
             {
                 await using var session = await BrowserSession.CreateAsync(width);

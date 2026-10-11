@@ -15,7 +15,7 @@ internal static class BrowserAccessibility
     [
         "#submit", "#theme", "#show-password", "#username", "#password", "#heading", "#error-summary > p",
         ".error-summary > p", ".wordmark", ".brand-mark", ".badge", ".eyebrow", ".subtitle", ".footnote",
-        "footer", "label", "strong", "p", ".skip-link", "body", "html", ".card"
+        "footer", "label", "strong", "p", ".skip-link", "body", "html", ".card", "#contrast-probe"
     ];
 
     public static async Task RequireNoViolationsAsync(IPage page, Func<Task>? captureFailure = null)
