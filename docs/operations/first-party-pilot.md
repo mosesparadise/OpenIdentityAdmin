@@ -1,6 +1,6 @@
 # First-party issuer pilot
 
-Feature 004 is a Development-only, non-administrator integration pilot. Its [current acceptance matrix](../../specs/004-first-party-login/acceptance-matrix.md) records merged implementation through PR #12, executed tests and remaining T031/T032/manual gaps; the [verification record](../../specs/004-first-party-login/verification.md) retains history. It does not complete production authentication, the administrator BFF, React administration, MFA, consent or certification.
+Feature 004 is a Development-only, non-administrator integration pilot. Its [current acceptance matrix](../../specs/004-first-party-login/acceptance-matrix.md) records merged implementation, verified T031 transport acceptance with final delivery on PR #14, and remaining T032/manual gaps; the [verification record](../../specs/004-first-party-login/verification.md) retains history. It does not complete production authentication, the administrator BFF, React administration, MFA, consent or certification.
 
 ## Windows with WSL2
 

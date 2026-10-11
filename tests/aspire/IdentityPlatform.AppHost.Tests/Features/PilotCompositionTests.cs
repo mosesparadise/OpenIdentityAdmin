@@ -22,6 +22,8 @@ public sealed class PilotCompositionTests
         Assert.Equal(3, secrets.Length);
         Assert.All(secrets, parameter => Assert.True(parameter.Secret));
         var auth = Assert.Single(builder.Resources.OfType<ProjectResource>(), resource => resource.Name == "auth");
+        Assert.All(auth.Annotations.OfType<EndpointAnnotation>(), endpoint => Assert.Equal("https", endpoint.UriScheme));
+        Assert.DoesNotContain(auth.Annotations.OfType<EndpointAnnotation>(), endpoint => endpoint.Name == "transport-http");
         Assert.Contains(auth.Annotations.OfType<WaitAnnotation>(), annotation => annotation.Resource.Name == "pilot-bootstrap");
         Assert.DoesNotContain(builder.Resources.OfType<ProjectResource>(), resource => resource.Name.Contains("demo", StringComparison.Ordinal));
         var environments = new Dictionary<string, Dictionary<string, object>>(StringComparer.Ordinal);

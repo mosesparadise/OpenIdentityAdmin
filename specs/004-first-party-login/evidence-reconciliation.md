@@ -15,7 +15,7 @@ Authorized sequence: finish and squash T030, then reconcile this pilot in its ow
 - [x] REC-A Confirm approved scope, prerequisite documents and T030 merged evidence.
 - [x] REC-B Reconcile requirements, task state, operational guidance and limited control references.
 - [x] REC-C Resolve independent review findings and validate documentation/register integrity.
-- [ ] REC-D Verify the final PR head through the existing required gates and squash-merge; record final CI/merge on the PR to avoid a self-referential evidence commit.
+- [x] REC-D Verify the final PR head through the existing required gates and squash-merge; record final CI/merge on the PR to avoid a self-referential evidence commit.
 
 ## Preserved gates
 
@@ -36,3 +36,5 @@ Independent test, documentation and compliance reviewers accepted the source cha
 The supporting assurance fixture correction passed all 27 existing regression cases with zero failures/skips after the original setup failures. The test reviewer confirmed validated reference containment, cleanup and preserved date/negative controls; compliance review confirmed the production validator and unassessed register state remain unchanged. Local assurance integrity, AI instruction inventory, Spec Kit prerequisites, changed Markdown target/heading checks and whitespace validation pass. No .NET runtime code, packages, production configuration, acceptance threshold or required case is changed.
 
 REC-D is the delivery gate, not a request for new user approval: existing authorization covers this PR's review, fixes and normal squash merge. Its final tested source/merge revision, exact required-check results and actual squash commit are recorded on the PR to avoid a self-referential evidence commit. The source checkpoint alone does not assert completed CI or a merge.
+
+REC-D delivery completed: PR #13 squash-merged as `237afa5` after source `87492cd` passed all 17 checks and 845 ordinary cases with zero failures/skips in [run 38151249880](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38151249880). Its tested merge tree matched the source and squash tree. Earlier pending statements above describe the pre-delivery checkpoint.
