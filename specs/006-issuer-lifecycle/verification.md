@@ -1,9 +1,20 @@
-# Issuer lifecycle verification — no runtime acceptance yet
+# Issuer lifecycle verification — restart in progress
 
-11 October 2026: feature 006 is a design draft under approved M01-E. There is no new lifecycle project, production change, executed lifecycle case, or accepted restart/two-node/rotation result.
+The user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. PR #17 implements restart only; it is not accepted until both-provider evidence, required checks and source/evidence reviews pass. Distribution, rotation, T021 human assessment, M01-F and public-release gates remain open.
 
-Research inspected the existing credential loader, DP issuer discriminator, pilot protocol/form fixtures, Aspire13.6.1 command/notification APIs, process cleanup and test-selection pipeline. Independent architecture/security research identified stale health/no-op restart, missing replacement-process cleanup, auto-login fallback and expiry-only replay false positives. The initial plan incorporates these findings; final design acceptance awaits user structure/sequencing choices and concrete harness review.
+Spec Kit template resolution, setup-plan/setup-tasks and prerequisites ran. No extension hooks exist. The requirements checklist and independent design review are complete. The prior accepted checkpoint is PR #16 squash `559380e952059383741a7bc75c259b5bb39ed1e1`; its 13 checks/901 ordinary cases do not establish lifecycle behavior.
 
-Spec Kit template resolution and setup-plan/setup-tasks scripts ran for this feature. Extension hooks are absent. The [checklist](checklists/requirements.md) deliberately remains incomplete while those choices/reviews are open. No implementation command or required-check waiver is being inferred.
+## Implementation and review in progress
 
-The prior accepted code checkpoint is PR #16 squash `559380e952059383741a7bc75c259b5bb39ed1e1`, whose documentation-only CI passed 13 checks/901 ordinary cases. That evidence does not exercise lifecycle scenarios. T021's human assessment remains open, as do M01-F and public-release gates.
+The new native xUnit v3/MTP project reuses explicit fixture source links, with 13 intended restart cases per provider. Existing AppHost harness tests add process-generation and accumulated-cleanup controls. Each provider receives its own <=660-second lifecycle invocation under the existing child-process coverage collector and unchanged 20-minute CI job. Actual aggregate timing is still required.
+
+Independent architecture/security/test source reviews identified and corrected: cancellation that could abandon stopped callbacks; replay snapshots taken too late; missing session-inventory and completed one-shot generation checks; unauthenticated rather than authenticated wrong-client controls; generic denials masking native binding failures; broad continuation/wrapper failure oracles; incomplete JWKS private-field guards; contradictory TRX counters; and missing lifecycle catalogue/manifest checks. Reviewer acceptance remains pending final source and executed evidence.
+
+## Experiments
+
+- Initial compilation exposed missing Aspire testing namespace and formatting/static-analysis violations; fixed without disabling rules.
+- First PostgreSQL run failed: Aspire reports a deliberately stopped .NET project as `Finished`, while the harness waited only for `Exited`. The fixture was invalidated, remaining cases failed closed, and teardown attempted all resources. MTP also refused duplicate test/cleanup result identities. This is failed evidence, not a pass. Terminal handling now accepts explicit `Finished`/`Exited` while independently requiring OS process exit.
+- Second PostgreSQL experiment: pending. SQL Server/full regression/coverage: not yet run for this implementation.
+- Local Python checks: lifecycle evidence selection (4 tests), existing evidence parser (8), browser matrix (8) passed. These do not replace provider execution.
+
+Final evidence will record actual discovered/executed identities, unchanged native-code timing margins, both provider/job durations, teardown, exact source/merge trees, coverage inputs and reviewer dispositions before acceptance.

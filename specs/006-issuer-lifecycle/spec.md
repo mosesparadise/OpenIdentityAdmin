@@ -1,8 +1,8 @@
 # Feature Specification: Issuer lifecycle continuity
 
-**Feature Branch**: `014-issuer-lifecycle`  
-**Created**: 11 October 2026  
-**Status**: Draft under approved M01-E; project structure and PR sequencing await the user's requested clarification. No implementation or acceptance yet.  
+**Feature Branch**: `014-issuer-lifecycle`
+**Created**: 11 October 2026
+**Status**: Approved M01-E scope; the user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. Restart design review precedes implementation; no lifecycle acceptance yet.
 **Input**: Proceed after the T021 handoff in PR #16 to M01-E: real issuer restart, two-instance behavior and staged signing/encryption overlap.
 
 ## User Scenarios & Testing
@@ -87,4 +87,4 @@ Existing native accounts/applications/scopes/authorizations/tokens; existing bro
 
 The approved v0.2 M01-E/ISS-003 backlog authorizes this work. It remains an isolated Development pilot with synthetic identities, native protocol ownership, existing lifetimes and no production deployment. T021's human accessibility/password-manager assessment, M01-F API contracts and wider product/certification obligations remain open. Process restart is not backup restore/RPO/RTO evidence under NFR-06. Two-instance pilot evidence does not establish future BFF refresh serialization or administrator five-second enforcement.
 
-The user requested questions before project/pattern changes. Two decisions are pending: dedicated lifecycle test project versus existing issuer project, and three sequential PRs versus one combined PR. The recommended options are documented in the plan; no elapsed time or preselected choice is treated as the user's answer. Production topology and key-activation configuration will be made concrete and reviewed before their implementation, without inventing operator/deployment approval.
+The user confirmed `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests` with feature folders and Aspire solution grouping, delivered as three sequential reviewed/verified/squash-merged PRs: restart, distribution, key overlap. Production topology and key-activation configuration will be made concrete and reviewed before their respective implementation, without inventing operator/deployment approval.

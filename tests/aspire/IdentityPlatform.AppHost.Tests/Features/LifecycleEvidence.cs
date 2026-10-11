@@ -7,6 +7,14 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 
 internal sealed record LifecycleEvidence(string[] Containers, (int Id, DateTime Started)[] Processes)
 {
+    public LifecycleEvidence Merge(LifecycleEvidence other) => new(
+        Containers.Concat(other.Containers).Distinct(StringComparer.Ordinal).ToArray(),
+        Processes.Concat(other.Processes).Distinct().ToArray());
+
+    internal static void RequireReplacement((int Id, DateTime Started) original, (int Id, DateTime Started) replacement, bool originalExited) =>
+        Assert.True(original.Id > 0 && replacement.Id > 0 && originalExited && original != replacement,
+            "Restart requires original process exit and a distinct live process generation.");
+
     public static LifecycleEvidence Capture(DistributedApplication app)
     {
         var model = app.Services.GetRequiredService<DistributedApplicationModel>();

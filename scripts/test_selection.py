@@ -3,7 +3,7 @@ import json
 import xml.etree.ElementTree as ET
 
 
-def catalogue(raw):
+def catalogue(raw, lifecycle=False):
     value = json.loads(raw)
     if value.get('schemaVersion') != 1 or not isinstance(value.get('tests'), list):
         raise ValueError('Unsupported test discovery document')
@@ -18,6 +18,8 @@ def catalogue(raw):
         if len(providers) != 1 or providers[0] not in ('PostgreSql', 'SqlServer'):
             raise ValueError('Issuer test lacks one recognized provider')
         browser = any(x == {'key': 'Category', 'value': 'Browser'} for x in traits)
+        if lifecycle and (browser or '.Features.Browser' in test['type']['namespace']):
+            raise ValueError('Lifecycle catalogue contains a browser namespace or trait')
         if browser != (test['type']['namespace'] == 'IdentityPlatform.Issuer.Tests.Features.Browser'):
             raise ValueError('Browser namespace and trait disagree')
         result[uid] = (name, providers[0], browser)
@@ -42,3 +44,51 @@ def require_execution_names(path, selected):
     names = [value.attrib['testName'] for value in results]
     if len(names) != len(set(names)) or set(names) != {test[0] for test in selected.values()}:
         raise ValueError('Executed tests do not match discovered selection')
+
+
+def require_lifecycle_partition(all_tests, selected, provider, counts):
+    if set(counts) != {'PostgreSql', 'SqlServer'} or any(value <= 0 for value in counts.values()):
+        raise ValueError('Lifecycle requires both provider counts')
+    if any(test[2] for test in all_tests.values()):
+        raise ValueError('Lifecycle catalogue contains browser cases')
+    for name, count in counts.items():
+        if sum(test[1] == name for test in all_tests.values()) != count:
+            raise ValueError('Lifecycle provider catalogue is incomplete')
+    if selected != {uid: test for uid, test in all_tests.items() if test[1] == provider}:
+        raise ValueError('Lifecycle selection omits or substitutes provider cases')
+
+
+def require_lifecycle_execution(path, selected):
+    root = ET.parse(path).getroot()
+    summaries = root.findall('./{*}ResultSummary')
+    if len(summaries) != 1 or summaries[0].get('outcome') not in ('Completed', 'Passed'):
+        raise ValueError('Lifecycle run did not complete successfully')
+    if root.findall('.//{*}ErrorInfo') or any(info.get('outcome') not in ('Passed', 'Completed') for info in root.findall('.//{*}RunInfo')):
+        raise ValueError('Lifecycle report contains run errors')
+    counters = root.findall('./{*}ResultSummary/{*}Counters')
+    required_zero = {'failed', 'error', 'timeout', 'aborted', 'inconclusive', 'passedButRunAborted',
+                     'notRunnable', 'notExecuted', 'disconnected', 'warning', 'completed', 'inProgress', 'pending'}
+    if len(counters) != 1 or any(counters[0].get(key) != '0' for key in required_zero):
+        raise ValueError('Lifecycle counters are incomplete or contradictory')
+    if any(counters[0].get(key) != str(len(selected)) for key in ('total', 'executed', 'passed')):
+        raise ValueError('Lifecycle counters do not match the selected results')
+    rows = root.findall('./{*}Results/{*}UnitTestResult')
+    definitions = root.findall('./{*}TestDefinitions/{*}UnitTest')
+    entries = root.findall('./{*}TestEntries/{*}TestEntry')
+    expected = {test[0] for test in selected.values()}
+    if not expected or len(rows) != len(expected) or any(row.get('outcome') != 'Passed' for row in rows):
+        raise ValueError('Lifecycle result rows are incomplete or nonpassing')
+    names = [row.get('testName') for row in rows]
+    ids = [row.get('testId') for row in rows]
+    executions = [row.get('executionId') for row in rows]
+    if set(names) != expected or any(not value for value in ids + executions) or len(set(ids)) != len(rows) or len(set(executions)) != len(rows):
+        raise ValueError('Lifecycle result identities are inconsistent')
+    if len(definitions) != len(rows) or {d.get('id'): d.get('name') for d in definitions} != dict(zip(ids, names)):
+        raise ValueError('Lifecycle definitions do not match results')
+    bindings = {(row.get('testId'), row.get('executionId')) for row in rows}
+    if len(entries) != len(rows) or {(e.get('testId'), e.get('executionId')) for e in entries} != bindings:
+        raise ValueError('Lifecycle entries do not match results')
+    for definition in definitions:
+        execution = definition.find('./{*}Execution')
+        if execution is None or (definition.get('id'), execution.get('id')) not in bindings:
+            raise ValueError('Lifecycle definition execution is inconsistent')

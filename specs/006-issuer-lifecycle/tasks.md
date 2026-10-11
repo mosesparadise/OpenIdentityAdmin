@@ -1,12 +1,12 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **design draft; no implementation tasks complete**. Approved backlog: M01-E / ISS-003. User clarification about test project and PR split remains pending. Proposed paths below assume the recommended dedicated project **only for review**, not as an accepted decision. Replace them consistently if the user selects the existing project.
+Status: **restart design confirmed; implementation pending review**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
 - [x] T001 Write feature 006 `spec.md`, initial `plan.md`, `research.md`, `data-model.md` and `quickstart.md` from approved M01-E and actual source research; preserve all three lifecycle stories and external gates.
-- [ ] T002 Resolve the user's project/solution-folder and PR-sequencing choices in `plan.md`; finalize source-sharing ownership and exact runner/coverage design before code. Complete `checklists/requirements.md` and Spec Kit analysis.
-- [ ] T003 Independently review the concrete design with architecture, security and test/Aspire reviewers; record findings/dispositions in `verification.md`. Source research is not a runtime pass.
+- [x] T002 Resolve the user's project/solution-folder and PR-sequencing choices in `plan.md`; finalize source-sharing ownership and exact runner/coverage design before code. Complete `checklists/requirements.md` and Spec Kit analysis.
+- [x] T003 Independently review the concrete design with architecture, security and test/Aspire reviewers; record findings/dispositions in `verification.md`. Source research is not a runtime pass.
 
 ## Phase 2 — Restart foundation (proposed PR 1)
 
@@ -37,7 +37,7 @@ Status: **design draft; no implementation tasks complete**. Approved backlog: M0
 
 ## Dependencies and parallel review
 
-T001 → T002 → T003 precedes implementation. T004/005 establish the agreed fixture ownership; T006 and T007 establish lifecycle/proof and evidence selection; T008–T011 use those foundations; T012 closes US1. Then T013 → T014 → T015 and T016 → T017 → T018. If the user selects one combined PR, these dependencies still hold but only the final complete feature is merged. Read-only architecture/security/test reviews may run in parallel; the lead owns all edits and resolves concrete findings.
+T001 → T002 → T003 precedes implementation. T004/005 establish the agreed fixture ownership; T006 and T007 establish lifecycle/proof and evidence selection; T008–T011 use those foundations; T012 closes US1. Then T013 → T014 → T015 and T016 → T017 → T018. The user confirmed separate sequential PRs; distribution begins only after restart is merged, and rotation after distribution is merged. Read-only architecture/security/test reviews may run in parallel; the lead owns all edits and resolves concrete findings.
 
 ## Traceability
 

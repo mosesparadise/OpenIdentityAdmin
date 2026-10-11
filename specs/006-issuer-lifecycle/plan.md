@@ -2,22 +2,19 @@
 
 **Branch**: `014-issuer-lifecycle` | **Date**: 11 October 2026 | **Spec**: [spec.md](spec.md)
 
-## Summary and pending choices
+## Confirmed delivery
 
-M01-E is approved product scope. The user explicitly requested questions about new project/file structure. Before implementation, confirm:
+On 11 October 2026 the user selected the dedicated `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests` project under the Aspire test solution folder, with `Features/Restart`, later `Features/Distribution` and `Features/KeyRotation`, and shared `Fixtures`. The user selected three sequential PRs: restart continuity → two-instance behavior → key overlap/retirement. Each increment is independently reviewed, verified and normally squash-merged before the next begins. PR #17 delivers restart only; M01-E remains partial afterward.
 
-1. **Recommended:** `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests`, grouped under the Aspire test solution folder, with `Features/Restart`, later `Features/Distribution` and `Features/KeyRotation`, and `Fixtures`. Alternative: keep lifecycle cases in the current Issuer.Tests project and create explicit isolated execution partitions.
-2. **Recommended:** three sequential PRs, restart continuity → two-instance behavior → key overlap/retirement, each independently reviewed, verified and normally squash-merged before the next begins. Alternative: one combined M01-E PR.
-
-These recommendations are proposals, not assumed answers. The current branch contains design documentation only. No production topology/configuration, project or test-runner change is authorized by a preselected question option. Once confirmed, routine implementation remains covered by existing approval; a new security-scope exception would require its own concrete amendment.
+Existing v0.2 approval covers routine implementation. Any new material security-scope exception requires its own concrete amendment.
 
 ## Technical context and constitution check
 
-Preserve pinned .NET/EF 10, OpenIddict 7.7.1, Aspire 13.6.1, xUnit v3/native MTP, both PostgreSQL and SQL Server, current TLS/PKCE/antiforgery/issuer rules and all nine 90% line/80% branch floors. Keep production Programs/composition/Features unchanged unless a demonstrated lifecycle defect requires a focused correction. No runtime key generation, generic repositories, custom token redemption or automatic security-operation retries.
+Preserve pinned .NET/EF 10, OpenIddict 7.7.1, Aspire 13.6.1, xUnit v3/native MTP, both PostgreSQL and SQL Server, current TLS/PKCE/antiforgery/issuer rules and all nine 90% line/80% branch floors. Keep production Programs/composition/Features unchanged unless a demonstrated lifecycle defect requires a focused correction. No runtime-generated issuer credentials or fallback keys (normal encrypted Data Protection ring creation remains supported), generic repositories, custom token redemption or automatic security-operation retries.
 
 The current HTTP issuer partition contains 292 cases per provider under a 660-second invocation deadline; its latest SQL duration was 523.495s, while earlier accepted checkpoints took 577.695s. Additional lifecycle operations should have their own bounded invocation, not consume uncertain headroom or enlarge the existing deadline. All old partitions and exact discovered/executed identities remain mandatory. Separate child-process coverage artifacts merge with the existing inputs; lifecycle tests cannot disappear from evidence selection.
 
-Constitution: existing approval and ISS-003 cover the work; Features/test grouping, native ownership, real providers, protected evidence, Aspire, explicit gaps and independent reviewers apply. This is local/CI verification, not production deployment, backup recovery, human accessibility acceptance or certification. New structure/sequencing decisions remain pending. The specified full lifecycle goal is retained regardless of PR split.
+Constitution: existing approval and ISS-003 cover the work; Features/test grouping, native ownership, real providers, protected evidence, Aspire, explicit gaps and independent reviewers apply. This is local/CI verification, not production deployment, backup recovery, human accessibility acceptance or certification. The user confirmed structure/sequencing. The specified full lifecycle goal is retained regardless of PR split.
 
 ## First increment: restart continuity
 
@@ -40,9 +37,9 @@ Capture the exact pre-restart ticket and original subject/session/authentication
 | Case | Boundary and oracle | Requirement |
 | --- | --- | --- |
 | RST-01 | Eligible pre-restart cookie → manual silent authorization on replacement; exact original identity/auth_time, no credential entry/session replacement; genuine validated tokens. | LIFE-001/002/004 |
-| RST-02 | Original pending form/antiforgery and cookies → replacement; genuine completion/exchange succeeds once. Foreign browser fails with no session/token side effect. | LIFE-002/008 |
-| RST-03 | Original completed interaction and continuation → replacement; same completed subject/session retained; one-use/foreign-browser controls deny. | LIFE-002/003 |
-| RST-04 | Pre-stop unredeemed code → replacement; exact original code/proof successfully redeems once; wrong proof remains denied. | LIFE-003 |
+| RST-02 | Original pending form/antiforgery and cookies → replacement; genuine completion/exchange succeeds once. Tampered antiforgery and a foreign browser with its own valid form proof fail before owner consumption, with no session/token/interaction side effect; original-owner completion then succeeds. | LIFE-002/008 |
+| RST-03 | Original completed interaction and continuation → replacement; same completed subject/session retained; foreign-browser control denies before owner consumption and preserves the owner's original continuation; reuse afterward also denies. | LIFE-002/003 |
+| RST-04 | Pre-stop unredeemed code → replacement; exact original code/proof successfully redeems once; wrong proof, wrong client and wrong redirect remain denied on live bound codes, each followed by exact valid recovery. | LIFE-003 |
 | RST-05 | Redeemed pre-stop code → replacement while still cryptographically unexpired; native replay denial and linked persisted revocation, not an expiry-only invalid_grant. | LIFE-003/005 |
 | RST-06 | Existing public tokens → independently validate using public metadata obtained after replacement; compare public signing keys and original issuer/audience/nonce/lifetime. Tampered/wrong-key control fails. | LIFE-004 |
 | RST-07 | Persisted revoked session, expired session and representative disabled-account state → replacement; original cookies fail silent issuance. Restore only the reversible account restriction and prove explicit fresh recovery. | LIFE-005 |
@@ -57,11 +54,11 @@ Prepare longer-lived cookie/form/token cohorts before the shortest-lived artifac
 
 Stop/start/readiness operations have explicit cancellation budgets bounded inside the lifecycle invocation. Measure and review those budgets during the first real-provider experiment; preserve existing 660-second provider invocation bounds. Restart observations are test-run measurements, not a production RTO/SLA.
 
-## Proposed project and harness reuse
+## Confirmed project and harness reuse
 
-If the dedicated project is selected, follow the current solution's Aspire test grouping and project properties. Avoid copying business or cryptographic logic. Reuse only the narrow RP/form/environment support required by the lifecycle tests, with its ownership/refactoring and dependent regression made explicit before editing. Options under review are source-linked fixture support (existing repository convention) versus an extracted test-support component; do not reference an executable test project merely to inherit its full suite/dependencies. No new shared library or fixture movement is decided without resolving the user's structural choice.
+Add the dedicated project to `/tests/aspire/` solution grouping and use existing native MTP properties/locked dependencies. Split the reusable `IssuerEnvironment.cs` from `IssuerFixture.cs` collection declarations. Source-link that environment, `TestRelyingParty.cs`, `TestLogin.cs`, `IssuerMaterialFixture.cs`, `SafeAssertions.cs` and `LifecycleEvidence.cs` into the new project, retaining the source-owning namespaces. No executable test-project reference, browser suite/package or new generic support library is needed. A partial lifecycle helper is compiled only by the new project.
 
-Each provider has a distinct lifecycle invocation/result directory and child-process coverage input. Extend `eng/test-matrix.json`, the appropriate runner, exact discovery/execution verification and CI required artifact inventory together. Test the selection/evidence gates with missing, duplicate, skipped and wrong-provider reports. Preserve the ordinary issuer/browser partition and all nine floors. Do not increase the original HTTP deadline or silently select lifecycle cases out of CI.
+Register matrix project `Issuer.Lifecycle` in each existing provider profile. Run it as its own <=660-second invocation under the existing provider child-process coverage collection; retain the existing nine coverage input artifacts. Strict discovered provider partitions and executed identity checks cover this project, with zero browser cases. Require both provider catalogues at their reviewed counts. Validate row outcomes, unique test/result identities, definition/result correspondence, summary and run errors as well as total/passed counters; reject inconsistent TRX. Extend selection tests for missing/duplicate/skipped/wrong-provider evidence, retaining every old partition/case/floor. Existing 20-minute provider CI job budget is unchanged and must accommodate the measured increment; failure requires investigation, not an automatic budget increase.
 
 ## Later increments retained
 
@@ -71,6 +68,6 @@ Each provider has a distinct lifecycle invocation/result directory and child-pro
 
 ## Validation and delivery
 
-Before implementation: resolve structural/sequencing choices, complete the spec checklist, run Spec Kit prerequisites and independent architecture/security/test analysis. For each increment: compile/analyzers/format, meaningful helper tests, exact real-provider lifecycle cases, existing provider/browser regression, child coverage and normal supply/assurance checks. Source-only review never establishes lifecycle behavior.
+Before implementation: record the confirmed structural/sequencing choices, complete the spec checklist, run Spec Kit prerequisites and independent architecture/security/test analysis. For each increment: compile/analyzers/format, meaningful helper tests, exact real-provider lifecycle cases, existing provider/browser regression, child coverage and normal supply/assurance checks. Source-only review never establishes lifecycle behavior.
 
 Record exact commands, case identities/counts, provider versions, source/merge tree, observed durations, failure corrections, reviewer dispositions and cleanup evidence in `verification.md`. Update the roadmap, issuer backlog and runbook after actual acceptance. Keep T021 manual assessment, remaining M01-E stories, M01-F and all public-release gates explicit. Use Conventional Commit PR titles and normal expected-head squash merges; no self-approval or protection bypass.

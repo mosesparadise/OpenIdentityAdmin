@@ -25,6 +25,34 @@ public sealed class LifecycleEvidenceTests
     }
 
     [Fact]
+    public void Restart_proof_rejects_noop_stale_generation_and_original_still_alive()
+    {
+        var started = new DateTime(2026, 10, 11, 0, 0, 0, DateTimeKind.Utc);
+        var original = (Id: 100, Started: started);
+        var replacement = (Id: 101, Started: started.AddSeconds(1));
+        Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, original, false));
+        Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, original, true));
+        Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, replacement, false));
+        Assert.ThrowsAny<Exception>(() => LifecycleEvidence.RequireReplacement(original, (0, started), true));
+        LifecycleEvidence.RequireReplacement(original, replacement, true);
+        LifecycleEvidence.RequireReplacement(original, (original.Id, started.AddSeconds(1)), true);
+    }
+
+    [Fact]
+    public void Cleanup_inventory_retains_every_replacement_including_reused_process_ids()
+    {
+        var started = new DateTime(2026, 10, 11, 0, 0, 0, DateTimeKind.Utc);
+        var original = (Id: 100, Started: started);
+        var replacement = (Id: 100, Started: started.AddSeconds(1));
+        var evidence = new LifecycleEvidence(["database"], [original]);
+        var merged = evidence.Merge(new LifecycleEvidence(["database", "second-database"], [original, replacement]));
+        Assert.Equal(2, merged.Containers.Length);
+        Assert.Equal(2, merged.Processes.Length);
+        Assert.Contains(original, merged.Processes);
+        Assert.Contains(replacement, merged.Processes);
+    }
+
+    [Fact]
     public async Task Production_composition_is_rejected_before_resources_start()
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);

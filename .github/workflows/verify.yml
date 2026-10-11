@@ -115,6 +115,7 @@ jobs:
       - run: dotnet restore --locked-mode
       - run: dotnet build --no-restore --nologo
       - run: python3 scripts/check-ai-instructions.py
+      - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
@@ -162,6 +163,7 @@ jobs:
       - run: dotnet restore --locked-mode
       - run: dotnet build --no-restore --nologo
       - run: python3 scripts/check-ai-instructions.py
+      - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
