@@ -1,6 +1,6 @@
 # T027 — Browser and theme acceptance
 
-**Current status:** T027 remains unresolved and release-blocking. SQL Server/WebKit reproduced the dark/1280 contrast finding on PR #11 head `7b6b936` in run 38129076793, expiring A-002 before T028 merged. T028 acceptance and PR #11 merge are blocked. See the [captured recurrence and investigation limits](verification.md#a-002-expiry-and-captured-contrast-recurrence). Earlier approved-sequence entries below are historical.
+**Current status:** T027 source acceptance is complete. The [reproduced theme inheritance defect is corrected](verification.md#completed-corrected-source-acceptance-and-disposition): source `7dc6086` passed all 17 checks/793 ordinary cases with zero failures/skips, the focused 60-observation regression, both mutation jobs and all coverage floors. [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) records the required final documentation-head checks and squash delivery. A-002 remains expired; closure uses its reproduced-defect criteria. Full pilot/manual/external acceptance remains separate. Earlier unresolved entries below are historical.
 
 ## Authorized recurrence investigation
 
@@ -44,8 +44,8 @@ Chromium × PostgreSQL/SQL Server is required on every PR and main push. Firefox
 - [x] BR-02 Implement browser selection/trust controls and strict test/CI partition with regression checks.
 - [x] BR-03 Implement meaningful error, theme, terminal recovery, freshness and browser-boundary journeys on both providers.
 - [x] BR-04 Inspect and approve every new canonical baseline; retain accessibility/manual limits.
-- [ ] BR-05 Pass static, assurance, supply-chain, unit, HTTP providers, six selected browser cells and combined coverage with zero skips; correct independent and GitHub findings.
-- [ ] BR-06 Record exact source evidence, publish a Conventional Commit PR and squash its verified final head before T028.
+- [x] BR-05 Pass static, assurance, supply-chain, unit, HTTP providers, six selected browser cells and combined coverage with zero skips; correct independent and GitHub findings.
+- [x] BR-06 Record exact source evidence and publish Conventional Commit PRs. PR #10 merged under A-002; PR #11 records the corrected-source disposition and final documentation-head checks/squash delivery. The original pre-T028 sequence was explicitly amended by A-002; final checks and merge remain a separate delivery gate on PR #11.
 
 No automated result constitutes complete WCAG conformance or password-manager/screen-reader acceptance. Qualified manual review, external certification and T030 concurrent interaction capacity remain explicit obligations. Local browser downloads are blocked by the managed network policy; CI execution and retained artifact inspection provide browser evidence without bypassing that policy.
 

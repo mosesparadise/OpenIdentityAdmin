@@ -1,5 +1,7 @@
 # Documentation approval
 
+Current delivery note: the A-002 sequencing exception remains expired. Its reproduced theme finding now has an [accepted corrected-source disposition](../specs/004-first-party-login/verification.md#completed-corrected-source-acceptance-and-disposition); final documentation-head checks and squash delivery are recorded on PR #11. The approval and recurrence entries below preserve their historical scope.
+
 On 10 October 2026, the requesting user stated: **“Version 0.2 is approved.”**
 
 This approves the complete ten-document v0.2 package and its AI skills/subagents, without amendments, and authorizes implementation through GitHub Spec Kit. The archive checksum is `25b113118d0430d44749513f5bef606e787a7f3e1e61c4d9c77937a0bc9acbe5`. The documents under approved-v0.2 preserve the original snapshot wording; this record supersedes their awaiting-approval status.
@@ -13,3 +15,6 @@ Amendment [A-002](amendments/A-002-browser-investigation-sequencing.md) was appr
 A-002 delivery references: [PR #10](https://github.com/mosesparadise/OpenIdentityAdmin/pull/10) squash-merged as `3310d4b`; [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) delivers T028 and records its exact-final-head checks and squash status. The exception is exhausted immediately when PR #11 merges. T027 remains unresolved and release-blocking; proceeding to any subsequent task requires its evidence-based disposition or a separate explicit extension.
 
 **A-002 expired on recurrence before T028 merged.** SQL Server/WebKit reproduced the contrast finding on PR #11 head `7b6b936` in [run 38129076793](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38129076793). PR #10 remains merged; PR #11/T028 acceptance and merge are blocked. The [captured evidence and investigation limits](../specs/004-first-party-login/verification.md#a-002-expiry-and-captured-contrast-recurrence) retain T027 as unresolved and release-blocking. No later progression occurs under this expired exception.
+
+
+On 11 October 2026, the authorized investigation reproduced the theme inheritance defect, tested the exact selector intervention against a failing original, and verified the corrected canonical stylesheet with permanent regressions. Source `7dc6086` passed all 17 checks/793 ordinary cases with zero failures/skips in [run 38139630540](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38139630540), plus the focused regression, both mutation jobs and all coverage floors. This satisfies A-002's existing reproduced-defect closure criteria; it is not a new approval or renewed sequencing exception. T027/T028 source acceptance is complete, subject to the same exact-final-documentation-head checks before the authorized PR #11 squash merge. T030/T029, full pilot/manual/external acceptance and production/public release requirements remain open.
