@@ -1,5 +1,6 @@
 using System.Net;
 using IdentityPlatform.AuthServer.Features.Accounts.Login;
+using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 
 [Collection("interaction-acceptance")]
-public sealed class InteractionCapacityTests(IssuerFixture fixture)
+public sealed partial class InteractionCapacityTests(IssuerFixture fixture)
 {
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
@@ -42,21 +43,29 @@ public sealed class InteractionCapacityTests(IssuerFixture fixture)
         Assert.Equal(before.Audits, after.Audits);
         await using var stale = environment.RuntimeServices();
         var denied = await AdmitAsync(stale, snapshot, deadline.Token);
-        Assert.Null(denied.Interaction);
-        Assert.Empty(denied.Cookies);
+        Assert.True(denied.Interaction is null, "Denied admission or binding exposed unexpected state.");
+        Assert.True(denied.Cookies.Length == 0, "Denied admission must not issue cookies.");
+        Assert.Equal(after, await CountsAsync(environment));
+        var winner = results.Single(value => value.Interaction is not null).Interaction!;
+        Assert.Equal(8, await LiveAsync(environment, winner.BudgetId!));
+        var budgetOnly = PilotProfile.BudgetCookie + "=" + cookies.GetCookies(environment.Issuer)[PilotProfile.BudgetCookie]!.Value;
+        Assert.True((await AdmitAsync(stale, budgetOnly, deadline.Token)).Interaction is null, "Denied admission or binding exposed unexpected state.");
         Assert.Equal(after, await CountsAsync(environment));
     }
 
-    private static async Task<Admission> AdmitAsync(IServiceProvider services, string cookies, CancellationToken cancellationToken)
+    private static async Task<Admission> AdmitAsync(IServiceProvider services, string cookies, CancellationToken cancellationToken,
+        string? requestToken = null, long? nativeExpiry = null, DefaultHttpContext? observed = null)
     {
         await using var scope = services.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         PilotDatabaseBounds.Apply(database);
-        var context = new DefaultHttpContext { RequestServices = scope.ServiceProvider, RequestAborted = cancellationToken };
+        var context = observed ?? new DefaultHttpContext();
+        context.RequestServices = scope.ServiceProvider;
+        context.RequestAborted = cancellationToken;
         context.Request.Headers.Cookie = cookies;
-        var token = InteractionSecrets.Create();
+        var token = requestToken ?? InteractionSecrets.Create();
         var interaction = await scope.ServiceProvider.GetRequiredService<LoginInteractions>().CreateAsync(context,
-            token, "urn:synthetic:" + token, DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 300);
+            token, "urn:synthetic:" + token, nativeExpiry ?? services.GetRequiredService<TimeProvider>().GetUtcNow().ToUnixTimeSeconds() + 300);
         return new Admission(interaction, context.Response.Headers.SetCookie.ToArray());
     }
 

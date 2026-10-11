@@ -27,14 +27,14 @@
       "AppHost": 9
     },
     "PostgreSql": {
-      "Persistence": 3,
+      "Persistence": 4,
       "AppHost": 4,
-      "Issuer": 181
+      "Issuer": 205
     },
     "SqlServer": {
-      "Persistence": 3,
+      "Persistence": 4,
       "AppHost": 4,
-      "Issuer": 181
+      "Issuer": 205
     }
   },
   "browser": {

@@ -9,7 +9,9 @@ public sealed class InteractionAdmissionBarrier(CancellationToken deadline) : Db
 {
     private readonly ConcurrentDictionary<Guid, byte> contexts = new();
     private readonly TaskCompletionSource ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly TaskCompletionSource firstArrival = new(TaskCreationOptions.RunContinuationsAsynchronously);
     public int Arrivals => contexts.Count;
+    public Task FirstArrival => firstArrival.Task;
 
     public override async ValueTask<InterceptionResult<DbDataReader>> ReaderExecutingAsync(DbCommand command, CommandEventData eventData,
         InterceptionResult<DbDataReader> result, CancellationToken cancellationToken = default)
@@ -17,6 +19,7 @@ public sealed class InteractionAdmissionBarrier(CancellationToken deadline) : Db
         if (eventData.Context is { } context && command.CommandText.Contains("LoginInteraction", StringComparison.Ordinal) &&
             command.CommandText.StartsWith("SELECT", StringComparison.Ordinal) && contexts.TryAdd(context.ContextId.InstanceId, 0))
         {
+            firstArrival.TrySetResult();
             if (contexts.Count == 2)
             {
                 ready.TrySetResult();

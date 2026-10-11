@@ -76,8 +76,10 @@ public sealed class InteractionTests(IssuerFixture fixture)
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         await database.Set<LoginInteraction>().Where(value => value.Id == pending[0].Interaction)
             .ExecuteUpdateAsync(update => update.SetProperty(value => value.ExpiresAt, 1), TestContext.Current.CancellationToken);
-        var fresh = await TestLogin.BeginAsync(environment, browser);
+        var fresh = await TestLogin.BeginAsync(environment, browser, exchange: true);
         Assert.True(!pending.Any(value => value.Interaction == fresh.Interaction), "Expected a fresh interaction after capacity was freed.");
+        await fresh.FollowAsync(environment, browser, await fresh.CompleteAsync(environment, browser));
+        Assert.True(fresh.Flow.Validated, "Recovered capacity must support a genuine independently validated flow.");
     }
 
     [Theory]

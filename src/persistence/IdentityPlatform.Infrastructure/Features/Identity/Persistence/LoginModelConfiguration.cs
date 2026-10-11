@@ -22,12 +22,19 @@ public static class LoginModelConfiguration
         session.HasIndex(value => value.UserId);
         session.HasIndex(value => value.ExpiresAt);
 
+        var budget = builder.Entity<LoginBrowserBudget>();
+        budget.Property(value => value.Id).HasMaxLength(64);
+        budget.HasIndex(value => value.ExpiresAt);
+
         var interaction = builder.Entity<LoginInteraction>();
         interaction.Property(value => value.Id).HasMaxLength(43);
         interaction.Property(value => value.RequestTokenId).HasMaxLength(100);
         interaction.Property(value => value.RequestUri).HasMaxLength(512);
         interaction.Property(value => value.ClientId).HasMaxLength(100);
         interaction.Property(value => value.BrowserDigest).HasMaxLength(64);
+        interaction.Property(value => value.BudgetId).HasMaxLength(64);
+        interaction.HasOne<LoginBrowserBudget>().WithMany().HasForeignKey(value => value.BudgetId).OnDelete(DeleteBehavior.Restrict);
+        interaction.HasIndex(value => new { value.BudgetId, value.Consumed, value.ExpiresAt });
         interaction.Property(value => value.CompletedSessionId).HasMaxLength(43);
         interaction.Property(value => value.CompletedUserId).HasMaxLength(450);
         interaction.HasIndex(value => value.RequestTokenId).IsUnique();
@@ -45,7 +52,7 @@ public static class LoginModelConfiguration
         if (sqlServer)
         {
             // No cascades: removal of a native account must not erase audit or revive stale sessions.
-            foreach (var type in new[] { typeof(PilotManifest), typeof(LocalIdentitySession), typeof(LoginInteraction) })
+            foreach (var type in new[] { typeof(PilotManifest), typeof(LocalIdentitySession), typeof(LoginInteraction), typeof(LoginBrowserBudget) })
             {
                 foreach (var property in builder.Entity(type).Metadata.GetProperties().Where(value => value.ClrType == typeof(string)))
                 {

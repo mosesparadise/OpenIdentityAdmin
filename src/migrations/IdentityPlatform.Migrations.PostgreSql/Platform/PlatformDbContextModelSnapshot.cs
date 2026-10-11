@@ -57,6 +57,25 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.ToTable("LocalIdentitySession", "platform");
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.LoginBrowserBudget", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LastAdmissionAt")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.ToTable("LoginBrowserBudget", "platform");
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.LoginInteraction", b =>
                 {
                     b.Property<string>("Id")
@@ -65,6 +84,10 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 
                     b.Property<string>("BrowserDigest")
                         .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("BudgetId")
                         .HasMaxLength(64)
                         .HasColumnType("character varying(64)");
 
@@ -106,6 +129,8 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 
                     b.HasIndex("RequestTokenId")
                         .IsUnique();
+
+                    b.HasIndex("BudgetId", "Consumed", "ExpiresAt");
 
                     b.ToTable("LoginInteraction", "platform");
                 });
@@ -622,6 +647,14 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
                     b.ToTable("OpenIddictTokens", "platform");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.LoginInteraction", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.LoginBrowserBudget", null)
+                        .WithMany()
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

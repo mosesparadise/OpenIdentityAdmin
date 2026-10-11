@@ -188,7 +188,7 @@ public sealed class PilotPolicyTests
     {
         var context = new DefaultHttpContext();
         context.Request.Headers.Cookie = string.Join("; ", Enumerable.Range(0, 9).Select(_ => PilotProfile.CorrelationPrefix + InteractionSecrets.Create() + "=" + InteractionSecrets.Create()));
-        var interactions = new LoginInteractions(null!, null!, null!, null!, null!, TimeProvider.System);
+        var interactions = new LoginInteractions(null!, null!, null!, null!, null!, TimeProvider.System, new LoginInteractionAdmission(null!, TimeProvider.System));
         Assert.Null(await interactions.CreateAsync(context, "token", "urn:request:synthetic", long.MaxValue));
         Assert.Equal(0, context.Response.Headers.SetCookie.Count);
     }
