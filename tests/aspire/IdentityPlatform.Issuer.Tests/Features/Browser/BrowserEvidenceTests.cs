@@ -20,6 +20,11 @@ public sealed class BrowserEvidenceTests
             Assert.True(!safe!.ToString().Contains(sentinel, StringComparison.Ordinal), "Sensitive browser diagnostic reached test evidence.");
             Assert.True(safe.InnerException is null, "Original browser diagnostics must not survive as an inner exception.");
         }
+        var callbackFailure = BrowserJourneys.CallbackFailure("https://example.invalid/" + sentinel + "?value=" + sentinel,
+            BrowserJourneyRole.SecondTab, 400, 0, 0, false);
+        Assert.True(callbackFailure.Message.Contains("SecondTab at other", StringComparison.Ordinal) &&
+            !callbackFailure.ToString().Contains(sentinel, StringComparison.Ordinal) && callbackFailure.InnerException is null,
+            "Callback diagnostics must contain only fixed categories and counters.");
         var phased = await Record.ExceptionAsync(() => BrowserEvidence.RunAsync(async () =>
         {
             await Task.Yield();

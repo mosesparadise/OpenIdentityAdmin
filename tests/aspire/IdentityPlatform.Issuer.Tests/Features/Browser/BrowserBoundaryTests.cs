@@ -85,21 +85,24 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             await using var session = await BrowserSession.CreateAsync();
             var firstPage = await session.Context.NewPageAsync();
             var original = environment.RelyingParty.Prepare(exchange: true);
+            BrowserEvidence.Mark(BrowserPhase.InitialNavigation);
             await firstPage.GotoAsync(environment.RelyingParty.StartUri(original).AbsoluteUri);
-            await BrowserJourneys.LoginAsync(firstPage, environment, original);
+            await BrowserJourneys.LoginAsync(firstPage, environment, original, role: BrowserJourneyRole.InitialSession);
             var first = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
+            BrowserEvidence.Mark(BrowserPhase.FirstTabNavigation);
             await firstPage.GotoAsync(environment.RelyingParty.StartUri(first).AbsoluteUri);
             var secondPage = await session.Context.NewPageAsync();
             var second = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
+            BrowserEvidence.Mark(BrowserPhase.SecondTabNavigation);
             await secondPage.GotoAsync(environment.RelyingParty.StartUri(second).AbsoluteUri);
             var firstId = await firstPage.Locator("input[name=Interaction]").InputValueAsync();
             var secondId = await secondPage.Locator("input[name=Interaction]").InputValueAsync();
             Assert.True(firstId != secondId && first.State != second.State && first.Nonce != second.Nonce, "Tabs must retain independent request bindings.");
-            await BrowserJourneys.LoginAsync(firstPage, environment, first);
+            await BrowserJourneys.LoginAsync(firstPage, environment, first, role: BrowserJourneyRole.FirstTab);
             var cookies = await session.Context.CookiesAsync();
             Assert.True(!cookies.Any(cookie => cookie.Name == PilotProfile.CorrelationPrefix + firstId), "Completed tab must clear its own correlation.");
             Assert.True(cookies.Any(cookie => cookie.Name == PilotProfile.CorrelationPrefix + secondId), "Completing one tab must retain the other's correlation.");
-            await BrowserJourneys.LoginAsync(secondPage, environment, second);
+            await BrowserJourneys.LoginAsync(secondPage, environment, second, role: BrowserJourneyRole.SecondTab);
             Assert.True(first.ExpectedSessionId != second.ExpectedSessionId, "Each fresh credential event must retain its own session.");
             await using var scope = environment.Services.CreateAsyncScope();
             var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -120,6 +123,7 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             await using var session = await BrowserSession.CreateAsync(javaScript: false);
             var firstPage = await session.Context.NewPageAsync();
             var first = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
+            BrowserEvidence.Mark(BrowserPhase.FirstTabNavigation);
             await firstPage.GotoAsync(environment.RelyingParty.StartUri(first).AbsoluteUri);
             var firstId = await firstPage.Locator("input[name=Interaction]").InputValueAsync();
             await FillCredentialsAsync(firstPage, environment);
@@ -139,6 +143,7 @@ public sealed class BrowserBoundaryTests(IssuerFixture fixture)
             }
             var secondPage = await session.Context.NewPageAsync();
             var second = environment.RelyingParty.Prepare(exchange: true, prompt: "login");
+            BrowserEvidence.Mark(BrowserPhase.SecondTabNavigation);
             await secondPage.GotoAsync(environment.RelyingParty.StartUri(second).AbsoluteUri);
             await BrowserJourneys.LoginAsync(secondPage, environment, second, javaScript: false);
             Assert.Equal(400, (await firstPage.ReloadAsync())!.Status);
