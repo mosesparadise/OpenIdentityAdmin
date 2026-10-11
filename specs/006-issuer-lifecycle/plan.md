@@ -75,3 +75,10 @@ Branch `015-issuer-distribution` follows merged PR #17 (`a6b4dfb`). The user con
 Before implementation: record the confirmed structural/sequencing choices, complete the spec checklist, run Spec Kit prerequisites and independent architecture/security/test analysis. For each increment: compile/analyzers/format, meaningful helper tests, exact real-provider lifecycle cases, existing provider/browser regression, child coverage and normal supply/assurance checks. Source-only review never establishes lifecycle behavior.
 
 Record exact commands, case identities/counts, provider versions, source/merge tree, observed durations, failure corrections, reviewer dispositions and cleanup evidence in `verification.md`. Update the roadmap, issuer backlog and runbook after actual acceptance. Keep T021 manual assessment, remaining M01-E stories, M01-F and all public-release gates explicit. Use Conventional Commit PR titles and normal expected-head squash merges; no self-approval or protection bypass.
+
+
+## Third increment: key lifecycle (T016 design in progress)
+
+Distribution PR #18 squash-merged as `58ebfb1` after final run `38183025677` passed all 21 checks / 1,097 ordinary cases, with tested and delivered tree unchanged. Branch `016-issuer-key-rotation` now contains the [key-lifecycle design draft](contracts/key-lifecycle.md): backward-compatible explicit active configuration, staged/previous inventories, native selection and lifetime guards, public-key propagation, operator retirement/rollback, actual-node configuration transitions and a minimum acceptance matrix.
+
+Native-source architecture/security/test research is complete. Production credential/adapter folder placement and Activation/Retirement test grouping have been asked of the user. Concrete-contract review and a configuration-transition experiment remain T016 prerequisites; no T017 implementation has started. Do not mark rotation accepted from this document.
