@@ -8,7 +8,7 @@ public sealed class ContrastBoundaryTests(ITestOutputHelper output)
 {
     private enum Arm
     {
-        NoScan, TargetPartial, FullWrapper, OwnedWrapper
+        NoScan, TargetPartial, FullWrapper
     }
 
     [Theory]
@@ -18,8 +18,7 @@ public sealed class ContrastBoundaryTests(ITestOutputHelper output)
     {
         Assert.True(provider is "PostgreSql" or "SqlServer");
         var samples = ContrastExperimentTests.ParseSamples(Environment.GetEnvironmentVariable("IDENTITY_CONTRAST_SAMPLES"));
-        var ownership = UseOwnershipComparison(Environment.GetEnvironmentVariable("IDENTITY_CONTRAST_OWNERSHIP_COMPARISON"));
-        Arm[] arms = ownership ? [Arm.FullWrapper, Arm.OwnedWrapper] : [Arm.NoScan, Arm.TargetPartial, Arm.FullWrapper];
+        var arms = Enum.GetValues<Arm>();
         var findings = 0;
         for (var sample = 0; sample < samples; sample++)
         {
@@ -28,7 +27,7 @@ public sealed class ContrastBoundaryTests(ITestOutputHelper output)
                 var arm = arms[(sample + offset) % arms.Length];
                 output.WriteLine($"Boundary sample {sample + 1}/{samples}: {arm} started");
                 var finding = false;
-                await BrowserEvidence.RunAsync(async () => finding = await ObserveAsync(arm, sample + 1, ownership));
+                await BrowserEvidence.RunAsync(async () => finding = await ObserveAsync(arm, sample + 1));
                 findings += finding ? 1 : 0;
                 output.WriteLine($"Boundary sample {sample + 1}/{samples}: {arm} observed finding={finding.ToString().ToLowerInvariant()}");
             }
@@ -37,19 +36,12 @@ public sealed class ContrastBoundaryTests(ITestOutputHelper output)
         Assert.True(findings == 0, $"The boundary experiment recorded {findings} failing observations; all findings remain unresolved failures.");
     }
 
-    internal static bool UseOwnershipComparison(string? value) => value switch
-    {
-        null => false,
-        "enabled" => true,
-        _ => throw new InvalidOperationException("Unknown contrast ownership experiment mode.")
-    };
-
-    private async Task<bool> ObserveAsync(Arm arm, int sample, bool ownership)
+    private async Task<bool> ObserveAsync(Arm arm, int sample)
     {
         await using var session = await BrowserSession.CreateAsync();
         var page = await session.Context.NewPageAsync();
         var fixture = new ContrastExperimentPage();
-        await fixture.AttachAsync(page, arm == Arm.OwnedWrapper);
+        await fixture.AttachAsync(page);
         await page.GotoAsync("https://contrast.example.invalid/account/login");
         await page.GetByLabel("Theme", new()
         {
@@ -68,12 +60,12 @@ public sealed class ContrastBoundaryTests(ITestOutputHelper output)
             output.WriteLine($"Raw target partial: failed={evidence.Failures}, incomplete={evidence.Incomplete}; {evidence.Evidence}");
             finding = evidence.Failures != 0 || evidence.Incomplete != 0;
         }
-        else if (arm is Arm.FullWrapper or Arm.OwnedWrapper)
+        else if (arm == Arm.FullWrapper)
         {
             try
             {
                 await BrowserAccessibility.RequireNoViolationsAsync(page,
-                    ownership ? null : () => ContrastExperimentTests.CaptureAsync(page, $"boundary-{arm}-{sample}"));
+                    () => ContrastExperimentTests.CaptureAsync(page, $"boundary-{arm}-{sample}"));
             }
             catch (Xunit.Sdk.XunitException exception) when (exception.Message.StartsWith("Automated accessibility violations:", StringComparison.Ordinal))
             {
@@ -83,7 +75,7 @@ public sealed class ContrastBoundaryTests(ITestOutputHelper output)
             }
         }
         var snapshot = await BrowserAccessibility.ReadStylesAsync(page);
-        output.WriteLine((!ownership && arm == Arm.FullWrapper && finding ? "Boundary observation after failed scan/diagnostic capture (later state)" : "Observation at assigned boundary") +
+        output.WriteLine((arm == Arm.FullWrapper && finding ? "Boundary observation after failed scan/diagnostic capture (later state)" : "Observation at assigned boundary") +
             BrowserAccessibility.DescribeSnapshot(snapshot));
         finding |= !HasHealthyCanvas(snapshot);
         Assert.Equal(1, fixture.Posts);

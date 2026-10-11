@@ -23,7 +23,7 @@ class ContrastExperimentEvidenceTests(unittest.TestCase):
             require_selection(other, other)
 
     def test_complete_cohort_and_marker_are_both_required(self):
-        arms = ('FullWrapper', 'OwnedWrapper')
+        arms = ('NoScan', 'TargetPartial', 'FullWrapper')
         lines = [f'Boundary sample {sample}/{SAMPLES}: {arm} observed finding=false' for sample in range(1, SAMPLES + 1) for arm in arms]
         with tempfile.TemporaryDirectory() as directory:
             report = Path(directory) / 'contrast.trx'

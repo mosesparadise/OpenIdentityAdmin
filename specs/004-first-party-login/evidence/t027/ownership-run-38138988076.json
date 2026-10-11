@@ -1,0 +1,260 @@
+{
+  "schema": 1,
+  "commit": "cf12d092b1f08ed55e5d2e5871320c81a132711e",
+  "run": 38138988076,
+  "job": 114468715969,
+  "artifact": 11702228591,
+  "browser": "webkit",
+  "scope": "synthetic rendering; no provider/authentication evidence",
+  "duration": "00:01:08.0660000",
+  "completedSessions": 40,
+  "findings": 19,
+  "arms": {
+    "FullWrapper": {
+      "observations": 20,
+      "findings": 19
+    },
+    "OwnedWrapper": {
+      "observations": 20,
+      "findings": 0
+    }
+  },
+  "ownedState": {
+    "body-background-kind": "opaque",
+    "root-background-kind": "transparent",
+    "page-token": "#020617",
+    "text-token": "#f8fafc",
+    "root-page-token": "#020617",
+    "root-text-token": "#f8fafc",
+    "body-color": "#f8fafc",
+    "body-background": "#020617",
+    "body-scheme": "dark",
+    "root-scheme": "dark",
+    "theme-page-token": "#020617",
+    "theme-control-page-token": "#020617",
+    "theme-scheme": "dark",
+    "theme-control-scheme": "dark",
+    "theme-font-applied": "true",
+    "theme-control-font-applied": "true",
+    "theme": "dark",
+    "ready": "complete",
+    "visibility": "visible",
+    "focus": "true",
+    "body-connected": "true",
+    "single-body": "true",
+    "stylesheet": "available",
+    "sheet-disabled": "false",
+    "body-rule": "true",
+    "rule-background": "true",
+    "rule-color": "true",
+    "rule-base": "true",
+    "inline-override": "false",
+    "zero-margin": "true",
+    "font-applied": "true",
+    "line-height-applied": "true",
+    "min-height-applied": "true"
+  },
+  "observations": [
+    {
+      "sample": 1,
+      "arm": "FullWrapper",
+      "finding": false
+    },
+    {
+      "sample": 1,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 2,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 2,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 3,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 3,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 4,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 4,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 5,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 5,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 6,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 6,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 7,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 7,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 8,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 8,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 9,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 9,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 10,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 10,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 11,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 11,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 12,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 12,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 13,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 13,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 14,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 14,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 15,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 15,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 16,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 16,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 17,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 17,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 18,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 18,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 19,
+      "arm": "FullWrapper",
+      "finding": true
+    },
+    {
+      "sample": 19,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 20,
+      "arm": "OwnedWrapper",
+      "finding": false
+    },
+    {
+      "sample": 20,
+      "arm": "FullWrapper",
+      "finding": true
+    }
+  ],
+  "disposition": "Original selectors reproduced 19/20; direct body token ownership passed 20/20 with healthy body/select/label state. Candidate requires production adoption review and unchanged full matrix; no engine cause or painted-pixel claim."
+}
