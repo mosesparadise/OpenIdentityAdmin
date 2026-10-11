@@ -1,6 +1,6 @@
 # Issuer protection operations
 
-This runbook covers the first Linux local-filesystem adapter, not a deployable identity product. Authentication, cookies, tokens, discovery/JWKS and public key rotation are not enabled yet. See [the configuration contract](../../specs/002-issuer-foundation/contracts/configuration.md) and [remaining issuer work](../engineering/issuer-flow-backlog.md).
+This runbook covers the first Linux local-filesystem adapter, not a deployable identity product. The default host profile remains health-only. The separately enabled [Development pilot](first-party-pilot.md) now implements authentication, cookies, tokens and discovery/JWKS. Public signing/encryption overlap and full session/code/token restart/two-instance acceptance remain M01-E; they are not established by this protection adapter. See [the configuration contract](../../specs/002-issuer-foundation/contracts/configuration.md) and [remaining issuer work](../engineering/issuer-flow-backlog.md).
 
 ## Provision and start
 
@@ -19,7 +19,7 @@ openssl pkcs12 -export -inkey signing.key -in signing.crt -out signing.pfx
 
 Generate encryption and wrapping credentials independently, with `keyUsage=critical,keyEncipherment` and different filenames/passwords. Retire unnecessary intermediate encrypted PEM material according to local secret-handling policy. Do not reuse any public key across purposes, even in a reissued certificate.
 
-Precreate a dedicated local key-ring directory with mode 0700 under the AuthServer service identity. Configure all keys in the contract, plus the existing database configuration, then start AuthServer. Any partial issuer configuration causes fixed-message exit 2 before listening. An entirely absent issuer profile retains the existing health-only foundation mode. Successful startup still exposes only `/alive` and `/health`.
+Precreate a dedicated local key-ring directory with mode 0700 under the AuthServer service identity. Configure all keys in the contract, plus the existing database configuration, then start AuthServer. Any partial issuer configuration causes fixed-message exit 2 before listening. An entirely absent issuer profile retains the existing health-only foundation mode. With `Pilot:Enabled=false`, successful protection-only startup exposes only `/alive` and `/health`; enabling the separate Development pilot also maps its documented login/protocol routes.
 
 The adapter rejects symlinks/reparse points, including parent components; projected-secret symlink mounts are therefore unsupported. It rejects group/other-writable nonsticky ancestors. **Mode checks do not establish ownership**: the operator must ensure the service owns its private directories/files and trusts every ancestor owner, including a sticky shared directory's owner. The runtime cannot protect against another process with the same identity/root privileges or arbitrary concurrent filesystem replacement. Use a local private volume, not an unbounded remote filesystem; provision Windows ACL/remote-store/HSM adapters separately.
 

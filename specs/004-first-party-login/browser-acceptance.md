@@ -1,6 +1,6 @@
 # T027 — Browser and theme acceptance
 
-**Current status:** T027 source acceptance is complete. The [reproduced theme inheritance defect is corrected](verification.md#completed-corrected-source-acceptance-and-disposition): source `7dc6086` passed all 17 checks/793 ordinary cases with zero failures/skips, the focused 60-observation regression, both mutation jobs and all coverage floors. [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) records the required final documentation-head checks and squash delivery. A-002 remains expired; closure uses its reproduced-defect criteria. Full pilot/manual/external acceptance remains separate. Earlier unresolved entries below are historical.
+**Current status:** T027 is accepted and merged with the reproduced theme inheritance correction in PR #11 (`bdd45e5`). PR #12 subsequently reverified all six browser cells and the separate 60-observation regression while completing T030. The [current acceptance matrix](acceptance-matrix.md) records counts, versions and remaining T031/T032/manual obligations. A-002 remains expired; closure used its reproduced-defect criteria. The earlier plan and checkpoint entries below are historical, including their then-open T030 references. Full pilot/manual/external acceptance remains separate.
 
 ## Authorized recurrence investigation
 

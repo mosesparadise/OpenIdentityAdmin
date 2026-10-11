@@ -1,5 +1,7 @@
 # T023 bootstrap acceptance plan
 
+Current delivery: T023 is squash-merged in [PR #5](https://github.com/mosesparadise/OpenIdentityAdmin/pull/5) and reverified at the PR #12 checkpoint. The plan/checkpoint statements below are historical; use the [current acceptance matrix](acceptance-matrix.md) for remaining obligations.
+
 Status: complete on both real providers; [CI evidence](verification.md#t023-completed-ci-checkpoint). PR #5 awaits review. Planned before implementation on branch `004-bootstrap-acceptance`. Existing requirements checklist:7/7 checked; Spec Kit prerequisites resolve to feature004. No extension hooks. Independent architecture review accepted the isolated fixture, runtime permissions and deterministic race design.
 
 Scope: LOGIN-001/008, US1/AC1-2; the existing approved feature plan's bootstrap convergence task. No administrator/product capability or acceptance relaxation. Runtime changes only for reproduced defects.

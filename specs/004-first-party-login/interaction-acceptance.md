@@ -1,5 +1,7 @@
 # T024 login and interaction acceptance plan
 
+Current delivery: T024 is squash-merged in [PR #6](https://github.com/mosesparadise/OpenIdentityAdmin/pull/6) and reverified at the PR #12 checkpoint. The plan/checkpoint statements below are historical; use the [current acceptance matrix](acceptance-matrix.md) for remaining obligations.
+
 Status: T024 verified by [run38073502300](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38073502300), all578 .NET cases and seven gates passed. This plan was recorded before implementation on `004-interaction-acceptance`, under approved feature004 and T024. Spec Kit prerequisites pass; requirements checklist7/7 checked; no extension hooks. PR #5 was squash-merged as `d4664a3f0222ffda2b0d4ae01d8e6aaedb551b92` after exact-head CI and review with zero open findings.
 
 Scope: LOGIN-003/004/005, US2/AC1–3 and T011–015. Complete password-entry eligibility, native five-attempt lockout, original cached-request binding, delayed positive max_age, independent tabs and completion/consumption race evidence. Existing freshness, capacity, forged-form and replaced-session tests remain in the required both-provider matrix. T025–T030 remain separate obligations; this increment does not accept the full pilot or authorize its next PR merge.

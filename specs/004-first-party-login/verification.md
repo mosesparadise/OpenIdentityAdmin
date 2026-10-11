@@ -1,16 +1,18 @@
 # Feature 004 verification and review record
 
-Status: implementation in progress; full acceptance pending. Partial executed evidence below does not establish release readiness or a control pass.
+Status: merged Development-pilot implementation with bounded automated evidence; full acceptance remains open. The [current acceptance matrix](acceptance-matrix.md) is the reconciled requirement/test/gap index. Historical entries below retain their original scope and do not override this checkpoint.
 
 ## Current delivery checkpoint — 11 October 2026
 
-T026 is merged in PR #9. PR #10 merged the bounded browser work under A-002; that exception expired when the WebKit contrast finding recurred. [PR #11](https://github.com/mosesparadise/OpenIdentityAdmin/pull/11) now contains T028 mutation verification, the reviewed callback observer/evidence corrections, and a reproduced CSS compatibility correction. The original root-only theme failed 19/20 paired sessions; declaring the same canonical values on root and body passed 20/20. The permanent fixtures consume the shipped stylesheet directly. See [the defect evidence and disposition](#theme-inheritance-defect-correction).
+T023–T028 and T030 are merged. PR #11 (`bdd45e5`) corrected the reproduced WebKit theme inheritance defect and completed the bounded browser/mutation work. A-002 remains expired; its finding was disposed of through the existing closure criteria, without weakening scans or thresholds.
 
-Corrected source `7dc608673de1be0c7a92ec1c2bce40be9abdf60f` passed all 17 checks in [run 38139630540](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38139630540): 793 ordinary cases, zero failures/skips, both mutation jobs, the focused regression and all nine coverage floors. The reproduced theme inheritance defect is corrected with a permanent regression; T027/T028 source acceptance is complete. PR #11 must pass the same checks on its final documentation head before merge; the PR records those results and the resulting squash. A-002 is not renewed, and no scan/rule/coverage/deadline is relaxed. T030 concurrent capacity, T029 evidence reconciliation, full M01-D, M01-E restart/overlap and manual/external release requirements remain separate open work.
+[PR #12](https://github.com/mosesparadise/OpenIdentityAdmin/pull/12) squash-merged T030 as `fca82fb363ae90287633f720920a1daeaaa331da`. Final source `4cdb0437d7e26c93cdbe276ca3078505df783e14` passed all 17 checks in [run 38148540658](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38148540658): **845 ordinary cases, zero failures/skips**, the separate 60-observation rendering regression, both seven-mutation jobs and all nine 90/80 coverage floors. Counts, versions, exact provider/browser scope and independent review limits are in the [acceptance matrix](acceptance-matrix.md#accepted-merged-checkpoint). The temporary SQL diagnostic workflow was removed before final verification.
 
-Earlier approval checkpoint `ef0464c2ab40c7855bacaba2decf463f7eda7ebe` passed all 14 checks and 749 .NET cases, zero skips, in [run 38120855109](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38120855109): 229 unit/architecture, 188 HTTP/provider cases on each database and 24 cases in each of six browser/provider cells. All nine module coverage floors passed. PR #10 later passed its final head in run 38125691380 before merging as `3310d4b`; neither historical checkpoint resolved the contrast finding.
+T029 reconciles this merged checkpoint and records specified HTTP transport and authorization-time current-state verification gaps as T031/T032. Those are unverified obligations, not observed runtime defects. T018/T021, qualified manual UI acceptance and full M01-D remain open. M01-E restart/two-instance/key overlap, M01-F management contracts/API docs, BFF/React and broader R1 work remain unbuilt. All 345 ASVS controls are unassessed; A-001 keeps actual certification as a public-release gate. T029's own exact-head checks and squash delivery are recorded on its PR.
 
-Required corrected-source scope is 793 ordinary .NET cases (243 unit/architecture, 188 HTTP/provider cases per database, 29 cases in each of six browser/provider cells), plus the separate 60-observation WebKit regression and both seven-mutation jobs. All must pass with zero skips and unchanged coverage floors. The following sections preserve chronological evidence; old unresolved statuses describe their checkpoints.
+## Historical evidence
+
+The following records preserve earlier executed results, failures, investigations and review dispositions. Counts and statements that a task was pending apply to those historical checkpoints.
 
 ## Handoff
 

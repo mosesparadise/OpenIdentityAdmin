@@ -2,11 +2,12 @@
 
 A greenfield administration platform built with OpenIddict and ASP.NET Core Identity. The approved product includes client/resource and user/role management, security, auditing and operational health through a React/TypeScript Admin BFF and a Razor Pages authentication service.
 
-**Current state: foundation verified; product features remain in development.** This branch contains native persistence, provider migrations, safe configuration/health, optional durable issuer protection, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. The default profile exposes operational health only. An explicitly enabled Development-only pilot supports a themed Razor login and an OpenIddict S256 authorization-code flow; its full acceptance remains in progress. The usable Admin BFF, management APIs, React client and Scalar/Swagger remain planned. This is not a deployable or certified identity product.
+**Current state: Development-only login pilot implemented; full product acceptance remains incomplete.** This branch contains native persistence, provider migrations, safe configuration/health, optional durable issuer protection, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. The default profile exposes operational health only. An explicitly enabled Development-only pilot supports a themed Razor login and an OpenIddict S256 authorization-code flow; its full acceptance remains in progress. The usable Admin BFF, management APIs, React client and Scalar/Swagger remain planned. This is not a deployable or certified identity product.
 
 ## Approved design
 
 - [Living roadmap and complete task register](docs/roadmap.md)
+- [Current pilot evidence, test coverage and remaining acceptance gaps](specs/004-first-party-login/acceptance-matrix.md)
 - [Code quality and squash-merge policy](docs/engineering/code-quality.md)
 - [ASVS control register and pending release decisions](docs/assurance/README.md)
 
@@ -22,7 +23,7 @@ Version 0.2 and A-001 are approved. The ten-document baseline preserves its orig
 
 ## Project organization
 
-Source and solution folders are grouped under `aspire`, `backend`, `core`, `migrations`, `persistence` and the reserved `frontend` area. Tests use corresponding responsibility groups plus `architecture`; Features remain inside each project. See the [layout and native MTP guide](docs/engineering/project-layout.md).
+Source and solution folders are grouped under `aspire`, `backend`, `core`, `migrations`, `persistence` and `frontend` (shared design tokens; React administration is planned). Tests use corresponding responsibility groups plus `architecture`; Features remain inside each project. See the [layout and native MTP guide](docs/engineering/project-layout.md).
 
 ## Local foundation
 
@@ -37,6 +38,8 @@ dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=
 # Or select the other required production provider:
 dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=SqlServer
 ```
+
+For Windows, run the pilot inside Linux/WSL2; follow the [WSL2 and trust instructions](docs/operations/first-party-pilot.md#windows-with-wsl2). The Linux credential adapter does not support a native Windows pilot.
 
 The dashboard uses `https://localhost:17100`. Use its generated authenticated login link printed locally. Each application receives a dynamically allocated HTTPS endpoint. The default profile exposes `/alive` and `/health`; the separate Development-only login pilot requires explicit configuration from its [quickstart](specs/004-first-party-login/quickstart.md). On Linux, follow the dev-certificate tool's `SSL_CERT_DIR` guidance while preserving the system trust directory; see the [quickstart](specs/001-platform-foundation/quickstart.md).
 
@@ -57,11 +60,9 @@ python3 scripts/verify.py SqlServer --browser chromium
 
 All six test projects use xUnit v3 (`xunit.v3.mtp-v2` 4.0.2) with native Microsoft Testing Platform 2.5.1. Build first: these scripts deliberately use `--no-build`/`--no-restore`. Each provider profile includes native persistence and actual Aspire process tests. An unavailable required provider fails; it is never substituted or skipped. The provider profiles exclude browser cases. The GitHub workflow also requires both Chromium browser profiles, runs Firefox/WebKit on both providers nightly/manually and for dependency/browser/trust changes, and merges every selected cell’s child-process coverage, enforcing 90% lines/80% branches for each handwritten module. No overall average can conceal an untested host. CI also checks current NuGet advisories, locked license evidence and the source snapshot for secrets; see [supply-chain evidence](docs/engineering/supply-chain.md). See `eng/coverage-policy.json` for generated-code exclusions and [native MTP/browser instructions](docs/engineering/project-layout.md#native-mtp) for installation, trust, cadence and exact selection checks.
 
-[CI run 38040891293](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38040891293) verified the xUnit v3/MTP and grouped-layout implementation: **92 .NET tests** across unit/PostgreSQL/SQL Server and **19 verification-script regressions** passed, with no skipped required cases. All nine handwritten modules passed their coverage floors, including child hosts; dependency, license and secret checks passed. The managed local environment blocks Microsoft's redirected SQL image hostname, so real SQL Server acceptance is established by GitHub CI. See the [current verification record](specs/001-platform-foundation/verification-mtp-layout.md) for the exact commit, artifact references, coverage and review dispositions.
+The latest merged product checkpoint is [PR #12](https://github.com/mosesparadise/OpenIdentityAdmin/pull/12), squash `fca82fb`: final source `4cdb043` passed all **17 checks and 845 ordinary tests with zero failures/skips** in [run 38148540658](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38148540658). This includes both database providers and all six browser/provider cells, with separate focused rendering/mutation evidence and all nine coverage floors. The [acceptance matrix](specs/004-first-party-login/acceptance-matrix.md) records exact scope, versions and limits. T031/T032 retain specified HTTP transport and authorization-state verification gaps; manual assessment, M01-E and the wider product are still pending. Counts and coverage do not prove all requirements complete.
 
-The subsequent [issuer-protection CI run 38048127515](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38048127515) passed **165 .NET tests** and the same **19 gate regressions**, including both credential-enabled database profiles. All nine modules and supply-chain checks passed. See its [verification record](specs/002-issuer-foundation/verification.md) for scope, artifacts, reviews and the fixture/evidence follow-up; the latest PR-head checks govern that follow-up. That historical checkpoint predates the Development-only login/protocol pilot; see the [feature 004 verification record](specs/004-first-party-login/verification.md) for its current acceptance and remaining gates.
-
-The [static-analysis and roadmap follow-up](specs/002-issuer-foundation/verification-quality.md) adds an enforced build/formatting CI job and three deliberately failing controls; its six-job implementation run also passed both providers and all existing regression/coverage gates.
+Historical foundation, issuer-protection and static-analysis checkpoints remain in their [foundation](specs/001-platform-foundation/verification-mtp-layout.md), [protection](specs/002-issuer-foundation/verification.md) and [quality](specs/002-issuer-foundation/verification-quality.md) records. The managed local environment could not fetch the redirected SQL image or pinned browser downloads, so their accepted execution evidence comes from normal GitHub CI; no provider/browser substitution or relaxed TLS was used.
 
 ## Implementation workflow
 

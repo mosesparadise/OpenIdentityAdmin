@@ -2,8 +2,27 @@
 
 **Feature Branch**: `002-issuer-foundation`  
 **Created**: 2026-10-10  
-**Status**: M01-D login/code-flow work is now specified and in progress under [feature 004](../../specs/004-first-party-login/spec.md). Restart/two-instance/key overlap remains M01-E. This was not the acceptance scope of feature 002. Feature 002 first establishes durable credentials and Data Protection. The remaining scenarios must retain their own Spec Kit scope and acceptance evidence. No complete issuer acceptance is claimed yet.
+**Status**: Feature 004 implements the bounded Development login/code pilot through PR #12 (`fca82fb`), with 17-check/845-case acceptance for the selected suite. T029 reconciles evidence; T031/T032 and manual/full M01-D acceptance remain open. ISS-003 restart/two-instance/key overlap remains M01-E. Feature 002 established durable credentials/Data Protection only. See the [current evidence matrix](../../specs/004-first-party-login/acceptance-matrix.md); no complete issuer or release acceptance is claimed.
 **Input**: Continue after merged PR #1 with the unfinished issuer portion of approved roadmap milestone 001. The local feature number 002 does not mean roadmap milestone 002 (secure administrator BFF), which depends on this work.
+
+## Current allocation of this original issuer backlog
+
+| Requirement | Implemented evidence / remaining obligation |
+| --- | --- |
+| ISS-001 | Feature 004 metadata/JWKS reflects the fixed pilot; future capabilities must have their own acceptance. |
+| ISS-002 | Feature 002 durable distinct credentials/encrypted protection is accepted; this alone does not prove ISS-003. |
+| ISS-003 | **Unbuilt M01-E:** real session/code/token restart, two deployed nodes and public signing/encryption overlap/retirement. |
+| ISS-004 | LOGIN-001/T023 transactional synthetic bootstrap and conflicts/rollback accepted. |
+| ISS-005 | LOGIN-003/008 password, lockout, form/cookie, audit and bounded request evidence; later administrator authentication remains separate. |
+| ISS-006 | Minimal API decisions preserve OpenIddict validation/native state; T031 retains named transport denials. |
+| ISS-007 | Mandatory S256 and downgrade/proof controls pass; A-001 certification compatibility is still external. |
+| ISS-008 | Bound/fresh/one-use interactions, tabs and atomic capacity accepted through T030. |
+| ISS-009 | Password/redemption current-state evidence exists; **T032** must directly prove changed eligibility at new/resumed authorization. |
+| ISS-010 | Independent public-key token/claim/binding validation accepted for the fixed pilot; native lifecycle claims follow the contract. |
+| ISS-011 | Six-cell automated UI/visual evidence accepted; qualified screen-reader/password-manager/WCAG and timed usability remain. |
+| ISS-012 | Accepted 845-case checkpoint plus mutations/coverage; **T031/T032**, full manual/product/operational acceptance remain. |
+
+The original scenarios below remain requirements. In particular, SC-004 restart/overlap is still unexecuted M01-E scope. The current component concurrency tests and single-host replay tests do not establish cross-node behavior. M01-F versioned management contracts, Scalar/Swagger and generated clients remain a separate obligation.
 
 ## User Scenarios & Testing
 

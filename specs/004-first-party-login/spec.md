@@ -2,7 +2,7 @@
 
 **Feature Branch**: `004-first-party-login`
 **Created**: 2026-10-10
-**Status**: Specified under approved v0.2 and A-001; implementation acceptance pending.
+**Status**: Development-pilot implementation merged under approved v0.2/A-001; [acceptance reconciliation](acceptance-matrix.md) retains T031/T032 and manual/full-feature obligations. No requirement is relaxed.
 **Input**: Merge PR #3 using squash, then proceed to M01-D in the approved roadmap.
 
 ## User Scenarios & Testing

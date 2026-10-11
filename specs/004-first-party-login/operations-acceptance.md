@@ -1,5 +1,7 @@
 # T026 — Operations and failure acceptance
 
+Current delivery: T026 is squash-merged in [PR #9](https://github.com/mosesparadise/OpenIdentityAdmin/pull/9) and reverified at the PR #12 checkpoint. The plan/checkpoint statements below are historical; use the [current acceptance matrix](acceptance-matrix.md) for remaining obligations.
+
 Authorized by the user's request to complete T026–T028 sequentially, each through a separate reviewed/fixed/squash-merged PR. PR #8 merged as `64d8ceb` after all seven checks on `3241d15`; this branch completes only T026. Existing v0.2, LOGIN-008/009, SC-005 and the feature's contracts govern the work. T027–T030 remain separate acceptance obligations.
 
 ## Design and evidence boundaries

@@ -1,5 +1,7 @@
 # T025 code-exchange acceptance plan
 
+Current delivery: T025 is squash-merged in [PR #7](https://github.com/mosesparadise/OpenIdentityAdmin/pull/7) and reverified at the PR #12 checkpoint. The plan/checkpoint statements below are historical; use the [current acceptance matrix](acceptance-matrix.md) for remaining obligations.
+
 Recorded before implementation on `004-exchange-acceptance`, under approved v0.2/A-001 and feature004. Spec Kit prerequisites pass; requirements checklist7/7 checked; no extension hooks. PR #6 subsequently passed all seven exact-head gates at `bd4992c` in run38082495623 and was squash-merged as `5aa330c`; this branch is based on that squash before publication.
 
 ## Scope and boundary
