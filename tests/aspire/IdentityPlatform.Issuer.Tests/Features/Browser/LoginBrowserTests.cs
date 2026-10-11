@@ -155,27 +155,27 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         await BrowserEvidence.RunAsync(async () =>
         {
             var environment = await fixture.GetAsync(provider);
-            await using var session = await BrowserSession.CreateAsync(width);
-            var context = session.Context;
-            var page = await context.NewPageAsync();
-            var flow = environment.RelyingParty.Prepare();
-            await page.GotoAsync(environment.RelyingParty.StartUri(flow).AbsoluteUri);
-            await page.GetByLabel("Theme", new()
+            // Reproduce the reported initial-context dark desktop finding; each context must pass its first scan.
+            var repetitions = theme == "dark" && width == 1280 ? 30 : 1;
+            for (var iteration = 0; iteration < repetitions; iteration++)
             {
-                Exact = true
-            }).SelectOptionAsync(theme);
-            Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
-            Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-            await BrowserAccessibility.RequireNoViolationsAsync(page);
-            await BrowserVisuals.CaptureAsync(page, $"login-{theme}-{width}");
-            var keys = await page.EvaluateAsync<string[]>("Object.keys(localStorage)");
-            Assert.True(keys.Length == 1 && keys[0] == "identity-theme", "Browser storage must contain only the theme preference.");
-            await page.ReloadAsync();
-            Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
-            // Exercise each newly rendered response; rescanning an already stable document is insufficient.
-            // Every first scan must pass. No failed response is retried or accepted.
-            for (var response = 0; response < 20; response++)
-            {
+                await using var session = await BrowserSession.CreateAsync(width);
+                var context = session.Context;
+                var page = await context.NewPageAsync();
+                var flow = environment.RelyingParty.Prepare();
+                await page.GotoAsync(environment.RelyingParty.StartUri(flow).AbsoluteUri);
+                await page.GetByLabel("Theme", new()
+                {
+                    Exact = true
+                }).SelectOptionAsync(theme);
+                Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
+                Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
+                await BrowserAccessibility.RequireNoViolationsAsync(page);
+                await BrowserVisuals.CaptureAsync(page, $"login-{theme}-{width}");
+                var keys = await page.EvaluateAsync<string[]>("Object.keys(localStorage)");
+                Assert.True(keys.Length == 1 && keys[0] == "identity-theme", "Browser storage must contain only the theme preference.");
+                await page.ReloadAsync();
+                Assert.Equal(theme, await page.Locator("html").GetAttributeAsync("data-theme"));
                 await page.Locator("#username").FillAsync("unknown.visual.user");
                 await page.Locator("#password").FillAsync("synthetic-invalid-password");
                 await page.Locator("#submit").ClickAsync();
@@ -185,14 +185,14 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
                 await page.Locator("#error-summary").FocusAsync();
                 Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
                 await BrowserAccessibility.RequireNoViolationsAsync(page, () => BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}"));
+                await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
+                if (width == 1280)
+                {
+                    await page.SetViewportSizeAsync(768, 900);
+                    Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
+                }
+                Assert.True(await page.EvaluateAsync<bool>("matchMedia('(prefers-reduced-motion: reduce)').matches"));
             }
-            await BrowserVisuals.CaptureAsync(page, $"error-{theme}-{width}");
-            if (width == 1280)
-            {
-                await page.SetViewportSizeAsync(768, 900);
-                Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth"));
-            }
-            Assert.True(await page.EvaluateAsync<bool>("matchMedia('(prefers-reduced-motion: reduce)').matches"));
         });
     }
 

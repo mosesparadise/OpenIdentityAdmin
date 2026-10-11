@@ -46,6 +46,12 @@ public sealed class BrowserEvidenceTests
         Assert.True(axeEvidence.Contains("color-contrast: #submit/other element", StringComparison.Ordinal) &&
             axeEvidence.Contains("foreground=#ffffff, background=unknown, contrast=2.5", StringComparison.Ordinal) &&
             !axeEvidence.Contains(sentinel, StringComparison.Ordinal), "Accessibility diagnostics must retain only fixed targets and numeric/color facts.");
+        var styleEvidence = BrowserAccessibility.DescribeStyles(System.Text.Json.JsonSerializer.SerializeToElement(new[]
+        {
+            new { index = 0, color = "#ffffff", fill = sentinel, background = "#000000", focus = true, hover = false, top = 12, height = 48, scroll = 0, text = sentinel }
+        }));
+        Assert.True(styleEvidence.Contains("#submit: color=#ffffff, fill=unknown, background=#000000", StringComparison.Ordinal) &&
+            !styleEvidence.Contains(sentinel, StringComparison.Ordinal), "Computed-style diagnostics must exclude arbitrary values.");
         var assertion = new Xunit.Sdk.XunitException("Expected invariant failure");
         var preserved = await Assert.ThrowsAsync<Xunit.Sdk.XunitException>(() => BrowserEvidence.RunAsync(() => Task.FromException(assertion)));
         Assert.Same(assertion, preserved);

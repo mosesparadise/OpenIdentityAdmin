@@ -15,7 +15,7 @@ internal static class BrowserAccessibility
     [
         "#submit", "#theme", "#show-password", "#username", "#password", "#heading", "#error-summary > p",
         ".error-summary > p", ".wordmark", ".brand-mark", ".badge", ".eyebrow", ".subtitle", ".footnote",
-        "footer", "label", "strong", "p", ".skip-link"
+        "footer", "label", "strong", "p", ".skip-link", "body", "html", ".card"
     ];
 
     public static async Task RequireNoViolationsAsync(IPage page, Func<Task>? captureFailure = null)
@@ -24,6 +24,15 @@ internal static class BrowserAccessibility
         if (result.Violations.Length > 0)
         {
             var message = Describe(result);
+            try
+            {
+                var styles = await page.EvaluateAsync<JsonElement>(StyleSnapshot, Targets);
+                message += DescribeStyles(styles);
+            }
+            catch (PlaywrightException)
+            {
+                message += "; style snapshot unavailable";
+            }
             if (captureFailure is not null)
             {
                 try
@@ -71,6 +80,42 @@ internal static class BrowserAccessibility
         }
         return "Automated accessibility violations: " + string.Join("; ", details);
     }
+
+    internal static string DescribeStyles(JsonElement styles)
+    {
+        var details = new List<string>();
+        foreach (var node in styles.EnumerateArray())
+        {
+            if (!node.TryGetProperty("index", out var indexValue) || !indexValue.TryGetInt32(out var index) || index < 0 || index >= Targets.Length)
+            {
+                continue;
+            }
+            details.Add($"{Targets[index]}: color={Color(node, "color")}, fill={Color(node, "fill")}, background={Color(node, "background")}, " +
+                $"focus={Flag(node, "focus")}, hover={Flag(node, "hover")}, top={Coordinate(node, "top")}, height={Coordinate(node, "height")}, scroll={Coordinate(node, "scroll")}");
+        }
+        return "; computed styles: " + string.Join("; ", details);
+    }
+
+    private static bool Flag(JsonElement node, string key) => node.TryGetProperty(key, out var value) && value.ValueKind == JsonValueKind.True;
+    private static string Coordinate(JsonElement node, string key) => node.TryGetProperty(key, out var value) && value.ValueKind == JsonValueKind.Number &&
+        value.TryGetInt32(out var number) && number is >= -100000 and <= 100000 ? number.ToString(CultureInfo.InvariantCulture) : "unknown";
+
+    // Read only: never move focus, pointer or scroll before preserving the failing computed state.
+    private const string StyleSnapshot = """
+        selectors => selectors.flatMap((selector, index) => {
+            const element = document.querySelector(selector);
+            if (!element) return [];
+            const style = getComputedStyle(element), rect = element.getBoundingClientRect();
+            const hex = value => {
+                const match = /^rgba?\((\d+), (\d+), (\d+)(?:, ([\d.]+))?\)$/.exec(value);
+                if (!match || (match[4] !== undefined && Number(match[4]) !== 1)) return 'unknown';
+                return '#' + match.slice(1, 4).map(channel => Number(channel).toString(16).padStart(2, '0')).join('');
+            };
+            return [{index, color: hex(style.color), fill: hex(style.webkitTextFillColor), background: hex(style.backgroundColor),
+                focus: element === document.activeElement, hover: element.matches(':hover'),
+                top: Math.round(rect.top), height: Math.round(rect.height), scroll: Math.round(scrollY)}];
+        })
+        """;
 
     private static string Color(JsonElement data, string name)
     {
