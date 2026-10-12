@@ -1,6 +1,6 @@
 {
-  "core": 20,
-  "browser": 5,
+  "core": 40,
+  "browser": 7,
   "node": 34,
   "browsers": [
     "chromium",

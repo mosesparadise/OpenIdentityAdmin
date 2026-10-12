@@ -1,67 +1,60 @@
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 
 namespace IdentityPlatform.Admin.Bff.Features.Documentation;
 
-// Deliberately not called by the production pipeline. This is renderer composition, not authorization.
+/// <summary>Registers viewer options separately from dormant renderer routes; this feature does not supply authorization.</summary>
 internal static class Setup
 {
-    internal static void MapDocumentation(this WebApplication app)
+    private const string InvalidOptions = "Documentation:Viewer requires bounded PageTitle, BrowserDocumentLabel and AdminDocumentLabel values.";
+    private const string BrowserDocument = "bff-v1";
+    private const string AdminDocument = "v1";
+
+    /// <summary>Validate presentation settings without mapping documentation or adding an activation switch.</summary>
+    internal static WebApplicationBuilder AddDocumentation(this WebApplicationBuilder builder)
     {
-        app.Use(async (context, next) =>
-        {
-            if (context.Request.Path.StartsWithSegments("/docs") || context.Request.Path.StartsWithSegments("/openapi"))
-            {
-                context.Response.OnStarting(() =>
-                {
-                    var nonce = context.Items[ScalarOptions.NonceHttpContextItemKey] as string;
-                    var script = nonce is null ? "'self'" : $"'self' 'nonce-{nonce}'";
-                    context.Response.Headers.ContentSecurityPolicy = $"default-src 'none'; script-src {script}; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
-                    context.Response.Headers.CacheControl = "no-store";
-                    context.Response.Headers.XContentTypeOptions = "nosniff";
-                    context.Response.Headers["Referrer-Policy"] = "no-referrer";
-                    return Task.CompletedTask;
-                });
-            }
-            // Scalar accepts a document-name route selector. Limit it to the supported inventory.
-            if (context.Request.Path.StartsWithSegments("/docs/scalar", out var remaining) &&
-                remaining.Value is { Length: > 1 } value &&
-                value is not "/v1" and not "/bff-v1" and not "/scalar.js" and not "/scalar.aspnetcore.js" and not "/favicon.svg")
-            {
-                context.Response.StatusCode = StatusCodes.Status404NotFound;
-                return;
-            }
-            await next(context);
-        });
-        app.MapOpenApi().WithDocumentPerVersion();
-        app.MapScalarApiReference("/docs/scalar", options =>
-        {
-            options.PersistentAuthentication = false;
-            options
-            .AddDocument("bff-v1", "Browser BFF v1", isDefault: true)
-            .AddDocument("v1", "Downstream Admin API v1")
-            .HideTestRequestButton().HideClientButton().DisableDefaultFonts().DisableAgent().DisableTelemetry().HideDeveloperTools()
-            .WithNonce()
-            .AddHeadContent("<script src=\"/docs/assets/scalar-bootstrap.js\"></script>")
-            .WithCustomCss(ReadText("tokens.css") + ReadText("theme.css"));
-        });
-        app.UseSwaggerUI(options =>
-        {
-            options.RoutePrefix = "docs/swagger";
-            options.IndexStream = () => OpenAsset("index.html");
-            options.SupportedSubmitMethods([]);
-            options.ConfigObject.PersistAuthorization = false;
-        });
-        app.MapGet("/docs/assets/scalar-bootstrap.js", () => Results.Content(ReadText("scalar-bootstrap.js"), "text/javascript")).ExcludeFromDescription();
-        app.MapGet("/docs/assets/swagger.js", () => Results.Content(ReadText("swagger.js"), "text/javascript")).ExcludeFromDescription();
-        app.MapGet("/docs/assets/theme.css", () => Results.Content(ReadText("tokens.css") + ReadText("theme.css"), "text/css")).ExcludeFromDescription();
+        builder.Services.AddOptions<DocumentationOptions>()
+            .BindConfiguration(DocumentationOptions.SectionName, options => options.ErrorOnUnknownConfiguration = true)
+            .Validate(options => options.IsValid(), InvalidOptions).ValidateOnStart();
+        return builder;
     }
 
-    private static Stream OpenAsset(string name) => typeof(Setup).Assembly.GetManifestResourceStream(
-        "IdentityPlatform.Admin.Bff.Features.Documentation.Assets." + name)!;
-
-    private static string ReadText(string name)
+    /// <summary>Map pinned read-only renderers for controlled fixtures; the production pipeline deliberately never calls this method.</summary>
+    internal static void MapDocumentation(this WebApplication app)
     {
-        using var reader = new StreamReader(OpenAsset(name));
-        return reader.ReadToEnd();
+        var settings = app.Services.GetRequiredService<IOptions<DocumentationOptions>>().Value;
+        app.Use(DocumentationPolicy.InvokeAsync);
+        app.MapOpenApi().WithDocumentPerVersion();
+        MapScalar(app, settings);
+        MapSwagger(app, settings);
+        MapAssets(app);
+    }
+
+    /// <summary>Keep local assets, nonce, no credentials and disabled interaction while applying safely rendered text.</summary>
+    private static void MapScalar(WebApplication app, DocumentationOptions settings) => app.MapScalarApiReference(DocumentationPolicy.ScalarRoute, options =>
+    {
+        options.PersistentAuthentication = false;
+        options.WithTitle(DocumentationAssets.ScalarTitle(settings.PageTitle))
+            .AddDocument(BrowserDocument, settings.BrowserDocumentLabel, isDefault: true)
+            .AddDocument(AdminDocument, settings.AdminDocumentLabel)
+            .HideTestRequestButton().HideClientButton().DisableDefaultFonts().DisableAgent().DisableTelemetry().HideDeveloperTools()
+            .WithNonce().AddHeadContent(DocumentationPolicy.ScalarHead).WithCustomCss(DocumentationAssets.ReadTheme());
+    });
+
+    /// <summary>Serve a fresh encoded template for each request and preserve disabled credential persistence and submit methods.</summary>
+    private static void MapSwagger(WebApplication app, DocumentationOptions settings) => app.UseSwaggerUI(options =>
+    {
+        options.RoutePrefix = DocumentationPolicy.SwaggerRoute;
+        options.IndexStream = () => DocumentationAssets.RenderSwagger(settings);
+        options.SupportedSubmitMethods([]);
+        options.ConfigObject.PersistAuthorization = false;
+    });
+
+    /// <summary>Expose only the fixed embedded scripts and stylesheet, excluding assets from the API contract.</summary>
+    private static void MapAssets(WebApplication app)
+    {
+        app.MapGet(DocumentationPolicy.ScalarAsset, () => Results.Content(DocumentationAssets.Read(DocumentationAssets.ScalarBootstrap), DocumentationPolicy.ScriptMediaType)).ExcludeFromDescription();
+        app.MapGet(DocumentationPolicy.SwaggerAsset, () => Results.Content(DocumentationAssets.Read(DocumentationAssets.SwaggerBootstrap), DocumentationPolicy.ScriptMediaType)).ExcludeFromDescription();
+        app.MapGet(DocumentationPolicy.ThemeAsset, () => Results.Content(DocumentationAssets.ReadTheme(), DocumentationPolicy.StyleMediaType)).ExcludeFromDescription();
     }
 }

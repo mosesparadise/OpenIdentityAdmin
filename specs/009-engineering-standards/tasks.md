@@ -13,10 +13,10 @@
 - [x] T006 [US2] Implement syntax-aware scenario/documentation/size/literal checks and seeded controls in eng/IdentityPlatform.CodeQuality under Engineering in IdentityPlatform.slnx.
 - [x] T007 [US2] Inventory legacy debt and reviewed exceptions under eng/code-quality; enforce changed findings and baseline expansion, link remediation to T013–T016.
 - [x] T008 [US2] Integrate the tool into scripts/check-static-analysis.py and scripts/check-ai-instructions.py; verify with clean/rejected controls and document limits.
-- [ ] T009 [US2] Independently review, fix, run required gates, update specs/009-engineering-standards/verification.md and squash the adoption PR.
+- [x] T009 [US2] Independently review, fix, run required gates, update specs/009-engineering-standards/verification.md and squash the adoption PR.
 
 ## US3 — OpenAPI configuration
-- [ ] T010 [US3] Move metadata to validated appsettings-backed options in backend Features/ApiContracts; preserve supported versions and security gates.
+- [x] T010 [US3] Move metadata to validated appsettings-backed options in backend Features/ApiContracts; preserve supported versions and security gates.
 - [ ] T011 [US3] Add configuration and actual hostile-document presence regressions in tests/contracts/IdentityPlatform.Api.Contracts.Tests; use Given-When-Then and meaningful XML.
 - [ ] T012 [US3] Review/fix/verify and squash the OpenAPI configuration PR; record evidence in verification.md.
 
