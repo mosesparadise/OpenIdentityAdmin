@@ -60,11 +60,11 @@ internal static class FactorOracle
         return ((BinaryPrimitives.ReadUInt32BigEndian(digest.AsSpan(offset)) & SignMask) % Modulus).ToString(Digits, CultureInfo.InvariantCulture);
     }
 
-    /// <summary>Chooses a canonical six-digit value absent from the complete native adjacent-step window.</summary>
+    /// <summary>Chooses a canonical value outside the native window plus the bounded request interval on either side.</summary>
     internal static string InvalidCode(string seed)
     {
-        const int FirstAcceptedOffset = -2;
-        const int AcceptedCounterCount = 5;
+        const int FirstAcceptedOffset = -4;
+        const int AcceptedCounterCount = 9;
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var accepted = Enumerable.Range(FirstAcceptedOffset, AcceptedCounterCount)
             .Select(offset => Code(seed, now + offset * StepSeconds)).ToHashSet(StringComparer.Ordinal);

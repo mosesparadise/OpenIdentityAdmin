@@ -48,7 +48,7 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
     [Theory, MemberData(nameof(Cases))]
     public async Task Given_ProtectedBootstrap_When_KeyboardEnrollmentCompletes_Then_ThemeAccessibilityAndSecretIsolationHold(string provider, string theme, int width)
     {
-        await BrowserEvidence.RunAsync(async () =>
+        await AdministratorBrowserEvidence.RunAsync(async () =>
         {
             await using var environment = await AdministratorEnvironment.CreateAsync(fixture, provider);
             await using var session = await BrowserSession.CreateAsync(width);
@@ -69,10 +69,7 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
             Assert.Equal(10, await page.Locator(RecoveryCodes).CountAsync());
             await RequirePageAsync(page);
             await RequireSecretIsolationAsync(page, session.Context, seed);
-            await page.GetByRole(AriaRole.Link, new()
-            {
-                Name = SavedLink
-            }).PressAsync(EnterKey);
+            await AdministratorKeyboard.AcknowledgeAsync(page);
             await page.WaitForURLAsync(new Uri(environment.Issuer, AdministratorJourney.Security).AbsoluteUri);
             await RequirePageAsync(page);
             await RequireHistoryAsync(page, seed);
@@ -84,7 +81,7 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
     [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
     public async Task Given_DisabledPageScripts_When_EnrollmentUsesNativeForms_Then_RecoveryCodesAndAccountStatusRemainAvailable(string provider)
     {
-        await BrowserEvidence.RunAsync(async () =>
+        await AdministratorBrowserEvidence.RunAsync(async () =>
         {
             await using var environment = await AdministratorEnvironment.CreateAsync(fixture, provider);
             await using var session = await BrowserSession.CreateAsync(javaScript: false);
