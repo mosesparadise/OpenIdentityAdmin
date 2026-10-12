@@ -9484,46 +9484,6 @@
       "Finding": {
         "Rule": "CQ001",
         "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Browser_accepts_explicitly_trusted_tls_and_rejects_an_unrelated_certificate(string)",
-        "Fingerprint": "99568EB3EE64097F29293D4475477632FF14FF44BF694F77168E8486DB27B944"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Browser_accepts_explicitly_trusted_tls_and_rejects_an_unrelated_certificate(string)",
-        "Fingerprint": "99568EB3EE64097F29293D4475477632FF14FF44BF694F77168E8486DB27B944"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Browser_accepts_explicitly_trusted_tls_and_rejects_an_unrelated_certificate(string)",
-        "Fingerprint": "99568EB3EE64097F29293D4475477632FF14FF44BF694F77168E8486DB27B944"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Browser_accepts_explicitly_trusted_tls_and_rejects_an_unrelated_certificate(string)",
-        "Fingerprint": "99568EB3EE64097F29293D4475477632FF14FF44BF694F77168E8486DB27B944"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
         "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(string)",
         "Fingerprint": "EA092B4170274922A461DAA81541FADE00AC231570F28C9DCF726F305A79C3E7"
       },

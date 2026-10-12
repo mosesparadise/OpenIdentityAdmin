@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.Issuer.Tests.Fixtures;
 using IdentityPlatform.Testing;
 using Microsoft.Playwright;
@@ -21,51 +20,29 @@ public sealed class LoginBrowserTests(IssuerFixture fixture)
         from width in Widths
         select new TheoryDataRow<string, string, int>(provider, theme, width).WithTrait("Provider", provider);
 
+    /// <summary>Requires trusted HTTPS positives and exact native certificate evidence from one isolated untrusted navigation.</summary>
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
-    public async Task Browser_accepts_explicitly_trusted_tls_and_rejects_an_unrelated_certificate(string provider)
+    public async Task Given_ExplicitBrowserTrust_When_UnrelatedCertificateIsPresented_Then_CertificateValidationRejectsIt(string provider)
     {
+        const string Alive = "/alive";
+        const int SecretBytes = 32;
         await BrowserEvidence.RunAsync(async () =>
         {
             var environment = await fixture.GetAsync(provider);
             await using var session = await BrowserSession.CreateAsync();
-            var context = session.Context;
-            var page = await context.NewPageAsync();
+            var page = await session.Context.NewPageAsync();
             BrowserEvidence.Mark(BrowserPhase.TrustedIssuer);
-            Assert.Equal(200, (await page.GotoAsync(new Uri(environment.Issuer, "/alive").AbsoluteUri))!.Status);
+            Assert.Equal(200, (await page.GotoAsync(new Uri(environment.Issuer, Alive).AbsoluteUri))!.Status);
             BrowserEvidence.Mark(BrowserPhase.TrustedRelyingParty);
-            Assert.Equal(200, (await page.GotoAsync(new Uri(environment.RelyingParty.BaseUri, "/alive").AbsoluteUri))!.Status);
-            using var key = RSA.Create(2048);
-            var request = new CertificateRequest("CN=identityplatform-untrusted-test", key, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-            var names = new SubjectAlternativeNameBuilder();
-            names.AddIpAddress(IPAddress.Loopback);
-            request.CertificateExtensions.Add(names.Build());
-            request.CertificateExtensions.Add(new X509BasicConstraintsExtension(false, false, 0, true));
-            request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.KeyEncipherment, true));
-            request.CertificateExtensions.Add(new X509EnhancedKeyUsageExtension(new OidCollection { new Oid("1.3.6.1.5.5.7.3.1") }, true));
-            // A separately issued leaf produces a precise unknown-issuer error even when Firefox's
-            // pinned transport cannot name newer self-signed-certificate error codes.
-            using var authorityKey = RSA.Create(2048);
-            var authorityRequest = new CertificateRequest("CN=identityplatform-untrusted-authority", authorityKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-            authorityRequest.CertificateExtensions.Add(new X509BasicConstraintsExtension(true, false, 0, true));
-            authorityRequest.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyCertSign | X509KeyUsageFlags.CrlSign, true));
-            using var authority = authorityRequest.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
-            using var issued = request.Create(authority, DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(4), RandomNumberGenerator.GetBytes(16));
-            using var certificate = issued.CopyWithPrivateKey(key);
-            await using var untrusted = new TestRelyingParty { ClientSecret = Convert.ToHexString(RandomNumberGenerator.GetBytes(32)) };
+            Assert.Equal(200, (await page.GotoAsync(new Uri(environment.RelyingParty.BaseUri, Alive).AbsoluteUri))!.Status);
+            using var certificate = BrowserCertificate.Create();
+            await using var untrusted = new TestRelyingParty { ClientSecret = Convert.ToHexString(RandomNumberGenerator.GetBytes(SecretBytes)) };
             await untrusted.StartAsync(TestContext.Current.CancellationToken, certificate);
             BrowserEvidence.Mark(BrowserPhase.UntrustedCertificate);
-            var error = await Assert.ThrowsAsync<PlaywrightException>(() => page.GotoAsync(new Uri(untrusted.BaseUri, "/alive").AbsoluteUri));
-            var certificateFailure = BrowserSession.Engine switch
-            {
-                "chromium" => error.Message.Contains("ERR_CERT_AUTHORITY_INVALID", StringComparison.Ordinal),
-                "firefox" => error.Message.Contains("SEC_ERROR_UNKNOWN_ISSUER", StringComparison.Ordinal) ||
-                    error.Message.Contains("MOZILLA_PKIX_ERROR_SELF_SIGNED_CERT", StringComparison.Ordinal),
-                "webkit" => error.Message.Contains("Unacceptable TLS certificate", StringComparison.Ordinal),
-                _ => false
-            };
-            Assert.True(certificateFailure, "The unrelated certificate must fail specifically at certificate validation (" + BrowserEvidence.Classify(error) + ").");
+            BrowserCertificateEvidence.AssertControls();
+            await BrowserCertificateEvidence.RequireAsync(session.Context, new Uri(untrusted.BaseUri, Alive).AbsoluteUri);
         });
     }
 
