@@ -14,3 +14,5 @@ Before any production call to `MapDocumentation`:
 - Complete M02/M04 authentication, authorization, same-origin proxy and real-contract acceptance. Protect HTML, JSON and all static assets before Scalar's anonymous asset metadata is reached.
 
 The production Admin.Api and Admin.Bff pipelines remain health-only. Synthetic fixture success, known-component advisory queries and exact archive hashes cannot satisfy this activation gate. The foundation's purpose is to make the boundary and remaining evidence explicit, not to approve production viewer deployment.
+
+The [12 October presentation-configuration reassessment](vendor/configuration-review-2026-10-12.json) preserves only the prior specific source-bound advisory dispositions after reviewing encoded title/label options and extracted policy files. It does not resolve vendor inventory, notice or activation gates. Runtime regression results are recorded separately in feature 009.
