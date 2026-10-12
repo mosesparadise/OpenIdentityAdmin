@@ -80,8 +80,8 @@ public sealed class SecurityFormTests
                 context.Request.QueryString = new QueryString(Query);
                 break;
             case MissingContentType:
-                context.Request.ContentType = null;
-                break;
+                Assert.Null(await AdministratorSecurityBrowser.CodeAsync(new DefaultHttpContext(), false));
+                return;
             default:
                 context.Request.Form = new FormCollection(fields, new FormFileCollection { new FormFile(Stream.Null, 0, 0, Upload, Upload) });
                 Assert.Null(await AdministratorSecurityBrowser.CodeAsync(context, false));
