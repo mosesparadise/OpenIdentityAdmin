@@ -46,4 +46,4 @@ Each provider requires exactly 45 discovered and executed cases, none skipped. T
 
 ## Next account journeys — not runnable yet
 
-The [MFA design](mfa-design.md) documents the next increment, including enrollment, TOTP, restricted recovery, lockout, key retention and loss behavior. Its configuration/routes are planned until T017/T018 pass implementation acceptance; do not treat this document as an instruction to enable unimplemented account pages. Bootstrap remains the only implemented administrator operation.
+The [MFA design](mfa-design.md) documents the next increment, including enrollment, TOTP, restricted recovery, lockout, key retention and loss behavior. T022 adds the strict `Identity:AdministratorAccounts:Enabled` composition switch and independent safeguards, but all administrator journey routes remain unimplemented until their later packets pass acceptance; do not treat this document as an instruction to enable unimplemented account pages. Bootstrap remains the only implemented administrator operation.

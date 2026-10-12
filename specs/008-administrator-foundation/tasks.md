@@ -29,11 +29,11 @@ Increment 1 was squash-merged in PR #21 as `38535bd`; its verification record an
 - [ ] T017 [US2] Implement approved enrollment/TOTP/recovery slices with explicit Setup under src/backend/IdentityPlatform.AuthServer/Features/Accounts and manager-compatible protected factor storage under Infrastructure/Features/Identity.
 - [ ] T018 [US2] Prove real browser, cross-node replay/concurrency, failure/audit and secret-safe evidence in tests/aspire/IdentityPlatform.Administrator.Tests; review/fix/verify/squash the second PR.
 
-### Detailed implementation packets (all pending)
+### Detailed implementation packets
 
 T017 is the implementation umbrella for T022–T026; T018 is the acceptance umbrella for T027–T029. Existing IDs remain stable. Every ID here belongs to feature 008; it does not replace same-numbered tasks in another feature.
 
-- [ ] T022 [US2] Refactor shared account composition and explicit administrator/pilot Razor/scheme isolation under AuthServer/Features/Accounts and existing Composition/Setup; install independent request/database/security protection.
+- [x] T022 [US2] Refactor shared account composition and explicit administrator/pilot Razor/scheme isolation under AuthServer/Features/Accounts and existing Composition/Setup; install independent request/database/security protection.
 - [ ] T023 [US2] Add authentication/factor/interaction/session/admission state and protected native manager/store adapters under Infrastructure/Features/Identity; generate both migrations and SchemaCatalog readiness updates.
 - [ ] T024 [US2] Implement authoritative budgets, complete lock order, replay/watermark, atomic audit, retained-capacity admission and bounded AuthServer-hosted cleanup.
 - [ ] T025 [US2] Implement protected Enrollment/Mfa/login Razor journeys, destination-generation proof continuity and authoritative account-session validation.
@@ -52,4 +52,4 @@ Dependencies: T016 -> T022/T023 -> T024 -> T025/T026; T027 enables isolated T028
 
 ## Dependencies and execution
 
-T001–T003 -> T004–T008 -> T010–T012 -> T013–T015. T009 can be authored alongside database fixture work once its contracts exist. Increment2 starts after increment1 merge; increment3 follows increment2. Independent source reviewers may work in parallel, but the main agent integrates edits. T016 is a reviewed design checkpoint; T017–T029 implementation/governance packets remain unchecked and do not claim runtime acceptance. M02-B–D, M05 passkeys, M01-F vendor clearance and human/external assurance remain separate.
+T001–T003 -> T004–T008 -> T010–T012 -> T013–T015. T009 can be authored alongside database fixture work once its contracts exist. Increment2 starts after increment1 merge; increment3 follows increment2. Independent source reviewers may work in parallel, but the main agent integrates edits. T016 is a reviewed design checkpoint; T022 composition is verified; the other T017–T029 implementation/governance packets remain unchecked and do not claim MFA runtime acceptance. M02-B–D, M05 passkeys, M01-F vendor clearance and human/external assurance remain separate.
