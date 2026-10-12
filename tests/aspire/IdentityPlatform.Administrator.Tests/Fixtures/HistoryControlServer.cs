@@ -13,6 +13,7 @@ internal sealed class HistoryControlServer(WebApplication application) : IAsyncD
     internal const string Submit = "#submit";
     internal const string Secret = "#secret";
     internal const string Continue = "#continue";
+    internal const string NoContentPath = "/no-content";
     internal const string SafePath = "/safe";
     private const string PostPath = "/post";
     private const string NoStore = "no-store";
@@ -49,6 +50,11 @@ internal sealed class HistoryControlServer(WebApplication application) : IAsyncD
     private async Task RespondAsync(HttpContext context)
     {
         context.Response.Headers.CacheControl = NoStore;
+        if (context.Request.Path == NoContentPath)
+        {
+            context.Response.StatusCode = StatusCodes.Status204NoContent;
+            return;
+        }
         context.Response.ContentType = HtmlType;
         var body = context.Request.Path == SafePath ? Safe : Form;
         if (context.Request.Path == PostPath && HttpMethods.IsPost(context.Request.Method))

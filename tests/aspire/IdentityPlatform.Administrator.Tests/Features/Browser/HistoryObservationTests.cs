@@ -74,6 +74,7 @@ public sealed class HistoryObservationTests
             Assert.Equal(HistoryOutcome.NativeRestoreRejected, outcome);
             Assert.Equal(1, server.Posts);
             await RequireObserversAsync(page, server);
+            await RequireResponseObserverAsync(page, server);
         }
         else
         {
@@ -102,6 +103,50 @@ public sealed class HistoryObservationTests
                 throw new PlaywrightException(CacheMiss);
             }));
         Assert.True(commit.Message == CacheMiss);
+    }
+
+    /// <summary>Independently proves the response listener using a real 204 navigation that receives headers but cannot commit a document.</summary>
+    private static async Task RequireResponseObserverAsync(IPage page, HistoryControlServer server)
+    {
+        const int NoContentStatus = 204;
+        const string Aborted = "NS_BINDING_ABORTED";
+        const string CacheMiss = "NS_ERROR_DOCUMENT_NOT_CACHED";
+        var responses = 0;
+        var commits = 0;
+        EventHandler<IResponse> response = (_, value) =>
+        {
+            if (value.Status == NoContentStatus && value.Request.IsNavigationRequest && value.Frame == page.MainFrame)
+            {
+                Interlocked.Increment(ref responses);
+            }
+        };
+        EventHandler<IFrame> committed = (_, value) =>
+        {
+            if (value == page.MainFrame)
+            {
+                Interlocked.Increment(ref commits);
+            }
+        };
+        page.Response += response;
+        page.FrameNavigated += committed;
+        try
+        {
+            var observed = await Assert.ThrowsAsync<PlaywrightException>(() => AdministratorHistory.ObserveAsync(page,
+                HistoryControlServer.Canary, async () =>
+                {
+                    var aborted = await Assert.ThrowsAsync<PlaywrightException>(() => page.GotoAsync(server.Origin + HistoryControlServer.NoContentPath));
+                    Assert.StartsWith(Aborted, aborted.Message, StringComparison.Ordinal);
+                    throw new PlaywrightException(CacheMiss);
+                }));
+            Assert.True(observed.Message == CacheMiss);
+            Assert.Equal(1, Volatile.Read(ref responses));
+            Assert.Equal(0, Volatile.Read(ref commits));
+        }
+        finally
+        {
+            page.Response -= response;
+            page.FrameNavigated -= committed;
+        }
     }
 
     /// <summary>Holds a real subresource so the predicate must reject loading and then observe completion using driver polling.</summary>
