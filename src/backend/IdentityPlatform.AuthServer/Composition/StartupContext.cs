@@ -15,6 +15,11 @@ internal sealed class StartupContext(string[] arguments) : IDisposable
         get; set;
     }
 
+    internal bool AdministratorEnabled
+    {
+        get; set;
+    }
+
     // Program owns this context outside the application lifetime. DI must not own it.
     public void Dispose() => Credentials?.Dispose();
 }

@@ -1,18 +1,13 @@
+using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Protection;
 
+/// <summary>Preserves the pilot API for the shared account connection and command bounds.</summary>
+/// <example><code>PilotDatabaseBounds.Apply(database);</code></example>
 public static class PilotDatabaseBounds
 {
-    public static void Apply(PlatformDbContext database)
-    {
-        var connection = database.Database.GetConnectionString()!;
-        database.Database.SetConnectionString(database.Database.IsNpgsql()
-            ? new NpgsqlConnectionStringBuilder(connection) { Timeout = 5 }.ConnectionString
-            : new SqlConnectionStringBuilder(connection) { ConnectTimeout = 5 }.ConnectionString);
-        database.Database.SetCommandTimeout(5);
-    }
+    /// <summary>Applies five-second provider connection/command bounds without opening a connection.</summary>
+    /// <example><code>PilotDatabaseBounds.Apply(database);</code></example>
+    public static void Apply(PlatformDbContext database) => AccountDatabaseBounds.Apply(database);
 }

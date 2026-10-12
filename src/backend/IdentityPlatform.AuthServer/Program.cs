@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Composition;
+using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
 
@@ -24,6 +25,11 @@ catch (IssuerProtectionException)
     return 2;
 }
 catch (PilotConfigurationException exception)
+{
+    Console.Error.WriteLine(exception.Message);
+    return 2;
+}
+catch (AdministratorConfigurationException exception)
 {
     Console.Error.WriteLine(exception.Message);
     return 2;

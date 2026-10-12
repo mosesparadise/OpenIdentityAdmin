@@ -7,14 +7,22 @@ using IdentityPlatform.Infrastructure.Persistence;
 
 namespace IdentityPlatform.AuthServer.Features.Pilot;
 
+/// <summary>Composes the explicitly enabled Development pilot while preserving shared account isolation.</summary>
+/// <example><code>services.AddFirstPartyPilot(credentials);</code></example>
 public static class Setup
 {
-    public static IServiceCollection AddFirstPartyPilot(this IServiceCollection services, IssuerCredentials credentials)
+    /// <summary>Registers the complete standalone pilot; the caller retains credential ownership until host disposal.</summary>
+    /// <example><code>services.AddFirstPartyPilot(credentials);</code></example>
+    public static IServiceCollection AddFirstPartyPilot(this IServiceCollection services, IssuerCredentials credentials) =>
+        AddFirstPartyPilot(services, credentials, administrator: false);
+
+    /// <summary>Registers pilot services and the single shared account composition with an optional administrator boundary.</summary>
+    internal static IServiceCollection AddFirstPartyPilot(this IServiceCollection services, IssuerCredentials credentials, bool administrator)
     {
         services.AddSingleton(TimeProvider.System);
         services.AddScoped<PilotBootstrap>();
         services.AddScoped<PilotEligibility>();
-        return services.AddAccounts().AddPilotProtection().AddProtocol(credentials);
+        return services.AddAccounts(pilot: true, administrator).AddProtocol(credentials);
     }
 
     internal static async Task<int> InitializePilotAsync(this WebApplication app)

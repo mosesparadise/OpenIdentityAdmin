@@ -1,6 +1,6 @@
 # Implementation plan: Administrator foundation
 
-**Branch**: 021-administrator-mfa-design | **Date**: 2026-10-12 | **Spec**: [spec.md](spec.md)
+**Branch**: 022-administrator-composition | **Date**: 2026-10-12 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
@@ -41,3 +41,7 @@ The current constitution is 1.1.0. All new/changed implementation must follow th
 ## Open work before implementation acceptance
 
 Execute T017/T018 only after T016 design convergence, with actual native managers, both providers and all three browser engines. The detailed work packets in tasks.md remain unchecked until verified. Complete the usable-admin predicate and supported exception route in T019 before increment3. All-factor-loss emergency recovery is unavailable; adding a reset route requires its own explicit approval.
+
+## T022 execution packet
+
+The next authorized item is the bounded [account composition packet](account-composition.md). Keep subsequent implementation/evidence packets open. No new project, dependency, database migration or user-facing MFA page is introduced. Implementation uses the approved feature hierarchy and source review plus the existing full CI matrix.
