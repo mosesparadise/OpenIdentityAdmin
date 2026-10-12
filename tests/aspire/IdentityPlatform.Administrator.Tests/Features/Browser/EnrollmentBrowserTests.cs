@@ -109,11 +109,11 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
     /// <summary>Exercises native reload and history without recording response HTML or secret values in assertion output.</summary>
     private static async Task RequireHistoryAsync(IPage page, string seed)
     {
-        await page.GoBackAsync();
+        await AdministratorHistory.NavigateAsync(() => page.GoBackAsync());
         await RequireNoRedisplayAsync(page, seed);
-        await page.ReloadAsync();
+        await AdministratorHistory.NavigateAsync(() => page.ReloadAsync());
         await RequireNoRedisplayAsync(page, seed);
-        await page.GoForwardAsync();
+        await AdministratorHistory.NavigateAsync(() => page.GoForwardAsync());
         await RequireNoRedisplayAsync(page, seed);
     }
 

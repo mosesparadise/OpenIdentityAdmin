@@ -28,7 +28,7 @@ public sealed class HttpAuthorityTests(BootstrapFixture fixture)
         var continuation = await AdministratorJourney.BeginAsync(environment, browser, enrollment: false);
         using var passwordOnly = await browser.GetAsync(AdministratorJourney.Security, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.Unauthorized, passwordOnly.StatusCode);
-        Assert.Null(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]);
+        Assert.True(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie] is null);
         var form = await AdministratorJourney.ReadAsync(browser, continuation, enrollment: false);
         using var completion = await AdministratorJourney.ConfirmAsync(browser, form, FactorOracle.UnusedCode(setup.Seed!, setup.Code), enrollment: false);
         Assert.Equal(HttpStatusCode.Redirect, completion.StatusCode);
@@ -64,7 +64,7 @@ public sealed class HttpAuthorityTests(BootstrapFixture fixture)
         {
             using var denied = await AdministratorJourney.ConfirmAsync(browser, form, code, enrollment: true);
             Assert.Equal(HttpStatusCode.ServiceUnavailable, denied.StatusCode);
-            Assert.Null(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]);
+            Assert.True(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie] is null);
             var body = await denied.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.False(body.Contains(RecoveryHeading, StringComparison.Ordinal) || body.Contains(form.Seed!, StringComparison.Ordinal));
         }

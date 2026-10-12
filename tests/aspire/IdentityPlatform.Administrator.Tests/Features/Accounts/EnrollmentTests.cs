@@ -29,7 +29,7 @@ public sealed class EnrollmentTests(BootstrapFixture fixture)
         var cookies = new CookieContainer();
         using var browser = environment.Browser(cookies);
         var location = await AdministratorJourney.BeginAsync(environment, browser, enrollment: true);
-        Assert.Null(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]);
+        Assert.True(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie] is null);
         var form = await AdministratorJourney.ReadAsync(browser, location, enrollment: true);
         var code = FactorOracle.Code(form.Seed!, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         using var result = await AdministratorJourney.ConfirmAsync(browser, form, code, enrollment: true);

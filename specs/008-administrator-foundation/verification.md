@@ -1,8 +1,12 @@
 # Verification record
 
+**Current status:** T024 is accepted in PR #29. T025 enrollment/login/account sessions is under review in [PR #30](https://github.com/mosesparadise/OpenIdentityAdmin/pull/30), with final exact-head CI still required; T026 recovery/security/logout has not started. See the latest packet below and [enrollment/login](enrollment-login.md). Earlier sections retain historical evidence and do not supersede this status.
+
+## Increment 1 historical record
+
 Baseline main: `6c64d34bead95e44ed9efe14db6483595f1a48c8`. Branch: `018-administrator-foundation`.
 
-**Current acceptance:** the first increment passed all 31 checks at implementation commit `d6a0dd9a74bdd73eb973a49c2f67cb9a17ec4a43`, tree `851ec50fb69a2aa631c41f2ea3ed472c13ebed51`, in [run 38248577326](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38248577326), attempt 1. Final documentation-head checks and normal squash are recorded live in [PR #21](https://github.com/mosesparadise/OpenIdentityAdmin/pull/21). Earlier failures and limits below remain part of the evidence; they are not erased by the accepted checkpoint. Only bootstrap/storage is accepted: administrator login, MFA/recovery and governance enforcement remain subsequent work.
+**Increment 1 acceptance:** the first increment passed all 31 checks at implementation commit `d6a0dd9a74bdd73eb973a49c2f67cb9a17ec4a43`, tree `851ec50fb69a2aa631c41f2ea3ed472c13ebed51`, in [run 38248577326](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38248577326), attempt 1. Final documentation-head checks and normal squash are recorded live in [PR #21](https://github.com/mosesparadise/OpenIdentityAdmin/pull/21). Earlier failures and limits below remain part of the evidence; they are not erased by the accepted checkpoint. Only bootstrap/storage is accepted: administrator login, MFA/recovery and governance enforcement remain subsequent work.
 
 User confirmed three sequential PRs, TOTP/recovery first with passkeys in M05, and the proposed existing-project/dedicated-test structure on12October2026. Approved v0.2 remains the implementation authority; no security exception is proposed.
 
@@ -129,3 +133,11 @@ Both providers passed Bootstrap45, Factors51 and Ceremonies35. All six browser c
 Coverage line/branch percentages: Core100/100, Infrastructure94.8/97.2, ServiceDefaults100/100, Migrator99.0/100, AuthServer96.4/98.7, Admin.Api100/100, Admin.Bff100/100, Worker100/100, AppHost98.8/100. No coverage exclusion or legacy allowance was added; 1,909 legacy findings remain after the four TLS-test removals. Architecture/security, capacity and test source reviews accepted the corrected code; no open review threads remained. GitHub author self-approval was not used; the review comments record AI source review, not independent certification.
 
 T024 is complete. T025 enrollment/login/session work begins on the merged base; T026 recovery/security/logout and T027–T029 umbrella acceptance remain open. Local SQL image retrieval remains unavailable; required SQL acceptance above comes from CI. Human/external assessment, certification, emergency recovery and management API/BFF/docs gates remain unchanged.
+
+## T025 review and verification in progress
+
+The implementation and independent source corrections are documented in [enrollment/login](enrollment-login.md). Local strict Accounts discovery/execution passed 37 PostgreSQL cases, zero skips, in 260.124 seconds. This includes two real-process regressions for an unread postcommit TLS response and independently admitted two-node login contention. The diagnostic canary/history classifier controls separately passed both provider selections after their final assertion corrections. Full build and code-quality checks pass with no new allowance.
+
+Initial CI exposed expected desktop badge baseline changes and native Chromium/Firefox refusal to restore a no-store POST through browser history. Updated image baselines were visually reviewed; cache-miss handling accepts only exact leading engine-specific error codes and still independently checks absence of secrets after every history action. Wrong-engine, generic URL mentions and suffixed error codes are rejected by seeded controls. Both provider WebKit administrator cells passed five cases on `a42f9d6`; this is not final-head acceptance for other engines. A transient source revision failed CA1863 in the diagnostic helper; its formatting cache was corrected before the next build. No acceptance evidence from failed/cancelled runs is promoted to a full pass.
+
+T025 remains open until complete exact-head CI and normal squash. T027/T028/T029 remain umbrella tasks, including actual clipboard/password-manager behavior, remaining MFA evidence, human assessments and final increment acceptance. T026 and governance/API/BFF work are not part of this acceptance claim.

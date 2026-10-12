@@ -36,7 +36,7 @@ public sealed class LostResponseTests(BootstrapFixture fixture)
             before = await VerifiersAsync(database);
         }
         Assert.Equal(10, before.Length);
-        Assert.Null(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]);
+        Assert.True(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie] is null);
         using var other = environment.Browser(cookies, secondary: true);
         using var denied = await other.GetAsync(AdministratorJourney.Security, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.Unauthorized, denied.StatusCode);

@@ -41,7 +41,7 @@ public sealed class FormTests(BootstrapFixture fixture)
         await using var scope = environment.Database.Administrator.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         Assert.Empty(await database.Set<AdministratorInteraction>().ToArrayAsync(TestContext.Current.CancellationToken));
-        Assert.Null(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]);
+        Assert.True(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie] is null);
     }
 
     /// <summary>Another browser's valid antiforgery token cannot authorize the owner's restricted interaction or consume its proof.</summary>
