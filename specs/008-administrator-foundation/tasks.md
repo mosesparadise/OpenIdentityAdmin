@@ -1,6 +1,6 @@
 # Tasks: Administrator foundation
 
-Increment 1 has completed its implementation acceptance checkpoint; PR #21 is the live final-check and merge record. User-approved delivery is three sequential PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
+Increment 1 was squash-merged in PR #21 as `38535bd`; its verification record and PR contain the final evidence. User-approved delivery is three sequential PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
 
 ## Setup and shared design
 
@@ -25,9 +25,24 @@ Increment 1 has completed its implementation acceptance checkpoint; PR #21 is th
 
 ## Increment 2 — US2 MFA and restricted recovery
 
-- [ ] T016 [US2] Complete interaction/secret-protection/expiry/attempt/freshness/all-factor-loss design in specs/008-administrator-foundation before implementing account journeys.
+- [x] T016 [US2] Complete and independently review interaction/secret-protection/expiry/attempt/freshness/all-factor-loss design in specs/008-administrator-foundation/mfa-design.md before implementing account journeys.
 - [ ] T017 [US2] Implement approved enrollment/TOTP/recovery slices with explicit Setup under src/backend/IdentityPlatform.AuthServer/Features/Accounts and manager-compatible protected factor storage under Infrastructure/Features/Identity.
 - [ ] T018 [US2] Prove real browser, cross-node replay/concurrency, failure/audit and secret-safe evidence in tests/aspire/IdentityPlatform.Administrator.Tests; review/fix/verify/squash the second PR.
+
+### Detailed implementation packets (all pending)
+
+T017 is the implementation umbrella for T022–T026; T018 is the acceptance umbrella for T027–T029. Existing IDs remain stable. Every ID here belongs to feature 008; it does not replace same-numbered tasks in another feature.
+
+- [ ] T022 [US2] Refactor shared account composition and explicit administrator/pilot Razor/scheme isolation under AuthServer/Features/Accounts and existing Composition/Setup; install independent request/database/security protection.
+- [ ] T023 [US2] Add authentication/factor/interaction/session/admission state and protected native manager/store adapters under Infrastructure/Features/Identity; generate both migrations and SchemaCatalog readiness updates.
+- [ ] T024 [US2] Implement authoritative budgets, complete lock order, replay/watermark, atomic audit, retained-capacity admission and bounded AuthServer-hosted cleanup.
+- [ ] T025 [US2] Implement protected Enrollment/Mfa/login Razor journeys, destination-generation proof continuity and authoritative account-session validation.
+- [ ] T026 [US2] Implement restricted Recovery, Security factor replacement/code regeneration and local logout; preserve all-factor-loss denial and one-time code delivery.
+- [ ] T027 [US2] Extend strict Administrator discovery into explicit story/provider/browser partitions in scripts and eng; retain 660-second invocation bounds and require all new coverage inputs.
+- [ ] T028 [US2] Implement MFA-01–13 independent cases from mfa-design.md in the approved Administrator suite; verify native managers, real HTTP/browser, both-provider observed races/failures and safe evidence.
+- [ ] T029 [US2] Converge architecture/security/test/UX/performance reviews, fix findings, run exact-head full CI, update operational instructions/verification and normally squash the second implementation PR.
+
+Dependencies: T016 -> T022/T023 -> T024 -> T025/T026; T027 enables isolated T028 evidence; T025/T026/T028 -> T029. Author tests with each behavior rather than deferring all tests until the end. T019–T021 remain subsequent third-increment work.
 
 ## Increment 3 — US3 current authority and governance
 
@@ -37,4 +52,4 @@ Increment 1 has completed its implementation acceptance checkpoint; PR #21 is th
 
 ## Dependencies and execution
 
-T001–T003 -> T004–T008 -> T010–T012 -> T013–T015. T009 can be authored alongside database fixture work once its contracts exist. Increment2 starts after increment1 merge; increment3 follows increment2. Independent source reviewers may work in parallel, but the main agent integrates edits. T016–T021 are explicit future work packets, not a claim that their detailed plans or acceptance exist already. M02-B–D, M05 passkeys, M01-F vendor clearance and human/external assurance remain separate.
+T001–T003 -> T004–T008 -> T010–T012 -> T013–T015. T009 can be authored alongside database fixture work once its contracts exist. Increment2 starts after increment1 merge; increment3 follows increment2. Independent source reviewers may work in parallel, but the main agent integrates edits. T016 is a reviewed design checkpoint; T017–T029 implementation/governance packets remain unchecked and do not claim runtime acceptance. M02-B–D, M05 passkeys, M01-F vendor clearance and human/external assurance remain separate.

@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-12
 
-**Status**: Design in progress — user choices recorded; no implementation acceptance
+**Status**: Increment 1 merged in PR #21; increment 2 detailed design reviewed; account implementation and increment 3 remain pending
 
 **Input**: Proceed to the next roadmap item, M02-A: protected operator-supplied first-administrator bootstrap, minimum MFA/recovery and permissions. Preserve approved Features/composition conventions, comprehensive tests, independent review and squash delivery.
 
@@ -116,4 +116,4 @@ The user confirmed on 12 October 2026:
 - **D2 — MFA scope**: password plus TOTP and recovery codes now; passkeys remain in M05. Recovery grants only restricted factor replacement.
 - **D3 — Structure**: preserve existing projects; Migrator `Features/Bootstrap/Initialize`, AuthServer `Features/Accounts`, Core/Infrastructure `Features/Identity`, plus the dedicated `tests/aspire/IdentityPlatform.Administrator.Tests` project under the Aspire solution folder.
 
-See [decision brief](decision-brief.md), [research](research.md) and [plan](plan.md). Only the first delivery increment is currently being detailed for implementation; later account journeys need their own completed design and evidence before their PRs begin.
+See [decision brief](decision-brief.md), [research](research.md) and [plan](plan.md). Increment 1 is merged. The second increment is detailed in [MFA design](mfa-design.md); T016 completed independent architecture/security/test design review; see verification.md. Account code and runtime evidence remain T017/T018. Third-increment governance still requires T019 before its code begins.

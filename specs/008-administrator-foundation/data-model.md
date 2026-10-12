@@ -30,3 +30,7 @@ Native role claims use type `identityplatform.permission`; values are case-sensi
 `administrators.assign` is separate from ordinary role editing. Later enforcement must also require it for indirect privilege changes (including changing privileged bundles or inserting this permission). This first increment stores the manifest but exposes no role-editing operation. No application Operator role is seeded.
 
 Database check constraints restrict both singleton IDs to1 and numeric revisions to nonnegative values. Enrollment has no cascading user FK in this increment; deleting a native user leaves the pending product row and permanent receipt as evidence and cannot reopen bootstrap. Future cleanup is a separate governed operation. Application code rejects missing singleton and inconsistent bootstrap records rather than reseeding them.
+
+## Increment 2 expansion
+
+See [MFA design](mfa-design.md#persistence-additions-and-operations) for the reviewed expansion contract. The tables above describe already-shipped increment 1; no new schema exists yet. Destination factor generations, orthogonal suspension, authoritative budgets/watermark, restricted interactions, protected seed/replay storage, recovery verifiers, sessions and retained-capacity admission require T023 migrations on both providers.

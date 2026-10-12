@@ -17,8 +17,8 @@
 
 ## US3 — OpenAPI configuration
 - [x] T010 [US3] Move metadata to validated appsettings-backed options in backend Features/ApiContracts; preserve supported versions and security gates.
-- [ ] T011 [US3] Add configuration and actual hostile-document presence regressions in tests/contracts/IdentityPlatform.Api.Contracts.Tests; use Given-When-Then and meaningful XML.
-- [ ] T012 [US3] Review/fix/verify and squash the OpenAPI configuration PR; record evidence in verification.md.
+- [x] T011 [US3] Add configuration and actual hostile-document presence regressions in tests/contracts/IdentityPlatform.Api.Contracts.Tests; use Given-When-Then and meaningful XML.
+- [x] T012 [US3] Review/fix/verify and squash the OpenAPI configuration PR; record evidence in verification.md.
 
 ## Existing-code retrofit — separate reviewed PRs alongside MFA
 - [ ] T013 [US2] Rename existing tests and all discovery/mutation/traceability consumers under tests, scripts and eng, preserving scenario semantics; retire associated legacy findings.
