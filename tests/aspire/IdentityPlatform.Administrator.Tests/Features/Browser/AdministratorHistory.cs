@@ -43,16 +43,60 @@ internal static class AdministratorHistory
             message.StartsWith(marker + '\n', StringComparison.Ordinal));
     }
 
-    /// <summary>Performs one history operation; the caller must still inspect the resulting document for secret redisplay.</summary>
-    internal static async Task NavigateAsync(Func<Task<IResponse?>> navigation)
+    /// <summary>Requires native Firefox refusal with no received main-frame response or successful commit; a timeout never qualifies.</summary>
+    internal static bool IsNativeRejection(string engine, Exception error, int responses, int commits) =>
+        engine == Firefox && error is PlaywrightException && IsCacheMiss(engine, error.Message) && responses == 0 && commits == 0;
+
+    /// <summary>Observes one real history operation; successful documents must pass the secret oracle, while exact native refusal requires independent navigation evidence.</summary>
+    internal static async Task<HistoryOutcome> ObserveAsync(IPage page, string seed, Func<Task<IResponse?>> navigation)
     {
+        var responses = 0;
+        var commits = 0;
+        EventHandler<IResponse> response = (_, value) =>
+        {
+            if (value.Request.IsNavigationRequest && value.Frame == page.MainFrame)
+            {
+                Interlocked.Increment(ref responses);
+            }
+        };
+        EventHandler<IFrame> committed = (_, value) =>
+        {
+            if (value == page.MainFrame)
+            {
+                Interlocked.Increment(ref commits);
+            }
+        };
+        page.Response += response;
+        page.FrameNavigated += committed;
         try
         {
-            await navigation();
+            try
+            {
+                await navigation();
+            }
+            catch (PlaywrightException exception) when (IsCacheMiss(BrowserSession.Engine, exception.Message))
+            {
+                if (IsNativeRejection(BrowserSession.Engine, exception, Volatile.Read(ref responses), Volatile.Read(ref commits)))
+                {
+                    return HistoryOutcome.NativeRestoreRejected;
+                }
+                if (BrowserSession.Engine == Firefox)
+                {
+                    throw;
+                }
+            }
+            await RequireNoRedisplayAsync(page, seed);
+            return HistoryOutcome.DocumentObserved;
         }
-        catch (PlaywrightException exception) when (IsCacheMiss(BrowserSession.Engine, exception.Message))
+        finally
         {
-            // The engine declined the no-store POST; this is not a retry or a secret-absence assertion.
+            page.Response -= response;
+            page.FrameNavigated -= committed;
         }
     }
+}
+
+internal enum HistoryOutcome
+{
+    DocumentObserved, NativeRestoreRejected
 }

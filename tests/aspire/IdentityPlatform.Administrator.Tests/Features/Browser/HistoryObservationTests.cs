@@ -1,4 +1,5 @@
 using IdentityPlatform.Administrator.Tests.Features.Factors;
+using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Features.Browser;
 using Microsoft.Playwright;
 
@@ -49,6 +50,58 @@ public sealed class HistoryObservationTests
             await page.SetContentAsync(SafeDocument);
             await AdministratorHistory.RequireNoRedisplayAsync(page, Canary);
         }
+    }
+
+    /// <summary>Uses a real no-store response, with no interception or cache override, to prove Firefox native refusal rather than accepting an inspector timeout.</summary>
+    [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
+    public async Task Given_RealNoStorePost_When_BackCannotRestoreDocument_Then_NativeRefusalHasNoResponseCommitOrResubmission(string provider)
+    {
+        Assert.True(provider is PostgreSql or SqlServer);
+        await using var server = await HistoryControlServer.StartAsync();
+        await using var session = await BrowserSession.CreateAsync(javaScript: false);
+        var page = await session.Context.NewPageAsync();
+        await page.GotoAsync(server.Origin);
+        await page.Locator(HistoryControlServer.Submit).ClickAsync();
+        await page.Locator(HistoryControlServer.Secret).WaitForAsync();
+        await page.Locator(HistoryControlServer.Continue).ClickAsync();
+        await page.WaitForURLAsync(server.Origin + HistoryControlServer.SafePath);
+        await AdministratorHistory.RequireNoRedisplayAsync(page, HistoryControlServer.Canary);
+        Assert.Equal(1, server.Posts);
+        var outcome = await AdministratorHistory.ObserveAsync(page, HistoryControlServer.Canary, () => page.GoBackAsync());
+        const string Firefox = "firefox";
+        if (BrowserSession.Engine == Firefox)
+        {
+            Assert.Equal(HistoryOutcome.NativeRestoreRejected, outcome);
+            Assert.Equal(1, server.Posts);
+            await RequireObserversAsync(page, server);
+        }
+        else
+        {
+            Assert.Equal(HistoryOutcome.DocumentObserved, outcome);
+        }
+    }
+
+    /// <summary>Seeds a native-looking error only after real response/commit and commit-only events; the actual observer must reject both.</summary>
+    private static async Task RequireObserversAsync(IPage page, HistoryControlServer server)
+    {
+        const string CacheMiss = "NS_ERROR_DOCUMENT_NOT_CACHED";
+        const string Fragment = "#commit-control";
+        var safe = server.Origin + HistoryControlServer.SafePath;
+        await page.GotoAsync(safe);
+        var response = await Assert.ThrowsAsync<PlaywrightException>(() => AdministratorHistory.ObserveAsync(page,
+            HistoryControlServer.Canary, async () =>
+            {
+                await page.GotoAsync(safe);
+                throw new PlaywrightException(CacheMiss);
+            }));
+        Assert.True(response.Message == CacheMiss);
+        var commit = await Assert.ThrowsAsync<PlaywrightException>(() => AdministratorHistory.ObserveAsync(page,
+            HistoryControlServer.Canary, async () =>
+            {
+                await page.GotoAsync(safe + Fragment);
+                throw new PlaywrightException(CacheMiss);
+            }));
+        Assert.True(commit.Message == CacheMiss);
     }
 
     /// <summary>Holds a real subresource so the predicate must reject loading and then observe completion using driver polling.</summary>

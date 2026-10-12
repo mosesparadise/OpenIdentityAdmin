@@ -109,12 +109,10 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
     /// <summary>Exercises native reload and history without recording response HTML or secret values in assertion output.</summary>
     private static async Task RequireHistoryAsync(IPage page, string seed)
     {
-        await AdministratorHistory.NavigateAsync(() => page.GoBackAsync());
         await AdministratorHistory.RequireNoRedisplayAsync(page, seed);
-        await AdministratorHistory.NavigateAsync(() => page.ReloadAsync());
-        await AdministratorHistory.RequireNoRedisplayAsync(page, seed);
-        await AdministratorHistory.NavigateAsync(() => page.GoForwardAsync());
-        await AdministratorHistory.RequireNoRedisplayAsync(page, seed);
+        await AdministratorHistory.ObserveAsync(page, seed, () => page.GoBackAsync());
+        await AdministratorHistory.ObserveAsync(page, seed, () => page.ReloadAsync());
+        await AdministratorHistory.ObserveAsync(page, seed, () => page.GoForwardAsync());
     }
 
     /// <summary>Uses a fresh browser binding, corrects a generic password error and completes ordinary native MFA login.</summary>

@@ -44,5 +44,15 @@ public sealed class BrowserEvidenceTests
         {
             Assert.Equal(history.Expected, AdministratorHistory.IsCacheMiss(history.Engine, history.Message));
         }
+        const string Firefox = "firefox";
+        const string Chromium = "chromium";
+        const string CacheMiss = "NS_ERROR_DOCUMENT_NOT_CACHED";
+        var native = new PlaywrightException(CacheMiss);
+        Assert.True(AdministratorHistory.IsNativeRejection(Firefox, native, 0, 0));
+        Assert.False(AdministratorHistory.IsNativeRejection(Firefox, native, 1, 0));
+        Assert.False(AdministratorHistory.IsNativeRejection(Firefox, native, 0, 1));
+        Assert.False(AdministratorHistory.IsNativeRejection(Chromium, native, 0, 0));
+        Assert.False(AdministratorHistory.IsNativeRejection(Firefox, new TimeoutException(CacheMiss), 0, 0));
+        Assert.False(AdministratorHistory.IsNativeRejection(Firefox, new PlaywrightException(SensitiveMessage), 0, 0));
     }
 }
