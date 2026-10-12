@@ -1,8 +1,8 @@
 using System.Net;
 using System.Security.Claims;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,6 @@
 using System.Net;
-using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Accounts;
+using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
