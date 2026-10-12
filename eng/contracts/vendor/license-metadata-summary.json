@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "startedUtc": "2026-10-12T08:53:36.885819+00:00",
+  "completedUtc": "2026-10-12T08:53:45.952058+00:00",
+  "source": "https://registry.npmjs.org",
+  "fullRawEvidence": {
+    "file": "viewer-license-metadata.json",
+    "sha256": "0846c4ceaa2c2c1d0c9c6cb7e1c9fc615334244f956e769838f79b9868454ea1",
+    "bytes": 112921,
+    "location": "retained reviewer scratch evidence"
+  },
+  "expectedPackageVersionPairs": 271,
+  "returnedRows": 271,
+  "declaredCurrentLicenseCount": 270,
+  "declaredLicenseExpressionCounts": {
+    "(MIT AND BSD-3-Clause)": 1,
+    "(MPL-2.0 OR Apache-2.0)": 1,
+    "0BSD": 1,
+    "Apache-2.0": 18,
+    "BSD-2-Clause": 1,
+    "BSD-3-Clause": 5,
+    "ISC": 3,
+    "MIT": 239,
+    "Unlicense": 1
+  },
+  "missingCurrentLicenseCount": 1,
+  "missingCurrentLicenseRows": [
+    {
+      "name": "format",
+      "version": "0.2.2",
+      "legacyLicenses": [
+        {
+          "url": "http://sjs.mit-license.org",
+          "type": "MIT"
+        }
+      ],
+      "metadataSource": "https://registry.npmjs.org/format/0.2.2",
+      "metadataSha256": "d9fa5ffa9d3603136450c7d95855166c9a773f0e5139e25248c20704ec587f48",
+      "limit": "Legacy MIT declaration only; no packaged license notice observed in prior archive inspection; notice fulfillment is unresolved."
+    }
+  ],
+  "unversionedSwaggerCandidates": [
+    "@braintree/sanitize-url",
+    "redux-immutable",
+    "stampit",
+    "traverse"
+  ],
+  "limits": [
+    "Registry declarations for queried exact versions only; not complete preserved license text or legal clearance. Swagger source-map/lock candidates are not confirmed complete actual bundled inventory because the published map fails coordinate validation. Four unversioned Swagger candidates excluded explicitly.",
+    "Counts describe declarations for queried candidate versions, not a complete actual embedded Swagger asset license inventory.",
+    "DOMPurify declares MPL-2.0 OR Apache-2.0; record the chosen compliance path and fulfill its obligations.",
+    "Preserved notices and registry metadata do not constitute independent legal clearance."
+  ]
+}

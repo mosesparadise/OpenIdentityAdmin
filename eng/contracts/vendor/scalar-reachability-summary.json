@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "analysisDateUtc": "2026-10-12T09:07:03.809707+00:00",
+  "evidenceKind": "Read-only source and artifact inspection; no exploit or runtime test executed",
+  "fullEvidence": {
+    "file": "scalar-reachability.json",
+    "sha256": "6223cc5935d9d192663b9a4526a44e1c3101748408a0e1a08ce85f85c765a23f",
+    "location": "retained reviewer scratch evidence; full upstream modules intentionally omitted from this summary"
+  },
+  "nuget": {
+    "name": "Scalar.AspNetCore",
+    "version": "2.17.14",
+    "archiveSha256": "00eb4acf750ebe0f725552ce66866653fcd69b5f44bbb0c4c4fbeea023796922",
+    "sourceCommit": "df377038e7c1c6cd4f615ec6438ecf2571520226"
+  },
+  "npm": {
+    "name": "@scalar/api-reference",
+    "version": "1.73.0",
+    "archiveSha256": "b088524c0664c3e43d62cc534c34903148095daadb6ecb31a652264bcd9d25cf",
+    "integrityVerified": true
+  },
+  "asset": {
+    "path": "package/dist/browser/standalone.js",
+    "bytes": 4418213,
+    "sha256": "26b06691fc0e2e35c631f1455371d9cd4cf17e3565d2a93d623d0017951e48ac",
+    "embeddedByteIdentityVerified": true,
+    "sourceMapSha256": "8acc49810b282fa538d3aafd03f72436ac83d03bc58dc56733ebf70b05b28f18",
+    "sourceCount": 2693
+  },
+  "nanoid": {
+    "includedModules": [
+      {
+        "path": "../../../../node_modules/.pnpm/nanoid@5.1.6/node_modules/nanoid/url-alphabet/index.js",
+        "sourceIndex": 1011,
+        "sourceSha256": "c1609d1c3a4ca7ae55919992575e7fd14115532ceb32a9199b13878cca1a5790",
+        "mappedOriginalLines": [
+          1,
+          2
+        ]
+      },
+      {
+        "path": "../../../../node_modules/.pnpm/nanoid@5.1.6/node_modules/nanoid/index.browser.js",
+        "sourceIndex": 1012,
+        "sourceSha256": "0ff6f67c7f10cf49f031faf20f5b2d4196b3b9232348ed7496cc66c70f47f284",
+        "mappedOriginalLines": [
+          2,
+          22,
+          23,
+          24,
+          25,
+          26,
+          28,
+          29
+        ]
+      }
+    ],
+    "excludedAffectedModules": [
+      "nanoid/non-secure/index.js",
+      "nanoid/index.js (Node shared CSPRNG-pool implementation)"
+    ],
+    "defaultSize": 21,
+    "sourceGeneratorRange": {
+      "firstSourceLine": 22,
+      "lastSourceLine": 29
+    },
+    "generatorSnippet": "export let nanoid = (size = 21) => { ... crypto.getRandomValues(new Uint8Array((size |= 0))) ... }",
+    "callsites": [
+      {
+        "path": "../../../api-client/dist/v2/components/code-input/CodeInput.vue.script.js",
+        "sourceIndex": 1013,
+        "sourceSha256": "1a714f0c0b375506b961f10f56f813053f47c37bcbab284a3945273b2a4ea9c5",
+        "calls": [
+          {
+            "line": 133,
+            "text": "const componentId = typeof attrs.id === \"string\" && attrs.id || `id-${nanoid()}`;"
+          }
+        ],
+        "purpose": "DOM component identifier",
+        "explicitSizeArgument": false
+      },
+      {
+        "path": "../../../api-client/dist/v2/components/code-input/CodeInputLite.vue.script.js",
+        "sourceIndex": 1027,
+        "sourceSha256": "8292e9796b53ff577a26d61805e598a1126e1a034811c1d04702869e36ec2f70",
+        "calls": [
+          {
+            "line": 138,
+            "text": "if ((typeof attrs.id !== \"string\" || !attrs.id) && generatedComponentId.value === null) generatedComponentId.value = `id-${nanoid()}`;"
+          }
+        ],
+        "purpose": "DOM component identifier, generated on first focus",
+        "explicitSizeArgument": false
+      },
+      {
+        "path": "../../../types/dist/utils/nanoid.js",
+        "sourceIndex": 1380,
+        "sourceSha256": "b0ec8f67bf38c86f55db5b515ffd8df8ba2fcc1429d62dc8a5eb870bc6062751",
+        "calls": [
+          {
+            "line": 7,
+            "text": ".default(() => nanoid());"
+          }
+        ],
+        "purpose": "Internal schema UID default",
+        "explicitSizeArgument": false
+      },
+      {
+        "path": "../../../themes/dist/index.js",
+        "sourceIndex": 1656,
+        "sourceSha256": "db98562f6fc1e6191d589b114f732e3045f9c8c6d2bd3bcfc7d9e5e04e65bc21",
+        "calls": [
+          {
+            "line": 213,
+            "text": "uid: nanoid(),"
+          }
+        ],
+        "purpose": "Theme UID",
+        "explicitSizeArgument": false
+      },
+      {
+        "path": "../../src/helpers/lazy-bus.ts",
+        "sourceIndex": 1982,
+        "sourceSha256": "41f5bdb0bf665f48303d12b0568b97c1ef3c21f3837817f8e84473a7c5391abe",
+        "calls": [
+          {
+            "line": 98,
+            "text": "const blockId = nanoid()"
+          }
+        ],
+        "purpose": "Lazy-render block identifier",
+        "explicitSizeArgument": false
+      }
+    ],
+    "observedActualCallCount": 5,
+    "generatedCoordinatePositiveControl": {
+      "generatedLine": 218,
+      "generatedColumnUtf16": 1917,
+      "sourceLine": 22,
+      "excerpt": "=s((()=>{Jpt(),JI=(e=21)=>{let t=``,n=crypto.getRandomValues(new Uint8Array(e|=0));for(;e--;)t+=qpt[n[e]&63];return t}})),Ypt,Xpt,Zpt,Qpt,$pt,emt,tmt,nmt,r"
+    }
+  },
+  "unmappedAffectedFunctions": [
+    {
+      "path": "../../../../node_modules/.pnpm/unhead@2.1.12/node_modules/unhead/dist/shared/unhead.0eF0fa-Y.mjs",
+      "function": "decodeHtmlEntities/hasDangerousProtocol",
+      "firstSourceLine": 76,
+      "lastSourceLine": 96,
+      "generatedMappingCount": 0,
+      "sourceIndex": 19,
+      "sourceSha256": "edd4963cfc037d3e6d41918b2db715a713282dd4df6873317c692b694e48354a",
+      "rangeTextSha256": "1d5843f5f6ef2c4220fd76b3236575373a231f1c4ad401ce242ec3f90d2b4e1d",
+      "rangeHashConvention": "UTF-8 source lines joined with LF, including final LF"
+    },
+    {
+      "path": "../../../../node_modules/.pnpm/unhead@2.1.12/node_modules/unhead/dist/shared/unhead.0eF0fa-Y.mjs",
+      "function": "makeTagSafe",
+      "firstSourceLine": 116,
+      "lastSourceLine": 204,
+      "generatedMappingCount": 0,
+      "sourceIndex": 19,
+      "sourceSha256": "edd4963cfc037d3e6d41918b2db715a713282dd4df6873317c692b694e48354a",
+      "rangeTextSha256": "c50a34f7c2ebb6d0c81a1c0cde1b5967527c277e71431e5e6f746810da819773",
+      "rangeHashConvention": "UTF-8 source lines joined with LF, including final LF"
+    },
+    {
+      "path": "../../../../node_modules/.pnpm/@ai-sdk+provider-utils@4.0.5_zod@4.4.3/node_modules/@ai-sdk/provider-utils/dist/index.mjs",
+      "function": "createJsonErrorResponseHandler",
+      "firstSourceLine": 2321,
+      "lastSourceLine": 2374,
+      "generatedMappingCount": 0,
+      "sourceIndex": 2534,
+      "sourceSha256": "fe20faabca5f7e83737db4950f3f2c08e83d56117de1a44a46735dfb43684f0e",
+      "rangeTextSha256": "0e4fc5b8b6bf5262c743c5ed9f4698b9dfd5d55b1443171db1950c0ae0c3b22d",
+      "rangeHashConvention": "UTF-8 source lines joined with LF, including final LF"
+    },
+    {
+      "path": "../../../../node_modules/.pnpm/@ai-sdk+provider-utils@4.0.5_zod@4.4.3/node_modules/@ai-sdk/provider-utils/dist/index.mjs",
+      "function": "createJsonResponseHandler",
+      "firstSourceLine": 2388,
+      "lastSourceLine": 2411,
+      "generatedMappingCount": 0,
+      "sourceIndex": 2534,
+      "sourceSha256": "fe20faabca5f7e83737db4950f3f2c08e83d56117de1a44a46735dfb43684f0e",
+      "rangeTextSha256": "6569e88b9aee56ead1732644c4f6b35304f0021763eca50cc8beb3418337fa6d",
+      "rangeHashConvention": "UTF-8 source lines joined with LF, including final LF"
+    },
+    {
+      "path": "../../../../node_modules/.pnpm/@ai-sdk+provider-utils@4.0.5_zod@4.4.3/node_modules/@ai-sdk/provider-utils/dist/index.mjs",
+      "function": "createStatusCodeErrorResponseHandler",
+      "firstSourceLine": 2442,
+      "lastSourceLine": 2456,
+      "generatedMappingCount": 0,
+      "sourceIndex": 2534,
+      "sourceSha256": "fe20faabca5f7e83737db4950f3f2c08e83d56117de1a44a46735dfb43684f0e",
+      "rangeTextSha256": "c901eb44c3c04d4b737725b7c414d85fddda595741ef4059d931f2c536f93955",
+      "rangeHashConvention": "UTF-8 source lines joined with LF, including final LF"
+    }
+  ],
+  "mappedModulePositiveControls": [
+    {
+      "path": "../../../../node_modules/.pnpm/@ai-sdk+provider-utils@4.0.5_zod@4.4.3/node_modules/@ai-sdk/provider-utils/dist/index.mjs",
+      "firstMappedLine": 159,
+      "lastMappedLine": 2317,
+      "mappingCount": 4448
+    },
+    {
+      "path": "../../../../node_modules/.pnpm/unhead@2.1.12/node_modules/unhead/dist/shared/unhead.0eF0fa-Y.mjs",
+      "firstMappedLine": 3,
+      "lastMappedLine": 110,
+      "mappingCount": 115
+    }
+  ],
+  "method": "Read-only source-map v3 Base64 VLQ decoding and generated UTF-16 coordinate inspection. Full sourcesContent can contain tree-shaken functions; absent-function conclusions refer to zero generated mappings, not absence from source text.",
+  "advisoryIds": [
+    "GHSA-28wg-ghj8-5hjv",
+    "GHSA-xwg4-73v4-xw9w",
+    "GHSA-95h2-gj7x-gx9w",
+    "GHSA-866g-f22w-33x8"
+  ],
+  "limits": [
+    "Source-map mapping evidence is tied to the exact byte-identified asset; it is not a general clearance for these package versions.",
+    "Tree-shaken affected functions remain present as original sourcesContent text in the map, but have no generated mappings. Other functions from both modules do have generated mappings.",
+    "No claim that enabling disabled client/AI features or upgrading the bundle preserves this rationale."
+  ]
+}

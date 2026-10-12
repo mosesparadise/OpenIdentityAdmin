@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactSha256": "050bc415ee7048dcd881682678f720264e7da5e373f7461d7c58c755305255f7",
+  "mapSha256": "5c0d0705c0079e3c1b24ae88062dfc25968f4f9754de8fa14cbb548af8996954",
+  "artifactByteIdentityToEmbeddedNuGetVerified": true,
+  "sourceMapCoordinateAssociationVerified": false,
+  "mismatch": {
+    "sourcePath": "webpack://SwaggerUIBundle/./node_modules/qs/lib/index.js",
+    "sourceLine": 3,
+    "sourceColumn": 4,
+    "mappedName": "stringify",
+    "generatedLine": 2,
+    "generatedColumnUtf16": 297467,
+    "actualExcerpt": "-width text-anchor text-decoration text-rendering underline-position underline-thickness unicode-bidi unicode-range units-per-em v-alphabetic v-hanging v-ideographic v-mathematical vector-effect vert-",
+    "expectedKind": "qs stringify import binding",
+    "observedKind": "position inside React DOM attribute-name string"
+  },
+  "method": "Source-map v3 Base64 VLQ decoded with global source/original-line/original-column/name accumulators, generated column reset for each semicolon line. Generated columns interpreted as UTF-16 code units. Same decoder finds the exact nanoid implementation in Scalar as a positive control.",
+  "additionalObservations": {
+    "actualDomPurifyVersionLiteral": "3.4.13",
+    "qsExpectedStringOccurrences": {
+      "throwOnLimitExceeded": 0,
+      "commaRoundTrip": 0,
+      "allowPrototypes": 0
+    }
+  },
+  "limits": [
+    "Absence of these qs strings alone is not proof every qs implementation is absent.",
+    "Do not infer complete bundle inventory or exact source-map component versions from this inconsistent map.",
+    "The 90 upstream-lock matched versions remain candidate inventory, not confirmed complete embedded component inventory.",
+    "The four unresolved source-map package versions remain unresolved; this is not the only inventory limitation."
+  ]
+}

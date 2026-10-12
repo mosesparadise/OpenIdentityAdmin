@@ -31,13 +31,13 @@
     },
     "PostgreSql": {
       "Persistence": 4,
-      "AppHost": 4,
+      "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41
     },
     "SqlServer": {
       "Persistence": 4,
-      "AppHost": 4,
+      "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41
     }

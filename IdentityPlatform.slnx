@@ -1,4 +1,5 @@
 <Solution>
+  <Folder Name="/src/" />
   <Folder Name="/src/aspire/">
     <Project Path="src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
     <Project Path="src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
@@ -20,6 +21,7 @@
   <Folder Name="/src/persistence/">
     <Project Path="src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
   <Folder Name="/tests/architecture/">
     <Project Path="tests/architecture/IdentityPlatform.Architecture.Tests/IdentityPlatform.Architecture.Tests.csproj" />
   </Folder>
@@ -30,6 +32,9 @@
   </Folder>
   <Folder Name="/tests/backend/">
     <Project Path="tests/backend/IdentityPlatform.Host.Tests/IdentityPlatform.Host.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tests/contracts/">
+    <Project Path="tests/contracts/IdentityPlatform.Api.Contracts.Tests/IdentityPlatform.Api.Contracts.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/core/">
     <Project Path="tests/core/IdentityPlatform.Core.Tests/IdentityPlatform.Core.Tests.csproj" />

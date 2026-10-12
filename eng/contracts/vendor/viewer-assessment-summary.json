@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "reviewDateUtc": "2026-10-12T09:07:03.875054+00:00",
+  "advisoryQuery": "viewer-advisory-summary.json",
+  "registryLicenseMetadata": "license-metadata-summary.json",
+  "advisoryDispositions": [
+    {
+      "id": "GHSA-28wg-ghj8-5hjv",
+      "package": "nanoid",
+      "version": "5.1.6",
+      "registrySeverity": "high",
+      "affectedRange": ">=4.0.0 <5.1.16",
+      "disposition": "not_affected_in_exact_browser_asset",
+      "rationale": "Affected non-secure module is absent; actual browser generator callers use default size for UI identifiers.",
+      "evidence": "scalar-reachability-summary.json"
+    },
+    {
+      "id": "GHSA-xwg4-73v4-xw9w",
+      "package": "nanoid",
+      "version": "5.1.6",
+      "registrySeverity": "high",
+      "affectedRange": ">=4.0.0 <5.1.11",
+      "disposition": "not_affected_in_exact_browser_asset",
+      "rationale": "Affected Node fillPool/Buffer/poolOffset implementation is absent; actual browser crypto generator has no shared CSPRNG pool and observed calls use default size.",
+      "evidence": "scalar-reachability-summary.json"
+    },
+    {
+      "id": "GHSA-95h2-gj7x-gx9w",
+      "package": "unhead",
+      "version": "2.1.12",
+      "registrySeverity": "moderate",
+      "affectedRange": "<2.1.13",
+      "disposition": "not_affected_in_exact_browser_asset",
+      "rationale": "Affected safe protocol-decoder/makeTagSafe functions have no generated mappings; other functions from the module survive.",
+      "evidence": "scalar-reachability-summary.json"
+    },
+    {
+      "id": "GHSA-866g-f22w-33x8",
+      "package": "@ai-sdk/provider-utils",
+      "version": "4.0.5",
+      "registrySeverity": "low",
+      "affectedRange": ">=4.0.0-beta.10 <4.0.33",
+      "disposition": "not_affected_in_exact_browser_asset",
+      "rationale": "All three advisory-named response handlers have no generated mappings; other provider-utils functions survive.",
+      "evidence": "scalar-reachability-summary.json"
+    },
+    {
+      "id": "GHSA-p98j-92pf-mc4p",
+      "package": "dompurify",
+      "version": "3.4.13",
+      "registrySeverity": "low",
+      "affectedRange": ">=3.4.13 <=3.4.15",
+      "disposition": "not_affected_in_exact_configured_sanitizer",
+      "rationale": "Actual byte-confirmed string sanitizer does not enable IN_PLACE or node-removing afterSanitize hooks.",
+      "evidence": "swagger-dompurify-reachability.json"
+    },
+    {
+      "id": "GHSA-6688-9rhm-gjv2",
+      "package": "dompurify",
+      "version": "3.4.13",
+      "registrySeverity": "low",
+      "affectedRange": "<=3.4.15",
+      "disposition": "not_affected_in_exact_configured_sanitizer",
+      "rationale": "Actual byte-confirmed sanitizer receives Markdown-produced string, not live rawtext Node with IN_PLACE.",
+      "evidence": "swagger-dompurify-reachability.json"
+    },
+    {
+      "id": "GHSA-x5fp-wj9c-mxmx",
+      "package": "qs",
+      "version": "6.15.2",
+      "registrySeverity": "moderate",
+      "affectedRange": ">=6.14.2 <=6.15.3",
+      "disposition": "unresolved_candidate_inventory",
+      "rationale": "Advisory requires comma:true parsing. Actual qs identity/callsite reachability not established because source map is inconsistent; do not allowlist as not affected.",
+      "evidence": "swagger-source-map-mismatch.json"
+    },
+    {
+      "id": "GHSA-4mjr-xmp4-gh2g",
+      "package": "qs",
+      "version": "6.15.2",
+      "registrySeverity": "moderate",
+      "affectedRange": ">=2.2.5 <6.16.0",
+      "disposition": "unresolved_candidate_inventory",
+      "rationale": "Advisory requires attacker-controlled constructor.isBuffer reaching stringify. Actual component identity/callsite reachability not established; do not allowlist as not affected.",
+      "evidence": "swagger-source-map-mismatch.json"
+    }
+  ],
+  "boundaryVerdict": {
+    "boundedUnmappedFoundation": "No concrete security blocker identified to current health-only composition; production documentation remains unmapped in every environment.",
+    "viewerActivationAndPublicRelease": "BLOCKED until verified bundle inventory, advisory disposition and notice/license obligations are resolved; source-map inconsistency is broader than four unknown versions.",
+    "t015VendorClearance": "PARTIAL / not claimed",
+    "testsExecutedByReviewer": false,
+    "certificationOrFormalComplianceClaim": false
+  },
+  "gateRecommendations": [
+    "Bind each reviewed not-affected advisory to exact package version, NuGet version, embedded JavaScript SHA256 and reviewed fixture configuration. Do not allowlist package names or severity classes.",
+    "Fail on version/hash drift, unknown advisory IDs, advisory endpoint errors or malformed response; refreshed advisory content requires review even when ID is unchanged.",
+    "Do not represent unresolved qs candidate findings as mitigated/not affected; archive them as unresolved inventory evidence under the explicit unmapped-foundation boundary.",
+    "Require verified inventory, fresh advisory assessment and preserved complete notices before any production MapDocumentation call and public release. A pinned hash detects change but does not resolve existing inventory gaps.",
+    "Use native patched viewer packages/verified vendor assets for updates; npm dependency overrides do not patch embedded NuGet viewer JavaScript."
+  ],
+  "licenseLimits": [
+    "Registry license metadata identifies declared license expressions only; it is not independent licensing/legal clearance.",
+    "format@0.2.2 has legacy MIT licenses metadata but no current license field and no packaged license notice observed; record provenance and resolve notice fulfillment before release.",
+    "DOMPurify offers MPL-2.0 OR Apache-2.0; record the chosen compliance path and satisfy its notice obligations, rather than treating dual licensing as missing license.",
+    "Unknown version candidates and inconsistent Swagger map prevent a complete transitive licensing claim."
+  ],
+  "fullEvidence": {
+    "file": "viewer-assessment.json",
+    "sha256": "92c3d71d12456165c7f9cccc2f29210b9cb557384ad7a2ea4c7fc3ddaa391136",
+    "location": "retained reviewer scratch evidence"
+  },
+  "summaryBoundary": "Derived from existing evidence only; no new network research, package installation, build, test or production action."
+}

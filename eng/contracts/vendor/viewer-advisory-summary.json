@@ -1,0 +1,166 @@
+{
+  "queriedUtc": "2026-10-12T08:53:58Z",
+  "source": "https://registry.npmjs.org/-/npm/v1/security/advisories/bulk",
+  "httpStatus": 200,
+  "requestPackageNames": 271,
+  "requestPackageVersionPairs": 271,
+  "responseSha256": "bab55479f6d0603509f74be8a81c297c1e1a95e7bed7bea1369424218242e6b0",
+  "requestSha256": "b26d29c419e6a15e14613c5a5ec63b7bd4e13d72ef01fff1e0a8f4fc77d7ce24",
+  "advisoryCount": 8,
+  "advisories": [
+    {
+      "name": "@ai-sdk/provider-utils",
+      "requestedVersions": [
+        "4.0.5"
+      ],
+      "id": 1193659,
+      "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+      "severity": "low",
+      "vulnerable_versions": ">=4.0.0-beta.10 <4.0.33",
+      "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+      "cwe": [
+        "CWE-400"
+      ],
+      "cvss": {
+        "score": 4.3,
+        "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+      }
+    },
+    {
+      "name": "dompurify",
+      "requestedVersions": [
+        "3.4.13"
+      ],
+      "id": 1240621,
+      "title": "DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS",
+      "severity": "low",
+      "vulnerable_versions": ">=3.4.13 <=3.4.15",
+      "url": "https://github.com/advisories/GHSA-p98j-92pf-mc4p",
+      "cwe": [
+        "CWE-79"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
+    },
+    {
+      "name": "dompurify",
+      "requestedVersions": [
+        "3.4.13"
+      ],
+      "id": 1241204,
+      "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup \u2014 pure HTML reparse executes",
+      "severity": "low",
+      "vulnerable_versions": "<=3.4.15",
+      "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
+      "cwe": [
+        "CWE-79"
+      ],
+      "cvss": {
+        "score": 0,
+        "vectorString": null
+      }
+    },
+    {
+      "name": "nanoid",
+      "requestedVersions": [
+        "5.1.6"
+      ],
+      "id": 1138810,
+      "title": "nanoid: non-secure generators can loop indefinitely with negative size",
+      "severity": "high",
+      "vulnerable_versions": ">=4.0.0 <5.1.16",
+      "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+      "cwe": [
+        "CWE-835"
+      ],
+      "cvss": {
+        "score": 5.9,
+        "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+      }
+    },
+    {
+      "name": "nanoid",
+      "requestedVersions": [
+        "5.1.6"
+      ],
+      "id": 1153188,
+      "title": "nanoid: Integer Overflow or Wraparound",
+      "severity": "high",
+      "vulnerable_versions": ">=4.0.0 <5.1.11",
+      "url": "https://github.com/advisories/GHSA-xwg4-73v4-xw9w",
+      "cwe": [
+        "CWE-190"
+      ],
+      "cvss": {
+        "score": 7.4,
+        "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+      }
+    },
+    {
+      "name": "qs",
+      "requestedVersions": [
+        "6.15.2"
+      ],
+      "id": 1158506,
+      "title": "qs array-limit bypass via bracket-key comma parsing",
+      "severity": "moderate",
+      "vulnerable_versions": ">=6.14.2 <=6.15.3",
+      "url": "https://github.com/advisories/GHSA-x5fp-wj9c-mxmx",
+      "cwe": [
+        "CWE-770"
+      ],
+      "cvss": {
+        "score": 3.7,
+        "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      }
+    },
+    {
+      "name": "qs",
+      "requestedVersions": [
+        "6.15.2"
+      ],
+      "id": 1158507,
+      "title": "qs: Denial of Service via Attacker Controlled isBuffer",
+      "severity": "moderate",
+      "vulnerable_versions": ">=2.2.5 <6.16.0",
+      "url": "https://github.com/advisories/GHSA-4mjr-xmp4-gh2g",
+      "cwe": [
+        "CWE-248",
+        "CWE-703"
+      ],
+      "cvss": {
+        "score": 5.3,
+        "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+      }
+    },
+    {
+      "name": "unhead",
+      "requestedVersions": [
+        "2.1.12"
+      ],
+      "id": 1116373,
+      "title": "Unhead has a hasDangerousProtocol() bypass via leading-zero padded HTML entities in useHeadSafe()",
+      "severity": "moderate",
+      "vulnerable_versions": "<2.1.13",
+      "url": "https://github.com/advisories/GHSA-95h2-gj7x-gx9w",
+      "cwe": [
+        "CWE-184"
+      ],
+      "cvss": {
+        "score": 6.1,
+        "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+      }
+    }
+  ],
+  "coverage": "Known Scalar map-derived versions plus viewer roots and Swagger candidate map-to-lock versions; not a complete actual Swagger asset inventory. Four unversioned Swagger candidates excluded explicitly; map association is also unresolved.",
+  "unresolvedComponents": [
+    "@braintree/sanitize-url",
+    "redux-immutable",
+    "stampit",
+    "traverse"
+  ],
+  "parserNote": "Initial schema check wrongly expected a per-advisory name field. npm supplies the name as the response-map key. Corrected parsing of saved HTTP200 response; initial attempt was not recorded as clean evidence.",
+  "sourceMapAssociationLimit": "swagger-source-map-mismatch.json"
+}
