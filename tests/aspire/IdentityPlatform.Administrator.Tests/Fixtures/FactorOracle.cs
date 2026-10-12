@@ -76,6 +76,23 @@ internal static class FactorOracle
         return candidate.ToString(Digits, CultureInfo.InvariantCulture);
     }
 
+    /// <summary>Checks every native counter crossed by the actual bounded request; a timing escape fails evidence without retrying authentication.</summary>
+    internal static void RequireWindow(string seed, string code, long started, bool valid)
+    {
+        const int MaximumIntervalSeconds = 20;
+        const int FirstOffset = -2;
+        const int WindowCount = 5;
+        const string InvalidInterval = "The native factor request escaped its observed bounded clock interval.";
+        const string InvalidWindow = "The independent code did not retain its intended validity throughout the native request interval.";
+        var ended = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        Assert.True(ended >= started && ended - started <= MaximumIntervalSeconds, InvalidInterval);
+        for (var counter = started / StepSeconds; counter <= ended / StepSeconds; counter++)
+        {
+            var accepted = Enumerable.Range(FirstOffset, WindowCount).Select(offset => Code(seed, (counter + offset) * StepSeconds));
+            Assert.True(accepted.Contains(code, StringComparer.Ordinal) == valid, InvalidWindow);
+        }
+    }
+
     /// <summary>Selects a distinct value within the native adjacent-step window without reusing an accepted numeric code.</summary>
     internal static string UnusedCode(string seed, string accepted)
     {

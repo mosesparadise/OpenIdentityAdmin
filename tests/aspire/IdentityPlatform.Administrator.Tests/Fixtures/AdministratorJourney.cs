@@ -8,7 +8,7 @@ internal static class AdministratorJourney
 {
     private const string UsernameField = "Username";
     private const string PasswordField = "Password";
-    private const string CodeField = "Code";
+    internal const string CodeField = "Code";
     private const string SetupInput = "setup-key";
     private const string LocalContinuationRequired = "The account continuation must remain local.";
 

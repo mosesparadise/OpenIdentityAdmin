@@ -1,8 +1,6 @@
 using System.Net;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
-using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +12,6 @@ namespace IdentityPlatform.Administrator.Tests.Features.Accounts;
 [Collection("administrator-bootstrap")]
 public sealed class HttpAuthorityTests(BootstrapFixture fixture)
 {
-    private const int CompetingRequests = 2;
-    private const string GovernanceStage = "%UPDATE%AdministratorGovernance%";
     private const string Accepted = "accepted";
     private const string EnrollmentEvent = "administrator-enrollment";
     private const string RecoveryHeading = "Save your recovery codes";
@@ -89,7 +85,7 @@ public sealed class HttpAuthorityTests(BootstrapFixture fixture)
         var location = await AdministratorJourney.BeginAsync(environment, primary, enrollment: true);
         var form = await AdministratorJourney.ReadAsync(primary, location, enrollment: true);
         var code = FactorOracle.Code(form.Seed!, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-        var responses = await ContendAsync(environment, provider, primary, secondary, form, code);
+        var responses = await JourneyContention.CompleteAsync(environment, provider, primary, secondary, form, form, code, enrollment: true);
         try
         {
             Assert.Equal(1, responses.Count(response => response.StatusCode == HttpStatusCode.OK));
@@ -106,53 +102,6 @@ public sealed class HttpAuthorityTests(BootstrapFixture fixture)
         Assert.Equal(1, await database.Set<AdministratorReplay>().CountAsync(TestContext.Current.CancellationToken));
         Assert.Equal(10, await database.Set<AdministratorRecoveryCode>().CountAsync(TestContext.Current.CancellationToken));
         Assert.Equal(1, await database.Set<SecurityAuditIntent>().CountAsync(row => row.Event == EnrollmentEvent && row.Outcome == Accepted, TestContext.Current.CancellationToken));
-    }
-
-    /// <summary>Holds the actual governance lock until the database proves that both production requests reached it.</summary>
-    private static async Task<HttpResponseMessage[]> ContendAsync(AdministratorEnvironment environment, string provider,
-        HttpClient primary, HttpClient secondary, AdministratorForm form, string code)
-    {
-        await using var services = new FactorServices(provider, environment.Database, environment.Material);
-        await using var scope = services.Services.CreateAsyncScope();
-        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        Task<HttpResponseMessage[]>? completion = null;
-        try
-        {
-            await using (var transaction = await CeremonyTransaction.OpenAsync(database, scope.ServiceProvider.GetRequiredService<NativeOperation>(),
-                new(true, false, [], []), TestContext.Current.CancellationToken))
-            {
-                var blocker = await DatabaseWaiters.IdentifyAsync(database, TestContext.Current.CancellationToken);
-                completion = Task.WhenAll(AdministratorJourney.ConfirmAsync(primary, form, code, enrollment: true),
-                    AdministratorJourney.ConfirmAsync(secondary, form, code, enrollment: true));
-                await DatabaseWaiters.ObserveAsync(environment.Database, blocker, GovernanceStage, CompetingRequests);
-            }
-            return await completion;
-        }
-        catch
-        {
-            primary.CancelPendingRequests();
-            secondary.CancelPendingRequests();
-            await DrainAsync(completion);
-            throw;
-        }
-    }
-
-    /// <summary>Drains both HTTP owners after a failed contention observation without retaining secret response diagnostics.</summary>
-    private static async Task DrainAsync(Task<HttpResponseMessage[]>? completion)
-    {
-        const int DrainSeconds = 10;
-        if (completion is null)
-        {
-            return;
-        }
-        _ = await Record.ExceptionAsync(async () =>
-        {
-            var responses = await completion.WaitAsync(TimeSpan.FromSeconds(DrainSeconds));
-            foreach (var response in responses)
-            {
-                response.Dispose();
-            }
-        });
     }
 
     /// <summary>Uses actual native HTTP enrollment while retaining only in-memory synthetic material for a subsequent login control.</summary>
