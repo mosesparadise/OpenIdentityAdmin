@@ -37,3 +37,13 @@ body { margin: 0; background: var(--page); color: var(--text); font-family: var(
   --scalar-color-green: var(--accent); --scalar-color-purple: var(--accent);
   --scalar-color-red: var(--error); --scalar-color-yellow: var(--text);
 }
+
+@media (max-width: 40rem) {
+  #swagger-ui .opblock-tag { overflow-wrap: anywhere; }
+  #swagger-ui .opblock-summary-control { min-width: 0; flex-wrap: wrap; gap: .35rem; }
+  #swagger-ui .opblock-summary-path { word-break: break-all; }
+  #swagger-ui :is(.responses-wrapper,.parameters-container,.model-box,.highlight-code) { max-width: 100%; overflow-x: auto; }
+  #swagger-ui table { table-layout: fixed; width: 100%; }
+  #swagger-ui :is(td,th) { overflow-wrap: anywhere; }
+  #swagger-ui pre { max-width: 100%; overflow-x: auto; }
+}

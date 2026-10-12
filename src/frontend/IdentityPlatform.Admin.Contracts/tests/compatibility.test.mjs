@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { inventory } from '../tooling/contracts.mjs';
+import { inventory, ContractViolation } from '../tooling/contracts.mjs';
 import { validate } from '../tooling/validate.mjs';
 import { requireBaselineInventory } from '../tooling/baseline.mjs';
 import { compatibility, requireCleanDiff } from '../tooling/compatibility.mjs';
@@ -42,7 +42,7 @@ const mutations = {
   'wrong browser path': d => { d.paths['/api/v1/leak'] = d.paths[list]; }
 };
 for (const [name, mutate] of Object.entries(mutations)) {
-  test(`rejects ${name}`, () => assert.throws(() => compatibility(fixture, changed(mutate), 'bff')));
+  test(`rejects ${name}`, () => assert.throws(() => compatibility(fixture, changed(mutate), 'bff'), ContractViolation));
 }
 test('empty fixture cannot substitute for exercised operations', () => assert.throws(() => inventory({ ...fixture, paths: {} }, 'bff')));
 
@@ -61,7 +61,13 @@ test('diff evidence rejects malformed output and unsuccessful processes', () => 
   requireCleanDiff({ status: 0, stdout: '[]' });
   for (const result of [{ status: 1, stdout: '[]' }, { status: 2, stdout: '[]' }, { status: null, stdout: '[]' },
     { status: 0, stdout: '[]', error: new Error('timeout') }, ...['', 'null', '""', '{"length":0}', '[{}]'].map(stdout => ({ status: 0, stdout }))]) {
-    assert.throws(() => requireCleanDiff(result));
+    assert.throws(() => requireCleanDiff(result), error => !(error instanceof ContractViolation));
+  }
+  for (const [status, level] of [[0, 2], [0, 3], [1, 1]]) {
+    assert.throws(() => requireCleanDiff({ status, stdout: JSON.stringify([{ id: 'changed', level, text: 'changed' }]) }), error => !(error instanceof ContractViolation));
+  }
+  for (const [status, level] of [[0, 1], [1, 2], [1, 3]]) {
+    assert.throws(() => requireCleanDiff({ status, stdout: JSON.stringify([{ id: 'changed', level, text: 'changed' }]) }), ContractViolation);
   }
 });
 test('baseline inventory rejects omission except the exact initial commit', () => {
@@ -75,5 +81,22 @@ test('baseline inventory rejects omission except the exact initial commit', () =
     const incomplete = new Set(files); incomplete.delete(file);
     assert.throws(() => requireBaselineInventory(base, incomplete));
     assert.throws(() => requireBaselineInventory(future, incomplete));
+  }
+});
+test('unsupported referenced or path-level preconditions fail closed even unchanged', () => {
+  const referenced = changed(d => {
+    d.components.schemas.EditVersion = { type: 'string', minLength: 1 };
+    d.paths[item].put.parameters.find(p => p.name === 'If-Match').schema = { $ref: '#/components/schemas/EditVersion' };
+  });
+  assert.throws(() => compatibility(referenced, referenced, 'bff'), ContractViolation);
+  const relaxed = structuredClone(referenced); relaxed.components.schemas.EditVersion.minLength = 0;
+  assert.throws(() => compatibility(referenced, relaxed, 'bff'), ContractViolation);
+  for (const mutate of [
+    d => { d.paths[item].parameters = [{ in: 'header', name: 'If-Match', required: true, schema: { type: 'string' } }]; },
+    d => { d.paths[item].get.responses['200'].headers.ETag = { $ref: '#/components/headers/EditVersion' }; },
+    d => { d.paths[item].get.responses['200'] = { $ref: '#/components/responses/Example' }; }
+  ]) {
+    const unsupported = changed(mutate);
+    assert.throws(() => compatibility(unsupported, unsupported, 'bff'), ContractViolation);
   }
 });

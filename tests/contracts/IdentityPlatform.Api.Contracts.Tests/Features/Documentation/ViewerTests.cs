@@ -105,7 +105,8 @@ public sealed class ViewerTests
         Assert.Equal(0, await page.EvaluateAsync<int>("Object.keys(localStorage).filter(k => /token|auth|credential/i.test(k)).length"));
 
         await page.SetViewportSizeAsync(320, 900);
-        Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"));
+        var overflow = await page.EvaluateAsync<string>("JSON.stringify([...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1 && getComputedStyle(e).position !== 'fixed').slice(0,12).map(e => ({tag:e.tagName, class:e.className, width:e.getBoundingClientRect().width})))");
+        Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"), overflow);
     }
 
     private static async Task VerifyRenderedDocumentAsync(IPage page, string viewer, bool dark, bool browserSurface)
@@ -122,25 +123,72 @@ public sealed class ViewerTests
                 Exact = true
             }).First).ToBeVisibleAsync();
         }
+        await CaptureAsync(page, viewer, dark, browserSurface, "initial");
+        if (viewer == "scalar")
+        {
+            await page.Locator(".t-doc__sidebar").GetByText("Models", new()
+            {
+                Exact = true
+            }).ClickAsync();
+            var models = page.GetByRole(AriaRole.Region, new()
+            {
+                Name = "Models",
+                Exact = true
+            });
+            await models.ScrollIntoViewIfNeededAsync();
+            var more = models.GetByRole(AriaRole.Button, new()
+            {
+                Name = "Show more",
+                Exact = true
+            });
+            if (await more.IsVisibleAsync())
+            {
+                await more.ClickAsync();
+            }
+            await page.Locator(".t-doc__sidebar").GetByText("ProblemDetails", new()
+            {
+                Exact = true
+            }).ClickAsync();
+            var problem = page.GetByRole(AriaRole.Region, new()
+            {
+                Name = "ProblemDetails",
+                Exact = true
+            });
+            await problem.ScrollIntoViewIfNeededAsync();
+            var expand = problem.Locator("button[aria-expanded=false]").First;
+            if (await expand.IsVisibleAsync())
+            {
+                await expand.ClickAsync();
+            }
+            await Assertions.Expect(problem.GetByText("status", new()
+            {
+                Exact = true
+            }).First).ToBeVisibleAsync();
+        }
         var body = await page.Locator("body").InnerTextAsync();
         Assert.Contains(browserSurface ? "/bff/api/v1/examples" : "/api/v1/examples", body, StringComparison.Ordinal);
         Assert.Contains("ProblemDetails", body, StringComparison.Ordinal);
         Assert.Contains("Example", body, StringComparison.Ordinal);
+        await CaptureAsync(page, viewer, dark, browserSurface, "rendered");
+        Assert.Equal("[]", await page.EvaluateAsync<string>("JSON.stringify(window.contractCsp)"));
+        var axe = await page.RunAxe();
+        Assert.True(axe.Violations.Length == 0, System.Text.Json.JsonSerializer.Serialize(axe.Violations.Select(v => new { v.Id, Nodes = v.Nodes.Select(n => new { n.Html, Messages = n.Any.Select(a => a.Message) }) })));
+    }
+
+    private static async Task CaptureAsync(IPage page, string viewer, bool dark, bool browserSurface, string stage)
+    {
         var output = Environment.GetEnvironmentVariable("IDENTITY_CONTRACT_OUTPUT");
         if (output is not null)
         {
             var directory = Path.Combine(output, "viewers", Environment.GetEnvironmentVariable("IDENTITY_TEST_BROWSER") ?? "chromium");
             Directory.CreateDirectory(directory);
-            var name = $"{viewer}-{(dark ? "dark" : "light")}-{(browserSurface ? "bff" : "api")}";
+            var name = $"{viewer}-{(dark ? "dark" : "light")}-{(browserSurface ? "bff" : "api")}-{stage}";
             await page.ScreenshotAsync(new()
             {
                 Path = Path.Combine(directory, name + ".png")
             });
             await File.WriteAllTextAsync(Path.Combine(directory, name + ".html"), await page.ContentAsync(), TestContext.Current.CancellationToken);
         }
-        Assert.Equal("[]", await page.EvaluateAsync<string>("JSON.stringify(window.contractCsp)"));
-        var axe = await page.RunAxe();
-        Assert.True(axe.Violations.Length == 0, System.Text.Json.JsonSerializer.Serialize(axe.Violations.Select(v => new { v.Id, Nodes = v.Nodes.Select(n => new { n.Html, Messages = n.Any.Select(a => a.Message) }) })));
     }
 
     [Fact]

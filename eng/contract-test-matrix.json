@@ -1,7 +1,7 @@
 {
   "core": 20,
   "browser": 5,
-  "node": 33,
+  "node": 34,
   "browsers": [
     "chromium",
     "firefox",
@@ -40,6 +40,7 @@
     "native schema validator rejects unresolved local reference",
     "native schema validator rejects malformed response",
     "diff evidence rejects malformed output and unsuccessful processes",
-    "baseline inventory rejects omission except the exact initial commit"
+    "baseline inventory rejects omission except the exact initial commit",
+    "unsupported referenced or path-level preconditions fail closed even unchanged"
   ]
 }

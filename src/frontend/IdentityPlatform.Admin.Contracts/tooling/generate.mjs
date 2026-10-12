@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import openapiTS, { astToString } from 'openapi-typescript';
+import { validate } from './validate.mjs';
 
 const root = fileURLToPath(new URL('../../../../', import.meta.url));
 const packageRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -28,6 +29,8 @@ async function output(relative, content) {
 }
 for (const [input, destination] of inputs) {
   const document = canonical(JSON.parse(await fs.readFile(path.join(root, 'artifacts/contracts', input), 'utf8')));
+  // Reject external/dynamic resolution before either the generator or an output write.
+  await validate(document, input.includes('bff-v1') ? 'bff' : 'api', input.startsWith('actual/'));
   await output(destination, JSON.stringify(document, null, 2) + '\n');
   if (input.includes('bff-v1')) {
     const types = astToString(await openapiTS(document));
