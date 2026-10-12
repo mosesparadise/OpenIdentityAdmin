@@ -145,7 +145,8 @@ public sealed partial class BootstrapTests
         var before = await SnapshotAsync(lease);
         await using var process = new BootstrapProcess(provider, scenario == "missing-connection" ? "" : lease.RuntimeConnection,
             operation: scenario == "operation" ? "unknown-operation" : "initialize-administrator",
-            environment: scenario == "local-roles" ? "Development" : "Production", provision: scenario == "local-roles", terminal: scenario == "terminal");
+            environment: scenario == "local-roles" ? "Development" : "Production",
+            sessionConnection: scenario == "operation" ? lease.AdministratorConnection : null, provision: scenario == "local-roles", terminal: scenario == "terminal");
         // Otherwise valid input prevents malformed-input rejection from masking a missing guard.
         await process.SendAsync(lease.Input());
         var result = await process.CompleteAsync();

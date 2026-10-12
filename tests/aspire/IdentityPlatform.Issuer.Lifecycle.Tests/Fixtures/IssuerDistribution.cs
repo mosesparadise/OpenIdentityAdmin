@@ -124,24 +124,33 @@ public sealed partial class IssuerEnvironment
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(45));
+        var stage = "StopNodeAsync";
         try
         {
+            stage = "stop.capture";
             CaptureLifecycle();
+            stage = "stop.initial-invariant";
             var invariant = DistributionInvariant();
             var node = nodes[name];
             var resource = Application.Services.GetRequiredService<DistributedApplicationModel>().Resources.Single(value => value.Name == name);
+            stage = "stop.command";
             Assert.True((await Application.Services.GetRequiredService<ResourceCommandService>()
                 .ExecuteCommandAsync(resource, KnownResourceCommands.StopCommand, deadline.Token)).Success, "Node stop command failed.");
+            stage = "stop.terminal-state";
             await Application.ResourceNotifications.WaitForResourceAsync(name, change =>
                 change.Snapshot.State?.Text == KnownResourceStates.Exited || change.Snapshot.State?.Text == KnownResourceStates.Finished, deadline.Token);
+            stage = "stop.process-exit";
             await ProcessTreeEvidence.WaitForTerminationAsync(node.Tree, deadline.Token);
+            stage = "stop.retained-invariant";
             Assert.True(invariant == DistributionInvariant(), "Stopping a node changed retained issuer resources.");
+            stage = "stop.peer";
             RequireOtherNode(name);
+            stage = "stop.final-capture";
             CaptureLifecycle();
         }
-        catch
+        catch (Exception failure)
         {
-            Invalidate();
+            Invalidate(stage, failure);
             throw;
         }
     }
@@ -150,19 +159,25 @@ public sealed partial class IssuerEnvironment
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(45));
+        var stage = "StartNodeAsync";
         try
         {
+            stage = "start.initial-invariant";
             var invariant = DistributionInvariant();
             var resource = Application.Services.GetRequiredService<DistributedApplicationModel>().Resources.Single(value => value.Name == name);
+            stage = "start.command";
             Assert.True((await Application.Services.GetRequiredService<ResourceCommandService>()
                 .ExecuteCommandAsync(resource, KnownResourceCommands.StartCommand, deadline.Token)).Success, "Node start command failed.");
+            stage = "start.ready";
             await ReadyNodeAsync(name, deadline.Token);
+            stage = "start.retained-invariant";
             Assert.True(invariant == DistributionInvariant(), "Starting a node changed retained issuer resources.");
+            stage = "start.peer";
             RequireOtherNode(name);
         }
-        catch
+        catch (Exception failure)
         {
-            Invalidate();
+            Invalidate(stage, failure);
             throw;
         }
         finally
@@ -171,7 +186,7 @@ public sealed partial class IssuerEnvironment
             {
                 CaptureLifecycle();
             }
-            catch (Exception) { Invalidate(); }
+            catch (Exception failure) { Invalidate("start.final-capture", failure); }
         }
     }
     private void RequireOtherNode(string name)

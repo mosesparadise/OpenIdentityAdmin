@@ -7,6 +7,29 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 [Trait("Category", "Harness")]
 public sealed class LifecycleEvidenceTests
 {
+    [Fact]
+    public async Task Cleanup_retains_primary_and_multiple_failures_attempts_remaining_actions_and_redacts_messages()
+    {
+        const string canary = "synthetic-lifecycle-secret";
+        var failures = new LifecycleFailures();
+        var primary = new InvalidOperationException(canary);
+        primary.Data["secret"] = canary;
+        failures.Record("stop.peer", primary);
+        var attempted = 0;
+        await failures.AttemptAsync("cleanup.stop", () => { attempted++; throw new IOException(canary); });
+        await failures.AttemptAsync("cleanup.dispose", () => { attempted++; throw new TimeoutException(canary); });
+        await failures.AttemptAsync("cleanup.last", () => { attempted++; return Task.CompletedTask; });
+        var error = Assert.ThrowsAny<Exception>(failures.RequireSuccess);
+        Assert.Equal(3, attempted);
+        Assert.False(error.ToString().Contains(canary, StringComparison.Ordinal), "Failure diagnostics exposed exception content.");
+        Assert.True(error.InnerException is null, "Failure diagnostics retained an inner exception.");
+        Assert.True(error.Data.Count == 0, "Failure diagnostics retained exception metadata.");
+        Assert.True(error.Message.Contains("stop.peer:InvalidOperationException", StringComparison.Ordinal), "Primary failure stage was lost.");
+        Assert.True(error.Message.Contains("cleanup.stop:IOException", StringComparison.Ordinal), "Stop cleanup stage was lost.");
+        Assert.True(error.Message.Contains("cleanup.dispose:TimeoutException", StringComparison.Ordinal), "Dispose cleanup stage was lost.");
+        new LifecycleFailures().RequireSuccess();
+    }
+
     [Theory]
     [InlineData("Running")]
     [InlineData("Starting")]

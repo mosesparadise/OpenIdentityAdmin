@@ -85,7 +85,7 @@ public sealed partial class BootstrapTests
                     }
                     finally
                     {
-                        await CancelAndDrainAsync(attempt, cancelled);
+                        await CancelAndDrainAsync(attempt, cancelled, sqlAttention: provider == "SqlServer");
                     }
                 }
                 break;
@@ -122,13 +122,20 @@ public sealed partial class BootstrapTests
         Assert.True(before == await SnapshotAsync(lease), "Failed initialization left partial state.");
         Assert.Equal(BootstrapOutcome.Created, await lease.InitializeAsync(Token));
     }
-    private static async Task CancelAndDrainAsync(Task attempt, CancellationTokenSource operation)
+    private static async Task CancelAndDrainAsync(Task attempt, CancellationTokenSource operation, bool sqlAttention = false)
     {
         await operation.CancelAsync();
         using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(40));
         var failure = await Record.ExceptionAsync(() => attempt.WaitAsync(cleanup.Token));
-        Assert.True(attempt.IsCompleted && !cleanup.IsCancellationRequested && failure is OperationCanceledException,
-            "Original operation did not finish with cancellation within independent cleanup deadline.");
+        // SqlClient 7.0.2 TdsParser adds a specific attention error after a cancelled
+        // executing command. Manager interception must still yield OperationCanceledException.
+        var attention = sqlAttention && failure is Microsoft.Data.SqlClient.SqlException sql && sql.Errors.Count == 1 &&
+            sql.Number == 0 && sql.Class == 11 && sql.State == 0 && sql.Message == "Operation cancelled by user.";
+        var diagnostic = failure is Microsoft.Data.SqlClient.SqlException providerFailure
+            ? $"SqlException number={providerFailure.Number} class={providerFailure.Class} state={providerFailure.State} errors={providerFailure.Errors.Count}"
+            : failure?.GetType().Name ?? "no failure";
+        Assert.True(attempt.IsCompleted && !cleanup.IsCancellationRequested && (failure is OperationCanceledException || attention),
+            "Original operation did not finish with recognized cancellation within independent cleanup deadline: " + diagnostic);
     }
 
 }

@@ -10,16 +10,16 @@ Only increment1 is ready for detailed implementation review. User-approved deliv
 
 ## Increment 1 — US1 bootstrap and storage
 
-- [ ] T004 [US1] Define explicit v1 permission catalogue/bundles in src/core/IdentityPlatform.Core/Features/Identity/Permissions; no wildcard or implicit future grants.
-- [ ] T005 [US1] Add governance singleton (Id=1, nonnegative long revision), permanent receipt and Pending enrollment (UserId max450) to src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence, following data-model.md.
-- [ ] T006 [US1] Generate both provider migrations under src/migrations and update src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs; preserve existing data.
-- [ ] T007 [US1] Add bounded redirected-input parsing (4096 UTF-8 bytes, exact fields, no duplicates) and explicit operation dispatch under src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize and existing Composition/Setup.
-- [ ] T008 [US1] Implement native manager bootstrap transaction and safe classified outcomes under src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize; permanent consumption, disabled pending user, no repair, shared UPDATE lock and atomic audit.
-- [ ] T009 [P] [US1] Add deterministic catalogue/parser/configuration tests under tests/core and tests/backend using existing projects and Features.
-- [ ] T010 [US1] Create tests/aspire/IdentityPlatform.Administrator.Tests with Features/Bootstrap and Fixtures, under Aspire in IdentityPlatform.slnx.
-- [ ] T011 [US1] Implement BOOT-01–04 and BOOT-08/09 real-provider/process/manager cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap.
-- [ ] T012 [US1] Implement observable race, audit denial, cancellation/crash and lost-result cases BOOT-05–07 in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap; no secret-bearing assertion output.
-- [ ] T013 [US1] Add strict isolated administrator provider selection and seeded evidence controls in scripts, eng/test-matrix.json and .github/workflows/verify.yml; require both new coverage inputs without enlarging issuer invocations.
+- [x] T004 [US1] Define explicit v1 permission catalogue/bundles in src/core/IdentityPlatform.Core/Features/Identity/Permissions; no wildcard or implicit future grants.
+- [x] T005 [US1] Add governance singleton (Id=1, nonnegative long revision), permanent receipt and Pending enrollment (UserId max450) to src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence, following data-model.md.
+- [x] T006 [US1] Generate both provider migrations under src/migrations and update src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs; preserve existing data.
+- [x] T007 [US1] Add bounded redirected-input parsing (4096 UTF-8 bytes, exact fields, no duplicates) and explicit operation dispatch under src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize and existing Composition/Setup.
+- [x] T008 [US1] Implement native manager bootstrap transaction and safe classified outcomes under src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize; permanent consumption, disabled pending user, no repair, shared UPDATE lock and atomic audit.
+- [x] T009 [P] [US1] Add deterministic parser/configuration tests in the existing tests/backend project and independent permission-bundle oracles in the dedicated provider project, using Features.
+- [x] T010 [US1] Create tests/aspire/IdentityPlatform.Administrator.Tests with Features/Bootstrap and Fixtures, under Aspire in IdentityPlatform.slnx.
+- [x] T011 [US1] Implement BOOT-01–04 and BOOT-08/09 real-provider/process/manager cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap.
+- [x] T012 [US1] Implement observable race, audit denial, cancellation/crash and lost-result cases BOOT-05–07 in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap; no secret-bearing assertion output.
+- [x] T013 [US1] Add strict isolated administrator provider selection and seeded evidence controls in scripts, eng/test-matrix.json and .github/workflows/verify.yml; require both new coverage inputs without enlarging issuer invocations.
 - [ ] T014 [US1] Run required provider/regression/static/mutation/coverage checks, independent source reviews, and record exact results in specs/008-administrator-foundation/verification.md; correct findings before normal squash.
 - [ ] T015 [US1] Replace planned quickstart commands with verified commands and update docs/roadmap.md; exact-head checks and live PR merge record complete increment1 delivery.
 

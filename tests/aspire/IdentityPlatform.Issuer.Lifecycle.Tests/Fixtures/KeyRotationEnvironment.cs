@@ -143,6 +143,11 @@ internal sealed class KeyRotationEnvironment : IAsyncDisposable
                         await Host.RequireSafeConfigurationLogsAsync(SensitiveValues());
                     }
                 }
+                catch (Exception failure)
+                {
+                    environment.Invalidate("key-rotation.log-scan", failure);
+                    throw;
+                }
                 finally { await environment.DisposeAsync(); }
             }
         }

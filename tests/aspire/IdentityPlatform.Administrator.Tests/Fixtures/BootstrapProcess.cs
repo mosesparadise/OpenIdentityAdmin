@@ -44,6 +44,9 @@ public sealed class BootstrapProcess : IAsyncDisposable
         if (provision)
         {
             start.Environment["LocalDevelopment__ProvisionRuntimeRoles"] = "true";
+            // Otherwise valid local-role settings ensure only the forbidden operation combination rejects this case.
+            start.Environment["LocalDevelopment__PlatformPassword"] = "aA1" + Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(24));
+            start.Environment["LocalDevelopment__SessionsPassword"] = "aA1" + Convert.ToHexString(System.Security.Cryptography.RandomNumberGenerator.GetBytes(24));
         }
         occupied.Start();
         start.Environment["ASPNETCORE_URLS"] = "http://127.0.0.1:" + ((IPEndPoint)occupied.LocalEndpoint).Port.ToString(System.Globalization.CultureInfo.InvariantCulture);
