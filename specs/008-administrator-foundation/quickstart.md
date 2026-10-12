@@ -43,3 +43,7 @@ python3 scripts/verify.py SqlServer --partition administrator
 ```
 
 Each provider requires exactly 45 discovered and executed cases, none skipped. TRX reports are under `artifacts/tests/administrator-{provider}/`. These isolated jobs retain the 660-second invocation limit and do not enlarge issuer suites. An unavailable provider is a failed prerequisite, not a successful or skipped test. Full CI additionally enforces regression, static analysis, mutation, secret/dependency checks and all required module coverage inputs.
+
+## Next account journeys — not runnable yet
+
+The [MFA design](mfa-design.md) documents the next increment, including enrollment, TOTP, restricted recovery, lockout, key retention and loss behavior. Its configuration/routes are planned until T017/T018 pass implementation acceptance; do not treat this document as an instruction to enable unimplemented account pages. Bootstrap remains the only implemented administrator operation.

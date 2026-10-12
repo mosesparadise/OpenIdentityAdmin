@@ -37,3 +37,9 @@ Pinned upstream ASP.NET Core v10.0.12 source inspection by the security reviewer
 Before increment 2, finish the enrollment ceremony, protected secret storage, challenge expiry/attempt limits, MFA freshness, all-authenticators-lost behavior and session-invalidation contract. Before increment 3, define the exact usable-admin predicate and which authorized recovery route can satisfy an exception. Pending enrollment is not usable; lockout defenses may never be bypassed to preserve a count. These are future design tasks, not permission to implement guessed behavior now.
 
 Passkeys, public/email recovery, support-assisted reset and remember-device policy are outside these first increments. Full R1 and AAL-oriented assurance remain incomplete.
+
+## Second-increment design resolution — 12 October 2026
+
+[MFA design](mfa-design.md) resolves the previously open T016 decisions. Independent security source review rechecked pinned ASP.NET Core 10.0.12 AuthenticatorTokenProvider, UserStoreBase and UserManager: native TOTP is Boolean/wall-clock/five-counter validation without replay persistence; native default stores persist raw authenticator/recovery values; CreateTwoFactorRecoveryCode is a protected virtual generation hook. Use the specified protected adapters and durable replay ledger, not an invented matched-counter result or default raw token storage. No package upgrade is needed.
+
+The existing account composition is pilot-owned, so administrator registration/routes/schemes and timeout/protection setup must be made independent without enabling the pilot. The shared persistence path also serves Migrator: AuthServer factor protection cannot become an accidental bootstrap dependency. Initial review found generation continuity, lock order, lockout expiry, staged-key installation and retained-backlog gaps; the final design corrects them. These are reviewed design decisions, not evidence that the planned code exists.

@@ -1,6 +1,6 @@
 # Implementation plan: Administrator foundation
 
-**Branch**: 018-administrator-foundation | **Date**: 2026-10-12 | **Spec**: [spec.md](spec.md)
+**Branch**: 021-administrator-mfa-design | **Date**: 2026-10-12 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
@@ -32,6 +32,12 @@ Increment1 supplies an initialization record and pending account, not a login ce
 
 See [test strategy](test-strategy.md) and [quickstart](quickstart.md). Strict selection must isolate Administrator from ordinary issuer invocations, require every expected test identity, and add its provider coverage artifacts to the mandatory merge set. Keep previous invocation limits and production module floors. Review seeded missing-case/substitution failures and regression tests for all reproduced defects.
 
-## Open work before later increments
+## Second-increment design checkpoint
 
-Complete enrollment/recovery ceremony, challenge/freshness/attempt budgets, protected factor storage and compromised/all-factor-loss recovery contract before increment2. Complete usable-admin predicate and supported exception route before increment3. These future design tasks are tracked; no future implementation is authorized merely by a placeholder.
+[MFA design](mfa-design.md) specifies the interaction/state model, native protected-store integration, exact limits, distributed replay/lock order, session invalidation, recovery loss handling, cleanup/backpressure and requirement-linked evidence. This is T016 documentation, not account implementation. A documentation checkpoint does not change the three approved implementation increments. No new production project or external package is proposed.
+
+The current constitution is 1.1.0. All new/changed implementation must follow the principal-engineer rules, meaningful XML/public examples, Given_When_Then tests, explicit values and 40/300 review thresholds. Legacy debt remains feature 009 T013–T016. No security exception or scope amendment is proposed.
+
+## Open work before implementation acceptance
+
+Execute T017/T018 only after T016 design convergence, with actual native managers, both providers and all three browser engines. The detailed work packets in tasks.md remain unchecked until verified. Complete the usable-admin predicate and supported exception route in T019 before increment3. All-factor-loss emergency recovery is unavailable; adding a reset route requires its own explicit approval.
