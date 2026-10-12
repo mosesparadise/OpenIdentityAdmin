@@ -83,3 +83,7 @@ Spec Kit cross-artifact analysis: ADMIN-003/004/010 map to T022–T025 and MFA-0
 This is design acceptance only. No account journey, factor adapter, migration, MFA browser test or new session has been implemented or executed. The documentation PR must still pass its exact-head proportional CI and normal squash checkpoint; heavy application suites are not required for a proven prose-only change and must not be reported as rerun.
 
 Local documentation checks passed: seven CI-scope controls, eight skill/eight reviewer integrity checks, assurance inventory integrity with all 345 controls still unassessed, all 27 assurance controls, changed-document relative links and git diff whitespace checks. No application tests were rerun for this prose-only checkpoint.
+
+## T022 account composition — 12 October 2026
+
+See [scope, requirements, tests and review dispositions](account-composition.md). The focused Accounts run passed 31 cases, zero failed/skipped. The solution built with zero warnings/errors; `python3 scripts/verify.py unit` passed all 347 required cases (25 Core, 298 Host, 5 Architecture, 19 AppHost), zero failed/skipped. The code-quality check and seeded controls passed; 28 stale legacy findings were removed, leaving 1,937, with no additions or exceptions. Initial static formatting identified import ordering in three new test files; corrected before publication. Final static checks and exact-head GitHub CI are pending; T022 remains unchecked until acceptance. No administrator MFA, session or distributed budget acceptance is claimed.

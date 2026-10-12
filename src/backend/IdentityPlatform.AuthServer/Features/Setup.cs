@@ -1,9 +1,9 @@
 using IdentityPlatform.AuthServer.Composition;
 using IdentityPlatform.AuthServer.Features.Accounts;
+using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol;
-using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Storage;
 using IdentityPlatform.ServiceDefaults;
 
@@ -11,6 +11,7 @@ namespace IdentityPlatform.AuthServer.Features;
 
 internal static class Setup
 {
+    /// <summary>Validates independent feature switches and composes shared account services exactly once.</summary>
     internal static WebApplicationBuilder AddFeatures(this WebApplicationBuilder builder, StartupContext startup)
     {
         try
@@ -22,6 +23,7 @@ internal static class Setup
             throw new DatabaseConfigurationException();
         }
         startup.Credentials = builder.Services.AddIssuer(builder.Configuration);
+        startup.AdministratorEnabled = AdministratorConfiguration.IsEnabled(builder.Configuration, startup.Credentials);
         startup.PilotEnabled = PilotConfiguration.IsEnabled(builder.Configuration, builder.Environment, startup.Credentials);
         if (startup.InitializePilot && !startup.PilotEnabled)
         {
@@ -29,21 +31,30 @@ internal static class Setup
         }
         if (startup.PilotEnabled)
         {
-            builder.Services.AddFirstPartyPilot(startup.Credentials!);
+            builder.Services.AddFirstPartyPilot(startup.Credentials!, startup.AdministratorEnabled);
+        }
+        else if (startup.AdministratorEnabled)
+        {
+            builder.Services.AddAccounts(pilot: false, administrator: true);
         }
         return builder;
     }
 
+    /// <summary>Installs account protection independently of pilot protocol activation, retaining health-only defaults.</summary>
     internal static WebApplication MapFeaturesEndpoints(this WebApplication app, StartupContext startup)
     {
-        if (startup.PilotEnabled)
+        if (startup.PilotEnabled || startup.AdministratorEnabled)
         {
             app.UseRouting();
             app.UseRequestTimeouts();
-            app.UsePilotProtection();
+            app.UseAccountProtection(startup.PilotEnabled);
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapProtocol().MapAccounts();
+            if (startup.PilotEnabled)
+            {
+                app.MapProtocol();
+            }
+            app.MapAccounts();
         }
         return app.MapPlatformHealthEndpoints();
     }

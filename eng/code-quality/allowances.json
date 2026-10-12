@@ -1082,36 +1082,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Setup.AddAccounts(thisIServiceCollection)",
-        "Fingerprint": "E8B6E51751F1344CE54804EB1A2F4BB8453221EAF1530B6F793C0A4F05CB483C"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Setup.AddAccounts(thisIServiceCollection)",
-        "Fingerprint": "E8B6E51751F1344CE54804EB1A2F4BB8453221EAF1530B6F793C0A4F05CB483C"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Setup.MapAccounts(thisWebApplication)",
-        "Fingerprint": "794CC8AF33C8B45CD7E03D110D46A83E713FCE537A464BD1AC47FBD7017750E6"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ003",
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Shared/AccountAssets.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.AccountAssets",
@@ -1692,36 +1662,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Pilot.Setup",
-        "Fingerprint": "A463FD9339CB4275C7683E7BCEEE59CE9BBF61FA873ABDAC818A7E9F5390F645"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Pilot.Setup.AddFirstPartyPilot(thisIServiceCollection,IssuerCredentials)",
-        "Fingerprint": "0687B65892E8E1916E31153AFA672BD94540F529FBD14E3AE1AD2E2967A4484D"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Pilot.Setup.AddFirstPartyPilot(thisIServiceCollection,IssuerCredentials)",
-        "Fingerprint": "0687B65892E8E1916E31153AFA672BD94540F529FBD14E3AE1AD2E2967A4484D"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Pilot/Setup.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Pilot.Setup.InitializePilotAsync(thisWebApplication)",
@@ -2142,210 +2082,10 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDatabaseBounds.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDatabaseBounds",
-        "Fingerprint": "E838D672577D003C3DC7EDEA3A75639D68A987F7DE7F181B1C0FD20C91C3C82E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDatabaseBounds.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDatabaseBounds.Apply(PlatformDbContext)",
-        "Fingerprint": "0AA025C508DE80B49EFE7C1346E43C089690CE7F22774C2C361A61146B3F6AC9"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDatabaseBounds.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDatabaseBounds.Apply(PlatformDbContext)",
-        "Fingerprint": "0AA025C508DE80B49EFE7C1346E43C089690CE7F22774C2C361A61146B3F6AC9"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDatabaseBounds.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDatabaseBounds.Apply(PlatformDbContext)",
-        "Fingerprint": "0AA025C508DE80B49EFE7C1346E43C089690CE7F22774C2C361A61146B3F6AC9"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDiagnostics.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDiagnostics",
-        "Fingerprint": "EE473C7AD46AF77D99259CCF3E08E28793BC92E48D02A72548FA02FE7CB95725"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDiagnostics.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDiagnostics.SuppressProtocolSecrets(IServiceCollection)",
-        "Fingerprint": "E936819FBA95D8909381BFAFB2E033C5C0DB9503340005864A4877A59E26650E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDiagnostics.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDiagnostics.SuppressProtocolSecrets(IServiceCollection)",
-        "Fingerprint": "E936819FBA95D8909381BFAFB2E033C5C0DB9503340005864A4877A59E26650E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDiagnostics.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDiagnostics.Sensitive(string?)",
-        "Fingerprint": "D913A6A8D681CA0956189E1F190B0EB0909C154C8716D5BC285A7088B760CAC0"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDiagnostics.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDiagnostics.Sensitive(string?)",
-        "Fingerprint": "D913A6A8D681CA0956189E1F190B0EB0909C154C8716D5BC285A7088B760CAC0"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotDiagnostics.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotDiagnostics.Sensitive(string?)",
-        "Fingerprint": "D913A6A8D681CA0956189E1F190B0EB0909C154C8716D5BC285A7088B760CAC0"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotRequestProtection.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection",
-        "Fingerprint": "5DB215DE72DC5A83C3BC6FBAD9D1F57C38F62C480645F4C081F0A133D8B5F93B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ008",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotRequestProtection.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection",
-        "Fingerprint": "5DB215DE72DC5A83C3BC6FBAD9D1F57C38F62C480645F4C081F0A133D8B5F93B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotRequestProtection.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection.InvokeAsync(HttpContext)",
-        "Fingerprint": "F6D9E5D779E4A7983BC5C78EE40671A5F05BBDBD119D9BE01456D31901B965EA"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotRequestProtection.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection.InvokeAsync(HttpContext)",
-        "Fingerprint": "F6D9E5D779E4A7983BC5C78EE40671A5F05BBDBD119D9BE01456D31901B965EA"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotRequestProtection.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection.InvokeAsync(HttpContext)",
-        "Fingerprint": "F6D9E5D779E4A7983BC5C78EE40671A5F05BBDBD119D9BE01456D31901B965EA"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/PilotRequestProtection.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.PilotRequestProtection.RequestFailed(ILogger,string)",
-        "Fingerprint": "5429CF153FB39A9DAB1949ACC0808048FFCAC9B3147130A46888C31B885627E0"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/Setup.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.Setup.AddFormExtractionProtection(thisOpenIddictServerBuilder)",
         "Fingerprint": "262131E19737A872104896204C246971EA839F30146F11AB3E3739047500C69B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.Setup.AddPilotProtection(thisIServiceCollection)",
-        "Fingerprint": "15C39F8D8E36ED8A28790C819A259FC63981661387C9102CEBB5F8F814380A7A"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.Setup.AddPilotProtection(thisIServiceCollection)",
-        "Fingerprint": "15C39F8D8E36ED8A28790C819A259FC63981661387C9102CEBB5F8F814380A7A"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.Setup.UsePilotProtection(thisWebApplication)",
-        "Fingerprint": "77038D957B17B35C46E3456DA6595018B42E380E0E6D42DB71D3D38083F15388"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Protection/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Protection.Setup.UsePilotProtection(thisWebApplication)",
-        "Fingerprint": "77038D957B17B35C46E3456DA6595018B42E380E0E6D42DB71D3D38083F15388"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -2516,26 +2256,6 @@
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Token/TokenEndpoint.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Token.TokenEndpoint.HandleAsync(HttpContext,PilotEligibility,IOpenIddictAuthorizationManager)",
         "Fingerprint": "E6CB4DC262D1ACC9BD245684501A45C69227D9C086216E2609C9EEF018250D8A"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Setup.AddFeatures(thisWebApplicationBuilder,StartupContext)",
-        "Fingerprint": "AD66A2D5C22FFAA66EBDFF8D5B004CD12B445681AD3F6627780EABC0447EBF2F"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Setup.MapFeaturesEndpoints(thisWebApplication,StartupContext)",
-        "Fingerprint": "08A9A1CBF7CDAF2FD221F8172B6DA457A62AFACEE41B85E40DFC16A36B987846"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
