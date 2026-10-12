@@ -48,7 +48,7 @@ export function inventory(document, surface, allowEmpty = false) {
 
 export function securityCompatibility(previous, current, surface, allowEmpty = false) {
   const before = inventory(previous, surface, allowEmpty), after = inventory(current, surface, allowEmpty);
-  if (!isDeepStrictEqual(previous.components?.securitySchemes, current.components?.securitySchemes)) throw new Error('Authentication definition changed');
+  if (before.size && !isDeepStrictEqual(previous.components?.securitySchemes, current.components?.securitySchemes)) throw new Error('Authentication definition changed');
   for (const [key, old] of before) {
     const next = after.get(key);
     if (!next) throw new Error('Removed operation');

@@ -9,3 +9,20 @@ body { margin: 0; background: var(--page); color: var(--text); font-family: var(
 .swagger-ui .model, .swagger-ui .opblock-tag, .swagger-ui .responses-inner h4 { color: var(--text); }
 .swagger-ui .scheme-container, .swagger-ui .opblock .opblock-section-header { background: var(--surface); }
 .swagger-ui section.models { border-color: var(--border); }
+
+.swagger-ui .info .base-url, .swagger-ui .info .url, .swagger-ui .parameter__in,
+.swagger-ui .json-schema-2020-12-expand-deep-button { color: var(--muted); }
+.swagger-ui .info .title small, .swagger-ui .info .title small.version-stamp,
+.swagger-ui .opblock .opblock-summary-method { background: var(--accent); color: var(--on-accent); text-shadow: none; }
+.swagger-ui .opblock, .swagger-ui .opblock.opblock-get, .swagger-ui .opblock.opblock-put { background: var(--surface); border-color: var(--border); }
+.swagger-ui .json-schema-2020-12, .swagger-ui .json-schema-2020-12-property,
+.swagger-ui .json-schema-2020-12-keyword, .swagger-ui .json-schema-2020-12-keyword__name { color: var(--text); }
+.swagger-ui .wrapper { max-width: 90rem; padding: 0 1rem; }
+@media (max-width: 40rem) {
+  .contract-header { padding: 1rem; }
+  .contract-header select { display: block; max-width: 100%; margin: .5rem 0; }
+  .swagger-ui .opblock .opblock-summary { flex-wrap: wrap; }
+  .swagger-ui .opblock .opblock-summary-path { max-width: 100%; overflow-wrap: anywhere; }
+}
+
+.contract-heading { margin: 1.5rem 1rem; font-size: 1.25rem; }

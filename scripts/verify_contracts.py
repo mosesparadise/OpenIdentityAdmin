@@ -66,7 +66,8 @@ def main():
         files = sorted(str(p) for folder in ('generated', 'tests/generated') for p in (PACKAGE / folder).glob('*.json'))
         if len(files) != 4:
             raise ValueError('Expected two actual and two fixture documents')
-        run(['npm', 'exec', '--prefix', str(PACKAGE), '--', 'redocly', 'lint', '--config', str(PACKAGE / 'tooling/redocly.yaml'), *files])
+        run(['node', str(PACKAGE / 'tooling/validate.mjs'), *files])
+        run(['node', str(PACKAGE / 'tooling/baseline.mjs')])
         node_report = output / 'node.xml'
         with node_report.open('w') as stream:
             run(['node', '--test', '--test-reporter=junit', str(PACKAGE / 'tests/compatibility.test.mjs')], stdout=stream)

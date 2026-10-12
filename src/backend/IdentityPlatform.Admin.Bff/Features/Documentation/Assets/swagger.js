@@ -10,7 +10,21 @@ function render() {
     plugins: [() => ({ wrapComponents: {
       authorizeBtn: () => () => null,
       authorizationPopup: () => () => null,
-      auths: () => () => null
+      auths: () => () => null,
+      // The pinned upstream emits unnamed response regions. Preserve the native table
+      // semantics and give each table an operation-specific accessible name.
+      responses: (Original, system) => class extends Original {
+        render() {
+          const label = `${this.props.method.toUpperCase()} ${this.props.path} responses`;
+          const decorate = element => {
+            if (!system.React.isValidElement(element)) return element;
+            const attributes = element.type === 'table' ? { role: undefined, 'aria-label': label } : {};
+            return system.React.cloneElement(element, attributes,
+              system.React.Children.map(element.props.children, decorate));
+          };
+          return decorate(super.render());
+        }
+      }
     } })]
   });
 }

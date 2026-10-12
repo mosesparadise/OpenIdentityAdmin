@@ -89,10 +89,10 @@ public sealed class ViewerTests
         }).CountAsync());
         Assert.Empty(mutations);
         Assert.Empty(external);
-        Assert.Empty(errors);
+        Assert.True(errors.IsEmpty, string.Join(Environment.NewLine, errors));
         Assert.Equal(0, await page.EvaluateAsync<int>("Object.keys(localStorage).filter(k => /token|auth|credential/i.test(k)).length"));
         var axe = await page.RunAxe();
-        Assert.Empty(axe.Violations);
+        Assert.True(axe.Violations.Length == 0, System.Text.Json.JsonSerializer.Serialize(axe.Violations));
         await page.SetViewportSizeAsync(320, 900);
         Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"));
     }

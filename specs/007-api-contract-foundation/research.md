@@ -23,7 +23,7 @@ Queried official NuGet flat-container indexes/nuspecs and npm registry metadata 
 | Swashbuckle.AspNetCore.SwaggerUI | 10.3.0 | UI only; no Swagger generator; same contracts, disabled submit/auth and asset/CSP tests. |
 | openapi-typescript | 7.13.0 | Peer dependency TypeScript `^5.x`; cannot independently adopt current TypeScript 7.0.2. |
 | openapi-fetch | 0.17.0 | Browser-only same-origin cookie/antiforgery behavior and no token API; candidate for the mandatory test-only runtime consumer; no usable production SDK is claimed. |
-| @redocly/cli | 2.62.1 | Node >=22.12 or >=20.19 <21; npm >=10; validate actual 3.1 output and pin entire dependency graph. |
+| @redocly/openapi-core | 2.62.1 | Node >=22.12 or >=20.19 <21; npm >=10; validate actual 3.1 output and pin entire dependency graph. |
 
 Asp.Versioning.OpenApi 10.2.3 depends on Asp.Versioning.Mvc.ApiExplorer >=10.2.1, Microsoft.AspNetCore.OpenApi >=10.0.10 and Microsoft.OpenApi >=2.7.5,<3.0.0. The intersection with Microsoft.AspNetCore.OpenApi10.0.12 is >=2.12.0,<3.0.0. An MVC-named transitive Explorer package does not authorize controllers or a second generator.
 
@@ -34,7 +34,7 @@ Sources (indexes supply availability; exact nuspecs supply constraints):
 - [Asp.Versioning index](https://api.nuget.org/v3-flatcontainer/asp.versioning.openapi/index.json), [10.2.3 constraints](https://api.nuget.org/v3-flatcontainer/asp.versioning.openapi/10.2.3/asp.versioning.openapi.nuspec).
 - [Microsoft 10.0.12 constraints](https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.openapi/10.0.12/microsoft.aspnetcore.openapi.nuspec).
 - [Scalar index](https://api.nuget.org/v3-flatcontainer/scalar.aspnetcore/index.json), [SwaggerUI index](https://api.nuget.org/v3-flatcontainer/swashbuckle.aspnetcore.swaggerui/index.json).
-- [openapi-typescript metadata](https://registry.npmjs.org/openapi-typescript/7.13.0), [openapi-fetch metadata](https://registry.npmjs.org/openapi-fetch/0.17.0), [Redocly metadata](https://registry.npmjs.org/@redocly/cli/2.62.1).
+- [openapi-typescript metadata](https://registry.npmjs.org/openapi-typescript/7.13.0), [openapi-fetch metadata](https://registry.npmjs.org/openapi-fetch/0.17.0), [Redocly metadata](https://registry.npmjs.org/@redocly/openapi-core/2.62.1).
 - [Official Minimal OpenAPI example](https://github.com/dotnet/aspnet-api-versioning/tree/main/examples/AspNetCore/WebApi/MinimalOpenApiExample).
 
 ## Format and compatibility semantics

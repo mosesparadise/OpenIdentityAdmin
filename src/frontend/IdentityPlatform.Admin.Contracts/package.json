@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "engines": { "node": "24.19.0", "npm": "11.9.0" },
+  "engines": {
+    "node": "24.19.0",
+    "npm": "11.9.0"
+  },
   "scripts": {
     "generate": "node tooling/generate.mjs",
     "check": "node tooling/generate.mjs --check && tsc --noEmit",
@@ -11,10 +14,10 @@
     "bundle": "esbuild tests/consumer.ts --bundle --format=iife --global-name=contractConsumer --outfile=dist/consumer.js --platform=browser"
   },
   "devDependencies": {
-    "@redocly/cli": "2.62.1",
     "esbuild": "0.28.2",
     "openapi-fetch": "0.17.0",
     "openapi-typescript": "7.13.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "@redocly/openapi-core": "2.62.1"
   }
 }
