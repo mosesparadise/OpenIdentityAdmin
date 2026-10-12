@@ -29,3 +29,8 @@ footer { padding: 0 1rem 2rem; text-align: center; font-size: .75rem; color: var
 .skip-link:focus { top: 1rem; }
 [hidden] { display: none !important; }
 @media (max-width: 520px) { .site-header { padding: 1rem; flex-wrap: wrap; } .badge { display: none; } .card { padding: 1.5rem; } .header-tools { margin-left: auto; } }
+
+.recovery-codes { padding-inline-start: 1.4rem; }
+.recovery-codes code { overflow-wrap: anywhere; user-select: all; }
+.card dt { font-weight: 600; margin-block-start: 1rem; }
+.card dd { margin-inline-start: 0; overflow-wrap: anywhere; }

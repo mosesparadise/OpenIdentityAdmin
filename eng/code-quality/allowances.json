@@ -53,26 +53,6 @@
     {
       "Finding": {
         "Rule": "CQ002",
-        "Path": "src/aspire/IdentityPlatform.AppHost/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AppHost.Features.Pilot.Setup.AddPilot(thisIDistributedApplicationBuilder,IResourceBuilder<ProjectResource>,IResourceBuilder<ProjectResource>,ReferenceExpression,string)",
-        "Fingerprint": "60F2BE34150500C8CD11ED60D6FC2ABDEA3ED2AC591D1C82303D042F1F44B6C2"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/aspire/IdentityPlatform.AppHost/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AppHost.Features.Pilot.Setup.AddPilot(thisIDistributedApplicationBuilder,IResourceBuilder<ProjectResource>,IResourceBuilder<ProjectResource>,ReferenceExpression,string)",
-        "Fingerprint": "60F2BE34150500C8CD11ED60D6FC2ABDEA3ED2AC591D1C82303D042F1F44B6C2"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
         "Path": "src/aspire/IdentityPlatform.AppHost/Features/Services/Setup.cs",
         "Symbol": "IdentityPlatform.AppHost.Features.Services.Setup.AddServices(thisIDistributedApplicationBuilder,DatabaseResources)",
         "Fingerprint": "8810A33D5CCB65DDC128CDB4AD9D7628DAF68D231B6187DA5278C86FE7DAE361"
@@ -86,16 +66,6 @@
         "Path": "src/aspire/IdentityPlatform.AppHost/Features/Services/Setup.cs",
         "Symbol": "IdentityPlatform.AppHost.Features.Services.Setup.AddServices(thisIDistributedApplicationBuilder,DatabaseResources)",
         "Fingerprint": "8810A33D5CCB65DDC128CDB4AD9D7628DAF68D231B6187DA5278C86FE7DAE361"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/aspire/IdentityPlatform.AppHost/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.AppHost.Features.Setup.AddFeatures(thisIDistributedApplicationBuilder)",
-        "Fingerprint": "22463F926444FACC22D225B5C82EAD2BF201E4E4B6489225DE72BA9AD9EF6722"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -496,56 +466,6 @@
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/Complete.cshtml.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.CompleteModel.OnGetAsync()",
         "Fingerprint": "0670D5FF825F685DBE198756A350CB39C5B1897599983CE56DE83A595474C19C"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/DummyPassword.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.DummyPassword",
-        "Fingerprint": "95ECF7F9CAFA0E236E98832825290959E7036F80E368B6B84DD664DBC29B0064"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/DummyPassword.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.DummyPassword.DummyPassword(IOptions<PasswordHasherOptions>)",
-        "Fingerprint": "CF818AD7E6608EB2FE18360A3EA275149A389A287903A4B3ACA3F009F36AE5D8"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/DummyPassword.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.DummyPassword.DummyPassword(IOptions<PasswordHasherOptions>)",
-        "Fingerprint": "CF818AD7E6608EB2FE18360A3EA275149A389A287903A4B3ACA3F009F36AE5D8"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/DummyPassword.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.DummyPassword.Verify(string)",
-        "Fingerprint": "28B7EA1879FD92F2D7788D8D5452647FEF91EA7197BA2130EE1B0DE64FCC56C8"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/DummyPassword.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.DummyPassword.Verify(string)",
-        "Fingerprint": "28B7EA1879FD92F2D7788D8D5452647FEF91EA7197BA2130EE1B0DE64FCC56C8"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -1066,16 +986,6 @@
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.LoginInteractions.CookieOptions()",
         "Fingerprint": "CE47415786954DE751B5D6B04EEB8B21225D8D4C3E2A2FEA6C5D8669E7B8689D"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Accounts.Login.Setup.AddLogin(thisIServiceCollection)",
-        "Fingerprint": "DF5A1B5AFA3765B2B8C056C25E18B12790FB896F5752729563F9299D1A0EF116"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -5176,106 +5086,6 @@
         "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalProfilesTests.cs",
         "Symbol": "IdentityPlatform.AppHost.Tests.Features.LocalProfilesTests.Selected_profile_migrates_and_serves_only_healthy_operational_endpoints(string,string)",
         "Fingerprint": "CB690715E32417878FE72418B87BA367BC261453A631CBDBDE8E09C15FC25F84"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_pilot_composition_forwards_private_parameters_only_to_their_owners(string)",
-        "Fingerprint": "296259164006BAF66CB9B8068DC1CBE1EEFC9CAA88810DFCE2F68FA9582B1AC3"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_pilot_composition_forwards_private_parameters_only_to_their_owners(string)",
-        "Fingerprint": "296259164006BAF66CB9B8068DC1CBE1EEFC9CAA88810DFCE2F68FA9582B1AC3"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_pilot_composition_forwards_private_parameters_only_to_their_owners(string)",
-        "Fingerprint": "296259164006BAF66CB9B8068DC1CBE1EEFC9CAA88810DFCE2F68FA9582B1AC3"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_pilot_composition_forwards_private_parameters_only_to_their_owners(string)",
-        "Fingerprint": "296259164006BAF66CB9B8068DC1CBE1EEFC9CAA88810DFCE2F68FA9582B1AC3"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_false_preserves_default_operational_hosts()",
-        "Fingerprint": "423598BA1DBE1899FA9A47F67235832179B2AF6FA836949307DE3727A3255F65"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_false_preserves_default_operational_hosts()",
-        "Fingerprint": "423598BA1DBE1899FA9A47F67235832179B2AF6FA836949307DE3727A3255F65"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Explicit_false_preserves_default_operational_hosts()",
-        "Fingerprint": "423598BA1DBE1899FA9A47F67235832179B2AF6FA836949307DE3727A3255F65"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Invalid_pilot_flag_is_rejected_before_resources_start()",
-        "Fingerprint": "6EA1EF1A3623946E9A0B1BDF0CCEA6181581C906094CDB99AE67F7DB3EB86E09"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Invalid_pilot_flag_is_rejected_before_resources_start()",
-        "Fingerprint": "6EA1EF1A3623946E9A0B1BDF0CCEA6181581C906094CDB99AE67F7DB3EB86E09"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/PilotCompositionTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.PilotCompositionTests.Invalid_pilot_flag_is_rejected_before_resources_start()",
-        "Fingerprint": "6EA1EF1A3623946E9A0B1BDF0CCEA6181581C906094CDB99AE67F7DB3EB86E09"
       },
       "Task": "T015",
       "Owner": "Implementation lead"

@@ -5,11 +5,34 @@ from pathlib import Path
 import sys
 
 
+def browser_labels(matrix):
+    """Reject incomplete or relabelled browser obligations before inspecting any coverage file."""
+    cells = matrix.get('include')
+    if not isinstance(cells, list) or not cells:
+        raise ValueError('Missing browser coverage obligations')
+    expected_keys = {'provider', 'browser', 'partition', 'label'}
+    if any(not isinstance(cell, dict) or set(cell) != expected_keys for cell in cells):
+        raise ValueError('Unexpected browser coverage cell shape')
+    engines = {cell['browser'] for cell in cells}
+    if engines not in ({'chromium'}, {'chromium', 'firefox', 'webkit'}):
+        raise ValueError('Unreviewed browser coverage engine set')
+    expected = {(provider, engine, partition) for provider in ('PostgreSql', 'SqlServer')
+                for engine in engines for partition in ('standard', 'administrator')}
+    actual = [(cell['provider'], cell['browser'], cell['partition']) for cell in cells]
+    if len(actual) != len(expected) or set(actual) != expected:
+        raise ValueError('Browser coverage provider/partition obligations are incomplete')
+    for cell in cells:
+        label = ('administrator-' if cell['partition'] == 'administrator' else '') + cell['provider'] + '-' + cell['browser']
+        if cell['label'] != label:
+            raise ValueError('Browser coverage label does not match its obligation')
+    return [cell['label'] for cell in cells]
+
+
 def require_inputs(root, matrix):
-    labels = ['administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+    labels = ['administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
               'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
-              'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
+              'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + browser_labels(matrix)
     if len(labels) != len(set(labels)):
         raise ValueError('Duplicate required coverage cell')
     for label in labels:

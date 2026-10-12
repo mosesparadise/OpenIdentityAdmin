@@ -53,6 +53,7 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
             Purpose = purpose,
             Generation = account.Authentication.Generation,
             DestinationGeneration = destinationGeneration,
+            ExpectedEnrollmentRevision = account.Enrollment.Revision,
             SecurityStamp = account.User.SecurityStamp!,
             CreatedAt = now,
             PasswordVerifiedAt = password.VerifiedAt,
@@ -63,8 +64,37 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
         return interaction;
     }
 
+    /// <summary>Rejects exhausted browser and installation budgets under admission serialization before password hashing.</summary>
+    internal async Task<bool> CanAdmitAsync(CeremonyTransaction transaction, CeremonyAccount account, string browserSecret)
+    {
+        account.RequireCurrent(transaction);
+        Require(transaction, account.User.Id);
+        if (!CeremonySecrets.IsIdentifier(browserSecret) || !clock.Observe(account.Authentication, out var now))
+        {
+            return false;
+        }
+        var browserId = CeremonySecrets.Digest(browserSecret);
+        var exists = await database.Set<AdministratorBrowserBudget>().AnyAsync(row => row.Id == browserId, transaction.Token);
+        return (!exists || transaction.Plan.Browsers.Contains(browserId, StringComparer.Ordinal)) &&
+            await HasInteractionCapacityAsync(transaction, account.User.Id, browserId, !exists, now);
+    }
+
+    /// <summary>Checks browser and installation capacity without requiring a known account or allocating retained state.</summary>
+    internal async Task<bool> CanAttemptAsync(CeremonyTransaction transaction, string browserSecret)
+    {
+        transaction.RequireContext(database);
+        if (!transaction.Plan.Admission || !CeremonySecrets.IsIdentifier(browserSecret))
+        {
+            throw new FactorUnavailableException();
+        }
+        var browserId = CeremonySecrets.Digest(browserSecret);
+        var exists = await database.Set<AdministratorBrowserBudget>().AnyAsync(row => row.Id == browserId, transaction.Token);
+        return (!exists || transaction.Plan.Browsers.Contains(browserId, StringComparer.Ordinal)) &&
+            await HasInteractionCapacityAsync(transaction, null, browserId, !exists, clock.Now);
+    }
+
     /// <summary>Requires both live budgets and physical retained capacity, counting expired and consumed rows until deletion.</summary>
-    private async Task<bool> HasInteractionCapacityAsync(CeremonyTransaction transaction, string userId, string budgetId, bool newBrowser, long now)
+    private async Task<bool> HasInteractionCapacityAsync(CeremonyTransaction transaction, string? userId, string budgetId, bool newBrowser, long now)
     {
         var rows = database.Set<AdministratorInteraction>();
         if (await rows.CountAsync(transaction.Token) >= AdministratorPolicy.RetainedRows ||
@@ -73,7 +103,7 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
             return false;
         }
         var live = rows.Where(row => row.State == AdministratorPolicy.Pending && row.ExpiresAt > now);
-        return await live.CountAsync(row => row.UserId == userId, transaction.Token) < AdministratorPolicy.LiveInteractions &&
+        return (userId is null || await live.CountAsync(row => row.UserId == userId, transaction.Token) < AdministratorPolicy.LiveInteractions) &&
             await live.CountAsync(row => row.BrowserBudgetId == budgetId, transaction.Token) < AdministratorPolicy.LiveInteractions;
     }
 

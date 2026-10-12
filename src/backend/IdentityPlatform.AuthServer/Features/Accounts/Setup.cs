@@ -1,7 +1,11 @@
+using IdentityPlatform.AuthServer.Features.Accounts.Enrollment;
 using IdentityPlatform.AuthServer.Features.Accounts.Login;
 using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
+using IdentityPlatform.AuthServer.Features.Accounts.Mfa;
+using IdentityPlatform.AuthServer.Features.Accounts.Security;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using Microsoft.AspNetCore.Identity;
 
@@ -17,6 +21,7 @@ internal static class Setup
         services.Configure<IdentityOptions>(AccountOptions.Identity);
         services.Configure<PasswordHasherOptions>(options => options.IterationCount = AccountPolicy.PasswordIterations);
         services.AddAuthorization();
+        services.AddSingleton<DummyPassword>();
         services.AddAntiforgery(AccountOptions.Antiforgery);
         services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(AccountOptions.Form);
         services.AddRazorPages(options =>
@@ -32,6 +37,9 @@ internal static class Setup
         {
             AccountSchemes.AddAdministrator(services, pilot);
             services.AddAdministratorMaintenance();
+            services.AddAdministratorJourneys();
+            services.AddScoped<IAdministratorJourney, AdministratorJourney>();
+            services.AddEnrollment().AddMfa().AddAccountSecurity();
         }
         return services.AddAccountProtection();
     }

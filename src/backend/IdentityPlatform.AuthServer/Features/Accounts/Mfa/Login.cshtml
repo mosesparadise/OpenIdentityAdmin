@@ -1,0 +1,13 @@
+@page "/account/administrator/login"
+@model IdentityPlatform.AuthServer.Features.Accounts.Mfa.LoginModel
+@{ ViewData["Title"] = "Administrator sign in"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Administrator access</p>
+  <h1 id="heading">Sign in</h1>
+  <p>Continue securely with your password and authenticator.</p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+  }
+  <form asp-antiforgery="true" method="post" action="/account/administrator/login"><partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" /></form>
+</section>

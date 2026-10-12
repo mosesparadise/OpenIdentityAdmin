@@ -139,6 +139,8 @@ jobs:
           - { profile: PostgreSql, partition: administrator, story: Factors, label: administrator-PostgreSql-factors }
           - { profile: SqlServer, partition: administrator, story: Bootstrap, label: administrator-SqlServer-bootstrap }
           - { profile: SqlServer, partition: administrator, story: Factors, label: administrator-SqlServer-factors }
+          - { profile: PostgreSql, partition: administrator, story: Accounts, label: administrator-PostgreSql-accounts }
+          - { profile: SqlServer, partition: administrator, story: Accounts, label: administrator-SqlServer-accounts }
           - { profile: PostgreSql, partition: administrator, story: Ceremonies, label: administrator-PostgreSql-ceremonies }
           - { profile: SqlServer, partition: administrator, story: Ceremonies, label: administrator-SqlServer-ceremonies }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
@@ -193,7 +195,7 @@ jobs:
   browser:
     needs: [scope, browser-plan]
     if: needs.scope.outputs.scope == 'full'
-    name: Browser ${{ matrix.provider }} / ${{ matrix.browser }}
+    name: Browser ${{ matrix.partition }} / ${{ matrix.provider }} / ${{ matrix.browser }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -241,12 +243,12 @@ jobs:
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.provider }}-${{ matrix.browser }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --browser ${{ matrix.browser }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: foundation-${{ matrix.provider }}-${{ matrix.browser }}
+          name: foundation-${{ matrix.label }}
           path: |
             artifacts/tests/
             artifacts/coverage/

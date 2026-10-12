@@ -30,25 +30,26 @@
       "Core": 25,
       "Host": 306,
       "Architecture": 5,
-      "AppHost": 19
+      "AppHost": 31
     },
     "PostgreSql": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 131
+      "Administrator": 165
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 131
+      "Administrator": 165
     }
   },
   "browser": {
-    "Issuer": 29
+    "Issuer": 29,
+    "Administrator": 5
   },
   "lifecycle_stories": {
     "Restart": {
@@ -80,6 +81,10 @@
     "Ceremonies": {
       "PostgreSql": 35,
       "SqlServer": 35
+    },
+    "Accounts": {
+      "PostgreSql": 34,
+      "SqlServer": 34
     }
   }
 }

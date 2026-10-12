@@ -1,0 +1,19 @@
+@page "/account/administrator/mfa"
+@model IdentityPlatform.AuthServer.Features.Accounts.Mfa.IndexModel
+@{ ViewData["Title"] = "Verify your authenticator"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Administrator access</p>
+  <h1 id="heading">Verify your authenticator</h1>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+    <a href="/account/administrator/login">Start a new sign-in</a>
+  }
+  else
+  {
+    <form asp-antiforgery="true" method="post" action="/account/administrator/mfa">
+      <input type="hidden" name="Interaction" value="@Model.Interaction" />
+      <partial name="/Features/Accounts/Shared/_AdministratorCode.cshtml" />
+    </form>
+  }
+</section>

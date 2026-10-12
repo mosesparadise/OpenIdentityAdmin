@@ -1,65 +1,67 @@
-using Microsoft.Extensions.Configuration;
+using IdentityPlatform.AppHost.Features.Services;
 
 namespace IdentityPlatform.AppHost.Features.Pilot;
 
 internal static class Setup
 {
-    private static readonly string[] PilotKeys = ["UserName", "RedirectUri", "Password", "ClientSecret"];
+    private const string EnablementKey = "Pilot:Enabled";
+    private const string Disabled = "false";
+    private const string Enabled = "true";
+    private const string InvalidEnablement = "Invalid pilot enablement setting.";
+    private const string BootstrapResource = "pilot-bootstrap";
+    private const string BootstrapArgument = "--initialize-pilot";
+    private const string EnvironmentKey = "DOTNET_ENVIRONMENT";
+    private const string Development = "Development";
+    private const string ProviderKey = "Database__Provider";
+    private const string PlatformConnectionKey = "ConnectionStrings__platform";
+    private const string EnablementVariable = "Pilot__Enabled";
+    private const string ConfigurationPrefix = "Pilot:";
+    private const string PasswordKey = "Password";
+    private const string ClientSecretKey = "ClientSecret";
+    private const string VariablePrefix = "Pilot__";
+    private const string ParameterPrefix = "pilot-";
 
+    private static readonly string[] PilotKeys = ["UserName", "RedirectUri", PasswordKey, ClientSecretKey];
+
+    /// <summary>Composes the explicit Development pilot and its one-shot bootstrap without activating administrator accounts.</summary>
     internal static void AddPilot(this IDistributedApplicationBuilder builder, IResourceBuilder<ProjectResource> auth,
-        IResourceBuilder<ProjectResource> migrator, ReferenceExpression platformRuntime, string provider)
+        IResourceBuilder<ProjectResource> migrator, ReferenceExpression platformRuntime, string provider, IssuerProtection protection)
     {
-        var enabled = builder.Configuration["Pilot:Enabled"];
-        if (enabled is null || string.Equals(enabled, "false", StringComparison.OrdinalIgnoreCase))
+        var enabled = builder.Configuration[EnablementKey];
+        if (enabled is null || string.Equals(enabled, Disabled, StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
-        if (!string.Equals(enabled, "true", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(enabled, Enabled, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException("Invalid pilot enablement setting.");
+            throw new InvalidOperationException(InvalidEnablement);
         }
-        var bootstrap = builder.AddProject<Projects.IdentityPlatform_AuthServer>("pilot-bootstrap")
-            .WithArgs("--initialize-pilot")
-            .WithEnvironment("DOTNET_ENVIRONMENT", "Development")
-            .WithEnvironment("Database__Provider", provider)
-            .WithEnvironment("ConnectionStrings__platform", platformRuntime)
-            .WithEnvironment("Pilot__Enabled", "true")
-            .WithEnvironment("Identity__Issuer", auth.GetEndpoint("https"))
+        var bootstrap = builder.AddProject<Projects.IdentityPlatform_AuthServer>(BootstrapResource)
+            .WithArgs(BootstrapArgument)
+            .WithEnvironment(EnvironmentKey, Development)
+            .WithEnvironment(ProviderKey, provider)
+            .WithEnvironment(PlatformConnectionKey, platformRuntime)
+            .WithEnvironment(EnablementVariable, Enabled)
             .WaitForCompletion(migrator);
-        auth.WithEnvironment("DOTNET_ENVIRONMENT", "Development")
-            .WithEnvironment("Pilot__Enabled", "true")
-            .WithEnvironment("Identity__Issuer", auth.GetEndpoint("https"))
+        auth.WithEnvironment(EnvironmentKey, Development)
+            .WithEnvironment(EnablementVariable, Enabled)
             .WaitForCompletion(bootstrap);
-        foreach (var setting in builder.Configuration.AsEnumerable().Where(setting =>
-            setting.Key.StartsWith("Identity:Protection:", StringComparison.OrdinalIgnoreCase) && setting.Value is not null))
-        {
-            var variable = setting.Key.Replace(":", "__");
-            if (setting.Key.EndsWith(":Password", StringComparison.OrdinalIgnoreCase))
-            {
-                var secret = builder.AddParameter("pilot-" + setting.Key.Replace(":", "-").ToLowerInvariant(), () => setting.Value!, secret: true);
-                auth.WithEnvironment(variable, secret);
-                bootstrap.WithEnvironment(variable, secret);
-            }
-            else
-            {
-                auth.WithEnvironment(variable, setting.Value!);
-                bootstrap.WithEnvironment(variable, setting.Value!);
-            }
-        }
+        protection.Apply(auth);
+        protection.Apply(bootstrap);
         foreach (var key in PilotKeys)
         {
-            var value = builder.Configuration["Pilot:" + key];
+            var value = builder.Configuration[ConfigurationPrefix + key];
             if (value is null)
             {
                 continue; // The enabled host rejects incomplete configuration; tests may inject before startup.
             }
-            if (key is "Password" or "ClientSecret")
+            if (key is PasswordKey or ClientSecretKey)
             {
-                bootstrap.WithEnvironment("Pilot__" + key, builder.AddParameter("pilot-" + key.ToLowerInvariant(), () => value, secret: true));
+                bootstrap.WithEnvironment(VariablePrefix + key, builder.AddParameter(ParameterPrefix + key.ToLowerInvariant(), () => value, secret: true));
             }
             else
             {
-                bootstrap.WithEnvironment("Pilot__" + key, value);
+                bootstrap.WithEnvironment(VariablePrefix + key, value);
             }
         }
     }

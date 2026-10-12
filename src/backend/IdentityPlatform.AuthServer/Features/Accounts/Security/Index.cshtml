@@ -1,0 +1,13 @@
+@page "/account/administrator/security"
+@model IdentityPlatform.AuthServer.Features.Accounts.Security.IndexModel
+@{ ViewData["Title"] = "Account security"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Your account</p>
+  <h1 id="heading">Account security</h1>
+  <p>You are signed in with your password and authenticator.</p>
+  <dl>
+    <dt>Password verified</dt><dd><time datetime="@Model.PasswordVerifiedAt.ToString("O")">@Model.PasswordVerifiedAt.ToString("u")</time></dd>
+    <dt>Authenticator verified</dt><dd><time datetime="@Model.FactorVerifiedAt.ToString("O")">@Model.FactorVerifiedAt.ToString("u")</time></dd>
+    <dt>Session expires</dt><dd><time datetime="@Model.ExpiresAt.ToString("O")">@Model.ExpiresAt.ToString("u")</time></dd>
+  </dl>
+</section>

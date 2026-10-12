@@ -1,0 +1,40 @@
+@page "/account/administrator/enrollment"
+@model IdentityPlatform.AuthServer.Features.Accounts.Enrollment.IndexModel
+@{ ViewData["Title"] = "Set up administrator access"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Administrator access</p>
+  @if (Model.RecoveryCodes is not null)
+  {
+    <h1 id="heading">Save your recovery codes</h1>
+    <p>Authenticator setup is complete. Save these codes in a secure password manager now. Each code can be used once to begin authenticator recovery.</p>
+    <p class="error-summary">These codes are shown only once. Reloading or leaving this page will not show them again.</p>
+    <ul class="recovery-codes" data-account-secret aria-label="Single-use recovery codes">
+      @foreach (var code in Model.RecoveryCodes)
+      {
+        <li><code>@code</code></li>
+      }
+    </ul>
+    <a class="primary" href="/account/administrator/security">I have saved my codes</a>
+  }
+  else if (Model.Seed is not null)
+  {
+    <h1 id="heading">Connect your authenticator</h1>
+    <p>Add a time-based account in your authenticator using this setup key. Keep the key private.</p>
+    <div class="field"><label for="setup-key">Setup key</label><input id="setup-key" data-account-secret type="text" value="@Model.Seed" readonly autocomplete="off" spellcheck="false" /></div>
+    <form asp-antiforgery="true" method="post" action="/account/administrator/enrollment">
+      <input type="hidden" name="Interaction" value="@Model.Interaction" />
+      <partial name="/Features/Accounts/Shared/_AdministratorCode.cshtml" />
+    </form>
+  }
+  else
+  {
+    <h1 id="heading">Set up administrator access</h1>
+    <p>Use the credentials created during protected administrator initialization.</p>
+    @if (Model.Error is not null)
+    {
+      <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+    }
+    <form asp-antiforgery="true" method="post" action="/account/administrator/enrollment"><partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" /></form>
+    <p class="footnote">Already enrolled? <a href="/account/administrator/login">Sign in</a></p>
+  }
+</section>

@@ -15,6 +15,11 @@ public sealed class AdministratorInteraction
     public string SecurityStamp { get; set; } = string.Empty;
     public long Generation { get; set; } = 1;
     public long DestinationGeneration { get; set; } = 1;
+    /// <summary>Binds new journeys to the enrolled state revision; older null rows cannot authorize activation.</summary>
+    public long? ExpectedEnrollmentRevision
+    {
+        get; set;
+    }
     public long CreatedAt
     {
         get; set;

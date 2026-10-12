@@ -4,6 +4,8 @@
     <PackageReference Include="xunit.v3.mtp-v2" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
     <PackageReference Include="Aspire.Hosting.Testing" />
+    <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="Deque.AxeCore.Playwright" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
     <ProjectReference Include="../../../src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
@@ -15,6 +17,10 @@
     <Compile Include="../IdentityPlatform.Issuer.Tests/Fixtures/TestRelyingParty.cs" Link="Fixtures/TestRelyingParty.cs" />
     <Compile Include="../IdentityPlatform.Issuer.Tests/Fixtures/TestLogin.cs" Link="Fixtures/TestLogin.cs" />
     <Compile Include="../IdentityPlatform.Issuer.Tests/Fixtures/ExchangeEvidence.cs" Link="Fixtures/ExchangeEvidence.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserSession.cs" Link="Fixtures/BrowserSession.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserEvidence.cs" Link="Fixtures/BrowserEvidence.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserAccessibility.cs" Link="Fixtures/BrowserAccessibility.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserStyleEvidence.cs" Link="Fixtures/BrowserStyleEvidence.cs" />
     <Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" />
     <Compile Include="../../shared/SafeAssertions.cs" Link="Fixtures/SafeAssertions.cs" />
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/LifecycleEvidence.cs" Link="Fixtures/LifecycleEvidence.cs" />

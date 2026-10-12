@@ -6,11 +6,13 @@ import xml.etree.ElementTree as ET
 def select_projects(matrix, profile, browser=None, partition='all'):
     if partition not in ('all', 'standard', 'lifecycle', 'administrator'):
         raise ValueError('Unknown test partition')
-    if partition != 'all' and (profile == 'unit' or browser):
-        raise ValueError('Partitions apply only to ordinary provider profiles')
+    if partition != 'all' and (profile == 'unit' or (browser and partition == 'lifecycle')):
+        raise ValueError('Partition is incompatible with this profile or browser')
     projects = matrix['browser'] if browser else matrix['profiles'][profile]
     if partition == 'standard':
         return {name: count for name, count in projects.items() if name not in ('Issuer.Lifecycle', 'Administrator')}
+    if partition == 'administrator' and 'Administrator' not in projects:
+        raise ValueError('Administrator partition is absent from the reviewed matrix')
     if partition == 'administrator':
         return {'Administrator': projects['Administrator']}
     if partition == 'lifecycle':
@@ -18,7 +20,10 @@ def select_projects(matrix, profile, browser=None, partition='all'):
     return dict(projects)
 
 
-def catalogue(raw, lifecycle=False):
+def catalogue(raw, lifecycle=False, project=None):
+    project = project or ('Issuer.Lifecycle' if lifecycle else 'Issuer')
+    if project not in ('Issuer', 'Issuer.Lifecycle', 'Administrator'):
+        raise ValueError('Unknown discovery project')
     value = json.loads(raw)
     if value.get('schemaVersion') != 1 or not isinstance(value.get('tests'), list):
         raise ValueError('Unsupported test discovery document')
@@ -33,11 +38,11 @@ def catalogue(raw, lifecycle=False):
         if len(providers) != 1 or providers[0] not in ('PostgreSql', 'SqlServer'):
             raise ValueError('Issuer test lacks one recognized provider')
         browser = any(x == {'key': 'Category', 'value': 'Browser'} for x in traits)
-        if lifecycle and (browser or '.Features.Browser' in test['type']['namespace']):
+        if project == 'Issuer.Lifecycle' and (browser or '.Features.Browser' in test['type']['namespace']):
             raise ValueError('Lifecycle catalogue contains a browser namespace or trait')
-        if browser != (test['type']['namespace'] == 'IdentityPlatform.Issuer.Tests.Features.Browser'):
+        if browser != (test['type']['namespace'] == 'IdentityPlatform.' + project + '.Tests.Features.Browser'):
             raise ValueError('Browser namespace and trait disagree')
-        result[uid] = (name, providers[0], browser, test['type']['namespace']) if lifecycle else (name, providers[0], browser)
+        result[uid] = (name, providers[0], browser, test['type']['namespace']) if project != 'Issuer' else (name, providers[0], browser)
         names.add(name)
     if not result:
         raise ValueError('Empty discovery document')
@@ -140,23 +145,28 @@ def require_lifecycle_story(all_tests, selected, provider, story, matrix):
         raise ValueError('Lifecycle story selection overlaps, omits or substitutes identities')
 
 
-def require_administrator_partition(all_tests, selected, provider, counts, expected_names):
+def require_administrator_partition(all_tests, selected, provider, counts, expected_names, browser_count=0):
     if provider not in ('PostgreSql', 'SqlServer') or set(counts) != {'PostgreSql', 'SqlServer'} or set(expected_names) != set(counts):
         raise ValueError('Administrator requires both provider inventories')
     for name, count in counts.items():
         expected = expected_names[name]
         actual = [test[0] for test in all_tests.values() if test[1] == name]
-        if count <= 0 or len(expected) != count or len(set(expected)) != count or sorted(actual) != sorted(expected):
+        if count <= 0 or len(expected) != count + browser_count or len(set(expected)) != count + browser_count or sorted(actual) != sorted(expected):
             raise ValueError('Administrator catalogue differs from reviewed identities')
-    if any(test[2] or test[3] not in ('IdentityPlatform.Administrator.Tests.Features.Bootstrap', 'IdentityPlatform.Administrator.Tests.Features.Factors', 'IdentityPlatform.Administrator.Tests.Features.Ceremonies') for test in all_tests.values()):
+    ordinary = {'IdentityPlatform.Administrator.Tests.Features.' + story for story in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts')}
+    browser_namespace = 'IdentityPlatform.Administrator.Tests.Features.Browser'
+    if any(len(test) != 4 or (test[3] != browser_namespace if test[2] else test[3] not in ordinary) for test in all_tests.values()):
         raise ValueError('Administrator catalogue contains an unexpected namespace or category')
+    if type(browser_count) is not int or browser_count < 0 or any(
+            sum(test[1] == p and test[2] for test in all_tests.values()) != browser_count for p in counts):
+        raise ValueError('Administrator browser inventory is incomplete')
     if selected != {uid: test for uid, test in all_tests.items() if test[1] == provider}:
         raise ValueError('Administrator selection omits or substitutes provider cases')
 
 
 def administrator_invocations(matrix, profile, story=None):
     stories = matrix['administrator_stories']
-    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies'}:
+    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies', 'Accounts'}:
         raise ValueError('Administrator stories and provider must be explicitly reviewed')
     if story is not None and story not in stories:
         raise ValueError('Unknown administrator story')
@@ -168,16 +178,34 @@ def administrator_invocations(matrix, profile, story=None):
     return [(name, stories[name][profile]) for name in stories if story is None or name == story]
 
 
-def require_administrator_story(all_tests, selected, provider, story, matrix, inventory):
-    administrator_invocations(matrix, provider, story)
+def administrator_catalogue(all_tests, provider, matrix, inventory):
+    """Validate every ordinary and browser identity, including each story's independent counts."""
+    administrator_invocations(matrix, provider)
     complete = {uid: test for uid, test in all_tests.items() if test[1] == provider}
     require_administrator_partition(all_tests, complete, provider,
-        {p: matrix['profiles'][p]['Administrator'] for p in ('PostgreSql', 'SqlServer')}, inventory)
+        {p: matrix['profiles'][p]['Administrator'] for p in ('PostgreSql', 'SqlServer')}, inventory, matrix.get('browser', {}).get('Administrator', 0))
     namespaces = {name: 'IdentityPlatform.Administrator.Tests.Features.' + name for name in matrix['administrator_stories']}
     for name, namespace in namespaces.items():
         for p, count in matrix['administrator_stories'][name].items():
             if sum(test[1] == p and test[3] == namespace for test in all_tests.values()) != count:
                 raise ValueError('Administrator story catalogue count changed without review')
+    return complete, namespaces
+
+
+def require_administrator_story(all_tests, selected, provider, story, matrix, inventory):
+    administrator_invocations(matrix, provider, story)
+    complete, namespaces = administrator_catalogue(all_tests, provider, matrix, inventory)
     expected = {uid: test for uid, test in complete.items() if test[3] == namespaces[story]}
     if selected != expected:
         raise ValueError('Administrator story selection overlaps, omits or substitutes identities')
+
+
+def require_administrator_browser(all_tests, selected, provider, matrix, inventory):
+    """Require the complete reviewed inventory and an exact disjoint browser selection for this provider."""
+    browser_count = matrix['browser']['Administrator']
+    if type(browser_count) is not int or browser_count <= 0:
+        raise ValueError('Administrator browser coverage must be positive')
+    complete, _ = administrator_catalogue(all_tests, provider, matrix, inventory)
+    expected = {uid: test for uid, test in complete.items() if test[2]}
+    if selected != expected:
+        raise ValueError('Administrator browser selection omits or substitutes identities')

@@ -35,8 +35,8 @@ T017 is the implementation umbrella for T022–T026; T018 is the acceptance umbr
 
 - [x] T022 [US2] Refactor shared account composition and explicit administrator/pilot Razor/scheme isolation under AuthServer/Features/Accounts and existing Composition/Setup; install independent request/database/security protection.
 - [x] T023 [US2] Add authentication/factor/interaction/session/admission state and protected native manager/store adapters under Infrastructure/Features/Identity; generate both migrations and SchemaCatalog readiness updates.
-- [ ] T024 [US2] Implement authoritative budgets, complete lock order, replay/watermark, atomic audit, retained-capacity admission and bounded AuthServer-hosted cleanup. Implementation under verification; see [ceremony security](ceremony-security.md).
-- [ ] T025 [US2] Implement protected Enrollment/Mfa/login Razor journeys, destination-generation proof continuity and authoritative account-session validation.
+- [x] T024 [US2] Implement authoritative budgets, complete lock order, replay/watermark, atomic audit, retained-capacity admission and bounded AuthServer-hosted cleanup. Accepted in PR #29 (`5d54e57`); see [ceremony security](ceremony-security.md).
+- [ ] T025 [US2] Implement protected Enrollment/Mfa/login Razor journeys, destination-generation proof continuity and authoritative account-session validation. Implementation in progress; see [enrollment/login](enrollment-login.md).
 - [ ] T026 [US2] Implement restricted Recovery, Security factor replacement/code regeneration and local logout; preserve all-factor-loss denial and one-time code delivery.
 - [ ] T027 [US2] Extend strict Administrator discovery into explicit story/provider/browser partitions in scripts and eng; retain 660-second invocation bounds and require all new coverage inputs.
 - [ ] T028 [US2] Implement MFA-01–13 independent cases from mfa-design.md in the approved Administrator suite; verify native managers, real HTTP/browser, both-provider observed races/failures and safe evidence.
@@ -54,4 +54,4 @@ Dependencies: T016 -> T022/T023 -> T024 -> T025/T026; T027 enables isolated T028
 
 ## Dependencies and execution
 
-T001–T003 -> T004–T008 -> T010–T012 -> T013–T015. T009 can be authored alongside database fixture work once its contracts exist. Increment2 starts after increment1 merge; increment3 follows increment2. Independent source reviewers may work in parallel, but the main agent integrates edits. T016 is a reviewed design checkpoint; T022 composition and T023 protected storage are verified; T017/T018 and T024–T029 remain unchecked and do not claim MFA runtime acceptance. M02-B–D, M05 passkeys, M01-F vendor clearance and human/external assurance remain separate.
+T001–T003 -> T004–T008 -> T010–T012 -> T013–T015. T009 can be authored alongside database fixture work once its contracts exist. Increment2 starts after increment1 merge; increment3 follows increment2. Independent source reviewers may work in parallel, but the main agent integrates edits. T016 is a reviewed design checkpoint; T022 composition and T023 protected storage are verified; T017/T018 and T025–T029 remain unchecked and do not claim MFA runtime acceptance. M02-B–D, M05 passkeys, M01-F vendor clearance and human/external assurance remain separate.

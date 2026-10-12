@@ -15,6 +15,7 @@ public static class Setup
         services.AddScoped<CeremonyClock>();
         services.AddScoped<CeremonyBudget>();
         services.AddScoped<CeremonyAdmission>();
+        services.AddScoped<CeremonyGenerations>();
         services.AddScoped<CeremonyReplay>();
         services.AddScoped<CeremonyCleanup>();
         return services;
