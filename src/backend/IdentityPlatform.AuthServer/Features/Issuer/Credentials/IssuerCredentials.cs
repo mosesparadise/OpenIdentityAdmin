@@ -10,6 +10,11 @@ namespace IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 public sealed class IssuerCredentials : IDisposable
 {
     private readonly List<X509Certificate2> certificates = [];
+    private readonly List<X509Certificate2> wrappingDecryptors = [];
+    private enum Validity
+    {
+        Active, Staged, Previous, RetainedWrapper
+    }
     private IssuerCredentials(Uri issuer, string keyRingPath)
     {
         Issuer = issuer;
@@ -24,10 +29,12 @@ public sealed class IssuerCredentials : IDisposable
     {
         get;
     }
-    public X509Certificate2 Signing => certificates[0];
-    public X509Certificate2 Encryption => certificates[1];
-    public X509Certificate2 Wrapping => certificates[2];
-    public IEnumerable<X509Certificate2> WrappingDecryptors => certificates.Skip(2);
+    public IssuerKeySet SigningKeys { get; private set; } = null!;
+    public IssuerKeySet EncryptionKeys { get; private set; } = null!;
+    public X509Certificate2 Signing => SigningKeys.Active;
+    public X509Certificate2 Encryption => EncryptionKeys.Active;
+    public X509Certificate2 Wrapping { get; private set; } = null!;
+    public IEnumerable<X509Certificate2> WrappingDecryptors => wrappingDecryptors.AsReadOnly();
 
     public static IssuerCredentials Load(IConfiguration configuration, DateTimeOffset now)
     {
@@ -39,9 +46,10 @@ public sealed class IssuerCredentials : IDisposable
                 PrivateStorage.RequireDirectory(identity["Protection:DataProtection:KeyRingPath"]));
             var protection = identity.GetSection("Protection");
             var fingerprints = new HashSet<string>(StringComparer.Ordinal);
-            material.LoadCertificate(protection.GetSection("Signing"), X509KeyUsageFlags.DigitalSignature, now, active: true, fingerprints);
-            material.LoadCertificate(protection.GetSection("Encryption"), X509KeyUsageFlags.KeyEncipherment, now, active: true, fingerprints);
-            material.LoadCertificate(protection.GetSection("DataProtection:Current"), X509KeyUsageFlags.KeyEncipherment, now, active: true, fingerprints);
+            material.SigningKeys = material.LoadKeySet(protection.GetSection("Signing"), X509KeyUsageFlags.DigitalSignature, now, fingerprints);
+            material.EncryptionKeys = material.LoadKeySet(protection.GetSection("Encryption"), X509KeyUsageFlags.KeyEncipherment, now, fingerprints);
+            material.Wrapping = material.LoadCertificate(protection.GetSection("DataProtection:Current"), X509KeyUsageFlags.KeyEncipherment, now, Validity.Active, fingerprints);
+            material.wrappingDecryptors.Add(material.Wrapping);
             var previous = protection.GetSection("DataProtection:Previous").GetChildren().ToArray();
             if (previous.Length > 4)
             {
@@ -50,7 +58,7 @@ public sealed class IssuerCredentials : IDisposable
 
             foreach (var entry in previous)
             {
-                material.LoadCertificate(entry, X509KeyUsageFlags.KeyEncipherment, now, active: false, fingerprints);
+                material.wrappingDecryptors.Add(material.LoadCertificate(entry, X509KeyUsageFlags.KeyEncipherment, now, Validity.RetainedWrapper, fingerprints));
             }
 
             return material;
@@ -62,8 +70,49 @@ public sealed class IssuerCredentials : IDisposable
         }
     }
 
-    private void LoadCertificate(IConfigurationSection section, X509KeyUsageFlags usage,
-        DateTimeOffset now, bool active, HashSet<string> fingerprints)
+    private IssuerKeySet LoadKeySet(IConfigurationSection section, X509KeyUsageFlags usage,
+        DateTimeOffset now, HashSet<string> fingerprints)
+    {
+        RequireFields(section, "Path", "Password", "Staged", "Previous");
+        var active = LoadCertificate(section, usage, now, Validity.Active, fingerprints);
+        var stagedSection = section.GetSection("Staged");
+        X509Certificate2? staged = null;
+        if (stagedSection.Exists())
+        {
+            RequireFields(stagedSection, "Path", "Password");
+            staged = LoadCertificate(stagedSection, usage, now, Validity.Staged, fingerprints);
+        }
+        var previousSection = section.GetSection("Previous");
+        var previous = previousSection.GetChildren().ToArray();
+        if (previousSection.Value is not null || previous.Length > 4)
+        {
+            throw new IssuerProtectionException();
+        }
+        var retained = new List<X509Certificate2>();
+        for (var index = 0; index < previous.Length; index++)
+        {
+            if (previous[index].Key != index.ToString(System.Globalization.CultureInfo.InvariantCulture))
+            {
+                throw new IssuerProtectionException();
+            }
+            RequireFields(previous[index], "Path", "Password");
+            retained.Add(LoadCertificate(previous[index], usage, now, Validity.Previous, fingerprints));
+        }
+        return new IssuerKeySet(active, staged, [.. retained]);
+    }
+
+    private static void RequireFields(IConfigurationSection section, params string[] allowed)
+    {
+        if (section.Value is not null || section.GetChildren().Any(child =>
+            !allowed.Contains(child.Key, StringComparer.OrdinalIgnoreCase) ||
+            (child.Key.Equals("Path", StringComparison.OrdinalIgnoreCase) || child.Key.Equals("Password", StringComparison.OrdinalIgnoreCase)) && child.GetChildren().Any()))
+        {
+            throw new IssuerProtectionException();
+        }
+    }
+
+    private X509Certificate2 LoadCertificate(IConfigurationSection section, X509KeyUsageFlags usage,
+        DateTimeOffset now, Validity validity, HashSet<string> fingerprints)
     {
         var path = PrivateStorage.RequireCredentialFile(section["Path"]);
         var password = section["Password"];
@@ -84,7 +133,8 @@ public sealed class IssuerCredentials : IDisposable
             var keyUsage = certificate.Extensions.OfType<X509KeyUsageExtension>().SingleOrDefault();
             if (key is null || publicKey is null || key.KeySize < 3072 ||
                 keyUsage is null || (keyUsage.KeyUsages & usage) != usage ||
-                (active && (now < certificate.NotBefore.ToUniversalTime() || now >= certificate.NotAfter.ToUniversalTime())) ||
+                (validity is Validity.Active or Validity.Previous && now < certificate.NotBefore.ToUniversalTime()) ||
+                (validity is Validity.Active or Validity.Staged && now >= certificate.NotAfter.ToUniversalTime()) ||
                 !fingerprints.Add(Convert.ToHexString(SHA256.HashData(publicKey.ExportSubjectPublicKeyInfo()))))
             {
                 throw new IssuerProtectionException();
@@ -108,6 +158,7 @@ public sealed class IssuerCredentials : IDisposable
                     throw new IssuerProtectionException();
                 }
             }
+            return certificate;
         }
         finally { CryptographicOperations.ZeroMemory(bytes); }
     }

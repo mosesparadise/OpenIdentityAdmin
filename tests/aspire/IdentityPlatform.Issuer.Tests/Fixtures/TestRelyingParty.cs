@@ -172,19 +172,23 @@ public sealed class TestRelyingParty : IAsyncDisposable
         return await (transport ?? backchannel).SendAsync(request, cancellationToken);
     }
 
-    public async Task<string> ValidateAsync(JsonElement tokens, TestFlow flow, CancellationToken cancellationToken, HttpClient? transport = null)
+    public async Task<string> ValidateAsync(JsonElement tokens, TestFlow flow, CancellationToken cancellationToken, HttpClient? transport = null, string? frozenJwks = null)
     {
-        using var metadata = JsonDocument.Parse(await (transport ?? backchannel).GetStringAsync(new Uri(Issuer, "/.well-known/openid-configuration"), cancellationToken));
-        if (metadata.RootElement.GetProperty("issuer").GetString() != Issuer.AbsoluteUri)
+        if (frozenJwks is null)
         {
-            return "Metadata or token validation failed.";
+            using var metadata = JsonDocument.Parse(await (transport ?? backchannel).GetStringAsync(new Uri(Issuer, "/.well-known/openid-configuration"), cancellationToken));
+            if (metadata.RootElement.GetProperty("issuer").GetString() != Issuer.AbsoluteUri)
+            {
+                return "Metadata or token validation failed.";
+            }
+            var jwksUri = new Uri(metadata.RootElement.GetProperty("jwks_uri").GetString()!);
+            if (jwksUri != new Uri(Issuer, "/connect/jwks"))
+            {
+                return "Metadata or token validation failed.";
+            }
+            frozenJwks = await (transport ?? backchannel).GetStringAsync(jwksUri, cancellationToken);
         }
-        var jwksUri = new Uri(metadata.RootElement.GetProperty("jwks_uri").GetString()!);
-        if (jwksUri != new Uri(Issuer, "/connect/jwks"))
-        {
-            return "Metadata or token validation failed.";
-        }
-        var keys = new JsonWebKeySet(await (transport ?? backchannel).GetStringAsync(jwksUri, cancellationToken)).GetSigningKeys();
+        var keys = new JsonWebKeySet(frozenJwks).GetSigningKeys();
         var handler = new JsonWebTokenHandler();
         var id = await handler.ValidateTokenAsync(tokens.GetProperty("id_token").GetString()!, Parameters(Issuer.AbsoluteUri, "identityplatform-pilot", "JWT", keys));
         var access = await handler.ValidateTokenAsync(tokens.GetProperty("access_token").GetString()!, Parameters(Issuer.AbsoluteUri, "identityplatform-pilot-api", "at+jwt", keys));
@@ -206,6 +210,11 @@ public sealed class TestRelyingParty : IAsyncDisposable
         if (!identity.TryGetClaim("nonce", out var nonceClaim) || nonceClaim.Value != flow.Nonce)
         {
             return "Nonce mismatch.";
+        }
+        var digest = SHA256.HashData(Encoding.ASCII.GetBytes(tokens.GetProperty("access_token").GetString()!));
+        if (!identity.TryGetClaim("at_hash", out var accessHash) || accessHash.Value != Base64UrlEncoder.Encode(digest.AsSpan(0, 16).ToArray()))
+        {
+            return "Access token hash mismatch.";
         }
         if (identity.Subject != expected.Subject || api.Subject != expected.Subject)
         {

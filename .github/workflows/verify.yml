@@ -106,6 +106,10 @@ jobs:
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }
           - { profile: SqlServer, partition: lifecycle, story: Distribution, label: SqlServer-lifecycle-distribution }
+          - { profile: PostgreSql, partition: lifecycle, story: KeyRotation.Activation, label: PostgreSql-lifecycle-keyrotation-activation }
+          - { profile: SqlServer, partition: lifecycle, story: KeyRotation.Activation, label: SqlServer-lifecycle-keyrotation-activation }
+          - { profile: PostgreSql, partition: lifecycle, story: KeyRotation.Retirement, label: PostgreSql-lifecycle-keyrotation-retirement }
+          - { profile: SqlServer, partition: lifecycle, story: KeyRotation.Retirement, label: SqlServer-lifecycle-keyrotation-retirement }
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'

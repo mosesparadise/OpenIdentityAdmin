@@ -18,8 +18,8 @@ class LifecycleSelectionTests(unittest.TestCase):
             self.assertFalse(standard.keys() & lifecycle.keys())
             self.assertEqual(complete, standard | lifecycle)
             self.assertEqual(300, sum(standard.values()))
-            self.assertEqual({'Issuer.Lifecycle': 36}, lifecycle)
-            self.assertEqual(336, sum(complete.values()))
+            self.assertEqual({'Issuer.Lifecycle': 41}, lifecycle)
+            self.assertEqual(341, sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
         self.assertEqual(matrix['browser'], select_projects(matrix, 'SqlServer', 'webkit'))
         for profile, browser, partition in [('unit', None, 'standard'), ('unit', None, 'lifecycle'),
@@ -48,7 +48,7 @@ class LifecycleSelectionTests(unittest.TestCase):
         matrix = json.loads((Path(__file__).resolve().parents[1] / 'eng/test-matrix.json').read_text())
         self.assertEqual(matrix['projects']['Issuer.Lifecycle'], {'group': 'aspire'})
         for provider in ('PostgreSql', 'SqlServer'):
-            self.assertEqual(matrix['profiles'][provider]['Issuer.Lifecycle'], 36)
+            self.assertEqual(matrix['profiles'][provider]['Issuer.Lifecycle'], 41)
         self.assertNotIn('Issuer.Lifecycle', matrix['profiles']['unit'])
         self.assertNotIn('Issuer.Lifecycle', matrix['browser'])
 
@@ -69,7 +69,7 @@ class LifecycleSelectionTests(unittest.TestCase):
                     uid = f'{story}-{provider}-{i}'
                     tests[uid] = (uid, provider, False, 'IdentityPlatform.Issuer.Lifecycle.Tests.Features.' + story)
         for provider in ('PostgreSql', 'SqlServer'):
-            self.assertEqual([('Restart', 13), ('Distribution', 23)], lifecycle_invocations(matrix, provider))
+            self.assertEqual([('Restart', 13), ('Distribution', 23), ('KeyRotation.Activation', 3), ('KeyRotation.Retirement', 2)], lifecycle_invocations(matrix, provider))
             subsets = []
             for story in matrix['lifecycle_stories']:
                 selected = {uid: t for uid, t in tests.items() if t[1] == provider and t[3].endswith('.' + story)}
@@ -85,8 +85,11 @@ class LifecycleSelectionTests(unittest.TestCase):
                                 {k: v for k, v in tests.items() if k != key}]:
                     with self.assertRaises(ValueError):
                         require_lifecycle_story(corrupt, selected, provider, story, matrix)
-            self.assertFalse(subsets[0].keys() & subsets[1].keys())
-            self.assertEqual({uid: t for uid, t in tests.items() if t[1] == provider}, subsets[0] | subsets[1])
+            union = {}
+            for selected in subsets:
+                self.assertFalse(union.keys() & selected.keys())
+                union.update(selected)
+            self.assertEqual({uid: t for uid, t in tests.items() if t[1] == provider}, union)
         for mutate in ('omitted', 'total', 'unknown', 'provider'):
             corrupt = copy.deepcopy(matrix)
             if mutate == 'omitted': del corrupt['lifecycle_stories']['Restart']

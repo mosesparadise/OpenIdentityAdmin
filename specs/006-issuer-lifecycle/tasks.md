@@ -1,6 +1,6 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution source and T015 evidence accepted (21 checks / 1,097 cases), PR #18 final delivery pending; rotation pending**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
+Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution delivered in squash-merged PR #18 (21 checks / 1,097 cases); T016 design/configuration seam complete; T017/T018 source acceptance complete in run 114 (25 checks / 1,149 cases); final PR #19 delivery gate below**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
@@ -25,19 +25,21 @@ Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); d
 
 **PR #17 delivery gate completed:** final head `3870ffaba5bb8f202fa1cff7ded89d7a78af0903`, final run `38178327657` (all 19 checks), squash `a6b4dfbde660162197e188715a4ba4056cd14772`. Tested merge and squash have tree `97df4e105983271cd6f10644596824d277417860`. No unresolved review findings. [PR #17](https://github.com/mosesparadise/OpenIdentityAdmin/pull/17) records exact evidence.
 
-## Phase 4 — US2 two-instance behavior (PR #18; verification in progress)
+## Phase 4 — US2 two-instance behavior (PR #18; delivered)
 
 - [x] T013 Write `contracts/distribution.md` and a detailed implementation plan for canonical HTTPS routing, node provenance, shared store/DP material, explicit topology and trust boundaries before changing AppHost/test composition. Confirm structural changes; independently review. LIFE-006/008.
 - [x] T014 Implement `Features/Distribution/` and required `Fixtures/` topology support: cross-node original form/antiforgery/cookie/continuation/code, concurrent code winner/replay consequences, committed eligibility and surviving-node cases. Use actual processes with provable dispatch, no generic mutation retries. LIFE-002/003/005/006/008.
 - [x] T015 Execute both providers, full required regression/coverage and independent reviews; update `verification.md`, roadmap/backlog/runbook. Accepted source checkpoint: `12ae110`, run `38181828768`, 21 checks / 1,097 ordinary passes with no failures/skips. M01-E remains partial while overlap is pending. LIFE-009/010. Squash delivery is the separate gate below.
 
-**PR #18 delivery gate pending:** verify the final documentation head, all normal required checks and no unresolved review findings, then perform an expected-head squash merge. Record the final run, head and squash on [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18); do not start T016 before that merge.
+**PR #18 delivery gate completed:** final head `71afb88b7d5352559ce0f01a833be75c84768818`, run `38183025677` (all 21 checks / 1,097 ordinary passes, no failures/skips), squash `58ebfb1afce2698f8d3edd86f9e30548fa8dda53`. Head, tested merge and squash share tree `546649ad6cac9a130a439ce30856f9b4d7ce8233`. All review findings resolved; normal expected-head squash merge performed. [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18) records final evidence.
 
-## Phase 5 — US3 staged key overlap (PR 3; not started)
+## Phase 5 — US3 staged key overlap (PR #19; source acceptance complete; final delivery gate below)
 
-- [ ] T016 Write `contracts/key-lifecycle.md` and detailed plan for backward-compatible active/staged/retiring configuration, signing prepublication, explicit selection, retained decryption, per-artifact lifetime/skew/cache retirement bounds and operator rollback/rollout; independently review native library behavior before implementation. LIFE-007/008.
-- [ ] T017 Implement only the reviewed credential/protocol/composition changes under existing production `Features/Issuer/` and `Features/Protocol/` plus `Features/KeyRotation/` tests. Prove publish→activate→overlap→safe-retire and premature-removal negatives on both real provider topologies. Native crypto/validation remains library-owned. LIFE-004/007/008.
-- [ ] T018 Run complete required gates and independent security/architecture/test reviews; update operator runbook and traceable evidence, then squash-merge. Close M01-E only when every LIFE/ISS-003 obligation has evidence; retain manual/full-product/backup-restore/external gates. LIFE-009/010.
+- [x] T016 Write `contracts/key-lifecycle.md` and detailed plan for backward-compatible active/staged/retiring configuration, signing prepublication, explicit selection, retained decryption, per-artifact lifetime/skew/cache retirement bounds and operator rollback/rollout; independently review native library behavior before implementation. LIFE-007/008.
+- [x] T017 Implement only the reviewed credential/protocol/composition changes under existing production `Features/Issuer/` and `Features/Protocol/` plus `Features/KeyRotation/` tests. Prove publish→activate→overlap→safe-retire and premature-removal negatives on both real provider topologies. Native crypto/validation remains library-owned. LIFE-004/007/008.
+- [x] T018 Run complete required gates and independent security/architecture/test reviews; update operator runbook and traceable evidence, then squash-merge. Close M01-E only when every LIFE/ISS-003 obligation has evidence; retain manual/full-product/backup-restore/external gates. LIFE-009/010.
+
+**PR #19 delivery gate:** run `38210425980` at source `69b8e8d` establishes source acceptance. Diagnostic-only assertion refinements and acceptance documentation require all final-head checks before normal expected-head squash delivery. The [PR](https://github.com/mosesparadise/OpenIdentityAdmin/pull/19) records final checks, reviewed head and merge; no unchecked provider or protection bypass is permitted.
 
 ## Dependencies and parallel review
 

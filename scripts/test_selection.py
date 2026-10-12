@@ -109,7 +109,7 @@ def require_lifecycle_execution(path, selected):
 
 def lifecycle_invocations(matrix, profile, story=None):
     stories = matrix['lifecycle_stories']
-    if set(stories) != {'Restart', 'Distribution'}:
+    if set(stories) != {'Restart', 'Distribution', 'KeyRotation.Activation', 'KeyRotation.Retirement'}:
         raise ValueError('Lifecycle stories must be explicitly reviewed')
     if story is not None and story not in stories:
         raise ValueError('Unknown lifecycle story')
