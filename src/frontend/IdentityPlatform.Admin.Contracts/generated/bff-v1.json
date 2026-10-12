@@ -1,0 +1,14 @@
+{
+  "info": {
+    "description": "Contract foundation. No production management operations are implemented.",
+    "title": "IdentityPlatform Admin BFF browser API",
+    "version": "1"
+  },
+  "openapi": "3.1.1",
+  "paths": {},
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}

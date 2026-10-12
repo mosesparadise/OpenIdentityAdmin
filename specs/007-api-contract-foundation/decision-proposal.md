@@ -1,6 +1,6 @@
 # M01-F decisions for confirmation
 
-Status: proposed on 12 October 2026; no new implementation files or packages added. Existing v0.2 approval remains active. These questions implement the user's instruction to confirm new structure/pattern choices, not a new general approval requirement.
+Status: both recommended decisions explicitly confirmed by the user on 12 October 2026. Existing v0.2 approval remains active. These questions implement the user's instruction to confirm new structure/pattern choices, not a new general approval requirement.
 
 ## 1. Deliver tooling before administrator authentication
 
@@ -53,4 +53,4 @@ The solution groups the test project under `/tests/contracts/` and frontend file
 
 The new test project uses xUnit v3/MTP and covers the production registration/generation components, not an independent imitation. Existing host/Aspire tests assert actual shipped routes remain absent on both providers. Test endpoint types are never referenced by production projects. The frontend package is private and is not published as a completed SDK. Fixture generated files never occupy its production `generated/` location.
 
-**Before implementation:** confirm these two decisions, finish and review the Spec Kit plan/contracts/tasks against them, then implement the approved scope. Existing approval covers routine package and test details once the structure/scope are confirmed; material security changes would require a separately documented decision.
+**Implementation sequence:** both decisions are confirmed; finish and review the Spec Kit plan/contracts/tasks, then implement the approved scope. Existing approval covers routine package and test details once the structure/scope are confirmed; material security changes would require a separately documented decision.

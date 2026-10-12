@@ -1,0 +1,6 @@
+{
+  "core": 19,
+  "browser": 5,
+  "node": 27,
+  "browsers": ["chromium", "firefox", "webkit"]
+}

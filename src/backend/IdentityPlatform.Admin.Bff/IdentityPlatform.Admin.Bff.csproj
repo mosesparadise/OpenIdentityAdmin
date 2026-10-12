@@ -3,4 +3,19 @@
     <ProjectReference Include="../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
     <ProjectReference Include="../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
   </ItemGroup>
+  <PropertyGroup>
+    <OpenApiGenerateDocumentsOnBuild>false</OpenApiGenerateDocumentsOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http" />
+    <PackageReference Include="Asp.Versioning.OpenApi" />
+    <PackageReference Include="Microsoft.OpenApi" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" PrivateAssets="all" />
+    <PackageReference Include="Scalar.AspNetCore" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
+    <InternalsVisibleTo Include="IdentityPlatform.Api.Contracts.Tests" />
+  </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="Features/Documentation/Assets/*" />
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/tokens.css" LogicalName="IdentityPlatform.Admin.Bff.Features.Documentation.Assets.tokens.css" /></ItemGroup>
 </Project>

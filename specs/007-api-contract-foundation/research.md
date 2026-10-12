@@ -1,6 +1,6 @@
 # M01-F research — 12 October 2026
 
-Status: source/package availability research only. No dependency graph has been restored, built or accepted for this feature. Decisions below are recommendations pending the two questions in [decision-proposal.md](decision-proposal.md).
+Status: source/package availability research only. No dependency graph has been restored, built or accepted for this feature. The user confirmed both structural/sequencing recommendations in [decision-proposal.md](decision-proposal.md); tool validation proceeds under the implementation tasks.
 
 ## Existing-host boundary
 
@@ -27,7 +27,7 @@ Queried official NuGet flat-container indexes/nuspecs and npm registry metadata 
 
 Asp.Versioning.OpenApi 10.2.3 depends on Asp.Versioning.Mvc.ApiExplorer >=10.2.1, Microsoft.AspNetCore.OpenApi >=10.0.10 and Microsoft.OpenApi >=2.7.5,<3.0.0. The intersection with Microsoft.AspNetCore.OpenApi10.0.12 is >=2.12.0,<3.0.0. An MVC-named transitive Explorer package does not authorize controllers or a second generator.
 
-Do not force TypeScript peer compatibility with legacy-peer-deps/overrides. The latest stable 5.x observed is TypeScript 5.9.3. Alternative @hey-api/openapi-ts 0.99.0 declares TypeScript `>=5.5.3 || >=6.0.0 || 6.0.1-rc` and Node >=22.18.0; this range admits the current compiler but does not itself establish schema/client correctness. Compare these candidates and choose a lock only after a representative compile/runtime/schema proof. Research the compatible Node LTS patch and diff tool before implementation; no final selection is claimed here.
+Do not force TypeScript peer compatibility with legacy-peer-deps/overrides. The latest stable 5.x observed is TypeScript 5.9.3. Alternative @hey-api/openapi-ts 0.99.0 declares TypeScript `>=5.5.3 || >=6.0.0 || 6.0.1-rc` and Node >=22.18.0; this range admits the current compiler but does not itself establish schema/client correctness. Compare these candidates and choose a lock only after a representative compile/runtime/schema proof. The plan selects Node24.19.0/npm11.9.0 and the compatible TypeScript5.9.3 pair; diff tooling remains subject to the documented validation gate.
 
 Sources (indexes supply availability; exact nuspecs supply constraints):
 

@@ -4,7 +4,7 @@
 
 **Created**: 12 October 2026
 
-**Status**: Draft; sequencing and new structure questions pending. No implementation has begun.
+**Status**: User confirmed foundation-first sequencing and proposed structure on 12 October 2026. Detailed design and implementation are proceeding under v0.2 approval.
 
 **Input**: Proceed to M01-F after M01-E, preserving approved versioning, documentation, generated-client and security requirements.
 
@@ -102,7 +102,7 @@ Contract inventory: surface, supported major, format, source revision, operation
 
 ## Dependencies and unresolved decisions
 
-- [NEEDS CLARIFICATION: Confirm foundation-first sequencing with runtime docs unavailable until real M02 administrator security and M04 resource contracts are accepted, or move administrator authentication ahead of this item.]
-- [NEEDS CLARIFICATION: Confirm proposed feature folders, contract test project/solution grouping and frontend contract package in decision-proposal.md before creating implementation files.]
+- Confirmed: build the foundation now; authenticated documentation remains a tracked M02/M04 dependency.
+- Confirmed: use the feature folders, dedicated contract test project/solution grouping and frontend contract package in decision-proposal.md.
 - T021 human accessibility and A-001 external certification remain independent open obligations; this work does not weaken their gates.
 - Package availability research is not a validated dependency lock. Implementation requires full graph validation and meaningful tests.

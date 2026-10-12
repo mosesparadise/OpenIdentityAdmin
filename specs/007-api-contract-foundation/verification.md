@@ -14,4 +14,8 @@ Final SQL issuer report time 653.141s leaves little room below the unchanged 660
 
 ## Remaining work
 
-Resolve the two user questions; complete/review Spec Kit design and tasks; implement and run exact source/CI evidence; resolve findings; create/update a Conventional Commit PR and normally squash only after required checks and review state allow it. Full protected docs and real resource acceptance remain M02/M04 follow-through.
+Both user questions are now resolved. Complete/review Spec Kit design and tasks; implement and run exact source/CI evidence; resolve findings; create/update a Conventional Commit PR and normally squash only after required checks and review state allow it. Full protected docs and real resource acceptance remain M02/M04 follow-through.
+
+## Design convergence
+
+User confirmed foundation-first sequencing and proposed structure on12October2026. Independent architecture/test reviewers passed the completed bounded design with stale-status wording corrections, now fixed. Scalar anonymous-asset hazard is recorded explicitly. Spec Kit prerequisite analysis found all design artifacts, all10 CONTRACT requirements map to cases/tasks, all3 stories have independent tests, no unresolved clarification or constitutional conflict remains. Requirements checklist passes; no execution result is inferred. No extension hooks are configured.

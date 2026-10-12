@@ -1,6 +1,6 @@
 # Contract foundation acceptance design
 
-Status: proposed acceptance inventory, not executed evidence. Concrete commands/discovered test identities will be added to the implementation plan and verification record after the structure decision.
+Status: proposed acceptance inventory, not executed evidence. Concrete commands/discovered test identities will be added to the implementation plan and verification record during implementation and discovery.
 
 | Case group | Boundary and oracle | Requirements |
 | --- | --- | --- |
