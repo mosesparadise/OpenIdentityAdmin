@@ -1,6 +1,6 @@
-# Staged issuer key lifecycle — T016 design draft
+# Staged issuer key lifecycle
 
-Status: **design draft, no implementation or runtime acceptance**. Restart PR #17 and distribution PR #18 are squash-merged. This is the third sequential M01-E increment, on `016-issuer-key-rotation`; LIFE-007 / US3 remains open. Existing document approval covers this bounded scope. The two file-layout choices below await the user's answer. Independent native-source research is complete; concrete-contract review and the configuration-transition experiment remain required before T017.
+Status: **T016 complete; T017 implemented and under verification; full acceptance/delivery pending**. Restart PR #17 and distribution PR #18 are squash-merged. This is the third sequential M01-E increment, on `016-issuer-key-rotation`; LIFE-007 / US3 remains open. Existing document approval covers this bounded scope. The user confirmed both recommended file-layout choices on 12 October 2026. Independent native-source research is complete; concrete-contract review and the real-host configuration-transition experiment passed before T017.
 
 ## Scope and native ownership
 
@@ -8,14 +8,14 @@ Support deliberate, restart-based publish → activate → overlap → retire tr
 
 OpenIddict 7.7.1 sorts credentials by certificate validity/expiry; adding a longer-lived staged certificate can make it the default. Registration order is not an activation policy. All registered signing/decryption credentials remain available to native validation, and native JWKS projection publishes public signing material only. This adapter uses protected private PFX inventories, including retained signing keys; public-only historical custody requires separate design.
 
-## Proposed file layout — user decision pending
+## Confirmed file layout
 
 - Keep ownership, parsing and lifecycle value types in `AuthServer/Features/Issuer/Credentials/`, preserving `IssuerCredentials`' current public active/wrapping properties.
 - Add `AuthServer/Features/Protocol/Keys/Setup.cs` and a small native generation-event selector/guard. `Protocol/Setup.cs` calls the feature explicitly. Native OpenIddict continues to construct JWKS; no replacement discovery/JWKS endpoint is introduced.
 - Extend existing `Host.Tests/Features/Issuer/` component tests and existing lifecycle `Fixtures/`; add no test project.
-- Proposed lifecycle use-case groups: `Features/KeyRotation/Activation/` and `Features/KeyRotation/Retirement/`, with separate bounded provider invocations. The alternative requested from the user is one KeyRotation folder with explicit test-class partitions.
+- Confirmed lifecycle use-case groups: `Features/KeyRotation/Activation/` and `Features/KeyRotation/Retirement/`, with separate bounded provider invocations.
 
-The user has been asked to choose the credential/adapter layout and activation/retirement test grouping. These are structure questions, not a new permission gate for already-approved implementation. Preserve thin Programs, Composition extensions and feature Setup conventions.
+The user confirmed both recommended layouts on 12 October 2026. Preserve thin Programs, Composition extensions and feature Setup conventions. The corrected real-host PostgreSQL configuration-transition experiment passed before T017; both-provider/full rotation acceptance remains required.
 
 ## Backward-compatible configuration
 
@@ -66,7 +66,7 @@ This is an operator-enforced rollout/retention contract, not a runtime proof of 
 1. **Publish/preload:** provision distinct replacement signing/encryption PFXs outside repository/web/publish roots. Install the same old-active/new-staged inventories on every node by controlled replacement. Verify both nodes' public overlap and decryption inventory, stable issuer/store/DP identity, and explicit old issuance. A staged certificate deliberately has later expiry than active in the regression control.
 2. **Acknowledge propagation:** every participating RP captures/acknowledges the overlap public set. Retain a stale old-only set as a negative test. Do not equate successful JWKS fetch by one process with universal cache convergence.
 3. **Activate with overlap:** on B, move new to root active, move old to Previous and remove the now-active Staged duplicate; replace B. A still issues old, B issues new, and both must accept original artifacts from either. Then activate A. Verify actual key identities on newly generated public and internal artifacts on both nodes. No configuration/value/file substitution may secretly retain old active selection.
-4. **Retain and retire:** after every old-active process has stopped, record the last possible old issuance boundary and supported cache/rollback obligations. Wait strictly beyond both the operator boundary `L + 300s` and every observed affected original expiration (plus any additional declared allowances), with keys still present; establish native expiry denial and public lifetime expiry before removing old material. Remove the old generation on both nodes, replace them, verify new-only public signing publication and issuance, and retain original eligible DP cookie continuity.
+4. **Retain and retire:** after every old-active process has stopped, record the last possible old issuance boundary, a monotonic elapsed-time anchor and supported cache/rollback obligations. Require more than 300 seconds of monotonic elapsed time and wait strictly beyond both the operator boundary `L + 300s` and every observed affected original expiration (plus any additional declared allowances), with keys still present; establish native expiry denial and public lifetime expiry before removing old material. Remove the old generation on both nodes, replace them, verify new-only public signing publication and issuance, and retain original eligible DP cookie continuity.
 
 Rollback changes explicit active selection only while that certificate can satisfy validity/expiry guards. Keep the newer generation in Staged/Previous everywhere for already-issued newer artifacts; an old-only rollback is unsafe. A rollback resets the last-old-issuance boundary. A failed activation does not justify generating replacement keys, deleting the ring, weakening TLS or replaying an ambiguous redemption.
 
@@ -102,9 +102,9 @@ KEY-09 also requires maximum and maximum+1 client lifetime values for every nati
 
 Add pure retirement-boundary controls for absent evidence, a stale/unknown or still-live old-active node, exact boundary equality and rollback reset; none may authorize retirement. The real test must also fail if the last-old-generation boundary cannot be established.
 
-Separate Activation and Retirement invocations are proposed because real retirement includes a five-minute wait. Each retains the existing 660-second invocation and 20-minute job limits; no old suite is enlarged, dropped or hidden. New selection must be disjoint/exhaustive against discovery, mandatory on both providers, and included in child-process coverage. Extend the explicit story/coverage manifests and seeded evidence-rejection controls only after the grouping decision. Final counts come from implementation/discovery, not this design inventory.
+Separate Activation and Retirement invocations are confirmed because real retirement includes a five-minute wait. Each retains the existing 660-second invocation and 20-minute job limits; no old suite is enlarged, dropped or hidden. New selection must be disjoint/exhaustive against discovery, mandatory on both providers, and included in child-process coverage. Extend the explicit story/coverage manifests and seeded evidence-rejection controls using the confirmed grouping. Final counts come from implementation/discovery, not this design inventory.
 
-Full existing unit, standard-provider, restart, distribution, six-cell browser, mutation, contrast, supply-chain, static-analysis and assurance checks remain mandatory. Coverage floors remain 90% line/80% branch for every required module. Required experiments/reviews and exact source/run/merge trees are recorded before acceptance. No rotation result, certification, production failover/RPO/RTO or manual accessibility acceptance is claimed by this draft.
+Full existing unit, standard-provider, restart, distribution, six-cell browser, mutation, contrast, supply-chain, static-analysis and assurance checks remain mandatory. Coverage floors remain 90% line/80% branch for every required module. Required experiments/reviews and exact source/run/merge trees are recorded before acceptance. Only the executions recorded in verification.md establish results; certification, production failover/RPO/RTO and manual accessibility remain separate gates.
 
 ## Native-source review references
 
@@ -117,4 +117,4 @@ Repository sources: `Features/Protocol/Setup.cs` (pilot limits and native regist
 
 KEY-01/09 trace LIFE-007/008; KEY-02/03/04/06/07/08/10 trace LIFE-003/004/007/008; KEY-05 traces LIFE-002/004/007; KEY-11 plus runner/coverage gates trace LIFE-001/006/009/010. T016 owns this contract, structural decisions and the required seam experiment; T017 owns implementation; T018 owns actual both-provider acceptance and squash delivery.
 
-Architecture/security/test native-source reviews informed this draft. Concrete-contract review tightened actual principal date access, expected encryption nullability, staged versus historical certificate validity, exact environment override removal, private atomic stopped-node JSON replacement, safe credential versus malformed-JSON boundaries, and conservative all-node retirement timing with rollback controls. Architecture, security and test reviewers passed this bounded concrete design after those corrections. These are design dispositions, not executed tests. User layout answers and the real-host configuration experiment remain open before T017.
+Architecture/security/test native-source reviews informed this draft. Concrete-contract review tightened actual principal date access, expected encryption nullability, staged versus historical certificate validity, exact environment override removal, private atomic stopped-node JSON replacement, safe credential versus malformed-JSON boundaries, and conservative all-node retirement timing with rollback controls. Architecture, security and test reviewers passed this bounded concrete design after those corrections. These are design dispositions, not executed tests. The user confirmed both recommended layouts on 12 October 2026; the real-host PostgreSQL configuration seam passed before T017 (see verification.md).

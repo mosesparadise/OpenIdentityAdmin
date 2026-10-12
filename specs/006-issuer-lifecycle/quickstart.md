@@ -18,15 +18,17 @@ python3 scripts/verify.py PostgreSql
 python3 scripts/verify.py SqlServer
 ```
 
-CI schedules standard (300 cases), restart (13) and distribution (23) as separate jobs for each provider:
+CI schedules standard (300 cases), restart (13), distribution (23), key activation (3) and key retirement (2) as separate jobs for each provider:
 
 ```bash
 python3 scripts/verify.py PostgreSql --partition standard
 python3 scripts/verify.py PostgreSql --partition lifecycle --story Restart
 python3 scripts/verify.py PostgreSql --partition lifecycle --story Distribution
+python3 scripts/verify.py PostgreSql --partition lifecycle --story KeyRotation.Activation
+python3 scripts/verify.py PostgreSql --partition lifecycle --story KeyRotation.Retirement
 ```
 
-Omitting `--partition` executes the complete 336-case provider profile, expanding lifecycle stories into separate bounded invocations. `--partition lifecycle` without `--story` runs both stories separately. No case is omitted. CI wraps each command in `dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/<label>.cobertura.xml -f cobertura`. Labels are `<provider>`, `<provider>-lifecycle-restart` and `<provider>-lifecycle-distribution`. Every story has its own report and coverage artifact. All thirteen full-matrix coverage inputs and the nine unchanged production-module floors are mandatory. Each provider test invocation remains <=660 seconds and each CI job <=20 minutes.
+Omitting `--partition` executes the complete 341-case provider profile, expanding lifecycle stories into separate bounded invocations. `--partition lifecycle` without `--story` runs all four stories separately. No case is omitted. CI wraps each command in `dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/<label>.cobertura.xml -f cobertura`. Labels are `<provider>`, `<provider>-lifecycle-restart` `<provider>-lifecycle-distribution`, `<provider>-lifecycle-keyrotation-activation` and `<provider>-lifecycle-keyrotation-retirement`. Every story has its own report and coverage artifact. All seventeen full-matrix coverage inputs and the nine unchanged production-module floors are mandatory. Each provider test invocation remains <=660 seconds and each CI job <=20 minutes.
 
 For a focused development experiment, use the exact project and explicit provider selection:
 
@@ -37,7 +39,7 @@ dotnet test --project tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Ident
   --results-directory artifacts/tests/PostgreSql-lifecycle-distribution
 ```
 
-Replace `PostgreSql` with `SqlServer` for the other provider. A focused command is diagnostic only: it does not run the complete profile, exact discovery/evidence gates, browser regression or coverage acceptance. The matrix requires 13 restart and 23 distribution cases per provider, no browser cases. Story reports are `artifacts/tests/<provider>-lifecycle-<restart|distribution>/Issuer.Lifecycle.trx`.
+Replace `PostgreSql` with `SqlServer` for the other provider. A focused command is diagnostic only: it does not run the complete profile, exact discovery/evidence gates, browser regression or coverage acceptance. The matrix requires 13 restart, 23 distribution, 3 key activation and 2 retirement cases per provider, no browser cases. Story reports are `artifacts/tests/<provider>-lifecycle-<restart|distribution|keyrotation-activation|keyrotation-retirement>/Issuer.Lifecycle.trx`.
 
 The harness replaces only the issuer child while retaining its original origin, database containers, completed migrator/bootstrap generations, HTTPS relying party, private files and populated DP ring. It verifies old-process exit, new generation, fresh health and a real HTTPS response. It tests original artifacts; a fresh credential login cannot substitute for old-cookie continuity. Native authorization-code lifetime remains 60 seconds. Failed setup/restart invalidates the environment; required cases cannot silently skip or retry.
 
@@ -45,4 +47,6 @@ All application generations and containers must be removed before private materi
 
 Distribution adds a second real AuthServer to the disposable graph. Requests preserve the canonical HTTPS origin, Host, TLS validation and original browser state; a test-only socket selector pins each request to a verified process-owned loopback listener. Token exchange and public metadata validation are explicitly pinned too. It exercises cross-node continuity, simultaneous code attempts, committed restrictions, surviving-node operation and bad/mismatched credential recovery. Old clients reject replacement process generations; clients must be recreated after a node restarts. No production proxy trust policy or automatic security retry is introduced.
 
-Restart delivery and current distribution acceptance are recorded in [verification.md](verification.md). Key rotation remains the third sequential PR; no Windows assistive-technology, backup restore, production RTO or certification acceptance follows from this harness.
+Restart delivery and current distribution acceptance are recorded in [verification.md](verification.md). Key rotation is implemented in the third sequential PR, with full acceptance tracked there; no Windows assistive-technology, backup restore, production RTO or certification acceptance follows from this harness.
+
+The key-rotation stories install separate private node configurations through the standard host content root. Supported transitions stop a node, atomically replace its configuration and start a new actual process. Activation exercises overlap, mixed generations, exact original artifacts, premature removal and retained rollback. Retirement includes an actual five-minute wait after every old-active process terminates, requires monotonic elapsed time as well as original expiry, and retains the unchanged Data Protection ring. It is intentionally a separate bounded invocation. Test-only native-pipeline late-failure controls do not imply those client overrides are reachable through the restricted pilot HTTP policy.

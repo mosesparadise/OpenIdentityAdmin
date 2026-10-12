@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
 parser.add_argument("--partition", choices=["all", "standard", "lifecycle"], default="all")
-parser.add_argument("--story", choices=["Restart", "Distribution"])
+parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement"])
 args = parser.parse_args()
 if args.story and args.partition != "lifecycle":
     parser.error("Story selection requires the lifecycle partition")
@@ -32,7 +32,7 @@ for project, count in projects.items():
     else:
         invocations.append((project, count, None))
 for project, expected_count, story in invocations:
-    label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower() if story else "")
+    label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower().replace(".", "-") if story else "")
     results = ROOT / "artifacts" / "tests" / label
     results.mkdir(parents=True, exist_ok=True)
     name = f"IdentityPlatform.{project}.Tests"

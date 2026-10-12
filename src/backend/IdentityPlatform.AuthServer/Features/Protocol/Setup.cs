@@ -1,6 +1,7 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Authorize;
+using IdentityPlatform.AuthServer.Features.Protocol.Keys;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
 using OpenIddict.Abstractions;
@@ -21,8 +22,7 @@ internal static class Setup
             options.RequireProofKeyForCodeExchange();
             options.RegisterScopes(OpenIddictConstants.Scopes.OpenId, PilotProfile.Scope);
             options.RegisterClaims(OpenIddictConstants.Claims.AuthenticationTime, OpenIddictConstants.Claims.Nonce, OpenIddictConstants.Claims.AccessTokenHash);
-            options.AddSigningCertificate(credentials.Signing);
-            options.AddEncryptionCertificate(credentials.Encryption);
+            options.AddIssuerKeyPolicy(credentials);
             options.DisableAccessTokenEncryption();
             options.SetAuthorizationCodeLifetime(TimeSpan.FromSeconds(60));
             options.SetAccessTokenLifetime(TimeSpan.FromMinutes(5));

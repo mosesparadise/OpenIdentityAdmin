@@ -1,6 +1,6 @@
 # Tasks: Issuer lifecycle continuity
 
-Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution delivered in squash-merged PR #18 (21 checks / 1,097 cases); T016 key-lifecycle design in progress**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
+Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); distribution delivered in squash-merged PR #18 (21 checks / 1,097 cases); T016 design/configuration seam complete; T017 implementation in progress**. Approved backlog: M01-E / ISS-003. On 11 October 2026 the user selected the dedicated lifecycle test project and three sequential PRs, beginning with restart continuity. Paths below now reflect those choices.
 
 ## Phase 1 — Design and clarification
 
@@ -33,9 +33,9 @@ Status: **restart delivered in squash-merged PR #17 (19 checks / 1,045 cases); d
 
 **PR #18 delivery gate completed:** final head `71afb88b7d5352559ce0f01a833be75c84768818`, run `38183025677` (all 21 checks / 1,097 ordinary passes, no failures/skips), squash `58ebfb1afce2698f8d3edd86f9e30548fa8dda53`. Head, tested merge and squash share tree `546649ad6cac9a130a439ce30856f9b4d7ce8233`. All review findings resolved; normal expected-head squash merge performed. [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18) records final evidence.
 
-## Phase 5 — US3 staged key overlap (third PR; T016 design in progress)
+## Phase 5 — US3 staged key overlap (PR #19; T017 implementation under verification)
 
-- [ ] T016 Write `contracts/key-lifecycle.md` and detailed plan for backward-compatible active/staged/retiring configuration, signing prepublication, explicit selection, retained decryption, per-artifact lifetime/skew/cache retirement bounds and operator rollback/rollout; independently review native library behavior before implementation. LIFE-007/008.
+- [x] T016 Write `contracts/key-lifecycle.md` and detailed plan for backward-compatible active/staged/retiring configuration, signing prepublication, explicit selection, retained decryption, per-artifact lifetime/skew/cache retirement bounds and operator rollback/rollout; independently review native library behavior before implementation. LIFE-007/008.
 - [ ] T017 Implement only the reviewed credential/protocol/composition changes under existing production `Features/Issuer/` and `Features/Protocol/` plus `Features/KeyRotation/` tests. Prove publish→activate→overlap→safe-retire and premature-removal negatives on both real provider topologies. Native crypto/validation remains library-owned. LIFE-004/007/008.
 - [ ] T018 Run complete required gates and independent security/architecture/test reviews; update operator runbook and traceable evidence, then squash-merge. Close M01-E only when every LIFE/ISS-003 obligation has evidence; retain manual/full-product/backup-restore/external gates. LIFE-009/010.
 
