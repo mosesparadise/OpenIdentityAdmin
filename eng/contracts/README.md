@@ -13,4 +13,4 @@ Before any production call to `MapDocumentation`:
 - Complete third-party notice/source/license obligations, including unpackaged toolchain notices before redistributing the tooling.
 - Complete M02/M04 authentication, authorization, same-origin proxy and real-contract acceptance. Protect HTML, JSON and all static assets before Scalar's anonymous asset metadata is reached.
 
-All current production hosts remain health-only. Synthetic fixture success, known-component advisory queries and exact archive hashes cannot satisfy this activation gate. The foundation's purpose is to make the boundary and remaining evidence explicit, not to approve production viewer deployment.
+The production Admin.Api and Admin.Bff pipelines remain health-only. Synthetic fixture success, known-component advisory queries and exact archive hashes cannot satisfy this activation gate. The foundation's purpose is to make the boundary and remaining evidence explicit, not to approve production viewer deployment.

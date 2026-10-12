@@ -4,7 +4,7 @@
 
 **Created**: 12 October 2026
 
-**Status**: User confirmed foundation-first sequencing and proposed structure on 12 October 2026. Detailed design and implementation are proceeding under v0.2 approval.
+**Status**: User confirmed foundation-first sequencing and proposed structure on 12 October 2026. The bounded foundation is implemented and verified under v0.2 approval; see verification.md. Actual authenticated documentation/resource acceptance and T015 vendor clearance remain open.
 
 **Input**: Proceed to M01-F after M01-E, preserving approved versioning, documentation, generated-client and security requirements.
 
