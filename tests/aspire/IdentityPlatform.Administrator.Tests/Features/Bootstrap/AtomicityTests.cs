@@ -75,6 +75,7 @@ public sealed partial class BootstrapTests
                 }
                 break;
             case "cancel-lock":
+                RequireCancellationClassifierControls();
                 using (var cancelled = CancellationTokenSource.CreateLinkedTokenSource(Token))
                 await using (var held = await GovernanceLock.AcquireAsync(lease))
                 {
@@ -129,10 +130,13 @@ public sealed partial class BootstrapTests
         await operation.CancelAsync();
         using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(40));
         var failure = await Record.ExceptionAsync(() => attempt.WaitAsync(cleanup.Token));
-        // SqlClient 7.0.2 TdsParser adds a specific attention error after a cancelled
-        // executing command. Manager interception must still yield OperationCanceledException.
-        var attention = sqlAttention && failure is Microsoft.Data.SqlClient.SqlException sql && sql.Errors.Count == 1 &&
-            sql.Number == 0 && sql.Class == 11 && sql.State == 0 && sql.Message == "Operation cancelled by user.";
+        // Preserve only the exact observed/source-supported nonfatal attention shapes.
+        // An arbitrary companion error cannot establish cancellation.
+        var attention = failure is Microsoft.Data.SqlClient.SqlException sql &&
+            IsSqlCancellation(sqlAttention, operation.IsCancellationRequested,
+                sql.Errors.Cast<Microsoft.Data.SqlClient.SqlError>().Select(error => new SqlCancellationError(
+                    error.Number, error.Class, error.State, error.LineNumber, string.IsNullOrEmpty(error.Procedure), Meaning(error.Message))).ToArray(),
+                hasInnerException: sql.InnerException is not null);
         var diagnostic = failure is Microsoft.Data.SqlClient.SqlException providerFailure
             ? "SqlException inner=" + (providerFailure.InnerException is not null) + " errors=" + string.Join(";",
                 providerFailure.Errors.Cast<Microsoft.Data.SqlClient.SqlError>().Select(error =>
@@ -141,6 +145,77 @@ public sealed partial class BootstrapTests
         Assert.True(attempt.IsCompleted && !cleanup.IsCancellationRequested,
             "Original operation did not finish within independent cleanup deadline: " + diagnostic);
         return failure is OperationCanceledException || attention ? null : diagnostic;
+    }
+
+    private enum SqlErrorMeaning
+    {
+        Unknown, Attention, Severe, StatementTerminated
+    }
+    private readonly record struct SqlCancellationError(int Number, byte Class, byte State, int Line, bool EmptyProcedure, SqlErrorMeaning Meaning);
+    private static SqlErrorMeaning Meaning(string message) => message switch
+    {
+        "Operation cancelled by user." => SqlErrorMeaning.Attention,
+        "A severe error occurred on the current command.  The results, if any, should be discarded." => SqlErrorMeaning.Severe,
+        "The statement has been terminated." => SqlErrorMeaning.StatementTerminated,
+        _ => SqlErrorMeaning.Unknown
+    };
+    private static readonly SqlCancellationError Attention = new(0, 11, 0, 0, true, SqlErrorMeaning.Attention);
+    private static readonly SqlCancellationError[] InterruptedStatement =
+    [
+        new(0, 11, 0, 0, true, SqlErrorMeaning.Severe),
+        Attention,
+        new(3621, 0, 0, 1, true, SqlErrorMeaning.StatementTerminated)
+    ];
+    private static bool IsSqlCancellation(bool sqlLockCase, bool cancelled, IReadOnlyList<SqlCancellationError> errors, bool hasInnerException = false) =>
+        sqlLockCase && cancelled && !hasInnerException && (errors.Count == 1 && errors[0] == Attention || errors.SequenceEqual(InterruptedStatement));
+
+    private static void RequireCancellationClassifierControls()
+    {
+        Assert.True(IsSqlCancellation(true, true, [Attention]), "Native attention must be recognized.");
+        Assert.True(IsSqlCancellation(true, true, InterruptedStatement), "Observed interrupted statement must be recognized.");
+        Assert.False(IsSqlCancellation(false, true, InterruptedStatement), "Attention escaped the SQL lock-case boundary.");
+        Assert.False(IsSqlCancellation(true, false, InterruptedStatement), "Attention without explicit cancellation was accepted.");
+        Assert.False(IsSqlCancellation(true, true, []), "Empty provider errors were accepted.");
+        Assert.False(IsSqlCancellation(true, true, [.. InterruptedStatement, Attention]), "Extra provider errors were accepted.");
+        Assert.False(IsSqlCancellation(true, true, InterruptedStatement.Reverse().ToArray()), "Wrong error order was accepted.");
+        foreach (var replacement in new[]
+        {
+            InterruptedStatement[2] with { Meaning = SqlErrorMeaning.Unknown },
+            InterruptedStatement[2] with { Number = -2 },
+            InterruptedStatement[2] with { Number = 1205 },
+            InterruptedStatement[2] with { Number = 229 },
+            InterruptedStatement[2] with { Class = 20 },
+            InterruptedStatement[2] with { State = 1 },
+            InterruptedStatement[2] with { Line = 2 },
+            InterruptedStatement[2] with { EmptyProcedure = false }
+        })
+        {
+            Assert.False(IsSqlCancellation(true, true, [InterruptedStatement[0], Attention, replacement]),
+                "An unrelated companion error was accepted as cancellation.");
+        }
+        Assert.False(IsSqlCancellation(true, true, InterruptedStatement, hasInnerException: true), "An inner exception was accepted.");
+        Assert.False(IsSqlCancellation(true, true, [Attention, Attention]), "Duplicated attention was accepted.");
+        for (var index = 0; index < InterruptedStatement.Length; index++)
+        {
+            Assert.False(IsSqlCancellation(true, true, InterruptedStatement.Where((_, position) => position != index).ToArray()),
+                "An omitted error was accepted.");
+            var original = InterruptedStatement[index];
+            foreach (var changed in new[]
+            {
+                original with { Number = original.Number + 1 },
+                original with { Class = (byte)(original.Class + 1) },
+                original with { State = 1 },
+                original with { Line = original.Line + 1 },
+                original with { EmptyProcedure = false },
+                original with { Meaning = SqlErrorMeaning.Unknown }
+            })
+            {
+                var errors = InterruptedStatement.ToArray();
+                errors[index] = changed;
+                Assert.False(IsSqlCancellation(true, true, errors), "A changed error field or message was accepted.");
+            }
+        }
+        Assert.Equal(SqlErrorMeaning.Unknown, Meaning("synthetic-unrecognized-provider-error"));
     }
 
 }
