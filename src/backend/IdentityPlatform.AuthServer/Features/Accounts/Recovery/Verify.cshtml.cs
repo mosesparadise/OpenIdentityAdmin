@@ -1,5 +1,3 @@
-using IdentityPlatform.AuthServer.Features.Accounts.Shared;
-
 namespace IdentityPlatform.AuthServer.Features.Accounts.Recovery;
 
 /// <summary>Verifies the fixed recovery-code proof before a restricted replacement transition.</summary>

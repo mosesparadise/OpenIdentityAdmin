@@ -1,4 +1,3 @@
-using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;

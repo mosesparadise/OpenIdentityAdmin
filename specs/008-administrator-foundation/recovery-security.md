@@ -1,6 +1,6 @@
 # T026 — restricted recovery and account security
 
-Status: in progress on accepted T025. The approved [MFA design](mfa-design.md) remains authoritative; this packet adds no emergency reset, management grant, new host or package. Native manager ownership, explicit Features/Setup and thin production entry points remain unchanged.
+Status: implemented in [PR #31](https://github.com/mosesparadise/OpenIdentityAdmin/pull/31), with final CI acceptance pending on accepted T025. The approved [MFA design](mfa-design.md) remains authoritative; this packet adds no emergency reset, management grant, new host or package. Native manager ownership, explicit Features/Setup and thin production entry points remain unchanged.
 
 ## Outcome and boundaries
 
@@ -44,3 +44,5 @@ The first expanded local PostgreSQL run passed all 33 then-present Recovery/Secu
 The strict runner now has Recovery and Security HTTP stories and disjoint Accounts/Security browser stories. Their required coverage inputs cannot be omitted or relabelled. The six administrator mutations include native recovery postclaim rollback and exact-session logout revocation; each requires one demonstrated assertion failure plus clean original/restored controls. Existing seven issuer mutations remain required. Coverage floors and the 1,890-entry legacy quality baseline are unchanged.
 
 Independent source reviews covered architecture/native authority, transaction/capacity, test oracles, UI/composition and fail-closed execution tooling. Corrections included mandatory rollback on native postclaim validation failure; immutable current-session capability binding; early rejection of absent staged ciphertext; exact remaining-verifier preservation; real foreign-session denial controls; visible no-script focus; keyboard-reachable security actions; disabled-route probes; and strict browser-story evidence controls. Source review does not substitute for CI, human accessibility assessment or certification.
+
+The first CI run passed the complete 18 Recovery and 21 Security cases on both real providers. Browser evidence exposed an exact keyboard-navigation completion race in the test; the shared navigation helper now waits for the focused link destination before inspecting the new document. Independent review accepted that correction without retries or relaxed assertions. Final accepted evidence is recorded in [verification](verification.md#t026--restricted-recovery-and-account-security--13-october-2026-bst).

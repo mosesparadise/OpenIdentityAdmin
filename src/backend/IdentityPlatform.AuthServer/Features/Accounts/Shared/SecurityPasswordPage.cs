@@ -1,7 +1,6 @@
+using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
-using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 
 namespace IdentityPlatform.AuthServer.Features.Accounts;
 

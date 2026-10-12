@@ -177,6 +177,7 @@ internal static class SecurityBrowserJourney
     private static async Task NavigateAsync(IPage page, string name)
     {
         const int MaximumControls = 12;
+        const string Href = "href";
         const string IsFocused = "element => document.activeElement === element";
         const string Unreachable = "The account security action was not reachable through keyboard navigation.";
         var link = page.GetByRole(AriaRole.Link, new()
@@ -190,7 +191,9 @@ internal static class SecurityBrowserJourney
             await page.Keyboard.PressAsync(Tab);
             if (await link.EvaluateAsync<bool>(IsFocused))
             {
+                var destination = new Uri(new Uri(page.Url), (await link.GetAttributeAsync(Href))!);
                 await page.Keyboard.PressAsync(Enter);
+                await page.WaitForURLAsync(destination.AbsoluteUri);
                 return;
             }
         }

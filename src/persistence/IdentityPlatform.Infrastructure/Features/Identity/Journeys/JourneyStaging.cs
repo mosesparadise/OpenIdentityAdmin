@@ -1,8 +1,8 @@
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
-using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
+using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.Journeys;

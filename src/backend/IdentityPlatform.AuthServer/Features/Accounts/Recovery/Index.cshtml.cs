@@ -1,5 +1,3 @@
-using IdentityPlatform.AuthServer.Features.Accounts.Shared;
-
 namespace IdentityPlatform.AuthServer.Features.Accounts.Recovery;
 
 /// <summary>Starts the fixed recovery password journey without granting password-only authority.</summary>
