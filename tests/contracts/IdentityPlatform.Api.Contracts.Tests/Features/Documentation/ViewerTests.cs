@@ -124,6 +124,24 @@ public sealed class ViewerTests
         await CaptureAsync(page, viewer, dark, browserSurface, "initial");
         if (viewer == "scalar")
         {
+            var endpoints = page.Locator("ul.endpoints a.endpoint");
+            await Assertions.Expect(endpoints.First).ToHaveAttributeAsync("role", "button");
+            foreach (var (index, key, heading) in new[] { (1, "Space", "Get a synthetic example"), (2, "Enter", "Update a synthetic example") })
+            {
+                await endpoints.First.FocusAsync();
+                for (var tab = 0; tab < index; tab++)
+                {
+                    await page.Keyboard.PressAsync("Tab");
+                }
+                await Assertions.Expect(endpoints.Nth(index)).ToBeFocusedAsync();
+                Assert.Equal("2px", await endpoints.Nth(index).EvaluateAsync<string>("node => getComputedStyle(node).outlineWidth"));
+                await page.Keyboard.PressAsync(key);
+                await Assertions.Expect(page.GetByRole(AriaRole.Heading, new()
+                {
+                    Name = heading,
+                    Exact = true
+                })).ToBeInViewportAsync();
+            }
             await page.Locator(".t-doc__sidebar").GetByText("Models", new()
             {
                 Exact = true
