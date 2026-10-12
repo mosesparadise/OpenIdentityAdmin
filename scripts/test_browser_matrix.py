@@ -58,7 +58,7 @@ class BrowserMatrixTests(unittest.TestCase):
 
     def test_coverage_requires_each_selected_report_and_rejects_empty_or_duplicate_cells(self):
         matrix = select('schedule', [])
-        labels = ['administrator-PostgreSql', 'administrator-SqlServer', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+        labels = ['administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
                       'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
               'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
@@ -68,7 +68,7 @@ class BrowserMatrixTests(unittest.TestCase):
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(23, require_inputs(root, matrix))
+            self.assertEqual(25, require_inputs(root, matrix))
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.unlink()

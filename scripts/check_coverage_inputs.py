@@ -6,7 +6,7 @@ import sys
 
 
 def require_inputs(root, matrix):
-    labels = ['administrator-PostgreSql', 'administrator-SqlServer', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+    labels = ['administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
               'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
               'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]

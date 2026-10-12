@@ -12,9 +12,13 @@ public enum BootstrapOutcome
     Created, AlreadyInitialized
 }
 
+/// <summary>Initializes an inert administrator once, using native managers and atomic durable audit.</summary>
+/// <example><code>await bootstrap.InitializeAsync(protectedInput, cancellationToken); // Does not grant an administrator session.</code></example>
 public sealed class AdministratorBootstrap(PlatformDbContext database, UserManager<PlatformUser> users,
     RoleManager<IdentityRole> roles, TimeProvider time, BootstrapCancellation cancellation)
 {
+    /// <summary>Serializes initialization, rejects conflicts and commits only complete pending state with its receipt and audit.</summary>
+    /// <example><code>var outcome = await bootstrap.InitializeAsync(input, cancellationToken);</code></example>
     public async Task<BootstrapOutcome> InitializeAsync(BootstrapInput input, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(input);
@@ -48,6 +52,21 @@ public sealed class AdministratorBootstrap(PlatformDbContext database, UserManag
             cancellationToken.ThrowIfCancellationRequested();
             Require(!await roles.RoleExistsAsync(name));
         }
+        await CreateRolesAsync(cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
+        var user = new PlatformUser { UserName = input.UserName, IsEnabled = false, LockoutEnabled = true };
+        Require((await users.CreateAsync(user, input.Password)).Succeeded);
+        cancellationToken.ThrowIfCancellationRequested();
+        Require((await users.AddToRoleAsync(user, AdministratorPermissions.PlatformRole)).Succeeded);
+        AddPendingState(input, normalized, user, governance);
+        await database.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return BootstrapOutcome.Created;
+    }
+
+    /// <summary>Creates exactly the approved role catalogue through native managers in the caller's transaction.</summary>
+    private async Task CreateRolesAsync(CancellationToken cancellationToken)
+    {
         foreach (var (name, permissions) in AdministratorPermissions.Bundles)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -59,12 +78,17 @@ public sealed class AdministratorBootstrap(PlatformDbContext database, UserManag
                 Require((await roles.AddClaimAsync(role, new Claim(AdministratorPermissions.ClaimType, permission))).Succeeded);
             }
         }
-        cancellationToken.ThrowIfCancellationRequested();
-        var user = new PlatformUser { UserName = input.UserName, IsEnabled = false, LockoutEnabled = true };
-        Require((await users.CreateAsync(user, input.Password)).Succeeded);
-        cancellationToken.ThrowIfCancellationRequested();
-        Require((await users.AddToRoleAsync(user, AdministratorPermissions.PlatformRole)).Succeeded);
+    }
+
+    /// <summary>Stages inert enrollment/authentication state, permanent receipt and success audit atomically.</summary>
+    private void AddPendingState(BootstrapInput input, string normalized, PlatformUser user, AdministratorGovernance governance)
+    {
+        const string Event = "administrator-initialization";
+        const string Actor = "deployment-operator";
+        const string Target = "user";
+        const string Outcome = "enrollment-pending";
         database.Add(new AdministratorEnrollment { UserId = user.Id });
+        database.Add(new AdministratorAuthentication { UserId = user.Id });
         database.Add(new AdministratorBootstrapReceipt
         {
             OperationId = input.OperationId,
@@ -76,18 +100,15 @@ public sealed class AdministratorBootstrap(PlatformDbContext database, UserManag
         governance.BootstrapConsumed = true;
         database.Add(new SecurityAuditIntent
         {
-            Event = "administrator-initialization",
-            ActorType = "deployment-operator",
+            Event = Event,
+            ActorType = Actor,
             ActorId = input.OperatorReference,
-            TargetType = "user",
+            TargetType = Target,
             TargetId = user.Id,
-            Outcome = "enrollment-pending",
+            Outcome = Outcome,
             CorrelationId = input.OperationId,
             OccurredAt = time.GetUtcNow().ToUnixTimeSeconds()
         });
-        await database.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
-        return BootstrapOutcome.Created;
     }
 
     private static void Require(bool condition)

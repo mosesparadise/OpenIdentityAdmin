@@ -1,4 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.AuthServer" />
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+  </ItemGroup>
   <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../core/IdentityPlatform.Core/IdentityPlatform.Core.csproj" />

@@ -23,6 +23,58 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAdmission", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdministratorAdmission", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorAdmission_Singleton", "\"Id\" = 1 AND \"Revision\" >= 0");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Revision = 0L
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<int>("Failures")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("LockoutUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("AdministratorAuthentication", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorAuthentication_State", "\"Generation\" > 0 AND \"Revision\" >= 0 AND \"Failures\" >= 0 AND \"Failures\" <= 5");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorBootstrapReceipt", b =>
                 {
                     b.Property<int>("Id")
@@ -55,11 +107,39 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorBrowserBudget", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.ToTable("AdministratorBrowserBudget", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorBrowserBudget_State", "\"Revision\" >= 0 AND \"ExpiresAt\" > 0");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorEnrollment", b =>
                 {
                     b.Property<string>("UserId")
                         .HasMaxLength(450)
                         .HasColumnType("character varying(450)");
+
+                    b.Property<long>("FactorGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RecoveryGeneration")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("Revision")
                         .HasColumnType("bigint");
@@ -69,11 +149,45 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
 
+                    b.Property<bool>("Suspended")
+                        .HasColumnType("boolean");
+
                     b.HasKey("UserId");
 
                     b.ToTable("AdministratorEnrollment", "platform", t =>
                         {
+                            t.HasCheckConstraint("CK_AdministratorEnrollment_Generations", "\"FactorGeneration\" >= 0 AND \"RecoveryGeneration\" >= 0");
+
                             t.HasCheckConstraint("CK_AdministratorEnrollment_Revision", "\"Revision\" >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorFactor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProtectedSeed")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Generation")
+                        .IsUnique();
+
+                    b.ToTable("AdministratorFactor", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorFactor_Generation", "\"Generation\" > 0");
                         });
                 });
 
@@ -103,6 +217,224 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                             Id = 1,
                             BootstrapConsumed = false,
                             Revision = 0L
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorInteraction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Attempts")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BrowserBudgetId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("BrowserDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("DestinationGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PasswordVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SecurityStamp")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("StagedSeed")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrowserBudgetId");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "Generation");
+
+                    b.ToTable("AdministratorInteraction", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorInteraction_State", "\"Generation\" > 0 AND \"DestinationGeneration\" > 0 AND \"Revision\" >= 0 AND \"Attempts\" >= 0 AND \"Attempts\" <= 5 AND \"CreatedAt\" >= 0 AND \"ExpiresAt\" > \"CreatedAt\"");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorRecoveryCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("RedeemedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<string>("Verifier")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Generation", "Verifier")
+                        .IsUnique();
+
+                    b.ToTable("AdministratorRecoveryCode", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorRecoveryCode_State", "\"Generation\" > 0 AND (\"RedeemedAt\" IS NULL OR \"RedeemedAt\" >= 0)");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorReplay", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("AcceptedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ProtectedCode")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.HasIndex("UserId", "Generation");
+
+                    b.ToTable("AdministratorReplay", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorReplay_State", "\"Generation\" > 0 AND \"AcceptedAt\" >= 0 AND \"ExpiresAt\" > \"AcceptedAt\"");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorSession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AuthenticationMethods")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FactorGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FactorVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LastActivityAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PasswordVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Revoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpiresAt");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId", "Generation");
+
+                    b.ToTable("AdministratorSession", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorSession_State", "\"Generation\" > 0 AND \"FactorGeneration\" > 0 AND \"Revision\" >= 0 AND \"CreatedAt\" >= 0 AND \"LastActivityAt\" >= \"CreatedAt\" AND \"ExpiresAt\" > \"LastActivityAt\" AND \"AuthenticationMethods\" = 'pwd otp' AND \"PasswordVerifiedAt\" >= 0 AND \"FactorVerifiedAt\" >= 0 AND \"PasswordVerifiedAt\" <= \"FactorVerifiedAt\" AND \"FactorVerifiedAt\" <= \"CreatedAt\"");
+                            t.HasCheckConstraint("CK_AdministratorSession_MethodLength", "octet_length(\"AuthenticationMethods\") = 7");
                         });
                 });
 
@@ -730,6 +1062,66 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
                     b.ToTable("OpenIddictTokens", "platform");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorEnrollment", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorFactor", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorInteraction", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorBrowserBudget", null)
+                        .WithMany()
+                        .HasForeignKey("BrowserBudgetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorRecoveryCode", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorReplay", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorSession", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.LoginInteraction", b =>

@@ -2492,56 +2492,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize/AdministratorBootstrap.cs",
-        "Symbol": "IdentityPlatform.Migrator.Features.Bootstrap.Initialize.AdministratorBootstrap",
-        "Fingerprint": "D5D551F60199B1A931A4757168FC191175924AA2529B1F07C0024423C818AACD"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize/AdministratorBootstrap.cs",
-        "Symbol": "IdentityPlatform.Migrator.Features.Bootstrap.Initialize.AdministratorBootstrap.InitializeAsync(BootstrapInput,CancellationToken)",
-        "Fingerprint": "50A60389BE90CCF8D1AD1C98E890EAEB678C49246093A50393BA9595078B2F31"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize/AdministratorBootstrap.cs",
-        "Symbol": "IdentityPlatform.Migrator.Features.Bootstrap.Initialize.AdministratorBootstrap.InitializeAsync(BootstrapInput,CancellationToken)",
-        "Fingerprint": "50A60389BE90CCF8D1AD1C98E890EAEB678C49246093A50393BA9595078B2F31"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize/AdministratorBootstrap.cs",
-        "Symbol": "IdentityPlatform.Migrator.Features.Bootstrap.Initialize.AdministratorBootstrap.InitializeAsync(BootstrapInput,CancellationToken)",
-        "Fingerprint": "50A60389BE90CCF8D1AD1C98E890EAEB678C49246093A50393BA9595078B2F31"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize/AdministratorBootstrap.cs",
-        "Symbol": "IdentityPlatform.Migrator.Features.Bootstrap.Initialize.AdministratorBootstrap.InitializeAsync(BootstrapInput,CancellationToken)",
-        "Fingerprint": "50A60389BE90CCF8D1AD1C98E890EAEB678C49246093A50393BA9595078B2F31"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/migrations/IdentityPlatform.Migrator/Features/Bootstrap/Initialize/AdministratorBootstrap.cs",
         "Symbol": "IdentityPlatform.Migrator.Features.Bootstrap.Initialize.AdministratorBootstrap.Require(bool)",
@@ -3092,46 +3042,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Health.SchemaCatalog",
-        "Fingerprint": "74C9FAED0E9E931596F79BD6C34DA0FA949BF7B9B9923055228A113E0722F496"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Health.SchemaCatalog.Platform(DatabaseProvider)",
-        "Fingerprint": "9FF3F31EC77D85DFD39EC52E389B2D283D6101F850C19B05F98908370A532A8E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Health.SchemaCatalog.Platform(DatabaseProvider)",
-        "Fingerprint": "9FF3F31EC77D85DFD39EC52E389B2D283D6101F850C19B05F98908370A532A8E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Health.SchemaCatalog.Platform(DatabaseProvider)",
-        "Fingerprint": "9FF3F31EC77D85DFD39EC52E389B2D283D6101F850C19B05F98908370A532A8E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Health/SchemaCatalog.cs",
         "Symbol": "IdentityPlatform.Infrastructure.Features.Health.SchemaCatalog.Sessions(DatabaseProvider)",
@@ -3216,16 +3126,6 @@
         "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorBootstrapReceipt.cs",
         "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorBootstrapReceipt",
         "Fingerprint": "89CF78DB80173C496F1B041A85B9A46EA386B28D89E3D1C71D95496A28355167"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorEnrollment.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorEnrollment",
-        "Fingerprint": "AEC6ED7E820CA07918A74F8FA00863E38D5E16557FF2DA3BD17FA38F2316EEEC"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -3492,16 +3392,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration",
-        "Fingerprint": "59E3A0B3DED7F8D6D8B1D3A900091ABDA3DF9EB20F797842940F8DC8C87F0B13"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
         "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration.AddPlatformPersistence(thisIServiceCollection,DatabaseProvider,string,string)",
@@ -3516,36 +3406,6 @@
         "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
         "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration.AddPlatformPersistence(thisIServiceCollection,DatabaseProvider,string,string)",
         "Fingerprint": "CAC73766592324A677AA1FE7B1D5A1A9FD3C3C6F4AF320F41437614276690A13"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration.AddIdentityPersistence(thisIServiceCollection,DatabaseProvider,string)",
-        "Fingerprint": "041377C00F4817379AAC1A0C6B265EBE4A58C0E026FCDADFADE11EF33B9DF56C"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration.AddIdentityPersistence(thisIServiceCollection,DatabaseProvider,string)",
-        "Fingerprint": "041377C00F4817379AAC1A0C6B265EBE4A58C0E026FCDADFADE11EF33B9DF56C"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration.AddIdentityPersistence(thisIServiceCollection,DatabaseProvider,string)",
-        "Fingerprint": "041377C00F4817379AAC1A0C6B265EBE4A58C0E026FCDADFADE11EF33B9DF56C"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -3646,46 +3506,6 @@
         "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PersistenceRegistration.cs",
         "Symbol": "IdentityPlatform.Infrastructure.Persistence.PersistenceRegistration.ValidateConnection(string,string)",
         "Fingerprint": "47945E9E8DC7CB3ED996ED3B5766A93E2029F7C82A8C46881BF93AA63641D57B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PlatformDbContext.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PlatformDbContext",
-        "Fingerprint": "F15466E97628C083250933A20876303A3FBEAD78DBA0AE825157C06AC2587CB2"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PlatformDbContext.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PlatformDbContext.OnModelCreating(ModelBuilder)",
-        "Fingerprint": "31AFF59CA2E70102428F6750EE9106BAED4C9079F47E15B7465A287AA3C7A35B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PlatformDbContext.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PlatformDbContext.OnModelCreating(ModelBuilder)",
-        "Fingerprint": "31AFF59CA2E70102428F6750EE9106BAED4C9079F47E15B7465A287AA3C7A35B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Persistence/PlatformDbContext.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Persistence.PlatformDbContext.OnModelCreating(ModelBuilder)",
-        "Fingerprint": "31AFF59CA2E70102428F6750EE9106BAED4C9079F47E15B7465A287AA3C7A35B"
       },
       "Task": "T014",
       "Owner": "Implementation lead"
@@ -4836,26 +4656,6 @@
         "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
         "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.AcquireAsync(BootstrapDatabase,bool)",
         "Fingerprint": "5C660E59538F07DC83894DF851D1CC1DBCFAE9D2B790E8CF1EDBE037749FB302"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.ObserveWaitersAsync(BootstrapDatabase,int)",
-        "Fingerprint": "D941B8EBDD25B1A4254EE3E2C5C1A76F8DD656E16B6520E6FC0519891C67FF06"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.ObserveWaitersAsync(BootstrapDatabase,int)",
-        "Fingerprint": "D941B8EBDD25B1A4254EE3E2C5C1A76F8DD656E16B6520E6FC0519891C67FF06"
       },
       "Task": "T015",
       "Owner": "Implementation lead"
@@ -18846,46 +18646,6 @@
         "Path": "tests/persistence/IdentityPlatform.Persistence.Tests/Features/DatabaseFailureTests.cs",
         "Symbol": "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.CapturedLogs.Capture.Log<TState>(LogLevel,EventId,TState,Exception?,Func<TState, Exception?, string>)",
         "Fingerprint": "C8A6198B916B083713B58151FB1BDFF92E2A54C0FFD4631617E1962DE5514125"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/persistence/IdentityPlatform.Persistence.Tests/Features/InteractionBudgetMigrationTests.cs",
-        "Symbol": "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Previous_schema_upgrade_preserves_legacy_interactions_and_restricts_budget_ownership(DatabaseProvider)",
-        "Fingerprint": "1C5AB4FD70A674AF86E5EA443CC1A739EC739D64543F7773C804330A50EA96EB"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/persistence/IdentityPlatform.Persistence.Tests/Features/InteractionBudgetMigrationTests.cs",
-        "Symbol": "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Previous_schema_upgrade_preserves_legacy_interactions_and_restricts_budget_ownership(DatabaseProvider)",
-        "Fingerprint": "1C5AB4FD70A674AF86E5EA443CC1A739EC739D64543F7773C804330A50EA96EB"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/persistence/IdentityPlatform.Persistence.Tests/Features/InteractionBudgetMigrationTests.cs",
-        "Symbol": "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Previous_schema_upgrade_preserves_legacy_interactions_and_restricts_budget_ownership(DatabaseProvider)",
-        "Fingerprint": "1C5AB4FD70A674AF86E5EA443CC1A739EC739D64543F7773C804330A50EA96EB"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/persistence/IdentityPlatform.Persistence.Tests/Features/InteractionBudgetMigrationTests.cs",
-        "Symbol": "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Previous_schema_upgrade_preserves_legacy_interactions_and_restricts_budget_ownership(DatabaseProvider)",
-        "Fingerprint": "1C5AB4FD70A674AF86E5EA443CC1A739EC739D64543F7773C804330A50EA96EB"
       },
       "Task": "T015",
       "Owner": "Implementation lead"

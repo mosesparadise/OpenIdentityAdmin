@@ -135,8 +135,10 @@ jobs:
           - { profile: unit, partition: all, label: unit }
           - { profile: PostgreSql, partition: standard, label: PostgreSql }
           - { profile: SqlServer, partition: standard, label: SqlServer }
-          - { profile: PostgreSql, partition: administrator, label: administrator-PostgreSql }
-          - { profile: SqlServer, partition: administrator, label: administrator-SqlServer }
+          - { profile: PostgreSql, partition: administrator, story: Bootstrap, label: administrator-PostgreSql-bootstrap }
+          - { profile: PostgreSql, partition: administrator, story: Factors, label: administrator-PostgreSql-factors }
+          - { profile: SqlServer, partition: administrator, story: Bootstrap, label: administrator-SqlServer-bootstrap }
+          - { profile: SqlServer, partition: administrator, story: Factors, label: administrator-SqlServer-factors }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }

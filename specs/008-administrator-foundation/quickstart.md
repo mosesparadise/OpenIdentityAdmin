@@ -42,7 +42,7 @@ python3 scripts/verify.py PostgreSql --partition administrator
 python3 scripts/verify.py SqlServer --partition administrator
 ```
 
-Each provider requires exactly 45 discovered and executed cases, none skipped. TRX reports are under `artifacts/tests/administrator-{provider}/`. These isolated jobs retain the 660-second invocation limit and do not enlarge issuer suites. An unavailable provider is a failed prerequisite, not a successful or skipped test. Full CI additionally enforces regression, static analysis, mutation, secret/dependency checks and all required module coverage inputs.
+Each provider runs two isolated stories: the unchanged 45 Bootstrap cases and 51 Factors cases. Every identity must be discovered and executed, none skipped. Use `--story Bootstrap` or `--story Factors` to select one explicitly. TRX reports are under `artifacts/tests/administrator-{provider}-{story}/`, with lowercase story names. These isolated jobs retain the 660-second invocation limit and do not enlarge issuer suites. An unavailable provider is a failed prerequisite, not a successful or skipped test. Full CI additionally enforces regression, static analysis, mutation, secret/dependency checks and all required module coverage inputs.
 
 ## Next account journeys — not runnable yet
 

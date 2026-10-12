@@ -42,6 +42,8 @@ T017 is the implementation umbrella for T022–T026; T018 is the acceptance umbr
 - [ ] T028 [US2] Implement MFA-01–13 independent cases from mfa-design.md in the approved Administrator suite; verify native managers, real HTTP/browser, both-provider observed races/failures and safe evidence.
 - [ ] T029 [US2] Converge architecture/security/test/UX/performance reviews, fix findings, run exact-head full CI, update operational instructions/verification and normally squash the second implementation PR.
 
+T023 pulls forward only T027's necessary Bootstrap/Factors story partitions and coverage inputs. Browser/story acceptance for complete MFA remains T027/T028; those umbrella tasks stay open. See [storage design and review dispositions](factor-storage.md).
+
 Dependencies: T016 -> T022/T023 -> T024 -> T025/T026; T027 enables isolated T028 evidence; T025/T026/T028 -> T029. Author tests with each behavior rather than deferring all tests until the end. T019–T021 remain subsequent third-increment work.
 
 ## Increment 3 — US3 current authority and governance
