@@ -39,11 +39,11 @@ class AdministratorSelectionTests(unittest.TestCase):
 
 class AdministratorStoryTests(unittest.TestCase):
     def setUp(self):
-        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors')},
-                       'profiles': {p: {'Administrator': 2} for p in ('PostgreSql', 'SqlServer')}}
+        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies')},
+                       'profiles': {p: {'Administrator': 3} for p in ('PostgreSql', 'SqlServer')}}
         self.catalogue = {p + s: (p + s, p, False, 'IdentityPlatform.Administrator.Tests.Features.' + s)
-                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors')}
-        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors')] for p in ('PostgreSql', 'SqlServer')}
+                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies')}
+        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies')] for p in ('PostgreSql', 'SqlServer')}
         self.selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
 
     def verify(self):
@@ -51,7 +51,7 @@ class AdministratorStoryTests(unittest.TestCase):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual([('Bootstrap', 1), ('Factors', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
+        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
         self.assertEqual([('Factors', 1)], administrator_invocations(self.matrix, 'PostgreSql', 'Factors'))
         for story in ('Restart', 'Unknown'):
             with self.assertRaises(ValueError): administrator_invocations(self.matrix, 'PostgreSql', story)
@@ -67,11 +67,11 @@ class AdministratorStoryTests(unittest.TestCase):
                 elif change == 'provider': del stories['Factors']['SqlServer']
                 elif change == 'zero': stories['Factors']['SqlServer'] = 0
                 elif change == 'bool': stories['Factors']['SqlServer'] = True
-                elif change == 'aggregate': self.matrix['profiles']['SqlServer']['Administrator'] = 3
+                elif change == 'aggregate': self.matrix['profiles']['SqlServer']['Administrator'] = 4
                 elif change == 'balanced-drift':
                     stories['Factors']['SqlServer'] = 2
                     stories['Bootstrap']['SqlServer'] = 2
-                    self.matrix['profiles']['SqlServer']['Administrator'] = 4
+                    self.matrix['profiles']['SqlServer']['Administrator'] = 5
                 with self.assertRaises(ValueError): self.verify()
 
     def test_complete_inventory_and_exact_story_selection_remain_mandatory(self):

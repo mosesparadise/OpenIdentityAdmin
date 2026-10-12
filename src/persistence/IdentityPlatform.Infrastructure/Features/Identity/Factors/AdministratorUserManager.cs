@@ -10,10 +10,19 @@ namespace IdentityPlatform.Infrastructure.Features.Identity.Factors;
 internal sealed class AdministratorUserManager(IUserStore<PlatformUser> store, IOptions<IdentityOptions> options,
     IPasswordHasher<PlatformUser> hasher, IEnumerable<IUserValidator<PlatformUser>> userValidators,
     IEnumerable<IPasswordValidator<PlatformUser>> passwordValidators, ILookupNormalizer normalizer,
-    IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<PlatformUser>> logger, FactorAccess access)
+    IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<PlatformUser>> logger, FactorAccess access, NativeOperation operation)
     : UserManager<PlatformUser>(store, options, hasher, userValidators, passwordValidators, normalizer, errors, services, logger)
 {
-    protected override CancellationToken CancellationToken => access.Token;
+    protected override CancellationToken CancellationToken => operation.Token.CanBeCanceled ? operation.Token : access.Token;
+
+    /// <summary>Rejects native manager substitution when a ceremony requires the original operation cancellation lease.</summary>
+    internal void RequireOperation(CancellationToken token)
+    {
+        if (!token.CanBeCanceled || operation.Token != token)
+        {
+            throw new FactorUnavailableException();
+        }
+    }
 
     /// <summary>Uses 128 random bits per recovery code rather than the framework's lower-entropy default format.</summary>
     protected override string CreateTwoFactorRecoveryCode() => Convert.ToHexString(RandomNumberGenerator.GetBytes(RecoveryVerifier.RandomBytes));

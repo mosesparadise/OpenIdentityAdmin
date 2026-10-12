@@ -13,11 +13,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
 parser.add_argument("--partition", choices=["all", "standard", "lifecycle", "administrator"], default="all")
-parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors"])
+parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies"])
 args = parser.parse_args()
 install_cancellation_handler()
 if args.story and (args.partition not in ("lifecycle", "administrator") or
-                   (args.story in ("Bootstrap", "Factors")) != (args.partition == "administrator")):
+                   (args.story in ("Bootstrap", "Factors", "Ceremonies")) != (args.partition == "administrator")):
     parser.error("Story selection requires its matching lifecycle or administrator partition")
 if args.browser and args.profile == "unit":
     parser.error("Browser verification requires a real provider")

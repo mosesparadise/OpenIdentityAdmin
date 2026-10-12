@@ -18,6 +18,7 @@ internal sealed class FactorScenario : IAsyncDisposable
     private const string PendingState = "Pending";
     private const int LifetimeSeconds = 300;
     private readonly AsyncServiceScope scope;
+    internal IServiceProvider Services => scope.ServiceProvider;
     internal PlatformDbContext Database
     {
         get;

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "administrator-replay",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplay.cs",
+      "before": "IsReplay(entries, account.User.Id, generation, code)",
+      "after": "entries.Count < 0",
+      "marker": "administrator-replay-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits"
+    },
+    {
+      "id": "administrator-password-budget",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs",
+      "before": "return new CeremonyPassword(transaction, account, purpose, now);",
+      "after": "account.Authentication.Failures = 0;\n        return new CeremonyPassword(transaction, account, purpose, now);",
+      "marker": "administrator-password-budget-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes"
+    },
+    {
+      "id": "administrator-clock-fence",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs",
+      "before": "state.ObservedAt > now + AdministratorPolicy.ClockSkewSeconds",
+      "after": "state.ObservedAt > long.MaxValue",
+      "marker": "administrator-clock-fence-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart"
+    },
+    {
+      "id": "administrator-audit",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+      "before": "CeremonyAudit.Add(database, action, accepted, userId, now);",
+      "after": "// Seeded test defect: omit the mandatory atomic audit.",
+      "marker": "administrator-audit-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ from ci_scope import ALWAYS_JOBS, FULL_JOBS, changed_paths, event_paths, require
 
 EXPECTED_ALWAYS = frozenset(('scope', 'assurance', 'source-secrets'))
 EXPECTED_FULL = frozenset(('browser-plan', 'static-analysis', 'supply-chain', 'verify', 'browser',
-                           'contrast-experiment', 'mutations', 'contracts', 'coverage'))
+                           'contrast-experiment', 'mutations', 'administrator-mutations', 'contracts', 'coverage'))
 
 
 class ScopeTests(unittest.TestCase):

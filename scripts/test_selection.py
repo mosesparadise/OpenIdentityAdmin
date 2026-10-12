@@ -148,7 +148,7 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
         actual = [test[0] for test in all_tests.values() if test[1] == name]
         if count <= 0 or len(expected) != count or len(set(expected)) != count or sorted(actual) != sorted(expected):
             raise ValueError('Administrator catalogue differs from reviewed identities')
-    if any(test[2] or test[3] not in ('IdentityPlatform.Administrator.Tests.Features.Bootstrap', 'IdentityPlatform.Administrator.Tests.Features.Factors') for test in all_tests.values()):
+    if any(test[2] or test[3] not in ('IdentityPlatform.Administrator.Tests.Features.Bootstrap', 'IdentityPlatform.Administrator.Tests.Features.Factors', 'IdentityPlatform.Administrator.Tests.Features.Ceremonies') for test in all_tests.values()):
         raise ValueError('Administrator catalogue contains an unexpected namespace or category')
     if selected != {uid: test for uid, test in all_tests.items() if test[1] == provider}:
         raise ValueError('Administrator selection omits or substitutes provider cases')
@@ -156,7 +156,7 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
 
 def administrator_invocations(matrix, profile, story=None):
     stories = matrix['administrator_stories']
-    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors'}:
+    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies'}:
         raise ValueError('Administrator stories and provider must be explicitly reviewed')
     if story is not None and story not in stories:
         raise ValueError('Unknown administrator story')
