@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { inventory } from '../tooling/contracts.mjs';
+import { validate } from '../tooling/validate.mjs';
 import { compatibility } from '../tooling/compatibility.mjs';
 
 const fixture = JSON.parse(fs.readFileSync(new URL('./generated/bff-v1.fixture.json', import.meta.url)));
@@ -43,3 +44,15 @@ for (const [name, mutate] of Object.entries(mutations)) {
   test(`rejects ${name}`, () => assert.throws(() => compatibility(fixture, changed(mutate), 'bff')));
 }
 test('empty fixture cannot substitute for exercised operations', () => assert.throws(() => inventory({ ...fixture, paths: {} }, 'bff')));
+
+test('empty BFF inventory still rejects bearer security definitions', () => {
+  const empty = { ...fixture, paths: {}, components: { securitySchemes: { Bearer: { type: 'http', scheme: 'bearer' } } } };
+  assert.throws(() => inventory(empty, 'bff', true));
+});
+test('native schema validator accepts all representative semantics', async () => await validate(fixture, 'bff'));
+test('native schema validator rejects unresolved local reference', async () => {
+  await assert.rejects(validate(changed(d => { d.components.schemas.ExampleUpdate.properties.label = { $ref: '#/components/schemas/Missing' }; }), 'bff'));
+});
+test('native schema validator rejects malformed response', async () => {
+  await assert.rejects(validate(changed(d => { d.paths[item].put.responses['200'] = { invalid: true }; }), 'bff'));
+});

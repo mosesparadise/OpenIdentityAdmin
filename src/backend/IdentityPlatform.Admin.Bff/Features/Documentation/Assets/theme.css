@@ -26,3 +26,14 @@ body { margin: 0; background: var(--page); color: var(--text); font-family: var(
 }
 
 .contract-heading { margin: 1.5rem 1rem; font-size: 1.25rem; }
+
+/* Override the pinned viewer's hard-coded light palette for both shared themes. */
+#swagger-ui :is(h1,h2,h3,h4,h5,h6,p,span,small,strong,i,td,th,button,label,select,code,a) { color: var(--text); }
+#swagger-ui :is(button,select), #swagger-ui .json-schema-2020-12-head { background-color: var(--surface); }
+#swagger-ui .opblock-summary-method, #swagger-ui .info .title small, #swagger-ui .info .title small pre { background: var(--accent); color: var(--on-accent); }
+#swagger-ui pre.microlight, #swagger-ui pre.microlight span { color: var(--text) !important; background: var(--surface) !important; }
+.light-mode, .dark-mode {
+  --scalar-color-blue: var(--accent); --scalar-color-orange: var(--accent);
+  --scalar-color-green: var(--accent); --scalar-color-purple: var(--accent);
+  --scalar-color-red: var(--error); --scalar-color-yellow: var(--text);
+}

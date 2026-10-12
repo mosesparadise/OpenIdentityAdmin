@@ -37,8 +37,8 @@ export function inventory(document, surface, allowEmpty = false) {
     }
   }
   if (!allowEmpty && operations.size === 0) throw new Error('Empty representative operation inventory');
-  if (operations.size) {
-    const schemes = document.components?.securitySchemes;
+  const schemes = document.components?.securitySchemes;
+  if (operations.size || (schemes && Object.keys(schemes).length)) {
     if (surface === 'bff') {
       if (Object.keys(schemes ?? {}).join() !== 'BrowserSession' || schemes.BrowserSession.type !== 'apiKey' || schemes.BrowserSession.in !== 'cookie') throw new Error('Browser contract must contain only cookie authentication');
     } else if (schemes?.AdminBearer?.type !== 'http' || schemes.AdminBearer.scheme !== 'bearer') throw new Error('Downstream contract must use bearer authentication');

@@ -26,7 +26,7 @@ Set URL-segment reader, AssumeDefaultVersionWhenUnspecified=false and ReportApiV
 
 Native Microsoft generation produces one named document for each host: `v1` and `bff-v1`, OpenAPI3.1. Native Asp.Versioning integration/Explorer resolves version metadata. Explicit surface title/server and browser/downstream authentication metadata remain distinct. Production inventories have no operations today; nonempty fixture inventories separately exercise schemas, headers, security and consumers.
 
-Build-time export invokes actual entry points with synthetic provider/connection configuration that passes normal startup validation and cannot connect to a real service. Do not start the server, migration or bootstrap. Prove export determinism and zero external socket use; no startup bypass. Remove only documented nonsemantic output variability, never sort away missing/changed operations. Archive source/version/provenance with outputs.
+Build-time export invokes actual entry points with synthetic provider/connection configuration that passes normal startup validation and cannot connect to a real service. Do not start the server, migration or bootstrap. Prove export determinism and zero external socket effects (runtime descriptor-allocation probes are counted; connect/bind/listen/send/receive are rejected); no startup bypass. Remove only documented nonsemantic output variability, never sort away missing/changed operations. Archive source/version/provenance with outputs.
 
 ## Rendering and client design
 

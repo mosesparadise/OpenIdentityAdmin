@@ -72,7 +72,16 @@ public sealed class ViewerTests
         }
         else
         {
-            await page.GotoAsync(origin + "/docs/scalar/v1");
+            await page.GetByRole(AriaRole.Button, new()
+            {
+                Name = "Browser BFF v1",
+                Exact = true
+            }).ClickAsync();
+            await page.GetByRole(AriaRole.Option, new()
+            {
+                Name = "Downstream Admin API v1",
+                Exact = true
+            }).ClickAsync();
         }
         await Assertions.Expect(page.GetByText("IdentityPlatform Admin API", new()
         {

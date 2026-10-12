@@ -6,7 +6,9 @@ import os
 from pathlib import Path
 import subprocess
 import xml.etree.ElementTree as ET
+from contract_evidence import catalogue as read_catalogue, require_node_report
 from test_evidence import require_complete_trx
+from verify_contrast_experiment import execute, install_cancellation_handler
 from test_selection import require_execution_names, require_lifecycle_execution
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,24 +18,26 @@ MATRIX = json.loads((ROOT / 'eng/contract-test-matrix.json').read_text())
 
 
 def run(command, **kwargs):
-    return subprocess.run(command, cwd=ROOT, check=True, timeout=kwargs.pop('timeout', 180), **kwargs)
+    destination = kwargs.pop('stdout', None)
+    capture = kwargs.pop('capture_output', False) or destination is not None
+    kwargs.pop('text', None)
+    output = execute(command, kwargs.pop('env', os.environ.copy()), timeout=kwargs.pop('timeout', 180), capture=capture)
+    if kwargs:
+        raise ValueError('Unsupported contract runner options')
+    if destination is not None:
+        destination.write(output)
+    return subprocess.CompletedProcess(command, 0, stdout=output)
 
 
 def catalogue(expression=None):
     command = ['dotnet', 'run', '--project', str(PROJECT), '--no-build', '--no-restore', '--', '--pre-enumerate-theories', 'on', '--list-tests', 'json']
     if expression:
         command += ['--filter', expression]
-    raw = json.loads(run(command, capture_output=True, text=True).stdout)
-    if raw.get('schemaVersion') != 1:
-        raise ValueError('Unsupported contract discovery schema')
-    tests = raw['tests']
-    result = {test['uid']: (test['displayName'],) for test in tests}
-    if not result or len(result) != len(tests) or len({test[0] for test in result.values()}) != len(result):
-        raise ValueError('Missing or duplicate contract identity')
-    return result
+    return read_catalogue(run(command, capture_output=True, text=True).stdout)
 
 
 def main():
+    install_cancellation_handler()
     parser = argparse.ArgumentParser()
     parser.add_argument('partition', choices=['core', *MATRIX['browsers']])
     args = parser.parse_args()
@@ -71,10 +75,9 @@ def main():
         node_report = output / 'node.xml'
         with node_report.open('w') as stream:
             run(['node', '--test', '--test-reporter=junit', str(PACKAGE / 'tests/compatibility.test.mjs')], stdout=stream)
-        root = ET.parse(node_report).getroot()
-        cases = root.findall('.//testcase')
-        if len(cases) != MATRIX['node'] or any(case.find(tag) is not None for case in cases for tag in ('failure', 'error', 'skipped')):
-            raise ValueError('Node contract evidence is incomplete')
+        if len(MATRIX['nodeIdentities']) != MATRIX['node']:
+            raise ValueError('Node identity manifest count differs')
+        require_node_report(node_report, MATRIX['nodeIdentities'])
     print(f'Contract {args.partition}: exact identities passed; no skipped or missing cases.')
 
 

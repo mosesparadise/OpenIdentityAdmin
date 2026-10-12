@@ -41,6 +41,7 @@ internal static class Setup
             .AddDocument("v1", "Downstream Admin API v1")
             .HideTestRequestButton().HideClientButton().DisableDefaultFonts().DisableAgent().DisableTelemetry().HideDeveloperTools()
             .WithNonce()
+            .AddHeadContent("<script src=\"/docs/assets/scalar-bootstrap.js\"></script>")
             .WithCustomCss(ReadText("tokens.css") + ReadText("theme.css"));
         });
         app.UseSwaggerUI(options =>
@@ -50,6 +51,7 @@ internal static class Setup
             options.SupportedSubmitMethods([]);
             options.ConfigObject.PersistAuthorization = false;
         });
+        app.MapGet("/docs/assets/scalar-bootstrap.js", () => Results.Content(ReadText("scalar-bootstrap.js"), "text/javascript")).ExcludeFromDescription();
         app.MapGet("/docs/assets/swagger.js", () => Results.Content(ReadText("swagger.js"), "text/javascript")).ExcludeFromDescription();
         app.MapGet("/docs/assets/theme.css", () => Results.Content(ReadText("tokens.css") + ReadText("theme.css"), "text/css")).ExcludeFromDescription();
     }

@@ -10,19 +10,19 @@ User confirmed both decisions on12October2026. Existing approved v0.2 scope appl
 
 ## Phase2 — Compatible setup
 
-- [ ] T004 Validate/pin NuGet graph in Directory.Packages.props and host package locks; keep Microsoft.OpenApi within compatible2.x constraints.
-- [ ] T005 Add tests/contracts/IdentityPlatform.Api.Contracts.Tests and solution grouping in IdentityPlatform.slnx; create private src/frontend/IdentityPlatform.Admin.Contracts toolchain with locked compatible Node/TypeScript dependencies.
+- [x] T004 Validate/pin NuGet graph in Directory.Packages.props and host package locks; keep Microsoft.OpenApi within compatible2.x constraints.
+- [x] T005 Add tests/contracts/IdentityPlatform.Api.Contracts.Tests and solution grouping in IdentityPlatform.slnx; create private src/frontend/IdentityPlatform.Admin.Contracts toolchain with locked compatible Node/TypeScript dependencies.
 
 ## Phase3 — US1 explicit surfaces
 
-- [ ] T006 [US1] Add version/generation fixture tests in tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Versioning and Features/Generation, using actual production registration and distinct synthetic operations.
-- [ ] T007 [US1] Implement Features/ApiContracts/Setup.cs and generation metadata in both existing Admin hosts; preserve Composition/rootSetup and health/protocol separation.
-- [ ] T008 [US1] Add deterministic actual-entry-point export and no-external-effect checks in scripts/ and dedicated contract tests; record exact version rejection responses.
+- [x] T006 [US1] Add version/generation fixture tests in tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Versioning and Features/Generation, using actual production registration and distinct synthetic operations.
+- [x] T007 [US1] Implement Features/ApiContracts/Setup.cs and generation metadata in both existing Admin hosts; preserve Composition/rootSetup and health/protocol separation.
+- [x] T008 [US1] Add deterministic actual-entry-point export and no-external-effect checks in scripts/ and dedicated contract tests; record exact version rejection responses.
 - [ ] T009 [US1] Extend actual-host/real-provider tests to require ready controls and exact404 documentation absence; test Development/Staging/Production without a docs enable switch.
 
 ## Phase4 — US2 compatibility and consumers
 
-- [ ] T010 [US2] Add fixture schemas with page default25/max100, nullable/composed/date/enum/error/precondition/security metadata under tests/contracts/IdentityPlatform.Api.Contracts.Tests/Fixtures.
+- [x] T010 [US2] Add fixture schemas with page default25/max100, nullable/composed/date/enum/error/precondition/security metadata under tests/contracts/IdentityPlatform.Api.Contracts.Tests/Fixtures.
 - [ ] T011 [US2] Implement pinned validation/diff plus semantic security/precondition checks and seeded positive/negative mutations in src/frontend/IdentityPlatform.Admin.Contracts/tests and scripts/.
 - [ ] T012 [US2] Generate actual BFF types separately from synthetic fixtures; compile positive/negative consumers and require typed HTTP cookie/URL/antiforgery behavior in src/frontend/IdentityPlatform.Admin.Contracts/tests.
 

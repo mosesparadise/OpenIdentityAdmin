@@ -1,6 +1,43 @@
 {
-  "core": 19,
+  "core": 20,
   "browser": 5,
-  "node": 27,
-  "browsers": ["chromium", "firefox", "webkit"]
+  "node": 31,
+  "browsers": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
+  "nodeIdentities": [
+    "nonempty native fixture inventory is exact",
+    "unchanged baseline passes the real diff process",
+    "additive optional request field passes",
+    "rejects removed operation",
+    "rejects duplicate operation ID",
+    "rejects missing operation ID",
+    "rejects security removed",
+    "rejects anonymous security alternative",
+    "rejects explicit anonymous security",
+    "rejects permission weakened",
+    "rejects downstream major silently changed",
+    "rejects browser bearer credential added",
+    "rejects new POST lacks antiforgery proof",
+    "rejects antiforgery precondition removed",
+    "rejects concurrency precondition optional",
+    "rejects etag response header removed",
+    "rejects required response field removed",
+    "rejects new required request field",
+    "rejects request type changed",
+    "rejects request bound tightened",
+    "rejects nullable output expansion",
+    "rejects response enum expansion",
+    "rejects external ref",
+    "rejects dynamic ref unsupported",
+    "rejects pathItems unsupported",
+    "rejects wrong browser path",
+    "empty fixture cannot substitute for exercised operations",
+    "empty BFF inventory still rejects bearer security definitions",
+    "native schema validator accepts all representative semantics",
+    "native schema validator rejects unresolved local reference",
+    "native schema validator rejects malformed response"
+  ]
 }

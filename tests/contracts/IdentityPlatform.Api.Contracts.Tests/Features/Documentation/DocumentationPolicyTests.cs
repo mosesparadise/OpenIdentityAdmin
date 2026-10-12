@@ -26,6 +26,7 @@ public sealed class DocumentationPolicyTests
     [Theory]
     [InlineData("/docs/assets/theme.css", "text/css")]
     [InlineData("/docs/assets/swagger.js", "text/javascript")]
+    [InlineData("/docs/assets/scalar-bootstrap.js", "text/javascript")]
     [InlineData("/docs/swagger/swagger-ui-bundle.js", "text/javascript")]
     [InlineData("/docs/scalar/scalar.js", "text/javascript")]
     [InlineData("/docs/scalar/scalar.aspnetcore.js", "text/javascript")]
