@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Engineering/">
+    <Project Path="eng/IdentityPlatform.CodeQuality/IdentityPlatform.CodeQuality.csproj" />
+  </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/aspire/">
     <Project Path="src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />

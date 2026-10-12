@@ -74,7 +74,7 @@ def main():
     parser.add_argument("report", type=Path)
     args = parser.parse_args()
     if args.mode == "vulnerabilities":
-        expected = {str(p.resolve()) for folder in ("src", "tests") for p in (ROOT / folder).glob("**/*.csproj")}
+        expected = {str(p.resolve()) for folder in ("src", "tests", "eng") for p in (ROOT / folder).glob("**/*.csproj")}
         count = require_no_vulnerabilities(json.loads(args.report.read_text()), expected)
         print(f"Advisory evidence: {count} projects, no known vulnerable packages reported")
     else:
