@@ -26,6 +26,7 @@ public static class Setup
         services.TryAddSingleton(TimeProvider.System);
         services.AddScoped<FactorProtection>();
         services.AddScoped<FactorAccess>();
+        services.AddScoped<NativeOperation>();
         services.AddScoped<ProtectedRecoveryStore>();
         services.Replace(ServiceDescriptor.Scoped<FactorStore, ProtectedFactorStore>());
         services.AddIdentityCore<PlatformUser>().AddUserManager<AdministratorUserManager>()

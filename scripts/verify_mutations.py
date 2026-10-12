@@ -24,14 +24,19 @@ class MutationError(ValueError):
     """A fixed, safe verification failure reason."""
 
 
-def manifest(root):
-    value = json.loads((root / 'eng/critical-mutations.json').read_text())
+def manifest(root, suite='issuer'):
+    if suite not in ('issuer', 'administrator'):
+        raise MutationError('Unknown mutation suite')
+    expected = 7 if suite == 'issuer' else 4
+    filename = 'eng/critical-mutations.json' if suite == 'issuer' else 'eng/administrator-mutations.json'
+    boundary = 'src/backend/IdentityPlatform.AuthServer/Features' if suite == 'issuer' else 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies'
+    value = json.loads((root / filename).read_text())
     mutations = value['mutations']
-    if value['version'] != 1 or len(mutations) != 7 or len({item['id'] for item in mutations}) != 7:
+    if value['version'] != 1 or len(mutations) != expected or len({item['id'] for item in mutations}) != expected:
         raise MutationError('Unexpected critical mutation inventory')
     for item in mutations:
         path = (root / item['path']).resolve()
-        if not path.is_relative_to((root / 'src/backend/IdentityPlatform.AuthServer/Features').resolve()) or path.suffix != '.cs':
+        if not path.is_relative_to((root / boundary).resolve()) or path.suffix != '.cs':
             raise MutationError('Mutation target is outside the permitted source boundary')
         if not item['before'] or item['before'] == item['after'] or path.read_text().count(item['before']) != 1:
             raise MutationError('Mutation source drift or ambiguous replacement')
@@ -157,16 +162,20 @@ def require_clean_checkout(environment):
 
 
 def main():
+    global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=['PostgreSql', 'SqlServer'])
+    parser.add_argument('--suite', choices=['issuer', 'administrator'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
+    if args.suite == 'administrator':
+        PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))
     environment = os.environ.copy()
     environment.update(DOTNET_ENVIRONMENT='Development', TESTINGPLATFORM_TELEMETRY_OPTOUT='1')
-    output = ROOT / 'artifacts/mutations' / args.provider
+    output = ROOT / 'artifacts/mutations' / (args.provider if args.suite == 'issuer' else 'administrator-' + args.provider)
     output.mkdir(parents=True, exist_ok=True)
     evidence_path = output / 'evidence.json'
     evidence_path.unlink(missing_ok=True)
@@ -174,14 +183,14 @@ def main():
     private.mkdir(exist_ok=True)
     with (private / 'critical-mutations.lock').open('w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        items = manifest(ROOT)
+        items = manifest(ROOT, args.suite)
         paths = sorted({item['path'] for item in items})
         require_clean_checkout(environment)
         code, commit = run(['git', 'rev-parse', 'HEAD'], 30, environment)
         if code:
             raise MutationError('Missing source commit identity')
         hashes = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in paths}
-        evidence = {'version': 1, 'commit': commit.strip(), 'provider': args.provider, 'source_sha256': hashes, 'mutations': []}
+        evidence = {'version': 1, 'suite': args.suite, 'commit': commit.strip(), 'provider': args.provider, 'source_sha256': hashes, 'mutations': []}
         with tempfile.TemporaryDirectory(prefix='critical-mutations-', dir=private) as temporary:
             directory = Path(temporary)
             build(environment)
@@ -219,7 +228,7 @@ def main():
             evidence['restored'] = execute(expression, selected, directory, environment)
             evidence['source_restored'] = True
         evidence_path.write_text(json.dumps(evidence, indent=2) + '\n')
-        print(f"{args.provider}: seven behavioral kills; baseline/restored controls pass; source hashes restored", flush=True)
+        print(f"{args.provider}: {len(items)} behavioral kills; baseline/restored controls pass; source hashes restored", flush=True)
 
 
 if __name__ == '__main__':

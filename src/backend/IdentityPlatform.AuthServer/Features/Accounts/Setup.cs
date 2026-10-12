@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Accounts.Login;
+using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -30,6 +31,7 @@ internal static class Setup
         if (administrator)
         {
             AccountSchemes.AddAdministrator(services, pilot);
+            services.AddAdministratorMaintenance();
         }
         return services.AddAccountProtection();
     }

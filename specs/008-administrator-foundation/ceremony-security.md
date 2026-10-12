@@ -1,0 +1,27 @@
+# T024 — administrator ceremony security
+
+Status: implementation and verification in progress; no journey acceptance or merge is claimed.
+
+This packet implements the reviewed MFA design's shared transaction mechanisms in Infrastructure/Features/Identity/Ceremonies, fixed policy in Core/Features/Identity/Authentication and the explicitly registered AuthServer Accounts/Maintenance scheduler. Existing projects and native stores remain. Enrollment/login/session issuance are T025; recovery and authorized slot transitions are T026. Destination-generation allocation remains T025 and requires its own durable allocator; T024 accepts no claim that a caller-supplied generation alone authorizes installation.
+
+## Transaction and proof ownership
+
+Lock plans snapshot immutable, distinct ordinal browser/account identifiers before opening one read-committed transaction. Optional governance precedes admission, then browser and authentication UPDATE locks. All participating material writes belong to the locked account; cleanup uses bounded ordered candidates and revalidates eligibility after acquisition. Native Identity operations inherit the same cancellation token without obtaining staged/recovery material-selection authority.
+
+The operation has one five-second cancellation deadline, an independent five-second provider command and server lock-wait bound, and explicit connection ownership. Both providers capture and restore session lock limits, including backlog/discovery reads outside a transaction; PostgreSQL also sets the transaction-local limit. Nested owners restore the outer limits before the original settings are restored. Restoration failure evicts and closes the physical connection. Disposal timing is measured separately from the operation deadline; no claim of cancellation-bound asynchronous disposal is made.
+
+Account, browser interaction, password and factor capabilities are privately constructed by their actual load/verification paths and bound to the original transaction. A password capability records the post-verification timestamp and intended purpose; correct password alone cannot reset the shared budget. Factor proof includes the persisted interaction fingerprint and is consumed once. Normal transactions cannot use the explicit maintenance-only commit, and maintenance transactions cannot acquire authentication capabilities. Helpers reject foreign contexts and detached watermark state. Cleanup invalidates ownership before disposal and releases every resource through nested finally blocks. Sensitive commits add a fixed-catalogue sanitized audit before SaveChanges/commit; no authority or secret response is issued by these mechanisms.
+
+## Time, replay and capacity
+
+Each observation returns one accepted UTC sample used for watermark, pruning cutoff or post-native reservation time. More than thirty seconds of rollback denies and retains evidence. Pruning preserves the exact five-minute boundary, deletes only older entries and never reduces the watermark. Accepted codes use the existing issuer-bound Data Protection purposes and constant-time comparisons. Native verification retains its own real wall clock.
+
+Installation admission serializes physical counts, including expired/consumed/unpruned records. Eight live browser/account interactions, eight live user sessions, thirty-two retained user sessions and ten-thousand installation retained rows remain separate limits. Admission creates a browser budget only alongside its interaction. Session capacity checks are called before proof consumption by T025 orchestration; this packet does not claim HTTP completion ordering acceptance.
+
+Cleanup attempts at most one hundred rows per category every sixty seconds under one five-second pass deadline. Each category is an atomic batch. A failed batch rolls back; previously committed categories remain reclaimed and the next scheduled pass handles remaining work. Receipts, audits, authentication generations/watermarks and live proof evidence are never cleanup targets. The host records only fixed-name counts, without raw exceptions or identity/credential tags.
+
+## Review dispositions and verification scope
+
+Architecture review identified mutable lock plans, forgeable/cross-transaction capabilities, an unobserved clock-read pruning race, password timestamp invention, locked-account proof verification, repeated proof completion and generic unaudited commits. These were corrected with immutable snapshots, private bound capabilities, accepted time samples, actual password proof, integrated budget checks, single-use completion and explicit maintenance ownership. Unsafe generic interaction rotation was removed; authorized replacement transitions belong to T026.
+
+Tests use real runtime-role PostgreSQL/SQL Server databases, native Identity managers/provider, existing protected issuer material, independent RFC oracle and observed provider waits. The new Ceremonies story must preserve Bootstrap45/Factors51 identities and the 660-second invocation bound. The required inventory now adds 35 Ceremonies cases per provider and eight ordinary host cases. An earlier 30-case PostgreSQL run and the earlier 352-case ordinary matrix passed without skips; the expanded 35-case PostgreSQL story passed in 71 seconds without skips; the 355-case ordinary matrix, coverage, mutation controls, final source reviews and CI remain pending. Local SQL Server image retrieval returned Forbidden, so local startup failure is explicitly not a test pass. No completed task box is asserted by this document.

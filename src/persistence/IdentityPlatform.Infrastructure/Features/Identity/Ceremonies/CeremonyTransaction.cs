@@ -1,0 +1,177 @@
+using System.Data;
+using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.Identity.Factors;
+using IdentityPlatform.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+
+namespace IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
+
+/// <summary>Owns cancellation, ordered locks and atomic audit; disposing an uncommitted ceremony rolls it back.</summary>
+internal sealed class CeremonyTransaction : IAsyncDisposable
+{
+    private readonly PlatformDbContext database;
+    private readonly IDbContextTransaction transaction;
+    private readonly IDisposable native;
+    private readonly CancellationTokenSource deadline;
+    private bool completed;
+    private bool disposed;
+    private readonly CeremonyConnection connection;
+    private readonly bool maintenance;
+    internal CeremonyLockPlan Plan
+    {
+        get;
+    }
+    internal CancellationToken Token => deadline.Token;
+
+    /// <summary>Captures the transaction and operation lease after their lifetime owners have been created.</summary>
+    private CeremonyTransaction(PlatformDbContext database, IDbContextTransaction transaction, IDisposable native,
+        CancellationTokenSource deadline, CeremonyLockPlan plan, CeremonyConnection connection, bool maintenance)
+    {
+        this.database = database;
+        this.transaction = transaction;
+        this.native = native;
+        this.deadline = deadline;
+        Plan = plan;
+        this.connection = connection;
+        this.maintenance = maintenance;
+    }
+
+    /// <summary>Opens one bounded transaction, discards clean stale tracking and acquires the entire declared lock set.</summary>
+    internal static Task<CeremonyTransaction> OpenAsync(PlatformDbContext database, NativeOperation operation,
+        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, false, cancellationToken);
+
+    /// <summary>Explicitly selects metadata-only cleanup ownership; ordinary ceremonies cannot use its unaudited commit.</summary>
+    internal static Task<CeremonyTransaction> OpenMaintenanceAsync(PlatformDbContext database, NativeOperation operation,
+        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, true, cancellationToken);
+
+    /// <summary>Creates bounded connection and transaction lifetimes and releases every partially acquired resource on failure.</summary>
+    private static async Task<CeremonyTransaction> OpenCoreAsync(PlatformDbContext database, NativeOperation operation,
+        CeremonyLockPlan plan, bool maintenance, CancellationToken cancellationToken)
+    {
+        if (database.Database.CurrentTransaction is not null || database.ChangeTracker.HasChanges())
+        {
+            throw new FactorUnavailableException();
+        }
+        database.ChangeTracker.Clear();
+        var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        deadline.CancelAfter(TimeSpan.FromSeconds(AdministratorPolicy.OperationSeconds));
+        var connection = new CeremonyConnection(database);
+        IDbContextTransaction? transaction = null;
+        IDisposable? native = null;
+        try
+        {
+            await connection.OpenAsync(deadline.Token);
+            transaction = await database.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, deadline.Token);
+            native = operation.Enter(deadline.Token);
+            await new CeremonyLocks(database).AcquireAsync(plan, deadline.Token);
+            return new CeremonyTransaction(database, transaction, native, deadline, plan, connection, maintenance);
+        }
+        catch
+        {
+            await ReleaseAsync(database, native, transaction, connection, deadline);
+            throw;
+        }
+    }
+
+    /// <summary>Rejects use outside the original transaction or after commit, disposal or cancellation.</summary>
+    internal void RequireCurrent()
+    {
+        if (completed || database.Database.CurrentTransaction?.TransactionId != transaction.TransactionId)
+        {
+            throw new FactorUnavailableException();
+        }
+        Token.ThrowIfCancellationRequested();
+    }
+
+    /// <summary>Rejects helper contexts that do not own this exact database transaction.</summary>
+    internal void RequireContext(PlatformDbContext current)
+    {
+        RequireCurrent();
+        if (!ReferenceEquals(database, current))
+        {
+            throw new FactorUnavailableException();
+        }
+    }
+
+    /// <summary>Excludes metadata maintenance from all authentication capability creation and use.</summary>
+    internal void RequireCeremony()
+    {
+        RequireCurrent();
+        if (maintenance)
+        {
+            throw new FactorUnavailableException();
+        }
+    }
+
+    /// <summary>Commits a fixed audit event and all native/product writes before any caller may release authority.</summary>
+    internal async Task CommitAsync(CeremonyEvent action, bool accepted, string userId, long now)
+    {
+        RequireCurrent();
+        if (maintenance || !Plan.Users.Contains(userId, StringComparer.Ordinal))
+        {
+            throw new FactorUnavailableException();
+        }
+        CeremonyAudit.Add(database, action, accepted, userId, now);
+        await database.SaveChangesAsync(Token);
+        await transaction.CommitAsync(Token);
+        completed = true;
+    }
+
+    /// <summary>Commits metadata-only maintenance without inventing an authentication or credential-change audit.</summary>
+    internal async Task CommitMaintenanceAsync()
+    {
+        RequireCurrent();
+        if (!maintenance)
+        {
+            throw new FactorUnavailableException();
+        }
+        await database.SaveChangesAsync(Token);
+        await transaction.CommitAsync(Token);
+        completed = true;
+    }
+
+    /// <summary>Releases native cancellation and rolls back uncommitted work without retaining stale tracked authority.</summary>
+    public async ValueTask DisposeAsync()
+    {
+        if (disposed)
+        {
+            return;
+        }
+        disposed = true;
+        completed = true;
+        await ReleaseAsync(database, native, transaction, connection, deadline);
+    }
+
+    /// <summary>Releases every acquired owner even when a preceding rollback or connection restoration fails.</summary>
+    internal static async ValueTask ReleaseAsync(PlatformDbContext database, IDisposable? native,
+        IAsyncDisposable? transaction, IAsyncDisposable connection, CancellationTokenSource deadline)
+    {
+        try
+        {
+            native?.Dispose();
+        }
+        finally
+        {
+            try
+            {
+                if (transaction is not null)
+                {
+                    await transaction.DisposeAsync();
+                }
+            }
+            finally
+            {
+                try
+                {
+                    await connection.DisposeAsync();
+                }
+                finally
+                {
+                    deadline.Dispose();
+                    database.ChangeTracker.Clear();
+                }
+            }
+        }
+    }
+}
