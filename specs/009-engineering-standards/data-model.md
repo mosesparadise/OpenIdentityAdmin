@@ -1,0 +1,3 @@
+# Engineering evidence model
+
+No product schema changes. A finding identifies rule, repository-relative file, member/signature, syntax fingerprint and measured rule facts. Never serialize source literals. Legacy inventory binds unchanged existing findings to a specific remediation task; initial snapshot is from main 38535bd. After adoption additions/rebinding are rejected relative to trusted PR-base evidence. Reviewed exceptions require exact identity, reason, owner, expiry and task. Resolved/stale entries are removed. CI selection records event, changed paths, full/docs decision and reason; missing evidence requires full work. Final acceptance consumes job outcomes and cannot equate an unselected test with passing evidence.

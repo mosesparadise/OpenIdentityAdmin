@@ -60,6 +60,8 @@ def main() -> None:
     run("dotnet", "format", "whitespace", "IdentityPlatform.slnx", "--no-restore", "--verify-no-changes")
     run("dotnet", "format", "style", "IdentityPlatform.slnx", "--no-restore", "--verify-no-changes",
         "--severity", "info", "--diagnostics", "IDE0005")
+    run("python3", "scripts/test_code_quality.py")
+    run("python3", "scripts/check_code_quality.py")
     if args.self_test:
         prove_enforcement()
 

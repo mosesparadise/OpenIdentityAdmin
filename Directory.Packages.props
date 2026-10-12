@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally></PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageVersion Include="Microsoft.Playwright" Version="1.63.0" />
     <PackageVersion Include="Deque.AxeCore.Playwright" Version="4.13.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.23.0" />

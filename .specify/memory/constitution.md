@@ -74,6 +74,56 @@ Applicable ASVS L3 and protocol control evidence is mandatory. Target Basic OP/C
 
 Use the reviewed project-specific AI skills and relevant independent reviewers. Preserve source/test evidence, inherited model choices, host permissions and the main agent's integration accountability.
 
+### 19. Principal-engineer maintainability
+
+Engineers and AI contributors MUST produce clean, maintainable, testable and easy-to-understand
+code. Methods and classes MUST have a cohesive responsibility and remain small enough to review
+without reconstructing unrelated behavior. Extract meaningful operations from lengthy methods;
+do not disguise complexity with arbitrary partial classes or pass-through wrappers. Reuse stable
+mechanisms across projects instead of copying large implementations. Keep domain ownership local
+and avoid speculative abstractions. Review dependency direction, failure semantics, cancellation,
+resource ownership and extension points with the implementation, not in a later cleanup phase.
+Review thresholds are 40 logical lines per method and 300 per class. Exceeding a threshold requires
+refactoring or a documented, scoped exception with rationale, owner and review expiry.
+
+### 20. Given-When-Then scenarios
+
+Handwritten test methods MUST describe the precondition, action and observable result using
+`Given_<condition>_When_<action>_Then_<outcome>`. Other test languages MUST use the equivalent
+readable Given/When/Then scenario description. Names MUST express behavior, not generic placeholders.
+Renames MUST preserve assertions and update exact discovery inventories, filters, mutation targets
+and requirement links. Historical evidence remains tied to its original commit and test identity.
+
+### 21. Explicit values and validated configuration
+
+Unexplained strings and integers that encode domain rules, protocol identifiers, limits, durations,
+routes or operational policy MUST NOT be scattered through executable code. Use framework/library
+constants, feature-owned named values, value types or validated configuration according to ownership.
+Do not create a global constants dumping ground. Independently specified test expectations MUST
+remain independent of implementation values. Security invariants MUST NOT become deployment-tunable
+merely to remove literals. OpenAPI deployment/presentation settings MUST come from appsettings-backed,
+validated options; supported API contracts and security constraints remain explicit in code.
+
+### 22. Useful code documentation
+
+Every handwritten method MUST have meaningful documentation of its purpose and contract. Document
+parameters, results, failure/cancellation behavior, ownership and security-sensitive side effects
+where relevant. Externally consumed methods and classes MUST include detailed documentation and
+safe usage examples. Documentation MUST explain behavior rather than restating a symbol's name,
+and MUST evolve with code. Use XML documentation for C# methods. Do not add secrets or real
+identities to examples. Native generated migrations/snapshots are excluded; test methods require
+meaningful documentation but not public-API example boilerplate. Other exclusions must be explicit.
+
+### 23. Proportional, fail-closed verification
+
+Documentation-only changes MAY omit expensive application test suites only when complete change
+evidence proves that all changed paths are eligible documentation. Retain relevant documentation,
+policy, instruction and secret checks, plus a visible final acceptance gate. Mixed changes,
+configuration, dependencies, executable tooling, workflow changes and uncertain classifications
+MUST receive full applicable verification. Scheduled/manual full verification remains available.
+An intentionally unselected suite MUST be recorded as not required for that change, never as a
+test pass. Failing, cancelled or unexpectedly skipped required work MUST block acceptance.
+
 ## Technology and Release Constraints
 
 Use .NET 10, EF Core 10 and stable OpenIddict 7 with ASP.NET Core Identity. All versions must be locked and validated together. React/TypeScript communicates through the Admin BFF. Authentication UI uses feature-organized Razor Pages and shared design tokens. Protocol application handlers and management endpoints use Minimal APIs. PostgreSQL and SQL Server are both required production providers; one is selected per environment.
@@ -92,4 +142,10 @@ The requesting user ratified this baseline by approving documentation version 0.
 
 Constitution amendments use semantic versions: major for incompatible governance changes, minor for added obligations and patch for clarifications. Review every implementation plan against these principles; explain any exception with scope, evidence, owner and expiry. Preserve the immutable approved snapshot and record accepted amendments separately.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-10 | **Last Amended**: 2026-10-10
+The user's engineering feedback on 2026-10-12 authorizes principles 19-23. Their adoption does not
+claim that legacy code already meets every new rule. Tooling, reviewed exceptions and remaining
+retrofit work MUST be explicit in the living task register; new and changed code MUST follow these
+principles immediately. Existing violations are corrected in separately reviewed PRs alongside
+feature delivery, not silently grandfathered as compliant code.
+
+**Version**: 1.1.0 | **Ratified**: 2026-10-10 | **Last Amended**: 2026-10-12

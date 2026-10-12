@@ -15,6 +15,11 @@ Use synthetic data. Do not disclose credentials, tokens, personal data or produc
 
 Return evidence, including files/symbols, requirement/control IDs, commands actually run, provider/browser/version scope, result and remaining gaps. Mark unexecuted checks as planned or not run. Never fabricate a pass, certification, benchmark or coverage result. A skipped or retried required check is not a clean pass.
 
+
+## Principal-engineer contribution standard
+
+Follow constitution 1.1.0 and docs/engineering/code-quality.md. Produce clean, maintainable, testable, easy-to-understand code with cohesive responsibilities and stable reusable mechanisms; do not duplicate large cross-project implementations or introduce speculative abstractions. Review 40 logical lines/method and 300/class thresholds; exceptions need scope, rationale, owner and expiry. Use Given_<condition>_When_<action>_Then_<outcome> scenario names, meaningful XML for handwritten C# methods, and detailed safe examples for externally consumed APIs/reusable public classes. Native generated EF artifacts are excluded; tests need documentation but no example boilerplate. Replace unexplained domain/protocol strings and integers with feature-owned named values or validated options, preserving independent test expectations and code-owned security invariants. OpenAPI presentation configuration comes from validated appsettings-backed options. New/changed code must comply immediately; exact legacy findings remain tracked for separate cleanup PRs. Do not expand a legacy baseline to silence a new finding. Relevant docs-only checks may omit expensive suites only through fail-closed selection and a visible final gate; unknown/mixed/policy/executable changes require full checks.
+
 ## Procedure
 
 1. State the workload, dataset, expected SLO, hardware, topology, cryptographic settings and provider versions. Distinguish measured findings from estimates.
