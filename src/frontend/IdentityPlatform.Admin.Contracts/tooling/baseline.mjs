@@ -14,24 +14,30 @@ function git(args) {
   return result.stdout;
 }
 
-export async function compareBaseline(base) {
+export function requireBaselineInventory(base, paths) {
   if (!/^[a-f0-9]{40}$/.test(base ?? '')) throw new Error('An exact baseline commit SHA is required');
-  const paths = new Set(git(['ls-tree', '-r', '--name-only', base, '--', prefix]).trim().split('\n'));
   const present = files.filter(file => paths.has(prefix + file));
   if (present.length !== files.length && !(base === foundationBase && present.length === 0)) {
     throw new Error('Supported baseline inventory is missing or incomplete');
   }
+  return present.length > 0;
+}
+
+export async function compareBaseline(base) {
+  if (!/^[a-f0-9]{40}$/.test(base ?? '')) throw new Error('An exact baseline commit SHA is required');
+  const paths = new Set(git(['ls-tree', '-r', '--name-only', base, '--', prefix]).trim().split('\n'));
+  const established = requireBaselineInventory(base, paths);
   for (const file of files) {
     const surface = file.includes('bff-v1') ? 'bff' : 'api', allowEmpty = !file.includes('.fixture.');
     const current = JSON.parse(fs.readFileSync(root + prefix + file));
     await validate(current, surface, allowEmpty);
-    if (present.length) {
+    if (established) {
       const previous = JSON.parse(git(['show', `${base}:${prefix}${file}`]));
       await validate(previous, surface, allowEmpty);
       compatibility(previous, current, surface, allowEmpty);
     }
   }
-  return { base, contracts: files.length, initialBaseline: present.length === 0 };
+  return { base, contracts: files.length, initialBaseline: !established };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

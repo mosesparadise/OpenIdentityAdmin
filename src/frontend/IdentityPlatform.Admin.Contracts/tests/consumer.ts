@@ -23,3 +23,14 @@ const wrongType: components['schemas']['ExampleUpdate'] = { label: 42 };
 // @ts-expect-error label is required
 const missing: components['schemas']['ExampleUpdate'] = {};
 void [valid, wrongType, missing];
+
+const nullable: components['schemas']['Example'] = { id: 'fixture', label: null, state: 'Active', updatedAt: '1970-01-01T00:00:00Z', contact: null };
+const composed: components['schemas']['Contact'] = { kind: 'email', email: 'synthetic@example.invalid' };
+const problem: components['schemas']['ProblemDetails'] = { status: 400, title: 'Synthetic', detail: null };
+// @ts-expect-error output enum is closed
+const unknownState: components['schemas']['ExampleState'] = 'Unknown';
+// @ts-expect-error date-time remains an ISO string at the HTTP boundary
+const objectDate: components['schemas']['Example']['updatedAt'] = new Date();
+// @ts-expect-error discriminator and member must agree
+const mixedContact: components['schemas']['Contact'] = { kind: 'email', phone: 'synthetic' };
+void [nullable, composed, problem, unknownState, objectDate, mixedContact];

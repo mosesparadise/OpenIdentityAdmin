@@ -1,12 +1,14 @@
 /* Pinned local Swagger bootstrap: no string eval, credential entry or interactive requests. */
 const selector = document.getElementById('contract');
 const container = document.getElementById('swagger-ui');
-// Adapt pinned Swagger5.33.1 semantics to this page's outer title/main landmark.
+// Adapt pinned Swagger5.33.1 semantics to this page's outer title and metadata regions.
 // Observe rendered document changes so selector and schema expansion retain labels.
 new MutationObserver(() => {
-  container.querySelectorAll('main').forEach(node => {
-    node.setAttribute('role', 'region'); node.setAttribute('aria-label', 'Management operations');
-  });
+  for (const [selector, label] of [['.information-container', 'Contract information'], ['.scheme-container', 'Server information']]) {
+    container.querySelectorAll(selector).forEach(node => {
+      node.setAttribute('role', 'region'); node.setAttribute('aria-label', label);
+    });
+  }
   container.querySelectorAll('.info .title').forEach(node => {
     node.setAttribute('role', 'heading'); node.setAttribute('aria-level', '2');
   });

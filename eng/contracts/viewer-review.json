@@ -1,0 +1,10 @@
+{
+  "scope": "Health-only foundation. Known candidate findings are archived, not declared clean. Production documentation activation/public release remains blocked.",
+  "configurationHashes": {
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Setup.cs": "cbd9c5716aa874b590891d0ef0888cd9edff13fb9ca7add79d05a6cb8fed05f8",
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/swagger.js": "26c9e3166ed9e6dcf3e154b6724f19eafa9ba60659854cfcb222ec8c7a393624",
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": "ccda9d84c4000fad11f3cdc400e11ecfefb168a59238dc7088913ea799a63d96"
+  },
+  "requestSha256": "2f06a0763ca4349b6f91041e82d6017a5fb76ff4c8b66773ba1bc2226d0a77e1",
+  "responseSha256": "bab55479f6d0603509f74be8a81c297c1e1a95e7bed7bea1369424218242e6b0"
+}

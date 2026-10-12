@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { inventory } from '../tooling/contracts.mjs';
 import { validate } from '../tooling/validate.mjs';
-import { compatibility } from '../tooling/compatibility.mjs';
+import { requireBaselineInventory } from '../tooling/baseline.mjs';
+import { compatibility, requireCleanDiff } from '../tooling/compatibility.mjs';
 
 const fixture = JSON.parse(fs.readFileSync(new URL('./generated/bff-v1.fixture.json', import.meta.url)));
 const list = '/bff/api/v1/examples', item = list + '/{id}';
@@ -55,4 +56,24 @@ test('native schema validator rejects unresolved local reference', async () => {
 });
 test('native schema validator rejects malformed response', async () => {
   await assert.rejects(validate(changed(d => { d.paths[item].put.responses['200'] = { invalid: true }; }), 'bff'));
+});
+test('diff evidence rejects malformed output and unsuccessful processes', () => {
+  requireCleanDiff({ status: 0, stdout: '[]' });
+  for (const result of [{ status: 1, stdout: '[]' }, { status: 2, stdout: '[]' }, { status: null, stdout: '[]' },
+    { status: 0, stdout: '[]', error: new Error('timeout') }, ...['', 'null', '""', '{"length":0}', '[{}]'].map(stdout => ({ status: 0, stdout }))]) {
+    assert.throws(() => requireCleanDiff(result));
+  }
+});
+test('baseline inventory rejects omission except the exact initial commit', () => {
+  const base = '0c1de1e8b5dbee5f53d0efff7814fdc03dfd6e93', future = '1'.repeat(40);
+  const files = new Set(['generated/v1.json', 'generated/bff-v1.json', 'tests/generated/v1.fixture.json', 'tests/generated/bff-v1.fixture.json'].map(p => 'src/frontend/IdentityPlatform.Admin.Contracts/' + p));
+  assert.equal(requireBaselineInventory(base, new Set()), false);
+  assert.equal(requireBaselineInventory(future, files), true);
+  assert.throws(() => requireBaselineInventory(future, new Set()));
+  assert.throws(() => requireBaselineInventory('main', files));
+  for (const file of files) {
+    const incomplete = new Set(files); incomplete.delete(file);
+    assert.throws(() => requireBaselineInventory(base, incomplete));
+    assert.throws(() => requireBaselineInventory(future, incomplete));
+  }
 });

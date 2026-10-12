@@ -18,6 +18,7 @@ public sealed class ViewerTests
         await using var host = await ContractHost.StartAsync(browserSurface: true, realHttps: true);
         await using var browser = await BrowserSession.CreateAsync();
         var page = await browser.Context.NewPageAsync();
+        await page.AddInitScriptAsync("window.contractCsp = []; document.addEventListener('securitypolicyviolation', e => window.contractCsp.push({ directive:e.effectiveDirective, blocked:e.blockedURI }));");
         await page.EmulateMediaAsync(new()
         {
             ColorScheme = dark ? ColorScheme.Dark : ColorScheme.Light
@@ -56,6 +57,7 @@ public sealed class ViewerTests
         {
             Exact = true
         }).First).ToBeVisibleAsync();
+        await VerifyRenderedDocumentAsync(page, viewer, dark, browserSurface: true);
         Assert.DoesNotContain("unsafe-eval", response.Headers["content-security-policy"], StringComparison.Ordinal);
         Assert.Equal("no-store", response.Headers["cache-control"]);
         Assert.False(await page.EvaluateAsync<bool>("Boolean(window.fixtureInjected)"));
@@ -91,6 +93,7 @@ public sealed class ViewerTests
         {
             Exact = true
         }).First).ToBeVisibleAsync();
+        await VerifyRenderedDocumentAsync(page, viewer, dark, browserSurface: false);
         Assert.Equal(0, await page.Locator("input[type=password]").CountAsync());
         Assert.Equal(0, await page.GetByRole(AriaRole.Button, new()
         {
@@ -100,10 +103,44 @@ public sealed class ViewerTests
         Assert.Empty(external);
         Assert.True(errors.IsEmpty, string.Join(Environment.NewLine, errors));
         Assert.Equal(0, await page.EvaluateAsync<int>("Object.keys(localStorage).filter(k => /token|auth|credential/i.test(k)).length"));
-        var axe = await page.RunAxe();
-        Assert.True(axe.Violations.Length == 0, System.Text.Json.JsonSerializer.Serialize(axe.Violations));
+
         await page.SetViewportSizeAsync(320, 900);
         Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"));
+    }
+
+    private static async Task VerifyRenderedDocumentAsync(IPage page, string viewer, bool dark, bool browserSurface)
+    {
+        var title = browserSurface ? "IdentityPlatform Admin BFF browser API" : "IdentityPlatform Admin API";
+        await Assertions.Expect(page.GetByText(title, new()
+        {
+            Exact = false
+        }).First).ToBeVisibleAsync();
+        foreach (var summary in new[] { "List synthetic examples", "Get a synthetic example", "Update a synthetic example" })
+        {
+            await Assertions.Expect(page.GetByText(summary, new()
+            {
+                Exact = true
+            }).First).ToBeVisibleAsync();
+        }
+        var body = await page.Locator("body").InnerTextAsync();
+        Assert.Contains(browserSurface ? "/bff/api/v1/examples" : "/api/v1/examples", body, StringComparison.Ordinal);
+        Assert.Contains("ProblemDetails", body, StringComparison.Ordinal);
+        Assert.Contains("Example", body, StringComparison.Ordinal);
+        var output = Environment.GetEnvironmentVariable("IDENTITY_CONTRACT_OUTPUT");
+        if (output is not null)
+        {
+            var directory = Path.Combine(output, "viewers", Environment.GetEnvironmentVariable("IDENTITY_TEST_BROWSER") ?? "chromium");
+            Directory.CreateDirectory(directory);
+            var name = $"{viewer}-{(dark ? "dark" : "light")}-{(browserSurface ? "bff" : "api")}";
+            await page.ScreenshotAsync(new()
+            {
+                Path = Path.Combine(directory, name + ".png")
+            });
+            await File.WriteAllTextAsync(Path.Combine(directory, name + ".html"), await page.ContentAsync(), TestContext.Current.CancellationToken);
+        }
+        Assert.Equal("[]", await page.EvaluateAsync<string>("JSON.stringify(window.contractCsp)"));
+        var axe = await page.RunAxe();
+        Assert.True(axe.Violations.Length == 0, System.Text.Json.JsonSerializer.Serialize(axe.Violations.Select(v => new { v.Id, Nodes = v.Nodes.Select(n => new { n.Html, Messages = n.Any.Select(a => a.Message) }) })));
     }
 
     [Fact]

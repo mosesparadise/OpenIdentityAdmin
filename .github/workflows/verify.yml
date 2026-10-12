@@ -324,6 +324,7 @@ jobs:
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - run: python3 scripts/test_contract_evidence.py
+      - run: python3 scripts/test_contract_supply_chain.py
       - name: Verify isolated contract evidence and coverage
         env:
           IDENTITY_CONTRACT_BASE: ${{ github.event.pull_request.base.sha || github.event.before || github.sha }}

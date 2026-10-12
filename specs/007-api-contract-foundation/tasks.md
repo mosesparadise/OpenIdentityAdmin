@@ -33,12 +33,12 @@ User confirmed both decisions on12October2026. Existing approved v0.2 scope appl
 
 ## Phase6 — Evidence and delivery
 
-- [ ] T015 Extend .github/workflows/verify.yml, scripts/ and eng/ evidence discovery/count/coverage and npm/viewer supply-chain checks; isolate new execution from issuer deadlines.
+- [ ] T015 **Partial:** foundation CI/provenance guards implemented; complete renderer component/advisory/notice acceptance is activation/release-blocking. Extend .github/workflows/verify.yml, scripts/ and eng/ evidence discovery/count/coverage and npm/viewer supply-chain checks; isolate new execution from issuer deadlines.
 - [ ] T016 Run focused and full required both-provider/browser/coverage checks; fix failures and reviewer findings; record actual evidence in specs/007-api-contract-foundation/verification.md.
 - [ ] T017 Update quickstart/research/roadmap and PR20 title/body for final behavior; verify exact head/checks/comments and squash normally, recording delivery in verification.md.
 
 ## Dependencies and execution
 
-T001–003 precede code; T004–005 precede production/test integration. US1 establishes registration/export; US2 depends on its nonempty fixtures; US3 consumes those same documents and components. T015 integration can be prepared alongside independent frontend tests but must include every final case before T016. T017 requires all foundation acceptance and exact-head review gates.
+T001–003 precede code; T004–005 precede production/test integration. US1 establishes registration/export; US2 depends on its nonempty fixtures; US3 consumes those same documents and components. T015 integration can be prepared alongside independent frontend tests but must include every final case before T016. T017 requires all runnable foundation acceptance and exact-head review gates. T015 remains explicitly partial: production documentation activation/public release additionally requires reliable complete vendor inventory, current advisory dispositions and notice obligations, alongside M02/M04. Its unresolved evidence is recorded in eng/contracts/README.md and is not counted as a clean or complete supply-chain acceptance.
 
 Independent read-only architecture/API/security/test reviews may run in parallel; main owns edits/integration. Each story's independent test is specified in spec.md and test-strategy.md. No unchecked deferred M02/M04 product acceptance is hidden in these completed-foundation tasks.

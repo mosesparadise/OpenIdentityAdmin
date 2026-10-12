@@ -66,6 +66,7 @@ def main():
     if args.partition == 'core':
         run(['python3', 'scripts/export_api_contracts.py'])
         run(['python3', 'scripts/install_contract_tools.py'])
+        run(['python3', 'scripts/check_contract_supply_chain.py'])
         run(['npm', 'run', 'check', '--prefix', str(PACKAGE)])
         files = sorted(str(p) for folder in ('generated', 'tests/generated') for p in (PACKAGE / folder).glob('*.json'))
         if len(files) != 4:

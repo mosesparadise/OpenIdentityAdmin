@@ -1,0 +1,33 @@
+{
+  "assetSha256": "050bc415ee7048dcd881682678f720264e7da5e373f7461d7c58c755305255f7",
+  "evidenceKind": "Actual generated JS bytes and exact upstream source; does not rely on the inconsistent Swagger source map",
+  "versionByteOffsetUtf8": 1414318,
+  "versionExcerpt": "DOMPurify.version=\"3.4.13\",DOMPurify.removed=[],!s||!s.document||s.doc",
+  "sanitizerByteOffsetUtf8": 1434523,
+  "actualSanitizerExcerpt": "$P.addHook&&$P.addHook(\"beforeSanitizeElements\",(function(s){return s.href&&s.setAttribute(\"rel\",\"noopener noreferrer\"),s}));const zP=function Markdown({source:s,className:o=\"\",getConfigs:i=()=>({useUnsafeMarkdown:!1})}){if(\"string\"!=typeof s)return null;const a=new Remarkable({html:!0,typographer:!0,breaks:!0,linkTarget:\"_blank\"}).use(linkify);a.core.ruler.disable([\"replacements\",\"smartquotes\"]);const{useUnsafeMarkdown:u}=i(),_=a.render(s),w=sanitizer(_,{useUnsafeMarkdown:u});return s&&_&&w?Re.createElement(\"div\",{className:Jn()(o,\"markdown\"),dangerouslySetInnerHTML:{__html:w}}):null};function sanitizer(s,{useUnsafeMarkdown:o=!1}={}){const i=o,a=o?[]:[\"style\",\"class\"];return o&&!sanitizer.hasWarnedAboutDeprecation&&(console.warn(\"useUnsafeMarkdown display configuration parameter is deprecated since >3.26.0 and will be removed in v4.0.0.\"),sanitizer.hasWarnedAboutDeprecation=!0),$P.sanitize(s,{ADD_ATTR:[\"target\"],FORBID_TAGS:[\"style\",\"form\"],ALLOW_DATA_ATTR:i,FORBID_ATTR:a})}sanitizer.hasWarnedAboutDeprecation=!1;",
+  "upstreamSourceEvidence": {
+    "url": "https://codeload.github.com/swagger-api/swagger-ui/tar.gz/cac3d136b5e37bfbe3288c8591f6f4fcf9870599",
+    "archiveSha256": "93038419a7eea954083253de8a9b9272c39b19373558c31885750f7729bfeb0a",
+    "callsiteFiles": [
+      {
+        "path": "src/core/components/providers/markdown.jsx",
+        "sha256": "d7fd9c31101fd5c2ee5dce545e9e28b55374c4d7e12b832d05a9c898f2651734",
+        "scratchFile": "swagger-source-core_components_providers_markdown.jsx"
+      }
+    ]
+  },
+  "specificConditionsAbsent": [
+    "No IN_PLACE option in the application sanitizer call",
+    "Markdown checks string source and passes Remarkable-rendered string to sanitizer",
+    "Application hook is beforeSanitizeElements and adds rel, not a node-removing afterSanitizeElements/afterSanitizeAttributes hook"
+  ],
+  "advisories": [
+    "GHSA-p98j-92pf-mc4p",
+    "GHSA-6688-9rhm-gjv2"
+  ],
+  "limits": [
+    "No blanket DOMPurify/XSS clearance.",
+    "Configuration or plugin/hook extension changes require reassessment.",
+    "Published Swagger map is inconsistent and cannot support general inventory clearance."
+  ]
+}
