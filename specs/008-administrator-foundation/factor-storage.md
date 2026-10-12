@@ -16,7 +16,7 @@ Use the approved Administrator project, new Features/Factors and existing Fixtur
 
 Cover native dispatch, reserved-token bypass denial, unsupported Migrator operations, actual native TOTP verification, protected purpose/user/issuer/generation/interaction substitution, corrupt/missing keys, durable ring continuity, independent recovery verifier expectations, single-use native redeem, rollback/cancellation and actual both-provider schema/upgrade constraints. Tests must not print seeds/codes/ciphertext or provider exception payloads. Pin previous migration IDs in historical upgrade regressions instead of relative list offsets. Component/store evidence is not MFA journey, distributed replay or full ceremony acceptance.
 
-Independent architecture/security and test design reviews found no unresolved user clarification. Their native-token bypass, SQL clustered-key, scoped capability, exact discovery and historical migration-index findings are incorporated above. Implementation/source/CI acceptance remains pending.
+Independent architecture/security and test design reviews found no unresolved user clarification. Their native-token bypass, SQL clustered-key, scoped capability, exact discovery and historical migration-index findings are incorporated above. Final exact-head source and CI acceptance is recorded in [verification](verification.md#t023-factor-storage--12-october-2026).
 
 ## Source-review dispositions
 
@@ -27,4 +27,4 @@ Independent architecture/security and test design reviews found no unresolved us
 - Test oracles use published RFC 6238 vectors and independently serialized recovery hashes. Noncanonical recovery input is deterministic; no random code shape determines expected failure.
 - The shared database wait-graph observer supports both bootstrap and factor tests. Redemption contention must be observed on the actual provider before releasing the winning transaction.
 
-Source implementation is present on the feature branch. Final exact-head provider/coverage/CI evidence and squash acceptance are pending; T023 remains unchecked until that evidence exists.
+T023 is complete: PR #27 was normally squash-merged as `824220b`. Exact head `e356090` passed all 36 CI jobs, 1,460 ordinary cases, 25 required coverage inputs and nine module floors. The 51 Factors and 45 Bootstrap cases per provider remain separate bounded invocations. [Verification](verification.md#t023-factor-storage--12-october-2026) records commands, results, review dispositions and limits. T024 ceremony rules and T025/T026 session/journey authority remain unimplemented.
