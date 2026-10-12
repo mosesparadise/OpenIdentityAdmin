@@ -102,6 +102,8 @@ jobs:
           - { profile: unit, partition: all, label: unit }
           - { profile: PostgreSql, partition: standard, label: PostgreSql }
           - { profile: SqlServer, partition: standard, label: SqlServer }
+          - { profile: PostgreSql, partition: administrator, label: administrator-PostgreSql }
+          - { profile: SqlServer, partition: administrator, label: administrator-SqlServer }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }
@@ -127,6 +129,7 @@ jobs:
       - run: dotnet build --no-restore --nologo
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
+      - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
@@ -175,6 +178,7 @@ jobs:
       - run: dotnet build --no-restore --nologo
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
+      - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py

@@ -26,6 +26,7 @@
     <Project Path="tests/architecture/IdentityPlatform.Architecture.Tests/IdentityPlatform.Architecture.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/aspire/">
+    <Project Path="tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj" />
     <Project Path="tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/IdentityPlatform.Issuer.Lifecycle.Tests.csproj" />
     <Project Path="tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj" />
     <Project Path="tests/aspire/IdentityPlatform.AppHost.Tests/IdentityPlatform.AppHost.Tests.csproj" />

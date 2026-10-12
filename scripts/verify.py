@@ -4,18 +4,18 @@ import argparse
 import json
 import os
 from pathlib import Path
-import subprocess
-import signal
+from verify_contrast_experiment import execute, install_cancellation_handler
 from test_evidence import require_complete_trx
-from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story
+from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_partition
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
-parser.add_argument("--partition", choices=["all", "standard", "lifecycle"], default="all")
+parser.add_argument("--partition", choices=["all", "standard", "lifecycle", "administrator"], default="all")
 parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement"])
 args = parser.parse_args()
+install_cancellation_handler()
 if args.story and args.partition != "lifecycle":
     parser.error("Story selection requires the lifecycle partition")
 if args.browser and args.profile == "unit":
@@ -33,6 +33,8 @@ for project, count in projects.items():
         invocations.append((project, count, None))
 for project, expected_count, story in invocations:
     label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower().replace(".", "-") if story else "")
+    if project == "Administrator":
+        label = "administrator-" + args.profile
     results = ROOT / "artifacts" / "tests" / label
     results.mkdir(parents=True, exist_ok=True)
     name = f"IdentityPlatform.{project}.Tests"
@@ -40,16 +42,23 @@ for project, expected_count, story in invocations:
                "--no-build", "--no-restore", "--no-progress", "--report-trx", "--report-trx-filename", f"{project}.trx",
                "--results-directory", str(results), "--pre-enumerate-theories", "on"]
     selected = None
-    if project in ("Issuer", "Issuer.Lifecycle"):
+    if project in ("Issuer", "Issuer.Lifecycle", "Administrator"):
         # Invoke the native executable: the SDK's discovery transport does not forward JSON output.
         discovery = ["dotnet", "run", "--project", command[3], "--no-build", "--no-restore", "--",
                      "--pre-enumerate-theories", "on", "--list-tests", "json"]
         def discover(expression=None):
             invocation = discovery + (["--filter", expression] if expression else [])
-            result = subprocess.run(invocation, cwd=ROOT, capture_output=True, text=True, timeout=60, check=True)
-            return catalogue(result.stdout, lifecycle=project == "Issuer.Lifecycle")
+            result = execute(invocation, os.environ.copy(), timeout=60, capture=True)
+            return catalogue(result, lifecycle=project != "Issuer")
         all_tests = discover()
-        if project == "Issuer.Lifecycle":
+        if project == "Administrator":
+            expression = f"Provider={args.profile}&FullyQualifiedName~IdentityPlatform.Administrator.Tests.Features.Bootstrap."
+            selected = discover(expression)
+            inventory = json.loads((ROOT / "eng/administrator-test-matrix.json").read_text())
+            counts = {provider: matrix["profiles"][provider]["Administrator"] for provider in ("PostgreSql", "SqlServer")}
+            require_administrator_partition(all_tests, selected, args.profile, counts, inventory)
+            command += ["--filter", expression]
+        elif project == "Issuer.Lifecycle":
             expression = f"Provider={args.profile}&FullyQualifiedName~IdentityPlatform.Issuer.Lifecycle.Tests.Features.{story}."
             selected = discover(expression)
             require_lifecycle_story(all_tests, selected, args.profile, story, matrix)
@@ -70,26 +79,14 @@ for project, expected_count, story in invocations:
     environment["IDENTITY_TEST_ARTIFACTS"] = str(results)
     if args.browser:
         environment["IDENTITY_TEST_BROWSER"] = args.browser
-    if project in ("AppHost", "Issuer", "Issuer.Lifecycle"):
+    if project in ("AppHost", "Issuer", "Issuer.Lifecycle", "Administrator"):
         environment["DOTNET_ENVIRONMENT"] = "Development"
     report = results / f"{project}.trx"
     report.unlink(missing_ok=True)
-    with subprocess.Popen(command, cwd=ROOT, env=environment, start_new_session=True) as process:
-        try:
-            exit_code = process.wait(timeout=180 if args.profile == "unit" else 660)
-        except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGTERM)
-            try:
-                process.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                os.killpg(process.pid, signal.SIGKILL)
-                process.wait()
-            raise RuntimeError(f"{project}/{args.profile} exceeded its outer execution deadline") from None
-        if exit_code:
-            raise subprocess.CalledProcessError(exit_code, command)
+    execute(command, environment, timeout=180 if args.profile == "unit" else 660)
     count = require_complete_trx(report, expected_count=expected_count)
     if selected is not None:
         require_execution_names(report, selected)
-        if project == "Issuer.Lifecycle":
+        if project in ("Issuer.Lifecycle", "Administrator"):
             require_lifecycle_execution(report, selected)
     print(f"Verified {project}/{label}: {count} required tests passed; none skipped", flush=True)

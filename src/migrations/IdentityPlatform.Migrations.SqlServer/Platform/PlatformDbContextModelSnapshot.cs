@@ -23,6 +23,93 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorBootstrapReceipt", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BundleVersion")
+                        .HasColumnType("int");
+
+                    b.Property<long>("CompletedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("OperationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OriginalNormalizedUserName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdministratorBootstrapReceipt", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorBootstrapReceipt_Singleton", "[Id] = 1");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorEnrollment", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("AdministratorEnrollment", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorEnrollment_Revision", "[Revision] >= 0");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorGovernance", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("BootstrapConsumed")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdministratorGovernance", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorGovernance_Revision", "[Revision] >= 0");
+
+                            t.HasCheckConstraint("CK_AdministratorGovernance_Singleton", "[Id] = 1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BootstrapConsumed = false,
+                            Revision = 0L
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.LocalIdentitySession", b =>
                 {
                     b.Property<string>("Id")

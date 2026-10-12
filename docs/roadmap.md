@@ -52,7 +52,7 @@ Prerequisites: issuer flow and durable session/key behavior; minimum administrat
 
 | Task | Deliverable and acceptance |
 | --- | --- |
-| M02-A | Protected operator-supplied initial administrator bootstrap, minimum MFA/recovery and permission model. No default password or public bootstrap endpoint. Audit bootstrap/security transitions. |
+| M02-A | In progress: [feature 008](../specs/008-administrator-foundation/spec.md), three sequential reviewed PRs approved. First: protected bootstrap, inert pending administrator and explicit permission/governance storage; provider verification underway. Next: TOTP enrollment/MFA/restricted recovery. Third: current authority and last-administrator enforcement. Admin API/BFF access remains unavailable until M02-B–D. |
 | M02-B | Actual BFF code/S256/PAR login/callback/logout, same-origin secure cookies, separate protected BFF key ring, server-held tickets/tokens, idle/absolute expiry and fresh session identifiers. |
 | M02-C | Two-node refresh serialization, rotation/replay response, fail-closed eligibility, CSRF/fixation/origin/proxy controls and concurrency/response-loss tests. |
 | M02-D | Admin API issuer/audience/token-type/store validation and current authorization; deny bypass via direct HTTP calls. Prove specified five-second enforcement across instances. |
