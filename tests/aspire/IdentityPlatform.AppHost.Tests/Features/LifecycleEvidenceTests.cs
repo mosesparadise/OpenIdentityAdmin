@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using IdentityPlatform.Testing;
@@ -28,6 +29,36 @@ public sealed class LifecycleEvidenceTests
         Assert.True(error.Message.Contains("cleanup.stop:IOException", StringComparison.Ordinal), "Stop cleanup stage was lost.");
         Assert.True(error.Message.Contains("cleanup.dispose:TimeoutException", StringComparison.Ordinal), "Dispose cleanup stage was lost.");
         new LifecycleFailures().RequireSuccess();
+    }
+
+    [Fact]
+    public async Task Process_exit_between_proc_open_and_read_is_absence_but_other_io_failures_propagate()
+    {
+        using var process = Process.Start(new ProcessStartInfo("/usr/bin/sleep", "30") { UseShellExecute = false })!;
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        try
+        {
+            var original = ProcessTreeEvidence.Read(process.Id)!.Generation;
+            Assert.False(ProcessTreeEvidence.Terminated(original));
+            using var file = new FileStream($"/proc/{process.Id}/stat", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var reader = new StreamReader(file);
+            process.Kill();
+            await process.WaitForExitAsync(deadline.Token);
+            // This is a real kernel ESRCH from an already-open proc file, not a mock.
+            Assert.Null(ProcessTreeEvidence.Read(process.Id, reader.ReadToEnd));
+            Assert.True(ProcessTreeEvidence.Terminated(original));
+            Assert.Throws<IOException>(() => ProcessTreeEvidence.Read(process.Id, () => throw new IOException("I/O error", 5)));
+            Assert.Throws<UnauthorizedAccessException>(() => ProcessTreeEvidence.Read(process.Id, () => throw new UnauthorizedAccessException()));
+        }
+        finally
+        {
+            if (!process.HasExited)
+            {
+                process.Kill();
+                using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                await process.WaitForExitAsync(cleanup.Token);
+            }
+        }
     }
 
     [Theory]

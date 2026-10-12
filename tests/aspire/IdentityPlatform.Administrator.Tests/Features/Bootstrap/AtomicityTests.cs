@@ -51,6 +51,7 @@ public sealed partial class BootstrapTests
     {
         await using var lease = await fixture.LeaseAsync(provider);
         var before = await SnapshotAsync(lease);
+        string? cancellationFailure = null;
         switch (scenario)
         {
             case "audit":
@@ -85,7 +86,7 @@ public sealed partial class BootstrapTests
                     }
                     finally
                     {
-                        await CancelAndDrainAsync(attempt, cancelled, sqlAttention: provider == "SqlServer");
+                        cancellationFailure = await CancelAndDrainAsync(attempt, cancelled, sqlAttention: provider == "SqlServer");
                     }
                 }
                 break;
@@ -102,7 +103,7 @@ public sealed partial class BootstrapTests
                     }
                     finally
                     {
-                        await CancelAndDrainAsync(attempt, cancelled);
+                        cancellationFailure = await CancelAndDrainAsync(attempt, cancelled);
                     }
                 }
                 break;
@@ -121,8 +122,9 @@ public sealed partial class BootstrapTests
         await lease.AssertRuntimeDrainedAsync();
         Assert.True(before == await SnapshotAsync(lease), "Failed initialization left partial state.");
         Assert.Equal(BootstrapOutcome.Created, await lease.InitializeAsync(Token));
+        Assert.True(cancellationFailure is null, "Cancellation classification failed after drain/rollback/recovery proof: " + cancellationFailure);
     }
-    private static async Task CancelAndDrainAsync(Task attempt, CancellationTokenSource operation, bool sqlAttention = false)
+    private static async Task<string?> CancelAndDrainAsync(Task attempt, CancellationTokenSource operation, bool sqlAttention = false)
     {
         await operation.CancelAsync();
         using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(40));
@@ -132,10 +134,13 @@ public sealed partial class BootstrapTests
         var attention = sqlAttention && failure is Microsoft.Data.SqlClient.SqlException sql && sql.Errors.Count == 1 &&
             sql.Number == 0 && sql.Class == 11 && sql.State == 0 && sql.Message == "Operation cancelled by user.";
         var diagnostic = failure is Microsoft.Data.SqlClient.SqlException providerFailure
-            ? $"SqlException number={providerFailure.Number} class={providerFailure.Class} state={providerFailure.State} errors={providerFailure.Errors.Count}"
+            ? "SqlException inner=" + (providerFailure.InnerException is not null) + " errors=" + string.Join(";",
+                providerFailure.Errors.Cast<Microsoft.Data.SqlClient.SqlError>().Select(error =>
+                    $"number={error.Number},class={error.Class},state={error.State},line={error.LineNumber},procedureEmpty={string.IsNullOrEmpty(error.Procedure)},attention={error.Message == "Operation cancelled by user."},statementTerminated={error.Message == "The statement has been terminated."},severe={error.Message == "A severe error occurred on the current command.  The results, if any, should be discarded."}"))
             : failure?.GetType().Name ?? "no failure";
-        Assert.True(attempt.IsCompleted && !cleanup.IsCancellationRequested && (failure is OperationCanceledException || attention),
-            "Original operation did not finish with recognized cancellation within independent cleanup deadline: " + diagnostic);
+        Assert.True(attempt.IsCompleted && !cleanup.IsCancellationRequested,
+            "Original operation did not finish within independent cleanup deadline: " + diagnostic);
+        return failure is OperationCanceledException || attention ? null : diagnostic;
     }
 
 }

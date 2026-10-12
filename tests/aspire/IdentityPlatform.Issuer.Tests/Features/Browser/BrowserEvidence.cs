@@ -23,7 +23,11 @@ internal static class BrowserEvidence
         "SEC_ERROR_UNKNOWN_ISSUER", "SEC_ERROR_UNTRUSTED_ISSUER", "SEC_ERROR_CA_CERT_INVALID",
         "MOZILLA_PKIX_ERROR_SELF_SIGNED_CERT", "ERR_CERT_AUTHORITY_INVALID", "Unacceptable TLS certificate",
         "Target page, context or browser has been closed", "Missing X server", "Executable doesn't exist",
-        "SEC_ERROR_UNTRUSTED_CERT", "SEC_ERROR_UNKNOWN", "SSL_ERROR_UNKNOWN"
+        "SEC_ERROR_UNTRUSTED_CERT", "SEC_ERROR_UNKNOWN", "SSL_ERROR_UNKNOWN",
+        // Diagnostic categories only: none expands certificate-rejection acceptance.
+        "Provisiolal navigation canceled.", "Load failed", "An SSL error has occurred",
+        "Connection terminated unexpectedly", "Could not connect", "Connection refused",
+        "cancelled", "canceled", "Timeout"
     ];
     public static string Classify(Exception exception) => ErrorMarkers.FirstOrDefault(value => exception.Message.Contains(value, StringComparison.Ordinal)) ?? "unclassified browser error";
 
