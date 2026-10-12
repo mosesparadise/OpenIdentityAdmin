@@ -2,6 +2,8 @@
 
 Baseline main: `6c64d34bead95e44ed9efe14db6483595f1a48c8`. Branch: `018-administrator-foundation`.
 
+**Current acceptance:** the first increment passed all 31 checks at implementation commit `d6a0dd9a74bdd73eb973a49c2f67cb9a17ec4a43`, tree `851ec50fb69a2aa631c41f2ea3ed472c13ebed51`, in [run 38248577326](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38248577326), attempt 1. Final documentation-head checks and normal squash are recorded live in [PR #21](https://github.com/mosesparadise/OpenIdentityAdmin/pull/21). Earlier failures and limits below remain part of the evidence; they are not erased by the accepted checkpoint. Only bootstrap/storage is accepted: administrator login, MFA/recovery and governance enforcement remain subsequent work.
+
 User confirmed three sequential PRs, TOTP/recovery first with passkeys in M05, and the proposed existing-project/dedicated-test structure on12October2026. Approved v0.2 remains the implementation authority; no security exception is proposed.
 
 Initial read-only architecture/security/test reviews identified required permanent bootstrap consumption, shared governance serialization, inactive enrollment state, native manager/audit transaction proof and isolated strict test-runner selection. These are reflected in the design. Design review has converged. Source is implemented; runtime/coverage acceptance and PR delivery remain in progress.
@@ -47,3 +49,25 @@ Run 38247095829 established the exact SQL cancellation collection after runtime 
 Both provider restart and all six application browser cells passed in that diagnostic run. The earlier unknown WebKit failure is not retroactively explained. Local WebKit probing was unavailable: the pinned executable was absent, elevated dependency installation was unavailable, and the official download returned managed-network Domain forbidden; no alternate route was attempted. Required browser acceptance remains CI-based.
 
 The strict collection matcher passed independent test-source review, a zero-warning/error build, and all five targeted PostgreSQL atomic-failure cases (56.534s), including its seeded classifier controls. Corrected SQL Server execution and the complete final-head CI gate remain required before delivery acceptance.
+
+## Accepted implementation checkpoint
+
+Run 38248577326 passed all 31 jobs without a job retry or skipped required case on this head: 1,301 ordinary .NET cases (316 unit/harness; 604 standard-provider; 82 lifecycle; 90 administrator; 174 application-browser; 35 contract), 34 Node contract controls, critical mutation checks for both providers, the focused WebKit contrast experiment, static-analysis seeded controls, dependency/advisory/license/secret policy, instruction/register integrity and strict evidence-selection controls. The administrator jobs passed exactly 45/45 each: PostgreSQL 352.215s, SQL Server 378.496s. All eight lifecycle cells and all six application-browser cells passed. The earlier unexplained WebKit failure remains a documented limit; no claim of proving its cause or absence of intermittency is made.
+
+All 23 required coverage inputs were present. Every required module exceeded the unchanged 90% line / 80% branch floor:
+
+| Module | Lines | Branches |
+| --- | --- | --- |
+| Core | 100.0% | 100.0% |
+| Infrastructure | 99.2% | 100.0% |
+| ServiceDefaults | 100.0% | 100.0% |
+| Migrator | 99.0% | 100.0% |
+| AuthServer | 96.3% | 98.6% |
+| Admin.Api | 100.0% | 100.0% |
+| Admin.Bff | 100.0% | 100.0% |
+| Worker | 100.0% | 100.0% |
+| AppHost | 98.8% | 100.0% |
+
+Architecture, security and test reviewers accepted the bounded source and corrections. No open GitHub review thread remained at the checkpoint. Copilot exhausted its review quota and supplied no substantive review; it is not counted as review evidence. Native executable invocation, replay, rejection/exit behavior and prior-schema upgrade are verified on both providers; the operator quickstart records the matching command and configuration boundary. The final documentation-only commit must still pass its required checks before normal squash; no self-approval or protection bypass is authorized.
+
+M02-A increments 2–3, M02-B–E, M01-F vendor/authenticated-documentation acceptance, human pilot assessment, independent assurance and public-release certification remain open. This increment creates a disabled account only; it grants no usable administrator session or production API/BFF access.

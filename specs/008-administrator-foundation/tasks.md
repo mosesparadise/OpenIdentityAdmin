@@ -1,6 +1,6 @@
 # Tasks: Administrator foundation
 
-Only increment1 is ready for detailed implementation review. User-approved delivery is three sequential PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
+Increment 1 has completed its implementation acceptance checkpoint; PR #21 is the live final-check and merge record. User-approved delivery is three sequential PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
 
 ## Setup and shared design
 
@@ -20,8 +20,8 @@ Only increment1 is ready for detailed implementation review. User-approved deliv
 - [x] T011 [US1] Implement BOOT-01–04 and BOOT-08/09 real-provider/process/manager cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap.
 - [x] T012 [US1] Implement observable race, audit denial, cancellation/crash and lost-result cases BOOT-05–07 in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap; no secret-bearing assertion output.
 - [x] T013 [US1] Add strict isolated administrator provider selection and seeded evidence controls in scripts, eng/test-matrix.json and .github/workflows/verify.yml; require both new coverage inputs without enlarging issuer invocations.
-- [ ] T014 [US1] Run required provider/regression/static/mutation/coverage checks, independent source reviews, and record exact results in specs/008-administrator-foundation/verification.md; correct findings before normal squash.
-- [ ] T015 [US1] Replace planned quickstart commands with verified commands and update docs/roadmap.md; exact-head checks and live PR merge record complete increment1 delivery.
+- [x] T014 [US1] Run required provider/regression/static/mutation/coverage checks, independent source reviews, and record exact results in specs/008-administrator-foundation/verification.md; correct findings before normal squash.
+- [x] T015 [US1] Replace planned quickstart commands with verified commands and update docs/roadmap.md; use PR #21 for the authoritative final documentation checks and normal squash record.
 
 ## Increment 2 — US2 MFA and restricted recovery
 
