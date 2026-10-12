@@ -49,7 +49,7 @@
   },
   "browser": {
     "Issuer": 29,
-    "Administrator": 5
+    "Administrator": 6
   },
   "lifecycle_stories": {
     "Restart": {

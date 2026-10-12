@@ -110,19 +110,11 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
     private static async Task RequireHistoryAsync(IPage page, string seed)
     {
         await AdministratorHistory.NavigateAsync(() => page.GoBackAsync());
-        await RequireNoRedisplayAsync(page, seed);
+        await AdministratorHistory.RequireNoRedisplayAsync(page, seed);
         await AdministratorHistory.NavigateAsync(() => page.ReloadAsync());
-        await RequireNoRedisplayAsync(page, seed);
+        await AdministratorHistory.RequireNoRedisplayAsync(page, seed);
         await AdministratorHistory.NavigateAsync(() => page.GoForwardAsync());
-        await RequireNoRedisplayAsync(page, seed);
-    }
-
-    /// <summary>Checks only fixed secret markers and an in-memory setup value, including restored browser documents.</summary>
-    private static async Task RequireNoRedisplayAsync(IPage page, string seed)
-    {
-        const string NoRedisplay = "Committed account secrets reappeared during browser history traversal.";
-        var html = await page.ContentAsync();
-        Assert.True(await page.Locator(RecoveryCodes).CountAsync() == 0 && !html.Contains(seed, StringComparison.Ordinal), NoRedisplay);
+        await AdministratorHistory.RequireNoRedisplayAsync(page, seed);
     }
 
     /// <summary>Uses a fresh browser binding, corrects a generic password error and completes ordinary native MFA login.</summary>

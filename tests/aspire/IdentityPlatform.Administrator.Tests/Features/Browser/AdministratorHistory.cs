@@ -10,6 +10,25 @@ internal static class AdministratorHistory
     private const string Firefox = "firefox";
     private const string ChromiumMiss = "net::ERR_CACHE_MISS";
     private const string FirefoxMiss = "NS_ERROR_DOCUMENT_NOT_CACHED";
+    private const string Root = "html";
+    private const int ReadinessMilliseconds = 5000;
+    private const string Snapshot = """
+        (element, seed) => {
+            if (document.readyState !== 'complete') return false;
+            if (document.querySelectorAll('.recovery-codes code').length !== 0 || element.outerHTML.includes(seed))
+                throw new Error('Committed account secrets reappeared during browser history traversal.');
+            return true;
+        }
+        """;
+
+    /// <summary>Uses driver polling for readiness even without page scripts, then fails immediately on one atomic secret-bearing observation.</summary>
+    internal static async Task RequireNoRedisplayAsync(IPage page, string seed, float timeout = ReadinessMilliseconds)
+    {
+        await page.Locator(Root).WaitForFunctionAsync(Snapshot, seed, new()
+        {
+            Timeout = timeout
+        });
+    }
 
     /// <summary>Accepts only the selected engine's exact leading cache-miss code; URL mentions and generic failures do not qualify.</summary>
     internal static bool IsCacheMiss(string engine, string message)
