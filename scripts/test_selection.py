@@ -148,7 +148,36 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
         actual = [test[0] for test in all_tests.values() if test[1] == name]
         if count <= 0 or len(expected) != count or len(set(expected)) != count or sorted(actual) != sorted(expected):
             raise ValueError('Administrator catalogue differs from reviewed identities')
-    if any(test[2] or test[3] != 'IdentityPlatform.Administrator.Tests.Features.Bootstrap' for test in all_tests.values()):
+    if any(test[2] or test[3] not in ('IdentityPlatform.Administrator.Tests.Features.Bootstrap', 'IdentityPlatform.Administrator.Tests.Features.Factors') for test in all_tests.values()):
         raise ValueError('Administrator catalogue contains an unexpected namespace or category')
     if selected != {uid: test for uid, test in all_tests.items() if test[1] == provider}:
         raise ValueError('Administrator selection omits or substitutes provider cases')
+
+
+def administrator_invocations(matrix, profile, story=None):
+    stories = matrix['administrator_stories']
+    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors'}:
+        raise ValueError('Administrator stories and provider must be explicitly reviewed')
+    if story is not None and story not in stories:
+        raise ValueError('Unknown administrator story')
+    for provider in ('PostgreSql', 'SqlServer'):
+        if any(set(counts) != {'PostgreSql', 'SqlServer'} or any(type(n) is not int or n <= 0 for n in counts.values()) for counts in stories.values()):
+            raise ValueError('Each administrator story requires both providers')
+        if sum(counts[provider] for counts in stories.values()) != matrix['profiles'][provider]['Administrator']:
+            raise ValueError('Administrator stories do not exhaust the provider profile')
+    return [(name, stories[name][profile]) for name in stories if story is None or name == story]
+
+
+def require_administrator_story(all_tests, selected, provider, story, matrix, inventory):
+    administrator_invocations(matrix, provider, story)
+    complete = {uid: test for uid, test in all_tests.items() if test[1] == provider}
+    require_administrator_partition(all_tests, complete, provider,
+        {p: matrix['profiles'][p]['Administrator'] for p in ('PostgreSql', 'SqlServer')}, inventory)
+    namespaces = {name: 'IdentityPlatform.Administrator.Tests.Features.' + name for name in matrix['administrator_stories']}
+    for name, namespace in namespaces.items():
+        for p, count in matrix['administrator_stories'][name].items():
+            if sum(test[1] == p and test[3] == namespace for test in all_tests.values()) != count:
+                raise ValueError('Administrator story catalogue count changed without review')
+    expected = {uid: test for uid, test in complete.items() if test[3] == namespaces[story]}
+    if selected != expected:
+        raise ValueError('Administrator story selection overlaps, omits or substitutes identities')

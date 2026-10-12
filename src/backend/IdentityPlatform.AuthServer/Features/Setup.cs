@@ -5,6 +5,7 @@ using IdentityPlatform.AuthServer.Features.Issuer;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.AuthServer.Features.Storage;
+using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.ServiceDefaults;
 
 namespace IdentityPlatform.AuthServer.Features;
@@ -36,6 +37,10 @@ internal static class Setup
         else if (startup.AdministratorEnabled)
         {
             builder.Services.AddAccounts(pilot: false, administrator: true);
+        }
+        if (startup.AdministratorEnabled)
+        {
+            builder.Services.AddAdministratorFactors(startup.Credentials!.Issuer);
         }
         return builder;
     }

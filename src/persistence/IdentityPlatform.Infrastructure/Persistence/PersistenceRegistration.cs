@@ -1,14 +1,18 @@
 using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
 
 namespace IdentityPlatform.Infrastructure.Persistence;
 
+/// <summary>Registers provider-specific native Identity/OpenIddict persistence with unavailable factors by default.</summary>
+/// <example><code>services.AddIdentityPersistence(provider, runtimeConnection);</code></example>
 public static class PersistenceRegistration
 {
     public static IServiceCollection AddPlatformPersistence(
@@ -19,17 +23,22 @@ public static class PersistenceRegistration
             .AddSessionPersistence(provider, sessionConnection);
     }
 
+    /// <summary>Registers native managers and a guarded factor store using the supplied least-privilege database connection.</summary>
+    /// <example><code>services.AddIdentityPersistence(DatabaseProvider.PostgreSql, configuredRuntimeConnection);</code></example>
     public static IServiceCollection AddIdentityPersistence(
         this IServiceCollection services, DatabaseProvider provider, string platformConnection)
     {
+        const string PlatformHistory = "PlatformMigrations";
         ValidateProviderConnection(platformConnection, provider);
 
         services.AddDbContext<PlatformDbContext>(options =>
-            ConfigureDatabase(options, provider, platformConnection, "PlatformMigrations"));
+            ConfigureDatabase(options, provider, platformConnection, PlatformHistory));
 
         services.AddIdentityCore<PlatformUser>(IdentityStoreConfiguration.Configure)
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<PlatformDbContext>();
+        services.Replace(ServiceDescriptor.Scoped<IUserStore<PlatformUser>, PlatformIdentityStore>());
+        services.TryAddScoped<FactorStore, UnavailableFactorStore>();
 
         services.AddOpenIddict().AddCore(options =>
         {

@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Fixtures;
 
+/// <summary>Holds a test-owned database lock while observing real bootstrap contention.</summary>
+/// <example><code>await using var heldLock = await GovernanceLock.AcquireAsync(lease);</code></example>
 public sealed class GovernanceLock : IAsyncDisposable
 {
     private readonly AsyncServiceScope scope;
@@ -59,35 +61,13 @@ public sealed class GovernanceLock : IAsyncDisposable
         }
     }
 
-    public async Task ObserveWaitersAsync(BootstrapDatabase lease, int minimum)
+    /// <summary>Observes native blocked statements instead of inferring contention from elapsed time.</summary>
+    /// <example><code>await heldLock.ObserveWaitersAsync(lease, minimum: 1);</code></example>
+    public Task ObserveWaitersAsync(BootstrapDatabase lease, int minimum)
     {
-        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
-        deadline.CancelAfter(TimeSpan.FromSeconds(20));
-        await using var scope = lease.Administrator.CreateAsyncScope();
-        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        var connection = database.Database.GetDbConnection();
-        await connection.OpenAsync(deadline.Token);
-        while (true)
-        {
-            await using var command = connection.CreateCommand();
-            command.CommandTimeout = 3;
-            command.CommandText = database.Database.IsSqlServer()
-                ? "WITH blocked AS (SELECT session_id FROM sys.dm_exec_requests WHERE database_id = DB_ID() AND blocking_session_id = @blocker UNION ALL SELECT r.session_id FROM sys.dm_exec_requests r JOIN blocked b ON r.blocking_session_id = b.session_id WHERE r.database_id = DB_ID()) SELECT COUNT(DISTINCT b.session_id) FROM blocked b JOIN sys.dm_exec_sessions s ON s.session_id = b.session_id JOIN sys.dm_exec_requests r ON r.session_id = b.session_id CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t WHERE s.login_name = 'platform_runtime' AND t.text LIKE @stage"
-                : "WITH RECURSIVE blocked(pid) AS (SELECT pid FROM pg_stat_activity WHERE datname = current_database() AND @blocker = ANY(pg_blocking_pids(pid)) UNION SELECT a.pid FROM pg_stat_activity a JOIN blocked b ON b.pid = ANY(pg_blocking_pids(a.pid)) WHERE a.datname = current_database()) SELECT COUNT(*) FROM blocked b JOIN pg_stat_activity a USING(pid) WHERE a.usename = 'platform_runtime' AND a.query LIKE @stage";
-            var parameter = command.CreateParameter();
-            parameter.ParameterName = "blocker";
-            parameter.Value = blocker;
-            command.Parameters.Add(parameter);
-            var stage = command.CreateParameter();
-            stage.ParameterName = "stage";
-            stage.Value = audit ? "%INSERT%SecurityAuditIntent%" : "%UPDATE%AdministratorGovernance%";
-            command.Parameters.Add(stage);
-            if (Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token), System.Globalization.CultureInfo.InvariantCulture) >= minimum)
-            {
-                return;
-            }
-            await Task.Delay(50, deadline.Token);
-        }
+        const string AuditStage = "%INSERT%SecurityAuditIntent%";
+        const string GovernanceStage = "%UPDATE%AdministratorGovernance%";
+        return DatabaseWaiters.ObserveAsync(lease, blocker, audit ? AuditStage : GovernanceStage, minimum);
     }
 
     public async ValueTask DisposeAsync()

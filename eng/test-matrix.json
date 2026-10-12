@@ -37,14 +37,14 @@
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 45
+      "Administrator": 96
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 45
+      "Administrator": 96
     }
   },
   "browser": {
@@ -66,6 +66,16 @@
     "KeyRotation.Retirement": {
       "PostgreSql": 2,
       "SqlServer": 2
+    }
+  },
+  "administrator_stories": {
+    "Bootstrap": {
+      "PostgreSql": 45,
+      "SqlServer": 45
+    },
+    "Factors": {
+      "PostgreSql": 51,
+      "SqlServer": 51
     }
   }
 }
