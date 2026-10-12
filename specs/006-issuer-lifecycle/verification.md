@@ -1,8 +1,8 @@
-# Issuer lifecycle verification — restart and distribution delivered
+# Issuer lifecycle verification — all three stories have source acceptance
 
-The user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. PR #17 delivered restart as squash `a6b4dfb`. Distribution source acceptance is recorded in [run 108 below](#distribution-source-acceptance--run-108): all 21 checks and 1,097 ordinary cases passed. Final run `38183025677` passed all 21 checks; [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18) squash-merged as `58ebfb1`. Key overlap/retirement, full M01-E, T021 human assessment, M01-F and public-release gates remain open.
+The user confirmed the dedicated lifecycle test project and three sequential PRs on 11 October 2026. PR #17 delivered restart as squash `a6b4dfb`. Distribution source acceptance is recorded in [run 108 below](#distribution-source-acceptance--run-108): all 21 checks and 1,097 ordinary cases passed. Final run `38183025677` passed all 21 checks; [PR #18](https://github.com/mosesparadise/OpenIdentityAdmin/pull/18) squash-merged as `58ebfb1`. Key overlap/retirement source acceptance passed all 25 checks / 1,149 ordinary cases in run `38210425980`; [PR #19](https://github.com/mosesparadise/OpenIdentityAdmin/pull/19) tracks its final diagnostic/documentation-head checks and squash delivery. T021 human assessment, M01-F, wider-product and public-release gates remain open.
 
-Earlier sections retain historical experiments and checkpoints; their counts and pending statements describe those earlier stages. Source acceptance is in run 108; final distribution delivery is recorded below.
+Earlier sections retain historical experiments and checkpoints; their counts and pending statements describe those earlier stages. Latest key-lifecycle source acceptance is in [run 114 below](#key-lifecycle-source-acceptance--run-114); earlier distribution acceptance/delivery records remain historical.
 
 Spec Kit template resolution, setup-plan/setup-tasks and prerequisites ran. No extension hooks exist. The requirements checklist and independent design review are complete. The prior accepted checkpoint is PR #16 squash `559380e952059383741a7bc75c259b5bb39ed1e1`; its 13 checks/901 ordinary cases do not establish lifecycle behavior.
 
