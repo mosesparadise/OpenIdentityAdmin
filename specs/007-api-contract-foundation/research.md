@@ -6,7 +6,7 @@ Status: source/package availability research only. No dependency graph has been 
 
 Both `src/backend/IdentityPlatform.Admin.Api/Features/Setup.cs` and the BFF equivalent call `AddStorage` and `MapPlatformHealthEndpoints`. Neither registers an administrator authentication/authorization scheme, session or proxy. `src/frontend/README.md` reserves a future React application. Therefore there is no real protected documentation browser path to reuse.
 
-Decision proposed: keep docs unmapped and test representative tooling in non-shipped fixtures. Alternative rejected: temporary anonymous Development docs, use of the non-admin pilot as admin authentication, or fake production operations. These would create unapproved exposure or misleading acceptance.
+User-confirmed decision: keep docs unmapped and test representative tooling in non-shipped fixtures. Alternative rejected: temporary anonymous Development docs, use of the non-admin pilot as admin authentication, or fake production operations. These would create unapproved exposure or misleading acceptance.
 
 Build-time Microsoft generation executes entry-point startup. Existing storage configuration must remain fail-closed. Export validation must use explicit synthetic configuration without DB access/seed/migration/key loading and must prove no network side effects. Do not add a general production startup-validation bypass.
 

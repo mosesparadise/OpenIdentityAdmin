@@ -1,6 +1,6 @@
 # Validation quickstart
 
-This is contract tooling, not a production administrator UI. Actual Admin.Api/Admin.Bff hosts still expose health only: `/docs`, `/openapi` and fixture routes return404 in every tested environment. Do not enable documentation until the M02/M04 security dependencies are implemented and accepted.
+This is contract tooling, not a production administrator UI. Actual Admin.Api/Admin.Bff hosts still expose health only: `/docs`, `/openapi` and fixture routes return404 in every tested environment. Do not enable documentation until the M02/M04 security dependencies and the separate [vendor inventory/advisory/notice activation gate](../../eng/contracts/README.md) are implemented and accepted.
 
 ## Linux / WSL2 core checks
 

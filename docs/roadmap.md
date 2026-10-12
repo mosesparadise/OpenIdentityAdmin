@@ -159,7 +159,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-13 rules/dashboard | M08-B | Planned |
 | FR-14 federation | M05-D | Planned |
 | FR-15 keys/inventory | M01-B/E, M08-C, M09-B | Partial: credential/protection adapter |
-| FR-16 API/docs/contracts | M01-F, M04-D | Planned |
+| FR-16 API/docs/contracts | M01-F, M04-D | Partial: contract foundation in PR #20; authenticated docs, real resource contracts and vendor activation evidence remain open |
 | FR-17 provider equivalence | M01-A, every affected feature, M09-B/F | Partial: implemented scope tested |
 | FR-18 installation/recovery | M01-A/B/E, M02-A, M09-B | Partial: local schemas/provisioning and DP; production operations unfinished |
 | FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared tokens/themed Razor pilot; React and full manual acceptance remain planned |

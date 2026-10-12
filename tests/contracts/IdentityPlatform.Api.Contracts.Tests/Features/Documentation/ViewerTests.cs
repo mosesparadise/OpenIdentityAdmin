@@ -104,9 +104,7 @@ public sealed class ViewerTests
         Assert.True(errors.IsEmpty, string.Join(Environment.NewLine, errors));
         Assert.Equal(0, await page.EvaluateAsync<int>("Object.keys(localStorage).filter(k => /token|auth|credential/i.test(k)).length"));
 
-        await page.SetViewportSizeAsync(320, 900);
-        var overflow = await page.EvaluateAsync<string>("JSON.stringify([...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1 && getComputedStyle(e).position !== 'fixed').slice(0,12).map(e => ({tag:e.tagName, class:e.className, width:e.getBoundingClientRect().width})))");
-        Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"), overflow);
+
     }
 
     private static async Task VerifyRenderedDocumentAsync(IPage page, string viewer, bool dark, bool browserSurface)
@@ -171,6 +169,20 @@ public sealed class ViewerTests
         Assert.Contains("Example", body, StringComparison.Ordinal);
         await CaptureAsync(page, viewer, dark, browserSurface, "rendered");
         Assert.Equal("[]", await page.EvaluateAsync<string>("JSON.stringify(window.contractCsp)"));
+        await AssertAccessibleAsync(page);
+        await page.SetViewportSizeAsync(320, 900);
+        // Resize returns before every engine has painted its responsive layout.
+        await page.EvaluateAsync("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))");
+        await CaptureAsync(page, viewer, dark, browserSurface, "narrow");
+        var overflow = await page.EvaluateAsync<string>("JSON.stringify({viewport:innerWidth, root:document.documentElement.scrollWidth, body:document.body.scrollWidth, elements:[...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1 || e.scrollWidth > e.clientWidth + 1).slice(0,20).map(e => ({tag:e.tagName, class:String(e.className), width:e.getBoundingClientRect().width, right:e.getBoundingClientRect().right, scroll:e.scrollWidth, client:e.clientWidth, overflow:getComputedStyle(e).overflowX}))})");
+        Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"), overflow);
+        await AssertAccessibleAsync(page);
+        await page.SetViewportSizeAsync(1280, 900);
+
+    }
+
+    private static async Task AssertAccessibleAsync(IPage page)
+    {
         var axe = await page.RunAxe();
         Assert.True(axe.Violations.Length == 0, System.Text.Json.JsonSerializer.Serialize(axe.Violations.Select(v => new { v.Id, Nodes = v.Nodes.Select(n => new { n.Html, Messages = n.Any.Select(a => a.Message) }) })));
     }

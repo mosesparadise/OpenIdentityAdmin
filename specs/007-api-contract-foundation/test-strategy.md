@@ -1,6 +1,6 @@
 # Contract foundation acceptance design
 
-Status: proposed acceptance inventory, not executed evidence. Concrete commands/discovered test identities will be added to the implementation plan and verification record during implementation and discovery.
+Status: implemented acceptance inventory. Commands are in quickstart.md; exact identities and partition counts are in eng/contract-test-matrix.json. Execution results and remaining gates are recorded in verification.md; this design table is not evidence of a passing run.
 
 | Case group | Boundary and oracle | Requirements |
 | --- | --- | --- |
