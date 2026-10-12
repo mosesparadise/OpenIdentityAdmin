@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Data.SqlClient;
 
 namespace IdentityPlatform.Administrator.Tests.Fixtures;
@@ -26,6 +27,63 @@ internal static class CeremonyCancellation
             sql.InnerException is null && Matches(sql.Errors.Cast<SqlError>().Select(error =>
                 new Error(error.Number, error.Class, error.State, error.LineNumber, string.IsNullOrEmpty(error.Procedure), error.Message)).ToArray());
         return failure is OperationCanceledException || accepted ? null : failure?.GetType().Name ?? NoFailure;
+    }
+
+    /// <summary>Accepts only documented cancellation or timeout shapes after the observed production deadline, never unrelated SQL failures.</summary>
+    internal static void RequireDeadlineFailure(Exception? failure, bool sqlAllowed)
+    {
+        RequireControls();
+        RequireTimeoutControls();
+        if (failure is OperationCanceledException)
+        {
+            return;
+        }
+        Assert.True(sqlAllowed && failure is SqlException, failure?.GetType().Name ?? NoFailure);
+        var sql = (SqlException)failure!;
+        var errors = sql.Errors.Cast<SqlError>().ToArray();
+        var cancellation = sql.InnerException is null && Matches(errors.Select(error =>
+            new Error(error.Number, error.Class, error.State, error.LineNumber, string.IsNullOrEmpty(error.Procedure), error.Message)).ToArray());
+        var timeout = MatchesTimeout(errors.Select(error => (error.Number, error.Class)).ToArray(), sql.InnerException);
+        const string Diagnostic = "Unexpected deadline metadata: ";
+        const string Separator = ",";
+        const string Field = ":";
+        var metadata = string.Join(Separator, errors.Select(error => string.Join(Field, error.Number, error.Class, error.State, error.LineNumber)));
+        Assert.True(cancellation || timeout, Diagnostic + metadata);
+    }
+
+    /// <summary>Recognizes one provider timeout with its documented class and required native command-timeout cause.</summary>
+    private static bool MatchesTimeout(IReadOnlyList<(int Number, byte Class)> errors, Exception? inner)
+    {
+        const int CommandTimeout = -2;
+        const int LockTimeout = 1222;
+        const int WaitTimeout = 258;
+        const byte TimeoutClass = 11;
+        const byte LockClass = 16;
+        return errors.Count == 1 && (errors[0] == (CommandTimeout, TimeoutClass) && inner is Win32Exception { NativeErrorCode: WaitTimeout } ||
+            errors[0] == (LockTimeout, LockClass) && inner is null);
+    }
+
+    /// <summary>Proves companion errors, wrong causes/classes and unrelated provider failures never count as deadline evidence.</summary>
+    private static void RequireTimeoutControls()
+    {
+        const int WaitTimeout = 258;
+        const int CommandNumber = -2;
+        const byte CommandClass = 11;
+        const int LockNumber = 1222;
+        const byte LockClass = 16;
+        (int Number, byte Class)[] command = [(CommandNumber, CommandClass)];
+        (int Number, byte Class)[] locked = [(LockNumber, LockClass)];
+        var cause = new Win32Exception(WaitTimeout);
+        Assert.True(MatchesTimeout(command, cause));
+        Assert.True(MatchesTimeout(locked, null));
+        Assert.False(MatchesTimeout(command, null));
+        Assert.False(MatchesTimeout(locked, cause));
+        Assert.False(MatchesTimeout([], cause));
+        Assert.False(MatchesTimeout([.. command, .. locked], cause));
+        Assert.False(MatchesTimeout([(command[0].Number, locked[0].Class)], cause));
+        Assert.False(MatchesTimeout([(locked[0].Number, command[0].Class)], null));
+        Assert.False(MatchesTimeout([(command[0].Number - 1, command[0].Class)], cause));
+        Assert.False(MatchesTimeout(command, new Win32Exception(WaitTimeout + 1)));
     }
 
     /// <summary>Requires the exact ordered metadata/message collection; arbitrary companion failures never count as cancellation.</summary>

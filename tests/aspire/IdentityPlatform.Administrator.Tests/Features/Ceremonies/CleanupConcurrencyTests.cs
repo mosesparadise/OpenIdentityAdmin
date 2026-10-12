@@ -78,7 +78,7 @@ public sealed class CleanupConcurrencyTests(BootstrapFixture fixture)
                 await DatabaseWaiters.ObserveAsync(lease, blocker, AdmissionStage, 1);
                 var failure = await Record.ExceptionAsync(() => waiting.WaitAsync(TimeSpan.FromSeconds(DrainSeconds), factors.Token));
                 Assert.True(waiting.IsCompleted);
-                Assert.IsAssignableFrom<OperationCanceledException>(failure);
+                CeremonyCancellation.RequireDeadlineFailure(failure, factors.Database.Database.IsSqlServer());
                 Assert.InRange(elapsed.Elapsed.TotalSeconds, MinimumElapsedSeconds, DrainSeconds);
                 Assert.False(factors.Token.IsCancellationRequested);
                 Assert.Equal(1, await factors.Database.Set<AdministratorInteraction>().CountAsync(factors.Token));

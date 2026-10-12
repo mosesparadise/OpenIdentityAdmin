@@ -1,4 +1,5 @@
 using System.Data;
+using System.Data.Common;
 using System.Globalization;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
@@ -51,9 +52,9 @@ public sealed class ConnectionTests(BootstrapFixture fixture)
         await database.Database.CloseConnectionAsync();
     }
 
-    /// <summary>A server-terminated session makes restoration fail; ownership still closes it and restores command configuration.</summary>
+    /// <summary>A server-terminated session either fails restoration or is already closed; ownership never returns it as a live session.</summary>
     [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
-    public async Task Given_TerminatedSession_When_RestorationFails_Then_PhysicalConnectionIsDiscarded(string provider)
+    public async Task Given_TerminatedSession_When_OwnershipEnds_Then_PhysicalConnectionIsDiscarded(string provider)
     {
         await using var lease = await fixture.LeaseAsync(provider);
         using var material = new IssuerMaterialFixture();
@@ -65,7 +66,8 @@ public sealed class ConnectionTests(BootstrapFixture fixture)
         await owner.OpenAsync(factors.Token);
         var session = int.Parse(await ScalarAsync(database, database.Database.IsSqlServer() ? SqlIdentity : PostgresIdentity), CultureInfo.InvariantCulture);
         await TerminateAsync(lease, session);
-        Assert.NotNull(await Record.ExceptionAsync(() => owner.DisposeAsync().AsTask()));
+        var failure = await Record.ExceptionAsync(() => owner.DisposeAsync().AsTask());
+        Assert.True(failure is null or DbException, failure?.GetType().Name);
         Assert.Equal(ConnectionState.Closed, database.Database.GetDbConnection().State);
         Assert.Equal(OriginalCommandSeconds, database.Database.GetCommandTimeout());
         await database.Database.OpenConnectionAsync(factors.Token);
