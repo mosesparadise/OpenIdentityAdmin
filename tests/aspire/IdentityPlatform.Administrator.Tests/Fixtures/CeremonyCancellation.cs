@@ -52,14 +52,14 @@ internal static class CeremonyCancellation
     }
 
     /// <summary>Recognizes one provider timeout with its documented class and required native command-timeout cause.</summary>
-    private static bool MatchesTimeout(IReadOnlyList<(int Number, byte Class)> errors, Exception? inner)
+    private static bool MatchesTimeout((int Number, byte Class)[] errors, Exception? inner)
     {
         const int CommandTimeout = -2;
         const int LockTimeout = 1222;
         const int WaitTimeout = 258;
         const byte TimeoutClass = 11;
         const byte LockClass = 16;
-        return errors.Count == 1 && (errors[0] == (CommandTimeout, TimeoutClass) && inner is Win32Exception { NativeErrorCode: WaitTimeout } ||
+        return errors.Length == 1 && (errors[0] == (CommandTimeout, TimeoutClass) && inner is Win32Exception { NativeErrorCode: WaitTimeout } ||
             errors[0] == (LockTimeout, LockClass) && inner is null);
     }
 
