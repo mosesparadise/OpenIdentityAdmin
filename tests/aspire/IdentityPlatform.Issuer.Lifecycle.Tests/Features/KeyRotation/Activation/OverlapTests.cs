@@ -163,7 +163,7 @@ public sealed class OverlapTests
             var query = QueryHelpers.ParseQuery(target.Query);
             Assert.True(query["iss"] == host.Issuer.AbsoluteUri, "Foreign continuation changed the canonical issuer.");
             Assert.True(query["error"] == "access_denied" && query["state"] == completed.Flow.State);
-            Assert.All(query.Keys, key => Assert.True(key is "error" or "error_description" or "error_uri" or "state" or "iss"));
+            Assert.True(query.Keys.All(key => key is "error" or "error_description" or "error_uri" or "state" or "iss"), "Foreign denial returned unexpected fields.");
             Assert.False(completed.Flow.Completion.Task.IsCompleted);
         }
         await RestartEvidence.RequireUnchangedAsync(host, before);

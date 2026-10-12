@@ -44,15 +44,10 @@ internal static class KeyEvidence
         var json = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var keys = new JsonWebKeySet(json);
         Assert.Equal(expected.Order(StringComparer.Ordinal), keys.Keys.Select(key => key.Kid).Order(StringComparer.Ordinal));
-        Assert.All(keys.Keys, key => Assert.False(key.HasPrivateKey));
+        Assert.True(keys.Keys.All(key => !key.HasPrivateKey), "JWKS contains private material.");
         using var parsed = JsonDocument.Parse(json);
-        Assert.All(parsed.RootElement.GetProperty("keys").EnumerateArray(), key =>
-        {
-            foreach (var field in PrivateFields)
-            {
-                Assert.False(key.TryGetProperty(field, out _), "JWKS contains private fields.");
-            }
-        });
+        Assert.True(parsed.RootElement.GetProperty("keys").EnumerateArray().All(key =>
+            PrivateFields.All(field => !key.TryGetProperty(field, out _))), "JWKS contains private fields.");
         return json;
     }
 

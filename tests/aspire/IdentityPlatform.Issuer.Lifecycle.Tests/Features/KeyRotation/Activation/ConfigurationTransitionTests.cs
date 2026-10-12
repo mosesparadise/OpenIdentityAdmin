@@ -77,7 +77,8 @@ public sealed class ConfigurationTransitionTests
             Assert.True((await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken)).Length > 0, "Account asset is empty.");
         }
         using var keys = JsonDocument.Parse(await transport.GetStringAsync(new Uri(environment.Issuer, "/connect/jwks"), TestContext.Current.CancellationToken));
-        Assert.Equal(access.Kid, Assert.Single(keys.RootElement.GetProperty("keys").EnumerateArray()).GetProperty("kid").GetString());
+        var published = keys.RootElement.GetProperty("keys");
+        Assert.True(published.GetArrayLength() == 1 && published[0].GetProperty("kid").GetString() == access.Kid, "Unexpected public signing inventory.");
         return access.Kid;
     }
 }

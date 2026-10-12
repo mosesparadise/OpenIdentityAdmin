@@ -65,8 +65,8 @@ internal sealed class CachedRequestEvidence(TestFlow flow, CookieContainer cooki
         var lines = text.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(line => line.TrimEnd('\r')).ToArray();
         Assert.True(lines.Contains("error:" + Errors.InvalidToken, StringComparer.Ordinal) &&
             lines.Contains("error_uri:https://documentation.openiddict.com/errors/" + nativeError, StringComparer.Ordinal), "Unexpected native cached-request denial.");
-        Assert.All(lines, line => Assert.True(line.StartsWith("error:", StringComparison.Ordinal) ||
-            line.StartsWith("error_description:", StringComparison.Ordinal) || line.StartsWith("error_uri:", StringComparison.Ordinal), "Native error includes unexpected fields."));
+        Assert.True(lines.All(line => line.StartsWith("error:", StringComparison.Ordinal) ||
+            line.StartsWith("error_description:", StringComparison.Ordinal) || line.StartsWith("error_uri:", StringComparison.Ordinal)), "Native error includes unexpected fields.");
         await RestartEvidence.RequireUnchangedAsync(host, before);
         Assert.False(flow.Completion.Task.IsCompleted);
     }

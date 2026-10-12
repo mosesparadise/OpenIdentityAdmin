@@ -63,7 +63,7 @@ public sealed class GenerationGuardTests
             using var body = JsonDocument.Parse(text);
             Assert.True(body.RootElement.GetProperty("error").GetString() == Errors.ServerError &&
                 body.RootElement.GetProperty("error_description").GetString() == ActiveKeyPolicy.SafeDescription);
-            Assert.All(body.RootElement.EnumerateObject(), property => Assert.True(property.Name is "error" or "error_description" or "error_uri"));
+            Assert.True(body.RootElement.EnumerateObject().All(property => property.Name is "error" or "error_description" or "error_uri"), "Guard returned unexpected fields.");
         }
         Assert.True(beforeTokens.TokenIds.SetEquals((await ExchangeSnapshot.CaptureAsync(host)).TokenIds), "Access generation guard ran after token entry creation.");
         await using (var scope = host.Services.CreateAsyncScope())
@@ -217,7 +217,7 @@ public sealed class GenerationGuardTests
         {
             Assert.True(values["error_description"] == description, "Guard description was not sanitized.");
         }
-        Assert.All(values.Keys, key => Assert.True(key is "error" or "error_description" or "error_uri" or "state" or "iss", "Guard returned an unexpected credential field."));
+        Assert.True(values.Keys.All(key => key is "error" or "error_description" or "error_uri" or "state" or "iss"), "Guard returned an unexpected credential field.");
     }
 
     private static async Task WaitUntilAsync(DateTimeOffset instant)

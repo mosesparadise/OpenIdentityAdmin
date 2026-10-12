@@ -218,3 +218,50 @@ The first actual PostgreSQL overlap experiment reached the missing-encryption ca
 Architecture source review passed production ownership/selection and requested three test corrections: monotonic retirement evidence, no callback fragments and cleanup on partial fixture construction. All were corrected and re-reviewed PASS. Test review tightened target-node public key identity, immutable native entry preservation, safe error assertions, cleanup ownership and cancellation propagation in the direct native transaction. Security and final test/evidence review remain in progress. No full-matrix, SQL Server, lifecycle acceptance or squash delivery is claimed by this checkpoint.
 
 The first full local Activation invocation completed in 466.725 seconds: overlap passed (287.444s), configuration transition passed (102.724s), generation guard failed (74.883s). The failing callback contained native RFC9207 `iss`, which the allowlist omitted. The corrected oracle requires `iss` to equal the canonical issuer and still excludes credentials/fragments. The full invocation was not accepted; later native guard branches and final refinements require execution.
+
+
+The corrected focused PostgreSQL generation-guard case passed (one case, zero failures/skips; 169.927s outer summary). It exercised the actual certificate-tail and certificate-expiry HTTP errors, native cached-request lifetime override rejection and exact-limit recovery, then direct native-pipeline late ID failure with original-code redemption and the sole generated access entry bound to the original identity. Transaction cancellation is runner-linked. This focused pass precedes diagnostic-only assertion refinements and is not complete Activation or both-provider acceptance.
+
+Independent architecture, test and security source reviews now pass after corrections. Security review found that xUnit collection assertions could format a rejected JWK/token/error value in a failing TRX. These are now fixed-message Boolean aggregate assertions; the configuration-seam JWKS cardinality check similarly avoids printing raw elements. No observed production disclosure is claimed. Exact discovery lists **82 lifecycle cases**, matching 41 per provider across the four disjoint stories.
+
+| Contract | Concrete test identity / scope |
+| --- | --- |
+| KEY-01; LIFE-007/008 | Host `KeyInventoryTests` plus existing issuer credential/storage tests: inventory bounds, shape, duplicates, purpose/validity and disposal. |
+| KEY-02/03/04/06/07/08; LIFE-003/004/007/008 | Activation `OverlapTests.Staging_mixed_activation_premature_removal_and_retained_rollback_preserve_exact_artifacts`: native key IDs and immutable entries, both mixed directions, frozen/current public verification, genuine at_hash splice, exact-artifact denial/recovery and retained rollback. |
+| KEY-05; LIFE-002/004/007/008 | Same overlap case: original cookie, antiforgery form, owner-bound completed continuation and replay/state controls across actual activation. |
+| KEY-09; LIFE-007/008 | Host `ActiveKeyPolicyTests`/`NativeLifetimeTests` and Activation `GenerationGuardTests.Real_certificate_tail_expiry_and_request_override_fail_with_native_errors_and_fresh_recovery`: four native types, active validity/tail, maxima/overrides, exact native errors and observed side effects. |
+| KEY-10; LIFE-003/004/007/008/009 | Retirement `Actual_expiry_and_all_old_generation_termination_precede_two_node_retirement` and `Incomplete_stale_live_boundary_and_rollback_evidence_cannot_authorize_retirement`: actual expiry/wait plus independent negative boundary controls. |
+| KEY-11; LIFE-001/006/009/010 | Activation `ConfigurationTransitionTests.Private_configuration_changes_issuance_only_after_actual_process_replacement`, shared process/config/log/disposal assertions, exact provider discovery/execution and mandatory child-process coverage. |
+
+All five lifecycle identities above are theories selected separately for both real database providers. The pure boundary case retains a provider trait for exact story accounting; it is not itself database interaction. The scenario/helper source evidence does not substitute for final provider execution or final-head regression gates.
+
+The full local PostgreSQL Retirement story passed **2/2**, zero failures/skips, in 478.846 seconds with strict discovered/executed identity checks. The real case kept original artifacts and keys until the all-old-generation boundary and actual lifetime wait completed, verified native/public expiry before removal, then proved new-only issuance and original DP-cookie continuity on both nodes. The separate pure boundary case passed. This result precedes diagnostic-only assertion refinements; final-head both-provider CI remains the acceptance gate.
+
+CI run [38210425980](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38210425980), source `69b8e8ddef2c31e070cd6cc72be17a1bb6807e73`, tested merge `867fbe29243e162b085249c6f1740ed39e497896`, passed all four new provider/story jobs. Source and merge share tree `7f68b126088795dbc94d4e2a70f7d77d4630053d`. Strict retained TRX checks match all three Activation and both Retirement identities per provider, with zero failed/skipped/incomplete cases. Activation TRX intervals were 510.807s PostgreSQL / 495.026s SQL Server; Retirement intervals were 446.780s / 470.645s, below unchanged invocation deadlines. The final overlap refinements (owner binding, native identity preservation and actual rollback reset) and native late-failure identity assertions execute in this source. Diagnostic-only assertion fixes followed in the working tree; they still require final-head CI. T017 is implemented; T018 full-matrix/evidence/squash delivery remains pending.
+
+
+## Key-lifecycle source acceptance — run 114
+
+Run [38210425980](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38210425980) passed **all 25 checks** at source `69b8e8ddef2c31e070cd6cc72be17a1bb6807e73`, tested merge `867fbe29243e162b085249c6f1740ed39e497896`, shared tree `7f68b126088795dbc94d4e2a70f7d77d4630053d`. All 22 retained archive digests match GitHub SHA-256 metadata. Run/head association comes from GitHub metadata, not an embedded TRX source claim.
+
+All **24 ordinary reports** reconcile to **1,149 passes, zero failures/skips/incomplete cases**: 293 unit/architecture/harness; 300 standard per provider; 41 lifecycle per provider; 29 browser cases in each of six provider/browser cells. Strict lifecycle validation matches discovered names, unique executions, definitions/entries and complete counters. All **17 child-process coverage inputs** are nonempty. The nine unchanged 90% line / 80% branch module floors passed:
+
+| Module | Lines | Branches |
+| --- | --- | --- |
+| Core | 100.0% | 100.0% |
+| Infrastructure | 99.1% | 100.0% |
+| ServiceDefaults | 100.0% | 100.0% |
+| Migrator | 98.2% | 100.0% |
+| AuthServer | 96.3% | 97.1% |
+| Admin.Api | 100.0% | 100.0% |
+| Admin.Bff | 100.0% | 100.0% |
+| Worker | 100.0% | 100.0% |
+| AppHost | 98.8% | 100.0% |
+
+Both providers passed seven mutation baselines, demonstrated seven behavioral kills and passed seven restored cases; original/mutant source hashes and tested merge identity match, with sources restored. These are the existing critical-control mutants, not exhaustive mutation coverage of every new lifecycle decision. The separate WebKit contrast experiment completed 60 observations with zero findings. Standard issuer TRX intervals were 346.037s PostgreSQL / 535.149s SQL Server; lifecycle intervals are above. Every original deadline, provider, test and coverage floor remains intact.
+
+Architecture and test source reviews passed; security source review passed after fixed-message diagnostic assertions replaced raw-item assertions. Independent test/security reviewers inspected the four new provider/story archives, exact identities/counters, archive/extracted-byte integrity and matching source/merge tree, and accepted the bounded key-lifecycle checkpoint. Passing teardown assertions establish fixture cleanup; no independent per-process cleanup ledger is retained in these reports. Final local inspection found no running test applications or containers. One retirement case/provider is pure boundary control, not database interaction. No open PR review threads were present at this checkpoint; no GitHub self-approval is claimed.
+
+**Disposition:** LIFE-007 / US3 / SC-L04 and the remaining scoped LIFE/ISS-003 obligations have source acceptance, completing the controlled M01-E lifecycle implementation alongside delivered restart/distribution. Operator instructions, original lifetime/cache/rollback limits and exact failures before correction are recorded above. The following diagnostic-only assertion refinements and this acceptance documentation must still pass exact final-head CI before normal expected-head squash delivery of [PR #19](https://github.com/mosesparadise/OpenIdentityAdmin/pull/19). The PR is the authoritative final delivery record. Do not conflate this source checkpoint with that merge.
+
+Manual T021/full M01-D, M01-F versioned management API/OpenAPI/Scalar/Swagger/client work, broader R1 and external/public-release gates remain open. This increment does not establish production cluster coordination or load balancing, shared rate limits, universal cache convergence, backup restore/RPO/RTO, Windows-native credential storage, human accessibility or OIDF certification.

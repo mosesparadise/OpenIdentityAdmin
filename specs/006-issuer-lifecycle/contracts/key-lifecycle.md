@@ -1,6 +1,6 @@
 # Staged issuer key lifecycle
 
-Status: **T016 complete; T017 implemented and under verification; full acceptance/delivery pending**. Restart PR #17 and distribution PR #18 are squash-merged. This is the third sequential M01-E increment, on `016-issuer-key-rotation`; LIFE-007 / US3 remains open. Existing document approval covers this bounded scope. The user confirmed both recommended file-layout choices on 12 October 2026. Independent native-source research is complete; concrete-contract review and the real-host configuration-transition experiment passed before T017.
+Status: **T016 complete; T017/T018 source accepted in run 114; final-head PR delivery tracked separately**. Restart PR #17 and distribution PR #18 are squash-merged. This is the third sequential M01-E increment, on `016-issuer-key-rotation`; LIFE-007 / US3 source acceptance is recorded in verification.md. Existing document approval covers this bounded scope. The user confirmed both recommended file-layout choices on 12 October 2026. Independent native-source research is complete; concrete-contract review and the real-host configuration-transition experiment passed before T017.
 
 ## Scope and native ownership
 
