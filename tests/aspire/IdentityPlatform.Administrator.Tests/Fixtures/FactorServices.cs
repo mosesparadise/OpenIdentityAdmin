@@ -20,13 +20,15 @@ internal sealed class FactorServices : IAsyncDisposable
     }
 
     /// <summary>Registers runtime-only database credentials and validates the durable ring before native factor use.</summary>
-    internal FactorServices(string provider, BootstrapDatabase database, IssuerMaterialFixture material, TimeProvider? clock = null)
+    internal FactorServices(string provider, BootstrapDatabase database, IssuerMaterialFixture material, TimeProvider? clock = null,
+        Action<IServiceCollection>? configure = null)
     {
         var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders())
             .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), database.RuntimeConnection);
         credentials = services.AddIssuerProtection(material.Configuration)!;
         services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies();
         services.AddSingleton(clock ?? TimeProvider.System);
+        configure?.Invoke(services);
         Services = services.BuildServiceProvider(validateScopes: true);
         try
         {

@@ -101,15 +101,20 @@ internal sealed class CeremonyClock(TimeProvider time)
 /// <summary>Uses the shared durable failure count and checked native lockout operations under the account lock.</summary>
 internal sealed class CeremonyBudget(UserManager<PlatformUser> users, CeremonyClock clock)
 {
+    /// <summary>Checks current native and product eligibility without reopening expired budgets or changing counters.</summary>
+    internal static bool IsAvailable(PlatformUser user, AdministratorAuthentication state, long now) =>
+        user.LockoutEnabled && state.Generation > 0 && state.Failures is >= 0 and <= AdministratorPolicy.FailedAttempts &&
+        state.LockoutUntil is not < 0 &&
+        (state.Failures == AdministratorPolicy.FailedAttempts) == (state.LockoutUntil is not null) &&
+        !(state.LockoutUntil > now) && !(user.LockoutEnd > DateTimeOffset.FromUnixTimeSeconds(now));
+
     /// <summary>Reopens only a legitimately expired lockout; ordinary password success cannot reset factor failures.</summary>
     internal async Task<bool> OpenAsync(CeremonyTransaction transaction, CeremonyAccount account)
     {
         account.RequireCurrent(transaction);
         ((AdministratorUserManager)users).RequireOperation(transaction.Token);
         var state = account.Authentication;
-        if (!account.User.LockoutEnabled || state.Generation <= 0 || state.LockoutUntil is < 0 || state.Failures is < 0 or > AdministratorPolicy.FailedAttempts ||
-            (state.Failures == AdministratorPolicy.FailedAttempts) != (state.LockoutUntil is not null) ||
-            !clock.Observe(state, out var now) || state.LockoutUntil > now || account.User.LockoutEnd > DateTimeOffset.FromUnixTimeSeconds(now))
+        if (!clock.Observe(state, out var now) || !IsAvailable(account.User, state, now))
         {
             return false;
         }

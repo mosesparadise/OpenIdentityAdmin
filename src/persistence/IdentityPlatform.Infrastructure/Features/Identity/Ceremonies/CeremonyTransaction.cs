@@ -17,7 +17,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     private bool completed;
     private bool disposed;
     private readonly CeremonyConnection connection;
-    private readonly bool maintenance;
+    private readonly CeremonyMode mode;
     internal CeremonyLockPlan Plan
     {
         get;
@@ -26,7 +26,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
 
     /// <summary>Captures the transaction and operation lease after their lifetime owners have been created.</summary>
     private CeremonyTransaction(PlatformDbContext database, IDbContextTransaction transaction, IDisposable native,
-        CancellationTokenSource deadline, CeremonyLockPlan plan, CeremonyConnection connection, bool maintenance)
+        CancellationTokenSource deadline, CeremonyLockPlan plan, CeremonyConnection connection, CeremonyMode mode)
     {
         this.database = database;
         this.transaction = transaction;
@@ -34,20 +34,20 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
         this.deadline = deadline;
         Plan = plan;
         this.connection = connection;
-        this.maintenance = maintenance;
+        this.mode = mode;
     }
 
     /// <summary>Opens one bounded transaction, discards clean stale tracking and acquires the entire declared lock set.</summary>
     internal static Task<CeremonyTransaction> OpenAsync(PlatformDbContext database, NativeOperation operation,
-        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, false, cancellationToken);
+        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, CeremonyMode.Authentication, cancellationToken);
 
     /// <summary>Explicitly selects metadata-only cleanup ownership; ordinary ceremonies cannot use its unaudited commit.</summary>
     internal static Task<CeremonyTransaction> OpenMaintenanceAsync(PlatformDbContext database, NativeOperation operation,
-        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, true, cancellationToken);
+        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, CeremonyMode.Maintenance, cancellationToken);
 
     /// <summary>Creates bounded connection and transaction lifetimes and releases every partially acquired resource on failure.</summary>
     private static async Task<CeremonyTransaction> OpenCoreAsync(PlatformDbContext database, NativeOperation operation,
-        CeremonyLockPlan plan, bool maintenance, CancellationToken cancellationToken)
+        CeremonyLockPlan plan, CeremonyMode mode, CancellationToken cancellationToken)
     {
         if (database.Database.CurrentTransaction is not null || database.ChangeTracker.HasChanges())
         {
@@ -65,7 +65,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
             transaction = await database.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, deadline.Token);
             native = operation.Enter(deadline.Token);
             await new CeremonyLocks(database).AcquireAsync(plan, deadline.Token);
-            return new CeremonyTransaction(database, transaction, native, deadline, plan, connection, maintenance);
+            return new CeremonyTransaction(database, transaction, native, deadline, plan, connection, mode);
         }
         catch
         {
@@ -98,7 +98,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     internal void RequireCeremony()
     {
         RequireCurrent();
-        if (maintenance)
+        if (mode != CeremonyMode.Authentication)
         {
             throw new FactorUnavailableException();
         }
@@ -108,7 +108,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     internal async Task CommitAsync(CeremonyEvent action, bool accepted, string userId, long now)
     {
         RequireCurrent();
-        if (maintenance || !Plan.Users.Contains(userId, StringComparer.Ordinal))
+        if (mode != CeremonyMode.Authentication || !Plan.Users.Contains(userId, StringComparer.Ordinal))
         {
             throw new FactorUnavailableException();
         }
@@ -122,7 +122,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     internal async Task CommitMaintenanceAsync()
     {
         RequireCurrent();
-        if (!maintenance)
+        if (mode != CeremonyMode.Maintenance)
         {
             throw new FactorUnavailableException();
         }
@@ -174,4 +174,9 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
             }
         }
     }
+}
+
+internal enum CeremonyMode
+{
+    Authentication, Maintenance
 }

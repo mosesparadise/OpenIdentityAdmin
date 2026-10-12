@@ -15,8 +15,10 @@ def select(event, changed):
                 'src/frontend/IdentityPlatform.DesignTokens/', 'src/aspire/', 'src/migrations/', 'src/persistence/')
     broad |= any(path.startswith(prefixes) or path.endswith(('packages.lock.json', '.props', '.targets', '.csproj'))
                  or path in ('global.json', 'NuGet.Config', 'dotnet-tools.json') for path in changed or ())
-    return {'include': [{'provider': provider, 'browser': browser}
-                        for browser in ENGINES if broad or browser == 'chromium' for provider in PROVIDERS]}
+    return {'include': [{'provider': provider, 'browser': browser, 'partition': partition,
+                         'label': ('administrator-' if partition == 'administrator' else '') + provider + '-' + browser}
+                        for browser in ENGINES if broad or browser == 'chromium'
+                        for provider in PROVIDERS for partition in ('standard', 'administrator')]}
 
 
 def changed_paths(before, after):

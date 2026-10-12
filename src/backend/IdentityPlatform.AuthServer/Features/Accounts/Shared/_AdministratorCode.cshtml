@@ -1,0 +1,6 @@
+<div class="field">
+  <label for="code">Authenticator code</label>
+  <input id="code" name="Code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required aria-describedby="code-help" />
+  <p id="code-help" class="footnote">Enter the six digits from your authenticator. Pasting is supported.</p>
+</div>
+<button type="submit" class="primary" id="submit">Verify authenticator <span aria-hidden="true">→</span></button>

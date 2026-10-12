@@ -59,6 +59,9 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.Property<long>("Generation")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("LastAllocatedFactorGeneration")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("LockoutUntil")
                         .HasColumnType("bigint");
 
@@ -72,6 +75,8 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("AdministratorAuthentication", "platform", t =>
                         {
+                            t.HasCheckConstraint("CK_AdministratorAuthentication_FactorAllocator", "[LastAllocatedFactorGeneration] >= 0");
+
                             t.HasCheckConstraint("CK_AdministratorAuthentication_State", "[Generation] > 0 AND [Revision] >= 0 AND [Failures] >= 0 AND [Failures] <= 5");
                         });
                 });
@@ -254,6 +259,9 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.Property<long>("DestinationGeneration")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ExpectedEnrollmentRevision")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("ExpiresAt")
                         .HasColumnType("bigint");
 
@@ -314,6 +322,8 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("AdministratorInteraction", "platform", t =>
                         {
+                            t.HasCheckConstraint("CK_AdministratorInteraction_EnrollmentRevision", "[ExpectedEnrollmentRevision] IS NULL OR [ExpectedEnrollmentRevision] >= 0");
+
                             t.HasCheckConstraint("CK_AdministratorInteraction_State", "[Generation] > 0 AND [DestinationGeneration] > 0 AND [Revision] >= 0 AND [Attempts] >= 0 AND [Attempts] <= 5 AND [CreatedAt] >= 0 AND [ExpiresAt] > [CreatedAt]");
                         });
                 });
@@ -457,8 +467,9 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("AdministratorSession", "platform", t =>
                         {
-                            t.HasCheckConstraint("CK_AdministratorSession_State", "[Generation] > 0 AND [FactorGeneration] > 0 AND [Revision] >= 0 AND [CreatedAt] >= 0 AND [LastActivityAt] >= [CreatedAt] AND [ExpiresAt] > [LastActivityAt] AND [AuthenticationMethods] = 'pwd otp' AND [PasswordVerifiedAt] >= 0 AND [FactorVerifiedAt] >= 0 AND [PasswordVerifiedAt] <= [FactorVerifiedAt] AND [FactorVerifiedAt] <= [CreatedAt]");
                             t.HasCheckConstraint("CK_AdministratorSession_MethodLength", "DATALENGTH([AuthenticationMethods]) = 14");
+
+                            t.HasCheckConstraint("CK_AdministratorSession_State", "[Generation] > 0 AND [FactorGeneration] > 0 AND [Revision] >= 0 AND [CreatedAt] >= 0 AND [LastActivityAt] >= [CreatedAt] AND [ExpiresAt] > [LastActivityAt] AND [AuthenticationMethods] = 'pwd otp' AND [PasswordVerifiedAt] >= 0 AND [FactorVerifiedAt] >= 0 AND [PasswordVerifiedAt] <= [FactorVerifiedAt] AND [FactorVerifiedAt] <= [CreatedAt]");
                         });
                 });
 

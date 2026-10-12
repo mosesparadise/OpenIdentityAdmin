@@ -5,20 +5,20 @@ import unittest
 from unittest.mock import patch
 from browser_matrix import select, changed_paths
 from test_selection import catalogue, require_partition, require_execution_names
-from check_coverage_inputs import require_inputs
+from check_coverage_inputs import require_inputs, browser_labels
 
 
 class BrowserMatrixTests(unittest.TestCase):
     def require_cells(self, actual, browsers):
-        expected = {(provider, browser) for provider in ('PostgreSql', 'SqlServer') for browser in browsers}
-        pairs = [(cell['provider'], cell['browser']) for cell in actual['include']]
+        expected = {(provider, browser, partition) for provider in ('PostgreSql', 'SqlServer') for browser in browsers for partition in ('standard', 'administrator')}
+        pairs = [(cell['provider'], cell['browser'], cell['partition']) for cell in actual['include']]
         self.assertEqual(len(pairs), len(set(pairs)))
         self.assertEqual(expected, set(pairs))
 
     def test_chromium_always_covers_both_providers(self):
         self.require_cells(select('pull_request', ['docs/roadmap.md']), ['chromium'])
 
-    def test_scheduled_manual_and_unknown_changes_cover_all_six_cells(self):
+    def test_scheduled_manual_and_unknown_changes_cover_all_provider_partition_cells(self):
         for event, paths in [('schedule', []), ('workflow_dispatch', []), ('pull_request', None), ('push', None)]:
             with self.subTest(event=event):
                 self.require_cells(select(event, paths), ['chromium', 'firefox', 'webkit'])
@@ -58,17 +58,17 @@ class BrowserMatrixTests(unittest.TestCase):
 
     def test_coverage_requires_each_selected_report_and_rejects_empty_or_duplicate_cells(self):
         matrix = select('schedule', [])
-        labels = ['administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+        labels = ['administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
                       'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
-              'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['provider'] + '-' + cell['browser'] for cell in matrix['include']]
+              'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['label'] for cell in matrix['include']]
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(27, require_inputs(root, matrix))
+            self.assertEqual(35, require_inputs(root, matrix))
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.unlink()
@@ -80,6 +80,21 @@ class BrowserMatrixTests(unittest.TestCase):
                 path.write_text('<coverage/>')
             with self.assertRaises(ValueError):
                 require_inputs(root, {'include': matrix['include'] + [matrix['include'][0]]})
+
+    def test_coverage_requires_every_provider_partition_and_exact_label(self):
+        import copy
+        matrix = select('workflow_dispatch', [])
+        self.assertEqual(12, len(browser_labels(matrix)))
+        for change in ('missing', 'relabel', 'duplicate', 'unknown', 'partial-engine', 'extra-field'):
+            with self.subTest(change=change):
+                invalid = copy.deepcopy(matrix)
+                if change == 'missing': invalid['include'] = [cell for cell in invalid['include'] if cell['partition'] != 'administrator']
+                elif change == 'relabel': invalid['include'][0]['label'] = 'unrelated-report'
+                elif change == 'duplicate': invalid['include'][-1] = invalid['include'][0]
+                elif change == 'unknown': invalid['include'][0]['provider'] = 'Other'
+                elif change == 'partial-engine': invalid['include'] = [cell for cell in invalid['include'] if cell['browser'] != 'webkit']
+                elif change == 'extra-field': invalid['include'][0]['optional'] = True
+                with self.assertRaises(ValueError): browser_labels(invalid)
 
     def test_execution_rejects_equal_count_wrong_identity_and_duplicates(self):
         with tempfile.TemporaryDirectory() as root:

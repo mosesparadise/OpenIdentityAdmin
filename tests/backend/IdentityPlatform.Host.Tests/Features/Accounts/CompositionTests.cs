@@ -15,7 +15,8 @@ public sealed class CompositionTests
     private const string ExpectedAnonymousScheme = "IdentityPlatform.Accounts.None";
     private const string Alive = "/alive";
     private const string Login = "/account/login";
-    private static readonly string[] UnavailableRoutes = ["/account/administrator/login", "/docs/scalar", "/docs/swagger", "/api/v1/users"];
+    private const string AdministratorLogin = "/account/administrator/login";
+    private static readonly string[] UnavailableRoutes = ["/docs/scalar", "/docs/swagger", "/api/v1/users"];
     private static readonly string[] ProtocolRoutes = ["/.well-known/openid-configuration", "/connect/authorize", "/connect/token"];
 
     /// <summary>Exercises all switch combinations against compiled Razor routing and native authentication defaults.</summary>
@@ -35,6 +36,14 @@ public sealed class CompositionTests
         {
             using var response = await host.Client.GetAsync(route, TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+        using var administratorLogin = await host.Client.GetAsync(AdministratorLogin, TestContext.Current.CancellationToken);
+        Assert.Equal(administrator ? HttpStatusCode.OK : HttpStatusCode.NotFound, administratorLogin.StatusCode);
+        if (administrator)
+        {
+            var html = await administratorLogin.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+            Assert.Contains("<span class=\"badge\">Account access</span>", html, StringComparison.Ordinal);
+            Assert.DoesNotContain("<span class=\"badge\">Development</span>", html, StringComparison.Ordinal);
         }
         await RequireSchemesAsync(host.Services, pilot, administrator);
     }

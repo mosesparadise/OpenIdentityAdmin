@@ -6,6 +6,11 @@ public sealed class AdministratorAuthentication
 {
     public string UserId { get; set; } = string.Empty;
     public long Generation { get; set; } = 1;
+    /// <summary>Retains the highest committed factor destination, including expired or abandoned staging.</summary>
+    public long LastAllocatedFactorGeneration
+    {
+        get; set;
+    }
     public long Revision
     {
         get; set;

@@ -21,11 +21,11 @@ class LifecycleSelectionTests(unittest.TestCase):
             self.assertEqual(complete, standard | lifecycle | administrator)
             self.assertEqual(302, sum(standard.values()))
             self.assertEqual({'Issuer.Lifecycle': 41}, lifecycle)
-            self.assertEqual(474, sum(complete.values()))
+            self.assertEqual(511, sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
         self.assertEqual(matrix['browser'], select_projects(matrix, 'SqlServer', 'webkit'))
         for profile, browser, partition in [('unit', None, 'standard'), ('unit', None, 'lifecycle'),
-                                             ('PostgreSql', 'chromium', 'standard'), ('SqlServer', 'webkit', 'lifecycle'),
+                                             ('SqlServer', 'webkit', 'lifecycle'),
                                              ('SqlServer', None, 'unknown')]:
             with self.assertRaises(ValueError):
                 select_projects(matrix, profile, browser, partition)

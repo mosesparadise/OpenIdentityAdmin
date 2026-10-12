@@ -42,8 +42,41 @@ python3 scripts/verify.py PostgreSql --partition administrator
 python3 scripts/verify.py SqlServer --partition administrator
 ```
 
-Each provider runs two isolated stories: the unchanged 45 Bootstrap cases and 51 Factors cases. Every identity must be discovered and executed, none skipped. Use `--story Bootstrap` or `--story Factors` to select one explicitly. TRX reports are under `artifacts/tests/administrator-{provider}-{story}/`, with lowercase story names. These isolated jobs retain the 660-second invocation limit and do not enlarge issuer suites. An unavailable provider is a failed prerequisite, not a successful or skipped test. Full CI additionally enforces regression, static analysis, mutation, secret/dependency checks and all required module coverage inputs.
+Each provider runs isolated Bootstrap, Factors, Ceremonies and Accounts stories. Exact reviewed case counts live in `eng/test-matrix.json`. Every identity must be discovered and executed, none skipped. Use `--story Bootstrap`, `--story Factors`, `--story Ceremonies` or `--story Accounts` to select one explicitly. TRX reports are under `artifacts/tests/administrator-{provider}-{story}/`, with lowercase story names. These isolated jobs retain the 660-second invocation limit and do not enlarge issuer suites. An unavailable provider is a failed prerequisite, not a successful or skipped test. Full CI additionally enforces regression, static analysis, mutation, secret/dependency checks and all required module coverage inputs.
 
-## Next account journeys — not runnable yet
+## Enrollment and MFA — T025 acceptance in progress
 
-The [MFA design](mfa-design.md) documents the next increment, including enrollment, TOTP, restricted recovery, lockout, key retention and loss behavior. T022 adds the strict `Identity:AdministratorAccounts:Enabled` composition switch and independent safeguards, but all administrator journey routes remain unimplemented until their later packets pass acceptance; do not treat this document as an instruction to enable unimplemented account pages. Bootstrap remains the only implemented administrator operation.
+The implementation branch adds enrollment, ordinary password/TOTP login and stored account-session validation. These journeys are **not yet accepted or merged**; follow [enrollment/login](enrollment-login.md) and [verification](verification.md) for the current evidence. Restricted recovery, authenticator replacement, code regeneration and logout remain T026. Administrator API/BFF/docs and OAuth authorization remain unavailable.
+
+The following instructions describe the implemented configuration and still need final both-provider/browser acceptance. In WSL2, use the [pilot prerequisites](../../docs/operations/first-party-pilot.md#windows-with-wsl2) for Docker, Linux private file permissions and separate Windows/browser HTTPS trust. Provide the complete [issuer protection](../../docs/operations/issuer-protection.md) settings through protected local configuration. Keep the signing, encryption and wrapping keys distinct and retain the Data Protection ring while its sessions/factors are in use.
+
+Set `Identity__AdministratorAccounts__Enabled=true` and `Pilot__Enabled=false` in the AppHost's protected configuration. Select `Database__Provider=PostgreSql` or `SqlServer`. Account activation and pilot activation are independent; enabling accounts never provisions an administrator automatically. AppHost forwards the resolved AuthServer HTTPS issuer and the complete protection settings through secret parameters to their owners.
+
+```bash
+dotnet run --project src/aspire/IdentityPlatform.AppHost --no-build
+```
+
+Keep this disposable Aspire environment running. Its default database state is removed on shutdown; it is not durable administrator hosting. In a second WSL terminal, configure the same live platform database's **runtime** connection privately, then run the protected `initialize-administrator` operation above. Do not copy a connection string into shell arguments, this document, screenshots or shared logs. The ordinary Migrator must have completed its schema upgrade first.
+
+Open the `auth` resource's HTTPS endpoint from the authenticated Aspire dashboard, then:
+
+1. Visit `/account/administrator/enrollment` and submit the protected-bootstrap username and password.
+2. Add the displayed setup key to a TOTP authenticator and submit its current six-digit code within five minutes.
+3. Save all ten single-use recovery codes in a secure password manager. They are displayed only in this successful response; refreshing or resubmitting cannot recover them. Their restricted recovery journey is still T026 and must not be represented as available yet.
+4. Follow the account-status link. Subsequent authentication begins at `/account/administrator/login`, followed by `/account/administrator/mfa` through its browser-bound continuation.
+
+The session lasts at most eight hours and expires after thirty minutes without accepted activity. Password-only authentication never creates it. Every protected request rechecks stored account/factor/session state; it grants only the account's status surface. Do not capture setup keys, codes or cookies in screenshots, browser traces or reports. Abandoning enrollment leaves the account pending; losing all enrolled factors has no bootstrap-reset or operator-bypass path.
+
+For durable hosting outside disposable Aspire, keep the exact canonical HTTPS issuer, database, Data Protection ring and protection keys stable across instances/restarts. The current native protection adapter requires Linux/WSL2. This paragraph does not authorize production deployment or claim production/certification acceptance.
+
+Focused automated commands:
+
+```bash
+python3 scripts/verify.py PostgreSql --partition administrator --story Accounts
+python3 scripts/verify.py SqlServer --partition administrator --story Accounts
+python3 scripts/verify.py PostgreSql --partition administrator --browser chromium
+python3 scripts/verify.py PostgreSql --partition administrator --browser firefox
+python3 scripts/verify.py PostgreSql --partition administrator --browser webkit
+```
+
+Run all three browser commands with `SqlServer` as well. Browser installation and TLS trust follow the pinned workflow. Test fixtures provision disposable synthetic material themselves; manual bootstrap credentials must never be supplied to these tests. Actual human WSL2/password-manager/screen-reader observations remain distinct from automated browser evidence.

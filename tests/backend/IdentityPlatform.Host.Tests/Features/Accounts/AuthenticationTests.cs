@@ -66,7 +66,7 @@ public sealed class AuthenticationTests
         Assert.False(response.Headers.Contains(SetCookieHeader));
     }
 
-    /// <summary>Blocks issuance itself so another handler cannot accidentally mint usable administrator tickets before T025.</summary>
+    /// <summary>Blocks arbitrary issuance without the actual committed journey result, even when a handler supplies an authenticated principal.</summary>
     [Fact]
     public async Task Given_AdministratorComposition_When_SignInIsRequested_Then_NoCookieIsIssued()
     {

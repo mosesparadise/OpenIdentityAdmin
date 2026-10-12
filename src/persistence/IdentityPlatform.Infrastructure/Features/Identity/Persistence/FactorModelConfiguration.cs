@@ -29,6 +29,9 @@ internal static class FactorModelConfiguration
         const string Valid = "\"Generation\" > 0 AND \"Revision\" >= 0 AND \"Failures\" >= 0 AND \"Failures\" <= 5";
         const string Rule = "State";
         FactorSchema.Check(entity, Rule, Valid, sqlServer);
+        const string AllocatorRule = "FactorAllocator";
+        const string AllocatorValid = "\"LastAllocatedFactorGeneration\" >= 0";
+        FactorSchema.Check(entity, AllocatorRule, AllocatorValid, sqlServer);
     }
 
     /// <summary>Configures bounded admission records without granting runtime authority.</summary>
@@ -71,6 +74,9 @@ internal static class FactorModelConfiguration
         const string Valid = "\"Generation\" > 0 AND \"DestinationGeneration\" > 0 AND \"Revision\" >= 0 AND \"Attempts\" >= 0 AND \"Attempts\" <= 5 AND \"CreatedAt\" >= 0 AND \"ExpiresAt\" > \"CreatedAt\"";
         const string Rule = "State";
         FactorSchema.Check(entity, Rule, Valid, sqlServer);
+        const string EnrollmentRule = "EnrollmentRevision";
+        const string EnrollmentValid = "\"ExpectedEnrollmentRevision\" IS NULL OR \"ExpectedEnrollmentRevision\" >= 0";
+        FactorSchema.Check(entity, EnrollmentRule, EnrollmentValid, sqlServer);
     }
 
     /// <summary>Configures bounded factor records without granting runtime authority.</summary>
