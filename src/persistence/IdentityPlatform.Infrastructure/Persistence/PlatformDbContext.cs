@@ -13,6 +13,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         base.OnModelCreating(builder);
         builder.HasDefaultSchema("platform");
         LoginModelConfiguration.Configure(builder, Database.IsSqlServer());
+        AdministratorModelConfiguration.Configure(builder, Database.IsSqlServer());
 
         if (Database.IsSqlServer())
         {

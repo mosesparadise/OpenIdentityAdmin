@@ -153,3 +153,36 @@ internal sealed class LifecycleEvidenceRecorder
         }
     }
 }
+
+// Only fixed stage identifiers and CLR type names are retained; never exception messages/data.
+internal sealed class LifecycleFailures
+{
+    private readonly Lock gate = new();
+    private readonly List<string> failures = [];
+    public void Record(string stage, Exception? failure = null)
+    {
+        lock (gate)
+        {
+            if (failures.Count < 32)
+            {
+                failures.Add($"{stage}:{failure?.GetType().Name ?? "invalidated"}");
+            }
+        }
+    }
+    public async Task AttemptAsync(string stage, Func<Task> action)
+    {
+        try
+        {
+            await action();
+        }
+        catch (Exception failure) { Record(stage, failure); }
+    }
+    public void RequireSuccess()
+    {
+        lock (gate)
+        {
+            Assert.True(failures.Count == 0,
+                "Issuer lifecycle failed; all cleanup actions were attempted. Stages (first 32): " + string.Join(", ", failures));
+        }
+    }
+}

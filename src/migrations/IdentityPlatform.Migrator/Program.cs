@@ -8,7 +8,7 @@ try
 }
 catch (ArgumentException)
 {
-    Console.Error.WriteLine("Invalid migration configuration. Set Database:Provider and both connection strings.");
+    Console.Error.WriteLine("Invalid migration configuration. Check operation, provider and required connections.");
     return 2;
 }
 

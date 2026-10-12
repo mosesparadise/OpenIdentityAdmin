@@ -4,13 +4,15 @@ import xml.etree.ElementTree as ET
 
 
 def select_projects(matrix, profile, browser=None, partition='all'):
-    if partition not in ('all', 'standard', 'lifecycle'):
+    if partition not in ('all', 'standard', 'lifecycle', 'administrator'):
         raise ValueError('Unknown test partition')
     if partition != 'all' and (profile == 'unit' or browser):
         raise ValueError('Partitions apply only to ordinary provider profiles')
     projects = matrix['browser'] if browser else matrix['profiles'][profile]
     if partition == 'standard':
-        return {name: count for name, count in projects.items() if name != 'Issuer.Lifecycle'}
+        return {name: count for name, count in projects.items() if name not in ('Issuer.Lifecycle', 'Administrator')}
+    if partition == 'administrator':
+        return {'Administrator': projects['Administrator']}
     if partition == 'lifecycle':
         return {'Issuer.Lifecycle': projects['Issuer.Lifecycle']}
     return dict(projects)
@@ -136,3 +138,17 @@ def require_lifecycle_story(all_tests, selected, provider, story, matrix):
     expected = {uid: test for uid, test in complete.items() if test[3] == namespaces[story]}
     if selected != expected:
         raise ValueError('Lifecycle story selection overlaps, omits or substitutes identities')
+
+
+def require_administrator_partition(all_tests, selected, provider, counts, expected_names):
+    if provider not in ('PostgreSql', 'SqlServer') or set(counts) != {'PostgreSql', 'SqlServer'} or set(expected_names) != set(counts):
+        raise ValueError('Administrator requires both provider inventories')
+    for name, count in counts.items():
+        expected = expected_names[name]
+        actual = [test[0] for test in all_tests.values() if test[1] == name]
+        if count <= 0 or len(expected) != count or len(set(expected)) != count or sorted(actual) != sorted(expected):
+            raise ValueError('Administrator catalogue differs from reviewed identities')
+    if any(test[2] or test[3] != 'IdentityPlatform.Administrator.Tests.Features.Bootstrap' for test in all_tests.values()):
+        raise ValueError('Administrator catalogue contains an unexpected namespace or category')
+    if selected != {uid: test for uid, test in all_tests.items() if test[1] == provider}:
+        raise ValueError('Administrator selection omits or substitutes provider cases')

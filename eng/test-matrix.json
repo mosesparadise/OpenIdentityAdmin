@@ -20,26 +20,31 @@
     },
     "Issuer.Lifecycle": {
       "group": "aspire"
+    },
+    "Administrator": {
+      "group": "aspire"
     }
   },
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 246,
+      "Host": 267,
       "Architecture": 5,
-      "AppHost": 17
+      "AppHost": 19
     },
     "PostgreSql": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
-      "Issuer.Lifecycle": 41
+      "Issuer.Lifecycle": 41,
+      "Administrator": 45
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
-      "Issuer.Lifecycle": 41
+      "Issuer.Lifecycle": 41,
+      "Administrator": 45
     }
   },
   "browser": {

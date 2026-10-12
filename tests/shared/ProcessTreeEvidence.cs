@@ -18,15 +18,20 @@ internal static class ProcessTreeEvidence
             int.Parse(fields[1], CultureInfo.InvariantCulture), int.Parse(fields[2], CultureInfo.InvariantCulture), fields[0][0]);
     }
 
-    internal static ProcessSnapshot? Read(int id)
+    internal static ProcessSnapshot? Read(int id) => Read(id, () => File.ReadAllText($"/proc/{id}/stat"));
+
+    internal static ProcessSnapshot? Read(int id, Func<string> readStat)
     {
         Assert.True(OperatingSystem.IsLinux(), "Process lifecycle evidence requires Linux or WSL2.");
         try
         {
-            return Parse(id, File.ReadAllText($"/proc/{id}/stat"));
+            return Parse(id, readStat());
         }
         catch (FileNotFoundException) { return null; }
         catch (DirectoryNotFoundException) { return null; }
+        // Linux can open proc metadata successfully, then return ESRCH if the
+        // process exits before read. .NET preserves this errno as HResult 3.
+        catch (IOException failure) when (failure.HResult == 3) { return null; }
     }
 
     internal static bool Terminated(ProcessGeneration original, ProcessSnapshot? current) =>

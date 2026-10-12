@@ -56,7 +56,12 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
     {
         get; private set;
     }
-    public void Invalidate() => Invalidated = true;
+    private readonly LifecycleFailures failures = new();
+    public void Invalidate(string? stage = null, Exception? failure = null, [CallerMemberName] string caller = "")
+    {
+        Invalidated = true;
+        failures.Record(stage ?? caller, failure);
+    }
 
     public static async Task<IssuerEnvironment> CreateAsync(string provider, CancellationToken cancellationToken, bool httpProbe = false,
         Func<IDistributedApplicationTestingBuilder, CancellationToken, Task>? configureBeforeBuild = null)
@@ -291,41 +296,32 @@ public sealed partial class IssuerEnvironment : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        var failed = false;
-        async Task Attempt(Func<Task> action)
-        {
-            try
-            {
-                await action();
-            }
-            catch (Exception) { failed = true; }
-        }
         if (application is not null)
         {
             // Capture replacements even when restart/readiness failed before its success path.
-            await Attempt(() => { CaptureLifecycle(); return Task.CompletedTask; });
+            await failures.AttemptAsync("cleanup.capture", () => { CaptureLifecycle(); return Task.CompletedTask; });
             using var teardown = new CancellationTokenSource(TimeSpan.FromSeconds(45));
-            await Attempt(() => application.StopAsync(teardown.Token));
-            await Attempt(() => application.DisposeAsync().AsTask());
+            await failures.AttemptAsync("cleanup.stop", () => application.StopAsync(teardown.Token));
+            await failures.AttemptAsync("cleanup.application", () => application.DisposeAsync().AsTask());
         }
         if (services is not null)
         {
-            await Attempt(() => services.DisposeAsync().AsTask());
+            await failures.AttemptAsync("cleanup.services", () => services.DisposeAsync().AsTask());
         }
         if (relyingParty is not null)
         {
-            await Attempt(() => relyingParty.DisposeAsync().AsTask());
+            await failures.AttemptAsync("cleanup.relying-party", () => relyingParty.DisposeAsync().AsTask());
         }
-        await Attempt(() => { runtimeCredentials?.Dispose(); return Task.CompletedTask; });
+        await failures.AttemptAsync("cleanup.runtime-credentials", () => { runtimeCredentials?.Dispose(); return Task.CompletedTask; });
         if (builder is not null)
         {
-            await Attempt(() => builder.DisposeAsync().AsTask());
+            await failures.AttemptAsync("cleanup.builder", () => builder.DisposeAsync().AsTask());
         }
-        await Attempt(() => { credentials.Dispose(); return Task.CompletedTask; });
+        await failures.AttemptAsync("cleanup.credentials", () => { credentials.Dispose(); return Task.CompletedTask; });
         if (lifecycle.Snapshot is { } captured)
         {
-            await Attempt(captured.AssertRemovedAsync);
+            await failures.AttemptAsync("cleanup.removal-proof", captured.AssertRemovedAsync);
         }
-        Assert.False(failed || Invalidated, "Issuer cleanup failed or the environment was invalidated; every remaining resource was still attempted.");
+        failures.RequireSuccess();
     }
 }

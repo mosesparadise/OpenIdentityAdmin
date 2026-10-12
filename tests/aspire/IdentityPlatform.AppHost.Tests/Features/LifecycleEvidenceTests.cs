@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using IdentityPlatform.Testing;
@@ -7,6 +8,59 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 [Trait("Category", "Harness")]
 public sealed class LifecycleEvidenceTests
 {
+    [Fact]
+    public async Task Cleanup_retains_primary_and_multiple_failures_attempts_remaining_actions_and_redacts_messages()
+    {
+        const string canary = "synthetic-lifecycle-secret";
+        var failures = new LifecycleFailures();
+        var primary = new InvalidOperationException(canary);
+        primary.Data["secret"] = canary;
+        failures.Record("stop.peer", primary);
+        var attempted = 0;
+        await failures.AttemptAsync("cleanup.stop", () => { attempted++; throw new IOException(canary); });
+        await failures.AttemptAsync("cleanup.dispose", () => { attempted++; throw new TimeoutException(canary); });
+        await failures.AttemptAsync("cleanup.last", () => { attempted++; return Task.CompletedTask; });
+        var error = Assert.ThrowsAny<Exception>(failures.RequireSuccess);
+        Assert.Equal(3, attempted);
+        Assert.False(error.ToString().Contains(canary, StringComparison.Ordinal), "Failure diagnostics exposed exception content.");
+        Assert.True(error.InnerException is null, "Failure diagnostics retained an inner exception.");
+        Assert.True(error.Data.Count == 0, "Failure diagnostics retained exception metadata.");
+        Assert.True(error.Message.Contains("stop.peer:InvalidOperationException", StringComparison.Ordinal), "Primary failure stage was lost.");
+        Assert.True(error.Message.Contains("cleanup.stop:IOException", StringComparison.Ordinal), "Stop cleanup stage was lost.");
+        Assert.True(error.Message.Contains("cleanup.dispose:TimeoutException", StringComparison.Ordinal), "Dispose cleanup stage was lost.");
+        new LifecycleFailures().RequireSuccess();
+    }
+
+    [Fact]
+    public async Task Process_exit_between_proc_open_and_read_is_absence_but_other_io_failures_propagate()
+    {
+        using var process = Process.Start(new ProcessStartInfo("/usr/bin/sleep", "30") { UseShellExecute = false })!;
+        using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        try
+        {
+            var original = ProcessTreeEvidence.Read(process.Id)!.Generation;
+            Assert.False(ProcessTreeEvidence.Terminated(original));
+            using var file = new FileStream($"/proc/{process.Id}/stat", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var reader = new StreamReader(file);
+            process.Kill();
+            await process.WaitForExitAsync(deadline.Token);
+            // This is a real kernel ESRCH from an already-open proc file, not a mock.
+            Assert.Null(ProcessTreeEvidence.Read(process.Id, reader.ReadToEnd));
+            Assert.True(ProcessTreeEvidence.Terminated(original));
+            Assert.Throws<IOException>(() => ProcessTreeEvidence.Read(process.Id, () => throw new IOException("I/O error", 5)));
+            Assert.Throws<UnauthorizedAccessException>(() => ProcessTreeEvidence.Read(process.Id, () => throw new UnauthorizedAccessException()));
+        }
+        finally
+        {
+            if (!process.HasExited)
+            {
+                process.Kill();
+                using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                await process.WaitForExitAsync(cleanup.Token);
+            }
+        }
+    }
+
     [Theory]
     [InlineData("Running")]
     [InlineData("Starting")]
