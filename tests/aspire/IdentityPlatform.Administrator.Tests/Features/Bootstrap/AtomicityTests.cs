@@ -26,11 +26,11 @@ public sealed partial class BootstrapTests
             await held.ObserveWaitersAsync(lease, 2);
         }
         var results = new[] { await first.CompleteAsync(), await second.CompleteAsync() };
-        Assert.All(results, result => Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal), "Bootstrap output disclosed a credential."));
+        Assert.True(results.All(result => !result.Output.Contains(lease.Password, StringComparison.Ordinal)), "Bootstrap output disclosed a credential.");
         Assert.Equal(1, results.Count(result => result.ExitCode == 0 && result.Output.Contains("enrollment initialized", StringComparison.Ordinal)));
         if (scenario == "identical")
         {
-            Assert.All(results, result => Assert.Equal(0, result.ExitCode));
+            Assert.True(results.All(result => result.ExitCode == 0), "Identical operation did not reconcile.");
             Assert.Equal(1, results.Count(result => result.Output.Contains("already initialized", StringComparison.Ordinal)));
         }
         else
@@ -78,11 +78,15 @@ public sealed partial class BootstrapTests
                 await using (var held = await GovernanceLock.AcquireAsync(lease))
                 {
                     var attempt = lease.InitializeAsync(cancelled.Token);
-                    await held.ObserveWaitersAsync(lease, 1);
-                    Assert.False(attempt.IsCompleted, "Operation was not blocked at the held governance row.");
-                    await cancelled.CancelAsync();
-                    var failure = await Record.ExceptionAsync(() => attempt.WaitAsync(TimeSpan.FromSeconds(40), Token));
-                    Assert.True(failure is OperationCanceledException, "Expected cancellation at the held database lock.");
+                    try
+                    {
+                        await held.ObserveWaitersAsync(lease, 1);
+                        Assert.False(attempt.IsCompleted, "Operation was not blocked at the held governance row.");
+                    }
+                    finally
+                    {
+                        await CancelAndDrainAsync(attempt, cancelled);
+                    }
                 }
                 break;
             case "cancel-manager":
@@ -98,9 +102,7 @@ public sealed partial class BootstrapTests
                     }
                     finally
                     {
-                        await cancelled.CancelAsync();
-                        var failure = await Record.ExceptionAsync(() => attempt.WaitAsync(TimeSpan.FromSeconds(40), Token));
-                        Assert.True(failure is OperationCanceledException, "Expected cancellation propagated through native manager command.");
+                        await CancelAndDrainAsync(attempt, cancelled);
                     }
                 }
                 break;
@@ -116,7 +118,17 @@ public sealed partial class BootstrapTests
                 }
                 break;
         }
+        await lease.AssertRuntimeDrainedAsync();
         Assert.True(before == await SnapshotAsync(lease), "Failed initialization left partial state.");
         Assert.Equal(BootstrapOutcome.Created, await lease.InitializeAsync(Token));
     }
+    private static async Task CancelAndDrainAsync(Task attempt, CancellationTokenSource operation)
+    {
+        await operation.CancelAsync();
+        using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(40));
+        var failure = await Record.ExceptionAsync(() => attempt.WaitAsync(cleanup.Token));
+        Assert.True(attempt.IsCompleted && !cleanup.IsCancellationRequested && failure is OperationCanceledException,
+            "Original operation did not finish with cancellation within independent cleanup deadline.");
+    }
+
 }

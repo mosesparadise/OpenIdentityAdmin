@@ -1,6 +1,6 @@
 # Initial administrator bootstrap contract — increment 1
 
-Proposed command: `dotnet IdentityPlatform.Migrator.dll --Operation initialize-administrator`. Default/explicit `upgrade` remains schema upgrade. Unknown operation is invalid configuration. Bootstrap requires only the platform connection and existing current schema; it does not migrate, provision database roles, read admin-session storage or listen on HTTP. LocalDevelopment runtime-role provisioning is incompatible with bootstrap.
+Command: `dotnet IdentityPlatform.Migrator.dll --Operation initialize-administrator`. Default/explicit `upgrade` remains schema upgrade. Unknown operation is invalid configuration. Bootstrap requires only the platform connection and existing current schema; it does not migrate, provision database roles, read admin-session storage or listen on HTTP. LocalDevelopment runtime-role provisioning is incompatible with bootstrap.
 
 Input is one UTF-8 JSON object supplied through redirected standard input, ending at EOF, bounded to 4096 raw bytes (not characters), with invalid UTF-8 rejected, with no unknown or duplicate properties. Credentials are never accepted from arguments/configuration. Required exact fields:
 
@@ -19,7 +19,7 @@ Outcomes:
 - `2`: invalid operation/configuration/input.
 - `1`: conflict, missing/current-schema failure, manager/persistence/audit failure, cancellation or deadline. Fixed diagnostic; raw exception/provider messages are not printed.
 
-A three-minute linked deadline covers input/EOF and operation; provider commands retain the existing 30-second timeout. Missing EOF within the deadline is failure; no unbounded input wait is permitted. No implicit retries. On ambiguous completion, use the original operation ID/username to reconcile with the receipt. Matching replay ignores current password validity and never re-enables, resets, regrants or recreates state. A failed transaction can be explicitly retried after the cause is resolved. Bootstrap never serves as a recovery/reset command.
+A three-minute operation deadline covers input/EOF and operation; provider commands retain the existing 30-second timeout. Missing EOF within the deadline is failure; no unbounded input wait is permitted. No implicit retries. On ambiguous completion, use the original operation ID/username to reconcile with the receipt. Matching replay ignores current password validity and never re-enables, resets, regrants or recreates state. A failed transaction can be explicitly retried after the cause is resolved. Bootstrap never serves as a recovery/reset command.
 
 The installation's durable consumed flag and receipt must agree. Missing governance seed or inconsistent consumed/receipt state fails without repair. Creation-only checks for existing target user, existing reserved roles or incomplete enrollment run after the matching-receipt branch; later legitimate changes must not turn replay into repair. Unrelated accounts, pilot configuration and sessions remain unchanged.
 

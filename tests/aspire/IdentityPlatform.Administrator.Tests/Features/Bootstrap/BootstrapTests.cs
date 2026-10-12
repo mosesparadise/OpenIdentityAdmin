@@ -45,7 +45,6 @@ public sealed partial class BootstrapTests(BootstrapFixture fixture)
         Assert.False(user.TwoFactorEnabled);
         Assert.False(user.EmailConfirmed);
         Assert.True(user.LockoutEnabled);
-        Assert.True(await users.CheckPasswordAsync(user, password));
         Assert.Equal("Pending", (await database.Set<AdministratorEnrollment>().SingleAsync(Token)).State);
         Assert.True((await database.Set<AdministratorGovernance>().SingleAsync(Token)).BootstrapConsumed);
         var receipt = await database.Set<AdministratorBootstrapReceipt>().SingleAsync(Token);
@@ -60,10 +59,14 @@ public sealed partial class BootstrapTests(BootstrapFixture fixture)
         Assert.Equal(1, (await database.Set<AdministratorGovernance>().SingleAsync(Token)).Revision);
         Assert.True(!string.IsNullOrEmpty(user.SecurityStamp) && !string.IsNullOrEmpty(user.ConcurrencyStamp), "Native stamps are missing.");
         // IdentityV3 network-byte-order envelope: version, PRF, iteration count, salt length.
-        var hash = Convert.FromBase64String(user.PasswordHash!);
+        var originalHash = user.PasswordHash!;
+        var hash = Convert.FromBase64String(originalHash);
         Assert.True(hash[0] == 1 && System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(hash.AsSpan(1)) == 2 &&
             System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(hash.AsSpan(5)) == 210_000 &&
             System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(hash.AsSpan(9)) >= 16, "Native hash policy differs from the approved contract.");
+        Assert.True(await users.CheckPasswordAsync(user, password));
+        Assert.True(originalHash == (await database.Users.AsNoTracking().SingleAsync(value => value.Id == user.Id, Token)).PasswordHash,
+            "Password verification repaired the original bootstrap hash.");
         Assert.Single(await database.Users.ToListAsync(Token));
         Assert.Empty(await database.UserClaims.ToListAsync(Token));
         Assert.Empty(await database.UserLogins.ToListAsync(Token));

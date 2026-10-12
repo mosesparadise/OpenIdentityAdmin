@@ -146,10 +146,13 @@ public sealed partial class BootstrapTests
         await using var process = new BootstrapProcess(provider, scenario == "missing-connection" ? "" : lease.RuntimeConnection,
             operation: scenario == "operation" ? "unknown-operation" : "initialize-administrator",
             environment: scenario == "local-roles" ? "Development" : "Production", provision: scenario == "local-roles", terminal: scenario == "terminal");
-        // No submitted secrets are needed to reject operation/configuration or terminal input.
-        await process.SendAsync([]);
+        // Otherwise valid input prevents malformed-input rejection from masking a missing guard.
+        await process.SendAsync(lease.Input());
         var result = await process.CompleteAsync();
         Assert.Equal(2, result.ExitCode);
+        var expected = scenario == "terminal" ? "Invalid administrator bootstrap input." : "Invalid migration configuration.";
+        Assert.True(result.Output.Contains(expected, StringComparison.Ordinal), "Failure was not attributed to the expected command boundary.");
+        Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal), "Rejected command or PTY echoed credentials.");
         Assert.True(before == await SnapshotAsync(lease), "Rejected operation configuration changed persisted state.");
     }
 

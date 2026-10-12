@@ -237,6 +237,24 @@ public sealed class BootstrapDatabase : IAsyncDisposable
         return await scope.ServiceProvider.GetRequiredService<AdministratorBootstrap>().InitializeAsync(request, cancellationToken);
     }
 
+    public async Task AssertRuntimeDrainedAsync()
+    {
+        using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+        await using var scope = Administrator.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var connection = database.Database.GetDbConnection();
+        await connection.OpenAsync(cleanup.Token);
+        await using var command = connection.CreateCommand();
+        command.CommandTimeout = 3;
+        command.CommandText = provider == DatabaseProvider.PostgreSql
+            ? "SELECT COUNT(*) FROM pg_stat_activity WHERE datname = current_database() AND usename = 'platform_runtime'"
+            : "SELECT COUNT(*) FROM sys.dm_exec_sessions WHERE database_id = DB_ID() AND login_name = 'platform_runtime'";
+        while (Convert.ToInt32(await command.ExecuteScalarAsync(cleanup.Token), System.Globalization.CultureInfo.InvariantCulture) != 0)
+        {
+            await Task.Delay(50, cleanup.Token);
+        }
+    }
+
     public async Task AuditPermissionAsync(bool allow, CancellationToken cancellationToken)
     {
         await using var scope = Administrator.CreateAsyncScope();

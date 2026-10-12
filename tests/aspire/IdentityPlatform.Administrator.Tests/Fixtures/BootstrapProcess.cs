@@ -55,6 +55,8 @@ public sealed class BootstrapProcess : IAsyncDisposable
             start.ArgumentList.Clear();
             start.ArgumentList.Add("--quiet");
             start.ArgumentList.Add("--return");
+            start.ArgumentList.Add("--echo");
+            start.ArgumentList.Add("never");
             start.ArgumentList.Add("--command");
             start.ArgumentList.Add(invocation);
             start.ArgumentList.Add("/dev/null");
