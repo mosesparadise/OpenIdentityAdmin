@@ -67,7 +67,7 @@ internal sealed class JourneyScenario : IAsyncDisposable
     /// <summary>Uses the same production mechanisms under test-owned composition, allowing narrowly scoped provider faults.</summary>
     private static void Register(IServiceCollection services) => services.AddAdministratorJourneys()
         .AddScoped<JourneyPassword>().AddScoped<JourneyCompletion>().AddScoped<JourneyStaging>()
-        .AddScoped<JourneyActivation>().AddScoped<JourneyRevocation>().AddScoped<JourneySessions>();
+        .AddScoped<JourneyTransition>().AddScoped<JourneyLogout>().AddScoped<JourneyActivation>().AddScoped<JourneyRevocation>().AddScoped<JourneySessions>();
 
     /// <summary>Resolves one scoped production mechanism for a deliberate test operation.</summary>
     internal T Get<T>() where T : notnull => scope.ServiceProvider.GetRequiredService<T>();

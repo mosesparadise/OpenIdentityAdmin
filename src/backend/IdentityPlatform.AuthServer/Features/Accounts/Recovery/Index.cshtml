@@ -1,0 +1,14 @@
+@page "/account/administrator/recovery"
+@model IdentityPlatform.AuthServer.Features.Accounts.Recovery.IndexModel
+@{ ViewData["Title"] = "Recover your authenticator"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Account security</p>
+  <h1 id="heading">Recover your authenticator</h1>
+  <p>Use your password and one unused recovery code. Recovery signs out your existing sessions and requires a new authenticator before you can sign in.</p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+  }
+  <form asp-antiforgery="true" method="post" action="/account/administrator/recovery"><partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" /></form>
+  <p class="footnote"><a href="/account/administrator/login">Return to sign in</a></p>
+</section>

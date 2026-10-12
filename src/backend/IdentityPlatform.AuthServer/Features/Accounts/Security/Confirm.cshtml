@@ -1,0 +1,28 @@
+@page "/account/administrator/security/replacement/confirm"
+@model IdentityPlatform.AuthServer.Features.Accounts.Security.ConfirmModel
+@{ ViewData["Title"] = "Confirm your new authenticator"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Account security</p>
+  @if (Model.RecoveryCodes is not null)
+  {
+    <partial name="/Features/Accounts/Shared/_RecoveryCodes.cshtml" model="Model.RecoveryCodes" />
+  }
+  else
+  {
+    <h1 id="heading">Confirm your new authenticator</h1>
+    @if (Model.Seed is not null)
+    {
+      <p>Add a time-based account in your new authenticator using this private setup key, then enter its code. Completing this step replaces your old authenticator and recovery codes and signs out other sessions.</p>
+      <div class="field"><label for="setup-key">Setup key</label><input id="setup-key" data-account-secret type="text" value="@Model.Seed" readonly autocomplete="off" spellcheck="false" /></div>
+      <form asp-antiforgery="true" method="post" action="/account/administrator/security/replacement/confirm">
+        <input type="hidden" name="Interaction" value="@Model.Interaction" />
+        <partial name="/Features/Accounts/Shared/_AdministratorCode.cshtml" />
+      </form>
+    }
+    else
+    {
+      <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+      <p><a href="/account/administrator/login">Start again</a></p>
+    }
+  }
+</section>

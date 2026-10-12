@@ -7,5 +7,5 @@ internal static class Setup
 {
     /// <summary>Keeps feature registration explicit; Razor discovers handlers through the exact account route convention.</summary>
     internal static IServiceCollection AddAccountSecurity(this IServiceCollection services) => services
-        .AddScoped<JourneySessions>();
+        .AddScoped<JourneySessions>().AddScoped<JourneyLogout>();
 }

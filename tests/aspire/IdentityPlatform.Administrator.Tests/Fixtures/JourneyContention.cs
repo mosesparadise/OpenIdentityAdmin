@@ -16,6 +16,14 @@ internal static class JourneyContention
     /// <summary>Starts independent form submissions and releases their blocker only after provider-native wait-graph observation.</summary>
     internal static async Task<HttpResponseMessage[]> CompleteAsync(AdministratorEnvironment environment, string provider,
         HttpClient primary, HttpClient secondary, AdministratorForm first, AdministratorForm second, string code, bool enrollment)
+        => await RunAsync(environment, provider, primary, secondary, new(enrollment, !enrollment, [], []),
+            enrollment ? GovernanceStage : AdmissionStage, () => Task.WhenAll(
+                AdministratorJourney.ConfirmAsync(primary, first, code, enrollment),
+                AdministratorJourney.ConfirmAsync(secondary, second, code, enrollment)));
+
+    /// <summary>Observes two real HTTP requests waiting on an explicit production lock before releasing their shared blocker.</summary>
+    internal static async Task<HttpResponseMessage[]> RunAsync(AdministratorEnvironment environment, string provider,
+        HttpClient primary, HttpClient secondary, CeremonyLockPlan plan, string commandStage, Func<Task<HttpResponseMessage[]>> requests)
     {
         await using var services = new FactorServices(provider, environment.Database, environment.Material);
         await using var scope = services.Services.CreateAsyncScope();
@@ -24,12 +32,11 @@ internal static class JourneyContention
         try
         {
             await using (var transaction = await CeremonyTransaction.OpenAsync(database, scope.ServiceProvider.GetRequiredService<NativeOperation>(),
-                new(enrollment, !enrollment, [], []), TestContext.Current.CancellationToken))
+                plan, TestContext.Current.CancellationToken))
             {
                 var blocker = await DatabaseWaiters.IdentifyAsync(database, TestContext.Current.CancellationToken);
-                completion = Task.WhenAll(AdministratorJourney.ConfirmAsync(primary, first, code, enrollment),
-                    AdministratorJourney.ConfirmAsync(secondary, second, code, enrollment));
-                await DatabaseWaiters.ObserveAsync(environment.Database, blocker, enrollment ? GovernanceStage : AdmissionStage, CompetingRequests);
+                completion = requests();
+                await DatabaseWaiters.ObserveAsync(environment.Database, blocker, commandStage, CompetingRequests);
             }
             return await completion;
         }

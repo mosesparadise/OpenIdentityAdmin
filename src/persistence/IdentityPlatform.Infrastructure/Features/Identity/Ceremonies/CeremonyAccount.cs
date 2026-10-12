@@ -171,6 +171,16 @@ internal sealed class CeremonyBudget(UserManager<PlatformUser> users, CeremonyCl
         account.Authentication.LockoutUntil = null;
     }
 
+    /// <summary>Clears only a completed restricted recovery budget; this capability cannot authorize a full session.</summary>
+    internal async Task CompleteRecoveryAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyRecoveryProof proof)
+    {
+        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        proof.Consume(transaction, account, clock.Now);
+        Require(await users.ResetAccessFailedCountAsync(account.User));
+        account.Authentication.Failures = 0;
+        account.Authentication.LockoutUntil = null;
+    }
+
     /// <summary>Rejects native concurrency or persistence failures without converting them into successful state changes.</summary>
     private static void Require(IdentityResult result)
     {

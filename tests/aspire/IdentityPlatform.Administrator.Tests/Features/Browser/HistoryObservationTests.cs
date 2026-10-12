@@ -7,6 +7,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
 /// <summary>Proves history observations wait for readiness without waiting away exposed secret material.</summary>
 [Trait("Category", "Browser")]
+[Trait("BrowserStory", "Accounts")]
 public sealed class HistoryObservationTests
 {
     private const string Origin = "https://history.example.invalid";

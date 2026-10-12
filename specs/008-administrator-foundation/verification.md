@@ -1,6 +1,6 @@
 # Verification record
 
-**Current status:** T024 is accepted in PR #29. T025 enrollment/login/account sessions is under review in [PR #30](https://github.com/mosesparadise/OpenIdentityAdmin/pull/30), with final exact-head CI still required; T026 recovery/security/logout has not started. See the latest packet below and [enrollment/login](enrollment-login.md). Earlier sections retain historical evidence and do not supersede this status.
+**Current status:** T025 enrollment/login/account sessions is accepted in [PR #30](https://github.com/mosesparadise/OpenIdentityAdmin/pull/30), squash `78d77c38b93f252cd5f07f811b4b2046843db60d`. T026 recovery/security/logout is in progress under the approved MFA design; see [recovery/security](recovery-security.md). Earlier sections retain historical evidence and do not supersede this status.
 
 ## Increment 1 historical record
 
@@ -141,3 +141,13 @@ The implementation and independent source corrections are documented in [enrollm
 Initial CI exposed expected desktop badge baseline changes and native Chromium/Firefox refusal to restore a no-store POST through browser history. Updated image baselines were visually reviewed; cache-miss handling accepts only exact leading engine-specific error codes and still independently checks absence of secrets after every history action. Wrong-engine, generic URL mentions and suffixed error codes are rejected by seeded controls. Both provider WebKit administrator cells passed five cases on `a42f9d6`; this is not final-head acceptance for other engines. A transient source revision failed CA1863 in the diagnostic helper; its formatting cache was corrected before the next build. No acceptance evidence from failed/cancelled runs is promoted to a full pass.
 
 T025 remains open until complete exact-head CI and normal squash. T027/T028/T029 remain umbrella tasks, including actual clipboard/password-manager behavior, remaining MFA evidence, human assessments and final increment acceptance. T026 and governance/API/BFF work are not part of this acceptance claim.
+
+## T025 acceptance — 13 October 2026 (Europe/London)
+
+[Run 38318191948](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38318191948) passed all 48 jobs at exact head `572d0325c76785280072bd05906a63e8efef9b7d`, tree `07f7769275e22cc02434fdb689f2fe329b6bef37`. [PR #30](https://github.com/mosesparadise/OpenIdentityAdmin/pull/30) was normally squash-merged as `78d77c38b93f252cd5f07f811b4b2046843db60d` after final review and clean merge-state checks; no protection bypass or self-approval was used.
+
+All 1,666 required non-mutation .NET matrix cases passed with zero skips: 367 unit, 511 ordinary/provider, 29 issuer plus seven administrator/browser/provider, and 61 contracts cases. Accounts passed 37/provider (PostgreSQL268.519s, SQLServer331.866s); administrator browsers passed 7/7 in every engine/provider cell. The final Firefox controls verify native no-store refusal, no resubmission and independent response-only/commit-only rejection; earlier inspector failures are retained above. SQLServer Issuer292 passed in533.491s within the unchanged660-second invocation bound. Both providers killed all seven protocol and four administrator mutants at their demonstrated defects.
+
+All35 mandatory coverage inputs were present. Module line/branch results: Core100/100; Infrastructure93.7/95.9; ServiceDefaults100/100; Migrator99/100; AuthServer96.3/98.6; Admin.Api100/100; Admin.Bff100/100; Worker100/100; AppHost99.5/100. All approved floors passed. No coverage exclusion/quality allowance was added;19 obsolete quality entries were removed (1,890 remain).
+
+Independent architecture/security, capacity, composition and test/UX source findings were corrected and accepted. There were no open inline threads. Copilot's quota prevented its automated review; independent repository-agent reviews and executed gates supplied the recorded engineering review, without claiming external security assessment. T026, T028 paste/autofill/human evidence, current-permission/last-administrator enforcement and external/public-release gates remain separate obligations.

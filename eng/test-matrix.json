@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 306,
+      "Host": 334,
       "Architecture": 5,
       "AppHost": 31
     },
@@ -37,19 +37,19 @@
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 168
+      "Administrator": 207
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 168
+      "Administrator": 207
     }
   },
   "browser": {
     "Issuer": 29,
-    "Administrator": 7
+    "Administrator": 12
   },
   "lifecycle_stories": {
     "Restart": {
@@ -85,6 +85,18 @@
     "Accounts": {
       "PostgreSql": 37,
       "SqlServer": 37
+    },
+    "Security": {
+      "PostgreSql": 21,
+      "SqlServer": 21
+    },
+    "Recovery": {
+      "PostgreSql": 18,
+      "SqlServer": 18
     }
+  },
+  "administrator_browser_stories": {
+    "Accounts": 7,
+    "Security": 5
   }
 }

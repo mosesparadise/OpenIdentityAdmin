@@ -16,9 +16,15 @@ internal sealed class JourneyEligibility(PlatformDbContext database)
     {
         transaction.RequireContext(database);
         account.RequireCurrent(transaction);
-        if (purpose == AdministratorPolicy.Login)
+        if (purpose is AdministratorPolicy.Login or AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration)
         {
             return account.IsActive;
+        }
+        if (purpose == AdministratorPolicy.Recovery)
+        {
+            return account.User.IsEnabled && account.User.TwoFactorEnabled && !account.Enrollment.Suspended &&
+                account.Enrollment.State is AdministratorPolicy.Active or AdministratorPolicy.RecoveryRequired &&
+                account.Enrollment.FactorGeneration > 0 && account.Enrollment.RecoveryGeneration > 0;
         }
         if (purpose != AdministratorPolicy.Enrollment || !transaction.Plan.Governance || account.User.IsEnabled ||
             account.User.TwoFactorEnabled || account.Enrollment.Suspended || account.Enrollment.State != AdministratorPolicy.Pending ||
@@ -37,7 +43,13 @@ internal sealed class JourneyEligibility(PlatformDbContext database)
     /// <summary>Rejects legacy, stale revision or transplanted staged destinations before completion or secret display.</summary>
     internal async Task<bool> AllowsAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyInteraction interaction)
     {
+        transaction.RequireContext(database);
+        account.RequireCurrent(transaction);
         var row = interaction.Row;
+        if (row.Purpose == AdministratorPolicy.Replacement && row.AuthorizationKind is not null)
+        {
+            return JourneyAuthorization.IsStaged(account, row);
+        }
         return row.ExpectedEnrollmentRevision == account.Enrollment.Revision &&
             (row.Purpose == AdministratorPolicy.Enrollment
                 ? row.DestinationGeneration <= account.Authentication.LastAllocatedFactorGeneration

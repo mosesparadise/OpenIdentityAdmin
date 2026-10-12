@@ -1,6 +1,6 @@
 # T025 — enrollment, MFA login and account sessions
 
-Status: implementation in progress on accepted T024. This packet applies the approved [MFA design](mfa-design.md); it does not claim runtime acceptance or introduce a new scope approval.
+Status: accepted in PR #30 (`78d77c3`) after all48 exact-head CI jobs passed; see [verification](verification.md#t025-acceptance--13-october-2026-europelondon). This packet applies the approved [MFA design](mfa-design.md); it does not claim runtime acceptance or introduce a new scope approval.
 
 Preserve the existing projects and feature hierarchy. AuthServer gains Enrollment/Mfa journeys and an account-status destination with feature-local Setup and small Razor handlers. Infrastructure owns native ceremony decisions, generation allocation and authoritative session validation. Shared browser/form/cookie mechanics remain under Accounts/Shared. No controller, management grant, new host or generic repository is added.
 

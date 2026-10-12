@@ -15,7 +15,7 @@ internal sealed class UnreceivedResponse : IAsyncDisposable
     private SslStream? stream;
 
     /// <summary>Preserves the original cookie state and writes the native form without receiving headers, cookies or recovery text.</summary>
-    internal async Task SendAsync(Uri issuer, CookieContainer cookies, AdministratorForm form, string code)
+    internal async Task SendAsync(Uri issuer, CookieContainer cookies, AdministratorForm form, string code, string path = AdministratorJourney.Enrollment)
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(DeadlineSeconds));
@@ -30,7 +30,7 @@ internal sealed class UnreceivedResponse : IAsyncDisposable
         });
         var body = await content.ReadAsByteArrayAsync(deadline.Token);
         var headers = Encoding.ASCII.GetBytes(string.Format(CultureInfo.InvariantCulture, Request,
-            AdministratorJourney.Enrollment, issuer.Authority, cookies.GetCookieHeader(issuer), body.Length));
+            path, issuer.Authority, cookies.GetCookieHeader(issuer), body.Length));
         await stream.WriteAsync(headers, deadline.Token);
         await stream.WriteAsync(body, deadline.Token);
         await stream.FlushAsync(deadline.Token);

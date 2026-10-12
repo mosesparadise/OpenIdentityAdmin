@@ -108,7 +108,7 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
     }
 
     /// <summary>Checks all session ceilings before callers consume a factor, recovery code or account authority.</summary>
-    internal async Task<bool> HasSessionCapacityAsync(CeremonyTransaction transaction, string userId)
+    internal async Task<bool> HasSessionCapacityAsync(CeremonyTransaction transaction, string userId, string? replacedSession = null)
     {
         Require(transaction, userId);
         var now = clock.Now;
@@ -116,7 +116,7 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
         var sessions = database.Set<AdministratorSession>();
         return await sessions.CountAsync(transaction.Token) < AdministratorPolicy.RetainedRows &&
             await sessions.CountAsync(row => row.UserId == userId, transaction.Token) < AdministratorPolicy.RetainedUserSessions &&
-            await sessions.CountAsync(row => row.UserId == userId && !row.Revoked && row.ExpiresAt > now && row.LastActivityAt > idle, transaction.Token) < AdministratorPolicy.LiveSessions;
+            await sessions.CountAsync(row => row.UserId == userId && row.PublicId != replacedSession && !row.Revoked && row.ExpiresAt > now && row.LastActivityAt > idle, transaction.Token) < AdministratorPolicy.LiveSessions;
     }
 
     /// <summary>Rejects count-and-allocate operations that did not acquire admission before account serialization.</summary>

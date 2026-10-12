@@ -32,6 +32,22 @@
       "after": "// Seeded test defect: omit the mandatory atomic audit.",
       "marker": "administrator-audit-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack"
+    },
+    {
+      "id": "administrator-recovery-rollback",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs",
+      "before": "if (!(await users.RedeemTwoFactorRecoveryCodeAsync(account.User, code)).Succeeded)\n        {\n            throw new FactorUnavailableException();\n        }",
+      "after": "if (!(await users.RedeemTwoFactorRecoveryCodeAsync(account.User, code)).Succeeded)\n        {\n            return null;\n        }",
+      "marker": "administrator-recovery-rollback-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack"
+    },
+    {
+      "id": "administrator-logout-revocation",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs",
+      "before": "session.Revoked = true;",
+      "after": "session.Revoked = false;",
+      "marker": "administrator-logout-revocation-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked"
     }
   ]
 }

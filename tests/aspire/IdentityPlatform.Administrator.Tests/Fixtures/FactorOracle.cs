@@ -95,13 +95,17 @@ internal static class FactorOracle
 
     /// <summary>Selects a distinct value within the native adjacent-step window without reusing an accepted numeric code.</summary>
     internal static string UnusedCode(string seed, string accepted)
+        => UnusedCode(seed, new HashSet<string>([accepted], StringComparer.Ordinal));
+
+    /// <summary>Excludes every already accepted numeric value while selecting an independently computed bounded native-window code.</summary>
+    internal static string UnusedCode(string seed, IReadOnlySet<string> accepted)
     {
         const string NoUnusedCode = "The native window contained no distinct independent code.";
         const int NativeWindowSteps = 2;
         int[] offsets = [StepSeconds, -StepSeconds, StepSeconds * NativeWindowSteps, -StepSeconds * NativeWindowSteps];
         var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         var codes = offsets.Select(offset => Code(seed, now + offset));
-        var selected = codes.FirstOrDefault(code => code != accepted);
+        var selected = codes.FirstOrDefault(code => !accepted.Contains(code));
         Assert.True(selected is not null, NoUnusedCode);
         return selected!;
     }

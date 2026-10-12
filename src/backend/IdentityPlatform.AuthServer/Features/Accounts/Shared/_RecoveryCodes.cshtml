@@ -1,0 +1,11 @@
+@model IReadOnlyList<string>
+<h1 id="heading">Save your recovery codes</h1>
+<p>Save these codes in a secure password manager now. Each code can be used once to begin authenticator recovery.</p>
+<p class="error-summary">These codes are shown only once. Reloading or leaving this page will not show them again.</p>
+<ul class="recovery-codes" data-account-secret aria-label="Single-use recovery codes">
+  @foreach (var code in Model)
+  {
+    <li><code>@code</code></li>
+  }
+</ul>
+<a class="primary" href="/account/administrator/security">I have saved my codes</a>

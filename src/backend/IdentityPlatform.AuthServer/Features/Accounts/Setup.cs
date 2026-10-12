@@ -3,6 +3,7 @@ using IdentityPlatform.AuthServer.Features.Accounts.Login;
 using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 using IdentityPlatform.AuthServer.Features.Accounts.Mfa;
 using IdentityPlatform.AuthServer.Features.Accounts.Security;
+using IdentityPlatform.AuthServer.Features.Accounts.Recovery;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
@@ -39,7 +40,8 @@ internal static class Setup
             services.AddAdministratorMaintenance();
             services.AddAdministratorJourneys();
             services.AddScoped<IAdministratorJourney, AdministratorJourney>();
-            services.AddEnrollment().AddMfa().AddAccountSecurity();
+            services.AddScoped<IAdministratorSecurityJourney, AdministratorSecurityJourney>();
+            services.AddEnrollment().AddMfa().AddRecovery().AddAccountSecurity();
         }
         return services.AddAccountProtection();
     }

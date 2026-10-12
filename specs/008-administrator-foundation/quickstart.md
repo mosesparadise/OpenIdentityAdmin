@@ -1,6 +1,6 @@
 # Protected administrator bootstrap — increment 1
 
-This creates a **disabled, enrollment-pending** administrator. It does not enable administrator login, issue a session, or unlock Admin API/BFF access. MFA enrollment and restricted recovery are the next increment. See [verification.md](verification.md) for acceptance status.
+This creates a **disabled, enrollment-pending** administrator. It does not enable administrator login, issue a session, or unlock Admin API/BFF access. Explicitly enabled enrollment and MFA login are accepted in T025; restricted recovery follows in T026. See [verification.md](verification.md) for acceptance status.
 
 ## Prerequisites
 
@@ -44,11 +44,11 @@ python3 scripts/verify.py SqlServer --partition administrator
 
 Each provider runs isolated Bootstrap, Factors, Ceremonies and Accounts stories. Exact reviewed case counts live in `eng/test-matrix.json`. Every identity must be discovered and executed, none skipped. Use `--story Bootstrap`, `--story Factors`, `--story Ceremonies` or `--story Accounts` to select one explicitly. TRX reports are under `artifacts/tests/administrator-{provider}-{story}/`, with lowercase story names. These isolated jobs retain the 660-second invocation limit and do not enlarge issuer suites. An unavailable provider is a failed prerequisite, not a successful or skipped test. Full CI additionally enforces regression, static analysis, mutation, secret/dependency checks and all required module coverage inputs.
 
-## Enrollment and MFA — T025 acceptance in progress
+## Enrollment and MFA — accepted T025
 
-The implementation branch adds enrollment, ordinary password/TOTP login and stored account-session validation. These journeys are **not yet accepted or merged**; follow [enrollment/login](enrollment-login.md) and [verification](verification.md) for the current evidence. Restricted recovery, authenticator replacement, code regeneration and logout remain T026. Administrator API/BFF/docs and OAuth authorization remain unavailable.
+PR #30 adds accepted enrollment, ordinary password/TOTP login and stored account-session validation. Follow [enrollment/login](enrollment-login.md) and [verification](verification.md) for the current evidence. Restricted recovery, authenticator replacement, code regeneration and logout remain T026. Administrator API/BFF/docs and OAuth authorization remain unavailable.
 
-The following instructions describe the implemented configuration and still need final both-provider/browser acceptance. In WSL2, use the [pilot prerequisites](../../docs/operations/first-party-pilot.md#windows-with-wsl2) for Docker, Linux private file permissions and separate Windows/browser HTTPS trust. Provide the complete [issuer protection](../../docs/operations/issuer-protection.md) settings through protected local configuration. Keep the signing, encryption and wrapping keys distinct and retain the Data Protection ring while its sessions/factors are in use.
+The enrollment/login configuration was accepted in PR #30; T026 security routes require their own final acceptance below. In WSL2, use the [pilot prerequisites](../../docs/operations/first-party-pilot.md#windows-with-wsl2) for Docker, Linux private file permissions and separate Windows/browser HTTPS trust. Provide the complete [issuer protection](../../docs/operations/issuer-protection.md) settings through protected local configuration. Keep the signing, encryption and wrapping keys distinct and retain the Data Protection ring while its sessions/factors are in use.
 
 Set `Identity__AdministratorAccounts__Enabled=true` and `Pilot__Enabled=false` in the AppHost's protected configuration. Select `Database__Provider=PostgreSql` or `SqlServer`. Account activation and pilot activation are independent; enabling accounts never provisions an administrator automatically. AppHost forwards the resolved AuthServer HTTPS issuer and the complete protection settings through secret parameters to their owners.
 
@@ -80,3 +80,26 @@ python3 scripts/verify.py PostgreSql --partition administrator --browser webkit
 ```
 
 Run all three browser commands with `SqlServer` as well. Browser installation and TLS trust follow the pinned workflow. Test fixtures provision disposable synthetic material themselves; manual bootstrap credentials must never be supplied to these tests. Actual human WSL2/password-manager/screen-reader observations remain distinct from automated browser evidence.
+
+## Recovery and account security — T026
+
+Implementation is under verification; consult [recovery/security](recovery-security.md) and the final PR checks before treating these routes as accepted.
+
+- From administrator login, choose **Use a recovery code** (`/account/administrator/recovery`). Supply the original username/password, then one unused recovery code. Recovery invalidates old local sessions and authorizes only a fresh authenticator setup; it does not sign you in. Confirm the new authenticator's code to obtain a new account session and ten new recovery codes.
+- From account status, use **Replace authenticator**. Enter the password and an unused code from the current authenticator, then confirm the displayed new key with its code. Abandoning this voluntary stage keeps the current factor usable. Successful completion invalidates all old local sessions and replaces recovery codes.
+- Use **Regenerate recovery codes** from account status with the password and an unused current authenticator code. Save the new codes immediately. All previously issued recovery codes and local sessions are invalidated; the current browser receives a replacement session.
+- Use **Sign out** and submit its confirmation. Visiting the confirmation alone does not log out. The POST revokes exactly this stored account session, leaving other current sessions intact.
+
+Fresh-password/step-up interactions expire after five minutes; a GET never extends that time. If recovery staging expires or its response is lost, restart with a fresh password and a different unused recovery code. Remaining codes remain usable until successful factor replacement. If a final completion response is lost, its codes cannot be redisplayed; authenticate with the installed factor and explicitly regenerate codes. Losing every factor/recovery code has no operator bypass or bootstrap reset. These are local account journeys, not Admin API/BFF access or OpenID Connect logout.
+
+Focused verification (repeat for `SqlServer`):
+
+```bash
+python3 scripts/verify.py PostgreSql --partition administrator --story Recovery
+python3 scripts/verify.py PostgreSql --partition administrator --story Security
+python3 scripts/verify.py PostgreSql --partition administrator --browser chromium --browser-story Security
+python3 scripts/verify.py PostgreSql --partition administrator --browser firefox --browser-story Security
+python3 scripts/verify.py PostgreSql --partition administrator --browser webkit --browser-story Security
+```
+
+Omitting `--browser-story` executes both mandatory Accounts and Security invocations separately, retaining each existing timeout. Native no-script, keyboard, theme, accessibility and secret-history checks run in all three engines. Human screen-reader/password-manager evidence remains a separate tracked obligation.
