@@ -20,9 +20,9 @@ class LifecycleSelectionTests(unittest.TestCase):
             administrator = select_projects(matrix, provider, partition='administrator')
             self.assertFalse(administrator.keys() & (standard.keys() | lifecycle.keys()))
             self.assertEqual(complete, standard | lifecycle | administrator)
-            self.assertEqual(302, sum(standard.values()))
+            self.assertEqual(304, sum(standard.values()))
             self.assertEqual({'Issuer.Lifecycle': 41}, lifecycle)
-            self.assertEqual(585, sum(complete.values()))
+            self.assertEqual(587, sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
         self.assertEqual(matrix['browser'], select_projects(matrix, 'SqlServer', 'webkit'))
         for profile, browser, partition in [('unit', None, 'standard'), ('unit', None, 'lifecycle'),

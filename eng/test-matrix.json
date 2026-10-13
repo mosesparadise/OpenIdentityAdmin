@@ -30,18 +30,18 @@
       "Core": 25,
       "Host": 338,
       "Architecture": 5,
-      "AppHost": 59
+      "AppHost": 61
     },
     "PostgreSql": {
       "Persistence": 4,
-      "AppHost": 6,
+      "AppHost": 8,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
       "Administrator": 242
     },
     "SqlServer": {
       "Persistence": 4,
-      "AppHost": 6,
+      "AppHost": 8,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
       "Administrator": 242
