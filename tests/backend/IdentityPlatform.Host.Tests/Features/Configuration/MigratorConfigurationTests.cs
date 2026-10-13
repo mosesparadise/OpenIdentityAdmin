@@ -3,101 +3,120 @@ using IdentityPlatform.Migrator.Features.Database.Upgrade;
 
 namespace IdentityPlatform.Host.Tests.Features.Configuration;
 
+/// <summary>Exercise safe configuration failures through the actual production entry points.</summary>
 public sealed class MigratorConfigurationTests
 {
+    private const string DotnetHostPath = "DOTNET_HOST_PATH";
+    private const string DotnetCommand = "dotnet";
+    private const string DotnetEnvironment = "DOTNET_ENVIRONMENT";
+    private const string ProviderKey = "Database__Provider";
+    private const string PlatformConnection = "ConnectionStrings__platform";
+    private const string SessionsConnection = "ConnectionStrings__adminsessions";
+    private const string PlatformPassword = "LocalDevelopment__PlatformPassword";
+    private const string SessionsPassword = "LocalDevelopment__SessionsPassword";
+    private const string ProvisionRuntimeRoles = "LocalDevelopment__ProvisionRuntimeRoles";
+    private const string DevelopmentEnvironment = "Development";
+    private const string EnabledFlag = "true";
+    private const string PostgreSqlProvider = "PostgreSql";
+    private const string BffHost = "Admin.Bff";
+    private const string SyntheticSecret = "synthetic-secret";
+    private const string InvalidConnection = "Password=synthetic-secret";
+    private const string MigrationFailure = "Invalid migration configuration";
+    private const string DatabaseFailure = "Invalid database configuration";
+    private const string AssemblyPrefix = "IdentityPlatform.";
+    private const string AssemblySuffix = ".dll";
+    private const int ConfigurationFailureExitCode = 2;
+    private static readonly TimeSpan ExitDeadline = TimeSpan.FromSeconds(10);
+    private static readonly string[] RuntimeHosts = ["AuthServer", "Admin.Api", BffHost, "Worker"];
+
+    /// <summary>Verify invalid migration settings produce a safe diagnostic and a nonzero exit.</summary>
     [Theory]
     [InlineData("synthetic-secret", "Development")]
     [InlineData("true", "Production")]
     [InlineData("true", "Development")]
     [InlineData("false", "Development")]
     [InlineData(null, "Development")]
-    public async Task Invalid_configuration_returns_safe_nonzero_exit(string? bootstrap, string environment)
+    public async Task Given_InvalidMigratorConfiguration_When_ProcessStarts_Then_ExitsSafely(string? bootstrap, string environment)
     {
-        var start = new ProcessStartInfo(Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet")
-        {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false
-        };
-        start.ArgumentList.Add(typeof(DatabaseUpgrade).Assembly.Location);
-        start.Environment["DOTNET_ENVIRONMENT"] = environment;
-        start.Environment["Database__Provider"] = "PostgreSql";
-        start.Environment["ConnectionStrings__platform"] = "";
-        start.Environment["ConnectionStrings__adminsessions"] = "";
-        start.Environment["LocalDevelopment__PlatformPassword"] = "";
-        start.Environment["LocalDevelopment__SessionsPassword"] = "";
-        if (bootstrap is null)
-        {
-            start.Environment.Remove("ConnectionStrings__platform");
-            start.Environment.Remove("ConnectionStrings__adminsessions");
-        }
-        if (bootstrap == "true" && environment == "Development")
-        {
-            start.Environment.Remove("LocalDevelopment__PlatformPassword");
-            start.Environment.Remove("LocalDevelopment__SessionsPassword");
-        }
-        start.Environment.Remove("LocalDevelopment__ProvisionRuntimeRoles");
-        if (bootstrap is not null)
-        {
-            start.Environment["LocalDevelopment__ProvisionRuntimeRoles"] = bootstrap;
-        }
-
-        using var process = Process.Start(start)!;
-        var output = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
-        var error = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
-        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
-        deadline.CancelAfter(TimeSpan.FromSeconds(10));
-        try
-        {
-            await process.WaitForExitAsync(deadline.Token);
-        }
-        finally
-        {
-            if (!process.HasExited)
-            {
-                process.Kill(entireProcessTree: true);
-            }
-        }
-        var combined = await output + await error;
-        Assert.DoesNotContain("synthetic-secret", combined);
-        Assert.Equal(2, process.ExitCode);
-        Assert.Contains("Invalid migration configuration", combined);
+        var start = CreateStart(typeof(DatabaseUpgrade).Assembly.Location);
+        ConfigureMigrator(start, bootstrap, environment);
+        await RequireSafeFailureAsync(start, MigrationFailure);
     }
 
+    /// <summary>Supply invalid provider, missing connection and incomplete connection cases for every runtime host.</summary>
     public static IEnumerable<object[]> RuntimeConfigurationCases()
     {
-        foreach (var host in new[] { "AuthServer", "Admin.Api", "Admin.Bff", "Worker" })
+        foreach (var host in RuntimeHosts)
         {
-            yield return [host, "synthetic-secret", null!];
-            yield return [host, "PostgreSql", null!];
-            yield return [host, "PostgreSql", "Password=synthetic-secret"];
+            yield return [host, SyntheticSecret, null!];
+            yield return [host, PostgreSqlProvider, null!];
+            yield return [host, PostgreSqlProvider, InvalidConnection];
         }
     }
 
+    /// <summary>Verify each real runtime host rejects invalid database settings without disclosure.</summary>
     [Theory]
     [MemberData(nameof(RuntimeConfigurationCases))]
-    public async Task Actual_runtime_host_rejects_invalid_configuration_without_exposing_it(string host, string provider, string? connection)
+    public async Task Given_InvalidRuntimeConfiguration_When_HostStarts_Then_ExitsWithoutDisclosingInput(string host, string provider, string? connection)
     {
-        var start = new ProcessStartInfo(Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet")
+        var start = CreateStart(Path.Combine(AppContext.BaseDirectory, AssemblyPrefix + host + AssemblySuffix));
+        start.Environment[ProviderKey] = provider;
+        start.Environment.Remove(PlatformConnection);
+        start.Environment.Remove(SessionsConnection);
+        if (connection is not null)
+        {
+            start.Environment[host == BffHost ? SessionsConnection : PlatformConnection] = connection;
+        }
+        await RequireSafeFailureAsync(start, DatabaseFailure);
+    }
+
+    /// <summary>Run the selected assembly with redirected streams and the current test runtime.</summary>
+    private static ProcessStartInfo CreateStart(string assembly)
+    {
+        var start = new ProcessStartInfo(Environment.GetEnvironmentVariable(DotnetHostPath) ?? DotnetCommand)
         {
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false
         };
-        start.ArgumentList.Add(Path.Combine(AppContext.BaseDirectory, $"IdentityPlatform.{host}.dll"));
-        start.Environment["Database__Provider"] = provider;
-        start.Environment.Remove("ConnectionStrings__platform");
-        start.Environment.Remove("ConnectionStrings__adminsessions");
-        if (connection is not null)
-        {
-            start.Environment[host == "Admin.Bff" ? "ConnectionStrings__adminsessions" : "ConnectionStrings__platform"] = connection;
-        }
+        start.ArgumentList.Add(assembly);
+        return start;
+    }
 
+    /// <summary>Preserve the missing/empty connection and bootstrap-password combinations used by the negative controls.</summary>
+    private static void ConfigureMigrator(ProcessStartInfo start, string? bootstrap, string environment)
+    {
+        start.Environment[DotnetEnvironment] = environment;
+        start.Environment[ProviderKey] = PostgreSqlProvider;
+        start.Environment[PlatformConnection] = "";
+        start.Environment[SessionsConnection] = "";
+        start.Environment[PlatformPassword] = "";
+        start.Environment[SessionsPassword] = "";
+        if (bootstrap is null)
+        {
+            start.Environment.Remove(PlatformConnection);
+            start.Environment.Remove(SessionsConnection);
+        }
+        if (bootstrap == EnabledFlag && environment == DevelopmentEnvironment)
+        {
+            start.Environment.Remove(PlatformPassword);
+            start.Environment.Remove(SessionsPassword);
+        }
+        start.Environment.Remove(ProvisionRuntimeRoles);
+        if (bootstrap is not null)
+        {
+            start.Environment[ProvisionRuntimeRoles] = bootstrap;
+        }
+    }
+
+    /// <summary>Bound process exit, drain both streams and reject secret disclosure while retaining tree cleanup on timeout.</summary>
+    private static async Task RequireSafeFailureAsync(ProcessStartInfo start, string expectedDiagnostic)
+    {
         using var process = Process.Start(start)!;
         var output = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
         var error = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
-        deadline.CancelAfter(TimeSpan.FromSeconds(10));
+        deadline.CancelAfter(ExitDeadline);
         try
         {
             await process.WaitForExitAsync(deadline.Token);
@@ -110,8 +129,8 @@ public sealed class MigratorConfigurationTests
             }
         }
         var combined = await output + await error;
-        Assert.DoesNotContain("synthetic-secret", combined);
-        Assert.Equal(2, process.ExitCode);
-        Assert.Contains("Invalid database configuration", combined);
+        Assert.DoesNotContain(SyntheticSecret, combined);
+        Assert.Equal(ConfigurationFailureExitCode, process.ExitCode);
+        Assert.Contains(expectedDiagnostic, combined);
     }
 }
