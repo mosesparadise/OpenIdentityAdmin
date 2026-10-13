@@ -7,7 +7,7 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 /// <summary>Retains bounded, allowlisted resource states without serializing configuration or replacing the test failure.</summary>
 internal static class ProfileStartupEvidence
 {
-    private static readonly string[] ResourceNames = ["database", "migrator", "auth", "admin-api", "admin-bff", "worker"];
+    internal static readonly string[] ResourceNames = ["database", "migrator", "auth", "admin-api", "admin-bff", "worker"];
     private static readonly HashSet<string> SafeStates = new(StringComparer.Ordinal)
     {
         KnownResourceStates.Running, KnownResourceStates.Starting, KnownResourceStates.FailedToStart,
