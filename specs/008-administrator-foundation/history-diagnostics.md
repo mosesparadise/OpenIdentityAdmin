@@ -1,0 +1,39 @@
+# T032 — controlled browser history diagnostics
+
+Status: implementation and local controls complete; exact-head CI and final review remain the delivery gate. This is the second of the user's approved sequence T031, T032, T019 design. It changes test diagnostics only. ADM-EVID-01 and ADM-OPS-01 remain unresolved, acceptance/public-release-blocking; A-003 is expired. T019 may proceed as design only after normal squash, while runtime governance remains gated.
+
+## Problem and evidence boundary
+
+The retained Firefox/SQL Accounts failure in main run `38355735749` timed out in the first five-second positive readiness oracle after releasing a held image. Release permission did not establish completed `FulfillAsync`. No route/load/phase evidence survived. Concurrent graph startup was observed, but resource contention, driver scheduling and delivery delay are hypotheses. See [the investigation](startup-investigation.md#separate-post-merge-finding-adm-evid-01) for original artifacts and pinned library analysis.
+
+T032 separates requested, release-permitted and successfully fulfilled signals. Route exceptions propagate to the awaiting control. Delivery and both repeated safe-document observations share one absolute five-second positive budget, started before release. The remaining timeout must be positive; zero must never disable Playwright's timeout. A final budget check rejects late completion. The unchanged 250 ms incomplete-document rejection, one-second secret rejection and both seed/recovery marker checks remain. Native history refusal classification is unchanged; neither a delivery error nor an observation timeout becomes accepted refusal.
+
+The probe retains only fixed phases, monotonic elapsed milliseconds, request/load counters and release/fulfillment/safe/cleanup booleans. It releases pending work on every exit and bounds route teardown separately at five seconds, preserving the primary error. A teardown failure prevents otherwise successful acceptance. It never records HTML, secret values, URLs, configuration or exception text in these diagnostic records. Raw framework failures remain subject to existing browser evidence safeguards.
+
+## Fixed comparison
+
+`scripts/verify_history_experiment.py PostgreSql` and the corresponding `SqlServer` command each perform exact native discovery, then run the same existing history-control identity once in `isolated` and once in `overlap`, using Firefox. The mode is explicit and allowlisted; missing means ordinary execution. Both runners reject inherited diagnostic mode, including an empty value. No ordinary suite can acquire diagnostic acceptance credit.
+
+The isolated invocation starts no graph. The overlap invocation owns a real Development AppHost, begins startup after the incomplete-document control, waits for the database's actual Running state, then releases the image while continuing to await actual health of AuthServer, Admin API, Admin BFF and Worker. Success requires measured interval intersection: graph start <= database Running <= positive start < graph ready. The positive interval itself must be nonempty and no longer than five seconds. A nonoverlapping arm is inconclusive and fails; it is never silently repeated.
+
+Startup retains its three-minute deadline. Cancellation, startup joining, graph/builder disposal and actual resource-removal verification share a separate 30-second cleanup join. A timeout reports incomplete cleanup and fails the arm; the asynchronous owner retains the token and resources until startup and disposal finish. The runner's process-group lifetime remains the final execution boundary. Failure windows retain missing timestamps explicitly; successful completion markers are written only after required observation, readiness and cleanup checks. The entire native case must still pass its subsequent secret controls.
+
+Discovery and both fixed arms share one 660-second invocation budget. Both report paths are removed before discovery. Each arm is attempted at most once with the remaining budget, even after the other fails; exhausted time leaves an explicit unattempted status and fails the comparison. Fixed outcomes and separate TRX reports remain under `artifacts/history-experiment/<provider>`. There are no blanket retries, no new ordinary case credit and no new coverage inputs. The existing 20-minute browser job ceiling remains unchanged.
+
+The verifier reuses strict native TRX result/definition/execution-entry reconciliation, exact selected identities and all required counters. It rejects missing/duplicate/substituted markers, incomplete fulfillment, unsafe observations, contradictory cleanup, overlong windows and absent overlap. A passing subprocess or synthetic marker alone cannot provide evidence. The two focused comparisons run only in the existing Firefox Accounts provider cells, before unchanged ordinary browser acceptance; artifacts are retained even on failure.
+
+## Controls and review
+
+Ten new pure native cases (five methods x both provider labels) exercise shared-budget exhaustion, fulfillment failure/cancellation, expiry before waiting on an inspector, invalid modes/missing windows and failed/pending/eventually completed or faulted cleanup. They do not themselves claim real-provider behavior. They add five Accounts cases per provider: ordinary Administrator HTTP is 242/provider, Accounts is 58/provider. Existing eight Accounts browser cases and five Security browser cases per engine/provider remain unchanged. The native manifest contains 255 identities/provider including those 13 browser cases.
+
+Four Python controls exercise exact UID/provider/story substitution, native-shaped malformed bindings/counters and marker failures, independent arm execution/stale artifact removal/deadline exhaustion, and ordinary-runner mode rejection. Independent architecture/Aspire and test review identified bounded cleanup, failure evidence, independent arm execution, stale reports, five-second validation, strict bindings and explicit cleanup reconciliation; all were corrected before CI.
+
+Local validation: project build passed with zero warnings/errors; initial ten focused cases passed with no skips in 1.073 seconds; Python controls pass. Final changed-source checks and exact-head CI belong in the PR evidence. This environment has no installed Playwright browser binaries and cannot obtain the SQL container asset through its current managed network policy; real-browser/provider comparison therefore runs in controlled CI. No TLS or network-policy bypass is authorized or used.
+
+## Closure requirements and next step
+
+A green comparison establishes only successful observed delivery under these fixed conditions. It neither reproduces the original failure nor proves its cause. Any failed arm must retain evidence and receive a substantiated disposition before re-execution; no successful retry substitutes for causality. Closing ADM-EVID-01 still requires a demonstrated cause, correction where justified, matching permanent regression and independent review. The original failed evidence remains retained.
+
+After this scoped diagnostic PR passes review and exact-head checks and is normally squash-merged, T019 supplies the usable-administrator predicate and supported recovery-route design. T020/T021 runtime enforcement, human observations and broader release gates remain pending.
+
+CI attempt record: initial head `872ddba` in run `38367816704` exposed an omitted update in the independent provider-total oracle (`580` versus `585` after five new cases/provider). Affected jobs failed in Python preflight before actual suites. The count is corrected from the native catalogue; no test is removed and no failure is classified as acceptance. The new revision receives a complete exact-head run, rather than retrying a failed diagnostic arm.
