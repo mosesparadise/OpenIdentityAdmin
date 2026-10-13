@@ -2342,36 +2342,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/core/IdentityPlatform.Core/Features/Identity/Permissions/AdministratorPermissions.cs",
-        "Symbol": "IdentityPlatform.Core.Features.Identity.Permissions.AdministratorPermissions",
-        "Fingerprint": "43EC32957162377AC5D09AF60D5CF549C2342885387888BB211A309DADAC14BB"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/core/IdentityPlatform.Core/Features/Identity/Permissions/AdministratorPermissions.cs",
-        "Symbol": "IdentityPlatform.Core.Features.Identity.Permissions.AdministratorPermissions.CreateBundles()",
-        "Fingerprint": "77C5C0289BC14A257DD9B24197FFB152ECE740833B35E52C19ABEE0AFA82AB58"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/core/IdentityPlatform.Core/Features/Identity/Permissions/AdministratorPermissions.cs",
-        "Symbol": "IdentityPlatform.Core.Features.Identity.Permissions.AdministratorPermissions.CreateBundles()",
-        "Fingerprint": "77C5C0289BC14A257DD9B24197FFB152ECE740833B35E52C19ABEE0AFA82AB58"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/migrations/IdentityPlatform.Migrator/Composition/HostApplicationExtensions.cs",
         "Symbol": "IdentityPlatform.Migrator.Composition.HostApplicationExtensions.AddConfigurations(thisHostApplicationBuilder)",
