@@ -1,5 +1,9 @@
 # OpenIdentityAdmin new-task handoff
 
+## Current engineering continuation
+
+On 14 October 2026 (Europe/London), the user approved the recommended retirement of the witness-test size exception. Main was verified at PR #49's squash `5f4fce7fe0c7761e6eab7308f2cd38908937af51`. Feature 009 T020 is the bounded child of T015; [scope and current evidence](../../specs/009-engineering-standards/witness-refactor.md). Verify its actual PR/head/check state before continuing. The refactor extracts preparation and committed-effect checks while preserving native race ownership, cancellation/drain, test identity and the original decisive mutation assertion. Delivery requires both-provider evidence, independent review and full exact-head CI. Do not renew the exception or close historical/human/release gates.
+
 ## Latest delivered checkpoint
 
 **Latest delivered checkpoint (13 October 2026):** PR [#48](https://github.com/mosesparadise/OpenIdentityAdmin/pull/48) was normally squash-merged as `f4995183453ba194e8136143f3ec6878fb16a7c9` after reviewed head `2e17aca6` passed all 70 jobs in run `38479414481`, all six mutation suites (42 kills with baseline/restored controls), all 55 coverage inputs and nine module floors. Feature 008 T020/T021 and correction F005 are complete for internal development scope. All six historical findings, 48 human rows and activation/public-release gates remain open. Earlier correction/hold notices below describe prior checkpoints. [Final evidence and remaining work](../../specs/008-administrator-foundation/governance-delivery.md).

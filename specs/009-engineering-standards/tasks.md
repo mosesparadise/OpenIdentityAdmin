@@ -40,3 +40,7 @@ The user selected these three engineering cleanups while feature 008 T020/T021 r
 Controls: ENG-02/03/04/05/07/09 and NFR-08/11/14. No runtime capability, incident closure, new project or amendment is introduced. ADM-OPS-01 and ADM-EVID-01 remain unresolved and acceptance/release-blocking.
 
 Batch acceptance: T017/T018/T019 were independently AI-reviewed and normally squash-merged in PRs #40/#41/#42 respectively, each after all62 exact-head CI jobs passed. See verification.md for commit/run identities, review dispositions, local controls and limits. Retired47 exact findings (1886→1839); T013–T016 remain open for the wider backlog. The third slice's two initial local static findings were corrected without suppressions. No open review findings remained at merge.
+
+## Witness test exception retirement — 14 October 2026
+
+- [ ] T020 [US2] Retire the exact CQ004 witness-ordering exception before its 15 October expiry. Extract cohesive preparation and committed-effect checks while preserving the original test identity, native ordering, resource ownership, deadlines and final mutation assertion. Verify unchanged discovery, both-provider ordinary and omitted-witness mutation controls, full required CI and independent architecture/test/security review before normal squash. This bounded child of T015 does not complete the wider retrofit or close historical findings. See [scope and evidence](witness-refactor.md).
