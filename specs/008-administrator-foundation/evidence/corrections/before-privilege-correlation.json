@@ -1,0 +1,168 @@
+{
+  "acceptance": false,
+  "comparisons": [
+    {
+      "Administrator": {
+        "database_alter_any_schema": 1,
+        "database_control": 1,
+        "database_create_table": 1,
+        "db_owner": 1,
+        "exact_table_count": 1,
+        "model_matches_target": 1,
+        "object_alter": 1,
+        "object_control": 1,
+        "object_delete": 1,
+        "object_insert": 1,
+        "object_select": 1,
+        "object_update": 1,
+        "object_view_definition": 1,
+        "object_visible": 1,
+        "probe_column_count": 0,
+        "runtime_login": 0,
+        "runtime_user": 0,
+        "schema_alter": 1,
+        "schema_control": 1,
+        "singleton_count": 1,
+        "sysadmin": 1
+      },
+      "Runtime": {
+        "database_alter_any_schema": 0,
+        "database_control": 0,
+        "database_create_table": 0,
+        "db_owner": 0,
+        "exact_table_count": 1,
+        "model_matches_target": 1,
+        "object_alter": 0,
+        "object_control": 0,
+        "object_delete": 1,
+        "object_insert": 1,
+        "object_select": 1,
+        "object_update": 1,
+        "object_view_definition": 0,
+        "object_visible": 1,
+        "probe_column_count": 0,
+        "runtime_login": 1,
+        "runtime_user": 1,
+        "schema_alter": 0,
+        "schema_control": 0,
+        "singleton_count": 1,
+        "sysadmin": 0
+      },
+      "SameDatabase": true,
+      "SameServer": true,
+      "SameVisibleObject": true
+    }
+  ],
+  "connection_correlation_complete": true,
+  "connections": [
+    {
+      "ConnectionOpen": true,
+      "RuntimeSampleAvailable": true,
+      "SameConnection": true,
+      "Stage": "BeforeAlter"
+    },
+    {
+      "ConnectionOpen": true,
+      "RuntimeSampleAvailable": true,
+      "SameConnection": true,
+      "Stage": "AfterAlter"
+    }
+  ],
+  "diagnostic_only": true,
+  "halt_for_observed_schema_change": false,
+  "image": "mcr.microsoft.com/mssql/server@sha256:4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090",
+  "mutant": "not_run",
+  "native_exit": 2,
+  "original_test_result": "failed-existing-denial-oracle",
+  "outcome": "correlated-observation-recorded",
+  "query_failures": [],
+  "report": {
+    "categories": [
+      "unknown"
+    ],
+    "checkpoints": [
+      {
+        "setup": "JourneyLease"
+      },
+      {
+        "setup": "HostBuilder"
+      },
+      {
+        "setup": "HostBuild"
+      },
+      {
+        "setup": "HostStart"
+      },
+      {
+        "setup": "AuthReadiness"
+      },
+      {
+        "setup": "HostReady"
+      },
+      {
+        "setup": "LeaseOpen"
+      },
+      {
+        "setup": "LeaseCreate"
+      },
+      {
+        "setup": "LeaseMigrate"
+      },
+      {
+        "setup": "LeaseProvision"
+      },
+      {
+        "setup": "LeaseReady"
+      },
+      {
+        "setup": "JourneyInitialize"
+      },
+      {
+        "setup": "JourneyServices"
+      },
+      {
+        "setup": "JourneyReady"
+      },
+      {
+        "setup": "EnrollmentStage"
+      },
+      {
+        "setup": "EnrollmentVerify"
+      },
+      {
+        "setup": "EnrollmentReady"
+      },
+      {
+        "alter": "ProviderError",
+        "probe": "Absent",
+        "provider_code": 1088
+      }
+    ],
+    "counters": {
+      "aborted": 0,
+      "completed": 0,
+      "disconnected": 0,
+      "error": 0,
+      "executed": 1,
+      "failed": 1,
+      "inProgress": 0,
+      "inconclusive": 0,
+      "notExecuted": 0,
+      "notRunnable": 0,
+      "passed": 0,
+      "passedButRunAborted": 0,
+      "pending": 0,
+      "timeout": 0,
+      "total": 1,
+      "warning": 0
+    },
+    "error_nodes": 1,
+    "marker_match": false,
+    "report": "parsed",
+    "stack_match": false,
+    "summary_errors": 0
+  },
+  "seconds": 52.006,
+  "source_commit": "3699718603d90665117e384128803aa5f75ad12e",
+  "source_instrumentation_unchanged": true
+}

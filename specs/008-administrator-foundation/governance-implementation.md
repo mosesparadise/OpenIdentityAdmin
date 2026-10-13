@@ -1,5 +1,9 @@
 # T020/T021 — internal administrator governance execution packet
 
+**Current correction checkpoint (13 October 2026):** implementation was already present at the handoff and is not repeated. The user's current failure-fix request covers the [reviewed test/evidence corrections](governance-failure-corrections.md), followed by required full verification for conditional delivery. Production source and the approved T019 scope are unchanged. The earlier hold below records A-004's expiry; that amendment is not renewed.
+
+**Delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
+
 Status: pre-code architecture/security/test design review converged; publication precedes runtime coding. A-004 was explicitly approved on 13 October 2026; all four historical findings and human/public-release gates remain open. This packet refines the approved [T019 design](governance-design.md), not its scope. The user approved the feature-local Governance folders, three test partitions and dedicated test-only process driver on 13 October 2026. Runtime implementation is now in progress; no runtime acceptance or completed T020/T021 delivery is claimed.
 
 ## Outcome and boundaries

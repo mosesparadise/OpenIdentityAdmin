@@ -7,6 +7,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import signal
 import subprocess
@@ -26,6 +27,116 @@ DIAGNOSTIC_PREFIX = 'mutation-diagnostic '
 PHASE = ContextVar('mutation_phase', default=('control', 'command', 0))
 ROLES = frozenset(('control', 'baseline', 'mutant', 'restored'))
 OPERATIONS = frozenset(('command', 'checkout', 'commit', 'build', 'discovery', 'execution'))
+RECEIPT = ContextVar('mutation_receipt', default=None)
+REPORT_LIMIT_BYTES = 2 * 1024 * 1024
+COUNTER_LIMIT = 100000
+COUNTER_NAMES = ('total', 'executed', 'passed', 'failed', 'error', 'timeout', 'aborted', 'inconclusive',
+                 'passedButRunAborted', 'notRunnable', 'notExecuted', 'disconnected', 'warning', 'completed', 'inProgress', 'pending')
+ASSERTION_CLASSES = ('TrueException', 'FalseException', 'EqualException', 'NotSameException', 'EmptyException', 'SingleException')
+EXCEPTION_CLASSES = ('OperationCanceledException', 'TaskCanceledException', 'TimeoutException', 'SqlException', 'PostgresException',
+                     'InvalidOperationException', 'FactorUnavailableException', 'GovernanceUnavailableException',
+                     'HttpRequestException', 'DockerApiException', 'RpcException', 'IOException')
+SETUP_STAGES = frozenset(('HostBuilder', 'HostBuild', 'HostStart', 'AuthReadiness', 'HostReady', 'HostCleanup',
+                         'LeaseOpen', 'LeaseCreate', 'LeaseMigrate', 'LeaseProvision', 'LeaseReady', 'LeaseCleanup',
+                         'JourneyLease', 'JourneyInitialize', 'JourneyServices', 'JourneyReady',
+                         'EnrollmentStage', 'EnrollmentVerify', 'EnrollmentReady', 'WitnessCreate',
+                         'WitnessSecurityPreparation', 'RequestPreparation', 'CodePreparation'))
+HARNESS_FAILURES = {'Bootstrap harness startup failed.': 'harness-startup-failed',
+                    'Bootstrap database setup failed.': 'harness-database-failed',
+                    'Bootstrap host cleanup failed.': 'harness-cleanup-failed'}
+HARNESS_PREFIXES = ('', 'System.InvalidOperationException: ', 'System.InvalidOperationException : ')
+WITNESS_STAGES = frozenset(('Setup', 'Prepared', 'GateWait', 'GateArrived', 'OrderWait', 'WriterFirst', 'ObserverFirst',
+                          'WriterSecurity', 'OrderComplete', 'CommitResult', 'WriterJoined', 'Drain', 'Security', 'Authority', 'Usable', 'Oracle'))
+PRIVILEGE_ALTER = frozenset(('Succeeded', 'Denied', 'ProviderError', 'Cancelled', 'Unknown'))
+PRIVILEGE_PROBE = frozenset(('Absent', 'Present', 'InvalidGovernance', 'Failed', 'Cancelled', 'NotObserved', 'Unknown'))
+
+
+def report_categories(root):
+    """Classify exact library type tokens without retaining any report-supplied strings."""
+    text = '\n'.join(node.text or '' for tag in ('Message', 'StackTrace') for node in root.findall('.//{*}' + tag))
+    allowed = ASSERTION_CLASSES + EXCEPTION_CLASSES
+    classes = [name for name in allowed if re.search(r'(?<![A-Za-z0-9_])' + name + r'(?![A-Za-z0-9_])', text)]
+    for name in ASSERTION_CLASSES:
+        prefix = 'Assert.' + name.removesuffix('Exception') + '() Failure'
+        if any((node.text or '').startswith(prefix) for node in root.findall('.//{*}Message')) and name not in classes:
+            classes.append(name)
+    for message, category in HARNESS_FAILURES.items():
+        if any((node.text or '').strip() == prefix + message
+               for prefix in HARNESS_PREFIXES for node in root.findall('.//{*}Message')):
+            classes.append(category)
+    return classes or ['unknown']
+
+
+def report_checkpoints(root):
+    """Keep only closed diagnostic lines; their presence is never an acceptance oracle."""
+    checkpoints = []
+    for node in root.findall('.//{*}StdOut'):
+        for line in (node.text or '').splitlines():
+            prefix, _, value = line.strip().partition(' ')
+            if prefix == 'governance-witness-stage' and value in WITNESS_STAGES:
+                checkpoints.append(value)
+            if prefix == 'governance-setup-stage' and value in SETUP_STAGES:
+                checkpoints.append({'setup': value})
+            if prefix == 'governance-privilege':
+                fields = value.split(' ')
+                if len(fields) == 3 and fields[0] in PRIVILEGE_ALTER and fields[1] in PRIVILEGE_PROBE and re.fullmatch(r'-?[0-9]{1,6}|none', fields[2]):
+                    checkpoints.append({'alter': fields[0], 'probe': fields[1], 'provider_code': None if fields[2] == 'none' else int(fields[2])})
+    privilege = [index for index, item in enumerate(checkpoints) if isinstance(item, dict) and 'alter' in item]
+    retained = set(privilege[-1:])
+    bypass = next((index for index in privilege if checkpoints[index]['alter'] == 'Succeeded' or
+                   checkpoints[index]['probe'] == 'Present'), None)
+    if bypass is not None:
+        retained.add(bypass)
+    privilege_indices = set(privilege)
+    ordinary = [index for index in range(len(checkpoints)) if index not in privilege_indices]
+    retained.update(ordinary[-(32 - len(retained)):])
+    return [checkpoints[index] for index in sorted(retained)]
+
+
+def report_observation(path, item):
+    """Read at most two MiB and project untrusted XML into a finite, bounded schema."""
+    try:
+        with path.open('rb') as source:
+            raw = source.read(REPORT_LIMIT_BYTES + 1)
+        if len(raw) > REPORT_LIMIT_BYTES or b'\x00' in raw or b'<!DOCTYPE' in raw.upper() or b'<!ENTITY' in raw.upper():
+            return {'report': 'rejected'}
+        root = ET.fromstring(raw)
+    except FileNotFoundError:
+        return {'report': 'missing'}
+    except (OSError, ET.ParseError, ValueError):
+        return {'report': 'unreadable'}
+    counters = root.findall('.//{*}Counters')
+    counts = {}
+    if len(counters) == 1:
+        for name in COUNTER_NAMES:
+            value = counters[0].attrib.get(name, '')
+            counts[name] = int(value) if re.fullmatch(r'[0-9]{1,6}', value) and int(value) <= COUNTER_LIMIT else None
+    errors = root.findall('.//{*}ErrorInfo')
+    marker = item['marker'] if item else None
+    method = item['method'] if item else None
+    return {'report': 'parsed', 'counters': counts, 'error_nodes': min(len(errors), COUNTER_LIMIT),
+            'summary_errors': min(len(root.findall('.//{*}ResultSummary//{*}ErrorInfo')), COUNTER_LIMIT),
+            'marker_match': bool(marker and any(e.findtext('{*}Message', '').strip() == marker for e in errors)),
+            'stack_match': bool(method and any(method + '(' in e.findtext('{*}StackTrace', '') for e in errors)),
+            'categories': report_categories(root), 'checkpoints': report_checkpoints(root)}
+
+
+def retain_failure(report, item, error):
+    """Best-effort local receipt never replaces a primary error or creates acceptance evidence."""
+    context = RECEIPT.get()
+    if context is None:
+        return
+    try:
+        path, source, run_id = context
+        role, operation, ordinal = PHASE.get()
+        value = {'diagnostic_only': True, 'source_commit': source if re.fullmatch(r'[0-9a-f]{40}', source) else None,
+                 'run_id': run_id if re.fullmatch(r'[0-9]{1,20}', run_id) else None,
+                 'role': role, 'operation': operation, 'ordinal': ordinal, 'failure': failure_category(error),
+                 **report_observation(report, item)}
+        path.write_text(json.dumps(value, sort_keys=True) + '\n')
+    except BaseException:
+        # A second cancellation or failed local sink must not replace the original exception.
+        pass
 
 
 def perform(role, operation, action, *arguments, ordinal=0, **keywords):
@@ -213,11 +324,15 @@ def execute(expression, selected, directory, environment, *, item=None):
     report = directory / 'result.trx'
     report.unlink(missing_ok=True)
     started = time.monotonic()
-    code, _ = run(['dotnet', 'test', '--project', PROJECT, '--no-build', '--no-restore', '--no-progress',
-                   '--pre-enumerate-theories', 'on', '--filter', expression, '--report-trx',
-                   '--report-trx-filename', report.name, '--results-directory', str(directory)], 180, environment)
-    counts = validate_report(report, selected, code, marker=item['marker'] if item else None,
-                             method=item['method'] if item else None)
+    try:
+        code, _ = run(['dotnet', 'test', '--project', PROJECT, '--no-build', '--no-restore', '--no-progress',
+                       '--pre-enumerate-theories', 'on', '--filter', expression, '--report-trx',
+                       '--report-trx-filename', report.name, '--results-directory', str(directory)], 180, environment)
+        counts = validate_report(report, selected, code, marker=item['marker'] if item else None,
+                                 method=item['method'] if item else None)
+    except BaseException as error:
+        retain_failure(report, item, error)
+        raise
     return {**counts, 'seconds': round(time.monotonic() - started, 3), 'tests': sorted(selected)}
 
 
@@ -255,6 +370,9 @@ def main():
         code, commit = perform('control', 'commit', run, ['git', 'rev-parse', 'HEAD'], 30, environment)
         if code:
             raise MutationError('Missing source commit identity')
+        receipt_path = output / 'failure-diagnostic.json'
+        receipt_path.unlink(missing_ok=True)
+        RECEIPT.set((receipt_path, commit.strip(), environment.get('GITHUB_RUN_ID', '')))
         hashes = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in paths}
         evidence = {'version': 1, 'suite': args.suite, 'commit': commit.strip(), 'provider': args.provider, 'source_sha256': hashes, 'mutations': []}
         with tempfile.TemporaryDirectory(prefix='critical-mutations-', dir=private) as temporary:

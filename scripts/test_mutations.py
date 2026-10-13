@@ -112,6 +112,307 @@ def incomplete_main(root, role):
     assert source.read_text() == 'original' and not evidence.exists()
 
 
+class GovernanceDiagnosticTests(unittest.TestCase):
+    """Prove the focused diagnostic runner cannot silently grow scope or bypass its stop gates."""
+
+    def ordinary_receipt(self):
+        """Independently seed a complete two-case SQL ordinary receipt for fail-closed prerequisite controls."""
+        counts = {name: 0 for name in ('total', 'executed', 'passed', 'failed', 'error', 'timeout', 'aborted', 'inconclusive',
+                  'passedButRunAborted', 'notRunnable', 'notExecuted', 'disconnected', 'warning', 'completed', 'inProgress', 'pending')}
+        counts.update(total=2, executed=2, passed=2)
+        return {'authorization': 'A-006', 'source_commit': 'f' * 40, 'mode': 'ordinary', 'provider': 'SqlServer',
+                'diagnostic_only': True, 'source_restored': True, 'halt_for_observed_bypass': False,
+                'outcome': 'expected-outcome-observed',
+                'observation': {'report': 'parsed', 'counters': counts, 'error_nodes': 0, 'summary_errors': 0}}
+
+    def test_Given_MissingImageOrWrongDaemon_When_ReadinessIsChecked_Then_NoImplicitPullOccurs(self):
+        """Only read-only image inspection is allowed; a missing image or wrong endpoint blocks execution."""
+        import diagnostic_governance as diagnostic
+        with patch.object(verifier, 'run', return_value=(1, 'private')) as run:
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.require_image({'DOCKER_HOST': 'unix:///var/run/docker.sock'})
+            self.assertEqual(['docker', '--host=unix:///var/run/docker.sock', 'image', 'inspect'], run.call_args.args[0][:4])
+            self.assertEqual(30, run.call_args.args[1])
+            self.assertNotIn('pull', run.call_args.args[0])
+            run.reset_mock()
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.require_image({'DOCKER_HOST': 'private'})
+            run.assert_not_called()
+
+    def test_Given_IncompleteOrForeignReceipt_When_MutantIsRequested_Then_OrdinarySuccessCannotBeInferred(self):
+        """Every required field/counter must match exact A006 same-source two-case success with native JSON types."""
+        import diagnostic_governance as diagnostic
+        diagnostic.require_passing_ordinary(self.ordinary_receipt(), 'f' * 40)
+        for key in self.ordinary_receipt():
+            changed = self.ordinary_receipt()
+            del changed[key]
+            with self.subTest(missing=key), self.assertRaises(verifier.MutationError):
+                diagnostic.require_passing_ordinary(changed, 'f' * 40)
+        for key in self.ordinary_receipt()['observation']['counters']:
+            for value in (None, True, '0', -1, 3):
+                changed = self.ordinary_receipt()
+                changed['observation']['counters'][key] = value
+                with self.subTest(counter=key, value=value), self.assertRaises(verifier.MutationError):
+                    diagnostic.require_passing_ordinary(changed, 'f' * 40)
+        for key, value in [('authorization', 'A-005'), ('source_commit', 'e' * 40), ('outcome', 'error'),
+                           ('provider', 'PostgreSql'), ('source_restored', 1), ('halt_for_observed_bypass', True),
+                           ('observation', None), ('diagnostic_only', 1)]:
+            changed = self.ordinary_receipt()
+            changed[key] = value
+            with self.subTest(field=key), self.assertRaises(verifier.MutationError):
+                diagnostic.require_passing_ordinary(changed, 'f' * 40)
+
+    def test_Given_UnavailablePrerequisite_When_RunStarts_Then_NoAttemptOrExperimentBegins(self):
+        """Readiness failure stops before file claims, build, discovery or database execution."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory, patch.object(diagnostic, 'require_image', side_effect=verifier.MutationError('fixed')), \
+                patch.object(diagnostic, 'experiment') as experiment:
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.run_once(Path(directory), 'ordinary', 'SqlServer', {}, 'f' * 40)
+            self.assertEqual([], list(Path(directory).iterdir()))
+            experiment.assert_not_called()
+
+    def test_Given_ExactOrdinarySuccess_When_ConditionalMutantRuns_Then_OnlyOneClaimIsPermitted(self):
+        """Valid SQL evidence permits exactly one diagnostic invocation; duplicate-key evidence is rejected."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory, patch.object(diagnostic, 'require_image'), \
+                patch.object(diagnostic, 'experiment', return_value={'diagnostic_only': True}) as experiment, redirect_stdout(io.StringIO()):
+            root = Path(directory)
+            base = root / diagnostic.ARTIFACT_ROOT / 'ordinary-SqlServer'
+            base.mkdir(parents=True)
+            receipt = base / 'diagnostic.json'
+            receipt.write_text(json.dumps(self.ordinary_receipt()))
+            diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+            experiment.assert_called_once()
+            with self.assertRaises(FileExistsError):
+                diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+            receipt.write_text('{"source_restored": false, "source_restored": true}')
+            with self.assertRaises(ValueError):
+                diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+            self.assertEqual(1, experiment.call_count)
+
+    def test_Given_SelectionDrift_When_ExperimentIsPrepared_Then_ExactProviderAndMethodsAreRequired(self):
+        """Selected methods cannot be duplicated, replaced, omitted or moved to another provider."""
+        import diagnostic_governance as diagnostic
+        selected = {'one': ('witness(provider)', 'SqlServer', False), 'two': ('privilege(provider)', 'SqlServer', False)}
+        diagnostic.require_selection(selected, 'SqlServer', ['witness', 'privilege'])
+        for changed in ({'one': selected['one']}, {**selected, 'extra': ('other(provider)', 'SqlServer', False)},
+                        {'one': ('witness(provider)', 'PostgreSql', False), 'two': selected['two']}):
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.require_selection(changed, 'SqlServer', ['witness', 'privilege'])
+
+    def test_Given_FailedMutationAndBrokenSink_When_Unwinding_Then_SourceAndPrimaryFailureArePreserved(self):
+        """Exercise actual changed_source/finally with cancellation and failure while receipt writes also fail."""
+        import diagnostic_governance as diagnostic
+        for primary in (RuntimeError('private'), KeyboardInterrupt()):
+            for secondary in (OSError('private'), KeyboardInterrupt()):
+                with tempfile.TemporaryDirectory() as directory:
+                    root = Path(directory)
+                    (root / 'work').mkdir()
+                    source = root / 'target.cs'
+                    source.write_text('original')
+                    item = {'id': diagnostic.WITNESS_ID, 'path': 'target.cs', 'before': 'original', 'after': 'mutant', 'method': 'witness'}
+                    with patch.object(verifier, 'manifest', return_value=[item]), patch.object(verifier, 'build'), \
+                            patch.object(verifier, 'discover', return_value={'one': ('witness(provider)', 'SqlServer', False)}), \
+                            patch.object(diagnostic, 'attempt', side_effect=primary), patch.object(Path, 'write_text', side_effect=secondary) as writer:
+                        # Keep real source writes/restoration while breaking only diagnostic output.
+                        with self.assertRaises(type(primary)) as caught:
+                            diagnostic.experiment(root, root, 'mutant', 'SqlServer', {}, 'f' * 40)
+                    self.assertIs(primary, caught.exception)
+                    self.assertEqual('original', source.read_text())
+                    self.assertFalse((root / 'evidence.json').exists())
+
+    def test_Given_ClaimedAttemptOrObservedBypass_When_NextRunStarts_Then_NoExperimentExecutes(self):
+        """A previous unmodified bypass or duplicate local attempt is a stop, not a retry opportunity."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = root / diagnostic.ARTIFACT_ROOT / 'ordinary-SqlServer'
+            base.mkdir(parents=True)
+            (base / 'attempt.json').write_text('{}')
+            with patch.object(diagnostic, 'experiment') as experiment, patch.object(diagnostic, 'require_image'):
+                with self.assertRaises(FileExistsError):
+                    diagnostic.run_once(root, 'ordinary', 'SqlServer', {}, 'f' * 40)
+                (base / 'diagnostic.json').write_text(json.dumps({'halt_for_observed_bypass': True}))
+                with self.assertRaises(verifier.MutationError):
+                    diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+                experiment.assert_not_called()
+
+    def test_Given_UnmodifiedDdlSuccess_When_OrdinaryValidationFails_Then_DiagnosticRequiresHalt(self):
+        """Raw output is discarded and an actual classified ALTER success cannot proceed to the mutant."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory:
+            root = report()
+            ET.SubElement(root, 'StdOut').text = 'governance-setup-stage HostBuild\ngovernance-privilege Succeeded Present none'
+            ET.ElementTree(root).write(Path(directory) / 'result.trx')
+            with patch.object(verifier, 'execute', side_effect=verifier.MutationError('fixed')):
+                result = diagnostic.attempt('private', {}, Path(directory), {}, {'marker': 'other', 'method': METHOD}, 'ordinary')
+            self.assertTrue(result['halt_for_observed_bypass'])
+            self.assertEqual('error', result['outcome'])
+
+    def test_Given_SetupAndDenialObservations_When_OrdinaryRunFinishes_Then_MixedCheckpointsRemainDiagnostic(self):
+        """Setup dictionaries cannot cause a post-execution classifier error or be mistaken for privilege bypasses."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory:
+            root = report(failed=False)
+            ET.SubElement(root, 'StdOut').text = 'governance-setup-stage LeaseReady\ngovernance-privilege Denied Absent 229'
+            ET.ElementTree(root).write(Path(directory) / 'result.trx')
+            with patch.object(verifier, 'execute', return_value={'seconds': 1}):
+                result = diagnostic.attempt('private', {}, Path(directory), {}, {'marker': MARKER, 'method': METHOD}, 'ordinary')
+            self.assertFalse(result['halt_for_observed_bypass'])
+            self.assertEqual('expected-outcome-observed', result['outcome'])
+            self.assertEqual([{'setup': 'LeaseReady'}, {'alter': 'Denied', 'probe': 'Absent', 'provider_code': 229}],
+                             result['observation']['checkpoints'])
+
+    def test_Given_EarlyPrivilegeBypass_When_SetupTailOverflows_Then_HaltAndPrivilegeEvidenceSurvive(self):
+        """Neither later setup observations nor a later denial may evict an observed bypass."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory:
+            root = report()
+            ET.SubElement(root, 'StdOut').text = '\n'.join(
+                ['governance-privilege Succeeded Present none'] + ['governance-setup-stage HostBuild'] * 100 +
+                ['governance-privilege Denied Absent 229', 'governance-setup-stage LeaseReady'])
+            ET.ElementTree(root).write(Path(directory) / 'result.trx')
+            with patch.object(verifier, 'execute', side_effect=verifier.MutationError('fixed')):
+                result = diagnostic.attempt('private', {}, Path(directory), {}, {'marker': MARKER, 'method': METHOD}, 'ordinary')
+            self.assertTrue(result['halt_for_observed_bypass'])
+            checkpoints = result['observation']['checkpoints']
+            self.assertEqual(32, len(checkpoints))
+            self.assertEqual({'alter': 'Succeeded', 'probe': 'Present', 'provider_code': None}, checkpoints[0])
+            self.assertEqual({'alter': 'Denied', 'probe': 'Absent', 'provider_code': 229}, checkpoints[-2])
+            self.assertEqual({'setup': 'LeaseReady'}, checkpoints[-1])
+
+
+class FailureReceiptTests(unittest.TestCase):
+    """Seed hostile and incomplete reports without granting mutation acceptance."""
+
+    def test_Given_KnownHarnessMessage_When_Classified_Then_OnlyExactCodeOwnedFailuresAreRecognized(self):
+        """Appending secret text cannot make it part of a retained category; unknown messages remain unknown."""
+        for message, category in [('Bootstrap harness startup failed.', 'harness-startup-failed'),
+                                  ('Bootstrap database setup failed.', 'harness-database-failed'),
+                                  ('Bootstrap host cleanup failed.', 'harness-cleanup-failed')]:
+            root = report()
+            root.find('.//Message').text = message
+            self.assertIn(category, verifier.report_categories(root))
+            root.find('.//Message').text = message + ' synthetic-secret'
+            self.assertNotIn(category, verifier.report_categories(root))
+            self.assertNotIn('synthetic-secret', json.dumps(verifier.report_categories(root)))
+
+    def test_Given_SetupCheckpointCanaries_When_Projected_Then_UnknownLabelsAndPayloadsAreDiscarded(self):
+        """Native enum values are finite; resource names, token fields and appended text never become observations."""
+        root = report()
+        ET.SubElement(root, 'StdOut').text = '\n'.join(('governance-setup-stage HostBuild',
+            'governance-setup-stage synthetic-secret', 'governance-setup-stage HostBuild synthetic-secret',
+            'governance-setup-stage LeaseCreate', 'governance-setup-stage -1'))
+        self.assertEqual([{'setup': 'HostBuild'}, {'setup': 'LeaseCreate'}], verifier.report_checkpoints(root))
+
+    def test_Given_RepeatedOrInvalidCheckpoints_When_Projected_Then_OutputStaysClosedAndBounded(self):
+        """Only known stages and six-digit provider codes can appear in the final 32 observations."""
+        root = report()
+        ET.SubElement(root, 'StdOut').text = '\n'.join(['governance-witness-stage Oracle'] * 100 +
+            ['governance-privilege Denied Absent 9999999', 'governance-privilege Denied Absent private',
+             'governance-witness-stage private', 'governance-privilege Unknown Unknown none'])
+        checkpoints = verifier.report_checkpoints(root)
+        self.assertEqual(32, len(checkpoints))
+        self.assertEqual(['Oracle'] * 31, checkpoints[:-1])
+        self.assertEqual({'alter': 'Unknown', 'probe': 'Unknown', 'provider_code': None}, checkpoints[-1])
+
+    def test_Given_SecretReport_When_Projected_Then_OnlyBoundedCategoriesRemain(self):
+        """Messages, stacks, names, arbitrary attributes and output must not escape the allowlist."""
+        secret = 'synthetic-receipt-secret'
+        root = report()
+        root.find('.//Message').text = 'Xunit.Sdk.EqualException ' + secret
+        root.find('.//StackTrace').text = secret
+        root.find('.//UnitTestResult').set('testName', secret)
+        root.find('.//Text').text = secret
+        root.find('.//Counters').set('total', '9' * 100)
+        root.find('.//Counters').set(secret, secret)
+        ET.SubElement(root, 'StdOut').text = '\n'.join((secret, 'governance-witness-stage GateArrived',
+            'governance-witness-stage ' + secret, 'governance-privilege ProviderError Absent -2',
+            'governance-privilege denied absent ' + secret))
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'result.trx'
+            ET.ElementTree(root).write(path)
+            result = verifier.report_observation(path, {'marker': MARKER, 'method': METHOD})
+        self.assertNotIn(secret, json.dumps(result))
+        self.assertIsNone(result['counters']['total'])
+        self.assertEqual(['EqualException'], result['categories'])
+        self.assertFalse(result['marker_match'])
+        self.assertFalse(result['stack_match'])
+        self.assertEqual(['GateArrived', {'alter': 'ProviderError', 'probe': 'Absent', 'provider_code': -2}], result['checkpoints'])
+
+    def test_Given_AbsentMalformedOrOversizedReport_When_Observed_Then_NoSuccessIsInvented(self):
+        """Unavailable and rejected reports preserve an explicit unknown instead of parsing unbounded input."""
+        cases = [(None, 'missing'), (b'<broken>', 'unreadable'),
+                 (b'x' * (verifier.REPORT_LIMIT_BYTES + 1), 'rejected'), (b'<!DOCTYPE private><TestRun/>', 'rejected')]
+        for contents, category in cases:
+            with self.subTest(category=category), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / 'result.trx'
+                if contents is not None:
+                    path.write_bytes(contents)
+                self.assertEqual({'report': category}, verifier.report_observation(path, None))
+
+    def test_Given_ExpectedMarker_When_ReceiptMatches_Then_StrictValidationStillOwnsAcceptance(self):
+        """A matching marker cannot mask a fixture error, regardless of observational booleans."""
+        root = report()
+        ET.SubElement(root.find('.//ResultSummary'), 'ErrorInfo')
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'result.trx'
+            ET.ElementTree(root).write(path)
+            result = verifier.report_observation(path, {'marker': MARKER, 'method': METHOD})
+            self.assertTrue(result['marker_match'] and result['stack_match'])
+            self.assertEqual(2, result['error_nodes'])
+            with self.assertRaises(verifier.MutationError):
+                validate_report(path, {NAME}, 2, marker=MARKER, method=METHOD)
+
+    def test_Given_PrimaryFailureAndBrokenReceipt_When_ExecuteUnwinds_Then_OriginalFailureAndSourceArePreserved(self):
+        """Receipt errors and second cancellation cannot hide process failure or skip source restoration."""
+        for primary in (RuntimeError('private'), KeyboardInterrupt(), SystemExit(143)):
+            for sink_error in (OSError('private'), KeyboardInterrupt(), None):
+                with self.subTest(primary=type(primary), sink=type(sink_error)), tempfile.TemporaryDirectory() as directory:
+                    base = Path(directory)
+                    source = base / 'target.cs'
+                    source.write_text('original')
+                    receipt = Mock()
+                    receipt.write_text.side_effect = sink_error
+                    token = verifier.RECEIPT.set((receipt, 'f' * 40, '1234'))
+                    try:
+                        with patch.object(verifier, 'run', side_effect=primary), self.assertRaises(type(primary)) as caught:
+                            with changed_source(source, 'original', 'mutant'):
+                                execute('private', {NAME}, base, {}, item={'marker': MARKER, 'method': METHOD})
+                        self.assertIs(primary, caught.exception)
+                        self.assertEqual('original', source.read_text())
+                        self.assertFalse((base / 'evidence.json').exists())
+                        self.assertEqual('missing', json.loads(receipt.write_text.call_args.args[0])['report'])
+                    finally:
+                        verifier.RECEIPT.reset(token)
+
+    def test_Given_UnexpectedAssertion_When_ExecuteFails_Then_ReceiptSurvivesPrivateReportCleanup(self):
+        """Report receipt remains outside temporary results; arbitrary source/run identities are suppressed."""
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = Path(directory) / 'failure-diagnostic.json'
+            token = verifier.RECEIPT.set((receipt, 'secret-source', 'secret-run'))
+            try:
+                with tempfile.TemporaryDirectory(dir=directory) as private:
+                    def failed_run(*args, **kwargs):
+                        root = report()
+                        root.find('.//Message').text = 'UnknownFailure secret-message'
+                        ET.ElementTree(root).write(Path(private) / 'result.trx')
+                        return 2, 'secret-output'
+                    with patch.object(verifier, 'run', side_effect=failed_run), self.assertRaises(verifier.MutationError):
+                        verifier.perform('mutant', 'execution', execute, 'private', {NAME}, Path(private), {},
+                                         item={'marker': MARKER, 'method': METHOD}, ordinal=2)
+                result = json.loads(receipt.read_text())
+                self.assertNotIn('secret', receipt.read_text())
+                self.assertEqual(('mutant', 'execution', 2), tuple(result[k] for k in ('role', 'operation', 'ordinal')))
+                self.assertTrue(result['diagnostic_only'])
+                self.assertEqual(['unknown'], result['categories'])
+                self.assertIsNone(result['source_commit'])
+                self.assertIsNone(result['run_id'])
+            finally:
+                verifier.RECEIPT.reset(token)
+
+
 class MutationEvidenceTests(unittest.TestCase):
     def test_Given_CommandOutcomes_When_DiagnosticsAreEmitted_Then_NoExitGrantsAcceptance(self):
         """Zero, expected test-failure and other exits retain distinct nonaccepting observations."""
@@ -502,6 +803,6 @@ time.sleep(60)
 
 
 if __name__ == '__main__':
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(MutationEvidenceTests)
+    suite = unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__])
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     sys.exit(0 if clean_result(result) else 1)

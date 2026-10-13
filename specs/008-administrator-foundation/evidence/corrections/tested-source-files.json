@@ -1,0 +1,17 @@
+{
+  "base": "3699718603d90665117e384128803aa5f75ad12e",
+  "files": {
+    "eng/administrator-test-matrix.json": "d0ad612ae9f706e288cb7a9c00e8090126143be547ce8afd17743e067cb2845e",
+    "eng/code-quality/allowances.json": "f04fe80485bd5aba4b91507c35e1190f384fbfe9e0bbf4445b9147c14af55b46",
+    "eng/test-matrix.json": "91838430b309fe4f9f927b835e328d0ee95580f4ce6f3bb4506ca95312bc94e1",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Governance/Failures/SqlPrivilegeGuardTests.cs": "3616b02d3f5248c46592528a8ca69b09dec94c61449c42320225215ea873fc98",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Governance/Failures/WitnessOrderingTests.cs": "fdbe0a7c7019836fdd992d17fdc98dbcb0ec3be68814c65374961904cde280fc",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/GovernancePrivileges.cs": "06ed2a0aa07254fec2cf6202f95401b16cdf37101e1ee89ef1e84efce3f44c22",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/PrivilegeDiagnostics.cs": "393e41dc9615e3bd92a47ec03962bc4e9417e668fc3f3ca375d2d742e1f5cb6e",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/SqlPrivilegeCheck.cs": "899ff95022d2235ecdb617a61ace0172ab5826220762defb3bb575ea396f0c60",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/SqlPrivilegeEvidence.cs": "3a23b7bdf9442b830dc9080a371248521c07cb2d180b57126868e0586c2f56c8",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/SqlPrivilegeGuardControls.cs": "fdf54ab4b3626a703567bf9dcde27e4efc42176da3422596e2fd0973c45a5f0c",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/SqlPrivilegeSnapshot.cs": "472dcf74936cdde3decf0ae1178b5b85ed5736895907aaa8b084d997fcdfe69e",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/WitnessPopulation.cs": "7ce480dcd24e70173a20d7a0781a41205bdc36e302639727504a42130a65557c"
+  }
+}

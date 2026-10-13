@@ -1,0 +1,11 @@
+{
+  "purpose": "Exercise the unchanged witness race in a populated user table after confirming a later native lookup wait",
+  "fixed_background_users": 512,
+  "creation": "Native UserManager.CreateAsync, passwordless, disabled, no roles or administrator product rows",
+  "invariants": [
+    "exact actor/witness governance candidate set",
+    "exact actor/witness usable set before lockout preparation",
+    "unchanged deadlines, native validation, isolation, indexes and commit oracle"
+  ],
+  "limits": "One predetermined cardinality; no count tuning or plan hint; another pre-oracle failure remains inconclusive"
+}

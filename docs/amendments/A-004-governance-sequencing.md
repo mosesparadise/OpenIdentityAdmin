@@ -1,6 +1,6 @@
 # Administrator-governance sequencing amendment A-004
 
-Status: **APPROVED — active only within the conditions below.** The requesting user explicitly approved A-004 on 13 October 2026 (Europe/London). T033/T034/T035 were delivered through PRs #44–46; PR #47 records final evidence. PR #46's reviewed head `b034ca775220cae5c1edab166e299e8176ec5a17` passed all 62 jobs in run `38395691033`; independent review reconciled all four mutation artifacts. This approval authorizes only T020/T021 sequencing and expires as specified in conditions 4 and 8. No historical finding or human/release gate is closed.
+Status: **EXPIRED — incomplete mandatory governance mutation evidence on 13 October 2026.** See the [PR48 verification record](../../specs/008-administrator-foundation/governance-verification.md). The approval and conditions below are retained as history; they no longer authorize delivery. The requesting user explicitly approved A-004 on 13 October 2026 (Europe/London). T033/T034/T035 were delivered through PRs #44–46; PR #47 records final evidence. PR #46's reviewed head `b034ca775220cae5c1edab166e299e8176ec5a17` passed all 62 jobs in run `38395691033`; independent review reconciled all four mutation artifacts. The former approval authorized only T020/T021 sequencing and expired under condition4 as recorded above. No historical finding or human/release gate is closed.
 
 ## Approved decision
 

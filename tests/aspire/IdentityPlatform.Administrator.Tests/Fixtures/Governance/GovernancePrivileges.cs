@@ -19,7 +19,6 @@ internal static class GovernancePrivileges
     private const string SqlServerAlter = "ALTER TABLE [platform].[AdministratorGovernance] ADD [GovernancePrivilegeProbe] int NULL";
     private const int SqlPermissionDenied = 229;
     private const int SqlObjectPermissionDenied = 4902;
-    private const string DenialMessage = "Expected native ALTER permission denial; raw provider diagnostics are withheld.";
 
     /// <summary>Requires accepted real runtime DML before attempting a schema write through that same least-privilege principal.</summary>
     internal static async Task RequireAsync(BootstrapFixture fixture, string provider)
@@ -29,9 +28,18 @@ internal static class GovernancePrivileges
         Assert.Equal(GovernanceOutcome.Accepted, await scenario.ExecuteAsync(request));
         await RequireCommittedAsync(scenario, request);
         var before = await scenario.SnapshotAsync();
-        await RequireAlterDeniedAsync(scenario, provider);
+        var sql = provider == PostgreSql ? null : new SqlPrivilegeCheck();
+        var observed = await PrivilegeDiagnostics.ObserveAsync(() => ObserveAlterAsync(scenario, provider, sql), () => ObserveProbeAsync(scenario, sql));
+        observed.Write();
+        if (sql is null)
+        {
+            observed.RequireDenial();
+        }
+        else
+        {
+            observed.RequireSqlDenial(sql.Evidence);
+        }
         Assert.Equal(before, await scenario.SnapshotAsync());
-        await RequireProbeAbsentAsync(scenario);
     }
 
     /// <summary>Checks stored native effect, semantic advance and exact accepted audit rather than trusting the returned outcome alone.</summary>
@@ -47,38 +55,58 @@ internal static class GovernancePrivileges
     }
 
     /// <summary>Accepts only provider-specific privilege failure within a linked five-second ceiling; cancellation is not a passing oracle.</summary>
-    private static async Task RequireAlterDeniedAsync(GovernanceScenario scenario, string provider)
+    private static async Task<AlterObservation> ObserveAlterAsync(GovernanceScenario scenario, string provider, SqlPrivilegeCheck? sql)
     {
         await using var scope = scenario.CreateScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(DeadlineSeconds));
         database.Database.SetCommandTimeout(DeadlineSeconds);
-        var denied = false;
+        if (sql is not null)
+        {
+            await sql.ReadRuntimeAsync(database, deadline.Token);
+        }
         try
         {
+            sql?.StartingAlter(database);
             await database.Database.ExecuteSqlRawAsync(provider == PostgreSql ? PostgreSqlAlter : SqlServerAlter, deadline.Token);
+            return new(AlterOutcome.Succeeded, null);
         }
         catch (DbException exception)
         {
-            denied = provider == PostgreSql
+            var denied = provider == PostgreSql
                 ? exception is Npgsql.PostgresException { SqlState: Npgsql.PostgresErrorCodes.InsufficientPrivilege }
                 : exception is Microsoft.Data.SqlClient.SqlException { Number: SqlPermissionDenied or SqlObjectPermissionDenied };
+            return new(denied ? AlterOutcome.Denied : AlterOutcome.ProviderError,
+                exception is Microsoft.Data.SqlClient.SqlException sqlError ? sqlError.Number : null);
         }
-        catch (OperationCanceledException) { /* A timeout does not demonstrate privilege isolation. */ }
-        Assert.True(denied, DenialMessage);
+        catch (OperationCanceledException) { return new(AlterOutcome.Cancelled, null); }
+        finally { sql?.FinishedAlter(database); }
     }
 
     /// <summary>Independently confirms object existence and unchanged schema with migration-owned metadata visibility.</summary>
-    private static async Task RequireProbeAbsentAsync(GovernanceScenario scenario)
+    private static async Task<ProbeOutcome> ObserveProbeAsync(GovernanceScenario scenario, SqlPrivilegeCheck? sql)
     {
+        var lifetime = TestContext.Current.CancellationToken;
+        if (lifetime.IsCancellationRequested)
+        {
+            return ProbeOutcome.NotObserved;
+        }
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(lifetime);
+        deadline.CancelAfter(TimeSpan.FromSeconds(DeadlineSeconds));
         await using var scope = scenario.Journey.Lease.Administrator.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        await database.Database.OpenConnectionAsync(TestContext.Current.CancellationToken);
+        database.Database.SetCommandTimeout(DeadlineSeconds);
+        await database.Database.OpenConnectionAsync(deadline.Token);
+        if (sql is not null)
+        {
+            return await sql.ProbeAsync(database, deadline.Token);
+        }
         await using var command = database.Database.GetDbConnection().CreateCommand();
         command.CommandText = ProbeCountQuery;
         command.CommandTimeout = DeadlineSeconds;
-        Assert.Equal(0, Convert.ToInt32(await command.ExecuteScalarAsync(TestContext.Current.CancellationToken), System.Globalization.CultureInfo.InvariantCulture));
-        Assert.Equal(1, await database.Set<AdministratorGovernance>().CountAsync(TestContext.Current.CancellationToken));
+        var columns = Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token), System.Globalization.CultureInfo.InvariantCulture);
+        var governance = await database.Set<AdministratorGovernance>().CountAsync(deadline.Token);
+        return columns != 0 ? ProbeOutcome.Present : governance != 1 ? ProbeOutcome.InvalidGovernance : ProbeOutcome.Absent;
     }
 }

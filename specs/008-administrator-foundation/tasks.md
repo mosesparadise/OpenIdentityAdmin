@@ -1,5 +1,9 @@
 # Tasks: Administrator foundation
 
+**Current correction checkpoint (13 October 2026):** the user explicitly requested failure fixes after requesting requirements review and conditional squash of PR48. [Reviewed corrections and focused evidence](governance-failure-corrections.md) now cover the SQL privilege ambiguity and a decisive populated-fixture witness mutation. Full final-head delivery evidence remains pending; T020/T021 are intentionally unchecked. All six findings and human/public-release blockers remain open. The former A-004 hold below is historical, not renewed authority.
+
+**Delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
+
 Increment 1 was squash-merged in PR #21 as `38535bd`; its verification record and PR contain the final evidence. The three approved increments are implemented through separately reviewed and squash-merged task PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
 
 ## Setup and shared design
@@ -77,3 +81,43 @@ The existing eleven specification-quality checklist items pass; checklist state 
 ## A-004-authorized governance execution — 13 October 2026
 
 The user explicitly approved A-004 after T035 delivery. T020/T021 remain unchecked while the [concrete implementation/test packet](governance-implementation.md), published at `e5f43f6` before coding, is being implemented and verified. The approved feature hierarchy, test partitions and isolated test driver are in place; exact-head full delivery evidence remains pending. The user approved feature-local Governance folders, three test partitions and the dedicated test-only driver. Record approval without treating it as implemented behavior or closure of the four historical findings. Preserve full verification and recurrence expiry. Earlier inactive-proposal statements describe the T035 checkpoint; the current authority is [A-004](../../docs/amendments/A-004-governance-sequencing.md).
+
+## A-005 bounded diagnostic tasks (approved 13 October 2026)
+
+These tasks implement [A-005](../../docs/amendments/A-005-governance-diagnostics.md) only; T020/T021 remain unchecked and delivery halted. No new PR or full runtime matrix is authorized.
+
+- [x] D001 Record explicit user approval, inspect prerequisites and preserve the existing delivery hold.
+- [x] D002 Retain bounded allowlisted mutation failure receipts, with secret-canary/malformed-report/write-failure/cancellation controls in existing Python tooling.
+- [x] D003 Classify ALTER/probe outcomes independently and add fixed witness checkpoints; preserve original assertions, failure ownership, native waits and deadlines. Validate seeded combined failure/cancellation controls.
+- [x] D004 Obtain independent architecture/security/test source review and publish the diagnostic revision on the separate branch without opening a PR.
+- [x] D005 In a clean disposable checkout, run one focused ordinary witness/privilege comparison per provider and one SQL witness mutation diagnostic, preserving source restoration and reporting all outcomes.
+- [x] D006 Publish evidence-based disposition, independent review and next recommendation; stop before any unapproved correction or delivery.
+
+A-005 disposition: all three scoped attempts are retained in [governance diagnostics](governance-diagnostics.md). PostgreSQL passed both selected cases; both SQL attempts are inconclusive with no retained post-Setup observations. The original findings remain open and A-005 authorizes no further execution. A-006 was proposed at that checkpoint and subsequently approved; see its disposition below.
+
+## A-006 bounded SQL readiness tasks (approved 13 October 2026)
+
+Authority: [A-006](../../docs/amendments/A-006-sql-diagnostic-readiness.md). PR48 remains draft/unmerged; all findings and human/public-release blockers remain open.
+
+- [x] E001 Record user approval and inspect managed Docker/network prerequisites.
+- [x] E002 Attempt the exact pinned SQL image acquisition once; failed with the `forbidden-response-text` category and image still absent. Required stop honored; readiness was not achieved.
+- [x] E003 Add closed setup observations and seeded privacy/failure/cancellation controls, preserving existing operations, deadlines and original test identities.
+- [x] E004 Obtain independent architecture/security/test review and publish only to the separate diagnostic branch.
+- [ ] E005 If readiness permits, run one SQL ordinary comparison; permit one SQL mutant only after both ordinary cases pass on that exact source.
+- [x] E006 Publish evidence/disposition and stop before any unapproved correction, full CI or merge.
+
+A-006 disposition: [SQL diagnostic readiness](sql-diagnostic-readiness.md). E005 was **not run**, because E002 did not establish image readiness. This is a completed bounded investigation with an unmet prerequisite, not completed SQL validation. A-006 concludes with publication; no retry, runtime continuation, full CI or merge is authorized.
+
+User-requested retry after A-006 disposition: one additional image acquisition failed after 10.240 seconds; pinned image still absent. [Separate retry record](sql-diagnostic-readiness.md#user-requested-retry--13-october-2026). E005 remains **not_run**; no feature acceptance, full CI or merge follows from this attempt.
+
+Registry investigation completed under the user's follow-up instruction: regional layer GET redirects encounter proxy CONNECT 403; two exact missing allowlist hosts identified. [Configuration handoff](sql-diagnostic-readiness.md#registry-access-investigation--13-october-2026) is pending the managed environment settings workflow. No policy change, image acquisition or SQL experiment was performed; E005 remains not_run.
+
+## Current user-authorized failure corrections
+
+- [x] F001 Preserve and verify remote/handoff state; confirm current network policy and pinned provider images without weakening TLS or proxy enforcement.
+- [x] F002 Correct the SQL privilege oracle with fresh same-attempt evidence and 105 fail-closed pure controls; retain original real-provider assertions.
+- [x] F003 Diagnose the current SQL witness non-kill, review a fixed native ordinary-user population, and demonstrate the exact unsafe-commit mutation assertion with baseline/restored controls.
+- [x] F004 Reconcile all portable identities, obtain independent architecture/security/test review, and preserve failed attempts and historical approval/finding records.
+- [ ] F005 Complete final exact-head full CI, all required mutation artifacts and coverage, review current remote/review state, and deliver the conditional normal squash only if requirements pass.
+
+These tasks use the current correction request, not expired A-004 or concluded A-005/A-006. Their focused receipts do not close historical causes or human/public-release gates.

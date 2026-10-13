@@ -322,9 +322,21 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_InvalidSemanticVersion_When_StorageOrCommandChangesIt_Then_NoWraparoundCanCommit(provider: \"PostgreSql\", condition: \"technical-governance-revision-overflow\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_PreGovernanceSchemaAndData_When_Migrated_Then_AdditiveRevisionPreservesExistingAuthority(provider: \"PostgreSql\", condition: \"upgrade-and-readiness\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_RuntimeDatabasePrincipal_When_GovernedChangesRun_Then_RequiredDmlWorksAndSchemaWritesDeny(provider: \"PostgreSql\", condition: \"runtime-privileges\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-present\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-failed\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-unobserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"cancellation-and-failure\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-cancellation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-failure\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"PostgreSql\", condition: \"sole-admin-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"PostgreSql\", condition: \"ceremony-then-governance\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"PostgreSql\", condition: \"governance-then-ceremony\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"cancelled-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"failed-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"unknown-stage\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"PostgreSql\", condition: \"valid-stages\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"PostgreSql\", variant: \"active-factor-change\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"PostgreSql\", variant: \"disable\")",
@@ -770,9 +782,126 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_InvalidSemanticVersion_When_StorageOrCommandChangesIt_Then_NoWraparoundCanCommit(provider: \"SqlServer\", condition: \"technical-governance-revision-overflow\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_PreGovernanceSchemaAndData_When_Migrated_Then_AdditiveRevisionPreservesExistingAuthority(provider: \"SqlServer\", condition: \"upgrade-and-readiness\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_RuntimeDatabasePrincipal_When_GovernedChangesRun_Then_RequiredDmlWorksAndSchemaWritesDeny(provider: \"SqlServer\", condition: \"runtime-privileges\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-present\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-failed\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-unobserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"cancellation-and-failure\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-cancellation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-failure\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"SqlServer\", condition: \"sole-admin-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"SqlServer\", condition: \"ceremony-then-governance\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"SqlServer\", condition: \"governance-then-ceremony\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"cancelled-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"failed-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"unknown-stage\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"SqlServer\", condition: \"valid-stages\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved(code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved(code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved(code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Cancelled\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Failed\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"InvalidGovernance\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"NotObserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Present\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Unknown\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorModel, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorModel, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorModel, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorProbePresent, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorProbePresent, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorProbePresent, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedAfterConnection, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedAfterConnection, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedAfterConnection, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedBeforeConnection, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedBeforeConnection, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedBeforeConnection, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedAfterConnection, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedAfterConnection, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedAfterConnection, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedBeforeConnection, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedBeforeConnection, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedBeforeConnection, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DeniedAdministratorPermission, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DeniedAdministratorPermission, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DeniedAdministratorPermission, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentDatabase, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentDatabase, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentDatabase, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentObject, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentObject, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentObject, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentServer, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentServer, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentServer, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyDatabase, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyDatabase, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyDatabase, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyRuntimeConnection, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyRuntimeConnection, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyRuntimeConnection, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyServer, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyServer, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyServer, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: GrantedRuntimePermission, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: GrantedRuntimePermission, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: GrantedRuntimePermission, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministrator, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministrator, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministrator, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorObject, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorObject, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorObject, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorSingleton, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorSingleton, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorSingleton, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingEvidence, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingEvidence, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingEvidence, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntime, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntime, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntime, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeObject, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeObject, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeObject, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeSingleton, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeSingleton, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeSingleton, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NoAlterAttempt, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NoAlterAttempt, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NoAlterAttempt, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NonpositiveObject, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NonpositiveObject, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NonpositiveObject, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeModel, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeModel, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeModel, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeProbePresent, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeProbePresent, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeProbePresent, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownAdministratorPermission, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownAdministratorPermission, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownAdministratorPermission, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownRuntimePermission, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownRuntimePermission, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownRuntimePermission, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: WrongPrincipal, code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: WrongPrincipal, code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: WrongPrincipal, code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Cancelled\", code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Denied\", code: -2)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Denied\", code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Denied\", code: null)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"ProviderError\", code: -2)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"ProviderError\", code: 229)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"ProviderError\", code: 4902)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Succeeded\", code: null)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Unknown\", code: 1088)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_MetadataReadFailure_When_ProbeAlsoFails_Then_PrimaryFailureRemainsAuthoritative(cancelled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_MetadataReadFailure_When_ProbeAlsoFails_Then_PrimaryFailureRemainsAuthoritative(cancelled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_ProbeException_When_ObservationsOtherwiseMatch_Then_ProbeFailureIsRetained",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"SqlServer\", variant: \"active-factor-change\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"SqlServer\", variant: \"disable\")",
@@ -13825,6 +13954,390 @@
         }
       ]
     },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-present\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-failed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-unobserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-present\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-failed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-unobserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"cancellation-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-cancellation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"cancellation-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-cancellation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"PostgreSql\", condition: \"sole-admin-recovery\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -13939,6 +14452,2704 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"cancelled-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"failed-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"unknown-stage\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"cancelled-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"failed-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"unknown-stage\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"PostgreSql\", condition: \"valid-stages\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"SqlServer\", condition: \"valid-stages\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved(code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved(code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved(code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_CompleteSqlEvidence_When_DenialIsRequired_Then_RawNativeClassificationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Cancelled\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Failed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"InvalidGovernance\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"NotObserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Present\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails(probe: \"Unknown\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteProbe_When_SqlEvidenceOtherwiseMatches_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorModel, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorModel, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorModel, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorProbePresent, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorProbePresent, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: AdministratorProbePresent, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedAfterConnection, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedAfterConnection, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedAfterConnection, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedBeforeConnection, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedBeforeConnection, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ChangedBeforeConnection, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedAfterConnection, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedAfterConnection, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedAfterConnection, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedBeforeConnection, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedBeforeConnection, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: ClosedBeforeConnection, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DeniedAdministratorPermission, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DeniedAdministratorPermission, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DeniedAdministratorPermission, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentDatabase, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentDatabase, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentDatabase, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentObject, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentObject, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentObject, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentServer, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentServer, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: DifferentServer, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyDatabase, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyDatabase, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyDatabase, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyRuntimeConnection, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyRuntimeConnection, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyRuntimeConnection, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyServer, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyServer, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: EmptyServer, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: GrantedRuntimePermission, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: GrantedRuntimePermission, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: GrantedRuntimePermission, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministrator, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministrator, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministrator, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorObject, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorObject, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorObject, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorSingleton, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorSingleton, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingAdministratorSingleton, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingEvidence, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingEvidence, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingEvidence, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntime, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntime, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntime, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeObject, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeObject, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeObject, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeSingleton, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeSingleton, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: MissingRuntimeSingleton, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NoAlterAttempt, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NoAlterAttempt, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NoAlterAttempt, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NonpositiveObject, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NonpositiveObject, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: NonpositiveObject, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeModel, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeModel, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeModel, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeProbePresent, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeProbePresent, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: RuntimeProbePresent, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownAdministratorPermission, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownAdministratorPermission, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownAdministratorPermission, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownRuntimePermission, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownRuntimePermission, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: UnknownRuntimePermission, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: WrongPrincipal, code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: WrongPrincipal, code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed(condition: WrongPrincipal, code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_IncompleteSqlEvidence_When_DenialIsRequired_Then_EveryNativeCodeFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardCase",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Cancelled\", code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Denied\", code: -2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Denied\", code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Denied\", code: null)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"ProviderError\", code: -2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"ProviderError\", code: 229)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"ProviderError\", code: 4902)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Succeeded\", code: null)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails(outcome: \"Unknown\", code: 1088)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_InvalidAlterResult_When_SqlEvidenceIsComplete_Then_DenialFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Nullable`1<System.Int32>"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_MetadataReadFailure_When_ProbeAlsoFails_Then_PrimaryFailureRemainsAuthoritative(cancelled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_MetadataReadFailure_When_ProbeAlsoFails_Then_PrimaryFailureRemainsAuthoritative",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_MetadataReadFailure_When_ProbeAlsoFails_Then_PrimaryFailureRemainsAuthoritative(cancelled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_MetadataReadFailure_When_ProbeAlsoFails_Then_PrimaryFailureRemainsAuthoritative",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SqlPrivilegeGuardTests.Given_ProbeException_When_ObservationsOtherwiseMatch_Then_ProbeFailureIsRetained": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SqlPrivilegeGuardTests",
+        "methodName": "Given_ProbeException_When_ObservationsOtherwiseMatch_Then_ProbeFailureIsRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": []
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "PrivilegeGuard"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
