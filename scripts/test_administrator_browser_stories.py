@@ -2,7 +2,7 @@
 import copy
 import json
 import unittest
-from test_selection import catalogue, administrator_browser_invocations, require_administrator_browser
+from test_selection import catalogue, administrator_browser_invocations, require_administrator_browser, require_administrator_story
 from test_administrator_selection import AdministratorBrowserSelectionTests
 
 
@@ -28,6 +28,31 @@ class DiscoveryTraitTests(unittest.TestCase):
 
 
 class BrowserStoryControls(AdministratorBrowserSelectionTests):
+    def test_Given_CompleteCatalogue_When_HttpStoryIsSelected_Then_BrowserStoryDriftIsRejected(self):
+        """An HTTP invocation checks both providers' browser partitions before any test starts."""
+        selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
+        require_administrator_story(self.catalogue, selected, 'PostgreSql', 'Factors', self.matrix, self.inventory)
+        for provider in ('PostgreSql', 'SqlServer'):
+            invalid = copy.deepcopy(self.catalogue)
+            key = provider + 'Browser'
+            invalid[key] = (*invalid[key][:4], 'Security')
+            with self.subTest(provider=provider), self.assertRaisesRegex(ValueError, 'browser story count'):
+                require_administrator_story(invalid, selected, 'PostgreSql', 'Factors', self.matrix, self.inventory)
+
+    def test_Given_BrowserInventory_When_HttpStoryIsSelected_Then_InvalidStoryManifestIsRejected(self):
+        """HTTP evidence cannot accept an absent or nonexhaustive browser-story manifest."""
+        selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
+        for change in ('missing', 'unknown', 'zero', 'boolean', 'aggregate'):
+            invalid = copy.deepcopy(self.matrix)
+            stories = invalid['administrator_browser_stories']
+            if change == 'missing': del invalid['administrator_browser_stories']
+            elif change == 'unknown': stories['Unknown'] = 1
+            elif change == 'zero': stories['Security'] = 0
+            elif change == 'boolean': stories['Security'] = True
+            else: stories['Security'] = 2
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                require_administrator_story(self.catalogue, selected, 'PostgreSql', 'Factors', invalid, self.inventory)
+
     def test_both_selections_are_disjoint_and_exhaust_default_all(self):
         selections = []
         for story in ('Accounts', 'Security'):

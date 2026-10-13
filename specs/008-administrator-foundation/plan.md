@@ -53,3 +53,7 @@ The bounded [account composition packet](account-composition.md) was accepted in
 ## T026 execution packet
 
 T024 and T025 are accepted in PRs #29 and #30. [Recovery/security](recovery-security.md) applies the existing approved MFA design to the remaining account journeys. Preserve all project/feature/composition conventions, native proof ownership, both-provider migrations, strict story/browser inventories and unchanged invocation bounds.
+
+## T027 execution packet
+
+[Evidence gates](evidence-gates.md) reconciles existing partition work and closes whole-catalogue browser-story validation in HTTP preflight. Preserve the existing project structure, exact inventories, 660-second invocations and all 45 coverage inputs. T028 will add behavior tests with reviewed discovery updates; T029 reconciles final increment acceptance.

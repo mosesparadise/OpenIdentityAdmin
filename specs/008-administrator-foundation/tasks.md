@@ -38,7 +38,7 @@ T017 is the implementation umbrella for T022–T026; T018 is the acceptance umbr
 - [x] T024 [US2] Implement authoritative budgets, complete lock order, replay/watermark, atomic audit, retained-capacity admission and bounded AuthServer-hosted cleanup. Accepted in PR #29 (`5d54e57`); see [ceremony security](ceremony-security.md).
 - [x] T025 [US2] Implement protected Enrollment/Mfa/login Razor journeys, destination-generation proof continuity and authoritative account-session validation. Accepted in PR #30 (`78d77c3`); see [enrollment/login](enrollment-login.md).
 - [x] T026 [US2] Implement restricted Recovery, Security factor replacement/code regeneration and local logout; preserve all-factor-loss denial and one-time code delivery. Accepted in PR #31 (`c10f9d2`); see [recovery/security](recovery-security.md).
-- [ ] T027 [US2] Extend strict Administrator discovery into explicit story/provider/browser partitions in scripts and eng; retain 660-second invocation bounds and require all new coverage inputs.
+- [ ] T027 [US2] Extend strict Administrator discovery into explicit story/provider/browser partitions in scripts and eng; retain 660-second invocation bounds and require all new coverage inputs. [T027 reconciliation](evidence-gates.md) is implemented and awaiting final acceptance.
 - [ ] T028 [US2] Implement MFA-01–13 independent cases from mfa-design.md in the approved Administrator suite; verify native managers, real HTTP/browser, both-provider observed races/failures and safe evidence.
 - [ ] T029 [US2] Converge architecture/security/test/UX/performance reviews, fix findings, run exact-head full CI, update operational instructions/verification and normally squash the second implementation PR.
 

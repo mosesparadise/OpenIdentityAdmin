@@ -21,7 +21,7 @@ Later MFA tests must prove actual protected Razor ceremonies, cross-node TOTP re
 
 ## First-increment reviewed discovery inventory
 
-The reviewed inventory contains 45 cases per provider (90 total), all in `IdentityPlatform.Administrator.Tests.Features.Bootstrap`, with exactly one Provider trait and no Browser trait. The selected project's discovered identities must match the explicit reviewed inventory; theory rows count separately. Final execution must verify exact names/UID binding and MTP result definitions/entries/counters, not only totals.
+The reviewed inventory contains 45 cases per provider (90 total), all in `IdentityPlatform.Administrator.Tests.Features.Bootstrap`, with exactly one Provider trait and no Browser trait. The selected project's discovered identities must match the explicit reviewed inventory; theory rows count separately. Final execution must verify exact discovered display names and consistent MTP result definitions/entries/counters, not only totals.
 
 | Group | Concrete rows per provider |
 | --- | --- |
@@ -38,8 +38,12 @@ The reviewed inventory contains 45 cases per provider (90 total), all in `Identi
 
 Pure parser variations (unknown/duplicate fields, extra JSON, blank/invalid GUID, invalid username/reference, password 15/16/256/257, exact byte limit, malformed escaped Unicode) belong to existing unit suites in addition to these process/provider cases. If implementation discovery requires a justified split, update this inventory and matrix in the same reviewed PR; never silently accept changed totals.
 
-Runner contract: add an `administrator` partition; `standard` excludes both Issuer.Lifecycle and Administrator, `all` includes both, browser/unit reject the administrator partition. The administrator partition selects only this project and exact Bootstrap namespace for one recognized provider, while validating the complete two-provider catalogue first. Add isolated 20-minute CI jobs and preserve the existing 660-second per-invocation ceiling, with two required `administrator-{provider}` coverage inputs. Seed omitted/duplicate/substituted identity, unknown namespace/provider, wrong-provider selection, Browser contamination, empty report and false counters. Existing standard/lifecycle/browser selections and limits remain unchanged.
+Historical increment-1 runner contract: add an `administrator` partition; `standard` excludes both Issuer.Lifecycle and Administrator, `all` includes both, browser/unit reject the administrator partition. The administrator partition selects only this project and exact Bootstrap namespace for one recognized provider, while validating the complete two-provider catalogue first. Add isolated 20-minute CI jobs and preserve the existing 660-second per-invocation ceiling, with two required `administrator-{provider}` coverage inputs. Seed omitted/duplicate/substituted identity, unknown namespace/provider, wrong-provider selection, Browser contamination, empty report and false counters. Existing standard/lifecycle/browser selections and limits remain unchanged.
 
 ## Increment 2 evidence design
 
-[MFA-01–13](mfa-design.md#required-test-inventory-before-implementation-acceptance) defines the next evidence families and decisive oracles. They are planned, not executed tests. T027/T028 must translate them to exact independent discovered identities and provider/browser/story partitions, preserving all current cases, deadlines and coverage inputs. A correct recovery race creates no full session; distinguish one successful transition audit from legitimate denial audits.
+[MFA-01–13](mfa-design.md#required-test-inventory-before-implementation-acceptance) defines the original evidence families and decisive oracles. T023–T026 now provide substantial accepted behavioral evidence; T028/T029 must reconcile each clause with the existing tests and close the remaining gaps. T027 validates exact discovery and provider/browser/story partitions, preserving all current cases, deadlines and coverage inputs. A correct recovery race creates no full session; distinguish one successful transition audit from legitimate denial audits.
+
+## T027 current execution contract
+
+[Evidence gates](evidence-gates.md) reconciles the complete six-story HTTP and two-story browser implementation, strict selection and mandatory coverage inputs. Browser Administrator selection is supported; unit Administrator selection remains invalid. Each invocation validates the complete two-provider inventory before running its selected cases. The historical increment-1 restriction above no longer describes the complete runner. MFA-01–13 behavior and human obligations remain T028/T029.
