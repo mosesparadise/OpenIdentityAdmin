@@ -1,5 +1,7 @@
 # T020/T021 implementation verification and delivery hold
 
+**Final delivery:** PR48 was squash-merged as `f499518` after all 70 exact-head CI jobs and independent artifact review passed. [Delivery evidence](governance-delivery.md) supersedes the historical pending-delivery notices below. All six findings and human/public-release blockers remain open.
+
 **Current correction checkpoint (13 October 2026):** [reviewed failure corrections](governance-failure-corrections.md) pass focused SQL baseline/restored and PostgreSQL controls, and the SQL omitted-witness mutation now reaches its exact bypass assertion. This work follows the user's current correction/conditional-delivery request. Final exact-head full CI, all mutation suites/providers and coverage remain required. PR48 remains draft/unmerged at this checkpoint; all six findings and human/public-release blockers remain open. The A-004 expiry and failed receipts below are preserved as history.
 
 Status: **delivery halted; A-004 irrevocably expired on 13 October 2026.** PR [#48](https://github.com/mosesparadise/OpenIdentityAdmin/pull/48) is a draft and must not merge under A-004. T020/T021 remain incomplete. The implementation lead owns evidence preservation; independent security and architecture reviewers assessed the mutation receipt. No production deployment, API/BFF activation, historical closure or human acceptance follows from this work.
