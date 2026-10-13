@@ -254,6 +254,10 @@ jobs:
           mkdir -p "$HOME/.pki/nssdb"
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
+      - run: python3 scripts/test_history_experiment.py
+      - name: Compare fixed isolated and startup-overlap history observations
+        if: matrix.partition == 'administrator' && matrix.browser == 'firefox' && matrix.browser_story == 'Accounts'
+        run: python3 scripts/verify_history_experiment.py ${{ matrix.provider }}
       - name: Test with child-process coverage
         run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
       - name: Retain synthetic test and coverage evidence
@@ -262,6 +266,7 @@ jobs:
         with:
           name: foundation-${{ matrix.label }}
           path: |
+            artifacts/history-experiment/
             artifacts/tests/
             artifacts/coverage/
           retention-days: 7

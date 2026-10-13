@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 from verify_contrast_experiment import execute, install_cancellation_handler
+from verify_history_experiment import MODE_VARIABLE as HISTORY_MODE_VARIABLE
 from test_evidence import require_complete_trx
 from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, administrator_invocations, require_administrator_browser, administrator_browser_invocations
 
@@ -19,6 +20,8 @@ parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.
 parser.add_argument("--browser-story", choices=["Accounts", "Security"])
 parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
 args = parser.parse_args()
+if HISTORY_MODE_VARIABLE in os.environ:
+    parser.error("Ordinary acceptance cannot run with a history diagnostic mode")
 if args.issuer_group and (args.partition != "issuer" or args.browser or args.story or args.profile == "unit"):
     parser.error("Issuer group requires an ordinary issuer provider partition")
 if args.browser_story and (not args.browser or args.partition != "administrator"):
