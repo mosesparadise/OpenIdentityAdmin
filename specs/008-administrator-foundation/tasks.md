@@ -1,10 +1,12 @@
 # Tasks: Administrator foundation
 
-**Full-CI follow-up:** the first correction run exposed a stale shared inventory assertion and newly reported Pkcs advisories. Provider totals are now independently checked as 790/895; Pkcs 10.0.13 replaces both vulnerable resolved versions across all 18 affected lock files. Local locked build, 32 credential controls, 182 Python controls, current 23-project advisory and 233-pair license checks pass. Final exact-head CI remains required; no historical or human/release finding is closed.
+**Latest delivered checkpoint (13 October 2026):** PR [#48](https://github.com/mosesparadise/OpenIdentityAdmin/pull/48) was normally squash-merged as `f4995183453ba194e8136143f3ec6878fb16a7c9` after reviewed head `2e17aca6` passed all 70 jobs in run `38479414481`, all six mutation suites (42 kills with baseline/restored controls), all 55 coverage inputs and nine module floors. Feature 008 T020/T021 and correction F005 are complete for internal development scope. All six historical findings, 48 human rows and activation/public-release gates remain open. Earlier correction/hold notices below describe prior checkpoints. [Final evidence](governance-delivery.md).
 
-**Current correction checkpoint (13 October 2026):** the user explicitly requested failure fixes after requesting requirements review and conditional squash of PR48. [Reviewed corrections and focused evidence](governance-failure-corrections.md) now cover the SQL privilege ambiguity and a decisive populated-fixture witness mutation. Full final-head delivery evidence remains pending; T020/T021 are intentionally unchecked. All six findings and human/public-release blockers remain open. The former A-004 hold below is historical, not renewed authority.
+**Historical full-CI follow-up checkpoint:** the first correction run exposed a stale shared inventory assertion and newly reported Pkcs advisories. Provider totals are now independently checked as 790/895; Pkcs 10.0.13 replaces both vulnerable resolved versions across all 18 affected lock files. Local locked build, 32 credential controls, 182 Python controls, current 23-project advisory and 233-pair license checks pass. Final exact-head CI remains required; no historical or human/release finding is closed.
 
-**Delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
+**Earlier correction checkpoint (13 October 2026):** the user explicitly requested failure fixes after requesting requirements review and conditional squash of PR48. [Reviewed corrections and focused evidence](governance-failure-corrections.md) now cover the SQL privilege ambiguity and a decisive populated-fixture witness mutation. At that earlier checkpoint full delivery evidence was pending; the final delivery record above supersedes that status. All six findings and human/public-release blockers remain open. The former A-004 hold below is historical, not renewed authority.
+
+**Historical A-004 delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
 
 Increment 1 was squash-merged in PR #21 as `38535bd`; its verification record and PR contain the final evidence. The three approved increments are implemented through separately reviewed and squash-merged task PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
 
@@ -54,9 +56,9 @@ Dependencies: T016 -> T022/T023 -> T024 -> T025/T026; T027 enables isolated T028
 
 ## Increment 3 — US3 current authority and governance
 
-- [x] T019 [US3] Complete usable-administrator predicate and supported recovery-route contract in [governance-design.md](governance-design.md); preserve lockout defenses and incomplete-enrollment exclusion. Independent architecture/security/test design reviews converged with GOV-01–12 planned acceptance families; its documentation PR supplies final checks/normal squash. Runtime T020/T021 is now authorized only within explicitly approved A-004; historical findings and prior acceptance obligations remain unresolved.
-- [ ] T020 [US3] Implement current permission and governed mutation policies under Core/Infrastructure Features/Identity with explicit actor/permission/recent-MFA/concurrency checks.
-- [ ] T021 [US3] Prove both-provider distributed last-admin and stale/current-authority scenarios in tests/aspire/IdentityPlatform.Administrator.Tests; review/fix/verify/squash the third PR.
+- [x] T019 [US3] Complete usable-administrator predicate and supported recovery-route contract in [governance-design.md](governance-design.md); preserve lockout defenses and incomplete-enrollment exclusion. Independent architecture/security/test design reviews converged with GOV-01–12 planned acceptance families; its documentation PR supplies final checks/normal squash. The initial runtime scope used explicitly approved A-004, which later expired; final PR48 delivery follows the current conditional instruction recorded above. Historical findings and prior acceptance obligations remain unresolved.
+- [x] T020 [US3] Implement current permission and governed mutation policies under Core/Infrastructure Features/Identity with explicit actor/permission/recent-MFA/concurrency checks.
+- [x] T021 [US3] Prove both-provider distributed last-admin and stale/current-authority scenarios in tests/aspire/IdentityPlatform.Administrator.Tests; review/fix/verify/squash the third PR.
 
 ## Dependencies and execution
 
@@ -120,6 +122,6 @@ Registry investigation completed under the user's follow-up instruction: regiona
 - [x] F002 Correct the SQL privilege oracle with fresh same-attempt evidence and 105 fail-closed pure controls; retain original real-provider assertions.
 - [x] F003 Diagnose the current SQL witness non-kill, review a fixed native ordinary-user population, and demonstrate the exact unsafe-commit mutation assertion with baseline/restored controls.
 - [x] F004 Reconcile all portable identities, obtain independent architecture/security/test review, and preserve failed attempts and historical approval/finding records.
-- [ ] F005 Complete final exact-head full CI, all required mutation artifacts and coverage, review current remote/review state, and deliver the conditional normal squash only if requirements pass.
+- [x] F005 Complete final exact-head full CI, all required mutation artifacts and coverage, review current remote/review state, and deliver the conditional normal squash only if requirements pass.
 
 These tasks use the current correction request, not expired A-004 or concluded A-005/A-006. Their focused receipts do not close historical causes or human/public-release gates.
