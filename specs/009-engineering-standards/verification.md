@@ -29,3 +29,24 @@ Final bounded architecture, API, security/configuration and test source reviews 
 OpenAPI increment completed: PR #23 squash-merged as `35873ee1a4cf1a550987953a6a29ee59e86c08ec`. Reviewed head `ebd495e81b01695a391dd081559c0a7d94f37874` passed run `38265619969` attempt 2, all 34 jobs. Independent test review reconciled 30 MTP module summaries across 23 ordinary jobs: 1,327 passed, zero failures/skips. Contract core passed 40 and each browser engine 7; all 23 coverage inputs and nine module floors passed. Admin API/BFF reached 100% line/branch; AuthServer retained 96.3%/98.4%. Both mutation gates passed.
 
 Attempt 1 had 31 successes; PostgreSQL distribution exhausted its 20-minute job limit in locked restore, before build/tests, after 19 project restore completions. No diagnostic established the cause. Coverage was skipped and final acceptance correctly failed. Only that setup job and dependent coverage/acceptance were rerun on the unchanged head; the missing distribution suite then passed all 23 cases. Successful original jobs retained their original execution times. This is not clean first-attempt acceptance. Copilot quota prevented its review; bounded independent source/evidence reviews passed, with no self-approval or bypass. T010–T012 are complete; the 1,965 remaining legacy findings, feature 009 T013–T016 and MFA remain open.
+
+## T017 — configuration scenario retrofit (13 October 2026)
+
+Approved as the first of three bounded engineering cleanups. Core and Host configuration tests now use Given–When–Then names and meaningful XML. A private shared process runner preserves real entry-point selection, missing/empty environment cases, concurrent stream reads, the linked ten-second deadline, tree termination and exact safe-error assertions. Independent test-owned values preserve password boundaries 32/128/129 and unknown provider99. No product behavior or test input was changed.
+
+Native xUnit v3/MTP discovery was captured before and after with `--pre-enumerate-theories on --list-tests json`. Applying the explicit map below gives identical display arguments, signatures and traits after excluding generated UID/source location: Core25→25; Host338→338, including34 renamed Host cases. Unchanged Host UIDs remain identical; all resulting UIDs are unique. Tracked-source search found no old-name selector consumers. Historical evidence remains unchanged.
+
+| Previous method | New method |
+| --- | --- |
+| `Accepts_only_named_supported_providers` | `Given_SupportedProviderName_When_Parsed_Then_ReturnsExpectedProvider` |
+| `Rejects_invalid_values_without_fallback_or_echoing_secrets` | `Given_InvalidProvider_When_Parsed_Then_RejectsWithoutDisclosingInput` |
+| `Accepts_absolute_https_issuer` | `Given_AbsoluteHttpsIssuer_When_Parsed_Then_PreservesUri` |
+| `Rejects_unsafe_or_ambiguous_issuer_without_echoing_input` | `Given_UnsafeIssuer_When_Parsed_Then_RejectsWithoutDisclosingInput` |
+| `Invalid_connections_are_rejected_before_build_without_echoing_input` | `Given_InvalidConnection_When_PersistenceIsRegistered_Then_RejectsWithoutDisclosingInput` |
+| `Invalid_local_passwords_cannot_reach_database_ddl` | `Given_InvalidLocalPassword_When_Validated_Then_RejectsBeforeDdl` |
+| `Local_password_length_boundaries_are_explicit` | `Given_LocalPasswordLengthBoundaries_When_Validated_Then_AcceptsOnlyAllowedLengths` |
+| `Undefined_provider_cannot_produce_a_schema_contract_or_provider_options` | `Given_UndefinedProvider_When_SchemaOrOptionsAreRequested_Then_Rejects` |
+| `Invalid_configuration_returns_safe_nonzero_exit` | `Given_InvalidMigratorConfiguration_When_ProcessStarts_Then_ExitsSafely` |
+| `Actual_runtime_host_rejects_invalid_configuration_without_exposing_it` | `Given_InvalidRuntimeConfiguration_When_HostStarts_Then_ExitsWithoutDisclosingInput` |
+
+Local evidence: full serialized solution build passed with zero warnings/errors; Core25/25 and Host338/338 passed without skips. `check_code_quality.py`, its seeded controls, `check-ai-instructions.py` and seven CI-selection controls passed. The allowance inventory removes exactly27 findings from the four intended configuration files (1886→1859), with no additions, rebinding or new exceptions. Architecture and test source reviews independently found preserved behavior; the test reviewer requested durable rename evidence, supplied above. Full static build/format/analyzer checks and seeded CA5350/IDE0055/IDE1006 rejection controls also passed. Exact-head CI/merge must pass and are recorded on the PR before acceptance. T013/T015 remain open beyond this bounded slice. ADM-OPS-01/ADM-EVID-01 and governance/release gates remain unchanged.

@@ -16,6 +16,8 @@ M01-F, Admin BFF/React and the wider R1 product remain open. The five-minute adm
 
 Milestone numbers below come from the approved product roadmap. Local Spec Kit feature numbers are increments: `001-platform-foundation` and `002-issuer-foundation` both contribute to **milestone 001**. They do not complete milestones 001 and 002.
 
+**Approved engineering batch:** feature 009 T017–T019 cover configuration-test names, the Core permission catalogue and shared lifecycle evidence, each in a separate reviewed squash PR. They are bounded portions of the still-open T013–T015 retrofit. This work does not close ADM-OPS-01/ADM-EVID-01 or enable gated feature 008 T020/T021. See the [task packet](../specs/009-engineering-standards/tasks.md#approved-focused-retrofit-batch--13-october-2026).
+
 ## Status, ownership and evidence
 
 - **Done:** the bounded task has actual acceptance evidence. PR merge state is recorded separately.

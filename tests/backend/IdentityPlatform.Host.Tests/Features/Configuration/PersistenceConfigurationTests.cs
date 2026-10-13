@@ -9,6 +9,7 @@ namespace IdentityPlatform.Host.Tests.Features.Configuration;
 
 public sealed class PersistenceConfigurationTests
 {
+    /// <summary>Verify both persistence registrations reject invalid connections before building services.</summary>
     [Theory]
     [InlineData(DatabaseProvider.PostgreSql, "")]
     [InlineData(DatabaseProvider.PostgreSql, "synthetic-secret")]
@@ -19,7 +20,7 @@ public sealed class PersistenceConfigurationTests
     [InlineData(DatabaseProvider.SqlServer, "Password=synthetic-secret")]
     [InlineData(DatabaseProvider.SqlServer, "Server=localhost")]
     [InlineData((DatabaseProvider)99, "Password=synthetic-secret")]
-    public void Invalid_connections_are_rejected_before_build_without_echoing_input(DatabaseProvider provider, string connection)
+    public void Given_InvalidConnection_When_PersistenceIsRegistered_Then_RejectsWithoutDisclosingInput(DatabaseProvider provider, string connection)
     {
         var identity = Assert.Throws<ArgumentException>(() => new ServiceCollection().AddIdentityPersistence(provider, connection));
         var sessions = Assert.Throws<ArgumentException>(() => new ServiceCollection().AddSessionPersistence(provider, connection));
@@ -27,6 +28,7 @@ public sealed class PersistenceConfigurationTests
         Assert.DoesNotContain("synthetic-secret", sessions.ToString());
     }
 
+    /// <summary>Verify local role passwords must meet all validation constraints before DDL.</summary>
     [Theory]
     [InlineData("")]
     [InlineData("shortA1")]
@@ -34,25 +36,33 @@ public sealed class PersistenceConfigurationTests
     [InlineData("abcdefghijklmnopqrstuvwxyz0123456789")]
     [InlineData("abcdefghijklmnopqrstuvwxyzABCDEFGHIJ")]
     [InlineData("aA123456789012345678901234567890';--")]
-    public void Invalid_local_passwords_cannot_reach_database_ddl(string password)
+    public void Given_InvalidLocalPassword_When_Validated_Then_RejectsBeforeDdl(string password)
     {
         Assert.Throws<ArgumentException>(() => LocalRuntimeRoleProvisioner.ValidatePassword(password));
     }
 
+    /// <summary>Verify independently specified minimum and maximum password lengths and the first oversized value.</summary>
     [Fact]
-    public void Local_password_length_boundaries_are_explicit()
+    public void Given_LocalPasswordLengthBoundaries_When_Validated_Then_AcceptsOnlyAllowedLengths()
     {
-        LocalRuntimeRoleProvisioner.ValidatePassword("aA1" + new string('x', 29));
-        LocalRuntimeRoleProvisioner.ValidatePassword("aA1" + new string('x', 125));
-        Assert.Throws<ArgumentException>(() => LocalRuntimeRoleProvisioner.ValidatePassword("aA1" + new string('x', 126)));
+        const string requiredCharacterClasses = "aA1";
+        const int minimumPaddingLength = 29;
+        const int maximumPaddingLength = 125;
+        LocalRuntimeRoleProvisioner.ValidatePassword(requiredCharacterClasses + new string('x', minimumPaddingLength));
+        LocalRuntimeRoleProvisioner.ValidatePassword(requiredCharacterClasses + new string('x', maximumPaddingLength));
+        Assert.Throws<ArgumentException>(() => LocalRuntimeRoleProvisioner.ValidatePassword(requiredCharacterClasses + new string('x', maximumPaddingLength + 1)));
     }
 
+    /// <summary>Verify undefined providers cannot select either schema or configure EF options.</summary>
     [Fact]
-    public void Undefined_provider_cannot_produce_a_schema_contract_or_provider_options()
+    public void Given_UndefinedProvider_When_SchemaOrOptionsAreRequested_Then_Rejects()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => SchemaCatalog.Platform((DatabaseProvider)99));
-        Assert.Throws<ArgumentOutOfRangeException>(() => SchemaCatalog.Sessions((DatabaseProvider)99));
+        const DatabaseProvider undefinedProvider = (DatabaseProvider)99;
+        const string unusedConnection = "synthetic";
+        const string unusedMigrations = "PlatformMigrations";
+        Assert.Throws<ArgumentOutOfRangeException>(() => SchemaCatalog.Platform(undefinedProvider));
+        Assert.Throws<ArgumentOutOfRangeException>(() => SchemaCatalog.Sessions(undefinedProvider));
         Assert.Throws<ArgumentOutOfRangeException>(() => PersistenceRegistration.ConfigureDatabase(
-            new DbContextOptionsBuilder(), (DatabaseProvider)99, "synthetic", "PlatformMigrations"));
+            new DbContextOptionsBuilder(), undefinedProvider, unusedConnection, unusedMigrations));
     }
 }

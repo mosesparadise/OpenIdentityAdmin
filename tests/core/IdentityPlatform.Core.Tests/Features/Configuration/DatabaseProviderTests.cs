@@ -4,16 +4,18 @@ namespace IdentityPlatform.Core.Tests.Features.Configuration;
 
 public sealed class DatabaseProviderTests
 {
+    /// <summary>Verify supported provider names retain case and whitespace normalization.</summary>
     [Theory]
     [InlineData("PostgreSql", DatabaseProvider.PostgreSql)]
     [InlineData("postgresql", DatabaseProvider.PostgreSql)]
     [InlineData(" SQLSERVER ", DatabaseProvider.SqlServer)]
     [InlineData("SqlServer", DatabaseProvider.SqlServer)]
-    public void Accepts_only_named_supported_providers(string value, DatabaseProvider expected)
+    public void Given_SupportedProviderName_When_Parsed_Then_ReturnsExpectedProvider(string value, DatabaseProvider expected)
     {
         Assert.Equal(expected, DatabaseProviderParser.Parse(value));
     }
 
+    /// <summary>Verify invalid providers fail without fallback or disclosure of supplied secrets.</summary>
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -23,7 +25,7 @@ public sealed class DatabaseProviderTests
     [InlineData("1")]
     [InlineData("PostgreSql,SqlServer")]
     [InlineData("Password=SensitiveValue")]
-    public void Rejects_invalid_values_without_fallback_or_echoing_secrets(string? value)
+    public void Given_InvalidProvider_When_Parsed_Then_RejectsWithoutDisclosingInput(string? value)
     {
         var exception = Assert.Throws<ArgumentException>(() => DatabaseProviderParser.Parse(value));
 

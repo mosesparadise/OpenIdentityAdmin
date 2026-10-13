@@ -4,15 +4,17 @@ namespace IdentityPlatform.Core.Tests.Features.Configuration;
 
 public sealed class IssuerUriTests
 {
+    /// <summary>Verify valid HTTPS issuer paths and ports are preserved.</summary>
     [Theory]
     [InlineData("https://identity.example.test/")]
     [InlineData("https://localhost:7341/")]
     [InlineData("https://identity.example.test/issuer")]
-    public void Accepts_absolute_https_issuer(string value)
+    public void Given_AbsoluteHttpsIssuer_When_Parsed_Then_PreservesUri(string value)
     {
         Assert.Equal(new Uri(value), IssuerUri.Parse(value));
     }
 
+    /// <summary>Verify unsafe or ambiguous issuers fail without disclosing input.</summary>
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -24,7 +26,7 @@ public sealed class IssuerUriTests
     [InlineData(" https://identity.example.test/")]
     [InlineData("https://identity.example.test/ ")]
     [InlineData("file:///identity")]
-    public void Rejects_unsafe_or_ambiguous_issuer_without_echoing_input(string? value)
+    public void Given_UnsafeIssuer_When_Parsed_Then_RejectsWithoutDisclosingInput(string? value)
     {
         var exception = Assert.Throws<ArgumentException>(() => IssuerUri.Parse(value));
 
