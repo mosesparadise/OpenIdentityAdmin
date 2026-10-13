@@ -139,5 +139,33 @@ class LifecycleSelectionTests(unittest.TestCase):
                 validate(root)
 
 
+class ExecutionBindingTests(unittest.TestCase):
+    def report(self):
+        """Create one internally consistent successful native-report shape without product data."""
+        root = E.fromstring('''<TestRun><Results><UnitTestResult testId="t" executionId="e" testName="A" outcome="Passed"/></Results>
+<TestDefinitions><UnitTest id="t" name="A"><Execution id="e"/></UnitTest></TestDefinitions>
+<TestEntries><TestEntry testId="t" executionId="e"/></TestEntries>
+<ResultSummary outcome="Completed"><Counters total="1" executed="1" passed="1"/></ResultSummary></TestRun>''')
+        for key in ('failed', 'error', 'timeout', 'aborted', 'inconclusive', 'passedButRunAborted',
+                    'notRunnable', 'notExecuted', 'disconnected', 'warning', 'completed', 'inProgress', 'pending'):
+            root.find('./ResultSummary/Counters').set(key, '0')
+        return root
+
+    def test_Given_SuccessfulReport_When_DefinitionRepeatsExecution_Then_AmbiguousBindingIsRejected(self):
+        """Neither identical nor conflicting extra execution bindings can hide behind a valid first child."""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'report.trx'
+            original = self.report()
+            E.ElementTree(original).write(path)
+            selected = {'native-id': ('A', 'PostgreSql', False)}
+            require_lifecycle_execution(path, selected)
+            for execution_id in ('e', 'different'):
+                invalid = copy.deepcopy(original)
+                E.SubElement(invalid.find('./TestDefinitions/UnitTest'), 'Execution', id=execution_id)
+                E.ElementTree(invalid).write(path)
+                with self.subTest(execution_id=execution_id), self.assertRaisesRegex(ValueError, 'execution'):
+                    require_lifecycle_execution(path, selected)
+
+
 if __name__ == '__main__':
     unittest.main()

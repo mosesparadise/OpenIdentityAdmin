@@ -114,8 +114,8 @@ def require_lifecycle_execution(path, selected):
     if len(entries) != len(rows) or {(e.get('testId'), e.get('executionId')) for e in entries} != bindings:
         raise ValueError('Lifecycle entries do not match results')
     for definition in definitions:
-        execution = definition.find('./{*}Execution')
-        if execution is None or (definition.get('id'), execution.get('id')) not in bindings:
+        executions = definition.findall('./{*}Execution')
+        if len(executions) != 1 or (definition.get('id'), executions[0].get('id')) not in bindings:
             raise ValueError('Lifecycle definition execution is inconsistent')
 
 
@@ -195,6 +195,11 @@ def administrator_catalogue(all_tests, provider, matrix, inventory):
         for p, count in matrix['administrator_stories'][name].items():
             if sum(test[1] == p and test[3] == namespace for test in all_tests.values()) != count:
                 raise ValueError('Administrator story catalogue count changed without review')
+    if matrix.get('browser', {}).get('Administrator', 0):
+        for current, count in administrator_browser_invocations(matrix):
+            for p in ('PostgreSql', 'SqlServer'):
+                if sum(test[1] == p and test[2] and test[4] == current for test in all_tests.values()) != count:
+                    raise ValueError('Administrator browser story count changed without review')
     return complete, namespaces
 
 
@@ -213,10 +218,6 @@ def require_administrator_browser(all_tests, selected, provider, matrix, invento
         raise ValueError('Administrator browser coverage must be positive')
     complete, _ = administrator_catalogue(all_tests, provider, matrix, inventory)
     administrator_browser_invocations(matrix, story)
-    for current, count in matrix['administrator_browser_stories'].items():
-        for p in ('PostgreSql', 'SqlServer'):
-            if sum(test[1] == p and test[2] and test[4] == current for test in all_tests.values()) != count:
-                raise ValueError('Administrator browser story count changed without review')
     expected = {uid: test for uid, test in complete.items() if test[2] and (story is None or test[4] == story)}
     if selected != expected:
         raise ValueError('Administrator browser selection omits or substitutes identities')
