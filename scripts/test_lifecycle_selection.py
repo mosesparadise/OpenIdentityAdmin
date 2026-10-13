@@ -9,7 +9,8 @@ from test_evidence import require_complete_trx
 
 
 class LifecycleSelectionTests(unittest.TestCase):
-    def test_scheduled_partitions_preserve_every_provider_case_without_overlap(self):
+    def test_Given_ScheduledPartitions_When_Combined_Then_EveryReviewedProviderCaseAppearsExactlyOnce(self):
+        """Keep the independently reviewed provider total and disjoint project partition obligations explicit."""
         matrix = json.loads((Path(__file__).resolve().parents[1] / 'eng/test-matrix.json').read_text())
         for provider in ('PostgreSql', 'SqlServer'):
             complete = select_projects(matrix, provider)
@@ -21,7 +22,7 @@ class LifecycleSelectionTests(unittest.TestCase):
             self.assertEqual(complete, standard | lifecycle | administrator)
             self.assertEqual(302, sum(standard.values()))
             self.assertEqual({'Issuer.Lifecycle': 41}, lifecycle)
-            self.assertEqual(550, sum(complete.values()))
+            self.assertEqual(580, sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
         self.assertEqual(matrix['browser'], select_projects(matrix, 'SqlServer', 'webkit'))
         for profile, browser, partition in [('unit', None, 'standard'), ('unit', None, 'lifecycle'),

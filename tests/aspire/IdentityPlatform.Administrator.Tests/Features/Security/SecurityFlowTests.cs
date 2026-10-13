@@ -33,6 +33,7 @@ public sealed class SecurityFlowTests(BootstrapFixture fixture)
         var replacement = await scenario.Get<JourneyTransition>().AuthorizeAsync(initial, scenario.Correlation, SecurityScenario.Replacement,
             code, correlation, token, candidate);
         Assert.NotNull(replacement);
+        await RequireAbandonedFactorAsync(scenario);
         Assert.NotNull(await scenario.Get<JourneySessions>().ValidateAsync(grant.UserId, grant.SessionId, token));
         Assert.Null(await scenario.Get<JourneyStaging>().ReadAsync(replacement, correlation, token, SecurityScenario.Replacement));
         Assert.Null(await scenario.Get<JourneyStaging>().ReadAsync(replacement, correlation, token, SecurityScenario.Replacement, SecurityScenario.Candidate(foreign)));
@@ -45,6 +46,18 @@ public sealed class SecurityFlowTests(BootstrapFixture fixture)
         Assert.NotNull(completed);
         Assert.Null(await scenario.Get<JourneySessions>().ValidateAsync(grant.UserId, grant.SessionId, token));
         Assert.NotNull(await scenario.Get<JourneySessions>().ValidateAsync(completed.UserId, completed.SessionId, token));
+    }
+
+    /// <summary>Fresh native login still uses the exact active factor while the unrelated voluntary replacement remains unconfirmed.</summary>
+    private static async Task RequireAbandonedFactorAsync(JourneyScenario scenario)
+    {
+        var token = TestContext.Current.CancellationToken;
+        var before = await scenario.Database.Set<AdministratorFactor>().AsNoTracking().SingleAsync(token);
+        var initial = await SecurityScenario.BeginAsync(scenario, SecurityScenario.Login);
+        Assert.NotNull(await scenario.Get<JourneyCompletion>().CompleteAsync(initial, scenario.Correlation, SecurityScenario.Login,
+            await SecurityScenario.UnusedAsync(scenario), token));
+        var after = await scenario.Database.Set<AdministratorFactor>().AsNoTracking().SingleAsync(token);
+        Assert.True(before.Id == after.Id && before.Generation == after.Generation && before.ProtectedSeed == after.ProtectedSeed);
     }
 
     /// <summary>Regeneration reserves the current factor code, changes all recovery verifiers and replaces the initiating session after commit.</summary>

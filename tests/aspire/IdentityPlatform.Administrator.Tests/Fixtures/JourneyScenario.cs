@@ -72,6 +72,9 @@ internal sealed class JourneyScenario : IAsyncDisposable
     /// <summary>Resolves one scoped production mechanism for a deliberate test operation.</summary>
     internal T Get<T>() where T : notnull => scope.ServiceProvider.GetRequiredService<T>();
 
+    /// <summary>Creates an independently disposed native service scope for real competing database operations.</summary>
+    internal AsyncServiceScope CreateScope() => services.Services.CreateAsyncScope();
+
     /// <summary>Creates actual password-bound random enrollment staging without minting a session.</summary>
     internal async Task StageAsync()
     {

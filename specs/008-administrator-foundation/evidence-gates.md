@@ -1,6 +1,6 @@
 # T027 — administrator execution and evidence gates
 
-Status: implementation and local verification complete; exact-head CI and squash acceptance pending.
+Status: accepted in [PR #33](https://github.com/mosesparadise/OpenIdentityAdmin/pull/33), squash `ab8b62d`; exact-head full CI and independent source reviews passed. See the [verification record](verification.md#t027--execution-evidence-gates--13-october-2026-utc).
 
 The user authorized T027–T029 on 13 October 2026, with a reviewed and squash-merged PR for each task before the next. The approved MFA design, existing projects and Features hierarchy remain authoritative. No production behavior, package, timeout, coverage floor or quality allowance changes in T027.
 

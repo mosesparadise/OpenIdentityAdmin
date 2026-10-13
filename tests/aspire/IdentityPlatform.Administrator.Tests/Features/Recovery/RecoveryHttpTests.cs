@@ -9,8 +9,10 @@ namespace IdentityPlatform.Administrator.Tests.Features.Recovery;
 public sealed class RecoveryHttpTests(BootstrapFixture fixture)
 {
     private const string ReusedRecoveryMaterial = "New recovery material reused a previously disclosed code.";
+    private const string RecoveryCookieMarker = "administrator-recovery-cookie-bypass";
     /// <summary>Recovery invalidates the old cookie without issuing another, then only proven replacement creates new local authority.</summary>
     [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
+    [Trait("CriticalDecision", "administrator-recovery-cookie")]
     public async Task Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(string provider)
     {
         await using var environment = await AdministratorEnvironment.CreateAsync(fixture, provider);
@@ -24,7 +26,7 @@ public sealed class RecoveryHttpTests(BootstrapFixture fixture)
         var replacement = await SecurityHttp.TransitionAsync(other, challenge, enrolled.RecoveryCodes[0], recovery: true);
         Assert.True(cookie == cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]!.Value);
         using var restricted = await other.GetAsync(AdministratorJourney.Security, TestContext.Current.CancellationToken);
-        Assert.Equal(HttpStatusCode.Unauthorized, restricted.StatusCode);
+        await RequireRestrictedAsync(restricted);
         var confirmation = await AdministratorJourney.ReadAsync(browser, replacement, enrollment: true);
         var code = FactorOracle.Code(confirmation.Seed!, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
         using var completed = await AdministratorJourney.ConfirmAtAsync(other, confirmation, code, SecurityHttp.Confirm);
@@ -38,6 +40,19 @@ public sealed class RecoveryHttpTests(BootstrapFixture fixture)
         Assert.Equal(HttpStatusCode.BadRequest, repeated.StatusCode);
         using var redisplay = await other.GetAsync(replacement, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.BadRequest, redisplay.StatusCode);
+    }
+
+    /// <summary>Marks only demonstrated successful protected-page authority as the mutation bypass; unrelated failures remain unmarked failures.</summary>
+    private static async Task RequireRestrictedAsync(HttpResponseMessage response)
+    {
+        const string AuthorityText = "You are signed in with your password and authenticator.";
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var html = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+            Assert.True(html.Contains(AuthorityText, StringComparison.Ordinal));
+            Assert.Fail(RecoveryCookieMarker);
+        }
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     /// <summary>Another browser's valid antiforgery token cannot spend the owner's recovery proof or receive its staged key.</summary>

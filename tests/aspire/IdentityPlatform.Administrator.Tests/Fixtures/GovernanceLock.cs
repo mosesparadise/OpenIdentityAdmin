@@ -70,6 +70,13 @@ public sealed class GovernanceLock : IAsyncDisposable
         return DatabaseWaiters.ObserveAsync(lease, blocker, audit ? AuditStage : GovernanceStage, minimum);
     }
 
+    /// <summary>Terminates only a runtime session independently observed executing the expected blocked audit INSERT.</summary>
+    internal Task TerminateAuditWaiterAsync(BootstrapDatabase lease)
+    {
+        Assert.True(audit);
+        return DatabaseWaiters.TerminateAuditWaiterAsync(lease, blocker);
+    }
+
     public async ValueTask DisposeAsync()
     {
         try
