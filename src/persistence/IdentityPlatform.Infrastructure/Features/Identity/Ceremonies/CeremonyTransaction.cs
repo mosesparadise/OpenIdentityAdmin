@@ -1,6 +1,7 @@
 using System.Data;
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
+using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -44,6 +45,10 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     /// <summary>Explicitly selects metadata-only cleanup ownership; ordinary ceremonies cannot use its unaudited commit.</summary>
     internal static Task<CeremonyTransaction> OpenMaintenanceAsync(PlatformDbContext database, NativeOperation operation,
         CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, CeremonyMode.Maintenance, cancellationToken);
+
+    /// <summary>Opens governance ownership; authentication and maintenance commits cannot complete this transaction.</summary>
+    internal static Task<CeremonyTransaction> OpenGovernanceAsync(PlatformDbContext database, NativeOperation operation,
+        CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, CeremonyMode.Governance, cancellationToken);
 
     /// <summary>Creates bounded connection and transaction lifetimes and releases every partially acquired resource on failure.</summary>
     private static async Task<CeremonyTransaction> OpenCoreAsync(PlatformDbContext database, NativeOperation operation,
@@ -104,6 +109,26 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
         }
     }
 
+    /// <summary>Allows shared locked account mechanisms while excluding metadata-only maintenance.</summary>
+    internal void RequireAccountOperation()
+    {
+        RequireCurrent();
+        if (mode is not (CeremonyMode.Authentication or CeremonyMode.Governance))
+        {
+            throw new FactorUnavailableException();
+        }
+    }
+
+    /// <summary>Requires the dedicated governance mode and its singleton serialization boundary.</summary>
+    internal void RequireGovernance()
+    {
+        RequireCurrent();
+        if (mode != CeremonyMode.Governance || !Plan.Governance)
+        {
+            throw new FactorUnavailableException();
+        }
+    }
+
     /// <summary>Commits a fixed audit event and all native/product writes before any caller may release authority.</summary>
     internal async Task CommitAsync(CeremonyEvent action, bool accepted, string userId, long now)
     {
@@ -127,6 +152,28 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
             throw new FactorUnavailableException();
         }
         await database.SaveChangesAsync(Token);
+        await transaction.CommitAsync(Token);
+        completed = true;
+    }
+
+    /// <summary>Commits governance only through a private-factory capability that checks actual state and derives the accepted audit.</summary>
+    internal async Task CommitGovernanceAsync(GovernanceCommit capability, CeremonyClock clock)
+    {
+        RequireGovernance();
+        await capability.WriteAsync(database, this, clock.Now);
+        await database.SaveChangesAsync(Token);
+        capability.RequireFinal(this, clock.Now);
+        await transaction.CommitAsync(Token);
+        completed = true;
+    }
+
+    /// <summary>Persists an actual failed native attempt with its denial audit, retaining no verification or target-side effects.</summary>
+    internal async Task CommitGovernanceDenialAsync(GovernanceDenial capability, CeremonyClock clock)
+    {
+        RequireGovernance();
+        await capability.WriteAsync(database, this, clock.Now);
+        await database.SaveChangesAsync(Token);
+        capability.RequireFinal(this, clock.Now);
         await transaction.CommitAsync(Token);
         completed = true;
     }
@@ -178,5 +225,5 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
 
 internal enum CeremonyMode
 {
-    Authentication, Maintenance
+    Authentication, Maintenance, Governance
 }

@@ -3,7 +3,7 @@
   "mutations": [
     {
       "id": "administrator-replay",
-      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplay.cs",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs",
       "before": "IsReplay(entries, account.User.Id, generation, code)",
       "after": "entries.Count < 0",
       "marker": "administrator-replay-bypass",

@@ -15,6 +15,8 @@ internal sealed class JourneyScenario : IAsyncDisposable
     private readonly AsyncServiceScope scope;
     internal PlatformDbContext Database => Get<PlatformDbContext>();
     internal BootstrapDatabase Lease => lease;
+    /// <summary>Supplies only synthetic issuer inputs to the owned non-HTTP process driver; callers must never log or serialize them to disk.</summary>
+    internal IReadOnlyDictionary<string, string?> IssuerSettings => material.Settings;
     internal FactorClock Clock
     {
         get;

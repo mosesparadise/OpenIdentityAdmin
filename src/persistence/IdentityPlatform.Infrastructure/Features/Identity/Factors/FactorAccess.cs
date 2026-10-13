@@ -26,6 +26,15 @@ internal sealed class FactorAccess(PlatformDbContext database)
     private Guid? transaction;
     private string? selectionBinding;
 
+    /// <summary>Rejects ambient staged, recovery or installation material before active-only governance verification.</summary>
+    internal void RequireActive()
+    {
+        if (transaction is not null || Staged is not null || Recovery is not null || Installation is not null)
+        {
+            throw new FactorUnavailableException();
+        }
+    }
+
     /// <summary>Selects a persisted interaction only within its caller-owned transaction.</summary>
     internal IDisposable Select(AdministratorInteraction interaction, CancellationToken token)
     {

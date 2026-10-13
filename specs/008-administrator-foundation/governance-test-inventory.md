@@ -1,8 +1,8 @@
-# T020/T021 planned scenario inventory
+# T020/T021 scenario inventory
 
-Status: final proposed pre-code inventory, not executed. The user approved the three feature-local partitions and dedicated test-only driver on 13 October 2026. Every listed row runs on PostgreSQL and SQL Server. Names below are exact proposed method names; multi-row methods use provider and scenario parameters. No test identity is accepted from this document; actual native discovery must reconcile it before implementation PR acceptance.
+Status: reconciled local implementation inventory; final acceptance remains pending independent review and strict CI. The user approved the three feature-local partitions and dedicated test-only driver on 13 October 2026. All rows are required on both provider labels; the driver transport/process controls explicitly do not access either database. Native discovery, exact row metadata and required manifests determine the execution inventory, not this document alone.
 
-Proposed added ordinary cases per provider: {'Policy': 74, 'Commands': 62, 'Failures': 38}; total 174. Administrator ordinary 242 → 416; full native 510 → 858. Existing Administrator browser13/provider and Issuer native644 remain unchanged.
+Actual added ordinary cases per provider: Policy 74, Commands 68 and Failures 49; total 191. Administrator ordinary 242 → 433 per provider; full native 510 → 892 across both providers. Existing Administrator browser13/provider and Issuer native644 remain unchanged. The approved pre-code estimate was 174 additions per provider (74/62/38), ordinary 416/provider and full native858; these remain historical planning figures, not current counts.
 
 ## Governance.Policy: 74 rows/provider
 
@@ -79,7 +79,7 @@ Complete native/protected credentials and grants count without a live session or
 ### P11 — GOV-02,07 (1 rows/provider)
 `IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_CurrentPopulation_When_EvaluatedRepeatedly_Then_SecurityStateAndSemanticVersionRemainUnchanged`
 
-Rows: `read-only`.
+Rows: one provider-only row. `read-only` was the planned intent label, not a native scenario argument.
 
 Before/after snapshot includes failures, locks, factor/auth/enrollment generations and revisions, stamps, replay, proof and AuthorityRevision; queries cannot unlock or create proof.
 
@@ -104,7 +104,7 @@ Rows: `staged`, `recovery`, `installation`.
 
 Otherwise valid active-factor account; use actual FactorAccess.Select/SelectRecovery or a VerifiedStagedFactor created by its real VerifyAsync factory followed by Install. No setter/reflection/constructor bypass. Reject ambient material selection; active normal positive control remains P10.
 
-## Governance.Commands: 62 rows/provider
+## Governance.Commands: 68 rows/provider
 
 ### C01 — GOV-03,05,07 (8 rows/provider)
 `IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_CurrentActorAndFreshBoundProof_When_SupportedCommandCommits_Then_StateVersionAndAuditAgree`
@@ -158,14 +158,16 @@ Change exactly the relevant version after preparing intent; current locks do not
 ### C08 — GOV-07 (1 rows/provider)
 `IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt`
 
-Rows: `semantic-version`.
+Rows: one provider-only row. `semantic-version` was the planned intent label, not a native scenario argument.
 
 Read, acquire locks and run ordinary session activity without semantic increment; one committed command increments once; rejected/rolled-back command adds none, independently of governance lock Revision.
 
 ### C09 — GOV-03,07 (8 rows/provider)
 `IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_AlreadySatisfiedCommand_When_Requested_Then_NoChangePreservesProofAuditAndVersion`
 
-Rows: `assign-existing-bundle`, `remove-absent-bundle`, `add-existing-grant`, `remove-absent-grant`, `enable-enabled`, `disable-disabled`, `suspend-suspended`, `resume-resumed`.
+Native command rows: `assign-bundle`, `remove-bundle`, `restore-specialist-grant`, `remove-specialist-grant`, `enable-account`, `disable-account`, `suspend-account`, `resume-account`.
+
+These correspond respectively to the original planned intent labels `assign-existing-bundle`, `remove-absent-bundle`, `add-existing-grant`, `remove-absent-grant`, `enable-enabled`, `disable-disabled`, `suspend-suspended`, `resume-resumed`. The source explicitly prepares already-satisfied state, then requires NoChange and snapshot equality; the shared command labels do not replace the no-change oracle.
 
 Coherent target and valid actor. Exact NoChange; before/after native/product stamps, target state, full-proof budget/reset, replay reservation, audit and AuthorityRevision unchanged. No-op must not be counted as a successful protected transition.
 
@@ -197,7 +199,7 @@ Rows: `unsupported-action`, `contradictory-target-fields`, `noncanonical-identif
 
 Finite action enum invalid value, irrelevant user target on role-only action, case/padding/noncanonical ID, and invalid/missing required expected-version shape respectively. Assert fixed typed rejection and no native/provider write. Do not invent request setters or publicly constructible proof to exercise validation.
 
-## Governance.Failures: 38 rows/provider
+## Governance.Failures: 49 rows/provider
 
 ### F01 — GOV-04 (2 rows/provider)
 `IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ConcurrencyTests.Given_TwoGovernanceNodes_When_DestructiveCommandsContend_Then_OnlyOneCanRemoveAuthority`
@@ -207,14 +209,14 @@ Rows: `self-removal`, `cross-removal`.
 Two independent child-driver processes execute production internal services against same real provider/key ring. Observe native UPDATE waiters behind known governance lock; release; at most one accepted mutation, one audit and one semantic increment, actual surviving usable witness; loser has no partial state.
 
 ### F02 — GOV-06 (5 rows/provider)
-`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ConcurrencyTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked`
+`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked`
 
 Rows: `lockout`, `recovery`, `suspension`, `disable`, `active-factor-change`.
 
 Hold exact witness authentication lock, observe mutation waiting at intended boundary, commit damaging witness state through legitimate fixed security path where supported, release. Mutation denies if no witness remains. Suspension/disable must not be portrayed as a survivor-guard bypass: arrange an already-safe authorized mutation/order or explicitly scoped test corruption to test stale read, with separate production semantics credit.
 
 ### F03 — GOV-06,10 (2 rows/provider)
-`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ConcurrencyTests.Given_SafeCommittedGovernance_When_MandatorySecurityEventFollows_Then_UnsafeAuthorityIsNotPreserved`
+`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_SafeCommittedGovernance_When_MandatorySecurityEventFollows_Then_UnsafeAuthorityIsNotPreserved`
 
 Rows: `lockout`, `restricted-recovery`.
 
@@ -311,6 +313,28 @@ Rows: `ceremony-then-governance`, `governance-then-ceremony`.
 
 Same account, active generation and actual code under existing native window. First legitimate operation commits reservation; independent second scope using the other real factory rejects exactly that code without accepted second authority. Start with a separately established current session and use FactorOracle unused code for first operation. Do not fabricate an AdministratorInteraction to authorize governance; real ceremony setup only supplies the ordinary ceremony side.
 
+## Implementation-review additions (reconciled with native discovery)
+
+The original 174 rows/provider are a planning estimate, not a ceiling. These additional regressions cover concrete implementation branches found during independent review. They do not change A-004, authorize external management surfaces, or constitute acceptance evidence.
+
+### C14 — GOV-01,03: coherent actor credentials (2 rows/provider)
+`IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_IncoherentActorAndHealthyWitness_When_GovernanceIsRequested_Then_NoProofOrAuthorityChangeCommits`
+
+Rows: `negative-native-failures`, `stale-factor-allocator`. A separately enrolled healthy witness prevents the survivor check from masking actor eligibility. Read permission suppression, full-command denial and private verification-factory denial agree; exact full snapshot remains unchanged.
+
+### C15 — GOV-03,08: distinct credential-denial effects (3 rows/provider)
+
+- `IdentityPlatform.Administrator.Tests.Features.Governance.Commands.DenialTests.Given_ExpiredReplayEntry_When_NativeFactorIsRejected_Then_SavepointRestoresPrunedMaterialAndCountsOnlyDenial` — `savepoint-pruning-rollback`; actual successful one-row native pruning precedes rollback to the verification savepoint, with exact protected material restored.
+- `IdentityPlatform.Administrator.Tests.Features.Governance.Commands.DenialTests.Given_FourEarlierFailures_When_FactorVerificationFails_Then_FifthDenialCommitsLockoutWithoutAuthorityChanges` — `fifth-failure-lockout`; exact product/native lockout and allowed native concurrency-stamp change commit with the denial audit, while old full-session validation denies.
+- `IdentityPlatform.Administrator.Tests.Features.Governance.Commands.DenialTests.Given_FullProtectedReplayLedger_When_ValidCredentialsArrive_Then_UnavailableRollsBackWithoutCountingFailure` — `full-replay-ledger`; 64 unprunable protected entries and independently valid unused input produce unavailable completion, with complete rollback rather than a counted failed credential.
+
+### C16 — GOV-03,08: native savepoint support (1 row/provider)
+`IdentityPlatform.Administrator.Tests.Features.Governance.Commands.SavepointTests.Given_ActualProviderSavepointCapability_When_NativeGovernanceProofIsRequested_Then_OnlySupportedTransactionsVerify`
+
+Row: `native-savepoint-support`. PostgreSQL supplies a real supported transaction and successful native savepoint observation. SQL Server uses actual MARS connection options, requires `SupportsSavepoints == false`, and must reject before any native savepoint attempt. This is deliberately asymmetric provider capability evidence; PostgreSQL incapability is not fabricated.
+
+C14–C16 add six rows/provider, changing Commands62 →68. F17 adds one final-witness row and F18–F19 add ten driver rows, changing Failures38 →49. Together they reconcile the historical174 estimate to actual191 per provider. Native parameter names vary by method; preserve exact metadata rather than inventing a common scenario parameter.
+
 ## Reuse and independence
 
 - Reuse BootstrapFixture/BootstrapDatabase for shared real provider host and isolated migrated runtime-principal leases, FactorServices/IssuerMaterialFixture/FactorOracle for real native protected state, and DatabaseWaiters/DatabaseCommandGate/GovernanceLock for actual SQL boundaries. Add small governance-owned adapters, not copied fixture graphs. Valid second-administrator fixtures require manager-created password/stamp, actual protected active factor and coherent product rows; label them as fixture provisioning, never shipped onboarding.
@@ -323,9 +347,53 @@ Same account, active generation and actual code under existing native window. Fi
 - Add explicit Governance.Policy/Commands/Failures stories under existing Administrator project. Six provider invocations add six mandatory coverage inputs: 49 → 55. Preserve nine module floors, existing49 inputs and existing cases. Shared three-story boundary is a plan, not evidence that SQL elapsed execution fits660s; measure each once locally, split a cohesive story further if needed through reviewed exact union/disjoint discovery rather than increasing deadlines.
 - Update eng/test-matrix.json counts; exact names in eng/administrator-test-matrix.json; scripts/test_selection.py exact namespace/story allowlists; scripts/verify.py argparse/partition rules and labels; .github/workflows/verify.yml six cells; scripts/check_coverage_inputs.py and independent scripts/test_browser_matrix.py six labels. Add omitted/duplicate/wrong-story/equal-count-substitution seeded selector cases; compare all old510 native UID/metadata identities with final inventory, not only count.
 - Ordinary regression execution and coverage does not include intentionally failing mutation runs. Recommended separate governance mutation suite in the same existing Administrator project: six required mutants with unchanged180s build/execution and60s discovery per command; original issuer7/admin8 remain unchanged. This adds two mutation jobs but no ordinary coverage-input cells. Manifest/suite choice requires reviewed tooling packet, not an unreviewed extension of the closed8-item administrator manifest or ordinal cap.
-- Six decisive mutants map to P06/C03 (bypassed-current-grant), F02 (omitted-witness-lock), C06 (skipped-last-admin-check), C05/F12 (stale/unbound-proof), F05 (unaudited-commit), C01/C08 (unversioned-write). Each needs a designated unique native CriticalDecision case/provider, independent fixed bypass assertion, native expected exit2, exact failed marker/stack, no run/setup/cleanup errors, baseline/restored controls and exact source restoration. Change neither surviving behavior nor assertion expectations to manufacture a kill.
+- Six decisive mutants map to P06/C03 (bypassed-current-grant), F17 (omitted-witness-lock), C06 (skipped-last-admin-check), C05/F12 (stale/unbound-proof), F05 (unaudited-commit), C01/C08 (unversioned-write). Each needs a designated unique native CriticalDecision case/provider, independent fixed bypass assertion, native expected exit2, exact failed marker/stack, no run/setup/cleanup errors, baseline/restored controls and exact source restoration. Change neither surviving behavior nor assertion expectations to manufacture a kill.
 - Driver is a test tool, not a tenth production coverage module. Ensure coverage collection follows child service execution where claimed; no exclusion of Core/Infrastructure paths reached only in child. Its own executable must pass current static-analysis/documentation/size checks.
 
 ## Deliberately bounded coverage
 
 This inventory uses equivalence classes rather than an unbounded Cartesian product of every corrupt record and command. Existing factor, session, recovery, browser and lifecycle suites remain mandatory and supply their detailed boundary coverage; new governance rows verify correct integration and independent current-state decisions. Every specified GOV family has a decisive new or explicitly retained oracle. If coding introduces an additional semantic branch, update this packet and actual native inventory before acceptance instead of silently adding/deleting rows. Human observations, BFF/API activation, onboarding and incident causal closure are outside this inventory.
+
+
+### F17 — GOV-02,07: final witness observation (1 row/provider)
+`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit`
+
+Pause the exact real governance context at native transaction commit, after both authoritative survivor reads, audit persistence and final proof validation. A fifth real wrong-password attempt must remain blocked by the witness account lock until the governed commit completes. The seeded omission can receive mutation credit only if the security writer commits while that gate remains closed and the governed command subsequently commits with independently verified membership loss, revision, replay, audit and zero usable survivors. Timeouts and failed observations never earn that marker.
+
+### F18 — bounded driver transport (8 rows/provider)
+`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.DriverTests.Given_BoundedSyntheticDriverInput_When_TransportIsEvaluated_Then_OnlyFixedFailureAndTerminatedChildRemain`
+
+Rows: `valid-input-composition-boundary`, `malformed-json`, `duplicate-root-property`, `duplicate-issuer-property`, `oversized-whitespace-frame`, `excessive-json-depth`, `closed-without-newline`, `unknown-root-property`.
+
+The valid-input control crosses validation and reaches the deliberately invalid composition boundary; its fixed expected failure is not successful governance execution. All eight controls exercise bounded input/output and owned-child termination without contacting either database. Provider labels repeat this transport contract.
+
+### F19 — real owned-process lifetime (2 rows/provider)
+`IdentityPlatform.Administrator.Tests.Features.Governance.Failures.DriverTests.Given_OwnedDriverDescendant_When_LeaderExitsOrTerminationIsIgnored_Then_BoundedGroupCleanupLeavesNoLiveGeneration`
+
+Rows: `leader-exited-descendant-holds-stdout`, `stubborn-descendant-parent-hard-stop`.
+
+These controls use real Linux processes without contacting either database. The driver owns one fixed Linux process group and retains PID/start-time identities for its leader and observed descendants. Cleanup verifies that retained generations have terminated and that the owned group has no live members. The controls cover a leader exiting while a descendant holds stdout and a descendant requiring the parent's hard stop. This is bounded cleanup of the owned process group; it does not sandbox arbitrary forks or contain descendants that deliberately escape into another session/process group. No cgroup, PID namespace or equivalent general process-tree containment is claimed.
+
+### Native discovery checkpoint — 13 October 2026
+
+Actual native discovery contains 892 administrator identities: the original510 plus382 governance rows (Policy74, Commands68, Failures49 per provider), with unique native IDs and display names. Clean base `a4c2ea206593830defe5406106b46eda492598a4` and final complete build outputs were each executed from the same absolute staging directory: every original native UID, display name, full type signature and trait was preserved in the final same-path comparison. The earlier872 checkpoint was intermediate; twenty provider-labelled driver identities account for the final increase. Executing identical tests from different output directories changes native UIDs, so cross-directory UID comparisons are invalid; filtered-versus-full comparisons within an invocation remain exact. Within new governance metadata, C08 carries `CriticalDecision=governance-version` and F12's `proof-expires` row carries `CriticalDecision=governance-stale-proof` on both providers. These additions do not change baseline metadata. Discovery is not full execution acceptance.
+
+F13 also requires four additional ordinary production-composition rows: two AuthServer settings and two API/BFF hosts. Native discovery confirms Host 340 and contract core 42, with all seven existing contract browser rows retained. Exact full endpoint inventories passed locally; direct HTTP absence probes are complementary, not substitutes for route enumeration.
+
+### Local execution checkpoint — 13 October 2026
+
+PostgreSQL Policy74 and Commands68 pass. A selected22-case driver/process/failure cohort passes: ten driver controls, F06 lost-result1, F05 atomicity5, F04 changed-plan2, F01 two-node2 and F07 cancellation2. This is not a22-case database-only cohort: the ten driver controls do not access the provider. The four route-inventory controls and ordinary unit431 pass; static analysis including seeded controls passes. Final strict both-provider/browser/native-mutation/complete-matrix/coverage acceptance remains pending. These local receipts do not complete T020/T021 or close historical and human gates.
+
+### Precise security-mutation credit
+
+The six governance defects are current-grant bypass; omitted final witness lock; omitted platform membership in the shared survivor predicate; expired consumed proof; omitted accepted audit; and omitted writer AuthorityRevision advance. The last-administrator defect preserves both projected and actual checks and tests their common membership predicate. Its marker requires durable removal of the only platform membership and a real accepted revision/replay/audit transition. A projected-check-only omission remains protected by the independent actual-survivor defense.
+
+The version defect tests the actual native writer's postcondition inside its original transaction, which is always rolled back. Both independent commit revision defenses remain active. Its marker establishes an uncommitted writer invariant violation, **not** an unversioned durable commit. Current-grant, witness, survivor-membership, stale-proof and audit markers require their independently specified actual durable unsafe effect. Generic errors, missing observations and cleanup failures never constitute a killed security mutant.
+
+The existing administrator replay mutation moves from `CeremonyReplay` to its extracted shared `CeremonyReplayLedger`, retaining the same defect, test identity and old eight-mutant obligation. No original mutation is removed.
+
+### Completed local PostgreSQL partitions
+
+The final ordinary PostgreSQL governance partitions pass independently: Policy74, Commands68 and Failures49, with no skipped or incomplete case. Their strict wrappers bind execution identities to native discovery. This covers all191 new PostgreSQL cases, including the ten provider-labelled driver controls that make no database calls. SQL Server, the existing full regression/browser matrix, actual mutation baseline/killed/restored controls and all55 coverage inputs remain pending.
+
+The administrator inventory now uses a repository-owned version2 wrapper containing exact provider name arrays, complete native type metadata and every trait. Both complete and filtered ordinary/browser discovery and administrator/governance mutation discovery validate this portable metadata. Native discovery retains its own version1 schema. Path-dependent native IDs remain exact within each complete/filtered run, while location fields are excluded from portable comparisons. This reviewed manifest is not an immutable historical baseline; preservation of the original510 records is separately evidenced by the same-path comparison above.

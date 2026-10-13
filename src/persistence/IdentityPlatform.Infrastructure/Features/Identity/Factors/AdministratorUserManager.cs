@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
+using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,6 +24,9 @@ internal sealed class AdministratorUserManager(IUserStore<PlatformUser> store, I
             throw new FactorUnavailableException();
         }
     }
+
+    /// <summary>Requires original native persistence ownership in addition to the cancellable transaction lease.</summary>
+    internal void RequireOperation(PlatformDbContext database, CancellationToken token) => operation.RequireContext(database, token);
 
     /// <summary>Uses 128 random bits per recovery code rather than the framework's lower-entropy default format.</summary>
     protected override string CreateTwoFactorRecoveryCode() => Convert.ToHexString(RandomNumberGenerator.GetBytes(RecoveryVerifier.RandomBytes));

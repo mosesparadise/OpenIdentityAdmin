@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "governance-current-grants",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs",
+      "before": "!GovernancePermissions.Required(Request.Action).IsSubsetOf(Grants.Permissions(Actor.User.Id))",
+      "after": "false",
+      "marker": "governance-current-grants-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies"
+    },
+    {
+      "id": "omitted-witness-lock",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs",
+      "before": "foreach (var id in plan.Users.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))\n        {",
+      "after": "foreach (var id in plan.Users.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal))\n        {\n            if (plan.Governance && plan.Users.Count > 1 && id == plan.Users[^1])\n            {\n                continue;\n            }",
+      "marker": "governance-witness-lock-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit"
+    },
+    {
+      "id": "governance-audit",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs",
+      "before": "GovernanceAudit.Add(database, state.Request, proof.ActorId, true, now);",
+      "after": "// Seeded test defect: omit the atomic accepted-governance audit.",
+      "marker": "governance-audit-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack"
+    },
+    {
+      "id": "governance-last-administrator",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs",
+      "before": "GovernanceRequest? projection = null) => grants.HasPlatformBundle(account.User.Id) &&\n        await IsEligibleAsync(transaction, account, projection);",
+      "after": "GovernanceRequest? projection = null) =>\n        await IsEligibleAsync(transaction, account, projection);",
+      "marker": "governance-last-administrator-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies"
+    },
+    {
+      "id": "governance-stale-proof",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs",
+      "before": "now - verification.VerifiedAt >= AdministratorPolicy.FreshnessSeconds",
+      "after": "now - verification.VerifiedAt >= long.MaxValue",
+      "marker": "governance-stale-proof-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies"
+    },
+    {
+      "id": "governance-version",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs",
+      "before": "state.Authority.AuthorityRevision = checked(state.Authority.AuthorityRevision + 1);",
+      "after": "// Seeded test defect: omit the semantic authority revision advance.",
+      "marker": "governance-version-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt"
+    }
+  ]
+}

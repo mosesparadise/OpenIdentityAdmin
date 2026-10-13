@@ -10,10 +10,16 @@ namespace IdentityPlatform.Administrator.Tests.Fixtures;
 /// <example><code>await using var heldLock = await GovernanceLock.AcquireAsync(lease);</code></example>
 public sealed class GovernanceLock : IAsyncDisposable
 {
+    private const string SqlAuditLock = "SELECT COUNT(*) FROM [platform].[SecurityAuditIntent] WITH (TABLOCKX, HOLDLOCK)";
+    private const string PostgreSqlAuditLock = "LOCK TABLE platform.\"SecurityAuditIntent\" IN ACCESS EXCLUSIVE MODE";
+    private const string SqlSession = "SELECT @@SPID";
+    private const string PostgreSqlSession = "SELECT pg_backend_pid()";
+    private int disposed;
     private readonly AsyncServiceScope scope;
     private readonly IDbContextTransaction transaction;
     private readonly int blocker;
     private readonly bool audit;
+    /// <summary>Retains the exact test-owned native blocker and its independent administrator connection.</summary>
     private GovernanceLock(AsyncServiceScope scope, IDbContextTransaction transaction, int blocker, bool audit)
     {
         this.scope = scope;
@@ -22,6 +28,8 @@ public sealed class GovernanceLock : IAsyncDisposable
         this.audit = audit;
     }
 
+    /// <summary>Acquires either the governance singleton or audit table on the disposable lease for native wait-graph evidence.</summary>
+    /// <example><code>await using var heldLock = await GovernanceLock.AcquireAsync(lease, audit: true);</code></example>
     public static async Task<GovernanceLock> AcquireAsync(BootstrapDatabase lease, bool audit = false)
     {
         var scope = lease.Administrator.CreateAsyncScope();
@@ -34,8 +42,7 @@ public sealed class GovernanceLock : IAsyncDisposable
                 if (audit)
                 {
                     var sql = database.Database.IsSqlServer()
-                        ? "SELECT COUNT(*) FROM [platform].[SecurityAuditIntent] WITH (TABLOCKX, HOLDLOCK)"
-                        : "LOCK TABLE platform.\"SecurityAuditIntent\" IN ACCESS EXCLUSIVE MODE";
+                        ? SqlAuditLock : PostgreSqlAuditLock;
                     await database.Database.ExecuteSqlRawAsync(sql, TestContext.Current.CancellationToken);
                 }
                 else
@@ -44,7 +51,7 @@ public sealed class GovernanceLock : IAsyncDisposable
                 }
                 await using var identity = database.Database.GetDbConnection().CreateCommand();
                 identity.Transaction = transaction.GetDbTransaction();
-                identity.CommandText = database.Database.IsSqlServer() ? "SELECT @@SPID" : "SELECT pg_backend_pid()";
+                identity.CommandText = database.Database.IsSqlServer() ? SqlSession : PostgreSqlSession;
                 var blocker = Convert.ToInt32(await identity.ExecuteScalarAsync(TestContext.Current.CancellationToken), System.Globalization.CultureInfo.InvariantCulture);
                 return new GovernanceLock(scope, transaction, blocker, audit);
             }
@@ -77,8 +84,14 @@ public sealed class GovernanceLock : IAsyncDisposable
         return DatabaseWaiters.TerminateAuditWaiterAsync(lease, blocker);
     }
 
+    /// <summary>Releases each owner once, including early failed-test cleanup before normal asynchronous disposal.</summary>
+    /// <example><code>await heldLock.DisposeAsync(); // Allows a failed subject to drain before its context is released.</code></example>
     public async ValueTask DisposeAsync()
     {
+        if (Interlocked.Exchange(ref disposed, 1) != 0)
+        {
+            return;
+        }
         try
         {
             await transaction.DisposeAsync();
@@ -87,5 +100,12 @@ public sealed class GovernanceLock : IAsyncDisposable
         {
             await scope.DisposeAsync();
         }
+    }
+    /// <summary>Allows the test owner to cancel and join the exact native wait-graph probe after subject completion.</summary>
+    internal Task ObserveOwnedAsync(BootstrapDatabase lease, int minimum, CancellationToken token)
+    {
+        const string AuditStage = "%INSERT%SecurityAuditIntent%";
+        const string GovernanceStage = "%UPDATE%AdministratorGovernance%";
+        return DatabaseWaiters.ObserveOwnedAsync(lease, blocker, audit ? AuditStage : GovernanceStage, minimum, token);
     }
 }

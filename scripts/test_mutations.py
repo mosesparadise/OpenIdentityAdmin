@@ -366,7 +366,63 @@ class MutationEvidenceTests(unittest.TestCase):
         """Keep issuer and administrator inventories explicit and reject drift or ambiguous source substitutions."""
         self.assertEqual(7, len(manifest(ROOT)))
         self.assertEqual(8, len(manifest(ROOT, "administrator")))
+        self.assertEqual(6, len(manifest(ROOT, "governance")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
+
+
+    def test_Given_GovernanceManifest_When_InventoryOrSourceBoundaryDrifts_Then_VerificationRejectsIt(self):
+        """Keep all six targets and the sole witness-lock exception explicit without touching sources."""
+        reviewed = json.loads((ROOT / 'eng/governance-mutations.json').read_text())
+        reader = Path.read_text
+        for change in ('missing', 'duplicate', 'outside', 'neighbor', 'extension', 'missing-anchor', 'ambiguous-anchor', 'same-replacement'):
+            value = json.loads(json.dumps(reviewed))
+            item = value['mutations'][0]
+            if change == 'missing': value['mutations'].pop()
+            elif change == 'duplicate': value['mutations'][1]['id'] = item['id']
+            elif change == 'outside': item['path'] = 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Accounts.cs'
+            elif change == 'neighbor': item['path'] = 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyStore.cs'
+            elif change == 'extension': item['path'] += '.txt'
+            elif change == 'missing-anchor': item['before'] = 'seeded anchor absent from source'
+            elif change == 'same-replacement': item['after'] = item['before']
+            target = (ROOT / item['path']).resolve()
+            def read(path, *arguments, **keywords):
+                """Substitute only seeded manifest/source reads and preserve every other source byte."""
+                if path == ROOT / 'eng/governance-mutations.json': return json.dumps(value)
+                original = reader(path, *arguments, **keywords)
+                return original + item['before'] if change == 'ambiguous-anchor' and path == target else original
+            with self.subTest(change=change), patch.object(Path, 'read_text', read):
+                with self.assertRaises(ValueError): manifest(ROOT, 'governance')
+
+    def test_Given_MutationBuild_When_Started_Then_SerialNodesAndExistingDeadlineAreRequired(self):
+        """Prevent overlapping build nodes without widening the existing build budget."""
+        environment = {'CONTROL': 'synthetic'}
+        with patch.object(verifier, 'run', return_value=(0, '')) as command:
+            verifier.build(environment)
+        command.assert_called_once_with(['dotnet', 'build', verifier.PROJECT, '--no-restore', '--nologo', '-m:1', '-nr:false'], 180, environment)
+        with patch.object(verifier, 'run', return_value=(1, '')):
+            with self.assertRaises(ValueError): verifier.build(environment)
+
+
+    def test_Given_AdministratorMutantDiscovery_When_MetadataDiffers_Then_IdentityCatalogueCannotAcceptIt(self):
+        """Bind administrator mutant discovery to the reviewed metadata before the existing UID checks."""
+        for project in ('Administrator', 'Issuer'):
+            with self.subTest(project=project), patch.object(verifier, 'PROJECT', project), \
+                    patch.object(verifier, 'run', return_value=(0, 'native-discovery')), \
+                    patch.object(verifier, 'load_inventory', return_value={'reviewed': True}) as loader, \
+                    patch.object(verifier, 'require_native_inventory') as require, \
+                    patch.object(verifier, 'catalogue', return_value={'selected': True}) as catalogue:
+                self.assertEqual({'selected': True}, verifier.discover('control', {}))
+                if project == 'Administrator':
+                    loader.assert_called_once_with(ROOT / 'eng/administrator-test-matrix.json')
+                    require.assert_called_once_with('native-discovery', {'reviewed': True})
+                    catalogue.reset_mock()
+                    require.side_effect = ValueError('Seeded metadata mismatch')
+                    with self.assertRaises(ValueError): verifier.discover('control', {})
+                    catalogue.assert_not_called()
+                else:
+                    loader.assert_not_called()
+                    require.assert_not_called()
+
 
     def test_exited_parent_pipe_holder_and_stubborn_child_are_terminated(self):
         for stubborn, redirected in ((False, False), (True, False), (True, True)):

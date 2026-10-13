@@ -47,6 +47,7 @@
     <Project Path="tests/persistence/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj" />
   </Folder>
   <Folder Name="/tests/tooling/">
+    <Project Path="tests/tooling/IdentityPlatform.Governance.Driver/IdentityPlatform.Governance.Driver.csproj" />
     <Project Path="tests/tooling/IdentityPlatform.BrowserInstaller/IdentityPlatform.BrowserInstaller.csproj" />
   </Folder>
   <Folder Name="/src/frontend/">

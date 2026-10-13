@@ -43,7 +43,7 @@ internal sealed class JourneySessionProof
     {
         transaction.RequireContext(database);
         account.RequireCurrent(transaction);
-        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        ((AdministratorUserManager)users).RequireOperation(database, transaction.Token);
         if (candidate is null || candidate.UserId != account.User.Id || !CeremonySecrets.IsIdentifier(candidate.SessionId))
         {
             return null;

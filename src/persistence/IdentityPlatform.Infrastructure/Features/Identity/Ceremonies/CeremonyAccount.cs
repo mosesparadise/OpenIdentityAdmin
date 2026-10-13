@@ -1,5 +1,6 @@
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
+using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +43,7 @@ internal sealed class CeremonyAccount
     internal void RequireCurrent(CeremonyTransaction transaction)
     {
         transaction.RequireContext(database);
-        transaction.RequireCeremony();
+        transaction.RequireAccountOperation();
         if (!ReferenceEquals(transaction, owner) || User.Id != userId || !transaction.Plan.Users.Contains(userId, StringComparer.Ordinal) ||
             Enrollment.UserId != User.Id || Authentication.UserId != User.Id ||
             database.Entry(User).State == EntityState.Detached || database.Entry(Enrollment).State == EntityState.Detached ||
@@ -51,12 +52,19 @@ internal sealed class CeremonyAccount
             throw new FactorUnavailableException();
         }
     }
+
+    /// <summary>Rejects native-manager substitution before a shared account operation can consume proof or write through another context.</summary>
+    internal void RequireManager(UserManager<PlatformUser> users, CeremonyTransaction transaction)
+    {
+        RequireCurrent(transaction);
+        ((AdministratorUserManager)users).RequireOperation(database, transaction.Token);
+    }
     /// <summary>Reloads native and product state only after account serialization, rejecting provider padding aliases.</summary>
     internal static async Task<CeremonyAccount> LoadAsync(PlatformDbContext database, CeremonyTransaction transaction,
         string userId)
     {
         transaction.RequireContext(database);
-        transaction.RequireCeremony();
+        transaction.RequireAccountOperation();
         if (!transaction.Plan.Users.Contains(userId, StringComparer.Ordinal))
         {
             throw new FactorUnavailableException();
@@ -112,7 +120,7 @@ internal sealed class CeremonyBudget(UserManager<PlatformUser> users, CeremonyCl
     internal async Task<bool> OpenAsync(CeremonyTransaction transaction, CeremonyAccount account)
     {
         account.RequireCurrent(transaction);
-        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        account.RequireManager(users, transaction);
         var state = account.Authentication;
         if (!clock.Observe(state, out var now) || !IsAvailable(account.User, state, now))
         {
@@ -132,7 +140,7 @@ internal sealed class CeremonyBudget(UserManager<PlatformUser> users, CeremonyCl
     internal async Task FailAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyInteraction? binding = null)
     {
         account.RequireCurrent(transaction);
-        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        account.RequireManager(users, transaction);
         if (!await OpenAsync(transaction, account))
         {
             throw new FactorUnavailableException();
@@ -164,7 +172,17 @@ internal sealed class CeremonyBudget(UserManager<PlatformUser> users, CeremonyCl
     /// <summary>Clears failures only after a verified current factor proof, never after password-only verification.</summary>
     internal async Task CompleteAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyProof proof)
     {
-        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        account.RequireManager(users, transaction);
+        proof.Consume(transaction, account, clock.Now);
+        Require(await users.ResetAccessFailedCountAsync(account.User));
+        account.Authentication.Failures = 0;
+        account.Authentication.LockoutUntil = null;
+    }
+
+    /// <summary>Clears failures only after consuming a native full governance proof bound to this account and command.</summary>
+    internal async Task CompleteGovernanceAsync(CeremonyTransaction transaction, CeremonyAccount account, GovernanceProof proof)
+    {
+        account.RequireManager(users, transaction);
         proof.Consume(transaction, account, clock.Now);
         Require(await users.ResetAccessFailedCountAsync(account.User));
         account.Authentication.Failures = 0;
@@ -174,7 +192,7 @@ internal sealed class CeremonyBudget(UserManager<PlatformUser> users, CeremonyCl
     /// <summary>Clears only a completed restricted recovery budget; this capability cannot authorize a full session.</summary>
     internal async Task CompleteRecoveryAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyRecoveryProof proof)
     {
-        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        account.RequireManager(users, transaction);
         proof.Consume(transaction, account, clock.Now);
         Require(await users.ResetAccessFailedCountAsync(account.User));
         account.Authentication.Failures = 0;

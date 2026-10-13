@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="../../tooling/IdentityPlatform.Governance.Driver/IdentityPlatform.Governance.Driver.csproj" ReferenceOutputAssembly="false" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="xunit.v3.mtp-v2" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
@@ -26,4 +27,12 @@
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/LifecycleEvidence.cs" Link="Fixtures/LifecycleEvidence.cs" />
     <Compile Include="../../shared/ProcessTreeEvidence.cs" Link="Fixtures/ProcessTreeEvidence.cs" />
   </ItemGroup>
+  <Target Name="CopyGovernanceDriver" AfterTargets="Build">
+    <ItemGroup>
+      <GovernanceDriverFiles Include="$(MSBuildProjectDirectory)/../../tooling/IdentityPlatform.Governance.Driver/bin/$(Configuration)/$(TargetFramework)/**/*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(GovernanceDriverFiles)"
+          DestinationFiles="@(GovernanceDriverFiles->'$(TargetDir)governance-driver/%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
 </Project>

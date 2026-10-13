@@ -15,6 +15,7 @@ import time
 import xml.etree.ElementTree as ET
 
 from test_selection import catalogue
+from administrator_inventory import load_inventory, require_native_inventory
 
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = 'tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj'
@@ -65,18 +66,22 @@ class MutationError(ValueError):
 
 
 def manifest(root, suite='issuer'):
-    if suite not in ('issuer', 'administrator'):
+    suites = {
+        'issuer': (7, 'eng/critical-mutations.json', 'src/backend/IdentityPlatform.AuthServer/Features'),
+        'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
+        'governance': (6, 'eng/governance-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance')
+    }
+    if suite not in suites:
         raise MutationError('Unknown mutation suite')
-    expected = 7 if suite == 'issuer' else 8
-    filename = 'eng/critical-mutations.json' if suite == 'issuer' else 'eng/administrator-mutations.json'
-    boundary = 'src/backend/IdentityPlatform.AuthServer/Features' if suite == 'issuer' else 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'
+    expected, filename, boundary = suites[suite]
     value = json.loads((root / filename).read_text())
     mutations = value['mutations']
     if value['version'] != 1 or len(mutations) != expected or len({item['id'] for item in mutations}) != expected:
         raise MutationError('Unexpected critical mutation inventory')
     for item in mutations:
         path = (root / item['path']).resolve()
-        if not path.is_relative_to((root / boundary).resolve()) or path.suffix != '.cs':
+        witness_lock = suite == 'governance' and path == (root / 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs').resolve()
+        if (not path.is_relative_to((root / boundary).resolve()) and not witness_lock) or path.suffix != '.cs':
             raise MutationError('Mutation target is outside the permitted source boundary')
         if not item['before'] or item['before'] == item['after'] or path.read_text().count(item['before']) != 1:
             raise MutationError('Mutation source drift or ambiguous replacement')
@@ -189,7 +194,7 @@ def run(command, timeout, environment, *, cleanup_timeout=10):
 
 
 def build(environment):
-    code, _ = run(['dotnet', 'build', PROJECT, '--no-restore', '--nologo'], 180, environment)
+    code, _ = run(['dotnet', 'build', PROJECT, '--no-restore', '--nologo', '-m:1', '-nr:false'], 180, environment)
     if code:
         raise MutationError('Mutation build failed; this is not a killed mutant')
 
@@ -199,6 +204,8 @@ def discover(expression, environment):
                         '--pre-enumerate-theories', 'on', '--list-tests', 'json', '--filter', expression], 60, environment)
     if code:
         raise MutationError('Mutation discovery failed')
+    if 'Administrator' in PROJECT:
+        require_native_inventory(output, load_inventory(ROOT / 'eng/administrator-test-matrix.json'))
     return catalogue(output, project='Administrator' if 'Administrator' in PROJECT else 'Issuer')
 
 
@@ -224,17 +231,17 @@ def main():
     global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=['PostgreSql', 'SqlServer'])
-    parser.add_argument('--suite', choices=['issuer', 'administrator'], default='issuer')
+    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
-    if args.suite == 'administrator':
+    if args.suite in ('administrator', 'governance'):
         PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))
     environment = os.environ.copy()
     environment.update(DOTNET_ENVIRONMENT='Development', TESTINGPLATFORM_TELEMETRY_OPTOUT='1')
-    output = ROOT / 'artifacts/mutations' / (args.provider if args.suite == 'issuer' else 'administrator-' + args.provider)
+    output = ROOT / 'artifacts/mutations' / (args.provider if args.suite == 'issuer' else args.suite + '-' + args.provider)
     output.mkdir(parents=True, exist_ok=True)
     evidence_path = output / 'evidence.json'
     evidence_path.unlink(missing_ok=True)

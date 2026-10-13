@@ -17,6 +17,7 @@ public static class Setup
         services.AddScoped<CeremonyAdmission>();
         services.AddScoped<CeremonyGenerations>();
         services.AddScoped<CeremonyReplay>();
+        services.AddScoped<CeremonyReplayLedger>();
         services.AddScoped<CeremonyCleanup>();
         return services;
     }

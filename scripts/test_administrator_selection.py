@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 import unittest
+import json
+import tempfile
+from pathlib import Path
+from administrator_inventory import load_inventory, metadata, require_native_inventory
+from test_selection import catalogue
 from test_selection import require_administrator_partition, select_projects, administrator_invocations, require_administrator_story
 
 
@@ -39,11 +44,11 @@ class AdministratorSelectionTests(unittest.TestCase):
 
 class AdministratorStoryTests(unittest.TestCase):
     def setUp(self):
-        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security')},
-                       'profiles': {p: {'Administrator': 6} for p in ('PostgreSql', 'SqlServer')}}
+        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures')},
+                       'profiles': {p: {'Administrator': 9} for p in ('PostgreSql', 'SqlServer')}}
         self.catalogue = {p + s: (p + s, p, False, 'IdentityPlatform.Administrator.Tests.Features.' + s, None)
-                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security')}
-        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security')] for p in ('PostgreSql', 'SqlServer')}
+                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures')}
+        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures')] for p in ('PostgreSql', 'SqlServer')}
         self.selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
 
     def verify(self):
@@ -51,7 +56,7 @@ class AdministratorStoryTests(unittest.TestCase):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
+        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
         self.assertEqual([('Factors', 1)], administrator_invocations(self.matrix, 'PostgreSql', 'Factors'))
         for story in ('Restart', 'Unknown'):
             with self.assertRaises(ValueError): administrator_invocations(self.matrix, 'PostgreSql', story)
@@ -67,11 +72,11 @@ class AdministratorStoryTests(unittest.TestCase):
                 elif change == 'provider': del stories['Factors']['SqlServer']
                 elif change == 'zero': stories['Factors']['SqlServer'] = 0
                 elif change == 'bool': stories['Factors']['SqlServer'] = True
-                elif change == 'aggregate': self.matrix['profiles']['SqlServer']['Administrator'] = 5
+                elif change == 'aggregate': self.matrix['profiles']['SqlServer']['Administrator'] = 8
                 elif change == 'balanced-drift':
                     stories['Factors']['SqlServer'] = 2
                     stories['Bootstrap']['SqlServer'] = 2
-                    self.matrix['profiles']['SqlServer']['Administrator'] = 8
+                    self.matrix['profiles']['SqlServer']['Administrator'] = 11
                 with self.assertRaises(ValueError): self.verify()
 
     def test_complete_inventory_and_exact_story_selection_remain_mandatory(self):
@@ -127,6 +132,100 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
                 elif change == 'namespace': self.catalogue['SqlServerBrowser'] = ('SqlServerBrowser', 'SqlServer', True, 'IdentityPlatform.Administrator.Tests.Features.Accounts', 'Accounts')
                 elif change == 'story': del self.matrix['administrator_stories']['Accounts']
                 with self.assertRaises(ValueError): self.verify()
+
+
+class AdministratorMetadataTests(unittest.TestCase):
+    """Exercise portable full metadata independently of the within-run native UID binding."""
+    def setUp(self):
+        self.records = []
+        for provider in ('PostgreSql', 'SqlServer'):
+            self.records.append({'uid': provider, 'displayName': provider + '-case', 'type': {
+                'assemblyFullName': 'IdentityPlatform.Administrator.Tests, Version=1.0.0.0',
+                'namespace': 'IdentityPlatform.Administrator.Tests.Features.Governance.Policy',
+                'typeName': 'PolicyTests', 'methodName': 'Given_State_When_Checked_Then_Denied',
+                'methodArity': 0, 'returnTypeFullName': 'System.Threading.Tasks.Task',
+                'parameterTypeFullNames': ['System.String']}, 'traits': [
+                    {'key': 'Provider', 'value': provider}, {'key': 'CriticalDecision', 'value': 'control'}]})
+        self.inventory = {'schemaVersion': 2, **{provider: [provider + '-case'] for provider in ('PostgreSql', 'SqlServer')},
+                          'metadata': {row['displayName']: metadata(row) for row in self.records}}
+
+    def verify(self, *, complete=True):
+        """Validate seeded discovery without executing a provider or native test process."""
+        require_native_inventory(json.dumps({'schemaVersion': 1, 'tests': self.records}), self.inventory, complete=complete)
+
+    def test_Given_ReviewedNativeMetadata_When_TraitOrderAndLocationChange_Then_PortableInventoryMatches(self):
+        for row in self.records:
+            row['traits'].reverse()
+            row['location'] = {'file': '/different/checkout/Test.cs', 'lineStart': 99}
+        self.verify()
+
+    def test_Given_ReviewedMetadata_When_AFieldChanges_Then_EqualCountDiscoveryIsRejected(self):
+        for field, replacement in (('assemblyFullName', 'OtherAssembly'), ('namespace', 'OtherStory'),
+                                   ('typeName', 'OtherType'), ('methodName', 'OtherMethod'), ('methodArity', 1), ('methodArity', False),
+                                   ('returnTypeFullName', 'System.Void'), ('parameterTypeFullNames', ['System.Int32'])):
+            with self.subTest(field=field):
+                self.setUp()
+                self.records[0]['type'] = {**self.records[0]['type'], field: replacement}
+                with self.assertRaises(ValueError): self.verify()
+
+    def test_Given_ReviewedCases_When_MissingDuplicateSubstitutedOrMisclassified_Then_DiscoveryIsRejected(self):
+        for change in ('missing', 'duplicate-name', 'duplicate-uid', 'substitute', 'provider', 'trait', 'missing-trait', 'extra-trait', 'story'):
+            with self.subTest(change=change):
+                self.setUp()
+                if change == 'missing': self.records.pop()
+                elif change == 'duplicate-name': self.records[1]['displayName'] = self.records[0]['displayName']
+                elif change == 'duplicate-uid': self.records[1]['uid'] = self.records[0]['uid']
+                elif change == 'substitute': self.records[0]['displayName'] = 'unreviewed-case'
+                elif change == 'provider': self.records[0]['traits'] = [{'key': 'Provider', 'value': 'SqlServer'}]
+                elif change == 'trait': self.records[0]['traits'] = [{'key': 'Provider', 'value': 'PostgreSql'}, {'key': 'CriticalDecision', 'value': 'other'}]
+                elif change == 'missing-trait': self.records[0]['traits'] = self.records[0]['traits'][:1]
+                elif change == 'extra-trait': self.records[0]['traits'] = [*self.records[0]['traits'], {'key': 'Extra', 'value': 'unreviewed'}]
+                else: self.records[0]['traits'] = [*self.records[0]['traits'], {'key': 'BrowserStory', 'value': 'Security'}]
+                with self.assertRaises(ValueError): self.verify()
+
+    def test_Given_FilteredDiscovery_When_MetadataChanges_Then_SubsetValidationAlsoRejectsIt(self):
+        self.records = self.records[:1]
+        self.verify(complete=False)
+        with self.assertRaises(ValueError): self.verify()
+        self.records[0]['type'] = {**self.records[0]['type'], 'methodName': 'OtherMethod'}
+        with self.assertRaises(ValueError): self.verify(complete=False)
+
+    def test_Given_NewOutputLocation_When_RunUidsChange_Then_MetadataPassesButSelectionStillRequiresExactRunUids(self):
+        self.records = [{**row, 'uid': 'new-path-' + row['uid']} for row in self.records]
+        self.verify()
+        raw = json.dumps({'schemaVersion': 1, 'tests': self.records})
+        all_tests = catalogue(raw, project='Administrator')
+        selected = {self.records[0]['uid']: all_tests[self.records[0]['uid']]}
+        counts = {'PostgreSql': 1, 'SqlServer': 1}
+        names = {provider: self.inventory[provider] for provider in counts}
+        require_administrator_partition(all_tests, selected, 'PostgreSql', counts, names)
+        changed_uid = {'another-uid': next(iter(selected.values()))}
+        with self.assertRaises(ValueError): require_administrator_partition(all_tests, changed_uid, 'PostgreSql', counts, names)
+
+    def test_Given_VersionTwoManifest_When_Loaded_Then_ExactNamesAndMetadataAreRequired(self):
+        for change in ('none', 'version', 'bool-version', 'duplicate-name', 'missing-record', 'extra-record', 'wrong-provider', 'malformed-trait'):
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                self.setUp()
+                if change == 'version': self.inventory['schemaVersion'] = 1
+                elif change == 'bool-version': self.inventory['schemaVersion'] = True
+                elif change == 'duplicate-name': self.inventory['PostgreSql'].append(self.inventory['PostgreSql'][0])
+                elif change == 'missing-record': self.inventory['metadata'].pop('PostgreSql-case')
+                elif change == 'extra-record': self.inventory['metadata']['other'] = self.inventory['metadata']['PostgreSql-case']
+                elif change == 'wrong-provider': self.inventory['metadata']['PostgreSql-case']['traits'] = [{'key': 'Provider', 'value': 'SqlServer'}]
+                elif change == 'malformed-trait': self.inventory['metadata']['PostgreSql-case']['traits'] = [{'key': 'Provider'}]
+                path = Path(directory) / 'inventory.json'
+                path.write_text(json.dumps(self.inventory))
+                if change == 'none': self.assertEqual(self.inventory, load_inventory(path))
+                else:
+                    with self.assertRaises(ValueError): load_inventory(path)
+
+    def test_Given_DuplicateJsonFields_When_LoadingManifestOrDiscovery_Then_LastValueDoesNotWin(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'inventory.json'
+            path.write_text('{"schemaVersion":1,"schemaVersion":2}')
+            with self.assertRaises(ValueError): load_inventory(path)
+        with self.assertRaises(ValueError):
+            require_native_inventory('{"schemaVersion":1,"schemaVersion":1,"tests":[]}', self.inventory)
 
 
 if __name__ == '__main__':

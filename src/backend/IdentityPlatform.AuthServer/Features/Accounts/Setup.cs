@@ -6,6 +6,7 @@ using IdentityPlatform.AuthServer.Features.Accounts.Recovery;
 using IdentityPlatform.AuthServer.Features.Accounts.Security;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -39,6 +40,7 @@ internal static class Setup
             AccountSchemes.AddAdministrator(services, pilot);
             services.AddAdministratorMaintenance();
             services.AddAdministratorJourneys();
+            services.AddAdministratorGovernance();
             services.AddScoped<IAdministratorJourney, AdministratorJourney>();
             services.AddScoped<IAdministratorSecurityJourney, AdministratorSecurityJourney>();
             services.AddEnrollment().AddMfa().AddRecovery().AddAccountSecurity();

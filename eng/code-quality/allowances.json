@@ -3023,56 +3023,6 @@
     {
       "Finding": {
         "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorGovernance.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorGovernance",
-        "Fingerprint": "FBA9F2A698E8AD429593D1B5BDE0ADF2322E42F73728FC54716409A8194F26CF"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorModelConfiguration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorModelConfiguration",
-        "Fingerprint": "E4282FDD5975ED0F0EFAD344831F9CD040BAA40EE8AA1E4759BF9980EE54ACED"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorModelConfiguration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorModelConfiguration.Configure(ModelBuilder,bool)",
-        "Fingerprint": "9D112821DC8CE05B146184BA2EA529A458DC969FEBEEBA8C502CC98FABE33E9B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorModelConfiguration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorModelConfiguration.Configure(ModelBuilder,bool)",
-        "Fingerprint": "9D112821DC8CE05B146184BA2EA529A458DC969FEBEEBA8C502CC98FABE33E9B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/AdministratorModelConfiguration.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorModelConfiguration.Configure(ModelBuilder,bool)",
-        "Fingerprint": "9D112821DC8CE05B146184BA2EA529A458DC969FEBEEBA8C502CC98FABE33E9B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
         "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/IdentityStoreConfiguration.cs",
         "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.IdentityStoreConfiguration",
         "Fingerprint": "F7917C7C9E069CB90E5892F1EE4E5FB2EADF285981E80F0F36C009E2783458D7"
@@ -4506,46 +4456,6 @@
         "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/BootstrapProcess.cs",
         "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.BootstrapProcess.DisposeAsync()",
         "Fingerprint": "4066EA18E7FDF69541347A75386965CD16D1E098DD7BE68AC31FA45B7F920FEC"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.GovernanceLock(AsyncServiceScope,IDbContextTransaction,int,bool)",
-        "Fingerprint": "8CF41A9FF97BB99D62AA230573FE0C373F4040E9CF3FD42EB4D8410EB11C30F9"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.AcquireAsync(BootstrapDatabase,bool)",
-        "Fingerprint": "5C660E59538F07DC83894DF851D1CC1DBCFAE9D2B790E8CF1EDBE037749FB302"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.AcquireAsync(BootstrapDatabase,bool)",
-        "Fingerprint": "5C660E59538F07DC83894DF851D1CC1DBCFAE9D2B790E8CF1EDBE037749FB302"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/GovernanceLock.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.GovernanceLock.DisposeAsync()",
-        "Fingerprint": "31EB7A9CE601E081FD8728F9946E8AF61DE15DB0DDB0206C660181DBD9835F00"
       },
       "Task": "T015",
       "Owner": "Implementation lead"
