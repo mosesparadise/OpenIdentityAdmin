@@ -1,6 +1,6 @@
 # Governance verification diagnostics amendment A-005
 
-Status: **APPROVED for bounded diagnostics only — 13 October 2026 (Europe/London).** The requesting user explicitly approved: “I approve A-005 for bounded governance diagnostics only, keeping PR #48 unmerged and all acceptance/public-release blockers open.” Only the diagnostic scope below is authorized; no correction, delivery or merge is authorized. A-004 expired on incomplete mandatory SQL mutation evidence in PR48. The [verification record](../../specs/008-administrator-foundation/governance-verification.md) retains exact receipts and limits.
+Status: **APPROVED scope executed; authorization concluded at bounded disposition — 13 October 2026 (Europe/London).** The requesting user explicitly approved: “I approve A-005 for bounded governance diagnostics only, keeping PR #48 unmerged and all acceptance/public-release blockers open.” Only the diagnostic scope below is authorized; no correction, delivery or merge is authorized. A-004 expired on incomplete mandatory SQL mutation evidence in PR48. The [verification record](../../specs/008-administrator-foundation/governance-verification.md) retains exact receipts and limits.
 
 ## Recommended decision
 
@@ -39,3 +39,7 @@ The stricter alternative is to hold all execution pending an external manual inv
 ## Independent proposal review
 
 Architecture/security/test reviewers support presenting a bounded diagnostic decision while admitting that both causes remain unknown. Their required clarifications are incorporated: preserve the original failure through receipt/probe failure, use a separately bounded five-second read-only probe, and publish on a separate branch without triggering unapproved full CI. These are AI source reviews of the proposal, not approval or execution evidence.
+
+## Bounded disposition
+
+All three approved experiments have finished; see the [diagnostic record](../../specs/008-administrator-foundation/governance-diagnostics.md). PostgreSQL passed 2/2; SQL ordinary failed 2/2 and SQL mutant failed 1/1 with no retained post-Setup observations. Both original findings remain unresolved. This authorization has concluded; [A-006](A-006-sql-diagnostic-readiness.md) is proposed, not approved.

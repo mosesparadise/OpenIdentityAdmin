@@ -1,0 +1,43 @@
+{
+  "diagnostic_only": true,
+  "mode": "mutant",
+  "provider": "SqlServer",
+  "source_before": "537cf7de77ce6444661f1dde017ffafe95c9be552a1356001efb2bea8804df1b",
+  "source_commit": "efa2aea3e30fef658f2c74e78d80425c7aa08b6e",
+  "source_mutant": "cd2c9112455ba5fcc0935bf778810603633ff2d7697839177110c1fc469ad22d",
+  "outcome": "error",
+  "seconds": null,
+  "observation": {
+    "report": "parsed",
+    "counters": {
+      "total": 1,
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "error_nodes": 1,
+    "summary_errors": 0,
+    "marker_match": false,
+    "stack_match": true,
+    "categories": [
+      "unknown"
+    ],
+    "checkpoints": [
+      "Setup"
+    ]
+  },
+  "halt_for_observed_bypass": false,
+  "source_restored": true
+}

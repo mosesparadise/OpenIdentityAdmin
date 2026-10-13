@@ -87,6 +87,8 @@ These tasks implement [A-005](../../docs/amendments/A-005-governance-diagnostics
 - [x] D001 Record explicit user approval, inspect prerequisites and preserve the existing delivery hold.
 - [x] D002 Retain bounded allowlisted mutation failure receipts, with secret-canary/malformed-report/write-failure/cancellation controls in existing Python tooling.
 - [x] D003 Classify ALTER/probe outcomes independently and add fixed witness checkpoints; preserve original assertions, failure ownership, native waits and deadlines. Validate seeded combined failure/cancellation controls.
-- [ ] D004 Obtain independent architecture/security/test source review and publish the diagnostic revision on the separate branch without opening a PR.
-- [ ] D005 In a clean disposable checkout, run one focused ordinary witness/privilege comparison per provider and one SQL witness mutation diagnostic, preserving source restoration and reporting all outcomes.
-- [ ] D006 Publish evidence-based disposition, independent review and next recommendation; stop before any unapproved correction or delivery.
+- [x] D004 Obtain independent architecture/security/test source review and publish the diagnostic revision on the separate branch without opening a PR.
+- [x] D005 In a clean disposable checkout, run one focused ordinary witness/privilege comparison per provider and one SQL witness mutation diagnostic, preserving source restoration and reporting all outcomes.
+- [x] D006 Publish evidence-based disposition, independent review and next recommendation; stop before any unapproved correction or delivery.
+
+A-005 disposition: all three scoped attempts are retained in [governance diagnostics](governance-diagnostics.md). PostgreSQL passed both selected cases; both SQL attempts are inconclusive with no retained post-Setup observations. The original findings remain open and A-005 authorizes no further execution. Proposed A-006 has no approval.

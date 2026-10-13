@@ -1,6 +1,8 @@
 # Documentation approval
 
-**A-005 diagnostic authorization (13 October 2026):** the user approved [bounded governance diagnostics](amendments/A-005-governance-diagnostics.md). PR #48 remains unmerged, A-004 remains expired, and all acceptance/public-release blockers remain open. Only safe diagnostic instrumentation, seeded controls and the specified focused experiments are authorized.
+**Current diagnostic disposition:** [A-005 execution](../specs/008-administrator-foundation/governance-diagnostics.md) has concluded: PostgreSQL2/2 passed; SQL ordinary2/2 and mutant1/1 failed with no retained post-Setup observations. The pinned SQL image is absent locally; causation remains unproven. A-005 authorizes no further execution. [A-006 SQL readiness diagnostics](amendments/A-006-sql-diagnostic-readiness.md) is proposed and not approved. PR48 remains draft/unmerged, T020/T021 halted, all six findings and human/public-release blockers open.
+
+**Historical A-005 diagnostic approval (13 October 2026; now concluded):** the user approved [bounded governance diagnostics](amendments/A-005-governance-diagnostics.md). PR #48 remains unmerged, A-004 remains expired, and all acceptance/public-release blockers remain open. That approval authorized only safe diagnostic instrumentation, seeded controls and the specified focused experiments; those experiments are now finished.
 
 **A-004 expired on 13 October 2026:** PR48 required SQL governance mutation evidence was incomplete. T020/T021 delivery is halted and PR48 must not merge. See the [verification record](../specs/008-administrator-foundation/governance-verification.md) and [approved diagnostic-only A-005](amendments/A-005-governance-diagnostics.md), which permits only its bounded investigation. All historical and human/public-release blockers remain open.
 
