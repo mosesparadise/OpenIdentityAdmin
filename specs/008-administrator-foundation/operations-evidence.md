@@ -16,7 +16,7 @@ Four native host cases exercise every pilot/administrator switch combination thr
 
 The failed-pass test does not emit or fabricate `cleanup.deleted`. Real cleanup/deletion transactions remain established by the provider suites. The export regression does not claim a working external collector, dashboard, alert, production SLO or exact committed-audit accounting.
 
-Host inventory increases from 334 to 338 cases: unit total 399, ordinary .NET matrix 1,872. Provider/browser identity catalogues, eight administrator/seven issuer mutants, 45 coverage inputs, nine floors and all deadlines remain unchanged. Native execution, full CI and review results are recorded below when completed.
+Host inventory increases from 334 to 338 cases, and eight safe startup-diagnostic harness cases increase AppHost from 31 to 39: unit total 407, ordinary .NET matrix 1,880. Provider/browser identity catalogues, eight administrator/seven issuer mutants, 45 coverage inputs, nine floors and all deadlines remain unchanged. Native execution, full CI and review results are recorded below when completed.
 
 ## Status and remaining work
 
@@ -29,3 +29,12 @@ Human Windows/password-manager/screen-reader observations are unexecuted. T028/T
 ## Delivery correction
 
 Run `38337369524` at `fc46ccc` rejected two unnecessary imports through the full IDE0005 style gate. The local build/quality-rule/whitespace checks had passed but were not equivalent to that full style command. Both imports were removed without changing behavior. The complete `python3 scripts/check-static-analysis.py` command then passed locally, including the full solution build, whitespace verification, IDE0005 style verification and quality controls. The attempt is not accepted as a clean matrix; final delivery requires the complete exact-head run recorded in PR #35.
+
+
+## Retained startup failure and diagnostic follow-up
+
+Run [38337949308](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38337949308) at `cab9dbe` is not accepted. The standard SQL Server AppHost Development-profile case failed during `StartAsync` after 41.958 seconds because Aspire reported that Worker failed to start. The worker has no administrator telemetry subscription in this default profile. The logs did not retain its process exit state; they do not establish a causal defect or prove an infrastructure transient. The remaining application jobs passed, but final acceptance failed and coverage was not accepted.
+
+The follow-up adds failure-time snapshots before graph disposal for six fixed resource roles. Only allowlisted states and numeric exit/PID fields are emitted; snapshots, arbitrary property values, URLs, environment/configuration, exception messages and credentials are not serialized. Reader/output failures cannot replace the original exception. Eight native harness cases cover known failure metadata, absence, hostile state/PID values including throwing conversion, failed readers, failed output, cancellation identity and silent success. Profile readiness explicitly stops on unavailable resources. All original route/isolation/key/dependency-health checks and three-minute/ten-second deadlines remain; no retry is introduced.
+
+The changed legacy profile method is split into cohesive documented helpers with named values. Rename: `Selected_profile_migrates_and_serves_only_healthy_operational_endpoints` → `Given_LocalProfile_When_StartedAndDatabaseStopped_Then_OnlyOperationalRoutesAndAccurateHealth`; the six theory rows and their provider selection are unchanged. Four legacy quality findings are removed rather than rebound. Independent test/composition review found no source blocker. This is improved diagnostic evidence, **not a demonstrated fix for the earlier Worker failure**. Fresh complete exact-head execution remains required, and a recurring failure must be investigated rather than retried into acceptance.

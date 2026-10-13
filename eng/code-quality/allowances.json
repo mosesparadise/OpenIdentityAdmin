@@ -5053,46 +5053,6 @@
     {
       "Finding": {
         "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalProfilesTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.LocalProfilesTests.Selected_profile_migrates_and_serves_only_healthy_operational_endpoints(string,string)",
-        "Fingerprint": "CB690715E32417878FE72418B87BA367BC261453A631CBDBDE8E09C15FC25F84"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalProfilesTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.LocalProfilesTests.Selected_profile_migrates_and_serves_only_healthy_operational_endpoints(string,string)",
-        "Fingerprint": "CB690715E32417878FE72418B87BA367BC261453A631CBDBDE8E09C15FC25F84"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalProfilesTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.LocalProfilesTests.Selected_profile_migrates_and_serves_only_healthy_operational_endpoints(string,string)",
-        "Fingerprint": "CB690715E32417878FE72418B87BA367BC261453A631CBDBDE8E09C15FC25F84"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalProfilesTests.cs",
-        "Symbol": "IdentityPlatform.AppHost.Tests.Features.LocalProfilesTests.Selected_profile_migrates_and_serves_only_healthy_operational_endpoints(string,string)",
-        "Fingerprint": "CB690715E32417878FE72418B87BA367BC261453A631CBDBDE8E09C15FC25F84"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
         "Path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/ProfileIsolationTests.cs",
         "Symbol": "IdentityPlatform.AppHost.Tests.Features.ProfileIsolationTests.Cancellation_while_waiting_for_startup_disposes_started_resources(string)",
         "Fingerprint": "D20221A75B4D95E512D4A111F540869E43EF38C7AB4F5048F979C0FF38AC7977"
