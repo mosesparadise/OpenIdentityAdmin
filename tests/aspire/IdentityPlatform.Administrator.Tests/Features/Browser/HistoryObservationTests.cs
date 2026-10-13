@@ -74,8 +74,11 @@ public sealed class HistoryObservationTests
         {
             Assert.Equal(HistoryOutcome.NativeRestoreRejected, outcome);
             Assert.Equal(1, server.Posts);
-            await RequireObserversAsync(page, server);
-            await RequireResponseObserverAsync(page, server);
+            // Use a separate page for seeded controls while Firefox settles the original history navigation.
+            var controls = await session.Context.NewPageAsync();
+            await RequireObserversAsync(controls, server);
+            await RequireResponseObserverAsync(controls, server);
+            Assert.Equal(1, server.Posts);
         }
         else
         {
