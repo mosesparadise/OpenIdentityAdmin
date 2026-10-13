@@ -22,8 +22,11 @@ internal static class AdministratorJourney
 
     /// <summary>Submits native password verification and returns only an admitted exact-origin continuation.</summary>
     internal static async Task<Uri> BeginAsync(AdministratorEnvironment environment, HttpClient browser, bool enrollment)
+        => await BeginAtAsync(environment, browser, enrollment ? Enrollment : Login);
+
+    /// <summary>Submits the real credentials only to a fixed test-selected account route with its native antiforgery token.</summary>
+    internal static async Task<Uri> BeginAtAsync(AdministratorEnvironment environment, HttpClient browser, string path)
     {
-        var path = enrollment ? Enrollment : Login;
         using var page = await browser.GetAsync(path, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
@@ -51,7 +54,11 @@ internal static class AdministratorJourney
 
     /// <summary>Posts a factor through the exact browser form; responses remain owned by the calling test.</summary>
     internal static Task<HttpResponseMessage> ConfirmAsync(HttpClient browser, AdministratorForm form, string code, bool enrollment) =>
-        PostAsync(browser, enrollment ? Enrollment : Mfa, new Dictionary<string, string>
+        ConfirmAtAsync(browser, form, code, enrollment ? Enrollment : Mfa);
+
+    /// <summary>Posts a fixed action's exact native code form, preserving response ownership and cancellation.</summary>
+    internal static Task<HttpResponseMessage> ConfirmAtAsync(HttpClient browser, AdministratorForm form, string code, string path) =>
+        PostAsync(browser, path, new Dictionary<string, string>
         {
             [Interaction] = form.Interaction,
             [Antiforgery] = form.Antiforgery,

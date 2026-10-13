@@ -8,6 +8,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 /// <summary>Exercises real administrator pages under every required engine without retaining secret-bearing diagnostics.</summary>
 [Collection("administrator-bootstrap")]
 [Trait("Category", "Browser")]
+[Trait("BrowserStory", "Accounts")]
 public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
 {
     private const string EnterKey = "Enter";

@@ -1,0 +1,10 @@
+@page "/account/administrator/logout"
+@model IdentityPlatform.AuthServer.Features.Accounts.Security.LogoutModel
+@{ ViewData["Title"] = "Sign out"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Your account</p>
+  <h1 id="heading">Sign out of this session?</h1>
+  <p>This ends your administrator account session in this browser.</p>
+  <form asp-antiforgery="true" method="post" action="/account/administrator/logout"><button class="primary" type="submit">Sign out</button></form>
+  <p class="footnote"><a href="/account/administrator/security">Keep me signed in</a></p>
+</section>

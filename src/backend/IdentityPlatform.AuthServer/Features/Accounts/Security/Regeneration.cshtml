@@ -1,0 +1,14 @@
+@page "/account/administrator/security/recovery-codes"
+@model IdentityPlatform.AuthServer.Features.Accounts.Security.RegenerationModel
+@{ ViewData["Title"] = "Create new recovery codes"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Account security</p>
+  <h1 id="heading">Create new recovery codes</h1>
+  <p>Verify your password and current authenticator. All previous recovery codes and other sessions will be invalidated when the new codes are created.</p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+  }
+  <form asp-antiforgery="true" method="post" action="/account/administrator/security/recovery-codes"><partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" /></form>
+  <p class="footnote"><a href="/account/administrator/login">Return to sign in</a></p>
+</section>

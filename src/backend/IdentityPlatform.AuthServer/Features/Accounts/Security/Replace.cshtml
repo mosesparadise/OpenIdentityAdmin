@@ -1,0 +1,20 @@
+@page "/account/administrator/security/replacement/verify"
+@model IdentityPlatform.AuthServer.Features.Accounts.Security.ReplaceModel
+@{ ViewData["Title"] = "Verify your current authenticator"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Account security</p>
+  <h1 id="heading">Verify your current authenticator</h1>
+  <p>Enter an unused code from your current authenticator to authorize replacement. This approval applies only to this action.</p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+    <p><a href="/account/administrator/login">Start again</a></p>
+  }
+  else
+  {
+    <form asp-antiforgery="true" method="post" action="/account/administrator/security/replacement/verify">
+      <input type="hidden" name="Interaction" value="@Model.Interaction" />
+      <partial name="/Features/Accounts/Shared/_AdministratorCode.cshtml" />
+    </form>
+  }
+</section>

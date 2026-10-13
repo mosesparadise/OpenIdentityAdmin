@@ -210,7 +210,7 @@ class MutationEvidenceTests(unittest.TestCase):
 
     def test_reviewed_manifest_targets_exist_exactly_once(self):
         self.assertEqual(7, len(manifest(ROOT)))
-        self.assertEqual(4, len(manifest(ROOT, "administrator")))
+        self.assertEqual(6, len(manifest(ROOT, "administrator")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
     def test_exited_parent_pipe_holder_and_stubborn_child_are_terminated(self):

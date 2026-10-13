@@ -31,9 +31,9 @@ internal sealed class JourneySessions(PlatformDbContext database, NativeOperatio
             var session = await database.Set<AdministratorSession>().SingleOrDefaultAsync(row => row.PublicId == publicId, transaction.Token);
             if (user is null || enrollment is null || authentication is null || session is null || session.PublicId != publicId ||
                 user.Id != userId || enrollment.UserId != userId || authentication.UserId != userId || session.UserId != userId ||
-                !clock.Observe(authentication, out var startedAt) || !Allows(user, enrollment, authentication, session, startedAt) ||
+                !clock.Observe(authentication, out var startedAt) || !JourneySessionState.Allows(user, enrollment, authentication, session, startedAt) ||
                 string.IsNullOrEmpty(await users.GetAuthenticatorKeyAsync(user)) ||
-                !clock.Observe(authentication, out var now) || !Allows(user, enrollment, authentication, session, now))
+                !clock.Observe(authentication, out var now) || !JourneySessionState.Allows(user, enrollment, authentication, session, now))
             {
                 return null;
             }
@@ -45,20 +45,6 @@ internal sealed class JourneySessions(PlatformDbContext database, NativeOperatio
         return result;
     }
 
-    /// <summary>Checks every current security binding and time boundary without clearing expired failure state.</summary>
-    private static bool Allows(PlatformUser user, AdministratorEnrollment enrollment, AdministratorAuthentication authentication,
-        AdministratorSession session, long now) =>
-        user.IsEnabled && user.TwoFactorEnabled && user.LockoutEnabled && !string.IsNullOrEmpty(user.SecurityStamp) &&
-        !enrollment.Suspended && enrollment.State == AdministratorPolicy.Active && enrollment.FactorGeneration > 0 &&
-        CeremonyBudget.IsAvailable(user, authentication, now) &&
-        !session.Revoked && session.AuthenticationMethods == AdministratorPolicy.Methods &&
-        session.Generation == authentication.Generation && session.FactorGeneration == enrollment.FactorGeneration &&
-        session.SecurityStamp == user.SecurityStamp && session.PasswordVerifiedAt >= 0 &&
-        session.FactorVerifiedAt >= session.PasswordVerifiedAt && session.CreatedAt >= session.FactorVerifiedAt &&
-        session.CreatedAt <= now && session.LastActivityAt >= session.CreatedAt &&
-        session.LastActivityAt <= now + AdministratorPolicy.ClockSkewSeconds &&
-        session.LastActivityAt > now - AdministratorPolicy.IdleSeconds && session.ExpiresAt > now &&
-        session.ExpiresAt == session.CreatedAt + AdministratorPolicy.SessionSeconds;
     /// <summary>Isolates metadata ownership inside the validator; callers cannot obtain or commit this transaction.</summary>
     private sealed class SessionScope(PlatformDbContext database, string userId, IDbContextTransaction transaction,
         IDisposable native, CeremonyConnection connection, CancellationTokenSource deadline) : IAsyncDisposable

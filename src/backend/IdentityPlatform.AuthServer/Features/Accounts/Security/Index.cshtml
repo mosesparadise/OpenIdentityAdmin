@@ -10,4 +10,9 @@
     <dt>Authenticator verified</dt><dd><time datetime="@Model.FactorVerifiedAt.ToString("O")">@Model.FactorVerifiedAt.ToString("u")</time></dd>
     <dt>Session expires</dt><dd><time datetime="@Model.ExpiresAt.ToString("O")">@Model.ExpiresAt.ToString("u")</time></dd>
   </dl>
+  <nav aria-label="Account security actions">
+    <p><a href="/account/administrator/security/replacement">Replace your authenticator</a></p>
+    <p><a href="/account/administrator/security/recovery-codes">Create new recovery codes</a></p>
+    <p><a href="/account/administrator/logout">Sign out</a></p>
+  </nav>
 </section>

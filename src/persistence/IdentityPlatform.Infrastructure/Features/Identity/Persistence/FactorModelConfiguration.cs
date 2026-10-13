@@ -12,6 +12,7 @@ internal static class FactorModelConfiguration
         ConfigureAdmission(builder, sqlServer);
         ConfigureBrowserBudget(builder, sqlServer);
         ConfigureInteraction(builder, sqlServer);
+        ConfigureAuthorization(builder, sqlServer);
         ConfigureFactor(builder, sqlServer);
         ConfigureReplay(builder, sqlServer);
         ConfigureRecoveryCode(builder, sqlServer);
@@ -77,6 +78,19 @@ internal static class FactorModelConfiguration
         const string EnrollmentRule = "EnrollmentRevision";
         const string EnrollmentValid = "\"ExpectedEnrollmentRevision\" IS NULL OR \"ExpectedEnrollmentRevision\" >= 0";
         FactorSchema.Check(entity, EnrollmentRule, EnrollmentValid, sqlServer);
+    }
+
+    /// <summary>Bounds additive step-up bindings; legacy rows retain no replacement authorization.</summary>
+    private static void ConfigureAuthorization(ModelBuilder builder, bool sqlServer)
+    {
+        var entity = builder.Entity<AdministratorInteraction>();
+        FactorSchema.Text(entity, nameof(AdministratorInteraction.AuthorizationKind), FactorSchema.LabelLength, sqlServer);
+        FactorSchema.Text(entity, nameof(AdministratorInteraction.SessionPublicId), FactorSchema.DigestLength, sqlServer);
+        const string Rule = "Authorization";
+        const string Valid = "(\"AuthorizationKind\" IS NULL AND \"AuthorizationVerifiedAt\" IS NULL AND \"SourceFactorGeneration\" IS NULL) OR " +
+            "(\"AuthorizationKind\" IS NOT NULL AND \"AuthorizationVerifiedAt\" IS NOT NULL AND \"SourceFactorGeneration\" IS NOT NULL AND " +
+            "\"AuthorizationVerifiedAt\" >= \"PasswordVerifiedAt\" AND \"SourceFactorGeneration\" > 0)";
+        FactorSchema.Check(entity, Rule, Valid, sqlServer);
     }
 
     /// <summary>Configures bounded factor records without granting runtime authority.</summary>

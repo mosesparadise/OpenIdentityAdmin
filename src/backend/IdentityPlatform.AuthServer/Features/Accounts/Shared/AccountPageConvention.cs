@@ -16,6 +16,12 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator) : IP
         ["/Mfa/Login"] = "account/administrator/login",
         ["/Mfa/Index"] = "account/administrator/mfa",
         ["/Recovery/Index"] = "account/administrator/recovery",
+        ["/Recovery/Verify"] = "account/administrator/recovery/verify",
+        ["/Security/Replacement"] = "account/administrator/security/replacement",
+        ["/Security/Replace"] = "account/administrator/security/replacement/verify",
+        ["/Security/Confirm"] = "account/administrator/security/replacement/confirm",
+        ["/Security/Regeneration"] = "account/administrator/security/recovery-codes",
+        ["/Security/Regenerate"] = "account/administrator/security/recovery-codes/verify",
         ["/Security/Index"] = "account/administrator/security",
         ["/Security/Logout"] = "account/administrator/logout"
     };

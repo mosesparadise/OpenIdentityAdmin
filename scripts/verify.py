@@ -6,18 +6,21 @@ import os
 from pathlib import Path
 from verify_contrast_experiment import execute, install_cancellation_handler
 from test_evidence import require_complete_trx
-from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, administrator_invocations, require_administrator_browser
+from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, administrator_invocations, require_administrator_browser, administrator_browser_invocations
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
 parser.add_argument("--partition", choices=["all", "standard", "lifecycle", "administrator"], default="all")
-parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts"])
+parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security"])
+parser.add_argument("--browser-story", choices=["Accounts", "Security"])
 args = parser.parse_args()
+if args.browser_story and (not args.browser or args.partition != "administrator"):
+    parser.error("Browser story requires an administrator browser invocation")
 install_cancellation_handler()
 if args.story and (args.partition not in ("lifecycle", "administrator") or
-                   (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts")) != (args.partition == "administrator")):
+                   (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security")) != (args.partition == "administrator")):
     parser.error("Story selection requires its matching lifecycle or administrator partition")
 if args.browser and args.story:
     parser.error("HTTP story and browser selection cannot be combined")
@@ -31,15 +34,17 @@ except ValueError as error:
 invocations = []
 for project, count in projects.items():
     if project == "Issuer.Lifecycle":
-        invocations.extend((project, expected, story) for story, expected in lifecycle_invocations(matrix, args.profile, args.story))
+        invocations.extend((project, expected, story, None) for story, expected in lifecycle_invocations(matrix, args.profile, args.story))
     elif project == "Administrator" and not args.browser:
-        invocations.extend((project, expected, story) for story, expected in administrator_invocations(matrix, args.profile, args.story))
+        invocations.extend((project, expected, story, None) for story, expected in administrator_invocations(matrix, args.profile, args.story))
+    elif project == "Administrator":
+        invocations.extend((project, expected, None, browser_story) for browser_story, expected in administrator_browser_invocations(matrix, args.browser_story))
     else:
-        invocations.append((project, count, None))
-for project, expected_count, story in invocations:
+        invocations.append((project, count, None, None))
+for project, expected_count, story, browser_story in invocations:
     label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower().replace(".", "-") if story else "")
     if project == "Administrator":
-        label = "administrator-" + args.profile + "-" + (args.browser or story.lower())
+        label = "administrator-" + args.profile + "-" + ((args.browser + "-" + browser_story.lower()) if args.browser else story.lower())
     results = ROOT / "artifacts" / "tests" / label
     results.mkdir(parents=True, exist_ok=True)
     name = f"IdentityPlatform.{project}.Tests"
@@ -59,9 +64,9 @@ for project, expected_count, story in invocations:
         if project == "Administrator":
             inventory = json.loads((ROOT / "eng/administrator-test-matrix.json").read_text())
             if args.browser:
-                expression = f"Provider={args.profile}&Category=Browser"
+                expression = f"Provider={args.profile}&Category=Browser&BrowserStory={browser_story}"
                 selected = discover(expression)
-                require_administrator_browser(all_tests, selected, args.profile, matrix, inventory)
+                require_administrator_browser(all_tests, selected, args.profile, matrix, inventory, browser_story)
             else:
                 expression = f"Provider={args.profile}&FullyQualifiedName~IdentityPlatform.Administrator.Tests.Features.{story}."
                 selected = discover(expression)

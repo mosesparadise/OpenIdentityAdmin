@@ -241,6 +241,14 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.Property<int>("Attempts")
                         .HasColumnType("int");
 
+                    b.Property<string>("AuthorizationKind")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long?>("AuthorizationVerifiedAt")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("BrowserBudgetId")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -292,6 +300,14 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .HasColumnType("nvarchar(256)")
                         .UseCollation("Latin1_General_100_BIN2");
 
+                    b.Property<string>("SessionPublicId")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long?>("SourceFactorGeneration")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("StagedSeed")
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)")
@@ -322,6 +338,8 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("AdministratorInteraction", "platform", t =>
                         {
+                            t.HasCheckConstraint("CK_AdministratorInteraction_Authorization", "([AuthorizationKind] IS NULL AND [AuthorizationVerifiedAt] IS NULL AND [SourceFactorGeneration] IS NULL) OR ([AuthorizationKind] IS NOT NULL AND [AuthorizationVerifiedAt] IS NOT NULL AND [SourceFactorGeneration] IS NOT NULL AND [AuthorizationVerifiedAt] >= [PasswordVerifiedAt] AND [SourceFactorGeneration] > 0)");
+
                             t.HasCheckConstraint("CK_AdministratorInteraction_EnrollmentRevision", "[ExpectedEnrollmentRevision] IS NULL OR [ExpectedEnrollmentRevision] >= 0");
 
                             t.HasCheckConstraint("CK_AdministratorInteraction_State", "[Generation] > 0 AND [DestinationGeneration] > 0 AND [Revision] >= 0 AND [Attempts] >= 0 AND [Attempts] <= 5 AND [CreatedAt] >= 0 AND [ExpiresAt] > [CreatedAt]");

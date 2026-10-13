@@ -27,9 +27,9 @@ class MutationError(ValueError):
 def manifest(root, suite='issuer'):
     if suite not in ('issuer', 'administrator'):
         raise MutationError('Unknown mutation suite')
-    expected = 7 if suite == 'issuer' else 4
+    expected = 7 if suite == 'issuer' else 6
     filename = 'eng/critical-mutations.json' if suite == 'issuer' else 'eng/administrator-mutations.json'
-    boundary = 'src/backend/IdentityPlatform.AuthServer/Features' if suite == 'issuer' else 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies'
+    boundary = 'src/backend/IdentityPlatform.AuthServer/Features' if suite == 'issuer' else 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'
     value = json.loads((root / filename).read_text())
     mutations = value['mutations']
     if value['version'] != 1 or len(mutations) != expected or len({item['id'] for item in mutations}) != expected:
@@ -140,7 +140,7 @@ def discover(expression, environment):
                         '--pre-enumerate-theories', 'on', '--list-tests', 'json', '--filter', expression], 60, environment)
     if code:
         raise MutationError('Mutation discovery failed')
-    return catalogue(output)
+    return catalogue(output, project='Administrator' if 'Administrator' in PROJECT else 'Issuer')
 
 
 def execute(expression, selected, directory, environment, *, item=None):

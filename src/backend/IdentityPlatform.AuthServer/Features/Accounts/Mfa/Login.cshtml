@@ -10,4 +10,5 @@
     <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
   }
   <form asp-antiforgery="true" method="post" action="/account/administrator/login"><partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" /></form>
+  <p class="footnote">Lost your authenticator? <a href="/account/administrator/recovery">Use a recovery code</a></p>
 </section>

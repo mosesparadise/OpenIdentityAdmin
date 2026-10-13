@@ -3,70 +3,110 @@ using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 
 /// <summary>Completes native MFA under serialized authority and returns a result only after audited commit and disposal.</summary>
 internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperation operation, JourneyLocator locator,
     JourneyEligibility eligibility, CeremonyClock clock, CeremonyBudget budget, CeremonyReplay replay,
-    CeremonyAdmission admission, JourneyActivation activation)
+    CeremonyAdmission admission, JourneyActivation activation, UserManager<PlatformUser> users, FactorAccess access, JourneyRevocation revocation)
 {
     /// <summary>Resolves locking candidates, rechecks every binding, and withholds all response material until commit succeeds.</summary>
-    internal Task<Grant?> CompleteAsync(string publicId, string correlation, string purpose, string code, CancellationToken token) =>
-        Grant.CompleteAsync(this, publicId, correlation, purpose, code, token);
+    internal Task<Grant?> CompleteAsync(string publicId, string correlation, string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null) =>
+        Grant.CompleteAsync(this, publicId, correlation, purpose, code, token, session);
 
     /// <summary>Completes the transaction and disposal before the private result can be converted into signing authority.</summary>
-    private async Task<Completion?> CompleteCoreAsync(string publicId, string correlation, string purpose, string code, CancellationToken token)
+    private async Task<Completion?> CompleteCoreAsync(string publicId, string correlation, string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null)
     {
         var candidate = await locator.InteractionAsync(publicId, token);
-        if (candidate is not { } target || purpose is not (AdministratorPolicy.Enrollment or AdministratorPolicy.Login))
+        if (candidate is not { } target || purpose is not (AdministratorPolicy.Enrollment or AdministratorPolicy.Login or AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration))
         {
             return null;
         }
-        var plan = new CeremonyLockPlan(purpose == AdministratorPolicy.Enrollment, true, [target.Browser], [target.User]);
+        var plan = new CeremonyLockPlan(purpose is AdministratorPolicy.Enrollment or AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration, true, [target.Browser], [target.User]);
         Completion? result;
         await using (var transaction = await CeremonyTransaction.OpenAsync(database, operation, plan, token))
         {
             var account = await CeremonyAccount.LoadAsync(database, transaction, target.User);
             var interaction = await CeremonyInteraction.ReadAsync(database, transaction, account, publicId, correlation, purpose, clock.Now);
             if (interaction is null || !await eligibility.AllowsAsync(transaction, account, interaction) ||
-                !await budget.OpenAsync(transaction, account) || !await admission.HasSessionCapacityAsync(transaction, account.User.Id))
+                !await budget.OpenAsync(transaction, account))
             {
                 return null;
             }
-            result = await VerifyAsync(transaction, account, interaction, code);
+            var authority = await JourneyAuthorization.BoundSessionAsync(database, users, clock, transaction, account, interaction.Row, session);
+            if ((JourneyAuthorization.IsVoluntary(purpose) && !JourneyAuthorization.IsRecoveryStage(interaction.Row) && authority is null) ||
+                (purpose == AdministratorPolicy.Replacement && (!JourneyAuthorization.IsStaged(account, interaction.Row) ||
+                    !JourneyAuthorization.IsFresh(interaction.Row, clock.Now))) ||
+                !await admission.HasSessionCapacityAsync(transaction, account.User.Id, authority?.PublicId))
+            {
+                return null;
+            }
+            result = await VerifyAsync(transaction, account, interaction, code, authority);
         }
         return result;
     }
 
     /// <summary>Consumes only a native unused factor; failed bound proof and its audit share the transaction.</summary>
-    private async Task<Completion?> VerifyAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyInteraction interaction, string code)
+    private async Task<Completion?> VerifyAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyInteraction interaction, string code, JourneySessionProof? authority)
     {
-        var enrolling = interaction.Row.Purpose == AdministratorPolicy.Enrollment;
-        var proof = await replay.VerifyAsync(transaction, account, interaction, code, enrolling);
+        var installing = interaction.Row.Purpose is AdministratorPolicy.Enrollment or AdministratorPolicy.Replacement;
+        var proof = await replay.VerifyAsync(transaction, account, interaction, code, installing);
         if (proof is null)
         {
             await budget.FailAsync(transaction, account, interaction);
             await transaction.CommitAsync(CeremonyEvent.Factor, false, account.User.Id, clock.Now);
             return null;
         }
+        authority?.RequireCurrent(transaction, account, clock.Now);
         await budget.CompleteAsync(transaction, account, proof);
-        var codes = enrolling ? await activation.ActivateAsync(transaction, account, proof) : [];
+        var codes = installing ? await activation.ActivateAsync(transaction, account, proof, interaction.Row.Id)
+            : interaction.Row.Purpose == AdministratorPolicy.Regeneration ? await RegenerateAsync(transaction, account, interaction.Row.Id) : [];
         interaction.Row.State = AdministratorPolicy.Consumed;
         interaction.Row.StagedSeed = null;
         interaction.Row.Revision = checked(interaction.Row.Revision + 1);
         if (!clock.Observe(account.Authentication, out var now) || now < proof.VerifiedAt ||
             now >= interaction.Row.ExpiresAt || now < interaction.Row.PasswordVerifiedAt ||
             now - interaction.Row.PasswordVerifiedAt >= AdministratorPolicy.FreshnessSeconds ||
-            now - proof.VerifiedAt >= AdministratorPolicy.FreshnessSeconds)
+            now - proof.VerifiedAt >= AdministratorPolicy.FreshnessSeconds ||
+            (interaction.Row.Purpose == AdministratorPolicy.Replacement && !JourneyAuthorization.IsFresh(interaction.Row, now)))
         {
             throw new FactorUnavailableException();
         }
+        authority?.RequireTime(now);
         var session = CreateSession(account, interaction.Row, proof, now);
         database.Add(session);
-        await transaction.CommitAsync(enrolling ? CeremonyEvent.Enrollment : CeremonyEvent.Factor, true, account.User.Id, now);
+        await transaction.CommitAsync(Event(interaction.Row.Purpose), true, account.User.Id, now);
         return new Completion(session.PublicId, session.UserId, session.ExpiresAt, codes);
     }
+
+    /// <summary>Rotates verifier generation and all previous local authority while preserving the current factor and its replay ledger.</summary>
+    private async Task<string[]> RegenerateAsync(CeremonyTransaction transaction, CeremonyAccount account, Guid preserved)
+    {
+        account.Enrollment.RecoveryGeneration = checked(account.Enrollment.RecoveryGeneration + 1);
+        account.Enrollment.Revision = checked(account.Enrollment.Revision + 1);
+        account.Authentication.Generation = checked(account.Authentication.Generation + 1);
+        if (!(await users.UpdateSecurityStampAsync(account.User)).Succeeded)
+        {
+            throw new FactorUnavailableException();
+        }
+        await database.SaveChangesAsync(transaction.Token);
+        await revocation.RevokeAsync(transaction, account, preserved);
+        using var recovery = access.SelectRecovery(account.Enrollment, transaction.Token);
+        return (await users.GenerateNewTwoFactorRecoveryCodesAsync(account.User, RecoveryVerifier.Count)
+            ?? throw new FactorUnavailableException()).ToArray();
+    }
+
+    /// <summary>Maps only supported completed purposes to a fixed sanitized audit catalogue.</summary>
+    private static CeremonyEvent Event(string purpose) => purpose switch
+    {
+        AdministratorPolicy.Enrollment => CeremonyEvent.Enrollment,
+        AdministratorPolicy.Replacement => CeremonyEvent.Replacement,
+        AdministratorPolicy.Regeneration => CeremonyEvent.Regeneration,
+        AdministratorPolicy.Login => CeremonyEvent.Factor,
+        _ => throw new FactorUnavailableException()
+    };
 
     /// <summary>Persists actual verification times and immutable absolute expiry without encoding privilege claims.</summary>
     private static AdministratorSession CreateSession(CeremonyAccount account, AdministratorInteraction interaction, CeremonyProof proof, long now) => new()
@@ -118,9 +158,9 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
 
         /// <summary>Constructs signing authority only by executing the actual native completion and disposed commit path.</summary>
         internal static async Task<Grant?> CompleteAsync(JourneyCompletion owner, string publicId, string correlation,
-            string purpose, string code, CancellationToken token)
+            string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null)
         {
-            var result = await owner.CompleteCoreAsync(publicId, correlation, purpose, code, token);
+            var result = await owner.CompleteCoreAsync(publicId, correlation, purpose, code, token, session);
             return result is null ? null : new Grant(result.SessionId, result.UserId, result.ExpiresAt, result.RecoveryCodes);
         }
 

@@ -16,6 +16,10 @@ public sealed class CompositionTests
     private const string Alive = "/alive";
     private const string Login = "/account/login";
     private const string AdministratorLogin = "/account/administrator/login";
+    private static readonly string[] AdministratorSecurityRoutes = ["/account/administrator/recovery", "/account/administrator/recovery/verify",
+        "/account/administrator/security/replacement", "/account/administrator/security/replacement/verify",
+        "/account/administrator/security/replacement/confirm", "/account/administrator/security/recovery-codes",
+        "/account/administrator/security/recovery-codes/verify", "/account/administrator/logout"];
     private static readonly string[] UnavailableRoutes = ["/docs/scalar", "/docs/swagger", "/api/v1/users"];
     private static readonly string[] ProtocolRoutes = ["/.well-known/openid-configuration", "/connect/authorize", "/connect/token"];
 
@@ -44,6 +48,14 @@ public sealed class CompositionTests
             var html = await administratorLogin.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.Contains("<span class=\"badge\">Account access</span>", html, StringComparison.Ordinal);
             Assert.DoesNotContain("<span class=\"badge\">Development</span>", html, StringComparison.Ordinal);
+        }
+        if (!administrator)
+        {
+            foreach (var route in AdministratorSecurityRoutes)
+            {
+                using var response = await host.Client.GetAsync(route, TestContext.Current.CancellationToken);
+                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
         }
         await RequireSchemesAsync(host.Services, pilot, administrator);
     }

@@ -11,29 +11,25 @@ internal sealed class AdministratorJourney(JourneyPassword passwords, JourneyCom
     /// <summary>Rejects ambiguous credentials, applies bounded dummy work for unavailable accounts and binds admitted continuations.</summary>
     public async Task<string?> BeginAsync(HttpContext context, bool enrollment)
     {
-        var form = await AdministratorBrowser.FormAsync(context, AdministratorBrowser.Username, AdministratorBrowser.Password);
-        if (form is null || form[AdministratorBrowser.Username][0]!.Length > AdministratorBrowser.UsernameLength ||
-            form[AdministratorBrowser.Password][0]!.Length > AdministratorBrowser.PasswordLength)
+        var request = await AdministratorPasswordForm.ReadAsync(context);
+        if (request is null)
         {
             return null;
         }
-        var browser = context.Request.Cookies[AdministratorBrowser.BudgetCookie];
-        browser = CeremonySecrets.IsIdentifier(browser) ? browser! : CeremonySecrets.Create();
-        var correlation = CeremonySecrets.Create();
         var purpose = enrollment ? AdministratorPolicy.Enrollment : AdministratorPolicy.Login;
-        var result = await passwords.BeginAsync(form[AdministratorBrowser.Username][0]!, form[AdministratorBrowser.Password][0]!,
-            purpose, browser, correlation, context.RequestAborted);
+        var result = await passwords.BeginAsync(request.Username, request.Password,
+            purpose, request.Browser, request.Correlation, context.RequestAborted);
         if (result.Interaction is null)
         {
             if (result.NeedsDummyWork)
             {
-                dummy.Verify(form[AdministratorBrowser.Password][0]!);
+                dummy.Verify(request.Password);
                 await denial.WriteAsync(context.RequestAborted);
             }
             return null;
         }
         context.RequestAborted.ThrowIfCancellationRequested();
-        AdministratorBrowser.Bind(context, result.Interaction, browser, correlation);
+        AdministratorBrowser.Bind(context, result.Interaction, request.Browser, request.Correlation);
         var path = enrollment ? AdministratorBrowser.EnrollmentPath : AdministratorBrowser.MfaPath;
         const string Query = "?Interaction=";
         return path + Query + result.Interaction;

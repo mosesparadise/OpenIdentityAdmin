@@ -1,6 +1,6 @@
 # Implementation plan: Administrator foundation
 
-**Feature**: 008 | **Latest accepted implementation**: PR #27 (`824220b`) | **Date**: 2026-10-12 | **Spec**: [spec.md](spec.md)
+**Feature**: 008 | **Latest accepted implementation**: PR #30 (`78d77c3`) | **Date**: 2026-10-12 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
@@ -49,3 +49,7 @@ The bounded [account composition packet](account-composition.md) was accepted in
 ## T023 acceptance and next packet
 
 [Protected factor storage](factor-storage.md) was accepted in PR #27 (`824220b`) with both-provider migrations/native adapters and 51 factor cases per provider. Bootstrap and Factors use separate strict invocations. [Verification](verification.md#t023-factor-storage--12-october-2026) records complete evidence. T024 is the next implementation packet: authoritative budgets, full lock order, replay/watermark, atomic audit, admission and bounded cleanup. Later journey/session/browser/governance packets remain open; storage records do not establish ceremony authority.
+
+## T026 execution packet
+
+T024 and T025 are accepted in PRs #29 and #30. [Recovery/security](recovery-security.md) applies the existing approved MFA design to the remaining account journeys. Preserve all project/feature/composition conventions, native proof ownership, both-provider migrations, strict story/browser inventories and unchanged invocation bounds.

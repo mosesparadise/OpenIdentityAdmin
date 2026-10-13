@@ -139,6 +139,10 @@ jobs:
           - { profile: PostgreSql, partition: administrator, story: Factors, label: administrator-PostgreSql-factors }
           - { profile: SqlServer, partition: administrator, story: Bootstrap, label: administrator-SqlServer-bootstrap }
           - { profile: SqlServer, partition: administrator, story: Factors, label: administrator-SqlServer-factors }
+          - { profile: PostgreSql, partition: administrator, story: Recovery, label: administrator-PostgreSql-recovery }
+          - { profile: SqlServer, partition: administrator, story: Recovery, label: administrator-SqlServer-recovery }
+          - { profile: PostgreSql, partition: administrator, story: Security, label: administrator-PostgreSql-security }
+          - { profile: SqlServer, partition: administrator, story: Security, label: administrator-SqlServer-security }
           - { profile: PostgreSql, partition: administrator, story: Accounts, label: administrator-PostgreSql-accounts }
           - { profile: SqlServer, partition: administrator, story: Accounts, label: administrator-SqlServer-accounts }
           - { profile: PostgreSql, partition: administrator, story: Ceremonies, label: administrator-PostgreSql-ceremonies }
@@ -169,6 +173,7 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_administrator_selection.py
+      - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
@@ -195,7 +200,7 @@ jobs:
   browser:
     needs: [scope, browser-plan]
     if: needs.scope.outputs.scope == 'full'
-    name: Browser ${{ matrix.partition }} / ${{ matrix.provider }} / ${{ matrix.browser }}
+    name: Browser ${{ matrix.partition }} ${{ matrix.browser_story }} / ${{ matrix.provider }} / ${{ matrix.browser }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -219,6 +224,7 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_administrator_selection.py
+      - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
@@ -243,7 +249,7 @@ jobs:
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

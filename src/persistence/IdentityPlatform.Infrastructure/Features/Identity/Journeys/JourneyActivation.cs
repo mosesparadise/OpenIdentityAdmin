@@ -4,6 +4,7 @@ using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 
@@ -12,7 +13,7 @@ internal sealed class JourneyActivation(PlatformDbContext database, UserManager<
     FactorAccess access, JourneyRevocation revocation)
 {
     /// <summary>Runs only after the original proof budget is completed; no cookie or plaintext recovery result escapes this transaction.</summary>
-    internal async Task<string[]> ActivateAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyProof proof)
+    internal async Task<string[]> ActivateAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyProof proof, Guid? preserved = null)
     {
         transaction.RequireContext(database);
         account.RequireCurrent(transaction);
@@ -30,7 +31,9 @@ internal sealed class JourneyActivation(PlatformDbContext database, UserManager<
         account.Enrollment.Revision = checked(account.Enrollment.Revision + 1);
         account.Authentication.Generation = checked(account.Authentication.Generation + 1);
         await database.SaveChangesAsync(transaction.Token);
-        await revocation.RevokeAsync(transaction, account);
+        await revocation.RevokeAsync(transaction, account, preserved);
+        await database.Set<AdministratorFactor>().Where(row => row.UserId == account.User.Id && row.Generation != staged.Generation)
+            .ExecuteDeleteAsync(transaction.Token);
         using var recovery = access.SelectRecovery(account.Enrollment, transaction.Token);
         var codes = await users.GenerateNewTwoFactorRecoveryCodesAsync(account.User, RecoveryVerifier.Count)
             ?? throw new FactorUnavailableException();

@@ -27,6 +27,20 @@ internal sealed class JourneyClockFence : DbCommandInterceptor
     public override ValueTask<DbDataReader> ReaderExecutedAsync(DbCommand command, CommandExecutedEventData eventData,
         DbDataReader result, CancellationToken cancellationToken = default)
     {
+        Observe(command);
+        return ValueTask.FromResult(result);
+    }
+    /// <summary>Observes actual conditional bulk claims after execution so cancellation and freshness can be tested at their native boundary.</summary>
+    public override ValueTask<int> NonQueryExecutedAsync(DbCommand command, CommandExecutedEventData eventData,
+        int result, CancellationToken cancellationToken = default)
+    {
+        Observe(command);
+        return ValueTask.FromResult(result);
+    }
+
+    /// <summary>Triggers only the armed operation once, whether the provider returns a reader or an affected-row count.</summary>
+    private void Observe(DbCommand command)
+    {
         if (command.CommandText.Contains(marker, StringComparison.Ordinal) &&
             (operation is null || command.CommandText.Contains(operation, StringComparison.Ordinal)) &&
             Interlocked.Exchange(ref action, null) is { } advance)
@@ -34,6 +48,5 @@ internal sealed class JourneyClockFence : DbCommandInterceptor
             Triggered = true;
             advance();
         }
-        return ValueTask.FromResult(result);
     }
 }

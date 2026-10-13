@@ -1,0 +1,22 @@
+@page "/account/administrator/recovery/verify"
+@model IdentityPlatform.AuthServer.Features.Accounts.Recovery.VerifyModel
+@{ ViewData["Title"] = "Enter a recovery code"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Account security</p>
+  <h1 id="heading">Enter a recovery code</h1>
+  <p>Use one of the single-use codes saved when you set up your authenticator. Continuing signs out your existing sessions and begins restricted authenticator replacement.</p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+    <p><a href="/account/administrator/login">Start again</a></p>
+  }
+  else
+  {
+    <form asp-antiforgery="true" method="post" action="/account/administrator/recovery/verify">
+      <input type="hidden" name="Interaction" value="@Model.Interaction" />
+      <div class="field"><label for="recovery-code">Recovery code</label><input id="recovery-code" name="Code" type="text" autocomplete="one-time-code" minlength="32" maxlength="32" pattern="[0-9A-F]{32}" required spellcheck="false" autocapitalize="characters" aria-describedby="recovery-hint" /></div>
+      <p id="recovery-hint">Paste all 32 uppercase letters and numbers without spaces. This code will be used once.</p>
+      <button class="primary" type="submit">Begin authenticator recovery</button>
+    </form>
+  }
+</section>
