@@ -79,3 +79,14 @@ The existing eleven specification-quality checklist items pass; checklist state 
 ## A-004-authorized governance execution — 13 October 2026
 
 The user explicitly approved A-004 after T035 delivery. T020/T021 remain unchecked while the [concrete implementation/test packet](governance-implementation.md), published at `e5f43f6` before coding, is being implemented and verified. The approved feature hierarchy, test partitions and isolated test driver are in place; exact-head full delivery evidence remains pending. The user approved feature-local Governance folders, three test partitions and the dedicated test-only driver. Record approval without treating it as implemented behavior or closure of the four historical findings. Preserve full verification and recurrence expiry. Earlier inactive-proposal statements describe the T035 checkpoint; the current authority is [A-004](../../docs/amendments/A-004-governance-sequencing.md).
+
+## A-005 bounded diagnostic tasks (approved 13 October 2026)
+
+These tasks implement [A-005](../../docs/amendments/A-005-governance-diagnostics.md) only; T020/T021 remain unchecked and delivery halted. No new PR or full runtime matrix is authorized.
+
+- [x] D001 Record explicit user approval, inspect prerequisites and preserve the existing delivery hold.
+- [x] D002 Retain bounded allowlisted mutation failure receipts, with secret-canary/malformed-report/write-failure/cancellation controls in existing Python tooling.
+- [x] D003 Classify ALTER/probe outcomes independently and add fixed witness checkpoints; preserve original assertions, failure ownership, native waits and deadlines. Validate seeded combined failure/cancellation controls.
+- [ ] D004 Obtain independent architecture/security/test source review and publish the diagnostic revision on the separate branch without opening a PR.
+- [ ] D005 In a clean disposable checkout, run one focused ordinary witness/privilege comparison per provider and one SQL witness mutation diagnostic, preserving source restoration and reporting all outcomes.
+- [ ] D006 Publish evidence-based disposition, independent review and next recommendation; stop before any unapproved correction or delivery.

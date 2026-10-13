@@ -40,4 +40,4 @@ Already-running CI is retained for observation; no runtime edit, rerun or squash
 
 ## Next decision
 
-Recommend the narrowly scoped [A-005 diagnostic proposal](../../docs/amendments/A-005-governance-diagnostics.md). It requires explicit user approval before instrumentation or another runtime experiment. Keep both new findings, all four historical findings, human observations and public-release gates open. Diagnostic completion alone will not accept T020/T021 or authorize PR48's merge.
+The user subsequently approved the narrowly scoped [A-005 diagnostics](../../docs/amendments/A-005-governance-diagnostics.md) on 13 October 2026. That approval authorizes only the specified instrumentation and experiments. Keep both new findings, all four historical findings, human observations and public-release gates open. Diagnostic completion alone will not accept T020/T021 or authorize PR48's merge.

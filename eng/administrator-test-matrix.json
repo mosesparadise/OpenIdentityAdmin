@@ -322,6 +322,14 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_InvalidSemanticVersion_When_StorageOrCommandChangesIt_Then_NoWraparoundCanCommit(provider: \"PostgreSql\", condition: \"technical-governance-revision-overflow\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_PreGovernanceSchemaAndData_When_Migrated_Then_AdditiveRevisionPreservesExistingAuthority(provider: \"PostgreSql\", condition: \"upgrade-and-readiness\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_RuntimeDatabasePrincipal_When_GovernedChangesRun_Then_RequiredDmlWorksAndSchemaWritesDeny(provider: \"PostgreSql\", condition: \"runtime-privileges\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-present\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-failed\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-unobserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"cancellation-and-failure\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-cancellation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-failure\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"PostgreSql\", condition: \"sole-admin-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"PostgreSql\", condition: \"ceremony-then-governance\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"PostgreSql\", condition: \"governance-then-ceremony\")",
@@ -770,6 +778,14 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_InvalidSemanticVersion_When_StorageOrCommandChangesIt_Then_NoWraparoundCanCommit(provider: \"SqlServer\", condition: \"technical-governance-revision-overflow\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_PreGovernanceSchemaAndData_When_Migrated_Then_AdditiveRevisionPreservesExistingAuthority(provider: \"SqlServer\", condition: \"upgrade-and-readiness\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_RuntimeDatabasePrincipal_When_GovernedChangesRun_Then_RequiredDmlWorksAndSchemaWritesDeny(provider: \"SqlServer\", condition: \"runtime-privileges\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-present\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-absent\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-failed\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-unobserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"cancellation-and-failure\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-cancellation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-failure\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"SqlServer\", condition: \"sole-admin-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"SqlServer\", condition: \"ceremony-then-governance\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"SqlServer\", condition: \"governance-then-ceremony\")",
@@ -13819,6 +13835,390 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"ddl-present\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-failed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"PostgreSql\", condition: \"denied-unobserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"ddl-present\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-absent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-failed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass(provider: \"SqlServer\", condition: \"denied-unobserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_AlterAndProbeOutcomes_When_DenialIsRequired_Then_OnlyNativeDenialAndVerifiedAbsencePass",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"cancellation-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-cancellation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"PostgreSql\", condition: \"primary-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"cancellation-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-cancellation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PrivilegeDiagnosticTests.Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain(provider: \"SqlServer\", condition: \"primary-and-failure\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "PrivilegeDiagnosticTests",
+        "methodName": "Given_PrimaryAndProbeFailures_When_DiagnosticsUnwind_Then_PrimaryExceptionAndSecondaryEvidenceRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Privilege"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

@@ -18301,5 +18301,18 @@
       "Owner": "Implementation lead"
     }
   ],
-  "Exceptions": []
+  "Exceptions": [
+    {
+      "Finding": {
+        "Rule": "CQ004",
+        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Governance/Failures/WitnessOrderingTests.cs",
+        "Symbol": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(string)",
+        "Fingerprint": "06BD769A9654CD7A93380B99F22DDF6641F99395FD9BE07591DF7C8481FFADC1"
+      },
+      "Task": "T015",
+      "Owner": "Implementation lead",
+      "Reason": "Feature009 T015 / A-005 D003: diagnostic-only checkpoint instrumentation retains the exact decisive witness method and its primary exception/assertion stack. Refactoring the race during cause discovery would change the experiment. Remove or review on diagnostic disposition before correction/delivery; no production exception.",
+      "Expires": "2026-10-15"
+    }
+  ]
 }

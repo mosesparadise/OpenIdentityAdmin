@@ -104,11 +104,14 @@ internal static class WitnessEvidence
         Assert.False(gate.Released);
         if (first == observation)
         {
+            WitnessDiagnostics.Write(WitnessStage.ObserverFirst);
             await observation;
             Assert.False(write.IsCompleted);
             return false;
         }
+        WitnessDiagnostics.Write(WitnessStage.WriterFirst);
         await write;
+        WitnessDiagnostics.Write(WitnessStage.WriterSecurity);
         await RequireSecurityAsync(scenario, witness, WitnessSecurity.Lockout);
         Assert.False(gate.Released);
         Assert.False(governance.IsCompleted);

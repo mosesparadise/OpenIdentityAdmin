@@ -1,6 +1,6 @@
 # Governance verification diagnostics amendment A-005
 
-Status: **PROPOSED — not approved.** No new runtime sequence is authorized by this document. A-004 expired on incomplete mandatory SQL mutation evidence in PR48. The [verification record](../../specs/008-administrator-foundation/governance-verification.md) retains exact receipts and limits.
+Status: **APPROVED for bounded diagnostics only — 13 October 2026 (Europe/London).** The requesting user explicitly approved: “I approve A-005 for bounded governance diagnostics only, keeping PR #48 unmerged and all acceptance/public-release blockers open.” Only the diagnostic scope below is authorized; no correction, delivery or merge is authorized. A-004 expired on incomplete mandatory SQL mutation evidence in PR48. The [verification record](../../specs/008-administrator-foundation/governance-verification.md) retains exact receipts and limits.
 
 ## Recommended decision
 
@@ -8,7 +8,7 @@ Authorize one bounded diagnostic increment for GOV-EVID-01 and GOV-PRIV-01, keep
 
 The two observed failures are a SQL witness-lock mutant rejected outside its expected bypass assertion, and a SQL runtime-principal test that did not demonstrate its required native ALTER denial. Current receipts cannot distinguish their actual causes. Neither a harmless test defect nor a product trust bypass may be assumed.
 
-## Concrete work authorized if approved
+## Authorized diagnostic work
 
 1. Extend the existing `scripts/verify_mutations.py` failure path to retain a bounded, secret-safe diagnostic receipt before temporary report cleanup. Include source/run identity, closed phase/ordinal, counters, error-node counts, exact expected-marker/stack match booleans and allowlisted assertion/exception categories. Unknown stays unknown. No raw error text, stack, SQL, identifiers, URLs, credentials or child output. Diagnostic failure must never mask the original failure, delay bounded cleanup, or create `evidence.json` acceptance.
 2. Add seeded controls in existing `scripts/test_mutations.py` for malformed/absent reports, canary secret strings, unexpected assertions, failed receipt writes, cancellation and cleanup. Preserve all existing strict verifier checks and issuer7/administrator8/governance6 required targets.
@@ -24,7 +24,7 @@ The two observed failures are a SQL witness-lock mutant rejected outside its exp
 - If unmodified code demonstrably permits an actual trust/privilege bypass, halt the affected experiment and preserve evidence for a separate remediation decision. Expected deliberate mutant effects remain negative controls, never production acceptance.
 - Preserve GOV-EVID-01/GOV-PRIV-01 and all four historical incidents as unresolved until their own evidence-based closure criteria are met. All human/public-release gates remain open. A later passing execution establishes only that execution.
 - Existing CI may finish for retained observations. Publish the proposal and any approved diagnostic revision on a separate branch without opening a PR or pushing to PR48, because its existing pull-request workflow would start a full runtime matrix. Do not change CI triggers/selection, use skip flags, or claim CI acceptance. Review source through immutable branch/commit links. Any new execution under this proposal must be explicitly diagnostic and limited to item5; no automatic PR48 squash or downstream feature progression. A later correction/delivery decision must return to a normally reviewed PR and the full unchanged required matrix.
-- This authorization, if granted, expires at delivery of the bounded diagnostic disposition or any expansion beyond these terms. Governance correction/acceptance/merge requires another explicit decision based on that disposition.
+- This authorization expires at delivery of the bounded diagnostic disposition or any expansion beyond these terms. Governance correction/acceptance/merge requires another explicit decision based on that disposition.
 
 ## Why this is recommended
 

@@ -1,5 +1,7 @@
 # Delivery roadmap and task register
 
+**A-005 diagnostic authorization (13 October 2026):** the user approved [bounded governance diagnostics](amendments/A-005-governance-diagnostics.md). PR #48 remains unmerged, A-004 remains expired, and all acceptance/public-release blockers remain open. Only safe diagnostic instrumentation, seeded controls and the specified focused experiments are authorized.
+
 **Delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](../specs/008-administrator-foundation/governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
 
 This is the living view of **all approved work**, as of 13 October 2026. It supplements the immutable [v0.2 plan](approved-v0.2/06-spec-kit-plan.md), [PRD](approved-v0.2/00-prd.md) and [approval record](approval.md). Dates are status dates, not delivery estimates. No estimate is invented before a feature's dependencies and acceptance work are understood.
