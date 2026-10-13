@@ -50,3 +50,14 @@ Use `--filter-trait Provider=PostgreSql` or `Provider=SqlServer` with pre-enumer
 The pinned external `dotnet-coverage` wrapper captures the test runner and child hosts. Do not add a second collector inside that session. CI first requires every selected report, then merges unit, PostgreSQL/SQL Server HTTP and all selected provider/browser reports and keeps the same 90% line/80% branch floor for each handwritten module. See the [verification record](../../specs/001-platform-foundation/verification-mtp-layout.md) for executed evidence.
 
 Issuer verification also discovers the full test catalogue and both provider partitions, checks their disjoint/exhaustive identity union, then reconciles executed TRX names against discovery. Provider/browser artifact paths are distinct. Repeated positive xUnit simple trait filters use OR; the verifier instead uses an explicit VSTest-syntax conjunction within the native MTP runner. This does not add a VSTest adapter.
+
+Issuer HTTP execution uses two fixed groups without splitting existing shared-fixture collections: `Flows` (130 cases/provider) and `Boundaries` (162). CI runs foundation separately from both issuer groups; `standard` and `all` still include both groups. For focused execution, after the same build/container/TLS prerequisites:
+
+```sh
+python3 scripts/verify.py PostgreSql --partition foundation
+python3 scripts/verify.py PostgreSql --partition issuer --issuer-group Flows
+python3 scripts/verify.py PostgreSql --partition issuer --issuer-group Boundaries
+# Repeat all three commands with SqlServer for the other mandatory provider.
+```
+
+Before either issuer group runs, discovery proves both filters form the exact disjoint HTTP inventory. Execution uses strict TRX identity/completion checks. CI requires four separate `issuer-{provider}-{flows|boundaries}` reports; all-engine combined coverage requires 49 inputs. Each invocation retains its 660-second cap and each CI job its 20-minute cap. Aggregate available issuer time increases to two invocations per provider; this is test execution organization, not a product-performance claim. [The operations evidence](../../specs/008-administrator-foundation/operations-evidence.md#issuer-execution-deadline-and-fixed-decomposition) retains the rejected original timeout and review limits.

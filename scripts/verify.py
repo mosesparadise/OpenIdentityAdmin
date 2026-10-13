@@ -8,14 +8,19 @@ from verify_contrast_experiment import execute, install_cancellation_handler
 from test_evidence import require_complete_trx
 from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, administrator_invocations, require_administrator_browser, administrator_browser_invocations
 
+from issuer_selection import issuer_catalogue, issuer_invocations, issuer_filter, require_issuer_inventory, require_issuer_selections
+
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
-parser.add_argument("--partition", choices=["all", "standard", "lifecycle", "administrator"], default="all")
+parser.add_argument("--partition", choices=["all", "standard", "foundation", "issuer", "lifecycle", "administrator"], default="all")
 parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security"])
 parser.add_argument("--browser-story", choices=["Accounts", "Security"])
+parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
 args = parser.parse_args()
+if args.issuer_group and (args.partition != "issuer" or args.browser or args.story or args.profile == "unit"):
+    parser.error("Issuer group requires an ordinary issuer provider partition")
 if args.browser_story and (not args.browser or args.partition != "administrator"):
     parser.error("Browser story requires an administrator browser invocation")
 install_cancellation_handler()
@@ -33,7 +38,9 @@ except ValueError as error:
     parser.error(str(error))
 invocations = []
 for project, count in projects.items():
-    if project == "Issuer.Lifecycle":
+    if project == "Issuer" and not args.browser:
+        invocations.extend((project, expected, group, None) for group, expected in issuer_invocations(matrix, args.profile, args.issuer_group))
+    elif project == "Issuer.Lifecycle":
         invocations.extend((project, expected, story, None) for story, expected in lifecycle_invocations(matrix, args.profile, args.story))
     elif project == "Administrator" and not args.browser:
         invocations.extend((project, expected, story, None) for story, expected in administrator_invocations(matrix, args.profile, args.story))
@@ -43,6 +50,8 @@ for project, count in projects.items():
         invocations.append((project, count, None, None))
 for project, expected_count, story, browser_story in invocations:
     label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower().replace(".", "-") if story else "")
+    if project == "Issuer" and not args.browser:
+        label = "issuer-" + args.profile + "-" + story.lower()
     if project == "Administrator":
         label = "administrator-" + args.profile + "-" + ((args.browser + "-" + browser_story.lower()) if args.browser else story.lower())
     results = ROOT / "artifacts" / "tests" / label
@@ -59,7 +68,7 @@ for project, expected_count, story, browser_story in invocations:
         def discover(expression=None):
             invocation = discovery + (["--filter", expression] if expression else [])
             result = execute(invocation, os.environ.copy(), timeout=60, capture=True)
-            return catalogue(result, project=project)
+            return issuer_catalogue(result) if project == "Issuer" else catalogue(result, project=project)
         all_tests = discover()
         if project == "Administrator":
             inventory = json.loads((ROOT / "eng/administrator-test-matrix.json").read_text())
@@ -78,12 +87,20 @@ for project, expected_count, story, browser_story in invocations:
             require_lifecycle_story(all_tests, selected, args.profile, story, matrix)
             command += ["--filter", expression]
         else:
+            require_issuer_inventory(all_tests, matrix)
             http_filter = f"Provider={args.profile}&Category!=Browser"
             browser_filter = f"Provider={args.profile}&Category=Browser"
             http, browser = discover(http_filter), discover(browser_filter)
             require_partition(all_tests, http, browser, args.profile, matrix["profiles"][args.profile]["Issuer"], matrix["browser"]["Issuer"])
-            selected = browser if args.browser else http
-            command += ["--filter", browser_filter if args.browser else http_filter]
+            expression = browser_filter if args.browser else issuer_filter(matrix, args.profile, story)
+            if args.browser:
+                selected = browser
+            else:
+                groups = {group: discover(issuer_filter(matrix, args.profile, group))
+                          for group, _ in issuer_invocations(matrix, args.profile)}
+                require_issuer_selections(all_tests, groups, args.profile, matrix)
+                selected = groups[story]
+            command += ["--filter", expression]
     elif args.profile != "unit":
         command += ["--filter-trait", f"Provider={args.profile}"]
     elif project == "AppHost":
@@ -101,6 +118,6 @@ for project, expected_count, story, browser_story in invocations:
     count = require_complete_trx(report, expected_count=expected_count)
     if selected is not None:
         require_execution_names(report, selected)
-        if project in ("Issuer.Lifecycle", "Administrator"):
+        if project in ("Issuer", "Issuer.Lifecycle", "Administrator"):
             require_lifecycle_execution(report, selected)
     print(f"Verified {project}/{label}: {count} required tests passed; none skipped", flush=True)

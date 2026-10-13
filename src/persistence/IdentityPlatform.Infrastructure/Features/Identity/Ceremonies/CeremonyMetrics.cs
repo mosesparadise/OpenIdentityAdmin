@@ -10,7 +10,7 @@ internal enum CeremonyOutcome
 /// <summary>Emits only fixed low-cardinality outcomes and metadata counts; identifiers and credentials are never metric tags.</summary>
 internal static class CeremonyMetrics
 {
-    private const string MeterName = "IdentityPlatform.Administrator.Ceremonies";
+    internal const string MeterName = "IdentityPlatform.Administrator.Ceremonies";
     private const string DecisionsName = "administrator.ceremony.decisions";
     private const string BacklogName = "administrator.cleanup.backlog";
     private const string OutcomeTag = "outcome";

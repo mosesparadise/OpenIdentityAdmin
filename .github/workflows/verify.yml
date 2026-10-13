@@ -133,8 +133,12 @@ jobs:
       matrix:
         include:
           - { profile: unit, partition: all, label: unit }
-          - { profile: PostgreSql, partition: standard, label: PostgreSql }
-          - { profile: SqlServer, partition: standard, label: SqlServer }
+          - { profile: PostgreSql, partition: foundation, label: PostgreSql }
+          - { profile: SqlServer, partition: foundation, label: SqlServer }
+          - { profile: PostgreSql, partition: issuer, issuer_group: Flows, label: issuer-PostgreSql-flows }
+          - { profile: SqlServer, partition: issuer, issuer_group: Flows, label: issuer-SqlServer-flows }
+          - { profile: PostgreSql, partition: issuer, issuer_group: Boundaries, label: issuer-PostgreSql-boundaries }
+          - { profile: SqlServer, partition: issuer, issuer_group: Boundaries, label: issuer-SqlServer-boundaries }
           - { profile: PostgreSql, partition: administrator, story: Bootstrap, label: administrator-PostgreSql-bootstrap }
           - { profile: PostgreSql, partition: administrator, story: Factors, label: administrator-PostgreSql-factors }
           - { profile: SqlServer, partition: administrator, story: Bootstrap, label: administrator-SqlServer-bootstrap }
@@ -172,6 +176,7 @@ jobs:
       - run: dotnet build --no-restore --nologo
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
+      - run: python3 scripts/test_issuer_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
@@ -186,7 +191,7 @@ jobs:
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -223,6 +228,7 @@ jobs:
       - run: dotnet build --no-restore --nologo
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
+      - run: python3 scripts/test_issuer_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py

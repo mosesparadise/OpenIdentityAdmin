@@ -24,7 +24,7 @@ Supply these settings through your private local configuration or process enviro
 
 | Setting | Requirement |
 | --- | --- |
-| `Pilot:Enabled` | Exactly `true` (case-insensitive); omitted/false keeps the health-only host. Other values fail. Enabled AuthServer requires Development. |
+| `Pilot:Enabled` | Exactly `true` (case-insensitive); omitted/false disables the pilot; health-only also requires `Identity:AdministratorAccounts:Enabled=false`. Other values fail. Enabled AuthServer requires Development. |
 | `Pilot:UserName` | Explicit synthetic account name,1–128 characters; never an administrator. |
 | `Pilot:Password` | External high-entropy synthetic password,16–256 characters. |
 | `Pilot:ClientSecret` | External high-entropy synthetic client secret,32–256 characters. |

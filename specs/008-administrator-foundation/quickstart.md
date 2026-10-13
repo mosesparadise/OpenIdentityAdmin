@@ -90,7 +90,7 @@ Run all three browser commands with `SqlServer` as well. Browser installation an
 - Use **Regenerate recovery codes** from account status with the password and an unused current authenticator code. Save the new codes immediately. All previously issued recovery codes and local sessions are invalidated; the current browser receives a replacement session.
 - Use **Sign out** and submit its confirmation. Visiting the confirmation alone does not log out. The POST revokes exactly this stored account session, leaving other current sessions intact.
 
-Fresh-password/step-up interactions expire after five minutes; a GET never extends that time. If recovery staging expires or its response is lost, restart with a fresh password and a different unused recovery code. Remaining codes remain usable until successful factor replacement. If a final completion response is lost, its codes cannot be redisplayed; authenticate with the installed factor and explicitly regenerate codes. Losing every factor/recovery code has no operator bypass or bootstrap reset. These are local account journeys, not Admin API/BFF access or OpenID Connect logout.
+Fresh-password/step-up interactions expire after five minutes; a GET never extends that time. If restricted recovery staging expires, or committed redemption loses its new browser binding/response, restart with fresh password and another unused recovery code. A lost setup GET with the original binding retained can reread the same staged key until its original expiry; GET never extends freshness. Remaining codes remain usable until successful factor replacement. If a final completion response is lost, its codes cannot be redisplayed; authenticate with the installed factor and explicitly regenerate codes. Losing every factor/recovery code has no operator bypass or bootstrap reset. These are local account journeys, not Admin API/BFF access or OpenID Connect logout.
 
 Focused verification (repeat for `SqlServer`):
 
@@ -103,3 +103,7 @@ python3 scripts/verify.py PostgreSql --partition administrator --browser webkit 
 ```
 
 Omitting `--browser-story` executes both mandatory Accounts and Security invocations separately, retaining each existing timeout. Native no-script, keyboard, theme, accessibility and secret-history checks run in all three engines. Human screen-reader/password-manager evidence remains a separate tracked obligation.
+
+## Operational and human handoff
+
+Use the [administrator operations runbook](../../docs/operations/administrator-accounts.md) for activation combinations, safe incident/telemetry interpretation, capacity/clock handling and durable-state/restore limits. The [manual assessment packet](../../docs/operations/administrator-manual-assessment.md) and [unexecuted result template](../../docs/operations/administrator-manual-results-template.md) cover Windows/WSL2 password-manager, keyboard and screen-reader observations on both providers. No human acceptance is inferred from CI.

@@ -4,11 +4,16 @@ import xml.etree.ElementTree as ET
 
 
 def select_projects(matrix, profile, browser=None, partition='all'):
-    if partition not in ('all', 'standard', 'lifecycle', 'administrator'):
+    """Select reviewed project partitions while rejecting incompatible unit or browser requests."""
+    if partition not in ('all', 'standard', 'foundation', 'issuer', 'lifecycle', 'administrator'):
         raise ValueError('Unknown test partition')
-    if partition != 'all' and (profile == 'unit' or (browser and partition == 'lifecycle')):
+    if partition != 'all' and (profile == 'unit' or (browser and partition in ('foundation', 'issuer', 'lifecycle'))):
         raise ValueError('Partition is incompatible with this profile or browser')
     projects = matrix['browser'] if browser else matrix['profiles'][profile]
+    if partition == 'foundation':
+        return {name: projects[name] for name in ('Persistence', 'AppHost')}
+    if partition == 'issuer':
+        return {'Issuer': projects['Issuer']}
     if partition == 'standard':
         return {name: count for name, count in projects.items() if name not in ('Issuer.Lifecycle', 'Administrator')}
     if partition == 'administrator' and 'Administrator' not in projects:

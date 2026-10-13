@@ -2,7 +2,7 @@
 
 This pack prepares the outstanding **T021 / LOGIN-007 and LOGIN-009 / US2 AC4** assessment. It contains instructions, **not executed results**. The [current acceptance matrix](../../specs/004-first-party-login/acceptance-matrix.md) distinguishes existing automation from open human acceptance. Use the [result template](../../specs/004-first-party-login/manual-assessment-results.md) for each assessment session.
 
-The scope is the Development-only, synthetic, non-administrator Razor login and its error/continuation states. Admin BFF, React, MFA, recovery, consent and production rollout are not available journeys. The future five-minute application-creation target in **NFR-09** cannot be measured using this pilot. A qualified assessor must evaluate the applicable **WCAG 2.2 Level A and AA** criteria across the complete scoped process; the cases below are a starting inventory, not a complete WCAG checklist or conformance assertion.
+The scope is the Development-only, synthetic, non-administrator Razor login and its error/continuation states. Admin BFF, React, MFA, recovery, consent and production rollout are outside this pilot assessment. The implemented administrator MFA/recovery pages have a separate [manual assessment packet](administrator-manual-assessment.md). The future five-minute application-creation target in **NFR-09** cannot be measured using this pilot. A qualified assessor must evaluate the applicable **WCAG 2.2 Level A and AA** criteria across the complete scoped process; the cases below are a starting inventory, not a complete WCAG checklist or conformance assertion.
 
 ## People and environment required
 
