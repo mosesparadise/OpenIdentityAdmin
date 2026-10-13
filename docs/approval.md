@@ -1,5 +1,7 @@
 # Documentation approval
 
+On 13 October 2026 (Europe/London), the requesting user approved [A-003](amendments/A-003-startup-investigation-sequencing.md) by stating **“Proceed with your recommendation”** in direct response to the recommendation to squash PR #35 under that amendment. The exception permits only that normal squash after exact-final-head checks and review; it expires at merge or recurrence. ADM-OPS-01 remains unresolved and acceptance/public-release-blocking. No later implementation, unexecuted human assessment, deployment or external declaration is authorized through this exception. PR #35 records the final checks and merge state.
+
 Current delivery note: the A-002 sequencing exception remains expired. Its reproduced theme finding now has an [accepted corrected-source disposition](../specs/004-first-party-login/verification.md#completed-corrected-source-acceptance-and-disposition); final documentation-head checks and squash delivery are recorded on PR #11. The approval and recurrence entries below preserve their historical scope.
 
 On 10 October 2026, the requesting user stated: **“Version 0.2 is approved.”**

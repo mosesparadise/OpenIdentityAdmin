@@ -1,8 +1,8 @@
 # Startup investigation sequencing amendment A-003
 
-Status: **Proposed; not approved.** No permission is inferred from prior A-001/A-002 approvals or the general instruction to process three tasks.
+Status: **Approved on 13 October 2026 (Europe/London), for PR #35 only, under the conditions below.** The exception expires at that merge or a recurrence, whichever happens first. It does not resolve ADM-OPS-01.
 
-## Decision requested
+## Approved decision
 
 Permit the normal squash merge of [PR #35](https://github.com/mosesparadise/OpenIdentityAdmin/pull/35), after every exact-final-head required check passes and source findings are resolved, while retaining **ADM-OPS-01** as an unresolved acceptance and public-release blocker. This exception would finish only T029's scoped telemetry/operations handoff. It would not accept the historical failure, close full T029/M02-A acceptance, or authorize subsequent task implementation through the exception.
 
@@ -14,11 +14,11 @@ At head `cab9dbe`, [run 38337949308](https://github.com/mosesparadise/OpenIdenti
 
 The follow-up adds bounded failure diagnostics and eight seeded controls without retrying a failed action, extending deadlines, excluding cases, suppressing assertions or changing production Worker behavior. Independent test review accepts this source. Independent architecture review correctly distinguishes source acceptance from disposition of the historical verification failure. A passing new run verifies its own execution; it does not close ADM-OPS-01.
 
-A separate [run 38340018934](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38340018934) passed all six SQL Server AppHost cases but exceeded the 660-second issuer invocation deadline. That run is rejected too. The reviewed correction splits the unchanged 292 issuer cases into fixed 130/162 groups, preserving entire fixture cohorts and proving exact native selections/TRX identities. Every invocation still has a 660-second limit, but the aggregate available budget increases to two invocations per provider. Four independent issuer reports become mandatory, raising coverage inputs from 45 to 49. **This proposal does not waive that timeout, any new failure or missing coverage:** the complete final matrix must pass before a merge decision.
+A separate [run 38340018934](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38340018934) passed all six SQL Server AppHost cases but exceeded the 660-second issuer invocation deadline. That run is rejected too. The reviewed correction splits the unchanged 292 issuer cases into fixed 130/162 groups, preserving entire fixture cohorts and proving exact native selections/TRX identities. Every invocation still has a 660-second limit, but the aggregate available budget increases to two invocations per provider. Four independent issuer reports become mandatory, raising coverage inputs from 45 to 49. **This amendment does not waive that timeout, any new failure or missing coverage:** the complete final matrix must pass before a merge decision.
 
 Repository guidance says, “No skipped/flaky required case counts as a clean pass.” Constitution §23 says, “Failing, cancelled or unexpectedly skipped required work MUST block acceptance.” Consequently, ordinary task/merge authorization does not supply this exception. A-002 concerned a different browser finding and does not cover this incident.
 
-## Proposed conditions
+## Approved conditions
 
 1. Merge PR #35 only after its exact final head passes all required static, supply-chain, instruction, unit, both-provider, browser, contract, mutation and combined coverage checks. Preserve every deadline, inventory, negative control and all nine module floors. Respect GitHub protections; no self-approval or bypass claim.
 2. Retain the failed run and ADM-OPS-01 as unresolved. Do not call the diagnostic follow-up a causal fix, label the failure an infrastructure transient, or count the rejected run as clean acceptance. The exact final run and review are recorded on the PR.
@@ -33,4 +33,6 @@ Recommend approving this narrow sequencing exception **only if the exact final m
 
 ## Approval record
 
-Pending an explicit user decision. The author must record the actual decision and its scope; this proposal is not an approval record.
+On 13 October 2026 (Europe/London), after the recommendation to approve this exact amendment and merge PR #35 while retaining ADM-OPS-01 as an unresolved release blocker, the requesting user stated: **“Proceed with your recommendation”** This approves only the bounded sequencing decision above. It is not inferred from A-001/A-002 or the earlier general instruction to process three tasks.
+
+Implementation head `4f5cf3fa4a1b7194f66963aac2580dd3cfe62ecf` passed all 62 jobs in [run 38343066101](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38343066101), including 1,880 ordinary .NET cases with no skips, all 49 coverage inputs and nine module floors. Source/document reviews converged and no review threads remained at approval. Recording this decision changes the PR head; its exact final checks and normal squash result are recorded on [PR #35](https://github.com/mosesparadise/OpenIdentityAdmin/pull/35). Approval does not waive those checks or any recurrence.
