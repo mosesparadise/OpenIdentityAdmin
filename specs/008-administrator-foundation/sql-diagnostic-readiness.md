@@ -47,3 +47,36 @@ After the original disposition, the user explicitly requested “Try again.” T
 Managed Docker remained available (28.4.0). Current environment observations reported restricted network policy enforced, with `mcr.microsoft.com` included among permitted hosts. The exact pinned image was absent. One additional acquisition through the existing managed socket/proxy/TLS path failed after 10.240 seconds, native exit 1, with only the bounded `forbidden-response-text` category retained. The image remained absent afterward. The permitted registry hostname alone does not establish accessibility of every required request; neither the rejecting component nor the cause of the denial is identified.
 
 The [separate safe retry receipt](evidence/a006/image-readiness-retry-01.json) preserves this outcome. No network policy, daemon, credential, TLS or image changes were made. No SQL comparison or mutant ran, and no source implementation or acceptance state changed. PR48 remains draft/unmerged; all findings and human/public-release blockers remain open. Further identical retries are not useful without an environment readiness change. Recommended next step remains an environment-owner investigation of access to the exact pinned SQL image through the managed path.
+
+## Registry access investigation — 13 October 2026
+
+The user approved the recommendation to investigate registry access through the managed proxy. This follow-up performed read-only metadata and bounded HTTP probes, with no image acquisition or SQL execution. It did not change network policy, credentials, daemon configuration, TLS verification or the pinned digest.
+
+**Confirmed current blocking boundary:** requests to the two observed layer-download destinations receive HTTP **403 at the proxy CONNECT tunnel**, before an origin HTTPS response is available. The configured registry hostname is reachable, but the regional download hosts are absent from the enforced allowlist.
+
+| Probe | Observation |
+| --- | --- |
+| Managed Docker | 28.4.0; HTTP and HTTPS proxy configured; no registry mirrors |
+| Registry `/v2/` | HTTP 200; CONNECT 200; TLS verified |
+| Pinned manifest | HTTP 200; TLS verified; SHA256 exactly matches pinned `4402d880…64a090` |
+| Three layer HEAD requests to registry | HTTP 200; no redirects; insufficient to prove download readiness |
+| Three bounded layer GET requests to registry | HTTP 307; redirects to the two regional hosts below |
+| `westcentralus.data.mcr.microsoft.com` | Proxy CONNECT 403; curl exit 56; no origin HTTP response |
+| `centralus.data.mcr.microsoft.com` | Proxy CONNECT 403; curl exit 56; no origin HTTP response |
+
+The GET probes requested byte 0 only, imposed a one-MiB transfer limit and a 30-second timeout, and did not automatically follow redirects. One HEAD probe per distinct returned destination then tested the configured proxy path with a 20-second timeout. Both were denied at CONNECT. A reported TLS verification field of zero on these failed tunnels is **not** successful origin TLS verification; no origin connection was established. Raw redirects, signed query parameters, headers and bodies are not published. The [sanitized receipt](evidence/a006/registry-access-investigation.json) retains only bounded status values and public hostnames.
+
+Current cloud status reports policy observations current and restricted policy enforced; both regional hosts are absent from its effective allowed hosts and the local policy snapshot. Docker reports the same configured proxy hostname. Daemon log inspection was unavailable to the task user (permission denied), so the historical Docker requests were not traced. This identifies a present reproducible prerequisite obstruction consistent with the earlier Forbidden pull failures; it does not retroactively prove their complete request path or diagnose either original governance finding. The image remains absent.
+
+### Concrete next action
+
+Use the managed environment configuration workflow to add these **two exact HTTPS destination hosts** to its network allowlist:
+
+- `westcentralus.data.mcr.microsoft.com`
+- `centralus.data.mcr.microsoft.com`
+
+Keep `mcr.microsoft.com`, restricted networking, the existing proxy and TLS verification. No wildcard or unrestricted Internet access is proposed. The available runtime connector exposes status only, so this configuration must be applied through the environment settings and their user-review workflow; editing `/etc/codex/network-policy.json` cannot grant access. The runtime skill explicitly requires that workflow for configuration changes.
+
+After the configuration is applied and current status confirms enforcement, first recheck the observed redirect destinations, then acquire the unchanged pinned image under an authorized bounded retry. If future redirects name a different regional host, stop and review that exact destination. Only verified image readiness can permit the ordinary SQL comparison and then, only after both cases pass, the conditional mutant under separately current execution authority. No automatic retry, production correction, full CI, acceptance or merge is authorized by this investigation. PR48 and all six findings/human/public-release blockers remain open.
+
+Independent architecture/security evidence review found no blocking documentation issue and confirmed the limits above. This was read-only AI review, not reproduction of the network probes or incident acceptance. Staged documentation/receipt secret scanning and whitespace validation passed; no application source changed.
