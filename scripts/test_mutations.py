@@ -1,3 +1,6 @@
+import io
+import json
+from contextlib import redirect_stdout
 import tempfile
 import os
 import signal
@@ -6,7 +9,8 @@ import sys
 import time
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
+import verify_mutations as verifier
 import xml.etree.ElementTree as ET
 
 from verify_mutations import changed_source, execute, validate_report, manifest, run, require_clean_checkout, ROOT, FAILURE_DIAGNOSTIC
@@ -54,7 +58,157 @@ def wait_for_termination(pid, timeout=1):
         time.sleep(0.01)
 
 
+def diagnostic_run(*, error=None, cleanup_error=None, code=0, sink_failure=None):
+    """Inject subprocess outcomes and return only captured diagnostics plus the supervised mock."""
+    secret = 'synthetic-phase-secret'
+    process = Mock(pid=123, returncode=code)
+    process.poll.return_value = code
+    process.communicate.side_effect = [error, ('', None), ('', None)] if error else [(secret, None)]
+    process.wait.side_effect = cleanup_error
+    output = io.StringIO()
+    original_print = print
+    def emit(*args, **kwargs):
+        if sink_failure and '"event": "' + sink_failure + '"' in args[0]:
+            raise BrokenPipeError(secret)
+        original_print(*args, **kwargs)
+    with patch.object(verifier.subprocess, 'Popen', return_value=process), patch.object(verifier.os, 'killpg') as killpg, \
+            patch('builtins.print', side_effect=emit), redirect_stdout(output):
+        try:
+            verifier.perform('baseline', 'execution', run, [secret], 180, {'private': secret})
+        except BaseException as observed:
+            assert observed is (cleanup_error or error)
+        else:
+            assert error is None and cleanup_error is None, 'Expected supervised failure did not propagate'
+    assert [call.args for call in killpg.call_args_list] == ([(123, signal.SIGTERM), (123, signal.SIGKILL)] if error else [])
+    text = output.getvalue()
+    assert secret not in text
+    events = [json.loads(line.removeprefix('mutation-diagnostic ')) for line in text.splitlines()]
+    return events, process
+
+
+def incomplete_main(root, role):
+    """Exercise actual orchestration/restoration with a timeout in each evidence-producing role."""
+    source = root / 'target.cs'
+    source.write_text('original')
+    item = {'id': 'control', 'path': 'target.cs', 'before': 'original', 'after': 'mutated', 'method': METHOD, 'marker': MARKER}
+    evidence = root / 'artifacts/mutations/PostgreSql/evidence.json'
+    evidence.parent.mkdir(parents=True)
+    evidence.write_text('stale')
+    def execute_phase(*args, **kwargs):
+        if verifier.PHASE.get()[0] == role:
+            raise subprocess.TimeoutExpired('synthetic-phase-secret', 180)
+        return {'total': 1}
+    with patch.object(verifier, 'ROOT', root), patch.object(verifier, 'manifest', return_value=[item]), \
+            patch.object(verifier, 'require_clean_checkout'), patch.object(verifier, 'run', return_value=(0, 'f' * 40)), \
+            patch.object(verifier, 'build'), patch.object(verifier, 'discover', return_value={'uid': (NAME, 'PostgreSql', False)}), \
+            patch.object(verifier, 'execute', side_effect=execute_phase), patch.object(verifier.signal, 'signal'), \
+            patch.object(sys, 'argv', ['verify_mutations', 'PostgreSql', '--disposable-checkout']), redirect_stdout(io.StringIO()):
+        try:
+            verifier.main()
+        except subprocess.TimeoutExpired:
+            pass
+        else:
+            raise AssertionError('Incomplete orchestration unexpectedly returned')
+    assert source.read_text() == 'original' and not evidence.exists()
+
+
 class MutationEvidenceTests(unittest.TestCase):
+    def test_Given_CommandOutcomes_When_DiagnosticsAreEmitted_Then_NoExitGrantsAcceptance(self):
+        """Zero, expected test-failure and other exits retain distinct nonaccepting observations."""
+        for code, outcome in [(0, 'zero-exit'), (2, 'test-failure-exit'), (3, 'other-exit')]:
+            with self.subTest(code=code):
+                events, process = diagnostic_run(code=code)
+                self.assertEqual(['started', 'returned'], [event['event'] for event in events])
+                self.assertEqual(outcome, events[-1]['outcome'])
+                self.assertEqual(('baseline', 'execution', 0), tuple(events[-1][key] for key in ('role', 'operation', 'ordinal')))
+                self.assertEqual((180, 10), (events[-1]['budget_seconds'], events[-1]['cleanup_budget_seconds']))
+                self.assertTrue(all(type(event['elapsed_ms']) is int and event['elapsed_ms'] >= 0 for event in events))
+                process.communicate.assert_called_once_with(timeout=180)
+                process.wait.assert_not_called()
+
+    def test_Given_FailedCommand_When_CleanupRuns_Then_PrimaryFailureAndCleanupAreDistinct(self):
+        """Secret-bearing timeouts/cancellation/errors stay fatal without claiming complete cleanup."""
+        secret = 'synthetic-phase-secret'
+        for error, outcome in [(subprocess.TimeoutExpired(secret, 180, secret, secret), 'timeout'),
+                               (RuntimeError(secret), 'error'), (KeyboardInterrupt(secret), 'cancelled')]:
+            for cleanup_error in (None, subprocess.TimeoutExpired(secret, 10, secret, secret)):
+                with self.subTest(outcome=outcome, incomplete=cleanup_error is not None):
+                    events, process = diagnostic_run(error=error, cleanup_error=cleanup_error)
+                    self.assertEqual(['started', 'command-failed', 'cleanup-incomplete' if cleanup_error else 'cleanup-returned'],
+                                     [event['event'] for event in events])
+                    self.assertEqual(outcome, events[1]['outcome'])
+                    self.assertEqual('timeout' if cleanup_error else 'returned', events[-1]['outcome'])
+                    self.assertEqual([180, 10, 10], [call.kwargs['timeout'] for call in process.communicate.call_args_list])
+                    process.wait.assert_called_once_with(timeout=10)
+
+    def test_Given_LaunchFailure_When_CommandCannotStart_Then_NoCleanupOrSecretsAreInvented(self):
+        """A launch exception has its own safe event and does not imply an existing child."""
+        secret = 'synthetic-phase-secret'
+        output = io.StringIO()
+        with patch.object(verifier.subprocess, 'Popen', side_effect=OSError(secret)), \
+                patch.object(verifier, 'cleanup_process') as cleanup, redirect_stdout(output):
+            with self.assertRaises(OSError):
+                verifier.perform('baseline', 'build', run, [secret], 180, {'private': secret})
+        self.assertNotIn(secret, output.getvalue())
+        events = [json.loads(line.removeprefix('mutation-diagnostic ')) for line in output.getvalue().splitlines()]
+        self.assertEqual(['started', 'launch-failed'], [event['event'] for event in events])
+        self.assertEqual('error', events[-1]['outcome'])
+        cleanup.assert_not_called()
+        self.assertEqual(('control', 'command', 0), verifier.PHASE.get())
+
+    def test_Given_DiagnosticSinkFailure_When_CommandFails_Then_TeardownAndFailurePropagationRemainMandatory(self):
+        """Broken output during failure/cleanup cannot bypass process cleanup or replace its failure."""
+        for event in ('command-failed', 'cleanup-returned', 'cleanup-incomplete'):
+            error = subprocess.TimeoutExpired('synthetic-phase-secret', 180)
+            cleanup_error = subprocess.TimeoutExpired('synthetic-phase-secret', 10) if event == 'cleanup-incomplete' else None
+            with self.subTest(event=event):
+                _, process = diagnostic_run(error=error, cleanup_error=cleanup_error, sink_failure=event)
+                self.assertEqual([180, 10, 10], [call.kwargs['timeout'] for call in process.communicate.call_args_list])
+                process.stdout.close.assert_called_once()
+                process.wait.assert_called_once_with(timeout=10)
+
+    def test_Given_CancellationDuringFailureReporting_When_Unwinding_Then_CleanupStillRuns(self):
+        """Even a BaseException outside best-effort reporting cannot skip the teardown finally."""
+        process = Mock(pid=123)
+        process.communicate.side_effect = subprocess.TimeoutExpired('private', 180)
+        with patch.object(verifier.subprocess, 'Popen', return_value=process), \
+                patch.object(verifier, 'diagnostic', side_effect=[None, KeyboardInterrupt(), None]), \
+                patch.object(verifier, 'cleanup_process') as cleanup:
+            with self.assertRaises(KeyboardInterrupt):
+                run(['private'], 180, {})
+        cleanup.assert_called_once_with(process, 10)
+
+    def test_Given_InvalidPhase_When_Requested_Then_NoCommandRuns(self):
+        """Reject arbitrary diagnostic labels and out-of-range ordinals before execution."""
+        for role, operation, ordinal in [('secret', 'build', 0), ('baseline', 'secret', 0), ('mutant', 'build', -1),
+                                         ('mutant', 'build', 9), ('mutant', 'build', True)]:
+            action = Mock()
+            with self.assertRaises(verifier.MutationError):
+                verifier.perform(role, operation, action, ordinal=ordinal)
+            action.assert_not_called()
+        self.assertEqual(('control', 'command', 0), verifier.PHASE.get())
+
+    def test_Given_OperationWrappers_When_Invoked_Then_OriginalBudgetsArePreserved(self):
+        """Build/discovery/execution retain their original per-command budgets and roles."""
+        observed = []
+        def supervised(*args, **kwargs):
+            observed.append((verifier.PHASE.get(), args[1]))
+            return 0, ''
+        with tempfile.TemporaryDirectory() as directory, patch.object(verifier, 'run', side_effect=supervised), \
+                patch.object(verifier, 'catalogue', return_value={}), patch.object(verifier, 'validate_report', return_value={}):
+            verifier.perform('baseline', 'build', verifier.build, {})
+            verifier.perform('mutant', 'discovery', verifier.discover, 'private', {}, ordinal=1)
+            verifier.perform('restored', 'execution', execute, 'private', set(), Path(directory), {})
+        self.assertEqual([(('baseline', 'build', 0), 180), (('mutant', 'discovery', 1), 60),
+                          (('restored', 'execution', 0), 180)], observed)
+
+    def test_Given_IncompleteEvidenceRole_When_TimeoutOccurs_Then_SourceRestoresAndNoArtifactExists(self):
+        """Incomplete baseline, mutant and restored controls cannot leave stale acceptance evidence."""
+        for role in ('baseline', 'mutant', 'restored'):
+            with self.subTest(role=role), tempfile.TemporaryDirectory() as directory:
+                incomplete_main(Path(directory), role)
+            self.assertEqual(('control', 'command', 0), verifier.PHASE.get())
+
     def check(self, root, *, code=2, failed=True):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'result.trx'

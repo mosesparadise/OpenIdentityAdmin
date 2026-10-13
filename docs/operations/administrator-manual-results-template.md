@@ -6,7 +6,8 @@ Status: **not_run**. This template contains no acceptance results. Follow the [a
 
 | Field | Actual value |
 | --- | --- |
-| Assessor / reviewer | Unassigned |
+| Assessor | Requesting user (volunteered 13 October 2026); record actual execution attribution |
+| Independent results reviewer | Unassigned; required before manual acceptance |
 | UTC execution / review dates | Not recorded |
 | Product commit / clean working tree | Not recorded |
 | Private configuration reference (no secrets) | Not recorded |
