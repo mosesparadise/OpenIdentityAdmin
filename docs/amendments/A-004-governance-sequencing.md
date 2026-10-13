@@ -1,8 +1,8 @@
-# Proposed administrator-governance sequencing amendment A-004
+# Administrator-governance sequencing amendment A-004
 
-Status: **DRAFT, NOT APPROVED.** Prepared on 13 October 2026 (Europe/London). This proposal has no implementation authority. It becomes eligible for an approval request only after the bounded T033/T034 investigations and T035 acceptance reconciliation have been reviewed and their PRs normally squash-merged. Final outcomes are recorded below; this proposal PR must also pass its own required checks and normal squash, recorded on the PR, before requesting approval.
+Status: **APPROVED — active only within the conditions below.** The requesting user explicitly approved A-004 on 13 October 2026 (Europe/London). T033/T034/T035 were delivered through PRs #44–46; PR #47 records final evidence. PR #46's reviewed head `b034ca775220cae5c1edab166e299e8176ec5a17` passed all 62 jobs in run `38395691033`; independent review reconciled all four mutation artifacts. This approval authorizes only T020/T021 sequencing and expires as specified in conditions 4 and 8. No historical finding or human/release gate is closed.
 
-## Decision proposed
+## Approved decision
 
 Permit implementation and normal squash delivery of feature 008 T020/T021, limited to the internal current-permission and last-administrator governance contract in the [approved T019 design](../../specs/008-administrator-foundation/governance-design.md), while [ADM-OPS-01](../../specs/008-administrator-foundation/worker-availability-investigation.md), [ADM-EVID-01](../../specs/008-administrator-foundation/firefox-history-investigation.md), the SQL/WebKit certificate-evidence finding from [run 38386343247](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38386343247), the [mutation-verifier timeout](../../specs/008-administrator-foundation/acceptance-reconciliation.md#new-required-mutation-verifier-failure-during-t035) from run `38392943760`, and the unexecuted human portion of T028/T029 remain unresolved acceptance and public-release blockers.
 
@@ -42,8 +42,8 @@ The stricter alternative is to hold T020/T021 until all four historical causes a
 
 ## Approval
 
-Not approved. Suggested decision text, after this proposal PR passes final checks and is normally merged:
+On 13 October 2026, the requesting user stated:
 
-“I approve A-004: implement and normally squash feature 008 T020/T021 under the documented conditions, retaining ADM-OPS-01, ADM-EVID-01, the unresolved SQL/WebKit certificate-evidence and mutation-verifier timeout findings, and outstanding human acceptance as unresolved acceptance/public-release blockers.”
+> I approve A-004: implement T020/T021 under its documented conditions, retaining all four findings and outstanding human acceptance as acceptance/public-release blockers.
 
-The existing general instruction to proceed with bounded investigation is not approval of this draft. Repository guidance requires a concrete amendment for material scope/security changes; T019 explicitly requires incident/manual acceptance or a new authorized sequencing exception before runtime work.
+The approval follows delivery and review of the concrete proposal. It does not waive any condition above, approve a new management surface, or supply missing human observations. Implementation and test inventories require independent review before coding; exact final-head verification and normal squash remain mandatory.
