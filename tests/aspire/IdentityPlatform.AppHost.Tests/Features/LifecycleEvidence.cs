@@ -216,7 +216,7 @@ internal sealed class LifecycleFailures
 {
     private const int MaximumFailures = 32;
     private const string InvalidatedFailure = "invalidated";
-    private const string FailureSummary = "Issuer lifecycle failed; all cleanup actions were attempted. Stages (first 32): ";
+    private const string FailureSummary = "Lifecycle verification failed; cleanup may be incomplete. Stages (first 32): ";
     private const string StageSeparator = ", ";
     private readonly Lock gate = new();
     private readonly List<string> failures = [];

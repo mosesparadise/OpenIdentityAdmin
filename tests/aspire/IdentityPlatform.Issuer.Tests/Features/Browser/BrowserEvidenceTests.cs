@@ -226,4 +226,63 @@ public sealed class BrowserEvidenceTests
             await BrowserAccessibility.RequireNoViolationsAsync(page);
         });
     }
+
+    /// <summary>Requires bounded secret-safe channel diagnostics without turning noncertificate failures into certificate acceptance.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public void Given_NativeFailureChannels_When_DiagnosticsAreCaptured_Then_OnlyStrictCertificateEvidenceCanAccept(string provider)
+    {
+        const string postgreSql = "PostgreSql";
+        const string sqlServer = "SqlServer";
+        Assert.True(provider is postgreSql or sqlServer);
+        BrowserCertificateEvidence.AssertControls();
+        const string secretPrefix = "private-canary-";
+        const string cancelled = "cancelled";
+        const string webkitCertificate = "Unacceptable TLS certificate";
+        var secret = secretPrefix + Guid.NewGuid().ToString();
+        var observation = new CertificateObservation();
+        observation.Observe(false, true, cancelled + secret);
+        observation.ObserveNavigation(new PlaywrightException(secret));
+        observation.Observe(false, true, null);
+        observation.Observe(false, true, "");
+        observation.Observe(false, true, secret);
+        observation.Observe(true, false, webkitCertificate + secret);
+        var failure = observation.Missing(new PlaywrightException(cancelled + secret), true, false);
+        Assert.False(observation.HasCertificate);
+        Assert.Null(failure.InnerException);
+        Assert.DoesNotContain(secret, failure.ToString(), StringComparison.Ordinal);
+        Assert.Contains("exact failures=4; unrelated failures=1; page-closed=True; browser-connected=False; dropped=0", failure.Message, StringComparison.Ordinal);
+        Assert.Contains("ordinal=1", failure.Message, StringComparison.Ordinal);
+        Assert.Contains("channel=request exact=True category=cancelled", failure.Message, StringComparison.Ordinal);
+        Assert.Contains("ordinal=2", failure.Message, StringComparison.Ordinal);
+        Assert.Contains("channel=navigation exact=True category=unclassified browser error", failure.Message, StringComparison.Ordinal);
+        Assert.Contains("category=missing", failure.Message, StringComparison.Ordinal);
+        Assert.Contains("category=empty", failure.Message, StringComparison.Ordinal);
+        RequireBoundedReceipts(observation, secret);
+        Assert.False(observation.HasCertificate);
+        observation.Observe(true, true, webkitCertificate);
+        Assert.True(observation.HasCertificate);
+    }
+
+    /// <summary>Checks the actual retained event list, so a removed storage bound fails even if the dropped counter remains correct.</summary>
+    private static void RequireBoundedReceipts(CertificateObservation observation, string secret)
+    {
+        const int overflowEvents = 10;
+        const string ordinalMarker = "ordinal=";
+        const string expectedDropped = "dropped=8";
+        const string expectedUnknown = "browser-connected=unknown";
+        const string expectedOrdinals = "1,2,3,4,5,6,7,8";
+        for (var index = 0; index < overflowEvents; index++)
+        {
+            observation.Observe(false, true, secret);
+        }
+        var failure = observation.Missing(new PlaywrightException(secret));
+        Assert.Contains(expectedDropped, failure.Message, StringComparison.Ordinal);
+        Assert.Contains(expectedUnknown, failure.Message, StringComparison.Ordinal);
+        Assert.DoesNotContain(secret, failure.ToString(), StringComparison.Ordinal);
+        var retainedOrdinals = failure.Message.Split(ordinalMarker).Skip(1).Select(entry => entry.Split(' ')[0]);
+        Assert.Equal(expectedOrdinals, string.Join(',', retainedOrdinals));
+    }
+
 }

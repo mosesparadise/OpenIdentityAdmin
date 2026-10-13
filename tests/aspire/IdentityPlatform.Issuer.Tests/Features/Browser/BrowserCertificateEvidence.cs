@@ -37,15 +37,16 @@ internal static class BrowserCertificateEvidence
         {
             var exact = request.IsNavigationRequest && string.Equals(target, request.Url, StringComparison.Ordinal) &&
                 ReferenceEquals(request.Frame, page.MainFrame);
-            observation.Observe(exact && IsCertificate(BrowserSession.Engine, request.Failure), exact);
+            observation.Observe(exact && IsCertificate(BrowserSession.Engine, request.Failure), exact, request.Failure);
         }
         context.RequestFailed += Failed;
         try
         {
             var error = await Assert.ThrowsAsync<PlaywrightException>(() => page.GotoAsync(target));
+            observation.ObserveNavigation(error);
             if (!IsCertificate(BrowserSession.Engine, error.Message))
             {
-                await observation.RequireAsync(error);
+                await observation.RequireAsync(error, () => page.IsClosed, () => context.Browser?.IsConnected);
             }
         }
         finally
