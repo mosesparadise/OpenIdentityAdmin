@@ -2,7 +2,7 @@ using Microsoft.Playwright;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Browser;
 
-/// <summary>Requires certificate-specific evidence while tolerating the ordering of WebKit's two native failure channels.</summary>
+/// <summary>Requires certificate-specific evidence while observing both native navigation and context request-failure channels.</summary>
 internal static class BrowserCertificateEvidence
 {
     private const string Chromium = "chromium";
@@ -12,7 +12,6 @@ internal static class BrowserCertificateEvidence
     private const string FirefoxIssuer = "SEC_ERROR_UNKNOWN_ISSUER";
     private const string FirefoxSelfSigned = "MOZILLA_PKIX_ERROR_SELF_SIGNED_CERT";
     private const string WebkitCertificate = "Unacceptable TLS certificate";
-    private const int EvidenceSeconds = 2;
     private static readonly string[] NonCertificateFailures = ["cancelled", "Timeout", "Connection refused", "ERR_CERT_AUTHORITY_INVALID", ""];
 
     /// <summary>Matches only the current engine's native certificate diagnostic; transport cancellation never qualifies.</summary>
@@ -28,33 +27,30 @@ internal static class BrowserCertificateEvidence
     internal static bool Matches(string engine, string target, string actual, bool navigation, bool mainFrame, string? failure) =>
         navigation && mainFrame && string.Equals(target, actual, StringComparison.Ordinal) && IsCertificate(engine, failure);
 
-    /// <summary>Requires one failed navigation on a fresh page and an engine-specific certificate error; never retries navigation.</summary>
+    /// <summary>Requires one failed navigation and exact certificate evidence; context observation retains page/frame/URL binding.</summary>
     internal static async Task RequireAsync(IBrowserContext context, string target)
     {
         var page = await context.NewPageAsync();
-        var certificate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        // Retain only successful classification, never arbitrary browser errors or request payloads.
+        var observation = new CertificateObservation();
+        // Ignore unrelated/worker requests before accessing their frame; retain only exact-navigation classification.
         void Failed(object? sender, IRequest request)
         {
-            if (request.IsNavigationRequest && string.Equals(target, request.Url, StringComparison.Ordinal) &&
-                Matches(BrowserSession.Engine, target, request.Url, request.IsNavigationRequest,
-                ReferenceEquals(request.Frame, page.MainFrame), request.Failure))
-            {
-                certificate.TrySetResult();
-            }
+            var exact = request.IsNavigationRequest && string.Equals(target, request.Url, StringComparison.Ordinal) &&
+                ReferenceEquals(request.Frame, page.MainFrame);
+            observation.Observe(exact && IsCertificate(BrowserSession.Engine, request.Failure), exact);
         }
-        page.RequestFailed += Failed;
+        context.RequestFailed += Failed;
         try
         {
             var error = await Assert.ThrowsAsync<PlaywrightException>(() => page.GotoAsync(target));
             if (!IsCertificate(BrowserSession.Engine, error.Message))
             {
-                await certificate.Task.WaitAsync(TimeSpan.FromSeconds(EvidenceSeconds), TestContext.Current.CancellationToken);
+                await observation.RequireAsync(error);
             }
         }
         finally
         {
-            page.RequestFailed -= Failed;
+            context.RequestFailed -= Failed;
             await page.CloseAsync();
         }
     }
@@ -81,5 +77,15 @@ internal static class BrowserCertificateEvidence
         Assert.False(Matches(WebkitEngine, Target, Target, false, true, WebkitError));
         Assert.False(Matches(WebkitEngine, Target, Target, true, false, WebkitError));
         Assert.False(Matches(WebkitEngine, Target, Target, true, true, null));
+        var observation = new CertificateObservation();
+        Assert.False(observation.HasCertificate);
+        observation.Observe(certificateMatch: true, exactNavigation: false);
+        observation.Observe(certificateMatch: false, exactNavigation: true);
+        Assert.False(observation.HasCertificate);
+        var secret = Guid.NewGuid().ToString();
+        var missing = observation.Missing(new PlaywrightException(secret));
+        Assert.True(missing.InnerException is null && !missing.ToString().Contains(secret, StringComparison.Ordinal));
+        observation.Observe(certificateMatch: true, exactNavigation: true);
+        Assert.True(observation.HasCertificate);
     }
 }

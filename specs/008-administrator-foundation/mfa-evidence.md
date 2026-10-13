@@ -62,3 +62,9 @@ ADMIN-003–006/009–012 and FR-07/12/17–19/21–24 are traced through the fa
 Tooling rename for changed code: `test_reviewed_manifest_targets_exist_exactly_once` → `test_Given_ReviewedMutationManifests_When_TargetsAreResolved_Then_ExactInventoriesAndUniqueSubstitutionsAreRequired`; assertion semantics are retained and the reviewed administrator inventory is now eight.
 
 Partition regression rename for the changed independent total: `test_scheduled_partitions_preserve_every_provider_case_without_overlap` → `test_Given_ScheduledPartitions_When_Combined_Then_EveryReviewedProviderCaseAppearsExactlyOnce`; the provider total is now 580 (302 standard + 41 lifecycle + 237 Administrator). Mutation markers identify only the demonstrated bypass: successful protected recovery-page authority, or a received enrollment cookie with neither committed session nor audit; unrelated statuses/storage mismatches fail unmarked assertions.
+
+## First exact-head CI attempt
+
+Run `38333480095` at `208f3d6` passed the new administrator browser cells, but the existing SQL Server/WebKit untrusted-certificate control failed with an unclassified diagnostic after about 3.5 seconds. That duration is consistent with its two-second native-evidence wait expiring; the original report does not establish the underlying browser cause. This attempt is not accepted as a clean matrix.
+
+The regression helper now observes context-level request failures while retaining exact target, navigation and main-frame identity, and emits only a fixed error category and counters if native certificate evidence is absent. Seeded controls reject missing evidence, ordinary transport failures, wrong-page events and sensitive diagnostic content. It still performs one navigation with the original two-second evidence bound and engine-specific certificate markers; generic TLS/transport failures cannot satisfy rejection. A fresh complete exact-head matrix is required.
