@@ -57,3 +57,11 @@ Review corrected two instrumentation defects before publication: reporting could
 The original failure remains unresolved and acceptance/release-blocking even if the revised run passes. A revised A-004 must explicitly include it, rather than silently extending the earlier three-finding terms. Until final checks and explicit user authorization, T020/T021 remain blocked.
 
 Local diagnostic validation: all 154 Python controls pass, including all 35 mutation-verifier controls, with no skips; AI instruction and assurance-register integrity checks pass. Independent test/security review accepted the corrected instrumentation; architecture/security reviewers conditionally support presenting the explicit four-finding proposal only after a clean full revised matrix and independent strict mutation-artifact reconciliation. No historical cause or harmlessness is inferred.
+
+## Final T035 delivery
+
+[PR #46](https://github.com/mosesparadise/OpenIdentityAdmin/pull/46) was normally squash-merged as `9e727709376be84dbb7d790392c5d125b02b9ca3`. Final reviewed head `b034ca775220cae5c1edab166e299e8176ec5a17` passed all 62 jobs in [run 38395691033](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38395691033), with all 49 coverage inputs and nine module floors. Architecture, test and security review converged. No unchanged retry or deadline change was used.
+
+Independent review reconciled issuer seven and administrator eight cases per provider: 30 recorded single-case kills and complete baseline/restored pass sets. Artifact IDs were `11811408379`, `11812187735`, `11811917923` and `11812323191`; ZIP digests, source/mutant hashes, exact inventories and run/head/checkout provenance were verified and recorded in the PR review. Checkout merge `3686bae80b459dde4e497c01257bda024496f81f` has the expected base/head parents and the same tree as the final reviewed head. The artifact audit validates sanitized verdict/count/hash consistency; raw TRX is not retained, so independent assertion-marker/stack/exit revalidation is unavailable. The strict producer checks remain reviewed and mandatory.
+
+This completes the T035 handoff/proposal delivery, not human assessment or whole-increment acceptance. All four historical findings remain unresolved. A-004 is still **not approved**; T020/T021 require the explicit decision specified in the amendment.
