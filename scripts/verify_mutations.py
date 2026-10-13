@@ -2,6 +2,7 @@
 """Verify representative security mutants in a disposable Linux checkout; never publish its builds."""
 import argparse
 from contextlib import contextmanager
+from contextvars import ContextVar
 import fcntl
 import hashlib
 import json
@@ -18,6 +19,45 @@ from test_selection import catalogue
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = 'tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj'
 FAILURE_DIAGNOSTIC = "Exit code indicates failure: '2'. Please refer to https://aka.ms/testingplatform/exitcodes for more information."
+
+MAXIMUM_MUTATION_ORDINAL = 8
+DIAGNOSTIC_PREFIX = 'mutation-diagnostic '
+PHASE = ContextVar('mutation_phase', default=('control', 'command', 0))
+ROLES = frozenset(('control', 'baseline', 'mutant', 'restored'))
+OPERATIONS = frozenset(('command', 'checkout', 'commit', 'build', 'discovery', 'execution'))
+
+
+def perform(role, operation, action, *arguments, ordinal=0, **keywords):
+    """Bind closed phase labels without retaining a command, filter or manifest identifier."""
+    if role not in ROLES or operation not in OPERATIONS or type(ordinal) is not int or not 0 <= ordinal <= MAXIMUM_MUTATION_ORDINAL:
+        raise MutationError('Invalid mutation diagnostic phase')
+    token = PHASE.set((role, operation, ordinal))
+    try:
+        return action(*arguments, **keywords)
+    finally:
+        PHASE.reset(token)
+
+
+def failure_category(error):
+    """Classify only the exception type; never stringify commands, output or exception payloads."""
+    if isinstance(error, subprocess.TimeoutExpired):
+        return 'timeout'
+    return 'cancelled' if isinstance(error, (KeyboardInterrupt, SystemExit)) else 'error'
+
+
+def diagnostic(event, outcome, started, timeout, cleanup_timeout):
+    """Emit fixed-schema observations; elapsed time is receipt time and may include cleanup."""
+    try:
+        role, operation, ordinal = PHASE.get()
+        print(DIAGNOSTIC_PREFIX + json.dumps({
+            'role': role, 'operation': operation, 'ordinal': ordinal, 'event': event, 'outcome': outcome,
+            'budget_seconds': timeout, 'cleanup_budget_seconds': cleanup_timeout,
+            'elapsed_ms': int((time.monotonic() - started) * 1000)
+        }, sort_keys=True), flush=True)
+    except Exception:
+        # Best-effort observations cannot change command failure or mandatory teardown.
+        pass
+
 
 
 class MutationError(ValueError):
@@ -101,31 +141,50 @@ def validate_report(path, selected, exit_code, *, marker=None, method=None):
     return {'total': len(results), 'passed': len(results) - len(failures), 'failed': len(failures), 'skipped': 0}
 
 
+def cleanup_process(process, cleanup_timeout):
+    """Preserve TERM/KILL, pipe closure and bounded leader wait; return is not descendant proof."""
+    for action in (signal.SIGTERM, signal.SIGKILL):
+        try:
+            os.killpg(process.pid, action)
+        except ProcessLookupError:
+            pass
+        try:
+            process.communicate(timeout=cleanup_timeout)
+        except subprocess.TimeoutExpired:
+            continue
+    if process.stdout is not None:
+        process.stdout.close()
+    if process.poll() is None:
+        process.kill()
+    process.wait(timeout=cleanup_timeout)
+
+
 def run(command, timeout, environment, *, cleanup_timeout=10):
-    # Raw output may contain an unexpected exception: never echo it or retain it as evidence.
-    process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT, text=True, start_new_session=True)
+    """Supervise one command without retries; diagnostics grant no report or mutation acceptance."""
+    started = time.monotonic()
+    diagnostic('started', 'pending', started, timeout, cleanup_timeout)
+    try:
+        process = subprocess.Popen(command, cwd=ROOT, env=environment, stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT, text=True, start_new_session=True)
+    except BaseException as error:
+        diagnostic('launch-failed', failure_category(error), started, timeout, cleanup_timeout)
+        raise
     try:
         output, _ = process.communicate(timeout=timeout)
-    except BaseException:
-        # The leader can already have exited while a descendant still owns its output pipe.
-        for action in (signal.SIGTERM, signal.SIGKILL):
+    except BaseException as error:
+        try:
+            diagnostic('command-failed', failure_category(error), started, timeout, cleanup_timeout)
+        finally:
+            # Even cancellation while reporting must enter the original mandatory teardown.
             try:
-                os.killpg(process.pid, action)
-            except ProcessLookupError:
-                pass
-            try:
-                process.communicate(timeout=cleanup_timeout)
-                # Still send SIGKILL next: a stubborn child may have redirected its pipes.
-            except subprocess.TimeoutExpired:
-                continue
-        # An escaped descendant must not make exception cleanup wait forever on a pipe.
-        if process.stdout is not None:
-            process.stdout.close()
-        if process.poll() is None:
-            process.kill()
-        process.wait(timeout=cleanup_timeout)
+                cleanup_process(process, cleanup_timeout)
+            except BaseException as cleanup_error:
+                diagnostic('cleanup-incomplete', failure_category(cleanup_error), started, timeout, cleanup_timeout)
+                raise
+            diagnostic('cleanup-returned', 'returned', started, timeout, cleanup_timeout)
         raise
+    outcome = 'zero-exit' if process.returncode == 0 else 'test-failure-exit' if process.returncode == 2 else 'other-exit'
+    diagnostic('returned', outcome, started, timeout, cleanup_timeout)
     return process.returncode, output
 
 
@@ -185,19 +244,19 @@ def main():
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         items = manifest(ROOT, args.suite)
         paths = sorted({item['path'] for item in items})
-        require_clean_checkout(environment)
-        code, commit = run(['git', 'rev-parse', 'HEAD'], 30, environment)
+        perform('control', 'checkout', require_clean_checkout, environment)
+        code, commit = perform('control', 'commit', run, ['git', 'rev-parse', 'HEAD'], 30, environment)
         if code:
             raise MutationError('Missing source commit identity')
         hashes = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest() for path in paths}
         evidence = {'version': 1, 'suite': args.suite, 'commit': commit.strip(), 'provider': args.provider, 'source_sha256': hashes, 'mutations': []}
         with tempfile.TemporaryDirectory(prefix='critical-mutations-', dir=private) as temporary:
             directory = Path(temporary)
-            build(environment)
+            perform('baseline', 'build', build, environment)
             selections = {}
-            for item in items:
+            for ordinal, item in enumerate(items, start=1):
                 expression = f"Provider={args.provider}&CriticalDecision={item['id']}"
-                selection = discover(expression, environment)
+                selection = perform('baseline', 'discovery', discover, expression, environment, ordinal=ordinal)
                 if len(selection) != 1 or any(test[1] != args.provider or test[2] or not test[0].startswith(item['method'] + '(') for test in selection.values()):
                     raise MutationError('Mutation target identity or provider differs from the reviewed manifest')
                 selections[item['id']] = (expression, selection)
@@ -205,27 +264,28 @@ def main():
             selected = {test[0] for _, values in selections.values() for test in values.values()}
             if len(selected) != len(items):
                 raise MutationError('Mutation targets overlap')
-            evidence['baseline'] = execute(expression, selected, directory, environment)
+            evidence['baseline'] = perform('baseline', 'execution', execute, expression, selected, directory, environment)
             print(f"{args.provider}: all {len(selected)} baseline cases passed", flush=True)
-            for item in items:
+            for ordinal, item in enumerate(items, start=1):
                 expression_one, selection = selections[item['id']]
                 print(f"{args.provider}: testing {item['id']}", flush=True)
                 with changed_source(ROOT / item['path'], item['before'], item['after']):
                     mutant_hash = hashlib.sha256((ROOT / item['path']).read_bytes()).hexdigest()
-                    build(environment)
-                    if discover(expression_one, environment) != selection:
+                    perform('mutant', 'build', build, environment, ordinal=ordinal)
+                    if perform('mutant', 'discovery', discover, expression_one, environment, ordinal=ordinal) != selection:
                         raise MutationError('Mutation changed discovered test identities')
-                    result = execute(expression_one, {test[0] for test in selection.values()}, directory, environment, item=item)
+                    result = perform('mutant', 'execution', execute, expression_one,
+                                     {test[0] for test in selection.values()}, directory, environment, item=item, ordinal=ordinal)
                 evidence['mutations'].append({'id': item['id'], 'mutant_sha256': mutant_hash,
                                               'verdict': 'killed_by_demonstrated_bypass', **result})
                 print(f"{args.provider}: {item['id']} killed at its demonstrated bypass", flush=True)
             if any(hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != digest for path, digest in hashes.items()):
                 raise MutationError('Source restoration hash mismatch')
-            build(environment)
-            restored = discover(expression, environment)
+            perform('restored', 'build', build, environment)
+            restored = perform('restored', 'discovery', discover, expression, environment)
             if restored != {uid: test for _, values in selections.values() for uid, test in values.items()}:
                 raise MutationError('Restored discovery differs from baseline')
-            evidence['restored'] = execute(expression, selected, directory, environment)
+            evidence['restored'] = perform('restored', 'execution', execute, expression, selected, directory, environment)
             evidence['source_restored'] = True
         evidence_path.write_text(json.dumps(evidence, indent=2) + '\n')
         print(f"{args.provider}: {len(items)} behavioral kills; baseline/restored controls pass; source hashes restored", flush=True)
