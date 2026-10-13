@@ -91,9 +91,13 @@ public sealed class WitnessOrderingTests(BootstrapFixture fixture)
         var gate = new NativeCommitGate();
         await using var scenario = await GovernanceScenario.CreateAsync(fixture, provider,
             services => services.ConfigureDbContext<PlatformDbContext>(options => options.AddInterceptors(gate)));
+        SetupDiagnostics.Write(SetupStage.WitnessCreate);
         var witness = await WitnessSecurity.CreateAsync(scenario);
+        SetupDiagnostics.Write(SetupStage.WitnessSecurityPreparation);
         var security = await witness.PrepareAsync(scenario, WitnessSecurity.Lockout);
+        SetupDiagnostics.Write(SetupStage.RequestPreparation);
         var request = await WitnessEvidence.RequestAsync(scenario);
+        SetupDiagnostics.Write(SetupStage.CodePreparation);
         var code = await scenario.UnusedCodeAsync();
         await using var scope = scenario.CreateScope();
         gate.Arm(scope.ServiceProvider.GetRequiredService<PlatformDbContext>());

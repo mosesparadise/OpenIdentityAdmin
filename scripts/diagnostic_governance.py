@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run only A-005's bounded experiments; outputs never constitute suite acceptance."""
+"""Run only A-006's gated SQL experiments; outputs never constitute suite acceptance."""
 import argparse
 import fcntl
 import hashlib
@@ -11,10 +11,45 @@ import sys
 import tempfile
 
 import verify_mutations as verifier
+from administrator_inventory import unique_object
 
 PRIVILEGE_METHOD = ('IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.'
                     'Given_RuntimeDatabasePrincipal_When_GovernedChangesRun_Then_RequiredDmlWorksAndSchemaWritesDeny')
 WITNESS_ID = 'omitted-witness-lock'
+AUTHORIZATION = 'A-006'
+ARTIFACT_ROOT = 'artifacts/governance-diagnostics-a006'
+SQL_IMAGE = 'mcr.microsoft.com/mssql/server@sha256:4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090'
+DOCKER_SOCKET = 'unix:///var/run/docker.sock'
+
+
+def require_image(environment):
+    """Inspect the same managed daemon used by the child graph; never implicitly acquire an image."""
+    if environment.get('DOCKER_HOST') != DOCKER_SOCKET:
+        raise verifier.MutationError('Diagnostic Docker endpoint differs from the managed daemon')
+    code, _ = verifier.run(['docker', '--host=' + DOCKER_SOCKET, 'image', 'inspect', SQL_IMAGE, '--format', '{{.Id}}'], 30, environment)
+    if code:
+        raise verifier.MutationError('Pinned SQL image is unavailable; no database experiment is permitted')
+
+
+def require_passing_ordinary(prior, commit):
+    """A006 requires exact-source two-case strict success, never a previous incomplete diagnostic receipt."""
+    if not isinstance(prior, dict):
+        raise verifier.MutationError('Invalid A006 ordinary receipt')
+    expected = {'authorization': AUTHORIZATION, 'source_commit': commit, 'mode': 'ordinary', 'provider': 'SqlServer',
+                'diagnostic_only': True, 'source_restored': True, 'halt_for_observed_bypass': False,
+                'outcome': 'expected-outcome-observed'}
+    if any(type(prior.get(key)) is not type(value) or prior[key] != value for key, value in expected.items()):
+        raise verifier.MutationError('Same-source successful A006 ordinary receipt required')
+    observation = prior.get('observation', {})
+    if not isinstance(observation, dict) or not isinstance(observation.get('counters'), dict):
+        raise verifier.MutationError('Invalid A006 ordinary observation')
+    counters = observation.get('counters', {})
+    counts = {name: 2 if name in ('total', 'executed', 'passed') else 0 for name in verifier.COUNTER_NAMES}
+    if set(counters) != set(counts) or any(type(counters[key]) is not int or counters[key] != value for key, value in counts.items()):
+        raise verifier.MutationError('A006 requires both ordinary cases passed without incomplete counters')
+    if observation.get('report') != 'parsed' or any(type(observation.get(key)) is not int or observation[key] != 0
+                                                  for key in ('error_nodes', 'summary_errors')):
+        raise verifier.MutationError('A006 ordinary report contains errors or missing evidence')
 
 
 def require_selection(selection, provider, methods):
@@ -38,7 +73,7 @@ def attempt(expression, selection, directory, environment, item, mode):
         outcome = verifier.failure_category(error)
     observation = verifier.report_observation(directory / 'result.trx', item)
     bypass = mode == 'ordinary' and (observation.get('marker_match', False) or any(
-        isinstance(row, dict) and (row['alter'] == 'Succeeded' or row['probe'] == 'Present')
+        isinstance(row, dict) and (row.get('alter') == 'Succeeded' or row.get('probe') == 'Present')
         for row in observation.get('checkpoints', [])))
     return {'outcome': outcome, 'seconds': result['seconds'] if result else None,
             'observation': observation, 'halt_for_observed_bypass': bypass}
@@ -63,9 +98,9 @@ def experiment(root, output, mode, provider, environment, commit):
     require_selection(selection, provider, methods)
     path = root / item['path']
     before = hashlib.sha256(path.read_bytes()).hexdigest()
-    receipt = {'diagnostic_only': True, 'mode': mode, 'provider': provider, 'source_before': before, 'source_commit': commit}
+    receipt = {'diagnostic_only': True, 'authorization': AUTHORIZATION, 'mode': mode, 'provider': provider, 'source_before': before, 'source_commit': commit}
     try:
-        with tempfile.TemporaryDirectory(prefix='a005-', dir=root / 'work') as temporary:
+        with tempfile.TemporaryDirectory(prefix='a006-', dir=root / 'work') as temporary:
             directory = Path(temporary)
             if mode == 'ordinary':
                 receipt.update(attempt(expression, selection, directory, environment, item, mode))
@@ -87,15 +122,16 @@ def main():
     """Claim one local attempt, preserving every ordinary result before permitting the SQL diagnostic mutant."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=('ordinary', 'mutant'))
-    parser.add_argument('provider', choices=('PostgreSql', 'SqlServer'))
+    parser.add_argument('provider', choices=('SqlServer',))
     parser.add_argument('--disposable-checkout', action='store_true', required=True)
     args = parser.parse_args()
-    if args.mode == 'mutant' and args.provider != 'SqlServer':
-        raise verifier.MutationError('A-005 permits only the SQL witness mutation experiment')
     root = verifier.ROOT
     verifier.PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     environment = os.environ.copy()
     environment.update(DOTNET_ENVIRONMENT='Development', TESTINGPLATFORM_TELEMETRY_OPTOUT='1')
+    for name in ('DOCKER_CONTEXT', 'DOCKER_TLS', 'DOCKER_TLS_VERIFY', 'DOCKER_CERT_PATH'):
+        environment.pop(name, None)
+    environment['DOCKER_HOST'] = DOCKER_SOCKET
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))
     private = root / 'work'
     private.mkdir(exist_ok=True)
@@ -109,16 +145,17 @@ def main():
 
 
 def run_once(root, mode, provider, environment, commit):
-    """Refuse identical retries and require retained non-bypass ordinary receipts before mutation."""
-    base = root / 'artifacts/governance-diagnostics'
+    """Require SQL readiness and a passing ordinary comparison before the single conditional mutant."""
+    if provider != 'SqlServer':
+        raise verifier.MutationError('A006 permits only SQL diagnostic execution')
+    require_image(environment)
+    base = root / ARTIFACT_ROOT
     for prior in base.glob('ordinary-*/diagnostic.json'):
-        if json.loads(prior.read_text()).get('halt_for_observed_bypass'):
+        if json.loads(prior.read_text(), object_pairs_hook=unique_object).get('halt_for_observed_bypass'):
             raise verifier.MutationError('Unmodified trust observation requires remediation decision')
     if mode == 'mutant':
-        for database in ('PostgreSql', 'SqlServer'):
-            prior = json.loads((base / ('ordinary-' + database) / 'diagnostic.json').read_text())
-            if prior.get('source_commit') != commit or 'observation' not in prior or not prior.get('source_restored'):
-                raise verifier.MutationError('Both same-source ordinary diagnostic receipts are required')
+        prior = json.loads((base / 'ordinary-SqlServer' / 'diagnostic.json').read_text(), object_pairs_hook=unique_object)
+        require_passing_ordinary(prior, commit)
     output = base / (mode + '-' + provider)
     output.mkdir(parents=True, exist_ok=True)
     with (output / 'attempt.json').open('x') as claim:
@@ -135,5 +172,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception:
-        print('A-005 diagnostic incomplete; no acceptance evidence produced.', flush=True)
+        print('A-006 diagnostic incomplete; no acceptance evidence produced.', flush=True)
         raise SystemExit(1) from None

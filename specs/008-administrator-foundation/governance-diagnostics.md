@@ -81,3 +81,7 @@ Additional source hygiene: the published diagnostic commit passed a Git-range gi
 Final independent architecture/security review verified all six receipt hashes, clean disposable checkout and restored source hash. It required the wording above to distinguish missing post-Setup observations from a proven failure location; that correction is incorporated. No runtime causal closure, product acceptance or merge was endorsed.
 
 Final independent test review also reconciled all six receipt hashes and the native counts/timings. The source checkpoint bound to the experiment is clean and its target source matches the published revision. The reviewer supports the documented limitations and proposed A-006 only; this is AI evidence review, not acceptance or authorization.
+
+## Subsequent A-006 checkpoint
+
+The user subsequently approved A-006. Its [bounded readiness disposition](sql-diagnostic-readiness.md) records the single failed pinned-image acquisition and reviewed diagnostic instrumentation. No SQL experiment ran under A-006; its authorization has concluded. The A-005 results above remain unchanged and do not establish either historical incident cause.

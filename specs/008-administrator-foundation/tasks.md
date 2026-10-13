@@ -91,4 +91,17 @@ These tasks implement [A-005](../../docs/amendments/A-005-governance-diagnostics
 - [x] D005 In a clean disposable checkout, run one focused ordinary witness/privilege comparison per provider and one SQL witness mutation diagnostic, preserving source restoration and reporting all outcomes.
 - [x] D006 Publish evidence-based disposition, independent review and next recommendation; stop before any unapproved correction or delivery.
 
-A-005 disposition: all three scoped attempts are retained in [governance diagnostics](governance-diagnostics.md). PostgreSQL passed both selected cases; both SQL attempts are inconclusive with no retained post-Setup observations. The original findings remain open and A-005 authorizes no further execution. Proposed A-006 has no approval.
+A-005 disposition: all three scoped attempts are retained in [governance diagnostics](governance-diagnostics.md). PostgreSQL passed both selected cases; both SQL attempts are inconclusive with no retained post-Setup observations. The original findings remain open and A-005 authorizes no further execution. A-006 was proposed at that checkpoint and subsequently approved; see its disposition below.
+
+## A-006 bounded SQL readiness tasks (approved 13 October 2026)
+
+Authority: [A-006](../../docs/amendments/A-006-sql-diagnostic-readiness.md). PR48 remains draft/unmerged; all findings and human/public-release blockers remain open.
+
+- [x] E001 Record user approval and inspect managed Docker/network prerequisites.
+- [x] E002 Attempt the exact pinned SQL image acquisition once; failed with the `forbidden-response-text` category and image still absent. Required stop honored; readiness was not achieved.
+- [x] E003 Add closed setup observations and seeded privacy/failure/cancellation controls, preserving existing operations, deadlines and original test identities.
+- [x] E004 Obtain independent architecture/security/test review and publish only to the separate diagnostic branch.
+- [ ] E005 If readiness permits, run one SQL ordinary comparison; permit one SQL mutant only after both ordinary cases pass on that exact source.
+- [x] E006 Publish evidence/disposition and stop before any unapproved correction, full CI or merge.
+
+A-006 disposition: [SQL diagnostic readiness](sql-diagnostic-readiness.md). E005 was **not run**, because E002 did not establish image readiness. This is a completed bounded investigation with an unmet prerequisite, not completed SQL validation. A-006 concludes with publication; no retry, runtime continuation, full CI or merge is authorized.

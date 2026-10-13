@@ -333,6 +333,10 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"PostgreSql\", condition: \"sole-admin-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"PostgreSql\", condition: \"ceremony-then-governance\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"PostgreSql\", condition: \"governance-then-ceremony\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"cancelled-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"failed-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"unknown-stage\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"PostgreSql\", condition: \"valid-stages\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"PostgreSql\", variant: \"active-factor-change\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"PostgreSql\", variant: \"disable\")",
@@ -789,6 +793,10 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.RecoveryTests.Given_SoleAdministrator_When_ExistingRecoveryCompletes_Then_RestrictedAuthorityAndGovernanceRemainDistinct(provider: \"SqlServer\", condition: \"sole-admin-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"SqlServer\", condition: \"ceremony-then-governance\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.ReplayTests.Given_CommittedNativeTotp_When_ReusedAcrossCeremonyAndGovernance_Then_SharedLedgerDeniesReplay(provider: \"SqlServer\", condition: \"governance-then-ceremony\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"cancelled-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"failed-sink\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"unknown-stage\")",
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"SqlServer\", condition: \"valid-stages\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"SqlServer\", variant: \"active-factor-change\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_LockedWitness_When_SecurityStateCommitsBeforeWaitingMutation_Then_WitnessIsRechecked(provider: \"SqlServer\", variant: \"disable\")",
@@ -14339,6 +14347,198 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"cancelled-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"failed-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"PostgreSql\", condition: \"unknown-stage\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"cancelled-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"failed-sink\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains(provider: \"SqlServer\", condition: \"unknown-stage\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_InvalidStageOrFailedSink_When_PrimaryFailureUnwinds_Then_OriginalExceptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"PostgreSql\", condition: \"valid-stages\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.SetupDiagnosticTests.Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels(provider: \"SqlServer\", condition: \"valid-stages\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures",
+        "typeName": "SetupDiagnosticTests",
+        "methodName": "Given_ReviewedStages_When_Observed_Then_OutputContainsOnlyFiniteLabels",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Diagnostic",
+          "value": "Setup"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

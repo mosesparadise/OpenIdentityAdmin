@@ -115,6 +115,82 @@ def incomplete_main(root, role):
 class GovernanceDiagnosticTests(unittest.TestCase):
     """Prove the focused diagnostic runner cannot silently grow scope or bypass its stop gates."""
 
+    def ordinary_receipt(self):
+        """Independently seed a complete two-case SQL ordinary receipt for fail-closed prerequisite controls."""
+        counts = {name: 0 for name in ('total', 'executed', 'passed', 'failed', 'error', 'timeout', 'aborted', 'inconclusive',
+                  'passedButRunAborted', 'notRunnable', 'notExecuted', 'disconnected', 'warning', 'completed', 'inProgress', 'pending')}
+        counts.update(total=2, executed=2, passed=2)
+        return {'authorization': 'A-006', 'source_commit': 'f' * 40, 'mode': 'ordinary', 'provider': 'SqlServer',
+                'diagnostic_only': True, 'source_restored': True, 'halt_for_observed_bypass': False,
+                'outcome': 'expected-outcome-observed',
+                'observation': {'report': 'parsed', 'counters': counts, 'error_nodes': 0, 'summary_errors': 0}}
+
+    def test_Given_MissingImageOrWrongDaemon_When_ReadinessIsChecked_Then_NoImplicitPullOccurs(self):
+        """Only read-only image inspection is allowed; a missing image or wrong endpoint blocks execution."""
+        import diagnostic_governance as diagnostic
+        with patch.object(verifier, 'run', return_value=(1, 'private')) as run:
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.require_image({'DOCKER_HOST': 'unix:///var/run/docker.sock'})
+            self.assertEqual(['docker', '--host=unix:///var/run/docker.sock', 'image', 'inspect'], run.call_args.args[0][:4])
+            self.assertEqual(30, run.call_args.args[1])
+            self.assertNotIn('pull', run.call_args.args[0])
+            run.reset_mock()
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.require_image({'DOCKER_HOST': 'private'})
+            run.assert_not_called()
+
+    def test_Given_IncompleteOrForeignReceipt_When_MutantIsRequested_Then_OrdinarySuccessCannotBeInferred(self):
+        """Every required field/counter must match exact A006 same-source two-case success with native JSON types."""
+        import diagnostic_governance as diagnostic
+        diagnostic.require_passing_ordinary(self.ordinary_receipt(), 'f' * 40)
+        for key in self.ordinary_receipt():
+            changed = self.ordinary_receipt()
+            del changed[key]
+            with self.subTest(missing=key), self.assertRaises(verifier.MutationError):
+                diagnostic.require_passing_ordinary(changed, 'f' * 40)
+        for key in self.ordinary_receipt()['observation']['counters']:
+            for value in (None, True, '0', -1, 3):
+                changed = self.ordinary_receipt()
+                changed['observation']['counters'][key] = value
+                with self.subTest(counter=key, value=value), self.assertRaises(verifier.MutationError):
+                    diagnostic.require_passing_ordinary(changed, 'f' * 40)
+        for key, value in [('authorization', 'A-005'), ('source_commit', 'e' * 40), ('outcome', 'error'),
+                           ('provider', 'PostgreSql'), ('source_restored', 1), ('halt_for_observed_bypass', True),
+                           ('observation', None), ('diagnostic_only', 1)]:
+            changed = self.ordinary_receipt()
+            changed[key] = value
+            with self.subTest(field=key), self.assertRaises(verifier.MutationError):
+                diagnostic.require_passing_ordinary(changed, 'f' * 40)
+
+    def test_Given_UnavailablePrerequisite_When_RunStarts_Then_NoAttemptOrExperimentBegins(self):
+        """Readiness failure stops before file claims, build, discovery or database execution."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory, patch.object(diagnostic, 'require_image', side_effect=verifier.MutationError('fixed')), \
+                patch.object(diagnostic, 'experiment') as experiment:
+            with self.assertRaises(verifier.MutationError):
+                diagnostic.run_once(Path(directory), 'ordinary', 'SqlServer', {}, 'f' * 40)
+            self.assertEqual([], list(Path(directory).iterdir()))
+            experiment.assert_not_called()
+
+    def test_Given_ExactOrdinarySuccess_When_ConditionalMutantRuns_Then_OnlyOneClaimIsPermitted(self):
+        """Valid SQL evidence permits exactly one diagnostic invocation; duplicate-key evidence is rejected."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory, patch.object(diagnostic, 'require_image'), \
+                patch.object(diagnostic, 'experiment', return_value={'diagnostic_only': True}) as experiment, redirect_stdout(io.StringIO()):
+            root = Path(directory)
+            base = root / diagnostic.ARTIFACT_ROOT / 'ordinary-SqlServer'
+            base.mkdir(parents=True)
+            receipt = base / 'diagnostic.json'
+            receipt.write_text(json.dumps(self.ordinary_receipt()))
+            diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+            experiment.assert_called_once()
+            with self.assertRaises(FileExistsError):
+                diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+            receipt.write_text('{"source_restored": false, "source_restored": true}')
+            with self.assertRaises(ValueError):
+                diagnostic.run_once(root, 'mutant', 'SqlServer', {}, 'f' * 40)
+            self.assertEqual(1, experiment.call_count)
+
     def test_Given_SelectionDrift_When_ExperimentIsPrepared_Then_ExactProviderAndMethodsAreRequired(self):
         """Selected methods cannot be duplicated, replaced, omitted or moved to another provider."""
         import diagnostic_governance as diagnostic
@@ -151,10 +227,10 @@ class GovernanceDiagnosticTests(unittest.TestCase):
         import diagnostic_governance as diagnostic
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            base = root / 'artifacts/governance-diagnostics/ordinary-SqlServer'
+            base = root / diagnostic.ARTIFACT_ROOT / 'ordinary-SqlServer'
             base.mkdir(parents=True)
             (base / 'attempt.json').write_text('{}')
-            with patch.object(diagnostic, 'experiment') as experiment:
+            with patch.object(diagnostic, 'experiment') as experiment, patch.object(diagnostic, 'require_image'):
                 with self.assertRaises(FileExistsError):
                     diagnostic.run_once(root, 'ordinary', 'SqlServer', {}, 'f' * 40)
                 (base / 'diagnostic.json').write_text(json.dumps({'halt_for_observed_bypass': True}))
@@ -167,16 +243,68 @@ class GovernanceDiagnosticTests(unittest.TestCase):
         import diagnostic_governance as diagnostic
         with tempfile.TemporaryDirectory() as directory:
             root = report()
-            ET.SubElement(root, 'StdOut').text = 'governance-privilege Succeeded Present none'
+            ET.SubElement(root, 'StdOut').text = 'governance-setup-stage HostBuild\ngovernance-privilege Succeeded Present none'
             ET.ElementTree(root).write(Path(directory) / 'result.trx')
             with patch.object(verifier, 'execute', side_effect=verifier.MutationError('fixed')):
                 result = diagnostic.attempt('private', {}, Path(directory), {}, {'marker': 'other', 'method': METHOD}, 'ordinary')
             self.assertTrue(result['halt_for_observed_bypass'])
             self.assertEqual('error', result['outcome'])
 
+    def test_Given_SetupAndDenialObservations_When_OrdinaryRunFinishes_Then_MixedCheckpointsRemainDiagnostic(self):
+        """Setup dictionaries cannot cause a post-execution classifier error or be mistaken for privilege bypasses."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory:
+            root = report(failed=False)
+            ET.SubElement(root, 'StdOut').text = 'governance-setup-stage LeaseReady\ngovernance-privilege Denied Absent 229'
+            ET.ElementTree(root).write(Path(directory) / 'result.trx')
+            with patch.object(verifier, 'execute', return_value={'seconds': 1}):
+                result = diagnostic.attempt('private', {}, Path(directory), {}, {'marker': MARKER, 'method': METHOD}, 'ordinary')
+            self.assertFalse(result['halt_for_observed_bypass'])
+            self.assertEqual('expected-outcome-observed', result['outcome'])
+            self.assertEqual([{'setup': 'LeaseReady'}, {'alter': 'Denied', 'probe': 'Absent', 'provider_code': 229}],
+                             result['observation']['checkpoints'])
+
+    def test_Given_EarlyPrivilegeBypass_When_SetupTailOverflows_Then_HaltAndPrivilegeEvidenceSurvive(self):
+        """Neither later setup observations nor a later denial may evict an observed bypass."""
+        import diagnostic_governance as diagnostic
+        with tempfile.TemporaryDirectory() as directory:
+            root = report()
+            ET.SubElement(root, 'StdOut').text = '\n'.join(
+                ['governance-privilege Succeeded Present none'] + ['governance-setup-stage HostBuild'] * 100 +
+                ['governance-privilege Denied Absent 229', 'governance-setup-stage LeaseReady'])
+            ET.ElementTree(root).write(Path(directory) / 'result.trx')
+            with patch.object(verifier, 'execute', side_effect=verifier.MutationError('fixed')):
+                result = diagnostic.attempt('private', {}, Path(directory), {}, {'marker': MARKER, 'method': METHOD}, 'ordinary')
+            self.assertTrue(result['halt_for_observed_bypass'])
+            checkpoints = result['observation']['checkpoints']
+            self.assertEqual(32, len(checkpoints))
+            self.assertEqual({'alter': 'Succeeded', 'probe': 'Present', 'provider_code': None}, checkpoints[0])
+            self.assertEqual({'alter': 'Denied', 'probe': 'Absent', 'provider_code': 229}, checkpoints[-2])
+            self.assertEqual({'setup': 'LeaseReady'}, checkpoints[-1])
+
 
 class FailureReceiptTests(unittest.TestCase):
     """Seed hostile and incomplete reports without granting mutation acceptance."""
+
+    def test_Given_KnownHarnessMessage_When_Classified_Then_OnlyExactCodeOwnedFailuresAreRecognized(self):
+        """Appending secret text cannot make it part of a retained category; unknown messages remain unknown."""
+        for message, category in [('Bootstrap harness startup failed.', 'harness-startup-failed'),
+                                  ('Bootstrap database setup failed.', 'harness-database-failed'),
+                                  ('Bootstrap host cleanup failed.', 'harness-cleanup-failed')]:
+            root = report()
+            root.find('.//Message').text = message
+            self.assertIn(category, verifier.report_categories(root))
+            root.find('.//Message').text = message + ' synthetic-secret'
+            self.assertNotIn(category, verifier.report_categories(root))
+            self.assertNotIn('synthetic-secret', json.dumps(verifier.report_categories(root)))
+
+    def test_Given_SetupCheckpointCanaries_When_Projected_Then_UnknownLabelsAndPayloadsAreDiscarded(self):
+        """Native enum values are finite; resource names, token fields and appended text never become observations."""
+        root = report()
+        ET.SubElement(root, 'StdOut').text = '\n'.join(('governance-setup-stage HostBuild',
+            'governance-setup-stage synthetic-secret', 'governance-setup-stage HostBuild synthetic-secret',
+            'governance-setup-stage LeaseCreate', 'governance-setup-stage -1'))
+        self.assertEqual([{'setup': 'HostBuild'}, {'setup': 'LeaseCreate'}], verifier.report_checkpoints(root))
 
     def test_Given_RepeatedOrInvalidCheckpoints_When_Projected_Then_OutputStaysClosedAndBounded(self):
         """Only known stages and six-digit provider codes can appear in the final 32 observations."""

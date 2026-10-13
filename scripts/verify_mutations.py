@@ -33,7 +33,18 @@ COUNTER_LIMIT = 100000
 COUNTER_NAMES = ('total', 'executed', 'passed', 'failed', 'error', 'timeout', 'aborted', 'inconclusive',
                  'passedButRunAborted', 'notRunnable', 'notExecuted', 'disconnected', 'warning', 'completed', 'inProgress', 'pending')
 ASSERTION_CLASSES = ('TrueException', 'FalseException', 'EqualException', 'NotSameException', 'EmptyException', 'SingleException')
-EXCEPTION_CLASSES = ('OperationCanceledException', 'TaskCanceledException', 'TimeoutException', 'SqlException', 'PostgresException')
+EXCEPTION_CLASSES = ('OperationCanceledException', 'TaskCanceledException', 'TimeoutException', 'SqlException', 'PostgresException',
+                     'InvalidOperationException', 'FactorUnavailableException', 'GovernanceUnavailableException',
+                     'HttpRequestException', 'DockerApiException', 'RpcException', 'IOException')
+SETUP_STAGES = frozenset(('HostBuilder', 'HostBuild', 'HostStart', 'AuthReadiness', 'HostReady', 'HostCleanup',
+                         'LeaseOpen', 'LeaseCreate', 'LeaseMigrate', 'LeaseProvision', 'LeaseReady', 'LeaseCleanup',
+                         'JourneyLease', 'JourneyInitialize', 'JourneyServices', 'JourneyReady',
+                         'EnrollmentStage', 'EnrollmentVerify', 'EnrollmentReady', 'WitnessCreate',
+                         'WitnessSecurityPreparation', 'RequestPreparation', 'CodePreparation'))
+HARNESS_FAILURES = {'Bootstrap harness startup failed.': 'harness-startup-failed',
+                    'Bootstrap database setup failed.': 'harness-database-failed',
+                    'Bootstrap host cleanup failed.': 'harness-cleanup-failed'}
+HARNESS_PREFIXES = ('', 'System.InvalidOperationException: ', 'System.InvalidOperationException : ')
 WITNESS_STAGES = frozenset(('Setup', 'Prepared', 'GateWait', 'GateArrived', 'OrderWait', 'WriterFirst', 'ObserverFirst',
                           'WriterSecurity', 'OrderComplete', 'CommitResult', 'WriterJoined', 'Drain', 'Security', 'Authority', 'Usable', 'Oracle'))
 PRIVILEGE_ALTER = frozenset(('Succeeded', 'Denied', 'ProviderError', 'Cancelled', 'Unknown'))
@@ -49,6 +60,10 @@ def report_categories(root):
         prefix = 'Assert.' + name.removesuffix('Exception') + '() Failure'
         if any((node.text or '').startswith(prefix) for node in root.findall('.//{*}Message')) and name not in classes:
             classes.append(name)
+    for message, category in HARNESS_FAILURES.items():
+        if any((node.text or '').strip() == prefix + message
+               for prefix in HARNESS_PREFIXES for node in root.findall('.//{*}Message')):
+            classes.append(category)
     return classes or ['unknown']
 
 
@@ -60,11 +75,22 @@ def report_checkpoints(root):
             prefix, _, value = line.strip().partition(' ')
             if prefix == 'governance-witness-stage' and value in WITNESS_STAGES:
                 checkpoints.append(value)
+            if prefix == 'governance-setup-stage' and value in SETUP_STAGES:
+                checkpoints.append({'setup': value})
             if prefix == 'governance-privilege':
                 fields = value.split(' ')
                 if len(fields) == 3 and fields[0] in PRIVILEGE_ALTER and fields[1] in PRIVILEGE_PROBE and re.fullmatch(r'-?[0-9]{1,6}|none', fields[2]):
                     checkpoints.append({'alter': fields[0], 'probe': fields[1], 'provider_code': None if fields[2] == 'none' else int(fields[2])})
-    return checkpoints[-32:]
+    privilege = [index for index, item in enumerate(checkpoints) if isinstance(item, dict) and 'alter' in item]
+    retained = set(privilege[-1:])
+    bypass = next((index for index in privilege if checkpoints[index]['alter'] == 'Succeeded' or
+                   checkpoints[index]['probe'] == 'Present'), None)
+    if bypass is not None:
+        retained.add(bypass)
+    privilege_indices = set(privilege)
+    ordinary = [index for index in range(len(checkpoints)) if index not in privilege_indices]
+    retained.update(ordinary[-(32 - len(retained)):])
+    return [checkpoints[index] for index in sorted(retained)]
 
 
 def report_observation(path, item):
