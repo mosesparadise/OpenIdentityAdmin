@@ -1,6 +1,6 @@
 # T033 — bounded Worker availability investigation
 
-Date: 13 October 2026 (Europe/London). Status: in progress; ADM-OPS-01 remains unresolved. The user authorized the recommended Worker investigation, Firefox investigation and acceptance reconciliation after the engineering batch. This packet supplies no authority for T020/T021, deployment or release.
+Date: 13 October 2026 (Europe/London). Status: scoped diagnostic delivery complete in PR #44; ADM-OPS-01 remains unresolved. The user authorized the recommended Worker investigation, Firefox investigation and acceptance reconciliation after the engineering batch. This packet supplies no authority for T020/T021, deployment or release.
 
 ## Question and stopping rule
 
@@ -50,7 +50,7 @@ Architecture/Aspire design review accepts the contrast with the execution-bound 
 
 ## Outcome
 
-Controlled Worker execution passed; final PR acceptance is blocked by a separate required browser failure described below. No root-cause fix or incident closure is claimed. Local documentation-scope selection controls, AI instruction integrity, assurance-register integrity and 27 assurance controls pass; these are documentation checks, not new provider executions.
+The first controlled Worker execution passed, but its PR acceptance was blocked by the separate required browser failure described below. The final scoped delivery section records the subsequent diagnostic revision and accepted source delivery. No root-cause fix or incident closure is claimed. Local documentation-scope selection controls, AI instruction integrity, assurance-register integrity and 27 assurance controls pass; these are documentation checks, not new provider executions.
 
 ## Implemented comparison and review
 
@@ -83,4 +83,13 @@ The pinned Playwright 1.63 bundled `coreBundle.js` SHA-256 is `549070af3acabb3ef
 Independent architecture/scope review distinguishes diagnostic source delivery from product acceptance. The approved investigation covers this assertion-preserving revision; no new sequencing waiver is needed for diagnostic-only delivery if its exact final-head full required matrix passes and reviews converge. The certificate finding remains unresolved and acceptance/release-blocking, owned by the implementation lead for follow-up. The failed run is never accepted retroactively. A new failure must be investigated from retained evidence before further acceptance; T020/T021 remains unauthorized. This applies the constitution's rule to continue independent authorized work while blocking failing affected acceptance, without reusing A-003.
 
 
-Diagnostic revision validation: independent security and test source reviews found no acceptance weakening. Test review required checking the actual retained event list, rather than its dropped counter alone; the corrected oracle requires ordinals 1–8 exactly. The original two pure rows passed, a temporary removed-storage-bound mutant failed both on that equality assertion, and both restored rows passed. Full solution build has zero warnings/errors; 146 Python controls, strict 644-case issuer inventory (292 HTTP + 30 browser per provider), existing AI/assurance integrity checks and code-quality rules pass. Legacy allowances remain unchanged. Existing theory bodies/data are unchanged in source; no saved pre-edit native inventory was available for a UID-by-UID comparison of this browser revision. The revised full CI result remains pending.
+Diagnostic revision validation: independent security and test source reviews found no acceptance weakening. Test review required checking the actual retained event list, rather than its dropped counter alone; the corrected oracle requires ordinals 1–8 exactly. The original two pure rows passed, a temporary removed-storage-bound mutant failed both on that equality assertion, and both restored rows passed. Full solution build has zero warnings/errors; 146 Python controls, strict 644-case issuer inventory (292 HTTP + 30 browser per provider), existing AI/assurance integrity checks and code-quality rules pass. Legacy allowances remain unchanged. Existing theory bodies/data are unchanged in source; no saved pre-edit native inventory was available for a UID-by-UID comparison of this browser revision. The revised full CI result is recorded below.
+
+
+## Final scoped delivery
+
+[PR #44](https://github.com/mosesparadise/OpenIdentityAdmin/pull/44) was normally squash-merged as `65031d7a7c4bb4d3d0fe08cab736e780df97cbb3`. Exact final head `15c6e0c1e789ba9114874d7e692dd1cca745ae0a` passed all 62 jobs in [run 38390215923](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38390215923), all 49 mandatory coverage inputs and all nine module floors. Independent evidence review verified five ZIP digests/sizes/run-head bindings and 13 extracted report members, with no open inline findings. The final SQL/WebKit suite passed 30/30, including the real certificate control in 1.105 seconds. All 29 prior SQL/WebKit report identities and all eight prior AppHost identities per provider remain unchanged; only the new browser diagnostic row was added.
+
+Both Worker suites passed 8/8. PostgreSQL configuration-failure/database-loss durations were 26.432/65.056 seconds; SQL Server durations were 41.648/76.333 seconds. Every new control retained joined, nonfailed, untruncated observer evidence. The PostgreSQL artifact `11808058063` has SHA-256 `1d6dc7d18a553d4d35197b135636ad73a3d711659d02c0a12fdfc6f7d758d0c4`; SQL Server `11809240474` has `efedcdf2267f53bb68d017effae3db08d8ab91c0c28b91cc1c042bd07cf6d0fd`; SQL/WebKit `11808318997` has `b431e2d184843c3962bad9c9427df0c046999421f4e474eb09573f6dcaf79008`.
+
+T033 completes as bounded investigation/diagnostic delivery. The historical Worker and certificate findings remain unresolved acceptance/release blockers, owned by the implementation lead, with independent architecture/test review and security review for certificate closure. Run `38386343247` remains failed. The final pass is nonreproduction, not a demonstrated correction. No more identical incident-specific repetitions are prescribed without new discriminating evidence. T020/T021 and human acceptance remain blocked/separate.
