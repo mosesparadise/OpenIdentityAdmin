@@ -98,5 +98,39 @@
   "administrator_browser_stories": {
     "Accounts": 8,
     "Security": 5
+  },
+  "issuer_http_groups": {
+    "Flows": {
+      "classes": [
+        "BootstrapAcceptanceTests",
+        "CodeFlowTests",
+        "CurrentStateTests",
+        "DenialTests",
+        "InitializationTests",
+        "InteractionTests",
+        "MetadataTests",
+        "OperationsAcceptanceTests",
+        "OperationsTests"
+      ],
+      "counts": {
+        "PostgreSql": 130,
+        "SqlServer": 130
+      }
+    },
+    "Boundaries": {
+      "classes": [
+        "AuthorizationStateTests",
+        "ExchangeAcceptanceTests",
+        "InteractionCapacityTests",
+        "InteractionRaceTests",
+        "PasswordEntryTests",
+        "RequestBindingTests",
+        "TransportAcceptanceTests"
+      ],
+      "counts": {
+        "PostgreSql": 162,
+        "SqlServer": 162
+      }
+    }
   }
 }

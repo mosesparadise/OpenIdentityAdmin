@@ -30,6 +30,12 @@ public sealed class ProfileStartupEvidenceTests
         };
         Assert.Equal("snapshot=present state=FailedToStart exit=2 pid=1234", ProfileStartupEvidence.Describe(snapshot));
         Assert.Equal("snapshot=absent", ProfileStartupEvidence.Describe(null));
+        var runtimeFailure = snapshot with
+        {
+            State = new(KnownResourceStates.RuntimeUnhealthy, null),
+            ExitCode = null
+        };
+        Assert.Equal("snapshot=present state=RuntimeUnhealthy exit=unavailable pid=1234", ProfileStartupEvidence.Describe(runtimeFailure));
     }
 
     /// <summary>Rejects hostile state text and arbitrary PID values without invoking object formatting.</summary>

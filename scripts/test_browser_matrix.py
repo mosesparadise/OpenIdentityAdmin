@@ -57,9 +57,10 @@ class BrowserMatrixTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             catalogue('invalid')
 
-    def test_coverage_requires_each_selected_report_and_rejects_empty_or_duplicate_cells(self):
+    def test_Given_RequiredCoverageCells_When_AnyReportIsMissingEmptyOrDuplicated_Then_AcceptanceFails(self):
+        """Independently enumerate all 49 obligations and reject omission or empty evidence for each."""
         matrix = select('schedule', [])
-        labels = ['administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+        labels = ['issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
                       'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
               'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['label'] for cell in matrix['include']]
@@ -69,7 +70,7 @@ class BrowserMatrixTests(unittest.TestCase):
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(45, require_inputs(root, matrix))
+            self.assertEqual(49, require_inputs(root, matrix))
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.unlink()

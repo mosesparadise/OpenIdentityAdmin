@@ -12,7 +12,7 @@ internal static class ProfileStartupEvidence
     {
         KnownResourceStates.Running, KnownResourceStates.Starting, KnownResourceStates.FailedToStart,
         KnownResourceStates.Exited, KnownResourceStates.Finished, KnownResourceStates.NotStarted,
-        KnownResourceStates.Waiting, KnownResourceStates.Stopping
+        KnownResourceStates.Waiting, KnownResourceStates.Stopping, KnownResourceStates.RuntimeUnhealthy
     };
     private static readonly System.Text.CompositeFormat LineFormat = System.Text.CompositeFormat.Parse("profile-resource={0} {1}");
     private static readonly System.Text.CompositeFormat SnapshotFormat = System.Text.CompositeFormat.Parse("snapshot=present state={0} exit={1} pid={2}");
