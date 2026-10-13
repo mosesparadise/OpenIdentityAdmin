@@ -47,3 +47,7 @@ Historical increment-1 runner contract: add an `administrator` partition; `stand
 ## T027 current execution contract
 
 [Evidence gates](evidence-gates.md) reconciles the complete six-story HTTP and two-story browser implementation, strict selection and mandatory coverage inputs. Browser Administrator selection is supported; unit Administrator selection remains invalid. Each invocation validates the complete two-provider inventory before running its selected cases. The historical increment-1 restriction above no longer describes the complete runner. MFA-01–13 behavior and human obligations remain T028/T029.
+
+## Planned governance evidence
+
+[T019 GOV-01–12](governance-design.md#required-acceptance-families-for-t020t021) defines the future current-authority, locked-survivor, command-proof, indirect-change, recovery, concurrency/version, audit/failure/restart and exposure controls. These are unexecuted design obligations for T020/T021, not extra accepted cases or delivered second-administrator onboarding. Preserve strict native inventory, both providers, bounded real contention and unchanged acceptance deadlines.

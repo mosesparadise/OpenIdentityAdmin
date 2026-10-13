@@ -1,6 +1,6 @@
 # T032 — controlled browser history diagnostics
 
-Status: implementation and local controls complete; exact-head CI and final review remain the delivery gate. This is the second of the user's approved sequence T031, T032, T019 design. It changes test diagnostics only. ADM-EVID-01 and ADM-OPS-01 remain unresolved, acceptance/public-release-blocking; A-003 is expired. T019 may proceed as design only after normal squash, while runtime governance remains gated.
+Status: scoped diagnostic delivery squash-merged in [PR #38](https://github.com/mosesparadise/OpenIdentityAdmin/pull/38) as `fbd8ca9`; historical incident remains unresolved. This is the second of the user's approved sequence T031, T032, T019 design. It changes test diagnostics only. ADM-EVID-01 and ADM-OPS-01 remain unresolved, acceptance/public-release-blocking; A-003 is expired. T019 may proceed as design only after normal squash, while runtime governance remains gated.
 
 ## Problem and evidence boundary
 
@@ -37,3 +37,14 @@ A green comparison establishes only successful observed delivery under these fix
 After this scoped diagnostic PR passes review and exact-head checks and is normally squash-merged, T019 supplies the usable-administrator predicate and supported recovery-route design. T020/T021 runtime enforcement, human observations and broader release gates remain pending.
 
 CI attempt record: initial head `872ddba` in run `38367816704` exposed an omitted update in the independent provider-total oracle (`580` versus `585` after five new cases/provider). Affected jobs failed in Python preflight before actual suites. The count is corrected from the native catalogue; no test is removed and no failure is classified as acceptance. The new revision receives a complete exact-head run, rather than retrying a failed diagnostic arm.
+
+## Final scoped verification — 13 October 2026
+
+Final head `f3d229e1862ef75fb5802b424e301f1ca654914d` passed [run 38368154130](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38368154130): all 62 jobs, all 49 required coverage inputs and all nine module floors. Local full static analysis/seeded enforcement passed; all 146 Python controls passed; final ten focused native controls passed with no skips in 1.783 seconds. Independent source reviews and retained-report review converged; no open review thread remained at normal squash.
+
+| Provider | Isolated positive window | Overlap positive window | Ordinary Firefox Accounts | Retained artifact |
+| --- | --- | --- | --- | --- |
+| PostgreSQL | 11.528 ms | 78.033 ms | 8/8, zero skips; invocation 186.247 s | `11798206503`, SHA-256 `7137f24efaf21aa8646b9b39eff5db183c4706fdd5d4949482d6781dd8194101` |
+| SQL Server | 14.060 ms | 64.470 ms | 8/8, zero skips; invocation 217.394 s | `11798436638`, SHA-256 `71eb32fcf20f2c5c985898cc447f44417f9588f481e9761c0313167da5111b58` |
+
+All four focused TRX cases passed strict independent reconciliation. Both overlap windows were after database Running and before all-host readiness, with graph cleanup complete. Every probe observed completed fulfillment and a safe document; isolated arms contained no graph. These artifacts establish successful diagnostics in the fixed conditions, not a reproduction or cause of ADM-EVID-01. Both incidents remain open. T019 proceeds as design only.
