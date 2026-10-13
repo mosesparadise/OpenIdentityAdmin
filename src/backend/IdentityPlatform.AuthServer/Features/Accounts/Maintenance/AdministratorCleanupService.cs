@@ -7,7 +7,7 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 /// <summary>Schedules bounded metadata reclamation without decrypting secrets or selecting an in-memory leader.</summary>
 internal sealed class AdministratorCleanupService(IServiceScopeFactory scopes, TimeProvider time) : BackgroundService
 {
-    private const string MeterName = "IdentityPlatform.Administrator.Cleanup";
+    internal const string MeterName = "IdentityPlatform.Administrator.Cleanup";
     private const string DeletedName = "administrator.cleanup.deleted";
     private const string DeferredName = "administrator.cleanup.deferred";
     private static readonly Meter Meter = new(MeterName);

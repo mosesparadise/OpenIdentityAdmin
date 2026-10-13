@@ -59,3 +59,5 @@ T024 and T025 are accepted in PRs #29 and #30. [Recovery/security](recovery-secu
 [Evidence gates](evidence-gates.md) reconciles existing partition work and closes whole-catalogue browser-story validation in HTTP preflight. Preserve the existing project structure, exact inventories, 660-second invocations and all 45 coverage inputs. T028 will add behavior tests with reviewed discovery updates; T029 reconciles final increment acceptance.
 
 T028 uses the [MFA behavioral evidence packet](mfa-evidence.md) to reconcile existing acceptance and independently exercise the remaining native/process/cleanup/browser boundaries. Human results remain separately pending.
+
+T029 operational convergence and telemetry evidence are tracked in [operations-evidence.md](operations-evidence.md); human execution remains separate from delivery of its runbook/template.

@@ -4,6 +4,7 @@ using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Host.Tests.Features.Accounts;
 
@@ -26,13 +27,15 @@ internal sealed class AccountHost : IAsyncDisposable
     internal IServiceProvider Services => app!.Services;
 
     /// <summary>Starts the exact host setup with independent feature switches; unwinds credentials if startup fails.</summary>
-    internal static async Task<AccountHost> StartAsync(bool pilot, bool administrator, Action<WebApplication>? configure = null)
+    internal static async Task<AccountHost> StartAsync(bool pilot, bool administrator, Action<WebApplication>? configure = null, Action<IServiceCollection>? configureServices = null)
     {
         var host = new AccountHost();
         try
         {
             var builder = host.Builder(pilot, administrator);
-            host.app = builder.AddConfigurations().ConfigureServices(host.startup).Build();
+            builder.AddConfigurations().ConfigureServices(host.startup);
+            configureServices?.Invoke(builder.Services);
+            host.app = builder.Build();
             host.app.ConfigureApplication(host.startup);
             configure?.Invoke(host.app);
             await host.app.StartAsync(TestContext.Current.CancellationToken);
