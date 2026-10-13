@@ -1,5 +1,7 @@
 # OpenIdentityAdmin new-task handoff
 
+**Full-CI follow-up:** the first correction run exposed a stale shared inventory assertion and newly reported Pkcs advisories. Provider totals are now independently checked as 790/895; Pkcs 10.0.13 replaces both vulnerable resolved versions across all 18 affected lock files. Local locked build, 32 credential controls, 182 Python controls, current 23-project advisory and 233-pair license checks pass. Final exact-head CI remains required; no historical or human/release finding is closed.
+
 ## Current correction continuation — 13 October 2026
 
 Read the [current correction record](../../specs/008-administrator-foundation/governance-failure-corrections.md) and latest [approval](../approval.md), [roadmap](../roadmap.md) and [tasks](../../specs/008-administrator-foundation/tasks.md) before the historical handoff below. The user subsequently requested requirements review and conditional squash of PR48, then explicitly requested fixing its failed checks. Corrections and necessary verification proceed under those current instructions; A-004 remains expired and A-005/A-006 concluded.

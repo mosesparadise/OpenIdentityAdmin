@@ -1,5 +1,7 @@
 # Tasks: Administrator foundation
 
+**Full-CI follow-up:** the first correction run exposed a stale shared inventory assertion and newly reported Pkcs advisories. Provider totals are now independently checked as 790/895; Pkcs 10.0.13 replaces both vulnerable resolved versions across all 18 affected lock files. Local locked build, 32 credential controls, 182 Python controls, current 23-project advisory and 233-pair license checks pass. Final exact-head CI remains required; no historical or human/release finding is closed.
+
 **Current correction checkpoint (13 October 2026):** the user explicitly requested failure fixes after requesting requirements review and conditional squash of PR48. [Reviewed corrections and focused evidence](governance-failure-corrections.md) now cover the SQL privilege ambiguity and a decisive populated-fixture witness mutation. Full final-head delivery evidence remains pending; T020/T021 are intentionally unchecked. All six findings and human/public-release blockers remain open. The former A-004 hold below is historical, not renewed authority.
 
 **Delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
