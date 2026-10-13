@@ -60,15 +60,19 @@ public sealed class LocalProfilesTests
         ConfigureProfiles(builder, environment);
         ConfigureIssuer(builder, credentials);
         await using var app = await builder.BuildAsync(cancellationToken);
-        await ProfileStartupEvidence.ObserveAsync(app, async () =>
+        await ProfileTransitionObserver.ObserveAsync(app, async transitions => await ProfileStartupEvidence.ObserveAsync(app, async () =>
         {
             await app.StartAsync(cancellationToken);
+            transitions.SetPhase(ProfilePhase.HostReadiness);
             await AssertHostsAsync(app, cancellationToken);
             Assert.NotEmpty(Directory.GetFiles(credentials.Ring, ProtectionKeyPattern));
+            transitions.SetPhase(ProfilePhase.ClosedIssuer);
             await AssertIssuerClosedAsync(app, cancellationToken);
+            transitions.SetPhase(ProfilePhase.DatabaseStop);
             await AssertIsolationAndStopDatabaseAsync(app, cancellationToken);
+            transitions.SetPhase(ProfilePhase.DegradedHealth);
             await AssertDegradedHealthAsync(app);
-        });
+        }));
     }
 
     /// <summary>Configures documentation requests against each requested API/BFF environment without enabling authentication.</summary>
