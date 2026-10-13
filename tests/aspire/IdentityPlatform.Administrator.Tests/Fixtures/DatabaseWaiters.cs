@@ -28,6 +28,43 @@ internal static class DatabaseWaiters
         return Convert.ToInt32(await command.ExecuteScalarAsync(token), CultureInfo.InvariantCulture);
     }
 
+    /// <summary>Finds the exact blocked audit writer in the leased database and terminates that session, never an unrelated connection.</summary>
+    internal static async Task TerminateAuditWaiterAsync(BootstrapDatabase lease, int blocker)
+    {
+        const string AuditStage = "%INSERT%SecurityAuditIntent%";
+        const string SqlCount = "COUNT(DISTINCT b.session_id)";
+        const string SqlIdentity = "MIN(b.session_id)";
+        const string PostgresCount = "COUNT(*)";
+        const string PostgresIdentity = "MIN(b.pid)";
+        const string SqlTerminate = "KILL ";
+        const string PostgresTerminate = "SELECT pg_terminate_backend(";
+        const string CloseArgument = ")";
+        var token = TestContext.Current.CancellationToken;
+        await using var scope = lease.Administrator.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        await database.Database.OpenConnectionAsync(token);
+        await using var command = database.Database.GetDbConnection().CreateCommand();
+        command.CommandTimeout = CommandSeconds;
+        command.CommandText = database.Database.IsSqlServer() ? SqlWaiters.Replace(SqlCount, SqlIdentity, StringComparison.Ordinal)
+            : PostgresWaiters.Replace(PostgresCount, PostgresIdentity, StringComparison.Ordinal);
+        var owner = command.CreateParameter();
+        owner.ParameterName = BlockerParameter;
+        owner.Value = blocker;
+        command.Parameters.Add(owner);
+        var stage = command.CreateParameter();
+        stage.ParameterName = StageParameter;
+        stage.Value = AuditStage;
+        command.Parameters.Add(stage);
+        var result = await command.ExecuteScalarAsync(token);
+        Assert.True(result is not null and not DBNull);
+        var session = Convert.ToInt32(result, CultureInfo.InvariantCulture);
+        Assert.True(session > 0 && session != blocker);
+        command.Parameters.Clear();
+        var identity = session.ToString(CultureInfo.InvariantCulture);
+        command.CommandText = database.Database.IsSqlServer() ? SqlTerminate + identity : PostgresTerminate + identity + CloseArgument;
+        await command.ExecuteNonQueryAsync(token);
+    }
+
     /// <summary>Waits for the expected runtime statement to block behind the known session, under a bounded diagnostic deadline.</summary>
     internal static async Task ObserveAsync(BootstrapDatabase lease, int blocker, string stagePattern, int minimum)
     {

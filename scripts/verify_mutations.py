@@ -27,7 +27,7 @@ class MutationError(ValueError):
 def manifest(root, suite='issuer'):
     if suite not in ('issuer', 'administrator'):
         raise MutationError('Unknown mutation suite')
-    expected = 7 if suite == 'issuer' else 6
+    expected = 7 if suite == 'issuer' else 8
     filename = 'eng/critical-mutations.json' if suite == 'issuer' else 'eng/administrator-mutations.json'
     boundary = 'src/backend/IdentityPlatform.AuthServer/Features' if suite == 'issuer' else 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'
     value = json.loads((root / filename).read_text())

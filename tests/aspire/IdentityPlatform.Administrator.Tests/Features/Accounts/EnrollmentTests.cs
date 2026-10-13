@@ -20,9 +20,11 @@ public sealed class EnrollmentTests(BootstrapFixture fixture)
     private const string AcceptedOutcome = "accepted";
     private const int RecoveryCount = 10;
     private const int AbsoluteSeconds = 28800;
+    private const string CookieCommitMarker = "administrator-precommit-cookie-bypass";
 
     /// <summary>Only committed native enrollment creates an enabled MFA account, ten one-time codes and a reusable stored session.</summary>
     [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
+    [Trait("CriticalDecision", "administrator-precommit-cookie")]
     public async Task Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(string provider)
     {
         await using var environment = await AdministratorEnvironment.CreateAsync(fixture, provider);
@@ -35,6 +37,7 @@ public sealed class EnrollmentTests(BootstrapFixture fixture)
         using var result = await AdministratorJourney.ConfirmAsync(browser, form, code, enrollment: true);
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
         Assert.NotNull(cookies.GetCookies(environment.Issuer)[AdministratorJourney.SessionCookie]);
+        await RequireCookieBackingAsync(environment);
         var html = await result.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         Assert.True(html.Contains(RecoveryHeading, StringComparison.Ordinal));
         Assert.True(System.Text.RegularExpressions.Regex.Count(html, RecoveryCodePattern) == RecoveryCount);
@@ -47,6 +50,19 @@ public sealed class EnrollmentTests(BootstrapFixture fixture)
         using var replay = await AdministratorJourney.ConfirmAsync(browser, form, code, enrollment: true);
         Assert.Equal(HttpStatusCode.BadRequest, replay.StatusCode);
         await AssertCommittedAsync(environment);
+    }
+
+    /// <summary>Requires independently committed session and audit backing after an actual cookie is received, before detailed state assertions.</summary>
+    private static async Task RequireCookieBackingAsync(AdministratorEnvironment environment)
+    {
+        await using var scope = environment.Database.Administrator.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var token = TestContext.Current.CancellationToken;
+        var sessions = await database.Set<AdministratorSession>().CountAsync(token);
+        var audits = await database.Set<SecurityAuditIntent>().CountAsync(row => row.Event == EnrollmentEvent && row.Outcome == AcceptedOutcome, token);
+        Assert.False(sessions == 0 && audits == 0, CookieCommitMarker);
+        Assert.Equal(1, sessions);
+        Assert.Equal(1, audits);
     }
 
     /// <summary>Inspects independently persisted activation, protected factors, replay, actual proof times and permanent receipt.</summary>

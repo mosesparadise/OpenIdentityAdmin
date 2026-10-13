@@ -37,19 +37,19 @@
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 207
+      "Administrator": 237
     },
     "SqlServer": {
       "Persistence": 4,
       "AppHost": 6,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
-      "Administrator": 207
+      "Administrator": 237
     }
   },
   "browser": {
     "Issuer": 29,
-    "Administrator": 12
+    "Administrator": 13
   },
   "lifecycle_stories": {
     "Restart": {
@@ -75,28 +75,28 @@
       "SqlServer": 45
     },
     "Factors": {
-      "PostgreSql": 51,
-      "SqlServer": 51
+      "PostgreSql": 58,
+      "SqlServer": 58
     },
     "Ceremonies": {
-      "PostgreSql": 35,
-      "SqlServer": 35
+      "PostgreSql": 41,
+      "SqlServer": 41
     },
     "Accounts": {
-      "PostgreSql": 37,
-      "SqlServer": 37
+      "PostgreSql": 53,
+      "SqlServer": 53
     },
     "Security": {
       "PostgreSql": 21,
       "SqlServer": 21
     },
     "Recovery": {
-      "PostgreSql": 18,
-      "SqlServer": 18
+      "PostgreSql": 19,
+      "SqlServer": 19
     }
   },
   "administrator_browser_stories": {
-    "Accounts": 7,
+    "Accounts": 8,
     "Security": 5
   }
 }

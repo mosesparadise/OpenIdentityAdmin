@@ -208,9 +208,10 @@ class MutationEvidenceTests(unittest.TestCase):
                     self.fail('Ambiguous mutation was entered')
                 self.assertEqual(original, path.read_bytes())
 
-    def test_reviewed_manifest_targets_exist_exactly_once(self):
+    def test_Given_ReviewedMutationManifests_When_TargetsAreResolved_Then_ExactInventoriesAndUniqueSubstitutionsAreRequired(self):
+        """Keep issuer and administrator inventories explicit and reject drift or ambiguous source substitutions."""
         self.assertEqual(7, len(manifest(ROOT)))
-        self.assertEqual(6, len(manifest(ROOT, "administrator")))
+        self.assertEqual(8, len(manifest(ROOT, "administrator")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
     def test_exited_parent_pipe_holder_and_stubborn_child_are_terminated(self):

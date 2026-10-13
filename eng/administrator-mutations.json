@@ -48,6 +48,22 @@
       "after": "session.Revoked = false;",
       "marker": "administrator-logout-revocation-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked"
+    },
+    {
+      "id": "administrator-precommit-cookie",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs",
+      "before": "await transaction.CommitAsync(Event(interaction.Row.Purpose), true, account.User.Id, now);",
+      "after": "await database.SaveChangesAsync(transaction.Token);",
+      "marker": "administrator-precommit-cookie-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes"
+    },
+    {
+      "id": "administrator-recovery-cookie",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs",
+      "before": "if (user is null || enrollment is null || authentication is null || session is null || session.PublicId != publicId ||",
+      "after": "if (enrollment?.State == AdministratorPolicy.RecoveryRequired && session is not null)\n            {\n                return new JourneySession(session.PublicId, userId, session.PasswordVerifiedAt, session.FactorVerifiedAt, session.ExpiresAt);\n            }\n            if (user is null || enrollment is null || authentication is null || session is null || session.PublicId != publicId ||",
+      "marker": "administrator-recovery-cookie-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes"
     }
   ]
 }

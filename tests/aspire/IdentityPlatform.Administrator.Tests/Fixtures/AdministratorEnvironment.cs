@@ -149,6 +149,27 @@ internal sealed class AdministratorEnvironment : IAsyncDisposable
         Timeout = TimeSpan.FromSeconds(HttpTimeoutSeconds)
     };
 
+    /// <summary>Terminates only the primary graph-owned AuthServer child at a test-observed transaction boundary.</summary>
+    internal Task KillPrimaryAsync() => AdministratorProcess.KillAsync(application!, Primary);
+
+    /// <summary>Restarts the primary host and retains all observed generations for final process-cleanup verification.</summary>
+    internal async Task RestartPrimaryAsync()
+    {
+        try
+        {
+            processes = [.. processes, .. await AdministratorProcess.RestartAsync(application!, Primary, Issuer)];
+        }
+        finally
+        {
+            // Capture a partially started replacement even when its readiness assertion fails.
+            if (application!.ResourceNotifications.TryGetCurrentState(Primary, out var state) &&
+                state!.Snapshot.State?.Text == KnownResourceStates.Running)
+            {
+                processes = [.. processes, .. AdministratorProcess.Capture(application, Primary)];
+            }
+        }
+    }
+
     /// <summary>Records distinct native process generations and their descendants after both nodes become healthy.</summary>
     private ProcessGeneration[] CaptureProcesses()
     {
