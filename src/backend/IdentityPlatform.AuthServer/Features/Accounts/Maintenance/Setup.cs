@@ -1,5 +1,4 @@
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
-using OpenTelemetry.Metrics;
 
 namespace IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 

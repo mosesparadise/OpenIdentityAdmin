@@ -2,7 +2,6 @@ using System.Diagnostics.Metrics;
 using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using Microsoft.Extensions.DependencyInjection;
-using OpenTelemetry;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 
