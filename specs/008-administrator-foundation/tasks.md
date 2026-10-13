@@ -105,3 +105,5 @@ Authority: [A-006](../../docs/amendments/A-006-sql-diagnostic-readiness.md). PR4
 - [x] E006 Publish evidence/disposition and stop before any unapproved correction, full CI or merge.
 
 A-006 disposition: [SQL diagnostic readiness](sql-diagnostic-readiness.md). E005 was **not run**, because E002 did not establish image readiness. This is a completed bounded investigation with an unmet prerequisite, not completed SQL validation. A-006 concludes with publication; no retry, runtime continuation, full CI or merge is authorized.
+
+User-requested retry after A-006 disposition: one additional image acquisition failed after 10.240 seconds; pinned image still absent. [Separate retry record](sql-diagnostic-readiness.md#user-requested-retry--13-october-2026). E005 remains **not_run**; no feature acceptance, full CI or merge follows from this attempt.
