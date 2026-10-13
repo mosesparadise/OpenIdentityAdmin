@@ -44,7 +44,7 @@ class IssuerSelectionTests(unittest.TestCase):
                 if test[1] == provider and not test[2] and test[3] in issuer_types(self.matrix, group)}
 
     def test_Given_ReviewedGroups_When_Combined_Then_All292HttpCasesAppearExactlyOnce(self):
-        """Preserve the reviewed 130/162 split and all 29 separately required browser cases per provider."""
+        """Preserve the reviewed 130/162 split and all 30 separately required browser cases per provider."""
         require_issuer_inventory(self.all_tests, self.matrix)
         for provider in PROVIDERS:
             self.assertEqual([('Flows', 130), ('Boundaries', 162)], issuer_invocations(self.matrix, provider))
