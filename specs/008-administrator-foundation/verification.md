@@ -179,3 +179,11 @@ Independent architecture/test source reviews accepted the corrections and explic
 ## T028 automated MFA evidence — 13 October 2026
 
 [PR #34](https://github.com/mosesparadise/OpenIdentityAdmin/pull/34) was squash-merged as `fafc98d`. Exact source head `d4e2a1a49a93a6d4afcb52d6e6c3d800ba0c0a9c` passed all 58 jobs in [run 38334770309](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38334770309), 1,868 ordinary .NET cases, all 45 coverage inputs and nine floors. Both providers passed eight administrator and seven issuer mutants. [MFA evidence](mfa-evidence.md) maps the 62 new identities, source-review fixes, local findings and first CI failure to the accepted complete run. Human observations and overall increment acceptance remain open.
+
+## T019 — governance design checkpoint — 13 October 2026
+
+The user's three-item sequence completed T031 in PR #37 (`1a043c0`) and T032 in PR #38 (`fbd8ca9`), each after all 62 exact-head checks. T019 is [design only](governance-design.md). It defines current persisted grants, configured usable platform administrators, exact command proof/versions, ordered witness locks and atomic actor/target audit, with the existing restricted-recovery and mandatory-security distinctions. No source, migrations, API/BFF/docs activation or new recovery endpoint is implemented.
+
+Independent architecture/security/test reviews converged after fixing explicit native MFA eligibility, cross-role union versus duplicate claims, complete grants on the platform role itself, staged-factor isolation and the shared-role grant-removal oracle. GOV-01–12 are planned scenarios, not executed governance tests. Spec Kit consistency analysis mapped all 12 ADMIN requirements across the existing 32 tasks and found no unresolved design/constitution conflict; the 11-item requirements checklist remains complete. Local documentation checks pass; exact-head documentation CI and normal squash are recorded on the PR.
+
+ADM-OPS-01, ADM-EVID-01 and human acceptance remain unresolved. Scoped passing diagnostics do not establish historical causality. Runtime T020/T021, second-administrator onboarding/M05, M02-B–E/API/BFF/React, vendor/docs activation, legacy engineering work and external security/conformance/certification remain pending.

@@ -1,6 +1,6 @@
 # Implementation plan: Administrator foundation
 
-**Feature**: 008 | **Latest accepted implementation**: PR #31 (`c10f9d2`) | **Date**: 2026-10-13 | **Spec**: [spec.md](spec.md)
+**Feature**: 008 | **Latest scoped runtime implementation**: PR #35 (`8792f85`); diagnostic delivery through PR #38 (`fbd8ca9`) | **Date**: 2026-10-13 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
@@ -61,3 +61,9 @@ T024 and T025 are accepted in PRs #29 and #30. [Recovery/security](recovery-secu
 T028 uses the [MFA behavioral evidence packet](mfa-evidence.md) to reconcile existing acceptance and independently exercise the remaining native/process/cleanup/browser boundaries. Human results remain separately pending.
 
 T029 operational convergence and telemetry evidence are tracked in [operations-evidence.md](operations-evidence.md); human execution remains separate from delivery of its runbook/template.
+
+## Third-increment design checkpoint
+
+[T019 governance design](governance-design.md) distinguishes current persisted grants, configured usable platform administrators and command-authorized actors. It fixes the complete-platform predicate, guarded voluntary changes versus existing restricted recovery/security enforcement, ordered witness locks, semantic authority versioning and atomic actor/target audit. GOV-01–12 are planned T020/T021 acceptance families; no runtime implementation or new endpoint is included. Preserve existing projects/Features/Setup. A portable AuthorityRevision addition to the existing singleton is planned only for T020; both provider migrations and schema readiness will be required.
+
+ADM-OPS-01 and ADM-EVID-01 remain unresolved despite accepted diagnostics. Runtime governance and whole-increment acceptance remain gated, including unexecuted human observations. Second-administrator onboarding is not supplied by role assignment and remains a dependency of the M05 account/factor lifecycle. No emergency-reset authority is added.

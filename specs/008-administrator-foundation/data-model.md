@@ -34,3 +34,7 @@ Database check constraints restrict both singleton IDs to1 and numeric revisions
 ## Increment 2 expansion
 
 See [MFA design](mfa-design.md#persistence-additions-and-operations) for the reviewed expansion contract. The tables above describe already-shipped increment 1; T023 adds the inert storage expansion described in [factor storage](factor-storage.md). Destination factor generations, orthogonal suspension, authentication state, restricted interactions, protected seed/replay storage, recovery verifiers, sessions and retained-capacity admission have provider-native migrations; T023 acceptance is recorded in [verification](verification.md#t023-factor-storage--12-october-2026). T024 owns authoritative mutation rules, budgets, locks, replay and cleanup; persisted rows alone confer no authority.
+
+## Planned governance versioning — design only
+
+[T019](governance-design.md#concurrency-and-atomicity) specifies a future portable nonnegative AuthorityRevision on the existing AdministratorGovernance singleton. It versions committed authority-policy/membership/governed account-state commands separately from the existing lock-acquisition Revision. It is not present in shipped schema. T020 must add both-provider migrations/readiness, preserve bootstrap state and bind native plus enrollment target versions; T020/T021 runtime work remains gated.
