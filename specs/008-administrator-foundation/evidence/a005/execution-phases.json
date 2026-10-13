@@ -1,0 +1,348 @@
+{
+  "ordinary-PostgreSql": [
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 37,
+      "event": "returned",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 2,
+      "event": "returned",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "build",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 39276,
+      "event": "returned",
+      "operation": "build",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "discovery",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 1574,
+      "event": "returned",
+      "operation": "discovery",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "execution",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 53268,
+      "event": "returned",
+      "operation": "execution",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    }
+  ],
+  "ordinary-SqlServer": [
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 10,
+      "event": "returned",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 2,
+      "event": "returned",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "build",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 3421,
+      "event": "returned",
+      "operation": "build",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "discovery",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 1448,
+      "event": "returned",
+      "operation": "discovery",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "execution",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 64063,
+      "event": "returned",
+      "operation": "execution",
+      "ordinal": 0,
+      "outcome": "test-failure-exit",
+      "role": "baseline"
+    }
+  ],
+  "mutant-SqlServer": [
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 10,
+      "event": "returned",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 30,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 2,
+      "event": "returned",
+      "operation": "command",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "control"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "build",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 3147,
+      "event": "returned",
+      "operation": "build",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "discovery",
+      "ordinal": 0,
+      "outcome": "pending",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 1189,
+      "event": "returned",
+      "operation": "discovery",
+      "ordinal": 0,
+      "outcome": "zero-exit",
+      "role": "baseline"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "build",
+      "ordinal": 2,
+      "outcome": "pending",
+      "role": "mutant"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 5620,
+      "event": "returned",
+      "operation": "build",
+      "ordinal": 2,
+      "outcome": "zero-exit",
+      "role": "mutant"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "discovery",
+      "ordinal": 2,
+      "outcome": "pending",
+      "role": "mutant"
+    },
+    {
+      "budget_seconds": 60,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 1687,
+      "event": "returned",
+      "operation": "discovery",
+      "ordinal": 2,
+      "outcome": "zero-exit",
+      "role": "mutant"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 0,
+      "event": "started",
+      "operation": "execution",
+      "ordinal": 2,
+      "outcome": "pending",
+      "role": "mutant"
+    },
+    {
+      "budget_seconds": 180,
+      "cleanup_budget_seconds": 10,
+      "elapsed_ms": 33280,
+      "event": "returned",
+      "operation": "execution",
+      "ordinal": 2,
+      "outcome": "test-failure-exit",
+      "role": "mutant"
+    }
+  ]
+}

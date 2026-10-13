@@ -1,0 +1,135 @@
+{
+  "exit_code": 2,
+  "selected_count": 2,
+  "counts": {
+    "total": "2",
+    "executed": "2",
+    "passed": "1",
+    "failed": "1",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "categories": [
+    "SqlException"
+  ],
+  "checkpoints": [
+    {
+      "setup": "JourneyLease"
+    },
+    {
+      "setup": "HostBuilder"
+    },
+    {
+      "setup": "HostBuild"
+    },
+    {
+      "setup": "HostStart"
+    },
+    {
+      "setup": "AuthReadiness"
+    },
+    {
+      "setup": "HostReady"
+    },
+    {
+      "setup": "LeaseOpen"
+    },
+    {
+      "setup": "LeaseCreate"
+    },
+    {
+      "setup": "LeaseMigrate"
+    },
+    {
+      "setup": "LeaseProvision"
+    },
+    {
+      "setup": "LeaseReady"
+    },
+    {
+      "setup": "JourneyInitialize"
+    },
+    {
+      "setup": "JourneyServices"
+    },
+    {
+      "setup": "JourneyReady"
+    },
+    {
+      "setup": "EnrollmentStage"
+    },
+    {
+      "setup": "EnrollmentVerify"
+    },
+    {
+      "setup": "EnrollmentReady"
+    },
+    {
+      "alter": "ProviderError",
+      "probe": "Absent",
+      "provider_code": 1088
+    },
+    "Setup",
+    {
+      "setup": "JourneyLease"
+    },
+    {
+      "setup": "LeaseOpen"
+    },
+    {
+      "setup": "LeaseCreate"
+    },
+    {
+      "setup": "LeaseMigrate"
+    },
+    {
+      "setup": "LeaseProvision"
+    },
+    {
+      "setup": "LeaseReady"
+    },
+    {
+      "setup": "JourneyInitialize"
+    },
+    {
+      "setup": "JourneyServices"
+    },
+    {
+      "setup": "JourneyReady"
+    },
+    {
+      "setup": "EnrollmentStage"
+    },
+    {
+      "setup": "EnrollmentVerify"
+    },
+    {
+      "setup": "EnrollmentReady"
+    },
+    {
+      "setup": "WitnessCreate"
+    }
+  ],
+  "source_locations": [
+    "/tests/aspire/IdentityPlatform.Administrator.Tests/Features/Governance/Failures/WitnessOrderingTests.cs:line 135",
+    "/tests/aspire/IdentityPlatform.Administrator.Tests/Features/Governance/Failures/WitnessOrderingTests.cs:line 95",
+    "/tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/WitnessPopulation.cs:line 31",
+    "/tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/WitnessPopulation.cs:line 36",
+    "/tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/Governance/WitnessPopulation.cs:line 47"
+  ],
+  "wait_stage_codes": [],
+  "strict_expected_outcome": false,
+  "validation_failure": "Mutation report counters do not match the required outcome",
+  "source_identity": "3a91f98692b5050ff59eed3baa1b6f635aec82af11ec6c7fa9738370ea5b51f3",
+  "source_unchanged": true
+}

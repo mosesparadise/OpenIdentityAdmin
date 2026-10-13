@@ -32,7 +32,7 @@ internal sealed class CeremonyPassword
         CeremonyClock clock, CeremonyTransaction transaction, CeremonyAccount account, string purpose, string password)
     {
         account.RequireCurrent(transaction);
-        ((AdministratorUserManager)users).RequireOperation(transaction.Token);
+        account.RequireManager(users, transaction);
         if (!await budget.OpenAsync(transaction, account) || !await users.CheckPasswordAsync(account.User, password) ||
             !clock.Observe(account.Authentication, out var now))
         {

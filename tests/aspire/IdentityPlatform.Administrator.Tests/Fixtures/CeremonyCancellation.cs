@@ -29,6 +29,15 @@ internal static class CeremonyCancellation
         return failure is OperationCanceledException || accepted ? null : failure?.GetType().Name ?? NoFailure;
     }
 
+    /// <summary>Classifies an observed native caller cancellation before a service replaces its exception with a safe boundary outcome.</summary>
+    internal static bool IsCallerCancellation(Exception? failure, bool sqlAllowed, bool requested)
+    {
+        RequireControls();
+        return requested && (failure is OperationCanceledException || failure is SqlException sql && sqlAllowed &&
+            sql.InnerException is null && Matches(sql.Errors.Cast<SqlError>().Select(error =>
+                new Error(error.Number, error.Class, error.State, error.LineNumber, string.IsNullOrEmpty(error.Procedure), error.Message)).ToArray()));
+    }
+
     /// <summary>Accepts only documented cancellation or timeout shapes after the observed production deadline, never unrelated SQL failures.</summary>
     internal static void RequireDeadlineFailure(Exception? failure, bool sqlAllowed)
     {
@@ -103,5 +112,27 @@ internal static class CeremonyCancellation
             Assert.False(Matches(changed));
             Assert.False(Matches(Interrupted.Where(error => error != original).ToArray()));
         }
+    }
+    /// <summary>Classifies native deadline evidence only after the observed production token expired, without retaining exception diagnostics.</summary>
+    internal static bool IsDeadlineFailure(Exception? failure, bool sqlAllowed, bool expired)
+    {
+        RequireControls();
+        RequireTimeoutControls();
+        if (!expired)
+        {
+            return false;
+        }
+        if (failure is OperationCanceledException)
+        {
+            return true;
+        }
+        if (!sqlAllowed || failure is not SqlException sql)
+        {
+            return false;
+        }
+        var errors = sql.Errors.Cast<SqlError>().ToArray();
+        return sql.InnerException is null && Matches(errors.Select(error =>
+            new Error(error.Number, error.Class, error.State, error.LineNumber, string.IsNullOrEmpty(error.Procedure), error.Message)).ToArray()) ||
+            MatchesTimeout(errors.Select(error => (error.Number, error.Class)).ToArray(), sql.InnerException);
     }
 }

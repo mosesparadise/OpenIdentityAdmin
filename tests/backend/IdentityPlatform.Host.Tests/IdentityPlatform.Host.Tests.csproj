@@ -15,4 +15,7 @@
   <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/SafeAssertions.cs" Link="Fixtures/SafeAssertions.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/CriticalDecisionAssertions.cs" Link="Fixtures/CriticalDecisionAssertions.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../shared/ProductionEndpointInventory.cs" Link="Fixtures/ProductionEndpointInventory.cs" />
+  </ItemGroup>
 </Project>

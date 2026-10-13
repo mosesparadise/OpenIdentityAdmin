@@ -65,10 +65,15 @@ internal static class DatabaseWaiters
         await command.ExecuteNonQueryAsync(token);
     }
 
+    /// <summary>Retains the existing test-owned cancellation contract for ordinary wait-graph callers.</summary>
+    internal static Task ObserveAsync(BootstrapDatabase lease, int blocker, string stagePattern, int minimum) =>
+        ObserveOwnedAsync(lease, blocker, stagePattern, minimum, TestContext.Current.CancellationToken);
+
     /// <summary>Waits for the expected runtime statement to block behind the known session, under a bounded diagnostic deadline.</summary>
-    internal static async Task ObserveAsync(BootstrapDatabase lease, int blocker, string stagePattern, int minimum)
+    internal static async Task ObserveOwnedAsync(BootstrapDatabase lease, int blocker, string stagePattern, int minimum,
+        CancellationToken cancellationToken)
     {
-        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken, cancellationToken);
         deadline.CancelAfter(TimeSpan.FromSeconds(WaitSeconds));
         await using var scope = lease.Administrator.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();

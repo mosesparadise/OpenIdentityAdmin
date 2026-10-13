@@ -7,6 +7,15 @@ internal sealed class NativeOperation(PlatformDbContext database)
 {
     private Guid? transaction;
     private CancellationToken token;
+
+    /// <summary>Rejects managers whose native persistence context differs even if their cancellation token was copied.</summary>
+    internal void RequireContext(PlatformDbContext current, CancellationToken cancellationToken)
+    {
+        if (!ReferenceEquals(database, current) || transaction is null || !cancellationToken.CanBeCanceled || Token != cancellationToken)
+        {
+            throw new FactorUnavailableException();
+        }
+    }
     internal CancellationToken Token
     {
         /// <summary>Supplies cancellation only while its original native transaction remains active.</summary>

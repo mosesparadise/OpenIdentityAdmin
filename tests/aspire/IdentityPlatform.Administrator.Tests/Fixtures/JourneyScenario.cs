@@ -15,6 +15,8 @@ internal sealed class JourneyScenario : IAsyncDisposable
     private readonly AsyncServiceScope scope;
     internal PlatformDbContext Database => Get<PlatformDbContext>();
     internal BootstrapDatabase Lease => lease;
+    /// <summary>Supplies only synthetic issuer inputs to the owned non-HTTP process driver; callers must never log or serialize them to disk.</summary>
+    internal IReadOnlyDictionary<string, string?> IssuerSettings => material.Settings;
     internal FactorClock Clock
     {
         get;
@@ -38,18 +40,22 @@ internal sealed class JourneyScenario : IAsyncDisposable
     internal static async Task<JourneyScenario> CreateAsync(BootstrapFixture fixture, string provider,
         Action<IServiceCollection>? configure = null)
     {
+        SetupDiagnostics.Write(SetupStage.JourneyLease);
         var lease = await fixture.LeaseAsync(provider);
         var material = new IssuerMaterialFixture();
         var clock = new FactorClock(DateTimeOffset.UtcNow);
         FactorServices? services = null;
         try
         {
+            SetupDiagnostics.Write(SetupStage.JourneyInitialize);
             await lease.InitializeAsync(TestContext.Current.CancellationToken);
+            SetupDiagnostics.Write(SetupStage.JourneyServices);
             services = new FactorServices(provider, lease, material, clock, collection =>
             {
                 Register(collection);
                 configure?.Invoke(collection);
             });
+            SetupDiagnostics.Write(SetupStage.JourneyReady);
             return new JourneyScenario(lease, material, services, clock);
         }
         catch
@@ -90,11 +96,14 @@ internal sealed class JourneyScenario : IAsyncDisposable
     /// <summary>Confirms the real generated key through native verification and retains only the resulting committed capability.</summary>
     internal async Task<JourneyCompletion.Grant> EnrollAsync()
     {
+        SetupDiagnostics.Write(SetupStage.EnrollmentStage);
         await StageAsync();
         const string Enrollment = "Enrollment";
+        SetupDiagnostics.Write(SetupStage.EnrollmentVerify);
         var grant = await Get<JourneyCompletion>().CompleteAsync(Interaction, Correlation, Enrollment,
             FactorOracle.Code(Seed, DateTimeOffset.UtcNow.ToUnixTimeSeconds()), TestContext.Current.CancellationToken);
         Assert.NotNull(grant);
+        SetupDiagnostics.Write(SetupStage.EnrollmentReady);
         return grant;
     }
 

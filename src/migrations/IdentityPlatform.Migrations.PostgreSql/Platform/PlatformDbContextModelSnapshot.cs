@@ -201,6 +201,9 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.Property<int>("Id")
                         .HasColumnType("integer");
 
+                    b.Property<long>("AuthorityRevision")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("BootstrapConsumed")
                         .HasColumnType("boolean");
 
@@ -211,6 +214,8 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 
                     b.ToTable("AdministratorGovernance", "platform", t =>
                         {
+                            t.HasCheckConstraint("CK_AdministratorGovernance_AuthorityRevision", "\"AuthorityRevision\" >= 0");
+
                             t.HasCheckConstraint("CK_AdministratorGovernance_Revision", "\"Revision\" >= 0");
 
                             t.HasCheckConstraint("CK_AdministratorGovernance_Singleton", "\"Id\" = 1");
@@ -220,6 +225,7 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         new
                         {
                             Id = 1,
+                            AuthorityRevision = 0L,
                             BootstrapConsumed = false,
                             Revision = 0L
                         });

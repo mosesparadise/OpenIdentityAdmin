@@ -209,6 +209,9 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<long>("AuthorityRevision")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("BootstrapConsumed")
                         .HasColumnType("bit");
 
@@ -219,6 +222,8 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.ToTable("AdministratorGovernance", "platform", t =>
                         {
+                            t.HasCheckConstraint("CK_AdministratorGovernance_AuthorityRevision", "[AuthorityRevision] >= 0");
+
                             t.HasCheckConstraint("CK_AdministratorGovernance_Revision", "[Revision] >= 0");
 
                             t.HasCheckConstraint("CK_AdministratorGovernance_Singleton", "[Id] = 1");
@@ -228,6 +233,7 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         new
                         {
                             Id = 1,
+                            AuthorityRevision = 0L,
                             BootstrapConsumed = false,
                             Revision = 0L
                         });

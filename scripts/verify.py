@@ -7,6 +7,7 @@ from pathlib import Path
 from verify_contrast_experiment import execute, install_cancellation_handler
 from verify_history_experiment import MODE_VARIABLE as HISTORY_MODE_VARIABLE
 from test_evidence import require_complete_trx
+from administrator_inventory import load_inventory, require_native_inventory, PROVIDERS
 from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, administrator_invocations, require_administrator_browser, administrator_browser_invocations
 
 from issuer_selection import issuer_catalogue, issuer_invocations, issuer_filter, require_issuer_inventory, require_issuer_selections
@@ -16,7 +17,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
 parser.add_argument("--partition", choices=["all", "standard", "foundation", "issuer", "lifecycle", "administrator"], default="all")
-parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security"])
+parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures"])
 parser.add_argument("--browser-story", choices=["Accounts", "Security"])
 parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
 args = parser.parse_args()
@@ -28,7 +29,7 @@ if args.browser_story and (not args.browser or args.partition != "administrator"
     parser.error("Browser story requires an administrator browser invocation")
 install_cancellation_handler()
 if args.story and (args.partition not in ("lifecycle", "administrator") or
-                   (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security")) != (args.partition == "administrator")):
+                   (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures")) != (args.partition == "administrator")):
     parser.error("Story selection requires its matching lifecycle or administrator partition")
 if args.browser and args.story:
     parser.error("HTTP story and browser selection cannot be combined")
@@ -56,7 +57,7 @@ for project, expected_count, story, browser_story in invocations:
     if project == "Issuer" and not args.browser:
         label = "issuer-" + args.profile + "-" + story.lower()
     if project == "Administrator":
-        label = "administrator-" + args.profile + "-" + ((args.browser + "-" + browser_story.lower()) if args.browser else story.lower())
+        label = "administrator-" + args.profile + "-" + ((args.browser + "-" + browser_story.lower()) if args.browser else story.lower().replace(".", "-"))
     results = ROOT / "artifacts" / "tests" / label
     results.mkdir(parents=True, exist_ok=True)
     name = f"IdentityPlatform.{project}.Tests"
@@ -68,13 +69,16 @@ for project, expected_count, story, browser_story in invocations:
         # Invoke the native executable: the SDK's discovery transport does not forward JSON output.
         discovery = ["dotnet", "run", "--project", command[3], "--no-build", "--no-restore", "--",
                      "--pre-enumerate-theories", "on", "--list-tests", "json"]
+        native_inventory = load_inventory(ROOT / "eng/administrator-test-matrix.json") if project == "Administrator" else None
         def discover(expression=None):
             invocation = discovery + (["--filter", expression] if expression else [])
             result = execute(invocation, os.environ.copy(), timeout=60, capture=True)
+            if native_inventory is not None:
+                require_native_inventory(result, native_inventory, complete=expression is None)
             return issuer_catalogue(result) if project == "Issuer" else catalogue(result, project=project)
         all_tests = discover()
         if project == "Administrator":
-            inventory = json.loads((ROOT / "eng/administrator-test-matrix.json").read_text())
+            inventory = {provider: native_inventory[provider] for provider in PROVIDERS}
             if args.browser:
                 expression = f"Provider={args.profile}&Category=Browser&BrowserStory={browser_story}"
                 selected = discover(expression)

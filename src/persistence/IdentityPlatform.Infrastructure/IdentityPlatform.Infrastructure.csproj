@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <InternalsVisibleTo Include="IdentityPlatform.AuthServer" />
+    <InternalsVisibleTo Include="IdentityPlatform.Governance.Driver" />
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
   </ItemGroup>
@@ -12,6 +13,8 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <!-- Override the SQL client transitively resolved PKCS package with the reviewed security patch. -->
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
   </ItemGroup>

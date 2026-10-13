@@ -29,6 +29,7 @@ internal sealed class CeremonyInteraction
     /// <summary>Revalidates transaction, tracked state, absolute expiry and every captured browser/account/purpose binding.</summary>
     internal void RequireCurrent(CeremonyTransaction current, CeremonyAccount account, long now)
     {
+        current.RequireCeremony();
         account.RequireCurrent(current);
         if (!ReferenceEquals(current, owner) || database.Entry(Row).State != EntityState.Unchanged ||
             FactorBinding.Digest(Row) != fingerprint || !IsCurrent(Row, account, now))
@@ -42,6 +43,7 @@ internal sealed class CeremonyInteraction
         CeremonyAccount account, string publicId, string? secret, string purpose, long now)
     {
         transaction.RequireContext(database);
+        transaction.RequireCeremony();
         account.RequireCurrent(transaction);
         if (!CeremonySecrets.IsIdentifier(publicId) || !CeremonySecrets.IsIdentifier(secret))
         {

@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-12
 
-**Status**: Bootstrap and scoped MFA/recovery implementation merged; increment-2 overall acceptance remains open. T031/T032 diagnostics merged in PRs #37/#38. T019 governance design is independently reviewed; runtime increment 3 remains gated.
+**Status**: Bootstrap and scoped MFA/recovery implementation merged; increment-2 overall acceptance remains open. T031/T032 diagnostics merged in PRs #37/#38. T019 governance design is independently reviewed; runtime increment 3 is authorized only under explicitly approved A-004 and its pre-code review/structure conditions.
 
 **Input**: Proceed to the next roadmap item, M02-A: protected operator-supplied first-administrator bootstrap, minimum MFA/recovery and permissions. Preserve approved Features/composition conventions, comprehensive tests, independent review and squash delivery.
 
@@ -116,4 +116,4 @@ The user confirmed on 12 October 2026:
 - **D2 — MFA scope**: password plus TOTP and recovery codes now; passkeys remain in M05. Recovery grants only restricted factor replacement.
 - **D3 — Structure**: preserve existing projects; Migrator `Features/Bootstrap/Initialize`, AuthServer `Features/Accounts`, Core/Infrastructure `Features/Identity`, plus the dedicated `tests/aspire/IdentityPlatform.Administrator.Tests` project under the Aspire solution folder.
 
-See [decision brief](decision-brief.md), [research](research.md) and [plan](plan.md). Increment 1 is merged. The second increment is detailed in [MFA design](mfa-design.md); T016 completed independent architecture/security/test design review; see verification.md. Account journeys have scoped acceptance through PRs #30/#31; T017/T018 retain overall evidence, incident and human obligations. [T019 governance design](governance-design.md) must converge before third-increment code, which also remains blocked by ADM-OPS-01/ADM-EVID-01 and prior increment acceptance.
+See [decision brief](decision-brief.md), [research](research.md) and [plan](plan.md). Increment 1 is merged. The second increment is detailed in [MFA design](mfa-design.md); T016 completed independent architecture/security/test design review; see verification.md. Account journeys have scoped acceptance through PRs #30/#31; T017/T018 retain overall evidence, incident and human obligations. [T019 governance design](governance-design.md) was reviewed and delivered in PR #39. A-004 now authorizes only the bounded T020/T021 execution after its concrete packet/structure review. All four historical findings and prior human acceptance remain unresolved.

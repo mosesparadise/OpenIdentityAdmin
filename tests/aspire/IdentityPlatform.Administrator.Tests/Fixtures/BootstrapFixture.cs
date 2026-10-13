@@ -55,6 +55,25 @@ public sealed class BootstrapFixture : IAsyncLifetime
 
 public sealed class BootstrapHost : IAsyncDisposable
 {
+    private const int StartupMinutes = 3;
+    private const int DatabaseCommandSeconds = 15;
+    private const string DevelopmentArgument = "--environment=Development";
+    private const string ProviderArgumentPrefix = "--Database:Provider=";
+    private const string DisabledPilotArgument = "--Pilot:Enabled=false";
+    private const string AuthResource = "auth";
+    private const string PlatformDatabase = "platform";
+    private const string RuntimePasswordParameter = "platform-runtime-password";
+    private const string StartupFailure = "Bootstrap harness startup failed.";
+    private const string DatabasePrefix = "administrator_";
+    private const string IdentifierFormat = "N";
+    private const string PostgreSqlCreate = "CREATE DATABASE \"{0}\"";
+    private const string SqlServerCreate = "CREATE DATABASE [{0}]";
+    private const string PostgreSqlUserKey = "Username";
+    private const string SqlServerUserKey = "User ID";
+    private const string RuntimePrincipal = "platform_runtime";
+    private const string PasswordKey = "Password";
+    private const string DatabaseFailure = "Bootstrap database setup failed.";
+
     private IDistributedApplicationTestingBuilder? builder;
     private DistributedApplication? application;
     private LifecycleEvidence? lifecycle;
@@ -62,60 +81,74 @@ public sealed class BootstrapHost : IAsyncDisposable
     private string runtimePassword = "";
     private DatabaseProvider provider;
 
+    /// <summary>Starts the existing real provider graph within its linked startup deadline; failure disposes the owned host and retains the fixed harness error.</summary>
     public static async Task<BootstrapHost> CreateAsync(string providerName, CancellationToken cancellationToken)
     {
         var host = new BootstrapHost { provider = DatabaseProviderParser.Parse(providerName) };
         try
         {
             using var startup = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            startup.CancelAfter(TimeSpan.FromMinutes(3));
+            startup.CancelAfter(TimeSpan.FromMinutes(StartupMinutes));
+            SetupDiagnostics.Write(SetupStage.HostBuilder);
             host.builder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.IdentityPlatform_AppHost>(
-                ["--environment=Development", $"--Database:Provider={providerName}", "--Pilot:Enabled=false"], startup.Token);
+                [DevelopmentArgument, ProviderArgumentPrefix + providerName, DisabledPilotArgument], startup.Token);
+            SetupDiagnostics.Write(SetupStage.HostBuild);
             host.application = await host.builder.BuildAsync(startup.Token);
+            SetupDiagnostics.Write(SetupStage.HostStart);
             await host.application.StartAsync(startup.Token);
-            await host.application.ResourceNotifications.WaitForResourceHealthyAsync("auth", startup.Token);
+            SetupDiagnostics.Write(SetupStage.AuthReadiness);
+            await host.application.ResourceNotifications.WaitForResourceHealthyAsync(AuthResource, startup.Token);
             host.lifecycle = LifecycleEvidence.Capture(host.application);
-            host.administratorConnection = (await host.application.GetConnectionStringAsync("platform", startup.Token))!;
+            host.administratorConnection = (await host.application.GetConnectionStringAsync(PlatformDatabase, startup.Token))!;
             var model = host.application.Services.GetRequiredService<DistributedApplicationModel>();
             host.runtimePassword = (await model.Resources.OfType<ParameterResource>()
-                .Single(value => value.Name == "platform-runtime-password").GetValueAsync(startup.Token))!;
+                .Single(value => value.Name == RuntimePasswordParameter).GetValueAsync(startup.Token))!;
+            SetupDiagnostics.Write(SetupStage.HostReady);
             return host;
         }
         catch
         {
+            SetupDiagnostics.Write(SetupStage.HostCleanup);
             await host.DisposeAsync();
-            throw new InvalidOperationException("Bootstrap harness startup failed.");
+            throw new InvalidOperationException(StartupFailure);
         }
     }
 
+    /// <summary>Creates and migrates a disposable provider database, retaining the existing least-privilege provisioning and cleanup behavior.</summary>
     public async Task<BootstrapDatabase> LeaseAsync(CancellationToken cancellationToken)
     {
         // The name is generated internally; no user-controlled identifier enters DDL.
-        var name = "administrator_" + Guid.NewGuid().ToString("N");
+        var name = DatabasePrefix + Guid.NewGuid().ToString(IdentifierFormat);
         await using var connection = Connection(administratorConnection);
+        SetupDiagnostics.Write(SetupStage.LeaseOpen);
         await connection.OpenAsync(cancellationToken);
         await using var command = connection.CreateCommand();
-        command.CommandTimeout = 15;
-        command.CommandText = provider == DatabaseProvider.PostgreSql ? $"CREATE DATABASE \"{name}\"" : $"CREATE DATABASE [{name}]";
+        command.CommandTimeout = DatabaseCommandSeconds;
+        command.CommandText = string.Format(System.Globalization.CultureInfo.InvariantCulture, provider == DatabaseProvider.PostgreSql ? PostgreSqlCreate : SqlServerCreate, name);
+        SetupDiagnostics.Write(SetupStage.LeaseCreate);
         await command.ExecuteNonQueryAsync(cancellationToken);
         var admin = WithDatabase(administratorConnection, name);
         var runtime = new DbConnectionStringBuilder { ConnectionString = admin };
-        runtime[provider == DatabaseProvider.PostgreSql ? "Username" : "User ID"] = "platform_runtime";
-        runtime["Password"] = runtimePassword;
+        runtime[provider == DatabaseProvider.PostgreSql ? PostgreSqlUserKey : SqlServerUserKey] = RuntimePrincipal;
+        runtime[PasswordKey] = runtimePassword;
         var database = new BootstrapDatabase(provider, admin, runtime.ConnectionString, () => DropAsync(name));
         try
         {
             await using var scope = database.Administrator.CreateAsyncScope();
             var context = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+            SetupDiagnostics.Write(SetupStage.LeaseMigrate);
             await context.Database.MigrateAsync(cancellationToken);
             // Reuse the host's generated login password; changing it would disrupt other databases.
+            SetupDiagnostics.Write(SetupStage.LeaseProvision);
             await LocalRuntimeRoleProvisioner.ProvisionAsync(context, RuntimeStore.Platform, runtimePassword, cancellationToken);
+            SetupDiagnostics.Write(SetupStage.LeaseReady);
             return database;
         }
         catch
         {
+            SetupDiagnostics.Write(SetupStage.LeaseCleanup);
             await database.DisposeAsync();
-            throw new InvalidOperationException("Bootstrap database setup failed.");
+            throw new InvalidOperationException(DatabaseFailure);
         }
     }
 

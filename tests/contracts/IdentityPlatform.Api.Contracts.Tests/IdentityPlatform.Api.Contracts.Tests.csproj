@@ -9,4 +9,7 @@
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
     <Using Include="Xunit" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../shared/ProductionEndpointInventory.cs" Link="Fixtures/ProductionEndpointInventory.cs" />
+  </ItemGroup>
 </Project>

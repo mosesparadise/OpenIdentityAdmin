@@ -1,0 +1,17 @@
+{
+  "review_type": "Independent AI source/evidence reviews, not human or external assessment",
+  "architecture_security": "pass",
+  "test_evidence": "pass",
+  "scope": [
+    "Guarded SQL privilege oracle and 105 pure controls",
+    "Fixed 512 ordinary-user fixture and unchanged native-commit mutation oracle",
+    "Deliberate f78-to-3699 diagnostic integration",
+    "Exact CQ004 fingerprint refresh with original 15 October expiry"
+  ],
+  "remaining": [
+    "Final exact-head full CI and coverage",
+    "All six historical findings",
+    "48 human case/cell rows not_run",
+    "Public-release and external assurance blockers"
+  ]
+}

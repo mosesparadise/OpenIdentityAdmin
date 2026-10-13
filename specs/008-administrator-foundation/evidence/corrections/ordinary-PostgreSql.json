@@ -1,0 +1,102 @@
+{
+  "exit_code": 0,
+  "selected_count": 2,
+  "counts": {
+    "total": "2",
+    "executed": "2",
+    "passed": "2",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "categories": [
+    "unknown"
+  ],
+  "checkpoints": [
+    {
+      "setup": "EnrollmentReady"
+    },
+    {
+      "alter": "Denied",
+      "probe": "Absent",
+      "provider_code": null
+    },
+    "Setup",
+    {
+      "setup": "JourneyLease"
+    },
+    {
+      "setup": "LeaseOpen"
+    },
+    {
+      "setup": "LeaseCreate"
+    },
+    {
+      "setup": "LeaseMigrate"
+    },
+    {
+      "setup": "LeaseProvision"
+    },
+    {
+      "setup": "LeaseReady"
+    },
+    {
+      "setup": "JourneyInitialize"
+    },
+    {
+      "setup": "JourneyServices"
+    },
+    {
+      "setup": "JourneyReady"
+    },
+    {
+      "setup": "EnrollmentStage"
+    },
+    {
+      "setup": "EnrollmentVerify"
+    },
+    {
+      "setup": "EnrollmentReady"
+    },
+    {
+      "setup": "WitnessCreate"
+    },
+    {
+      "setup": "WitnessSecurityPreparation"
+    },
+    {
+      "setup": "RequestPreparation"
+    },
+    {
+      "setup": "CodePreparation"
+    },
+    "Prepared",
+    "GateWait",
+    "GateArrived",
+    "OrderWait",
+    "ObserverFirst",
+    "OrderComplete",
+    "CommitResult",
+    "WriterJoined",
+    "Drain",
+    "Security",
+    "Authority",
+    "Usable",
+    "Oracle"
+  ],
+  "source_locations": [],
+  "wait_stage_codes": [],
+  "strict_expected_outcome": true,
+  "source_identity": "6eb62fc47a9b3f95711a38392978a58230e59a6a24d9bd8368edfd0634991af4",
+  "source_unchanged": true
+}
