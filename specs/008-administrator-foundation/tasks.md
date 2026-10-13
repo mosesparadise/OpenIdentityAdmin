@@ -1,5 +1,7 @@
 # Tasks: Administrator foundation
 
+**Delivery hold (13 October 2026):** A-004 expired on incomplete required SQL mutation evidence in PR48. T020/T021 remain incomplete and unmerged; no runtime continuation is authorized. [Verification and proposed diagnostics](governance-verification.md). Earlier implementation checkpoints below remain historical observations, not current delivery authority.
+
 Increment 1 was squash-merged in PR #21 as `38535bd`; its verification record and PR contain the final evidence. The three approved increments are implemented through separately reviewed and squash-merged task PRs; later design tasks must finish before their dependent code. No implementation box is checked without recorded evidence.
 
 ## Setup and shared design
