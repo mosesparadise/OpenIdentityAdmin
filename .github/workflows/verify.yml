@@ -1,472 +1,77 @@
-name: Verify foundation
+name: Diagnostic WebKit certificate provenance
 on:
-  pull_request:
-  push:
-    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '23 2 * * *'
+    inputs:
+      expected_diagnostic_sha:
+        description: Reviewed full diagnostic commit SHA; source is fixed separately
+        required: true
+        type: string
 permissions:
   contents: read
 concurrency:
-  group: verify-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: diagnostic-webkit-certificate-once
+  cancel-in-progress: false
 jobs:
-  scope:
-    name: Change scope and documentation checks
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    outputs:
-      scope: ${{ steps.scope.outputs.scope }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - run: python3 scripts/test_ci_scope.py
-      - run: python3 scripts/check-ai-instructions.py
-      - id: scope
-        run: python3 scripts/ci_scope.py
-  browser-plan:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Browser matrix selection
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - run: python3 scripts/test_browser_matrix.py
-      - id: matrix
-        run: python3 scripts/browser_matrix.py
-  assurance:
-    name: Assurance register integrity
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - run: python3 scripts/check_assurance.py
-      - run: python3 scripts/test_assurance.py
-  static-analysis:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Static analysis and formatting
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      IDENTITY_QUALITY_BASE: ${{ github.event.pull_request.base.sha || github.event.before || github.sha }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          fetch-depth: 0
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet restore --locked-mode
-      - run: python3 scripts/check-static-analysis.py --self-test
-  supply-chain:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Dependency, license and secret checks
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet restore --locked-mode
-      - run: python3 scripts/test_supply_chain.py
-      - name: Check current NuGet advisories
-        run: |
-          mkdir -p artifacts/security
-          dotnet package list --vulnerable --include-transitive --format json --output-version 1 > artifacts/security/advisories.json
-          python3 scripts/check_supply_chain.py vulnerabilities artifacts/security/advisories.json
-      - name: Inventory licenses and reject unreviewed changes
-        run: python3 scripts/check_supply_chain.py licenses artifacts/security/licenses.json
-      - name: Retain advisory and license evidence
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: foundation-supply-chain
-          path: artifacts/security/
-          retention-days: 7
-          if-no-files-found: error
-  source-secrets:
-    name: Source secret checks
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Scan the source snapshot for credentials
-        shell: bash
-        run: |
-          curl --fail --show-error --location --retry 2 https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz --output "$RUNNER_TEMP/gitleaks.tar.gz"
-          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
-          mkdir -p "$RUNNER_TEMP/gitleaks" "$RUNNER_TEMP/identity-source"
-          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks" gitleaks
-          git archive HEAD | tar -x -C "$RUNNER_TEMP/identity-source"
-          "$RUNNER_TEMP/gitleaks/gitleaks" dir "$RUNNER_TEMP/identity-source" --redact --no-banner
-  verify:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: ${{ matrix.label }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - { profile: unit, partition: all, label: unit }
-          - { profile: PostgreSql, partition: foundation, label: PostgreSql }
-          - { profile: SqlServer, partition: foundation, label: SqlServer }
-          - { profile: PostgreSql, partition: issuer, issuer_group: Flows, label: issuer-PostgreSql-flows }
-          - { profile: SqlServer, partition: issuer, issuer_group: Flows, label: issuer-SqlServer-flows }
-          - { profile: PostgreSql, partition: issuer, issuer_group: Boundaries, label: issuer-PostgreSql-boundaries }
-          - { profile: SqlServer, partition: issuer, issuer_group: Boundaries, label: issuer-SqlServer-boundaries }
-          - { profile: PostgreSql, partition: administrator, story: Bootstrap, label: administrator-PostgreSql-bootstrap }
-          - { profile: PostgreSql, partition: administrator, story: Factors, label: administrator-PostgreSql-factors }
-          - { profile: SqlServer, partition: administrator, story: Bootstrap, label: administrator-SqlServer-bootstrap }
-          - { profile: SqlServer, partition: administrator, story: Factors, label: administrator-SqlServer-factors }
-          - { profile: PostgreSql, partition: administrator, story: Recovery, label: administrator-PostgreSql-recovery }
-          - { profile: SqlServer, partition: administrator, story: Recovery, label: administrator-SqlServer-recovery }
-          - { profile: PostgreSql, partition: administrator, story: Security, label: administrator-PostgreSql-security }
-          - { profile: SqlServer, partition: administrator, story: Security, label: administrator-SqlServer-security }
-          - { profile: PostgreSql, partition: administrator, story: Accounts, label: administrator-PostgreSql-accounts }
-          - { profile: SqlServer, partition: administrator, story: Accounts, label: administrator-SqlServer-accounts }
-          - { profile: PostgreSql, partition: administrator, story: Ceremonies, label: administrator-PostgreSql-ceremonies }
-          - { profile: SqlServer, partition: administrator, story: Ceremonies, label: administrator-SqlServer-ceremonies }
-          - { profile: PostgreSql, partition: administrator, story: Governance.Policy, label: administrator-PostgreSql-governance-policy }
-          - { profile: PostgreSql, partition: administrator, story: Governance.Commands, label: administrator-PostgreSql-governance-commands }
-          - { profile: PostgreSql, partition: administrator, story: Governance.Failures, label: administrator-PostgreSql-governance-failures }
-          - { profile: SqlServer, partition: administrator, story: Governance.Policy, label: administrator-SqlServer-governance-policy }
-          - { profile: SqlServer, partition: administrator, story: Governance.Commands, label: administrator-SqlServer-governance-commands }
-          - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
-          - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
-          - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
-          - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }
-          - { profile: SqlServer, partition: lifecycle, story: Distribution, label: SqlServer-lifecycle-distribution }
-          - { profile: PostgreSql, partition: lifecycle, story: KeyRotation.Activation, label: PostgreSql-lifecycle-keyrotation-activation }
-          - { profile: SqlServer, partition: lifecycle, story: KeyRotation.Activation, label: SqlServer-lifecycle-keyrotation-activation }
-          - { profile: PostgreSql, partition: lifecycle, story: KeyRotation.Retirement, label: PostgreSql-lifecycle-keyrotation-retirement }
-          - { profile: SqlServer, partition: lifecycle, story: KeyRotation.Retirement, label: SqlServer-lifecycle-keyrotation-retirement }
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
-      DOTNET_NOLOGO: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet tool restore
-      - run: dotnet restore --locked-mode
-      - run: dotnet build --no-restore --nologo
-      - run: python3 scripts/check-ai-instructions.py
-      - run: python3 scripts/test_lifecycle_selection.py
-      - run: python3 scripts/test_issuer_selection.py
-      - run: python3 scripts/test_administrator_selection.py
-      - run: python3 scripts/test_administrator_browser_stories.py
-      - run: python3 scripts/test_verify_evidence.py
-      - run: python3 scripts/test_mutations.py
-      - run: python3 scripts/test_coverage_gate.py
-      - name: Trust local HTTPS certificate
-        if: matrix.profile != 'unit'
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/identity-https-trust"
-          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
-          openssl rehash "$RUNNER_TEMP/identity-https-trust"
-          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-      - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }}
-      - name: Retain synthetic test and coverage evidence
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: foundation-${{ matrix.label }}
-          path: |
-            artifacts/tests/
-            artifacts/coverage/
-          retention-days: 7
-          if-no-files-found: error
-  browser:
-    needs: [scope, browser-plan]
-    if: needs.scope.outputs.scope == 'full'
-    name: Browser ${{ matrix.partition }} ${{ matrix.browser_story }} / ${{ matrix.provider }} / ${{ matrix.browser }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.browser-plan.outputs.matrix) }}
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
-      DOTNET_NOLOGO: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet tool restore
-      - run: dotnet restore --locked-mode
-      - run: dotnet build --no-restore --nologo
-      - run: python3 scripts/check-ai-instructions.py
-      - run: python3 scripts/test_lifecycle_selection.py
-      - run: python3 scripts/test_issuer_selection.py
-      - run: python3 scripts/test_administrator_selection.py
-      - run: python3 scripts/test_administrator_browser_stories.py
-      - run: python3 scripts/test_verify_evidence.py
-      - run: python3 scripts/test_mutations.py
-      - run: python3 scripts/test_coverage_gate.py
-      - name: Trust local HTTPS certificate
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/identity-https-trust"
-          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
-          openssl rehash "$RUNNER_TEMP/identity-https-trust"
-          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-      - name: Install pinned browser and provision explicit trust
-        shell: bash
-        run: |
-          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps ${{ matrix.browser }}
-          sudo apt-get install -y libnss3-tools
-          # WebKit uses the ephemeral runner's OS bundle; trust only this public synthetic leaf.
-          sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
-          sudo update-ca-certificates
-          echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
-          # Chromium uses NSS peer trust. Firefox imports the exact leaf as an explicit anchor in its private profile.
-          mkdir -p "$HOME/.pki/nssdb"
-          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
-          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
-      - run: python3 scripts/test_history_experiment.py
-      - name: Compare fixed isolated and startup-overlap history observations
-        if: matrix.partition == 'administrator' && matrix.browser == 'firefox' && matrix.browser_story == 'Accounts'
-        run: python3 scripts/verify_history_experiment.py ${{ matrix.provider }}
-      - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
-      - name: Retain synthetic test and coverage evidence
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: foundation-${{ matrix.label }}
-          path: |
-            artifacts/history-experiment/
-            artifacts/tests/
-            artifacts/coverage/
-          retention-days: 7
-          if-no-files-found: error
-  contrast-experiment:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Focused WebKit contrast experiment
+  diagnostic:
+    name: Diagnostic only / PostgreSQL / WebKit / certificate
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_NOLOGO: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet restore --locked-mode
-      - run: dotnet build --no-restore --nologo
-      - run: python3 scripts/test_contrast_experiment.py
-      - run: dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps webkit
-      - name: Compare bounded synthetic scanner and page lifecycles
-        run: python3 scripts/verify_contrast_experiment.py
-      - name: Retain separate synthetic experiment evidence
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: focused-webkit-contrast
-          path: artifacts/contrast-experiment/
-          retention-days: 7
-          if-no-files-found: error
-  mutations:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Critical mutations ${{ matrix.provider }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        provider: [PostgreSql, SqlServer]
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_NOLOGO: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet restore --locked-mode
-      - run: python3 scripts/test_mutations.py
-      - name: Trust local HTTPS certificate
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/identity-https-trust"
-          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
-          openssl rehash "$RUNNER_TEMP/identity-https-trust"
-          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-      - name: Verify isolated critical-decision mutants
-        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --disposable-checkout
-      - name: Retain only sanitized mutation evidence
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: critical-mutations-${{ matrix.provider }}
-          path: artifacts/mutations/${{ matrix.provider }}/evidence.json
-          retention-days: 7
-          if-no-files-found: error
-  administrator-mutations:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Administrator mutations ${{ matrix.provider }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        provider: [PostgreSql, SqlServer]
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_NOLOGO: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet restore --locked-mode
-      - run: python3 scripts/test_mutations.py
-      - name: Trust local HTTPS certificate
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/identity-https-trust"
-          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
-          openssl rehash "$RUNNER_TEMP/identity-https-trust"
-          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-      - name: Verify isolated critical-decision mutants
-        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite administrator --disposable-checkout
-      - name: Retain only sanitized mutation evidence
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: administrator-mutations-${{ matrix.provider }}
-          path: artifacts/mutations/administrator-${{ matrix.provider }}/evidence.json
-          retention-days: 7
-          if-no-files-found: error
-  governance-mutations:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Governance mutations ${{ matrix.provider }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        provider: [PostgreSql, SqlServer]
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_NOLOGO: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet restore --locked-mode
-      - run: python3 scripts/test_mutations.py
-      - name: Trust local HTTPS certificate
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/identity-https-trust"
-          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
-          openssl rehash "$RUNNER_TEMP/identity-https-trust"
-          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-      - name: Verify isolated critical-decision mutants
-        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite governance --disposable-checkout
-      - name: Retain only sanitized mutation evidence
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: governance-mutations-${{ matrix.provider }}
-          path: artifacts/mutations/governance-${{ matrix.provider }}/evidence.json
-          retention-days: 7
-          if-no-files-found: error
-  contracts:
-    needs: scope
-    if: needs.scope.outputs.scope == 'full'
-    name: Contracts ${{ matrix.partition }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        partition: [core, chromium, firefox, webkit]
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
       DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
-      DOTNET_ENVIRONMENT: Development
+      DOTNET_NOLOGO: '1'
+      NUGET_PACKAGES: ${{ runner.temp }}/identity-diagnostic-nuget
+      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/identity-diagnostic-browsers
+      PACKET: ${{ github.workspace }}/diagnostic/diagnostics/webkit-ci
+      SOURCE: ${{ github.workspace }}/source
+      EVIDENCE: ${{ runner.temp }}/identity-webkit-ci
+    defaults:
+      run:
+        shell: bash
     steps:
+      - name: Require the reviewed first dispatch on the isolated diagnostic branch
+        env:
+          EXPECTED_DIAGNOSTIC_SHA: ${{ inputs.expected_diagnostic_sha }}
+        run: |
+          python3 - <<'PY'
+          import os, re
+          assert os.environ['GITHUB_EVENT_NAME'] == 'workflow_dispatch'
+          assert os.environ['GITHUB_REPOSITORY'] == 'mosesparadise/OpenIdentityAdmin'
+          assert os.environ['GITHUB_REF'] == 'refs/heads/diagnostic/webkit-ci-provenance'
+          assert os.environ['GITHUB_RUN_ATTEMPT'] == '1'
+          assert os.environ['RUNNER_ENVIRONMENT'] == 'github-hosted'
+          expected = os.environ['EXPECTED_DIAGNOSTIC_SHA']
+          assert re.fullmatch('[0-9a-f]{40}', expected)
+          assert expected == os.environ['GITHUB_SHA']
+          PY
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.sha }}
+          path: diagnostic
           persist-credentials: false
-          fetch-depth: 0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 6fcb96216eca0974041d3e8346adc4ce8458789d
+          path: source
+          persist-credentials: false
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
-          global-json-file: global.json
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version: '24.19.0'
-      - run: npm install --global npm@11.9.0
-      - run: npm ci --prefix src/frontend/IdentityPlatform.Admin.Contracts --ignore-scripts --strict-peer-deps
-      - run: npm run bundle --prefix src/frontend/IdentityPlatform.Admin.Contracts
-      - run: dotnet tool restore
-      - run: dotnet restore --locked-mode
-      - run: dotnet build --no-restore --nologo
-      - run: sudo apt-get install -y strace
-      - name: Provision trusted HTTPS and pinned browser
-        if: matrix.partition != 'core'
-        shell: bash
+          global-json-file: source/global.json
+      - name: Restore pinned tools and locked dependencies; build the unchanged source
+        working-directory: source
+        run: |
+          dotnet tool restore
+          dotnet restore --locked-mode
+          dotnet build --no-restore --nologo
+      - name: Provision the original CI trust recipe and pinned WebKit
+        working-directory: source
         run: |
           mkdir -p "$RUNNER_TEMP/identity-https-trust"
           dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps ${{ matrix.partition }}
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps webkit
           sudo apt-get install -y libnss3-tools
           sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
           sudo update-ca-certificates
@@ -474,71 +79,34 @@ jobs:
           mkdir -p "$HOME/.pki/nssdb"
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
-      - run: python3 scripts/test_contract_evidence.py
-      - run: python3 scripts/test_contract_supply_chain.py
-      - name: Verify isolated contract evidence and coverage
-        env:
-          IDENTITY_CONTRACT_BASE: ${{ github.event.pull_request.base.sha || github.event.before || github.sha }}
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/contracts-${{ matrix.partition }}.cobertura.xml -f cobertura python3 scripts/verify_contracts.py ${{ matrix.partition }}
-      - name: Retain contract evidence
+      - name: Verify pure controls, immutable source and exact one-case selection
+        working-directory: source
+        run: python3 "$PACKET/prepare.py" "$SOURCE" "$EVIDENCE"
+      - name: Execute one unchanged case under the original coverage settings
+        working-directory: source
+        run: python3 "$PACKET/run.py" collect "$SOURCE" "$EVIDENCE"
+      - name: Restore private driver and reconcile owned resources
+        if: always()
+        run: python3 "$PACKET/cleanup.py" "$SOURCE" "$EVIDENCE"
+      - name: Preserve the native, covered-child and collector verdicts
+        if: always()
+        run: python3 "$PACKET/run.py" finish "$SOURCE" "$EVIDENCE"
+      - name: Retain only allowlisted sanitized diagnostic receipts
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: foundation-contracts-${{ matrix.partition }}
+          name: diagnostic-webkit-certificate-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 3
+          if-no-files-found: error
           path: |
-            artifacts/tests/contracts-*/
-            artifacts/coverage/
-            artifacts/contracts/
-          retention-days: 7
-          if-no-files-found: error
-  coverage:
-    name: Per-module coverage
-    needs: [scope, verify, browser, browser-plan, contracts]
-    if: needs.scope.outputs.scope == 'full'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
-      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
-      DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
-        with:
-          global-json-file: global.json
-      - run: dotnet tool restore
-      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          pattern: foundation-*
-          path: artifacts/input
-      - name: Require evidence from every selected cell
-        env:
-          BROWSER_MATRIX: ${{ needs.browser-plan.outputs.matrix }}
-        run: python3 scripts/check_coverage_inputs.py artifacts/input "$BROWSER_MATRIX"
-      - run: dotnet coverage merge 'artifacts/input/**/coverage/*.cobertura.xml' -o artifacts/coverage/merged.cobertura.xml -f cobertura
-      - run: python3 scripts/check-coverage.py artifacts/coverage/merged.cobertura.xml
-      - name: Retain merged evidence
-        if: always()
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: foundation-coverage
-          path: artifacts/coverage/
-          retention-days: 7
-          if-no-files-found: error
-  acceptance:
-    name: Verification acceptance
-    if: always()
-    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, contracts, coverage]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Require all selected obligations
-        env:
-          CI_SCOPE: ${{ needs.scope.outputs.scope }}
-          CI_NEEDS: ${{ toJSON(needs) }}
-        run: python3 scripts/ci_scope.py accept
+            ${{ runner.temp }}/identity-webkit-ci/public/preflight.json
+            ${{ runner.temp }}/identity-webkit-ci/public/browser-files.json
+            ${{ runner.temp }}/identity-webkit-ci/public/native-exit.json
+            ${{ runner.temp }}/identity-webkit-ci/public/native-result.json
+            ${{ runner.temp }}/identity-webkit-ci/public/observation.json
+            ${{ runner.temp }}/identity-webkit-ci/public/diagnostic-result.json
+            ${{ runner.temp }}/identity-webkit-ci/public/validation-failure.json
+            ${{ runner.temp }}/identity-webkit-ci/public/child-exit.json
+            ${{ runner.temp }}/identity-webkit-ci/public/collector-exit.json
+            ${{ runner.temp }}/identity-webkit-ci/public/cleanup.json
+            ${{ runner.temp }}/identity-webkit-ci/public/outcome.json
