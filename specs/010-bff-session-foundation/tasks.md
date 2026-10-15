@@ -1,6 +1,6 @@
 # Tasks: Durable administrator session foundation
 
-All tasks below belong to feature 010, not feature 008 or 009's identically numbered tasks. A checked task means its stated implementation or evidence is recorded, not whole-feature acceptance. Internal B1 passed both-provider and exact-head acceptance in PR #52; [delivery](delivery.md) records the evidence. T022 remains open for the next product slice.
+All tasks below belong to feature 010, not feature 008 or 009's identically numbered tasks. A checked task means its stated implementation or evidence is recorded, not whole-feature acceptance. Internal B1 passed both-provider and exact-head acceptance in PR #52; [delivery](delivery.md) records the evidence. T022 is supplied by the [feature 011 planning packet](../011-administrator-issuer-client/spec.md); B2 runtime implementation remains open there.
 
 ## Phase 1 — Scope and dependency preparation
 
@@ -40,7 +40,7 @@ All tasks below belong to feature 010, not feature 008 or 009's identically numb
 - [x] T019 Reconcile all new discovery identities/counts in `eng/test-matrix.json`, verification selectors and mandatory coverage consumers; add seeded rejection controls for any changed selector. Preserve old counts/IDs, floors and deadlines. Requirements: SC-001, SC-005.
 - [x] T020 Run focused provider/protection/failure evidence and all required exact-head CI, reconcile artifacts and independent source/security/test reviews in `verification.md`; keep failed attempts and actual limits. Requirements: all FR/SC.
 - [x] T021 After every required gate passes, normally squash the implementation PR and update `docs/roadmap.md`, `docs/operations/new-task-handoff.md` and this task list. Mark only B1 complete; retain M02-B/C/D/E gaps. Requirements: SC-005.
-- [ ] T022 Prepare the next B2 issuer/client specification and reviewed integration packet: fixed manager-backed admin client/scope/audience, distinct current-MFA admission, pinned native code/S256/PAR/`private_key_jwt` support, denial/replay evidence and later refresh/end-session dependencies. Update `docs/roadmap.md`; no pilot relaxation or inferred activation. Requirements: FR-008 and roadmap M02-B.
+- [x] T022 Prepare the next B2 issuer/client specification and reviewed integration packet: fixed manager-backed admin client/scope/audience, distinct current-MFA admission, pinned native code/S256/PAR/`private_key_jwt` support, denial/replay evidence and later refresh/end-session dependencies. Update `docs/roadmap.md`; no pilot relaxation or inferred activation. Requirements: FR-008 and roadmap M02-B.
 
 ## Dependencies and parallel opportunities
 
@@ -77,4 +77,9 @@ and a merge cannot borrow the passing unit/source-review evidence.
 
 ## Accepted B1 checkpoint — 15 October 2026
 
-[Delivery](delivery.md) records PR #52 squash `ca410c01`, run `38769486233` (70/70), both-provider native reports, 55 coverage inputs/nine floors and final independent reviews. These complete T011/T014–T016/T020/T023 and the implementation merge in T021. This prose packet supplies the T021 roadmap/handoff/task updates through its own required checks and squash. Earlier convergence paragraphs describe the pre-acceptance state, not current blockers. T022 remains the next task; B2/B3/C/D/E and every historical/human/activation/release gate remain open.
+[Delivery](delivery.md) records PR #52 squash `ca410c01`, run `38769486233` (70/70), both-provider native reports, 55 coverage inputs/nine floors and final independent reviews. These complete T011/T014–T016/T020/T023 and the implementation merge in T021. This prose packet supplies the T021 roadmap/handoff/task updates through its own required checks and squash. Earlier convergence paragraphs describe the pre-acceptance state, not current blockers. T022 now supplies the separate [feature 011 plan/tasks](../011-administrator-issuer-client/tasks.md); its planning PR records checks/squash. B2 implementation, B3/C/D/E and every historical/human/activation/release gate remain open.
+
+
+## B2 planning handoff — 15 October 2026
+
+T022 is delivered by the feature 011 specification, reviewed protocol/data contracts, source research and dependency-ordered tasks. [Planning evidence](../011-administrator-issuer-client/verification.md) distinguishes this packet from runtime implementation. No B2 case has run and no B2 capability is accepted. The next implementation prerequisites are feature 011 T004/T005; preserve all B1 evidence and later browser/API/refresh/React gates.
