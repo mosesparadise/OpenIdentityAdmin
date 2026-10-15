@@ -79,3 +79,43 @@ The user explicitly requested roadmap implementation and temporary Firefox exclu
 The separate diagnostic sources `8eea5e3f` and `f24be452` remain frozen and do not merge into this prerequisite. The latter native case passed but document identity was unavailable, so its evidence gate failed; no correction is claimed. [PR #56](https://github.com/mosesparadise/OpenIdentityAdmin/pull/56) retains run/artifact/hash dispositions and the upstream draft. Upstream submission was rejected with HTTP 403; no issue was created.
 
 Local A-007 verification: all 192 Python controls pass, including exact two-engine/contract selection, rejection of a missing whole engine, and removal/empty evidence controls for each of 48 inputs. Instruction integrity, all 345 assurance-register entries and whitespace checks pass. Independent architecture/test and security reviews passed the corrected source; their initial WebKit-omission finding was fixed by requiring both active engines on every full run. No native browser/database run was performed locally. Full hosted verification remains pending at this source checkpoint.
+
+
+## PR #56 prerequisite delivery — 15 October 2026
+
+[PR #56](https://github.com/mosesparadise/OpenIdentityAdmin/pull/56) was normally squash-merged as `2cfdb55bf128503c5c1b1451d1becad2219430aa`, sole parent `98139cc942467f4094434691c30668ba72dbeb70`. Exact head `8c0b9aed9bef948fc9a754d00f7b54b9145e1006` and tested merge `78c4a2652d58d44d20a27117972abc2c558a212d` share tree `a37c3f3dec781404307135cb70803f04da0b1515` with that squash. [Run 38804409013](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38804409013), attempt 1, passed all 63 applicable jobs including final acceptance. The live review/restriction state was checked and no bypass used.
+
+T004's native dependencies/API/transport controls and the MessagePack 2.5.307 advisory patch are delivered. A-007 governs the initial phase: all 12 Chromium/WebKit browser cells and three contract partitions passed. Seven Firefox jobs remain deferred, not passed. Failed earlier runs and both frozen diagnostic branches remain retained; no Firefox correction or historical closure is claimed.
+
+Independent architecture/test review reconciled raw unit evidence: 491 passes (25 Core, 400 Host, 5 Architecture, 61 AppHost), no failures/skips/errors, including all seven native prerequisite identities. It matched all 48 unique coverage merge paths to current-head artifact records and independently recomputed the merged XML's package rates and global 6,393/6,691 lines and 879/901 branches. The existing diagnostic Governance.Driver appears in the aggregate but is not one of the nine unchanged product floors. Individual raw reports for all 48 inputs were not separately downloaded.
+
+Coverage artifact `12006587735`: ZIP SHA-256 `fee04cd59b0b8dac8032701df25e4315535d0808a4b15f86e608c970c6969ca5`; raw XML SHA-256 `d4dbb4f7c1bde2688bd22f25a070b0c00c0dec021f43ea9e39bd49a1c862e14d`.
+
+| Required module | Lines | Branches | Floor |
+| --- | ---: | ---: | --- |
+| IdentityPlatform.Core | 98.9% | 100.0% | Pass |
+| IdentityPlatform.AuthServer | 97.3% | 100.0% | Pass |
+| IdentityPlatform.AppHost | 99.5% | 100.0% | Pass |
+| IdentityPlatform.Infrastructure | 94.6% | 97.6% | Pass |
+| IdentityPlatform.Migrator | 99.0% | 100.0% | Pass |
+| IdentityPlatform.Admin.Bff | 94.9% | 95.4% | Pass |
+| IdentityPlatform.ServiceDefaults | 100.0% | 100.0% | Pass |
+| IdentityPlatform.Admin.Api | 100.0% | 100.0% | Pass |
+| IdentityPlatform.Worker | 100.0% | 100.0% | Pass |
+
+Independent security review verified all six mutation ZIP digests, exact source/manifests/recomputed mutant hashes and native case identities: 42 expected kills, 42 baseline passes, 42 restored passes and zero skips. These retained sanitized receipts are not raw TRX, and these are existing suites rather than new B2-specific mutation coverage.
+
+| Mutation suite | Artifact | Kills | ZIP SHA-256 |
+| --- | --- | ---: | --- |
+| governance-mutations-PostgreSql | 12006606133 | 6 | `66002404f428aac86bdb6c144b7ce1e4f279b0f33860684709e6c512616ab0e7` |
+| critical-mutations-PostgreSql | 12005848573 | 7 | `ee4157c6e760d8592220d1b313eaf456c6cd5b71c3dc6405e3c583928df6680f` |
+| administrator-mutations-PostgreSql | 12005024024 | 8 | `094bc777d0159f4df9031a570b9382ee6a67a74a643177cc46f76ed028b21893` |
+| administrator-mutations-SqlServer | 12006372441 | 8 | `00adfa105d3faad91280e6c948e7251a237453381c7b783f7681577b2f97d9ec` |
+| governance-mutations-SqlServer | 12006212279 | 6 | `9890b2aa9c7dcf945c0227ffd8e53e12945856e686658c8800484d081dd02b36` |
+| critical-mutations-SqlServer | 12005044417 | 7 | `b3b021004fbc78d6de73b469973cea6b1c51ccc9b5e83ebe991ff1a87b3bf8cf` |
+
+Supply-chain artifact `12006090707` (ZIP SHA-256 `572f49cff17dc9668984296761b8be94ebd81f90138c8fe1ac98d5d79b5bb9d2`) covers 23 projects with zero reported advisories and 252 package/version/license pairs reconciled to locked hashes and project membership. Independent architecture/test and security reviews passed this prerequisite's exact source and evidence. Automated review does not replace human/external assessment.
+
+The separate [T005 native-store prerequisite](native-store-ownership.md) adds four installed-manager controls and raises Host discovery to 404; those cases are not part of the PR #56 run above. Local complete Host evidence passes 404/404 and preserves all prior 400 native case display names; 192 Python controls, code quality, instruction integrity, assurance-register integrity and the staged secret scan pass. Failed local setup attempts and their corrections remain recorded in that prerequisite. Its own full exact-head CI is required before delivery.
+
+T005 and B2 acceptance remain open. Next: implement the reviewed opt-in cancellation/operation owner while preserving native getter/enumerator behavior, then prove exact transaction participation and rollback on both providers for Platform and Sessions contexts and actual native dispatcher paths. All six historical findings, 48 human rows and activation/public-release gates remain open. Restore Firefox at T028 before the A-007 boundary.
