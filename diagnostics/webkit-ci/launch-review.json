@@ -1,0 +1,21 @@
+{
+  "acceptance": false,
+  "actionlint": "1.7.7 pass",
+  "architecture_test_review": "pass",
+  "authority": "Current user request to fix PR50",
+  "date": "2026-10-15",
+  "existing_runtime_packet": "unchanged; prior86 controls retained",
+  "files": {
+    ".github/workflows/verify.yml": "8deae54d76ce4a5f72a81ee77e8af4a609a6bea14020f78709efe7ae86ed2f2c",
+    "diagnostics/webkit-ci/README.md": "65a91393a9672bb181fb594b83df0175f48092c10dba526a40e5fcf406a762fd",
+    "diagnostics/webkit-ci/launch-20261015.md": "e928e77ac659b691749799be9415f05ce88b60d41baa4369f26e70c46065f013",
+    "diagnostics/webkit-ci/test-launch.py": "446e110c4ad384ebac67da22d6c1745706a521c7cec0dd0dcc409ea3f06ce14a"
+  },
+  "guard_controls": 10,
+  "maximum_native_cases": 1,
+  "parent": "ecd3009b4d99370a958f154f1945a0b32a216170",
+  "runtime_result": "not run at publication",
+  "security_review": "pass",
+  "source": "6fcb96216eca0974041d3e8346adc4ce8458789d",
+  "timezone": "Europe/London"
+}

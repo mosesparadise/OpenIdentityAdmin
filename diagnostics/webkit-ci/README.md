@@ -1,5 +1,7 @@
 # Focused GitHub Actions certificate diagnostic proposal
 
+**Current continuation:** the user requested fixing PR #50 on 15 October. The [one-time hosted launch](launch-20261015.md) supersedes the manual-only recipe below; diagnostic source/oracles and all acceptance blockers remain unchanged.
+
 Prepared 15 October 2026 (Europe/London) after the user accepted review of the next focused diagnostic. This is diagnostic preparation, not a browser execution, CI acceptance, incident closure or release authorization. PR #50 stays draft and unmerged. A-004 remains expired; A-005/A-006 remain concluded. All six historical findings, 48 human assessment rows and activation/public-release gates remain open. Do not renew the witness-size exception or mark feature 009 T020 delivered.
 
 ## Question and existing evidence

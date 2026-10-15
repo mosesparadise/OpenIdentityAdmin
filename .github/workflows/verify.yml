@@ -1,11 +1,7 @@
 name: Diagnostic WebKit certificate provenance
 on:
-  workflow_dispatch:
-    inputs:
-      expected_diagnostic_sha:
-        description: Reviewed full diagnostic commit SHA; source is fixed separately
-        required: true
-        type: string
+  push:
+    branches: [diagnostic/webkit-ci-provenance]
 permissions:
   contents: read
 concurrency:
@@ -27,20 +23,30 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Require the reviewed first dispatch on the isolated diagnostic branch
-        env:
-          EXPECTED_DIAGNOSTIC_SHA: ${{ inputs.expected_diagnostic_sha }}
+      - name: Require the one reviewed fast-forward from the frozen diagnostic parent
         run: |
           python3 - <<'PY'
-          import os, re
-          assert os.environ['GITHUB_EVENT_NAME'] == 'workflow_dispatch'
-          assert os.environ['GITHUB_REPOSITORY'] == 'mosesparadise/OpenIdentityAdmin'
-          assert os.environ['GITHUB_REF'] == 'refs/heads/diagnostic/webkit-ci-provenance'
-          assert os.environ['GITHUB_RUN_ATTEMPT'] == '1'
-          assert os.environ['RUNNER_ENVIRONMENT'] == 'github-hosted'
-          expected = os.environ['EXPECTED_DIAGNOSTIC_SHA']
-          assert re.fullmatch('[0-9a-f]{40}', expected)
-          assert expected == os.environ['GITHUB_SHA']
+          import json, os, re
+
+          def validate_launch(event, env):
+              parent = 'ecd3009b4d99370a958f154f1945a0b32a216170'
+              repository = 'mosesparadise/OpenIdentityAdmin'
+              ref = 'refs/heads/diagnostic/webkit-ci-provenance'
+              assert env['GITHUB_EVENT_NAME'] == 'push'
+              assert env['GITHUB_REPOSITORY'] == repository
+              assert env['GITHUB_REF'] == ref
+              assert env['GITHUB_RUN_ATTEMPT'] == '1'
+              assert env['RUNNER_ENVIRONMENT'] == 'github-hosted'
+              assert event['repository']['full_name'] == repository
+              assert event['ref'] == ref and event['before'] == parent
+              assert all(event[key] is False for key in ('created', 'deleted', 'forced'))
+              assert re.fullmatch('[0-9a-f]{40}', env['GITHUB_SHA'])
+              assert event['after'] == env['GITHUB_SHA'] != parent
+              assert event['head_commit']['id'] == event['after']
+
+          with open(os.environ['GITHUB_EVENT_PATH']) as stream:
+              event = json.load(stream)
+          validate_launch(event, os.environ)
           root = os.environ['RUNNER_TEMP']
           with open(os.environ['GITHUB_ENV'], 'a') as output:
               for name, leaf in [('NUGET_PACKAGES', 'identity-diagnostic-nuget'),
