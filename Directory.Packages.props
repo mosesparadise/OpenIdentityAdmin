@@ -11,6 +11,8 @@
     <PackageVersion Include="OpenIddict.EntityFrameworkCore" Version="7.7.1" />
     <PackageVersion Include="OpenIddict.AspNetCore" Version="7.7.1" />
     <PackageVersion Include="OpenIddict.Server.AspNetCore" Version="7.7.1" />
+    <PackageVersion Include="OpenIddict.Client.AspNetCore" Version="7.7.1" />
+    <PackageVersion Include="OpenIddict.Client.SystemNetHttp" Version="7.7.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.12" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />

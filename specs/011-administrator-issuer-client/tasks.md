@@ -1,6 +1,6 @@
 # Tasks: Administrator issuer/client integration
 
-Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exists, not B2 runtime acceptance. All implementation tasks remain unchecked. T003 denotes the planning delivery supplied by this PR; its exact-head checks and squash are recorded on the PR, not presumed from this checkbox. Requirement IDs refer to [spec.md](spec.md); scenario IDs below are planned evidence labels, not executed test identities.
+Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exists, not B2 runtime acceptance. Runtime implementation remains unaccepted; checked prerequisite tasks denote only their stated evidence. T003 denotes the planning delivery supplied by this PR; its exact-head checks and squash are recorded on the PR, not presumed from this checkbox. Requirement IDs refer to [spec.md](spec.md); scenario IDs below are planned evidence labels, not executed test identities.
 
 ## Phase 1 — Planning and dependencies
 
@@ -10,7 +10,7 @@ Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exis
 
 ## Phase 2 — Executable prerequisites
 
-- [ ] T004 Inventory the actual composition/package/manager/test diff in `verification.md`; add only required pinned 7.7.1 client package references in `Directory.Packages.props`, `Admin.Bff.csproj` and affected lock files. Resolve compatible dependencies, advisory/license inventory and no ephemeral keys. FR-010/013; SC-006.
+- [x] T004 Inventory the actual composition/package/manager/test diff in `verification.md`; add only required pinned 7.7.1 client package references in `Directory.Packages.props`, `Admin.Bff.csproj` and affected lock files. Resolve compatible dependencies, advisory/license inventory and no ephemeral keys. [Prerequisite evidence](native-integration-inventory.md); normal exact-head checks still govern delivery. FR-010/013; SC-006.
 - [ ] T005 Prove exact native event ordering/APIs in `AuthServer/Features/Protocol/Administrator/` and `ClientAssertions/`, and `Admin.Bff/Features/Authentication/`: post-validation proof checks, consumption/quotas, PAR-versus-cache identity, strict expiry, state/native claim preservation and no-retry transport. Prove source-supported integration realizes the contract's issuance-commit linearization before implementation; infeasibility blocks the affected path, not the product rule. FR-005–011; SC-002/003/005. Do not call source inspection runtime acceptance.
 - [ ] T006 Define seeded failing/valid controls and discovery/coverage/mutation partition plan in existing `eng/test-matrix.json`, selectors and mutation manifests; preserve all old IDs, 55 inputs/nine floors and deadlines, adding required inputs without exclusions. FR-013; SC-001/006.
 
