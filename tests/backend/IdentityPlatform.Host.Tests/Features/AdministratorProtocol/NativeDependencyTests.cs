@@ -1,6 +1,6 @@
 using IdentityPlatform.Core.Features.Configuration;
-using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
+using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Client;
 using OpenIddict.EntityFrameworkCore;
