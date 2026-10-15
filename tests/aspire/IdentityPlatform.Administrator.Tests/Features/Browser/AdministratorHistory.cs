@@ -48,7 +48,8 @@ internal static class AdministratorHistory
         engine == Firefox && error is PlaywrightException && IsCacheMiss(engine, error.Message) && responses == 0 && commits == 0;
 
     /// <summary>Observes one real history operation; successful documents must pass the secret oracle, while exact native refusal requires independent navigation evidence.</summary>
-    internal static async Task<HistoryOutcome> ObserveAsync(IPage page, string seed, Func<Task<IResponse?>> navigation)
+    internal static async Task<HistoryOutcome> ObserveAsync(IPage page, string seed, Func<Task<IResponse?>> navigation,
+        Action<int, int>? observation = null)
     {
         var responses = 0;
         var commits = 0;
@@ -76,7 +77,11 @@ internal static class AdministratorHistory
             }
             catch (PlaywrightException exception) when (IsCacheMiss(BrowserSession.Engine, exception.Message))
             {
-                if (IsNativeRejection(BrowserSession.Engine, exception, Volatile.Read(ref responses), Volatile.Read(ref commits)))
+                var responseCount = Volatile.Read(ref responses);
+                var commitCount = Volatile.Read(ref commits);
+                var rejection = IsNativeRejection(BrowserSession.Engine, exception, responseCount, commitCount);
+                observation?.Invoke(responseCount, commitCount);
+                if (rejection)
                 {
                     return HistoryOutcome.NativeRestoreRejected;
                 }

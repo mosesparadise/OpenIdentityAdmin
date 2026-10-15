@@ -51,19 +51,24 @@ public sealed class HistoryObservationTests
         await using var server = await HistoryControlServer.StartAsync();
         await using var session = await BrowserSession.CreateAsync(javaScript: false);
         var page = await session.Context.NewPageAsync();
+        using var evidence = new HistoryNavigationEvidence(page, server);
         await page.GotoAsync(server.Origin);
+        evidence.MoveTo(HistoryNavigationPhase.Submit);
         await page.Locator(HistoryControlServer.Submit).ClickAsync();
         await page.Locator(HistoryControlServer.Secret).WaitForAsync();
+        evidence.MoveTo(HistoryNavigationPhase.Safe);
         await page.Locator(HistoryControlServer.Continue).ClickAsync();
         await page.WaitForURLAsync(server.Origin + HistoryControlServer.SafePath);
         await AdministratorHistory.RequireNoRedisplayAsync(page, HistoryControlServer.Canary);
         Assert.Equal(1, server.Posts);
-        var outcome = await AdministratorHistory.ObserveAsync(page, HistoryControlServer.Canary, () => page.GoBackAsync());
+        evidence.MoveTo(HistoryNavigationPhase.Back);
+        var outcome = await AdministratorHistory.ObserveAsync(page, HistoryControlServer.Canary, () => page.GoBackAsync(), evidence.Catch);
         const string Firefox = "firefox";
         if (BrowserSession.Engine == Firefox)
         {
             Assert.Equal(HistoryOutcome.NativeRestoreRejected, outcome);
             Assert.Equal(1, server.Posts);
+            evidence.MoveTo(HistoryNavigationPhase.Controls);
             // Use a separate page for seeded controls while Firefox settles the original history navigation.
             var controls = await session.Context.NewPageAsync();
             await RequireObserversAsync(controls, server);
@@ -74,6 +79,7 @@ public sealed class HistoryObservationTests
         {
             Assert.Equal(HistoryOutcome.DocumentObserved, outcome);
         }
+        evidence.MoveTo(HistoryNavigationPhase.Complete);
     }
 
     /// <summary>Seeds a native-looking error only after real response/commit and commit-only events; the actual observer must reject both.</summary>
