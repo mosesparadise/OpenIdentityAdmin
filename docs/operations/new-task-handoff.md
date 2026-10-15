@@ -1,6 +1,8 @@
 # OpenIdentityAdmin new-task handoff
 
-## Current roadmap continuation — 15 October 2026
+**Current acceptance continuation (15 October 2026):** PR #50 preserves its witness refactor and current-base integration `2581cfac`; required run `38746001120` finished 65 success/four failed/one skipped. All six mutation artifacts reconcile 42 kills and complete controls, but three native startup failures block acceptance. Two expired startup while downloading the pinned PostgreSQL image; the third reached migrations before a separate DCP creation timeout. A bounded image preparation correction now precedes native execution, preserving every existing deadline and security assertion. [Disposition](../../specs/009-engineering-standards/witness-ci-disposition.md) records exact evidence and limits. Current-candidate CI and final review remain required; no squash yet. Further diagnostic launches remain paused. PR #52 separately implements the BFF store and published observer correction `35c3a562`; do not repeat that implementation. All six findings, 48 human rows and activation/public-release blockers remain open.
+
+## Historical planning continuation — before PR #51 merged
 
 The user requested visible roadmap delivery and approved M02-B scope/dependency preparation. Resume [feature 010](../../specs/010-bff-session-foundation/spec.md), its [plan](../../specs/010-bff-session-foundation/plan.md), [tasks](../../specs/010-bff-session-foundation/tasks.md) and [verification](../../specs/010-bff-session-foundation/verification.md). First implementation target: a complete internal durable protected BFF ticket store, including both-provider persistence, separate keys, expiry, concurrency, revocation, audit intent and cleanup. This planning packet does not implement or activate login, proxy, API or React access.
 
@@ -132,3 +134,8 @@ Old checkout was `/workspace/work/OpenIdentityAdmin`; new task need not use that
 Ignored logs/TRX, bin/obj, disposable worktrees and agent sessions are not durable across tasks. Sanitized evidence is committed. Do not transfer raw credentials, signed redirect URLs, connection strings or mutated binaries. Recreate disposable resources when authorized. Original uploaded editorconfig/gitignore references may not transfer; current approved repository files govern unless original-file comparison is requested.
 
 This handoff is sufficient to locate the authoritative decisions and resume the current investigation; retaining every conversational detail requires separately retaining/exporting the original conversation if the client provides that capability.
+
+
+## Historical engineering continuation — 14 October 2026
+
+On 14 October 2026 (Europe/London), the user approved the recommended retirement of the witness-test size exception. Main was verified at PR #49's squash `5f4fce7fe0c7761e6eab7308f2cd38908937af51`. Feature 009 T020 is the bounded child of T015; [scope and current evidence](../../specs/009-engineering-standards/witness-refactor.md). Verify its actual PR/head/check state before continuing. The refactor extracts preparation and committed-effect checks while preserving native race ownership, cancellation/drain, test identity and the original decisive mutation assertion. Delivery requires both-provider evidence, independent review and full exact-head CI. Do not renew the exception or close historical/human/release gates.

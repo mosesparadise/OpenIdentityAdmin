@@ -91,14 +91,7 @@ public sealed class WitnessOrderingTests(BootstrapFixture fixture)
         var gate = new NativeCommitGate();
         await using var scenario = await GovernanceScenario.CreateAsync(fixture, provider,
             services => services.ConfigureDbContext<PlatformDbContext>(options => options.AddInterceptors(gate)));
-        SetupDiagnostics.Write(SetupStage.WitnessCreate);
-        var witness = await WitnessPopulation.CreateAsync(scenario);
-        SetupDiagnostics.Write(SetupStage.WitnessSecurityPreparation);
-        var security = await witness.PrepareAsync(scenario, WitnessSecurity.Lockout);
-        SetupDiagnostics.Write(SetupStage.RequestPreparation);
-        var request = await WitnessEvidence.RequestAsync(scenario);
-        SetupDiagnostics.Write(SetupStage.CodePreparation);
-        var code = await scenario.UnusedCodeAsync();
+        var prepared = await WitnessEvidence.PrepareCommitRaceAsync(scenario);
         await using var scope = scenario.CreateScope();
         gate.Arm(scope.ServiceProvider.GetRequiredService<PlatformDbContext>());
         using var lifetime = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
@@ -108,15 +101,15 @@ public sealed class WitnessOrderingTests(BootstrapFixture fixture)
         WitnessDiagnostics.Write(WitnessStage.Prepared);
         try
         {
-            governance = scope.ServiceProvider.GetRequiredService<GovernanceService>().ExecuteAsync(request, scenario.Session,
-                scenario.Password, code, lifetime.Token);
+            governance = scope.ServiceProvider.GetRequiredService<GovernanceService>().ExecuteAsync(prepared.Request, scenario.Session,
+                scenario.Password, prepared.Code, lifetime.Token);
             WitnessDiagnostics.Write(WitnessStage.GateWait);
             var blocker = await gate.WaitAsync(governance, lifetime.Token);
             WitnessDiagnostics.Write(WitnessStage.GateArrived);
-            write = security(lifetime.Token);
+            write = prepared.Security(lifetime.Token);
             observation = DatabaseWaiters.ObserveOwnedAsync(scenario.Journey.Lease, blocker, WitnessEvidence.AccountStage, OneWriter, lifetime.Token);
             WitnessDiagnostics.Write(WitnessStage.OrderWait);
-            unsafeOrder = await WitnessEvidence.RequireOrderAsync(scenario, witness, gate, write, governance, observation);
+            unsafeOrder = await WitnessEvidence.RequireOrderAsync(scenario, prepared.Witness, gate, write, governance, observation);
             WitnessDiagnostics.Write(WitnessStage.OrderComplete);
             gate.Release();
             WitnessDiagnostics.Write(WitnessStage.CommitResult);
@@ -125,12 +118,7 @@ public sealed class WitnessOrderingTests(BootstrapFixture fixture)
             WitnessDiagnostics.Write(WitnessStage.WriterJoined);
         }
         finally { WitnessDiagnostics.Write(WitnessStage.Drain); gate.Release(); await lifetime.CancelAsync(); await WitnessEvidence.DrainAsync(write, governance, observation); }
-        WitnessDiagnostics.Write(WitnessStage.Security);
-        await WitnessEvidence.RequireSecurityAsync(scenario, witness, WitnessSecurity.Lockout);
-        WitnessDiagnostics.Write(WitnessStage.Authority);
-        await WitnessEvidence.RequireAuthorityAsync(scenario, request, accepted: true);
-        WitnessDiagnostics.Write(WitnessStage.Usable);
-        Assert.Empty((await scenario.ReadAsync()).UsableAdministrators);
+        await WitnessEvidence.RequireCommittedLockoutAsync(scenario, prepared.Witness, prepared.Request);
         WitnessDiagnostics.Write(WitnessStage.Oracle);
         Assert.False(unsafeOrder, UnsafeCommit);
     }
