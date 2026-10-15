@@ -1,0 +1,44 @@
+{
+  "acceptance": false,
+  "certificate_session_armed_once": true,
+  "correlated_negative_failures": [
+    {
+      "browserConnected": true,
+      "category": "certificate",
+      "contextClosing": false,
+      "currentSession": null,
+      "elapsedMs": 1339,
+      "exactLoader": true,
+      "exactPageProxy": true,
+      "hasProvisional": false,
+      "initialized": true,
+      "ordinal": 22,
+      "pageClosed": false,
+      "provisionalSession": null,
+      "source": "Playwright.provisionalLoadFailed"
+    },
+    {
+      "binding": 1,
+      "browserConnected": true,
+      "category": "certificate",
+      "contextClosing": false,
+      "currentSession": true,
+      "elapsedMs": 1339,
+      "exactLoader": true,
+      "exactRequest": true,
+      "hasProvisional": false,
+      "nativeCancelled": false,
+      "ordinal": 23,
+      "pageClosed": false,
+      "provisionalSession": null,
+      "requestSession": true,
+      "source": "Network.loadingFailed"
+    }
+  ],
+  "diagnostic_complete": true,
+  "parent_variables_restored": true,
+  "retention_complete": true,
+  "scope_matches": true,
+  "trusted_positives": true,
+  "unexpected_untrusted_http200": false
+}

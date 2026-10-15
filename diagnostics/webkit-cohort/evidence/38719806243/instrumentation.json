@@ -1,0 +1,11 @@
+{
+  "acceptance": false,
+  "helper_sha256": "25afa7d2f5b3bdf58d7fb32154e1b137eb85a007e7b57ddd73ace50fdedcd549",
+  "instrumented_files": 1106,
+  "instrumented_manifest_sha256": "e7156cbed7b38448e7d963b769242c87267c23ef9d2e8c78b4611d8dfe15fbfd",
+  "instrumented_test_sha256": "2fe27773a933d32d3917d5cc3054b51e08b79452b9f00b2314ca2524276c437b",
+  "original_files": 1105,
+  "original_manifest_sha256": "43dee6a6f580b748885d9cd7821f6f65b02729c6b416ea96c35a1a4b0f11fb6f",
+  "original_test_sha256": "19e82c5e0f5b5ba54f0a748bf72d9fc0c25fb863915222ebba79926e2bb0a6e8",
+  "scope": "one certificate factory expression and one disposable helper; rebuilt private test copy"
+}

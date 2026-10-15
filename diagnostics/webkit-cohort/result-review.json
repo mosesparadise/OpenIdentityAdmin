@@ -1,0 +1,42 @@
+{
+  "acceptance": false,
+  "architecture_test_review": "pass within diagnostic evidence scope; insufficient causal fix/readiness evidence",
+  "artifact_id": 11965580793,
+  "artifact_zip_sha256": "c1fad10d44ac8deb1077d046ee4d112d0dcdf3b2fed73a3e9ca349d4148dc071",
+  "attempt": 1,
+  "browser_files_equal_previous_hosted": 51,
+  "certificate_ordinal": 25,
+  "diagnostic_sha": "6d4e24c6602f30335ef47a7470bac9056630dce6",
+  "executed_workflow_sha256": "59a23796b4e3f9fe13d65e463ab383a4c439f2973489f14900af5e72c7115492",
+  "files": {
+    "browser-files.json": "acbe623d2b71b6ded8bd59b0e373f3f071ee4d1b170ba719d2f0d6ab63a245cb",
+    "child-exit.json": "92443246495cd6882bdadb49ebf7241c437716ee27da6f16123bdf8fbbd7a3ae",
+    "cleanup.json": "f48eafae6149ac5d814c8ac365e85e1eed9090039943efc035a266bad987ee12",
+    "collector-exit.json": "43cf408aded4686a127450725ae3ec8bb5387a15fb90fc453865d2851a7a0ef6",
+    "diagnostic-result.json": "b8809bc04bc6e1711e5e60770cea59977bb5fb895b234db8ab59887a3b019dc5",
+    "discovery.json": "f72b0715ddd2105dd4e5f2b17d75ee7d0112553b9a26611d898c0170ef9734a7",
+    "instrumentation.json": "d2edf8462585dcfa23516ea55a755410f2c788cda4cce7cc9ba6c0ae36662b9e",
+    "native-exit.json": "9366e18e7fc31891c52daf0764c84afa7499f39479e9b3ef27ed45f534373497",
+    "native-result.json": "1b5f810425414da48075e02fb1b49ecaacba432e45fe4a6fcbd50118657a01f5",
+    "observation.json": "f204585e1dee6e5ed5a72ff7f1c09064ecadc6915cc626c36bb60cc56d4fd5cf",
+    "outcome.json": "63793aae89e1d9cad97c373fff77f2b8292422b99073df0ef1bd80183b0af02c",
+    "preflight.json": "74f2dee2ca461da95078359f7a89edeb5b23ba9150ed939999e9b5ecec2e7da2"
+  },
+  "historical_certificate_ordinal": 20,
+  "historical_order_matches": false,
+  "historical_prefix_matches": false,
+  "job_id": 116371287526,
+  "native_counts": {
+    "executed": 30,
+    "failed": 0,
+    "passed": 30
+  },
+  "native_report_sha256": "9b4ed862bac2a34b08aaac0c92547e99a1275c6897e5cbde413921a440fa1485",
+  "native_seconds": 361.212,
+  "original_required_ci": "failed; unchanged",
+  "original_required_run": 38483679324,
+  "raw_report_reviewed": false,
+  "run_id": 38719806243,
+  "security_review": "pass within diagnostic scope",
+  "source": "6fcb96216eca0974041d3e8346adc4ce8458789d"
+}

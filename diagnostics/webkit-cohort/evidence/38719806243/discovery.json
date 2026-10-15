@@ -1,0 +1,12 @@
+{
+  "acceptance": false,
+  "cross_path_all_uids_equal": false,
+  "historical_cohort_names_equal": true,
+  "instrumented_inventory": 644,
+  "original_inventory": 644,
+  "portable_names_and_metadata_equal": true,
+  "private_inventory": 644,
+  "same_path_all_uids_equal": true,
+  "same_path_selected_uids_equal": true,
+  "selected": 30
+}

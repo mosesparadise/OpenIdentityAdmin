@@ -1,3 +1,5 @@
+> Completed: run 38719806243 passed all30 native cases. The historical case order was not reproduced and required CI remains failed. See [result.md](result.md). The workflow is archived and inactive; the preparation and launch instructions below are historical.
+
 # One PostgreSQL/WebKit cohort observation
 
 15 October 2026 (Europe/London). The user instructed “Please proceed” after the recommendation to observe the original 30-case PostgreSQL/WebKit group and its shared-fixture history. This authorizes the preparation, independent review and one hosted cohort run described here. It does not renew A-004/A-005/A-006 or authorize SQL experiments, a full acceptance rerun, production changes, release or merge.

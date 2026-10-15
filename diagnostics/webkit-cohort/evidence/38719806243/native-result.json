@@ -1,0 +1,276 @@
+{
+  "acceptance": false,
+  "certificate_failure": {
+    "category": "none",
+    "certificate_assertion_frame": false,
+    "certificate_wait_frame": false,
+    "fixture_frame": false
+  },
+  "certificate_ordinal": 25,
+  "certificate_outcome": "Passed",
+  "counts": {
+    "aborted": 0,
+    "completed": 0,
+    "disconnected": 0,
+    "error": 0,
+    "executed": 30,
+    "failed": 0,
+    "inProgress": 0,
+    "inconclusive": 0,
+    "notExecuted": 0,
+    "notRunnable": 0,
+    "passed": 30,
+    "passedButRunAborted": 0,
+    "pending": 0,
+    "timeout": 0,
+    "total": 30,
+    "warning": 0
+  },
+  "historical_order_matches": false,
+  "historical_prefix_matches": false,
+  "order": [
+    {
+      "duration": "00:00:15.1230000",
+      "end": "2026-10-15T10:25:30.5516382+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.ContrastExperimentTests.Synthetic_dark_error_page_preserves_contrast_across_scanner_and_page_lifecycles(provider: \"PostgreSql\")",
+      "ordinal": 1,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:25:15.4072251+00:00"
+    },
+    {
+      "duration": "00:00:36.4700000",
+      "end": "2026-10-15T10:26:07.0520551+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Freshness_requires_new_credentials_and_completes_once_without_a_loop(provider: \"PostgreSql\", mode: \"prompt-login\")",
+      "ordinal": 2,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:25:30.5814763+00:00"
+    },
+    {
+      "duration": "00:00:03.2990000",
+      "end": "2026-10-15T10:26:10.3520633+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Freshness_requires_new_credentials_and_completes_once_without_a_loop(provider: \"PostgreSql\", mode: \"max-age-zero\")",
+      "ordinal": 3,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:07.0525209+00:00"
+    },
+    {
+      "duration": "00:00:02.7170000",
+      "end": "2026-10-15T10:26:13.0707546+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Expired_owned_interaction_shows_safe_terminal_ui_and_allows_a_fresh_start(provider: \"PostgreSql\", theme: \"dark\", width: 1280)",
+      "ordinal": 4,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:10.3531197+00:00"
+    },
+    {
+      "duration": "00:00:02.6429999",
+      "end": "2026-10-15T10:26:15.7150470+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Expired_owned_interaction_shows_safe_terminal_ui_and_allows_a_fresh_start(provider: \"PostgreSql\", theme: \"light\", width: 320)",
+      "ordinal": 5,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:13.0712124+00:00"
+    },
+    {
+      "duration": "00:00:01.6170000",
+      "end": "2026-10-15T10:26:17.3339327+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Theme_is_available_before_body_render_and_survives_storage_and_system_changes(provider: \"PostgreSql\", mode: \"unavailable\")",
+      "ordinal": 6,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:15.7167487+00:00"
+    },
+    {
+      "duration": "00:00:01.1690000",
+      "end": "2026-10-15T10:26:18.5037260+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Theme_is_available_before_body_render_and_survives_storage_and_system_changes(provider: \"PostgreSql\", mode: \"saved-light\")",
+      "ordinal": 7,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:17.3341748+00:00"
+    },
+    {
+      "duration": "00:00:01.1930000",
+      "end": "2026-10-15T10:26:19.6983689+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Theme_is_available_before_body_render_and_survives_storage_and_system_changes(provider: \"PostgreSql\", mode: \"system\")",
+      "ordinal": 8,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:18.5042974+00:00"
+    },
+    {
+      "duration": "00:00:01.0980000",
+      "end": "2026-10-15T10:26:20.7972636+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Theme_is_available_before_body_render_and_survives_storage_and_system_changes(provider: \"PostgreSql\", mode: \"saved\")",
+      "ordinal": 9,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:19.6986409+00:00"
+    },
+    {
+      "duration": "00:00:01.0590000",
+      "end": "2026-10-15T10:26:21.8573849+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Theme_is_available_before_body_render_and_survives_storage_and_system_changes(provider: \"PostgreSql\", mode: \"invalid\")",
+      "ordinal": 10,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:20.7976505+00:00"
+    },
+    {
+      "duration": "00:00:01.6000000",
+      "end": "2026-10-15T10:26:23.4591005+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Login_without_javascript_uses_the_same_protected_form_and_manual_continuation(provider: \"PostgreSql\")",
+      "ordinal": 11,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:21.8585304+00:00"
+    },
+    {
+      "duration": "00:00:02.5420000",
+      "end": "2026-10-15T10:26:26.0022319+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserAcceptanceTests.Generic_credential_error_clears_password_and_supports_keyboard_correction(provider: \"PostgreSql\")",
+      "ordinal": 12,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:23.4597057+00:00"
+    },
+    {
+      "duration": "00:00:04.1170000",
+      "end": "2026-10-15T10:26:30.1237418+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.ContrastBoundaryTests.Synthetic_error_page_observations_isolate_navigation_target_scan_and_finishing_page(provider: \"PostgreSql\")",
+      "ordinal": 13,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:26.0042430+00:00"
+    },
+    {
+      "duration": "00:00:02.3650000",
+      "end": "2026-10-15T10:26:32.4909922+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserBoundaryTests.Cross_site_post_with_a_copied_valid_form_token_cannot_authenticate_or_consume_the_interaction(provider: \"PostgreSql\")",
+      "ordinal": 14,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:30.1255596+00:00"
+    },
+    {
+      "duration": "00:00:03.2110000",
+      "end": "2026-10-15T10:26:35.7030832+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserBoundaryTests.Completed_tab_cannot_adopt_a_replacement_session_and_a_new_flow_recovers(provider: \"PostgreSql\")",
+      "ordinal": 15,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:32.4916253+00:00"
+    },
+    {
+      "duration": "00:00:04.1020000",
+      "end": "2026-10-15T10:26:39.8074101+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserBoundaryTests.Authenticated_tabs_keep_independent_correlations_and_complete_their_original_flows(provider: \"PostgreSql\")",
+      "ordinal": 16,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:35.7047904+00:00"
+    },
+    {
+      "duration": "00:00:01.6650000",
+      "end": "2026-10-15T10:26:41.4741712+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserBoundaryTests.Form_boundaries_reject_modified_requests_without_burning_legitimate_interactions(provider: \"PostgreSql\", change: \"missing-antiforgery\")",
+      "ordinal": 17,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:39.8081196+00:00"
+    },
+    {
+      "duration": "00:00:01.6450000",
+      "end": "2026-10-15T10:26:43.1198733+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserBoundaryTests.Form_boundaries_reject_modified_requests_without_burning_legitimate_interactions(provider: \"PostgreSql\", change: \"invalid-antiforgery\")",
+      "ordinal": 18,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:41.4744632+00:00"
+    },
+    {
+      "duration": "00:00:03.0600000",
+      "end": "2026-10-15T10:26:46.1809757+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserBoundaryTests.Form_boundaries_reject_modified_requests_without_burning_legitimate_interactions(provider: \"PostgreSql\", change: \"foreign-interaction\")",
+      "ordinal": 19,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:43.1201246+00:00"
+    },
+    {
+      "duration": "00:00:01.4940000",
+      "end": "2026-10-15T10:26:47.6769761+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserEvidenceTests.Actual_axe_scan_rejects_seeded_contrast_and_accepts_the_corrected_page(provider: \"PostgreSql\")",
+      "ordinal": 20,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:46.1823750+00:00"
+    },
+    {
+      "duration": "00:00:01.9520000",
+      "end": "2026-10-15T10:26:49.6297828+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserEvidenceTests.Callback_document_requires_exact_flow_and_full_readiness_even_when_navigation_already_completed(provider: \"PostgreSql\")",
+      "ordinal": 21,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:47.6775418+00:00"
+    },
+    {
+      "duration": "00:00:00.0300000",
+      "end": "2026-10-15T10:26:49.6621862+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserEvidenceTests.Sensitive_browser_and_timeout_diagnostics_are_suppressed_but_assertions_remain_failures(provider: \"PostgreSql\")",
+      "ordinal": 22,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:49.6314201+00:00"
+    },
+    {
+      "duration": "00:00:00.0030000",
+      "end": "2026-10-15T10:26:49.6662766+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserEvidenceTests.Given_NativeFailureChannels_When_DiagnosticsAreCaptured_Then_OnlyStrictCertificateEvidenceCanAccept(provider: \"PostgreSql\")",
+      "ordinal": 23,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:49.6625874+00:00"
+    },
+    {
+      "duration": "00:00:00.8540000",
+      "end": "2026-10-15T10:26:50.5222896+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.BrowserStyleEvidenceTests.Canvas_evidence_distinguishes_missing_body_rule_from_inline_override_and_healthy_theme(provider: \"PostgreSql\")",
+      "ordinal": 24,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:49.6672649+00:00"
+    },
+    {
+      "duration": "00:00:01.5040000",
+      "end": "2026-10-15T10:26:52.0276135+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Given_ExplicitBrowserTrust_When_UnrelatedCertificateIsPresented_Then_CertificateValidationRejectsIt(provider: \"PostgreSql\")",
+      "ordinal": 25,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:50.5233517+00:00"
+    },
+    {
+      "duration": "00:00:02.1250000",
+      "end": "2026-10-15T10:26:54.1539735+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(provider: \"PostgreSql\")",
+      "ordinal": 26,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:52.0281250+00:00"
+    },
+    {
+      "duration": "00:00:03.5570000",
+      "end": "2026-10-15T10:26:57.7122105+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Both_themes_reflow_and_have_no_automated_accessibility_violations(provider: \"PostgreSql\", theme: \"light\", width: 320)",
+      "ordinal": 27,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:54.1546336+00:00"
+    },
+    {
+      "duration": "00:03:58.2980000",
+      "end": "2026-10-15T10:30:56.0117799+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Both_themes_reflow_and_have_no_automated_accessibility_violations(provider: \"PostgreSql\", theme: \"dark\", width: 1280)",
+      "ordinal": 28,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:26:57.7128229+00:00"
+    },
+    {
+      "duration": "00:00:03.4250000",
+      "end": "2026-10-15T10:30:59.4379119+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Both_themes_reflow_and_have_no_automated_accessibility_violations(provider: \"PostgreSql\", theme: \"light\", width: 1280)",
+      "ordinal": 29,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:30:56.0120167+00:00"
+    },
+    {
+      "duration": "00:00:03.1050000",
+      "end": "2026-10-15T10:31:02.5438564+00:00",
+      "name": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Both_themes_reflow_and_have_no_automated_accessibility_violations(provider: \"PostgreSql\", theme: \"dark\", width: 320)",
+      "ordinal": 30,
+      "outcome": "Passed",
+      "start": "2026-10-15T10:30:59.4382388+00:00"
+    }
+  ],
+  "outcome": "Passed",
+  "report_sha256": "9b4ed862bac2a34b08aaac0c92547e99a1275c6897e5cbde413921a440fa1485",
+  "report_valid": true
+}

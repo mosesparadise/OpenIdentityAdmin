@@ -1,0 +1,10 @@
+{
+  "acceptance": false,
+  "child_exit": 0,
+  "collector_exit": 0,
+  "diagnostic_job_success": true,
+  "diagnostic_sha": "6d4e24c6602f30335ef47a7470bac9056630dce6",
+  "native_exit": 0,
+  "run_id": "38719806243",
+  "source": "6fcb96216eca0974041d3e8346adc4ce8458789d"
+}

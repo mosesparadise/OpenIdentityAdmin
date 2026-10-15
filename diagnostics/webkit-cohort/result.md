@@ -1,0 +1,39 @@
+# PostgreSQL/WebKit cohort result
+
+15 October 2026 (Europe/London). The user-authorized single cohort observation completed successfully. It did not reproduce the historical case order or the certificate-evidence failure. PR #50 remains draft and unmerged; required acceptance is still blocked.
+
+## Verified execution
+
+[Run 38719806243](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38719806243), attempt 1/job `116371287526`, ran at diagnostic commit `6d4e24c6602f30335ef47a7470bac9056630dce6`, tree `ecfe8cbf2414f9b6bfdd9b9208f022c24a2ce0a3`. The main agent verified the reviewed 30-file addition against frozen parent `d8114ad2af24bd20f0aee3fffb8b82947a3b9d9a`, then performed one non-forced expected-head update. The first-attempt push guard passed. No replay or second native invocation occurred.
+
+The original checkout remained at `6fcb96216eca0974041d3e8346adc4ce8458789d`. Its build, the original private-copy build and the instrumented private-copy build each passed with zero warnings/errors. All 114 hosted preparation controls passed; ten additional launch controls had passed locally. Cross-path discovery preserved all 644 portable identities/metadata, and discovery before/after instrumentation at the same private path preserved all 644 generated IDs and the 30 selected cases. The only private source differences were the certificate factory expression and its disposable helper. Original/instrumented manifest hashes were independently reconstructed from the pinned checkout and reviewed transform and matched the hosted receipt.
+
+All **30 native cases passed**, with zero failed, skipped or other incomplete counters. The supervised native invocation took 361.212 seconds within the unchanged 660-second limit. Native, covered-child and collector exits were independently zero. The certificate case passed in 1.504 seconds. These are diagnostic results, not a replacement for the required CI result.
+
+The certificate observer retained 29 events across exactly three navigations, with no dropped events, ambiguity, overflow or instrumentation failure. Both trusted navigations returned HTTP 200. The negative navigation produced a certificate-category native failure with exact request/session/loader binding and `nativeCancelled=false`, followed by the mapped failure before page closure. The page was open, browser connected and context not closing. The preceding provisional-load method-entry event had `hasProvisional=false`; this does not establish that the entry was forwarded to the public navigation-error channel. No successful untrusted navigation was observed. Exclusive arm and parent-variable-restoration receipts validated successfully.
+
+## Evidence and cleanup
+
+Artifact `11965580793`, `diagnostic-webkit-cohort-38719806243-1`, has verified ZIP SHA-256 `c1fad10d44ac8deb1077d046ee4d112d0dcdf3b2fed73a3e9ca349d4148dc071`. Its twelve allowlisted JSON files are retained byte-for-byte in [evidence/38719806243](evidence/38719806243/). The hosted strict validator recorded raw native TRX SHA-256 `9b4ed862bac2a34b08aaac0c92547e99a1275c6897e5cbde413921a440fa1485`. Raw TRX, native console and coverage were not uploaded. Independent reviews reconcile the sanitized validator receipts and reviewed validation code, not an unavailable raw report. Observation and outcome were independently recomputed from the downloaded evidence.
+
+Cleanup verified the original 1,105 source files unchanged, the private test restored and helper removed, the private driver restored, shared driver unchanged, owned process groups reconciled and Docker clean. GitHub's finalizer subsequently terminated orphan dotnet/compiler/container-init processes; the receipt does not claim every host process had already exited. The private instrumented assembly was never a production deliverable.
+
+The runner used Ubuntu 24.04.5, runner 2.337.0, image `20261012.334.1`, SDK 10.0.402, dotnet-coverage 18.12.0, Playwright 1.63.0 and WebKit 2359. All 51 browser-file hashes match the preceding successful hosted diagnostic. The historical failed run used image `20261004.327.1`; matching selected tools/browser files does not establish the same host state or timing.
+
+## Ordering finding and next bounded step
+
+The native receipt explicitly reports `historical_order_matches=false` and `historical_prefix_matches=false`. The certificate case ran **25th**, after 24 different preceding entries, rather than 20th after the historical 19-case sequence. In particular, keyboard login ran 26th, after the certificate case; it immediately preceded the historical failure. The 100-iteration dark-desktop visual case ran 28th. This cohort therefore tested the full catalogue and a shared fixture, but did not recreate that specific preceding history. It does not establish that ordering caused the certificate failure.
+
+Pinned xUnit 4.0.2 source at commit `0c7aa4991fa340689155d52043ce88f52f2f7421` explains why path changes can alter defaults: [ForAssembly](https://github.com/xunit/xunit/blob/0c7aa4991fa340689155d52043ce88f52f2f7421/src/xunit.v3.common/Utility/UniqueIDGenerator.cs) hashes the assembly/configuration paths absent a unique-ID override, and the default [class](https://github.com/xunit/xunit/blob/0c7aa4991fa340689155d52043ce88f52f2f7421/src/xunit.v3.core/Framework/DefaultTestClassOrderer.cs), [method](https://github.com/xunit/xunit/blob/0c7aa4991fa340689155d52043ce88f52f2f7421/src/xunit.v3.core/Framework/DefaultTestMethodOrderer.cs) and [case](https://github.com/xunit/xunit/blob/0c7aa4991fa340689155d52043ce88f52f2f7421/src/xunit.v3.core/Framework/DefaultTestCaseOrderer.cs) orderers sort their derived IDs. Original within-assembly parallelism is disabled, but that does not fix order across paths. Same-private-path before/after discovery equality proved instrumentation stability, not historical order equivalence.
+
+Read-only examination of the digest-verified historical TRX records this assembly location:
+
+`/home/runner/work/OpenIdentityAdmin/OpenIdentityAdmin/tests/aspire/IdentityPlatform.Issuer.Tests/bin/Debug/net10.0/IdentityPlatform.Issuer.Tests.dll`
+
+The next bounded candidate is a separately reviewed cohort diagnostic that preserves the historical assembly/configuration location and native xUnit ordering, with verified temporary instrumentation/restoration and actual order capture. The path above comes from case-sensitive `TestMethod.codeBase`; the TRX `storage` field lowercases it and must not be used as the original hash input. Verify the configuration-file path or absence, `.uniqueid` status and default-order assumptions before launch. It must not silently force a custom order, weaken the certificate oracle, extend deadlines or rerun until green. This document proposes no automatic execution. The changed runner image and diagnostic timing remain comparison limits even if order subsequently matches.
+
+## Closure and remaining gates
+
+The executed workflow is preserved as [launched-verify.yml](launched-verify.yml), outside `.github/workflows`; the active diagnostic workflow is removed. The earlier single-case and failed-definition receipts remain intact. Do not merge the diagnostic branch.
+
+Required run `38483679324` remains failed, including its certificate case and final acceptance job; aggregate coverage remains skipped. No causal source defect or corrected-source acceptance has been established. PR #50 remains at `6fcb96216eca0974041d3e8346adc4ce8458789d`, main at `5f4fce7fe0c7761e6eab7308f2cd38908937af51`, and the handoff branch remains at `3699718603d90665117e384128803aa5f75ad12e`. All six historical findings, 48 human rows and activation/public-release gates stay open. T020 is undelivered; its size exception is not renewed. A-004 remains expired and A-005/A-006 concluded. No SQL experiment, full-CI retry, production change or merge occurred.
