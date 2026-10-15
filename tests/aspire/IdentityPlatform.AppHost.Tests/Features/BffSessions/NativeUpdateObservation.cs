@@ -30,7 +30,7 @@ internal sealed class NativeUpdateObservation : DbCommandInterceptor
         return ValueTask.FromResult(result);
     }
 
-    /// <summary>Waits until the provider reports the marked request blocked on a real lock; case cancellation bounds observation.</summary>
+    /// <summary>Finds the unique command marker anywhere in the native batch, including after SQL parameter declarations, and requires a real lock wait.</summary>
     internal async Task RequireBlockedAsync(DbContext observer, CancellationToken cancellationToken)
     {
         await observer.Database.OpenConnectionAsync(cancellationToken);
@@ -39,7 +39,7 @@ internal sealed class NativeUpdateObservation : DbCommandInterceptor
         var parameter = command.CreateParameter();
         parameter.ParameterName = MarkerParameter;
         parameter.DbType = DbType.String;
-        parameter.Value = marker + Wildcard;
+        parameter.Value = Wildcard + marker + Wildcard;
         command.Parameters.Add(parameter);
         while (Convert.ToInt32(await command.ExecuteScalarAsync(cancellationToken), System.Globalization.CultureInfo.InvariantCulture) == 0)
         {

@@ -69,3 +69,5 @@ review. T022 remains the next independent product-design step; browser activatio
 and a merge cannot borrow the passing unit/source-review evidence.
 
 - [x] T024 Correct first-hosted-candidate integration failures: reconcile the issuer selector's independent AppHost count (8→15) and remove the four IDE0005 imports; preserve the failed run and 114 passing prerequisite controls in `verification.md`. Requirements: SC-005. This completes correction evidence only; T020/T021 remain open.
+
+- [x] T025 Correct the test-owned native lock observer to find its unique marker after a possible SQL parameter declaration, preserving the blocked-request predicate and every deadline. Record independent source review and the incomplete SQL evidence in `verification.md`; native acceptance remains in T020, not this checkbox. Requirements: FR-004, FR-006, SC-001.

@@ -115,3 +115,42 @@ IDE0005 verification command also passes locally, and the complete solution buil
 allowance dependency remains open. New exact-candidate checks and native
 provider results remain required; these corrections do not close historical
 findings or make the implementation merge-ready.
+
+## Corrected-selection CI and bounded observer correction — 15 October 2026
+
+[Run 38745940575](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38745940575), attempt 1, tested head `4e0efb88d465bc1c0e5b40fcd9c090e6a8467615` through merge `93393d1281caaf7454508901eeace25423da8494`. Its tree `067876a4093a907a7a4cdb681657185ca22d78cd` equals the source head tree. Final result: **65 successful jobs, four failed jobs, one skipped job**. The selector/import corrections passed. Required acceptance is still failed.
+
+- Hosted unit verification passed 484/484, zero skips.
+- PostgreSQL foundation passed Persistence 4/4 and AppHost 15/15, zero skips; AppHost took 503.298 seconds. This supplies the first complete current-candidate PostgreSQL BFF evidence.
+- SQL Server persistence passed 4/4, including migration/repeated initialization and runtime permissions. AppHost reached its unchanged 660-second invocation limit without a completed report. Artifact `11980221874`, SHA-256 `d00850a0d3c43412dcdbfb857e3a58ddfa4b35c46b353b165b34fa9068a109f4`, contains Persistence TRX, partial coverage and a native unfinished stream, not an AppHost TRX.
+- Independent parsing against pinned Microsoft.Testing.Platform 2.5.1 writer source (`0bf77e3aedbf86f1fa16220bc951d3b52ba56763`) found nine complete terminal SQL records, all passing, without exceptions. Three are BFF cleanup/concurrency cases and six are existing cases. The last completion was 13:59:20.641943 UTC; 193.44 seconds elapsed without another terminal result before the supervisor stopped execution. The stream does not retain started/in-progress records, so it cannot identify the unfinished case or prove full completion.
+- PostgreSQL lifecycle key-rotation activation failed 1/3 cases during initial Aspire startup. After migrations completed, DCP creation of admin-bff and pilot-bootstrap resources hit the native 20-second RPC timeout; the test failed before its replacement/rotation oracle. The unchanged lifecycle fixture/topology and initial credential loading do not establish an extraction defect. Artifact `11980141682`, SHA-256 `b799a641a4a7e315269a392a053d288859e83c5116cba14eaff6e8bb8bf67d77`, retains this failure. No timeout adjustment or causal closure is claimed.
+- Static checks passed build/style and then failed the unchanged expired witness allowance. Final acceptance failed and aggregate module coverage was skipped.
+- All six existing issuer/administrator/governance mutation suites passed. Independent review reconciled the actual ZIP digests, exact source/tested-merge binding, manifest/method/provider sets, source and computed mutant hashes: 42 kills with 42 baseline and 42 restored controls, zero skips. These are sanitized native-verifier receipts; raw mutant TRX is not present and new BFF mutation coverage is not claimed.
+
+The final local SQL attempt after reclaiming 3.1 GiB still exhausted Docker VFS
+storage during container creation. Console capture also became incomplete
+(exit 120); no completed acceptance report resulted. No further local native
+run followed. Archived generated outputs and relocated SDK/caches preserve
+source, prior evidence and binary bytes; enough space was recovered for ordinary
+editing and standard artifact downloads, not another SQL invocation.
+
+Source review identified a bounded observer-format weakness: the lock-test
+parameter used `marker + '%'` against full `sys.dm_exec_sql_text` batch text.
+A parameter declaration can precede the command's unique comment. The correction
+uses `'%' + marker + '%'`, retaining parameterization, the per-instance GUID and
+the actual provider lock-wait predicate. The observer's own query contains only
+the parameter placeholder and does not acquire this tagged ticket-update lock.
+The existing repository DatabaseWaiters uses the same contains-style approach.
+Independent test review approves this narrow correction; production behavior,
+case identities, selector boundaries, coverage floors and all deadlines remain
+unchanged. The affected AppHost test project builds locally with zero warnings
+and zero errors after the correction.
+
+This is a precise source concern, **not a proven cause of the SQL timeout**: the
+failed run retained neither the active-case identity nor the relevant DMV batch
+text. Existing mandatory native lock-wait/provider tests must verify the new
+candidate. No partition is added solely from this incomplete trace. PR #50's
+new current-base CI also has required startup failures; its retirement remains
+unaccepted and cannot be borrowed by this PR. All historical/human/release gates
+remain open.
