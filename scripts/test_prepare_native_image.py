@@ -97,4 +97,4 @@ class NativeImagePreparationTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    run(6)
+    run(7)

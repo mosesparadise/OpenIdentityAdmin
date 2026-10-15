@@ -47,9 +47,11 @@ internal static class NativeTransactionConformance
         await connection.OpenAsync(token);
         contender.Database.SetCommandTimeout(ContenderCommandSeconds);
         await using var transaction = await contender.Database.BeginTransactionAsync(token);
-        var exception = await Assert.ThrowsAnyAsync<DbException>(() =>
+        var exception = await Assert.ThrowsAnyAsync<Exception>(() =>
             new CeremonyLocks(contender).AcquireAsync(new CeremonyLockPlan(true, false, [], []), token));
-        fixture.RequireLockTimeout(exception);
+        var native = exception is DbException direct ? direct :
+            Assert.IsAssignableFrom<DbException>(Assert.IsType<InvalidOperationException>(exception).InnerException);
+        fixture.RequireLockTimeout(native);
         await transaction.RollbackAsync(token);
     }
 
