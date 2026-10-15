@@ -1,0 +1,31 @@
+{
+  "acceptance": false,
+  "architecture_test_review": "pass for diagnostic evidence; insufficient causal fix/readiness evidence",
+  "artifact_id": 11962952368,
+  "artifact_zip_sha256": "54d96e8a4f02b77730ee82b98ff54b21ce2cfe7ad2ce4ef484ee0500d8e07911",
+  "browser_files_equal_prior_local": 51,
+  "diagnostic_sha": "a37989c19d6fcfdb69c651a3ae6f791118a25a88",
+  "executed_workflow_sha256": "8deae54d76ce4a5f72a81ee77e8af4a609a6bea14020f78709efe7ae86ed2f2c",
+  "files": {
+    "browser-files.json": "acbe623d2b71b6ded8bd59b0e373f3f071ee4d1b170ba719d2f0d6ab63a245cb",
+    "child-exit.json": "92443246495cd6882bdadb49ebf7241c437716ee27da6f16123bdf8fbbd7a3ae",
+    "cleanup.json": "68bf24cf2936cb6725243801c9710c7abae9187f5c3e70b8a08c4c366c7346ec",
+    "collector-exit.json": "43cf408aded4686a127450725ae3ec8bb5387a15fb90fc453865d2851a7a0ef6",
+    "diagnostic-result.json": "4f17e57eb4a1693f9ce624a8beac121cd042451aefcd27b13caa76a91174d822",
+    "native-exit.json": "c7e83e9fddb595ac17c41a937eba1b8ecb3ffcc48cdf843217e32e2dd22edeb7",
+    "native-result.json": "dd30fa723dbd41a6b62f3e8aa11c379706a869339ffc8a7df14df813852c7bc9",
+    "observation.json": "6848311e419031503e3dd3b80d583e3592b56a6dfce5c9e340a5f77b6a03daaf",
+    "outcome.json": "bba3f87bccb4738260b16c17db8aea4d2f13d6dee203cc1f9d071e6c74fde6e3",
+    "preflight.json": "f96add7b1ed425e6bcb631f73e159716349bd7e19c40da7e562a1033ea283350"
+  },
+  "historical_cohort_sha256": "a6af72e1de3218e7589e7e613e6b90cffc7f7bdea6766801cf57811aa7d3f080",
+  "job_id": 116357828236,
+  "native_report_sha256": "dcdc90305ac136ab89291b7566853268430f4f232584398f7bd199cade9a9842",
+  "original_required_ci": "failed; unchanged",
+  "original_required_ci_run": 38483679324,
+  "raw_report_reviewed": false,
+  "run_attempt": 1,
+  "run_id": 38715730653,
+  "security_review": "pass within diagnostic scope",
+  "source": "6fcb96216eca0974041d3e8346adc4ce8458789d"
+}

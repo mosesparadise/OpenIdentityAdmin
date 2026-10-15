@@ -1,0 +1,9 @@
+{
+  "acceptance": false,
+  "complete": true,
+  "docker_clean": true,
+  "driver_restored": true,
+  "processes_clean": true,
+  "shared_driver_unchanged": true,
+  "source_unchanged": true
+}

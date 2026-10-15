@@ -6,7 +6,7 @@ import unittest
 import yaml
 
 local_workflow = Path(__file__).parent/'verify.yml'
-workflow_path = local_workflow if local_workflow.exists() else Path(__file__).resolve().parents[2]/'.github/workflows/verify.yml'
+workflow_path = local_workflow if local_workflow.exists() else Path(__file__).parent/'launched-verify.yml'
 workflow = yaml.safe_load(workflow_path.read_text())
 step = workflow['jobs']['diagnostic']['steps'][0]['run']
 python = step.split("python3 - <<'PY'\n", 1)[1].rsplit('\nPY', 1)[0]

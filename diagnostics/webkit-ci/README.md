@@ -1,3 +1,5 @@
+> Completed: the single hosted case passed in run 38715730653. The original required CI failure remains unexplained. See [hosted-result.md](hosted-result.md) for evidence and limits. The active workflow is retired; [launched-verify.yml](launched-verify.yml) is an inert historical archive. Earlier launch instructions below are historical and must not be replayed.
+
 # Focused GitHub Actions certificate diagnostic proposal
 
 **Current continuation:** the user requested fixing PR #50 on 15 October. The [one-time hosted launch](launch-20261015.md) supersedes the manual-only recipe below; diagnostic source/oracles and all acceptance blockers remain unchanged.
