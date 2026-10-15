@@ -1,6 +1,6 @@
 # Tasks: Durable administrator session foundation
 
-All tasks below belong to feature 010, not feature 008 or 009's identically numbered tasks. A checked task means its stated implementation or evidence is recorded, not whole-feature acceptance. Both-provider and exact-head acceptance tasks remain open separately.
+All tasks below belong to feature 010, not feature 008 or 009's identically numbered tasks. A checked task means its stated implementation or evidence is recorded, not whole-feature acceptance. Internal B1 passed both-provider and exact-head acceptance in PR #52; [delivery](delivery.md) records the evidence. T022 remains open for the next product slice.
 
 ## Phase 1 — Scope and dependency preparation
 
@@ -20,26 +20,26 @@ All tasks below belong to feature 010, not feature 008 or 009's identically numb
 - [x] T008 [US1] Implement separate BFF ring/application/purpose ownership in `src/backend/IdentityPlatform.Admin.Bff/Features/Sessions/`; extract only stable shared protection mechanics into `Infrastructure/Features/Protection/` if needed, retaining existing issuer behavior and tests. Requirements: FR-002, FR-010.
 - [x] T009 [US1] Implement native serialization, canonical named scheme/single identity and exact `sub`/`sid` binding, store-owned lifetime properties, authenticated envelope, fresh 32-byte handle, hashed lookup and atomic create/load/audit in `Admin.Bff/Features/Sessions/` plus narrow Infrastructure persistence. No public routes or ephemeral fallback. Requirements: FR-001–004, FR-006, FR-009–010.
 - [x] T010 [US1] Add bounded serialization, scheme/identity/claim-binding mismatch (including replacement tickets), conflicting native lifetime, tamper/wrong-purpose/key-loss/rotation controls in `tests/backend/IdentityPlatform.Host.Tests/Features/BffSessions/` and no-private-log controls in `tests/aspire/IdentityPlatform.AppHost.Tests/Features/BffSessions/`; preserve all issuer protection regressions. Requirements: FR-001–004, FR-006, FR-009–010; SC-003.
-- [ ] T011 [US1] Prove migration/repeated upgrade/session-only grants in `tests/persistence/IdentityPlatform.Persistence.Tests/Features/NativePersistenceTests.cs` and independent-instance/restart state in `tests/aspire/IdentityPlatform.AppHost.Tests/Features/BffSessions/` on both real providers. Requirements: FR-003, FR-007; SC-001.
+- [x] T011 [US1] Prove migration/repeated upgrade/session-only grants in `tests/persistence/IdentityPlatform.Persistence.Tests/Features/NativePersistenceTests.cs` and independent-instance/restart state in `tests/aspire/IdentityPlatform.AppHost.Tests/Features/BffSessions/` on both real providers. Requirements: FR-003, FR-007; SC-001.
 
 ## Phase 4 — US2: Expiry, concurrency and local revocation
 
 - [x] T012 [US2] Implement an injected-clock policy in `Admin.Bff/Features/Sessions/` for strictly positive shorter lifetimes, maximum 30-minute idle/eight-hour absolute, authenticated immutable original idle duration, immutable upstream/absolute cap, expiry at equality and rollback denial; reads never renew. Requirements: FR-004, FR-006.
 - [x] T013 [US2] Implement expected-revision renewal and idempotent current-row revocation with atomic audit in session persistence/orchestration; no upsert, revision wraparound or automatic conflict retry. Requirements: FR-005, FR-009.
-- [ ] T014 [US2] Add exact-before/at/after deadline, retained-shorter-idle-policy and clock-rollback controls under `Host.Tests/Features/BffSessions/`; native two-instance renewal/revoke interleavings, no-resurrection and failed-audit rollback under `AppHost.Tests/Features/BffSessions/` for both providers. Requirements: FR-004–006, FR-009; SC-001–002.
-- [ ] T015 [US2] Add cancellation, database/key unavailability and unknown-commit-outcome evidence under `AppHost.Tests/Features/BffSessions/`; no successful result or implicit retry after failure. Requirements: FR-006, FR-011.
+- [x] T014 [US2] Add exact-before/at/after deadline, retained-shorter-idle-policy and clock-rollback controls under `Host.Tests/Features/BffSessions/`; native two-instance renewal/revoke interleavings, no-resurrection and failed-audit rollback under `AppHost.Tests/Features/BffSessions/` for both providers. Requirements: FR-004–006, FR-009; SC-001–002.
+- [x] T015 [US2] Add cancellation, database/key unavailability and unknown-commit-outcome evidence under `AppHost.Tests/Features/BffSessions/`; no successful result or implicit retry after failure. Requirements: FR-006, FR-011.
 
 ## Phase 5 — US3: Bounded operations and isolation
 
-- [ ] T016 [US3] Implement at-most-100-row eligible ticket cleanup with deletion-time predicates and no audit cascade under `Infrastructure/Features/Sessions/`; prove live renewal/cleanup and deletion/stale-renewal races on both providers. Requirements: FR-005–006, FR-011.
+- [x] T016 [US3] Implement at-most-100-row eligible ticket cleanup with deletion-time predicates and no audit cascade under `Infrastructure/Features/Sessions/`; prove live renewal/cleanup and deletion/stale-renewal races on both providers. Requirements: FR-005–006, FR-011.
 - [x] T017 [US3] Keep production registration internal/dormant and demonstrate no login/callback/proxy/docs/management route changes using `tests/shared/ProductionEndpointInventory.cs` and `Host.Tests/Features/BffSessions/`. Requirements: FR-008; SC-004.
 - [x] T018 [US3] Add operations instructions in `docs/operations/bff-session-store.md` for separate keys/credentials, explicit upgrade, safe diagnostics, rollback, retained decryptors and snapshot invalidation; distinguish pending audit retention/export and remote logout. Requirements: FR-007, FR-009–011.
 
 ## Phase 6 — Implementation acceptance and next product work
 
 - [x] T019 Reconcile all new discovery identities/counts in `eng/test-matrix.json`, verification selectors and mandatory coverage consumers; add seeded rejection controls for any changed selector. Preserve old counts/IDs, floors and deadlines. Requirements: SC-001, SC-005.
-- [ ] T020 Run focused provider/protection/failure evidence and all required exact-head CI, reconcile artifacts and independent source/security/test reviews in `verification.md`; keep failed attempts and actual limits. Requirements: all FR/SC.
-- [ ] T021 After every required gate passes, normally squash the implementation PR and update `docs/roadmap.md`, `docs/operations/new-task-handoff.md` and this task list. Mark only B1 complete; retain M02-B/C/D/E gaps. Requirements: SC-005.
+- [x] T020 Run focused provider/protection/failure evidence and all required exact-head CI, reconcile artifacts and independent source/security/test reviews in `verification.md`; keep failed attempts and actual limits. Requirements: all FR/SC.
+- [x] T021 After every required gate passes, normally squash the implementation PR and update `docs/roadmap.md`, `docs/operations/new-task-handoff.md` and this task list. Mark only B1 complete; retain M02-B/C/D/E gaps. Requirements: SC-005.
 - [ ] T022 Prepare the next B2 issuer/client specification and reviewed integration packet: fixed manager-backed admin client/scope/audience, distinct current-MFA admission, pinned native code/S256/PAR/`private_key_jwt` support, denial/replay evidence and later refresh/end-session dependencies. Update `docs/roadmap.md`; no pilot relaxation or inferred activation. Requirements: FR-008 and roadmap M02-B.
 
 ## Dependencies and parallel opportunities
@@ -48,7 +48,7 @@ T001–003 deliver planning. T004–005 precede source implementation; T006–00
 
 Independent architecture/test and security review may run in parallel with each other. The main agent owns all edits and integration. The first implementation PR should deliver US1–US3 together as a usable internal store, not an isolated helper marked as a complete session feature.
 
-## Convergence review — 15 October 2026
+## Historical convergence review — before final acceptance, 15 October 2026
 
 US1–US3 source is implemented and independently reviewed, but B1 is not accepted.
 T011, T014–T016 and T020–T021 remain open because the latest both-provider
@@ -62,14 +62,19 @@ Schemas and repeated upgrade; they are reused rather than copied into a new
 BffSessions persistence directory. The new AppHost cases supply store-specific
 behavior. This path refinement does not remove either provider obligation.
 
-- [ ] T023 Resolve implementation acceptance prerequisites: use hosted Docker capacity for the unchanged native cases and integrate the independently accepted witness-allowance retirement without renewing its expiry. PR #50 is now delivered and integrated; local Docker capacity remains insufficient. Then complete existing T011/T014–T016/T020 evidence once against the actual candidate. This is an operational/dependency task, not authorization to resume paused WebKit diagnostics or waive gates. Requirements: SC-001, SC-005.
+- [x] T023 Resolve implementation acceptance prerequisites: use hosted Docker capacity for the unchanged native cases and integrate the independently accepted witness-allowance retirement without renewing its expiry. PR #50 is now delivered and integrated; local Docker capacity remains insufficient. Then complete existing T011/T014–T016/T020 evidence once against the actual candidate. This is an operational/dependency task, not authorization to resume paused WebKit diagnostics or waive gates. Requirements: SC-001, SC-005. Completed through PR #50 integration and hosted run `38769486233`; local capacity is not claimed fixed.
 
 No new feature scope or duplicate implementation is required by this convergence
 review. T022 remains the next independent product-design step; browser activation
 and a merge cannot borrow the passing unit/source-review evidence.
 
-- [x] T024 Correct first-hosted-candidate integration failures: reconcile the issuer selector's independent AppHost count (8→15) and remove the four IDE0005 imports; preserve the failed run and 114 passing prerequisite controls in `verification.md`. Requirements: SC-005. This completes correction evidence only; T020/T021 remain open.
+- [x] T024 Correct first-hosted-candidate integration failures: reconcile the issuer selector's independent AppHost count (8→15) and remove the four IDE0005 imports; preserve the failed run and 114 passing prerequisite controls in `verification.md`. Requirements: SC-005. This correction alone did not complete T020/T021; subsequent acceptance is recorded below.
 
 - [x] T025 Correct the test-owned native lock observer to find its unique marker after a possible SQL parameter declaration, preserving the blocked-request predicate and every deadline. Record independent source review and the incomplete SQL evidence in `verification.md`; native acceptance remains in T020, not this checkbox. Requirements: FR-004, FR-006, SC-001.
 
-- [x] T026 Divide native AppHost execution into two mandatory groups (eight existing cases plus seven BFF cases per provider), preserving exact discovery identities, strict separate native reports, 660-second invocation bounds, the 20-minute job and 55 coverage inputs. Six seeded controls, both-provider native discovery and independent reviews pass. Record the twelve-pass incomplete SQL evidence in `verification.md`; T020/T021 still require exact-candidate acceptance and merge. Requirements: SC-001, SC-005.
+- [x] T026 Divide native AppHost execution into two mandatory groups (eight existing cases plus seven BFF cases per provider), preserving exact discovery identities, strict separate native reports, 660-second invocation bounds, the 20-minute job and 55 coverage inputs. Six seeded controls, both-provider native discovery and independent reviews pass. Record the twelve-pass incomplete SQL evidence in `verification.md`; T020/T021 subsequently completed exact-candidate acceptance and implementation squash; see below. Requirements: SC-001, SC-005.
+
+
+## Accepted B1 checkpoint — 15 October 2026
+
+[Delivery](delivery.md) records PR #52 squash `ca410c01`, run `38769486233` (70/70), both-provider native reports, 55 coverage inputs/nine floors and final independent reviews. These complete T011/T014–T016/T020/T023 and the implementation merge in T021. This prose packet supplies the T021 roadmap/handoff/task updates through its own required checks and squash. Earlier convergence paragraphs describe the pre-acceptance state, not current blockers. T022 remains the next task; B2/B3/C/D/E and every historical/human/activation/release gate remain open.

@@ -1,6 +1,6 @@
 # Planning and implementation evidence
 
-15 October 2026. This record distinguishes a reviewed plan from running code.
+15 October 2026. **Current acceptance:** PR #52 is squash-merged as `ca410c01`; all 70 jobs, both-provider raw reports, coverage and independent reviews passed. [Exact delivery record](delivery.md). Earlier sections preserve their historical checkpoints.
 
 ## Planning baseline and scope
 
@@ -22,7 +22,7 @@ At planning publication, hosted exact-head checks and squash were pending. The s
 
 ## Runtime acceptance status
 
-The initial planning-only statements below are historical. The implementation evidence at the end supersedes their execution status, without claiming acceptance.
+The initial planning-only statements below are historical. The implementation evidence and final delivery section supersede their execution status; earlier incomplete-acceptance statements remain historical.
 
 ## Implementation continuation — 15 October 2026
 
@@ -170,3 +170,10 @@ Six new seeded selection controls and 24 existing issuer/lifecycle/report contro
 PR #50 is accepted and squash-merged as `e780cfa964ebed683e59f1dee50349fd6026c935`, retiring the expired allowance and adding bounded pinned-image preparation. Its independently reconciled 70-job/42-mutation/55-input/nine-floor result is recorded separately in feature 009's delivery record. Bringing that main checkpoint into this branch supplies the actual dependency; it cannot substitute for this feature's acceptance. All six historical findings, 48 human assessment rows and activation/public-release gates remain open.
 
 The integrated candidate also passes the full local solution build with zero warnings/errors, the mandatory code-quality gate with 1,794 legacy records and zero exceptions, six image-preparation controls, seven scope controls, AI instruction consistency and actionlint. Accepted PR #50 witness/preparation source files are byte-identical to main. PR #53 records its delivery and merged as `bb37751077d9e4084b6466f4c2f8a1f5a2230bef`; integration preserves both accepted history and BFF implementation. No local native database case ran during this correction. Hosted verification remains pending.
+
+
+## Final internal B1 acceptance and delivery — 15 October 2026
+
+[PR #52](https://github.com/mosesparadise/OpenIdentityAdmin/pull/52) was normally squash-merged as `ca410c01a161032c1f09e2bd92439cb48b046476`. Head `bc84ec7846afeaf8b4cc104ac1928efb2a34bd92` passed all 70 jobs in run `38769486233`, attempt 1. Independent architecture/test and security reviews reconciled raw unit 484/484, each provider Persistence 4/4 plus AppHost 8/8 and BFF 7/7, all 55 coverage inputs/nine floors and six existing mutation receipts (42 kills with baseline/restored controls). Tested merge, head and squash share tree `b3a4d15fdf40b7992b9ea0f25b25034712e5c8cb`. [Delivery](delivery.md) retains exact bindings, artifact hashes, coverage counts and limits.
+
+T011/T014–T016/T020/T023 are accepted; T021 records the completed implementation squash and this status packet. T022 is the next product task. All six historical findings, 48 human rows, later B2/B3/C/D/E and activation/public-release gates remain open. No historical failed evidence is discarded and no expired approval is revived.

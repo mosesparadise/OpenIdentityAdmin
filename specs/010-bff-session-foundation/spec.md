@@ -2,7 +2,7 @@
 
 **Feature branch**: `049-bff-session-foundation`  
 **Created**: 15 October 2026  
-**Status**: Planning; no runtime implementation accepted  
+**Status**: Internal B1 implementation accepted in PR #52; [delivery evidence](delivery.md). Browser/API activation and later M02 work remain open
 **Input**: The user approved preparing M02-B's implementation scope and resolving its sequencing dependencies: “Proceed with your recommendation. I want to see real progress.”
 
 This is the first bounded implementation slice of roadmap M02-B, supporting PRD FR-11, FR-12 (partial session audit intent), FR-17, FR-18, FR-21, FR-22 and NFR-02, NFR-08, NFR-11, NFR-14. Its outcome is a durable, protected server-side ticket store that later administrator login can use. It does not itself sign a browser in or authorize a management action. [Sequencing and remaining M02 work](research.md) distinguish planning delivery, internal implementation and activation.
@@ -82,6 +82,6 @@ Unknown/oversized handles; oversized protected payload; empty bindings; unsuppor
 
 ## Assumptions
 
-The approved v0.2 architecture supplies the database/session separation and protection requirements. The current user instruction advances scope preparation; it does not waive any acceptance gate. [Research](research.md) records what exists and what is missing. All six historical findings, 48 human assessment rows and activation/public-release blockers remain open. A-004 is expired; A-005/A-006 are concluded. No diagnostic approval is renewed.
+The approved v0.2 architecture supplies the database/session separation and protection requirements. The user authorized implementation and conditional delivery; PR #52 passed the required gates before squash. No acceptance gate is waived. [Research](research.md) records what exists and what is missing. All six historical findings, 48 human assessment rows and activation/public-release blockers remain open. A-004 is expired; A-005/A-006 are concluded. No diagnostic approval is renewed.
 
 The foundation is exercised through internal service calls with synthetic data until later issuer/client and browser work is accepted. It does not prove administrator MFA, five-second API enforcement, refresh serialization, remote logout, browser token secrecy or whole-milestone acceptance.
