@@ -1,5 +1,7 @@
 # OpenIdentityAdmin new-task handoff
 
+**Current user-authorized continuation (15 October 2026):** [A-007](../amendments/A-007-initial-phase-browser-scope.md) permits roadmap implementation with Firefox deferred through internal B2. PR #56 may deliver after full applicable Chromium/WebKit/both-provider checks, unchanged mutations and nine floors; full-run coverage inputs are 48. Verify actual head/run/merge before claiming delivery. All six findings and 48 human rows remain open. Restore Firefox before B3 implementation/activation/release (feature 011 T028). The prior Firefox diagnosis remains unresolved and its branches frozen; no further diagnostic run is authorized by this scope change.
+
 **Current delivered checkpoint (15 October 2026):** PR [#52](https://github.com/mosesparadise/OpenIdentityAdmin/pull/52) is squash-merged as `ca410c01a161032c1f09e2bd92439cb48b046476`. Feature 010's internal B1 ticket store is accepted after all 70 jobs in run `38769486233`, both-provider raw reports, 55 coverage inputs/nine floors and final independent reviews. [Exact delivery evidence](../../specs/010-bff-session-foundation/delivery.md). PR #50 (`e780cfa9`) and its delivery record PR #53 (`bb377510`) are already merged; no allowance was renewed. Verify current remote main rather than assuming this prose commit's future identity.
 
 ## Current product continuation — 15 October 2026

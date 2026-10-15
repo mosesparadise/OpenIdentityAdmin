@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import sys
+from browser_matrix import ENGINES, CONTRACT_PARTITIONS
 
 
 def browser_labels(matrix):
@@ -14,7 +15,7 @@ def browser_labels(matrix):
     if any(not isinstance(cell, dict) or set(cell) != expected_keys for cell in cells):
         raise ValueError('Unexpected browser coverage cell shape')
     engines = {cell['browser'] for cell in cells}
-    if engines not in ({'chromium'}, {'chromium', 'firefox', 'webkit'}):
+    if engines != set(ENGINES):
         raise ValueError('Unreviewed browser coverage engine set')
     expected = {(provider, engine, partition, story) for provider in ('PostgreSql', 'SqlServer')
                 for engine in engines for partition in ('standard', 'administrator')
@@ -31,10 +32,10 @@ def browser_labels(matrix):
 
 def require_inputs(root, matrix):
     """Require every independent execution report, including both issuer groups on both providers."""
-    labels = ['issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+    labels = ['issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
               'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
-              'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + browser_labels(matrix)
+              'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + ['contracts-' + partition for partition in CONTRACT_PARTITIONS] + browser_labels(matrix)
     if len(labels) != len(set(labels)):
         raise ValueError('Duplicate required coverage cell')
     for label in labels:

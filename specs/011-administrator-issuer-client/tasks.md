@@ -12,7 +12,7 @@ Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exis
 
 - [x] T004 Inventory the actual composition/package/manager/test diff in `verification.md`; add only required pinned 7.7.1 client package references in `Directory.Packages.props`, `Admin.Bff.csproj` and affected lock files. Resolve compatible dependencies, advisory/license inventory and no ephemeral keys. [Prerequisite evidence](native-integration-inventory.md); normal exact-head checks still govern delivery. FR-010/013; SC-006.
 - [ ] T005 Prove exact native event ordering/APIs in `AuthServer/Features/Protocol/Administrator/` and `ClientAssertions/`, and `Admin.Bff/Features/Authentication/`: post-validation proof checks, consumption/quotas, PAR-versus-cache identity, strict expiry, state/native claim preservation and no-retry transport. Prove source-supported integration realizes the contract's issuance-commit linearization before implementation; infeasibility blocks the affected path, not the product rule. FR-005–011; SC-002/003/005. Do not call source inspection runtime acceptance.
-- [ ] T006 Define seeded failing/valid controls and discovery/coverage/mutation partition plan in existing `eng/test-matrix.json`, selectors and mutation manifests; preserve all old IDs, 55 inputs/nine floors and deadlines, adding required inputs without exclusions. FR-013; SC-001/006.
+- [ ] T006 Define seeded failing/valid controls and discovery/coverage/mutation partition plan in existing `eng/test-matrix.json`, selectors and mutation manifests; preserve all old IDs, nine floors and deadlines, adding required inputs; [A-007](../../docs/amendments/A-007-initial-phase-browser-scope.md) explicitly defers seven Firefox inputs (48 full-run inputs remain). FR-013; SC-001/006.
 
 ## Phase 3 — US1: Current administrator admission
 
@@ -52,6 +52,8 @@ Goal: actual native client interoperability and persistent callback state, witho
 - [ ] T025 Reconcile actual native discovery, mandatory coverage/partitions, route inventories, all applicable exact-head CI and raw evidence; independently review architecture/test/security/API boundaries and resolve findings in `verification.md`. FR-001–013; SC-001–006.
 - [ ] T026 Normally squash only the accepted B2 implementation; update this task list, roadmap and handoff with exact source/run/tree/merge and limits. Mark no B3/C/D/E or human/release gate complete. SC-006.
 - [ ] T027 Prepare B3 request-bound fresh login, product callback/B1 ticket establishment, cookie/CSRF/fixation and local/accurately bounded remote logout specification, including three-engine browser acceptance and dependencies on issuer end-session/refresh policy. FR-003/012; roadmap M02-B/C, not B2 completion evidence.
+
+- [ ] T028 Restore Firefox before B3 implementation, any product browser/API activation or release; reassess at T026/T027. Restore all 55 original coverage inputs plus new obligations, resolve the history-evidence failure, execute all three engines on both providers and independently review. A-007 deferral grants no Firefox acceptance or historical closure. FR-013; SC-006.
 
 ## Dependencies and parallel opportunities
 
