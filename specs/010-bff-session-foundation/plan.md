@@ -4,7 +4,7 @@
 
 ## Summary
 
-Feature 010 is the first internal M02-B slice: a durable protected ticket store with expiry, concurrency, revocation and bounded cleanup. Keep browser/management routes disabled. Planning PR #51 is merged. The implementation now exists on `050-bff-ticket-store`; provider verification and exact-head acceptance remain incomplete. See [verification](verification.md) for the separate local results and blockers.
+Feature 010 is the first internal M02-B slice: a durable protected ticket store with expiry, concurrency, revocation and bounded cleanup. Keep browser/management routes disabled. Planning PR #51 is merged. The implementation was squash-merged in PR #52 as `ca410c01` after both-provider evidence, all 70 exact-head jobs and independent reviews passed. See [delivery](delivery.md) for accepted evidence and [verification](verification.md) for retained earlier failures. T022/B2 is next.
 
 ## Technical context
 
@@ -152,9 +152,9 @@ T005 without activating a browser consumer.
   actual discovered identities and coverage; no new exclusion or allowance.
 
 Independent architecture/test and security review of this design precedes source
-edits. Runtime completion and executable merge still require their own evidence.
+edits. Runtime completion and executable merge subsequently passed; [delivery](delivery.md) records the exact evidence.
 
-[Quickstart](quickstart.md) gives prerequisites/evidence capture. [Tasks](tasks.md) maps requirements to source and tests. [Verification](verification.md) separates planning checks from unexecuted runtime acceptance. Independent architecture/test/security review applies to both packet and source.
+[Quickstart](quickstart.md) gives prerequisites/evidence capture. [Tasks](tasks.md) maps requirements to source and tests. [Verification](verification.md) separates planning, failed attempts and final runtime acceptance. Independent architecture/test/security review applies to both packet and source.
 
 
 ## Bounded native execution refinement — 15 October 2026
@@ -173,6 +173,6 @@ preparation; the two maximum durations cannot both fit that job. This is an
 explicit change to invocation grouping, not a promise of aggregate completion.
 The same parent coverage collector and 55 required inputs retain all modules and
 floors. Unit, production, native case, fixture and security behavior is unchanged.
-Independent architecture/test and security reviews pass; runtime acceptance is
-still required. PR #50's accepted allowance retirement and bounded exact-image
+Independent architecture/test and security reviews passed; subsequent runtime
+acceptance and squash are recorded in [delivery](delivery.md). PR #50's accepted allowance retirement and bounded exact-image
 preparation are integrated from main without repeating its implementation.
