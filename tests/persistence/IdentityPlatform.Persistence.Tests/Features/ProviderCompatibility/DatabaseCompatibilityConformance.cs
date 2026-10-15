@@ -8,15 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 
-/// <summary>Reusable same-database upgrade assertions accept any registered implementation and fixture-owned catalog query.</summary>
+/// <summary>Reusable same-database upgrade assertions accept any registered implementation and fixture-owned physical fingerprint.</summary>
 public static class DatabaseCompatibilityConformance
 {
     /// <summary>Requires complete physical schema, history and data preservation across repeated plugin upgrades.</summary>
     public static async Task VerifyAsync(IRelationalDatabaseProvider provider, string connection, DbConnection fixtureConnection,
-        string indexQuery, string identityQuery, CancellationToken token)
+        Func<DbConnection, CancellationToken, Task<string>> captureFingerprint, string identityQuery, CancellationToken token)
     {
         const int SuccessfulUpgrade = 0;
-        var before = await DatabaseSnapshot.CaptureAsync(fixtureConnection, indexQuery, token);
+        var before = await captureFingerprint(fixtureConnection, token);
+        Assert.False(string.IsNullOrWhiteSpace(before));
         var physicalIdentity = await IdentityAsync(fixtureConnection, identityQuery, token);
         var services = new ServiceCollection().AddLogging();
         services.AddPlatformPersistence(provider, connection, connection);
@@ -32,7 +33,7 @@ public static class DatabaseCompatibilityConformance
         Assert.Equal(provider.Migrations(DatabaseStore.Sessions), await sessions.Database.GetAppliedMigrationsAsync(token));
         Assert.Equal(SuccessfulUpgrade, await DatabaseUpgrade.RunAsync(root, token));
         Assert.Equal(SuccessfulUpgrade, await DatabaseUpgrade.RunAsync(root, token));
-        var after = await DatabaseSnapshot.CaptureAsync(fixtureConnection, indexQuery, token);
+        var after = await captureFingerprint(fixtureConnection, token);
         Assert.Equal(before, after);
     }
 

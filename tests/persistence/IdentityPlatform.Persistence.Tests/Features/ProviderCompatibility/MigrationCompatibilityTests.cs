@@ -31,8 +31,10 @@ public sealed class MigrationCompatibilityTests
         var connection = name == Postgres ? await StartPostgresAsync(postgres, deadline.Token) : await StartSqlServerAsync(sqlServer, deadline.Token);
         await BaselineProducer.PopulateAsync(name, connection, deadline.Token);
         await using DbConnection fixture = name == Postgres ? new NpgsqlConnection(connection) : new SqlConnection(connection);
+        var indexQuery = name == Postgres ? PostgresIndexes : SqlIndexes;
         await DatabaseCompatibilityConformance.VerifyAsync(TestDatabaseProviders.Resolve(name), connection, fixture,
-            name == Postgres ? PostgresIndexes : SqlIndexes, name == Postgres ? PostgresIdentity : SqlIdentity, deadline.Token);
+            (database, token) => DatabaseSnapshot.CaptureAsync(database, indexQuery, token),
+            name == Postgres ? PostgresIdentity : SqlIdentity, deadline.Token);
         await NativeProviderConformance.VerifyAsync(NativeProviderFixtures.Create(name, connection), deadline.Token);
     }
 

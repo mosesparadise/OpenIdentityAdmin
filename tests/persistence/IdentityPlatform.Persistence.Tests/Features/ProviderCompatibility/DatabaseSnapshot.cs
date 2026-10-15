@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 
-/// <summary>Fingerprints real schema metadata and every row in both logical stores, including complete history rows.</summary>
+/// <summary>Fingerprints PostgreSQL/SQL Server schema metadata and every row in both logical stores, including complete history rows.</summary>
 internal static class DatabaseSnapshot
 {
     private const string Tables = "SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema IN ('platform', 'bff') AND table_type = 'BASE TABLE' ORDER BY table_schema, table_name";
