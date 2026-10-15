@@ -1,10 +1,10 @@
 # Implementation plan: Durable administrator session foundation
 
-**Branch**: `049-bff-session-foundation` | **Date**: 15 October 2026 | **Spec**: [spec.md](spec.md)
+**Planning branch**: `049-bff-session-foundation`; **implementation branch**: `050-bff-ticket-store` | **Date**: 15 October 2026 | **Spec**: [spec.md](spec.md)
 
 ## Summary
 
-Feature 010 is the first internal M02-B slice: a durable protected ticket store with expiry, concurrency, revocation and bounded cleanup. Keep browser/management routes disabled. This PR delivers the design and task packet only; runtime tasks remain unchecked until actual evidence exists.
+Feature 010 is the first internal M02-B slice: a durable protected ticket store with expiry, concurrency, revocation and bounded cleanup. Keep browser/management routes disabled. Planning PR #51 is merged. The implementation now exists on `050-bff-ticket-store`; provider verification and exact-head acceptance remain incomplete. See [verification](verification.md) for the separate local results and blockers.
 
 ## Technical context
 
@@ -16,13 +16,13 @@ Multiple BFF instances share the selected session database and BFF ring. There i
 
 ## Constitution check
 
-No exception is proposed. Current user authority advances M02-B preparation within approved v0.2. Planning acceptance does not declare runtime or activation tasks complete.
+No exception is proposed. Current user authority advances M02-B implementation within approved v0.2 following merged planning PR #51. Planning acceptance does not declare runtime or activation tasks complete.
 
 - Keep feature-local ownership and the existing hierarchy. BFF cannot reference AuthServer handlers or acquire platform business-write privileges.
 - Extract only stable key-ring validation/loading mechanics into narrow Infrastructure code when reuse is necessary; preserve issuer behavior/negative controls. Do not duplicate that subsystem or share configured rings/application names.
 - Both providers, additive migrations, least-privilege grants, cancellation, races, atomic audit intent and failure behavior accompany implementation.
 - New code must meet documentation, test naming and size rules. Never renew/copy the expired witness allowance.
-- Exact-source applicable CI and independent review precede normal squash. This planning-only change receives the existing prose checks and supplies no product execution/coverage credit.
+- Exact-source applicable CI and independent review precede normal squash. Planning PR #51 received prose checks only. The executable implementation requires full checks and supplies no acceptance until those pass.
 - Historical findings, human assessment and activation/public-release gates stay open. No expired diagnostic approval is revived.
 
 Recheck these principles against the actual implementation diff before its acceptance.
@@ -38,7 +38,7 @@ Recheck these principles against the actual implementation diff before its accep
 | Existing provider migration projects under `Sessions/` | Additive ticket/audit migrations and snapshots; preserve native client-state tables |
 | Existing Migrator and `Infrastructure/Features/Health/SchemaCatalog.cs` | Explicit upgrade/readiness and session-runtime grants |
 | `tests/backend/IdentityPlatform.Host.Tests/Features/BffSessions/` | Bounds, native serialization, protection/configuration and route isolation |
-| `tests/persistence/IdentityPlatform.Persistence.Tests/Features/BffSessions/` | Provider migration/model/grant contracts |
+| `tests/persistence/IdentityPlatform.Persistence.Tests/Features/NativePersistenceTests.cs` | Provider migration/model/grant contracts |
 | `tests/aspire/IdentityPlatform.AppHost.Tests/Features/BffSessions/` | Real provider, restart/two-instance, concurrency and failure behavior |
 | `eng/test-matrix.json` and existing verification/coverage configuration | Exact inventory and mandatory coverage inputs; no avoidance exclusions |
 
@@ -65,4 +65,114 @@ CSRF/fixation/origin protection accompanies the first route that needs it; place
 
 ## Verification
 
+## Implementation design — 15 October 2026
+
+Implementation branch `050-bff-ticket-store` starts at the planning squash
+`ab281729fc1a44c188359faac620105d50376aec`. The source inventory below refines
+T005 without activating a browser consumer.
+
+- `AdminSessionTicket` and `AdminSessionAudit` are internal Infrastructure
+  entities, configured by `AdminSessionModel` from `AdminSessionDbContext`.
+  Persist UTC instants as UTC ticks (`bigint`) on both providers, avoiding
+  PostgreSQL microsecond rounding at equality boundaries. Digest/identifier
+  columns use provider-specific ordinal collations. Keep native OpenIddict
+  tables and their existing model registration intact. Audit has no ticket
+  foreign key or cascade. Index idle expiry, absolute expiry, revocation and
+  subject/source binding. Audit operation/outcome are finite integers.
+- `SessionTicketPersistence` owns short explicit database transactions and
+  parameterized EF queries. Create inserts ticket and audit in one commit.
+  Renew uses a conditional update on digest, expected revision, unrevoked and
+  still-live state, then inserts audit before commit. It never upserts/retries.
+  Revoke conditionally sets the current unrevoked row's revocation timestamp
+  without a caller revision; its update lock protects the subsequent revision
+  read/audit until commit. Revocation need not increment revision: the permanent
+  denial predicate wins over every renewal, including `long.MaxValue`.
+  Cleanup selects at most 100 digests and rechecks revoked/expired predicates
+  in the delete. No audit deletion is implemented.
+  After renewal's conditional update obtains write ownership, resample the
+  injected clock and recheck the original and replacement windows before audit
+  and commit; rollback if lock waiting crossed either original deadline or
+  observed clock rollback. Create similarly rechecks after insertion. Load
+  samples time after retrieval/decryption before returning. Repeat mutation
+  eligibility checks immediately before commit after awaited audit insertion.
+  Provider barrier tests hold the row lock or audit write across
+  the original deadline, proving a queued renewal cannot revive expired state.
+  Observe the native blocked write before advancing time and require unchanged
+  revision/payload plus no audit commit. Independent in-process providers prove
+  store restart, not a process-crash recovery claim. Dispose the dedicated
+  protection provider before wrappers, including partial initialization failure.
+- BFF `SessionTicketStore`, `SessionTicketCodec`, `SessionTicketPolicy` and
+  `SessionHandle` own orchestration, native binding/protection, clock policy
+  and canonical random references respectively. An internal result category
+  distinguishes rejected/unavailable from operational failure. Cancellation
+  propagates; raw exceptions/private inputs are never logged or returned.
+  Every method accepts cancellation for database work. No automatic mutation
+  retries or commit-outcome inference is permitted.
+- The protected envelope contains every persisted authentication metadata
+  field except the additional database-only revocation denial, plus the native
+  ticket. Version and byte limits are checked before native deserialization.
+  The clock retains tick precision; native `AuthenticationProperties` use their
+  framework RFC1123 whole-second representation. Compare those properties to
+  the corresponding envelope instants truncated to seconds, while enforcing
+  actual expiry/rollback against full UTC ticks. This wire precision never
+  widens store eligibility; native expiry can be less than one second earlier.
+  Fractional-second round-trip tests cover that conservative projection.
+  Preserve other native properties and tokens in a
+  private serialized copy, without mutating the caller's ticket.
+- Extract `PrivateStorage`, `EncryptedKeyRepository`, bounded password-encrypted
+  PKCS#12 loading, and generic registration/startup verification into
+  `Infrastructure/Features/Protection`. Keep issuer certificate-role/validity
+  policy and ownership in AuthServer; translate shared fixed failures through
+  its existing safe exception. Split long native XML validation into cohesive
+  methods, document moved methods and retire only their actual legacy entries.
+  Existing issuer negative tests remain mandatory regressions.
+- BFF owns an explicitly disposable `SessionProtection` container with a
+  dedicated service provider and wrapper credentials. Configuration is
+  `Bff:Sessions:Protection:{ApplicationId,KeyRingPath,Current:{Path,Password},Previous}`.
+  ApplicationId is a bounded deployment identifier; application discriminator
+  `IdentityPlatform.Admin.Bff|<id>` and ticket purpose/version are code-owned.
+  Up to four retained wrappers, private Linux paths, encrypted native ring,
+  active usable RSA wrapper, retained decryptors and startup probes are required.
+  No fallback and no implicit issuer-ring reuse. Registration remains an
+  internal opt-in helper unused by default production host composition.
+- Add IVT only for BFF and existing test/migration assemblies where needed;
+  no production project or package upgrade. Existing session grants cover new
+  tables after the one-shot Migrator; prove this with runtime credentials.
+- Host tests use the existing synthetic `IssuerMaterialFixture` for independent
+  BFF ring material and native serialization/protection/policy negative cases.
+  Persistence tests exercise both additive migrations and grants. AppHost tests
+  use the existing Aspire harness and separate service providers sharing the
+  real session database/ring for restart, competing renewal, both revoke
+  interleavings, deletion races, rollback, cancellation and unknown outcomes.
+  Test interceptors/barriers remain test-only; production endpoint inventory is
+  unchanged. Keep every existing deadline and native test identity.
+- Inventory consumers are `eng/test-matrix.json`, `scripts/test_selection.py`,
+  `scripts/verify.py`, `eng/coverage-policy.json`,
+  `scripts/check_coverage_inputs.py` and the unchanged full workflow. Reconcile
+  actual discovered identities and coverage; no new exclusion or allowance.
+
+Independent architecture/test and security review of this design precedes source
+edits. Runtime completion and executable merge still require their own evidence.
+
 [Quickstart](quickstart.md) gives prerequisites/evidence capture. [Tasks](tasks.md) maps requirements to source and tests. [Verification](verification.md) separates planning checks from unexecuted runtime acceptance. Independent architecture/test/security review applies to both packet and source.
+
+
+## Bounded native execution refinement — 15 October 2026
+
+The observer candidate completed twelve SQL AppHost cases in 622.606 seconds but
+could not report all fifteen before the unchanged 660-second invocation bound.
+The existing eight cases alone took 458.475 seconds. The mandatory workload now
+uses two sequential invocations within the same foundation job: Foundation
+(eight cases) and BffSessions (seven). Both providers retain fifteen exact native
+identities; native discovery proves the groups disjoint and exhaustive before
+execution, and strict TRX counters/row/definition/entry bindings validate each
+separate report. No optional group selector is added.
+
+Each invocation still has 660 seconds and the job still has 20 minutes including
+preparation; the two maximum durations cannot both fit that job. This is an
+explicit change to invocation grouping, not a promise of aggregate completion.
+The same parent coverage collector and 55 required inputs retain all modules and
+floors. Unit, production, native case, fixture and security behavior is unchanged.
+Independent architecture/test and security reviews pass; runtime acceptance is
+still required. PR #50's accepted allowance retirement and bounded exact-image
+preparation are integrated from main without repeating its implementation.

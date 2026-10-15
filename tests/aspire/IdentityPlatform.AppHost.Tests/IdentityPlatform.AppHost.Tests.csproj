@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" /></ItemGroup>
@@ -15,4 +16,5 @@
     <Compile Include="../IdentityPlatform.Issuer.Lifecycle.Tests/Fixtures/NodeTransport.cs" Link="Fixtures/NodeTransport.cs" />
     <Compile Include="../IdentityPlatform.Issuer.Lifecycle.Tests/Fixtures/ProcessListener.cs" Link="Fixtures/ProcessListener.cs" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/BffSessionFixture.cs" Link="Fixtures/BffSessionFixture.cs" /></ItemGroup>
 </Project>

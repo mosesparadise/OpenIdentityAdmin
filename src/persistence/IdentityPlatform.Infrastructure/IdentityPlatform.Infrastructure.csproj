@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.Admin.Bff" />
+    <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AuthServer" />
     <InternalsVisibleTo Include="IdentityPlatform.Governance.Driver" />
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />

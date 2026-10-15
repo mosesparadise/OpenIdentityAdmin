@@ -1,12 +1,13 @@
 using System.Security.Cryptography;
-using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Infrastructure.Features.Protection;
 
 namespace IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 
 /// <summary>Composition-root owner. Dispose after the host and all certificate consumers.</summary>
+/// <example><code>using var material = IssuerCredentials.Load(configuration, DateTimeOffset.UtcNow); // Dispose after consumers.</code></example>
 public sealed class IssuerCredentials : IDisposable
 {
     private readonly List<X509Certificate2> certificates = [];
@@ -111,95 +112,47 @@ public sealed class IssuerCredentials : IDisposable
         }
     }
 
+    /// <summary>Applies issuer role/validity and uniqueness policy to bounded encrypted certificate material owned by this object.</summary>
     private X509Certificate2 LoadCertificate(IConfigurationSection section, X509KeyUsageFlags usage,
         DateTimeOffset now, Validity validity, HashSet<string> fingerprints)
     {
-        var path = PrivateStorage.RequireCredentialFile(section["Path"]);
-        var password = section["Password"];
-        if (string.IsNullOrWhiteSpace(password))
+        const string PathSetting = "Path";
+        const string PasswordSetting = "Password";
+        const int MinimumRsaBits = 3072;
+        const int ProbeBytes = 32;
+        var certificate = ProtectedCertificate.Load(section[PathSetting], section[PasswordSetting]);
+        certificates.Add(certificate); // Include partial loads in owner cleanup before role validation.
+        using var key = certificate.GetRSAPrivateKey();
+        using var publicKey = certificate.GetRSAPublicKey();
+        var keyUsage = certificate.Extensions.OfType<X509KeyUsageExtension>().SingleOrDefault();
+        if (key is null || publicKey is null || key.KeySize < MinimumRsaBits ||
+            keyUsage is null || (keyUsage.KeyUsages & usage) != usage ||
+            (validity is Validity.Active or Validity.Previous && now < certificate.NotBefore.ToUniversalTime()) ||
+            (validity is Validity.Active or Validity.Staged && now >= certificate.NotAfter.ToUniversalTime()) ||
+            !fingerprints.Add(Convert.ToHexString(SHA256.HashData(publicKey.ExportSubjectPublicKeyInfo()))))
         {
             throw new IssuerProtectionException();
         }
 
-        var bytes = PrivateStorage.ReadBoundedFile(path);
-        try
+        // HasPrivateKey is metadata; a real operation proves that the imported private key is usable.
+        var probe = RandomNumberGenerator.GetBytes(ProbeBytes);
+        if (usage == X509KeyUsageFlags.DigitalSignature)
         {
-            var certificate = X509CertificateLoader.LoadPkcs12(bytes, password, X509KeyStorageFlags.EphemeralKeySet,
-                new Pkcs12LoaderLimits { MaxCertificates = 1, MaxKeys = 1 });
-            certificates.Add(certificate); // Include partial loads in owner cleanup before validation.
-            RequireProtectedPrivateKey(bytes, password);
-            using var key = certificate.GetRSAPrivateKey();
-            using var publicKey = certificate.GetRSAPublicKey();
-            var keyUsage = certificate.Extensions.OfType<X509KeyUsageExtension>().SingleOrDefault();
-            if (key is null || publicKey is null || key.KeySize < 3072 ||
-                keyUsage is null || (keyUsage.KeyUsages & usage) != usage ||
-                (validity is Validity.Active or Validity.Previous && now < certificate.NotBefore.ToUniversalTime()) ||
-                (validity is Validity.Active or Validity.Staged && now >= certificate.NotAfter.ToUniversalTime()) ||
-                !fingerprints.Add(Convert.ToHexString(SHA256.HashData(publicKey.ExportSubjectPublicKeyInfo()))))
+            var signature = key.SignData(probe, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            if (!publicKey.VerifyData(probe, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
             {
                 throw new IssuerProtectionException();
             }
-
-            // HasPrivateKey is metadata; a real operation proves that the imported private key is usable.
-            var probe = RandomNumberGenerator.GetBytes(32);
-            if (usage == X509KeyUsageFlags.DigitalSignature)
-            {
-                var signature = key.SignData(probe, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-                if (!publicKey.VerifyData(probe, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
-                {
-                    throw new IssuerProtectionException();
-                }
-            }
-            else
-            {
-                var decrypted = key.Decrypt(publicKey.Encrypt(probe, RSAEncryptionPadding.OaepSHA256), RSAEncryptionPadding.OaepSHA256);
-                if (!CryptographicOperations.FixedTimeEquals(probe, decrypted))
-                {
-                    throw new IssuerProtectionException();
-                }
-            }
-            return certificate;
         }
-        finally { CryptographicOperations.ZeroMemory(bytes); }
-    }
-
-    private static void RequireProtectedPrivateKey(byte[] bytes, string password)
-    {
-        // Run only AFTER the bounded native loader has checked PKCS#12 work/certificate/key limits.
-        var info = Pkcs12Info.Decode(bytes, out var consumed, skipCopy: true);
-        if (consumed != bytes.Length || info.IntegrityMode != Pkcs12IntegrityMode.Password || !info.VerifyMac(password))
+        else
         {
-            throw new IssuerProtectionException();
-        }
-
-        var protectedKeys = 0;
-        foreach (var contents in info.AuthenticatedSafe)
-        {
-            if (contents.ConfidentialityMode == Pkcs12ConfidentialityMode.Password)
-            {
-                contents.Decrypt(password);
-            }
-            else if (contents.ConfidentialityMode != Pkcs12ConfidentialityMode.None)
+            var decrypted = key.Decrypt(publicKey.Encrypt(probe, RSAEncryptionPadding.OaepSHA256), RSAEncryptionPadding.OaepSHA256);
+            if (!CryptographicOperations.FixedTimeEquals(probe, decrypted))
             {
                 throw new IssuerProtectionException();
             }
-
-            foreach (var bag in contents.GetBags())
-            {
-                if (bag is Pkcs12ShroudedKeyBag)
-                {
-                    protectedKeys++;
-                }
-                else if (bag is not Pkcs12CertBag)
-                {
-                    throw new IssuerProtectionException();
-                }
-            }
         }
-        if (protectedKeys != 1)
-        {
-            throw new IssuerProtectionException();
-        }
+        return certificate;
     }
 
     public void Dispose()

@@ -2,12 +2,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 
+/// <summary>Owns the isolated BFF session schema, including native client state and durable tickets.</summary>
+/// <example><code>services.AddSessionPersistence(provider, configuredSessionConnection);</code></example>
 public sealed class AdminSessionDbContext(DbContextOptions<AdminSessionDbContext> options)
     : DbContext(options)
 {
+    /// <summary>Preserves native client state and adds the internal protected ticket tables.</summary>
+    /// <example><code>Configure the context through AddSessionPersistence; migrations run only in the Migrator.</code></example>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.HasDefaultSchema("bff");
+        const string SessionSchema = "bff";
+        modelBuilder.HasDefaultSchema(SessionSchema);
+        AdminSessionModel.Configure(modelBuilder, Database.IsSqlServer());
     }
 }

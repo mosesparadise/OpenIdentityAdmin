@@ -184,6 +184,7 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_issuer_selection.py
+      - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
@@ -239,6 +240,7 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_issuer_selection.py
+      - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py

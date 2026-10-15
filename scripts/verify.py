@@ -10,6 +10,7 @@ from test_evidence import require_complete_trx
 from administrator_inventory import load_inventory, require_native_inventory, PROVIDERS
 from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, administrator_invocations, require_administrator_browser, administrator_browser_invocations
 
+from apphost_selection import apphost_invocations, apphost_catalogue, apphost_filter, require_apphost_selections
 from issuer_selection import issuer_catalogue, issuer_invocations, issuer_filter, require_issuer_inventory, require_issuer_selections
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,7 +43,9 @@ except ValueError as error:
     parser.error(str(error))
 invocations = []
 for project, count in projects.items():
-    if project == "Issuer" and not args.browser:
+    if project == "AppHost" and args.profile != "unit":
+        invocations.extend((project, expected, group, None) for group, expected in apphost_invocations(matrix, args.profile))
+    elif project == "Issuer" and not args.browser:
         invocations.extend((project, expected, group, None) for group, expected in issuer_invocations(matrix, args.profile, args.issuer_group))
     elif project == "Issuer.Lifecycle":
         invocations.extend((project, expected, story, None) for story, expected in lifecycle_invocations(matrix, args.profile, args.story))
@@ -54,6 +57,8 @@ for project, count in projects.items():
         invocations.append((project, count, None, None))
 for project, expected_count, story, browser_story in invocations:
     label = args.profile + ("-" + args.browser if args.browser else "-lifecycle-" + story.lower().replace(".", "-") if story else "")
+    if project == "AppHost" and args.profile != "unit":
+        label = args.profile + "-apphost-" + story.lower()
     if project == "Issuer" and not args.browser:
         label = "issuer-" + args.profile + "-" + story.lower()
     if project == "Administrator":
@@ -65,7 +70,7 @@ for project, expected_count, story, browser_story in invocations:
                "--no-build", "--no-restore", "--no-progress", "--report-trx", "--report-trx-filename", f"{project}.trx",
                "--results-directory", str(results), "--pre-enumerate-theories", "on"]
     selected = None
-    if project in ("Issuer", "Issuer.Lifecycle", "Administrator"):
+    if project in ("Issuer", "Issuer.Lifecycle", "Administrator") or (project == "AppHost" and args.profile != "unit"):
         # Invoke the native executable: the SDK's discovery transport does not forward JSON output.
         discovery = ["dotnet", "run", "--project", command[3], "--no-build", "--no-restore", "--",
                      "--pre-enumerate-theories", "on", "--list-tests", "json"]
@@ -75,9 +80,17 @@ for project, expected_count, story, browser_story in invocations:
             result = execute(invocation, os.environ.copy(), timeout=60, capture=True)
             if native_inventory is not None:
                 require_native_inventory(result, native_inventory, complete=expression is None)
+            if project == "AppHost":
+                return apphost_catalogue(result)
             return issuer_catalogue(result) if project == "Issuer" else catalogue(result, project=project)
-        all_tests = discover()
-        if project == "Administrator":
+        all_tests = discover(f"Provider={args.profile}") if project == "AppHost" else discover()
+        if project == "AppHost":
+            groups = {group: discover(apphost_filter(args.profile, group))
+                      for group, _ in apphost_invocations(matrix, args.profile)}
+            require_apphost_selections(all_tests, groups, args.profile, matrix)
+            selected = groups[story]
+            command += ["--filter", apphost_filter(args.profile, story)]
+        elif project == "Administrator":
             inventory = {provider: native_inventory[provider] for provider in PROVIDERS}
             if args.browser:
                 expression = f"Provider={args.profile}&Category=Browser&BrowserStory={browser_story}"
@@ -125,6 +138,6 @@ for project, expected_count, story, browser_story in invocations:
     count = require_complete_trx(report, expected_count=expected_count)
     if selected is not None:
         require_execution_names(report, selected)
-        if project in ("Issuer", "Issuer.Lifecycle", "Administrator"):
+        if project in ("AppHost", "Issuer", "Issuer.Lifecycle", "Administrator"):
             require_lifecycle_execution(report, selected)
     print(f"Verified {project}/{label}: {count} required tests passed; none skipped", flush=True)
