@@ -18,4 +18,5 @@
   <ItemGroup>
     <Compile Include="../../shared/ProductionEndpointInventory.cs" Link="Fixtures/ProductionEndpointInventory.cs" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/BffSessionFixture.cs" Link="Fixtures/BffSessionFixture.cs" /></ItemGroup>
 </Project>

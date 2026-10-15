@@ -23,6 +23,112 @@ namespace IdentityPlatform.Migrations.PostgreSql.Sessions
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Persistence.AdminSessionAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Digest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .UseCollation("C");
+
+                    b.Property<long>("OccurredAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Outcome")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CorrelationId")
+                        .IsUnique();
+
+                    b.HasIndex("Digest", "OccurredAt");
+
+                    b.ToTable("AdminSessionAudit", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdminSessionAudit_Digest", "\"Digest\" ~ '^[0-9A-F]{64}$'");
+
+                            t.HasCheckConstraint("CK_AdminSessionAudit_State", "\"Revision\" > 0 AND \"OccurredAt\" >= 0 AND \"Operation\" IN (1, 2, 3) AND \"Outcome\" = 1");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Persistence.AdminSessionTicket", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .UseCollation("C");
+
+                    b.Property<long>("AbsoluteExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("IdleExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("IdleLifetime")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LastActivityAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("ProtectedTicket")
+                        .IsRequired()
+                        .HasMaxLength(98304)
+                        .HasColumnType("bytea");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("RevokedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SourceSession")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)")
+                        .UseCollation("C");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)")
+                        .UseCollation("C");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("AbsoluteExpiresAt");
+
+                    b.HasIndex("IdleExpiresAt");
+
+                    b.HasIndex("RevokedAt");
+
+                    b.HasIndex("Subject", "SourceSession");
+
+                    b.ToTable("AdminSessionTicket", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdminSessionTicket_Binding", "\"Digest\" ~ '^[0-9A-F]{64}$' AND octet_length(\"Subject\") > 0 AND octet_length(\"SourceSession\") > 0");
+
+                            t.HasCheckConstraint("CK_AdminSessionTicket_Payload", "octet_length(\"ProtectedTicket\") > 0 AND octet_length(\"ProtectedTicket\") <= 98304");
+
+                            t.HasCheckConstraint("CK_AdminSessionTicket_State", "\"Revision\" > 0 AND \"CreatedAt\" >= 0 AND \"LastActivityAt\" >= \"CreatedAt\" AND \"AbsoluteExpiresAt\" > \"LastActivityAt\" AND \"IdleExpiresAt\" > \"LastActivityAt\" AND \"IdleExpiresAt\" <= \"AbsoluteExpiresAt\" AND \"IdleLifetime\" > 0 AND \"IdleLifetime\" <= 18000000000");
+                        });
+                });
+
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>
                 {
                     b.Property<string>("Id")
