@@ -99,3 +99,19 @@ These SHA-256 values identify retained local raw reports; the reports are not pu
 | `issuer-extraction/IdentityPlatform.Host.Tests_net10.0_x64.trx` | 123 | `85abc9d4982e48d13dda9f2a0b2a1f2aff41f7b01ebc3fd45193cfc0f4bd8875` |
 
 Final syntax-aware inventory contains 1,795 findings: the 1,794 retained exact legacy findings plus the one unchanged expired exception, with no new finding. The required command uses `IDENTITY_QUALITY_BASE=ab281729fc1a44c188359faac620105d50376aec python3 scripts/check_code_quality.py` because this isolated checkout has no `origin/main`; an initial invocation without that explicit trusted base failed before comparing allowances. Supplying the verified base passes non-growth and reaches the expected expired-allowance rejection. This is not a quality-gate pass.
+
+## First hosted candidate and integration correction — 15 October 2026
+
+[Run 38740538365](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38740538365), attempt 1, tested PR #52 head `16044a2a1409107e7a09e1f9a13cea9810b29399`. It failed. All 51 ordinary unit/provider/browser jobs stopped at the same pure issuer-selection prerequisite: it expected eight AppHost foundation cases instead of the reviewed fifteen. Missing test/coverage uploads were consequences of that early stop, not additional native test failures. No ordinary provider/browser acceptance was obtained. The six mutation jobs passed; those statuses alone are not artifact reconciliation or final acceptance. Aggregate coverage was skipped and final acceptance failed.
+
+The static-analysis job built successfully with zero warnings/errors, then
+rejected four unused namespace imports (IDE0005). The correction removes exactly
+those imports and updates the independent foundation-count assertion to fifteen.
+No runtime behavior, test identity, selector boundary, coverage floor, deadline,
+workflow or allowance is changed. Hosted failure is the before-control; all 114
+local prerequisite controls now pass (lifecycle 7, issuer 9, administrator 17,
+browser stories 14, evidence 8, mutations 56, coverage 3). The exact hosted
+IDE0005 verification command also passes locally, and the complete solution builds with zero warnings/errors. The mandatory expired-witness
+allowance dependency remains open. New exact-candidate checks and native
+provider results remain required; these corrections do not close historical
+findings or make the implementation merge-ready.

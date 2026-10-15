@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Admin.Bff.Features.Sessions;
 

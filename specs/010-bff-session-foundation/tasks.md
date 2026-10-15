@@ -67,3 +67,5 @@ behavior. This path refinement does not remove either provider obligation.
 No new feature scope or duplicate implementation is required by this convergence
 review. T022 remains the next independent product-design step; browser activation
 and a merge cannot borrow the passing unit/source-review evidence.
+
+- [x] T024 Correct first-hosted-candidate integration failures: reconcile the issuer selector's independent AppHost count (8→15) and remove the four IDE0005 imports; preserve the failed run and 114 passing prerequisite controls in `verification.md`. Requirements: SC-005. This completes correction evidence only; T020/T021 remain open.

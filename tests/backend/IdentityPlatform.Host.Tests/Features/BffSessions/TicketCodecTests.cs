@@ -2,7 +2,6 @@ using System.Text;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
 using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace IdentityPlatform.Host.Tests.Features.BffSessions;
 
