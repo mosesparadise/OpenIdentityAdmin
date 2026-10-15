@@ -1,0 +1,123 @@
+name: Diagnostic WebKit cohort provenance
+on:
+  push:
+    branches: [diagnostic/webkit-ci-provenance]
+permissions:
+  contents: read
+concurrency:
+  group: diagnostic-webkit-cohort-once
+  cancel-in-progress: false
+jobs:
+  diagnostic:
+    name: Diagnostic only / PostgreSQL / WebKit / 30-case cohort
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      PACKET: ${{ github.workspace }}/diagnostic/diagnostics/webkit-cohort
+      SOURCE: ${{ github.workspace }}/source
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Require the one reviewed fast-forward from the frozen diagnostic parent
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+
+          def validate_launch(event, env):
+              parent = 'd8114ad2af24bd20f0aee3fffb8b82947a3b9d9a'
+              repository = 'mosesparadise/OpenIdentityAdmin'
+              ref = 'refs/heads/diagnostic/webkit-ci-provenance'
+              assert env['GITHUB_EVENT_NAME'] == 'push'
+              assert env['GITHUB_REPOSITORY'] == repository
+              assert env['GITHUB_REF'] == ref
+              assert env['GITHUB_RUN_ATTEMPT'] == '1'
+              assert env['RUNNER_ENVIRONMENT'] == 'github-hosted'
+              assert event['repository']['full_name'] == repository
+              assert event['ref'] == ref and event['before'] == parent
+              assert all(event[key] is False for key in ('created', 'deleted', 'forced'))
+              assert re.fullmatch('[0-9a-f]{40}', env['GITHUB_SHA'])
+              assert event['after'] == env['GITHUB_SHA'] != parent
+              assert event['head_commit']['id'] == event['after']
+
+          with open(os.environ['GITHUB_EVENT_PATH']) as stream:
+              event = json.load(stream)
+          validate_launch(event, os.environ)
+          root = os.environ['RUNNER_TEMP']
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              for name, leaf in [('NUGET_PACKAGES', 'identity-diagnostic-nuget'),
+                                 ('PLAYWRIGHT_BROWSERS_PATH', 'identity-diagnostic-browsers'),
+                                 ('EVIDENCE', 'identity-webkit-cohort')]:
+                  output.write(name + '=' + root + '/' + leaf + '\n')
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          path: diagnostic
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 6fcb96216eca0974041d3e8346adc4ce8458789d
+          path: source
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: source/global.json
+      - name: Restore pinned tools and locked dependencies; build the unchanged source
+        working-directory: source
+        run: |
+          dotnet tool restore
+          dotnet restore --locked-mode
+          dotnet build --no-restore --nologo
+      - name: Provision the original CI trust recipe and pinned WebKit
+        working-directory: source
+        run: |
+          mkdir -p "$RUNNER_TEMP/identity-https-trust"
+          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
+          openssl rehash "$RUNNER_TEMP/identity-https-trust"
+          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps webkit
+          sudo apt-get install -y libnss3-tools
+          sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
+          sudo update-ca-certificates
+          echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
+          mkdir -p "$HOME/.pki/nssdb"
+          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
+          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
+      - name: Verify pure controls, immutable source and exact 30-case selection
+        working-directory: source
+        run: python3 "$PACKET/prepare.py" "$SOURCE" "$EVIDENCE"
+      - name: Execute one instrumented cohort under the original coverage settings
+        working-directory: source
+        run: python3 "$PACKET/run.py" collect "$SOURCE" "$EVIDENCE"
+      - name: Restore private driver and reconcile owned resources
+        if: always()
+        run: python3 "$PACKET/cleanup.py" "$SOURCE" "$EVIDENCE"
+      - name: Preserve the native, covered-child and collector verdicts
+        if: always()
+        run: python3 "$PACKET/run.py" finish "$SOURCE" "$EVIDENCE"
+      - name: Retain only allowlisted sanitized diagnostic receipts
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: diagnostic-webkit-cohort-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 3
+          if-no-files-found: error
+          path: |
+            ${{ runner.temp }}/identity-webkit-cohort/public/preflight.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/instrumentation.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/discovery.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/browser-files.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/native-exit.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/native-result.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/observation.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/diagnostic-result.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/validation-failure.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/child-exit.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/collector-exit.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/cleanup.json
+            ${{ runner.temp }}/identity-webkit-cohort/public/outcome.json

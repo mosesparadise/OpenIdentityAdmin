@@ -1,0 +1,2 @@
+<!-- Standalone no-package helper controls; the real instrumented Issuer project retains all repository analyzers. -->
+<Project />

@@ -1,0 +1,48 @@
+{
+  "original_sha256": "549070af3acabb3efcc4f55bfe6210f9f7c2fcf633cf7eaa59bfe60719969171",
+  "patched_sha256": "d63f55b208128394a5a02c84d0db4e00ca027f48674ef420ccdb72a060fa94ee",
+  "observer_sha256": "b86066b251c621cfa8c616daac37530a640158e1f8d960429c4bdbfefc77d413",
+  "hooks": [
+    {
+      "before": "      async navigateFrame(frame, url3, referrer) {",
+      "after": "      async navigateFrame(frame, url3, referrer) {\n        __identityWk.navigation(this, frame, url3);"
+    },
+    {
+      "before": "        return { newDocumentId: result2.loaderId };",
+      "after": "        __identityWk.navigationResult(this, result2);\n        return { newDocumentId: result2.loaderId };"
+    },
+    {
+      "before": "      _onDispatchMessageFromTarget(event) {",
+      "after": "      _onDispatchMessageFromTarget(event) {\n        __identityWk.protocol(this, event);"
+    },
+    {
+      "before": "      handleProvisionalLoadFailed(event) {",
+      "after": "      handleProvisionalLoadFailed(event) {\n        __identityWk.provisional(this, event);"
+    },
+    {
+      "before": "      _onLoadingFailed(session2, event) {",
+      "after": "      _onLoadingFailed(session2, event) {\n        __identityWk.mappedFailure(this, session2, event);"
+    },
+    {
+      "before": "      _onTargetDestroyed(event) {",
+      "after": "      _onTargetDestroyed(event) {\n        __identityWk.transition(this, \"target-destroyed\", event);"
+    },
+    {
+      "before": "      async _onTargetCreated(event) {",
+      "after": "      async _onTargetCreated(event) {\n        __identityWk.transition(this, \"target-created\", event);"
+    },
+    {
+      "before": "      _onDidCommitProvisionalTarget(event) {",
+      "after": "      _onDidCommitProvisionalTarget(event) {\n        __identityWk.transition(this, \"target-committed\", event);"
+    },
+    {
+      "before": "      async closePage(runBeforeUnload) {",
+      "after": "      async closePage(runBeforeUnload) {\n        __identityWk.transition(this, \"page-close-command\");"
+    },
+    {
+      "before": "      didClose() {",
+      "after": "      didClose() {\n        __identityWk.transition(this, \"page-did-close\");"
+    }
+  ],
+  "reverse_restoration_matches": true
+}
