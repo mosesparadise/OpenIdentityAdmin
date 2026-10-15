@@ -1,5 +1,15 @@
 # OpenIdentityAdmin new-task handoff
 
+## Current roadmap continuation — 15 October 2026
+
+The user requested visible roadmap delivery and approved M02-B scope/dependency preparation. Resume [feature 010](../../specs/010-bff-session-foundation/spec.md), its [plan](../../specs/010-bff-session-foundation/plan.md), [tasks](../../specs/010-bff-session-foundation/tasks.md) and [verification](../../specs/010-bff-session-foundation/verification.md). First implementation target: a complete internal durable protected BFF ticket store, including both-provider persistence, separate keys, expiry, concurrency, revocation, audit intent and cleanup. This planning packet does not implement or activate login, proxy, API or React access.
+
+Latest verified main before this packet is PR #49 squash `5f4fce7fe0c7761e6eab7308f2cd38908937af51`; recheck actual remote head and planning PR/merge. PR #50 remains draft/unmerged at `6fcb96216eca0974041d3e8346adc4ce8458789d`; its refactor exists and must not be repeated. [Current CI/diagnostic disposition](../../specs/009-engineering-standards/witness-ci-disposition.md) preserves failed required CI, passing nonreproducing diagnostics and the pause on further native runs. Main's witness allowance expired on 15 October and blocks clean executable delivery until properly retired; no renewal.
+
+M02-B planning is independent of PR #50 source; executable delivery still requires unchanged checks. Existing `bff` native state tables are reusable; the product store and BFF key boundary are missing. Actual administrator login needs a distinct issuer/client integration: the pilot rejects administrator roles/MFA and lacks PAR/refresh/end-session support. Do not broaden the pilot or infer current authority from a stored ticket. Later B2/B3/C/D/E packages remain explicit.
+
+All six findings, 48 human rows and activation/public-release gates remain open. A-004 is expired; A-005/A-006 concluded. Preserve `046-governance-diagnostic-proposal` at `3699718603d90665117e384128803aa5f75ad12e`; the retired WebKit diagnostic branch must not merge. Earlier sections retain historical checkpoints, superseded by verified later delivery records.
+
 ## Latest delivered checkpoint
 
 **Latest delivered checkpoint (13 October 2026):** PR [#48](https://github.com/mosesparadise/OpenIdentityAdmin/pull/48) was normally squash-merged as `f4995183453ba194e8136143f3ec6878fb16a7c9` after reviewed head `2e17aca6` passed all 70 jobs in run `38479414481`, all six mutation suites (42 kills with baseline/restored controls), all 55 coverage inputs and nine module floors. Feature 008 T020/T021 and correction F005 are complete for internal development scope. All six historical findings, 48 human rows and activation/public-release gates remain open. Earlier correction/hold notices below describe prior checkpoints. [Final evidence and remaining work](../../specs/008-administrator-foundation/governance-delivery.md).
