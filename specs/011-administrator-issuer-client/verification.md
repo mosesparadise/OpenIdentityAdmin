@@ -58,3 +58,8 @@ Local checks passed: seven scope controls, AI instruction consistency (eight ski
 | Exact executable-head full CI / coverage / runtime reviews | not_run; T025 |
 | B2 implementation squash | not_run; T026 |
 | Product browser/BFF session/API/React/refresh activation | outside B2; B3/C/D/E remain open |
+
+
+## First planning CI and scanner correction
+
+PR #55 head `21621c64c6abae583dbb6519c4393ec1fdd47d1b`, run `38782971396`, passed scope and assurance checks but failed the source-secret scan and final acceptance. All eleven full-suite jobs were intentionally unselected for prose. The exact pinned Gitleaks 8.30.1 archive was verified against workflow SHA-256 `551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb`; a local archive of that exact head reproduced one generic-api-key finding at T018's prose description. The detector matched ordinary wording about registration-key drift and cancellation, not credential material. Rephrased that sentence without changing its test obligation; no scanner rule, allowlist or workflow was changed. The failed run is retained. The corrected complete staged source snapshot passes the same pinned scanner with zero findings; exact corrected-head proportional CI remains required before merge.
