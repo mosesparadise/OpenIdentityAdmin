@@ -155,3 +155,24 @@ Independent architecture/test and security review of this design precedes source
 edits. Runtime completion and executable merge still require their own evidence.
 
 [Quickstart](quickstart.md) gives prerequisites/evidence capture. [Tasks](tasks.md) maps requirements to source and tests. [Verification](verification.md) separates planning checks from unexecuted runtime acceptance. Independent architecture/test/security review applies to both packet and source.
+
+
+## Bounded native execution refinement — 15 October 2026
+
+The observer candidate completed twelve SQL AppHost cases in 622.606 seconds but
+could not report all fifteen before the unchanged 660-second invocation bound.
+The existing eight cases alone took 458.475 seconds. The mandatory workload now
+uses two sequential invocations within the same foundation job: Foundation
+(eight cases) and BffSessions (seven). Both providers retain fifteen exact native
+identities; native discovery proves the groups disjoint and exhaustive before
+execution, and strict TRX counters/row/definition/entry bindings validate each
+separate report. No optional group selector is added.
+
+Each invocation still has 660 seconds and the job still has 20 minutes including
+preparation; the two maximum durations cannot both fit that job. This is an
+explicit change to invocation grouping, not a promise of aggregate completion.
+The same parent coverage collector and 55 required inputs retain all modules and
+floors. Unit, production, native case, fixture and security behavior is unchanged.
+Independent architecture/test and security reviews pass; runtime acceptance is
+still required. PR #50's accepted allowance retirement and bounded exact-image
+preparation are integrated from main without repeating its implementation.

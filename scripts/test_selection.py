@@ -27,7 +27,7 @@ def select_projects(matrix, profile, browser=None, partition='all'):
 
 def catalogue(raw, lifecycle=False, project=None):
     project = project or ('Issuer.Lifecycle' if lifecycle else 'Issuer')
-    if project not in ('Issuer', 'Issuer.Lifecycle', 'Administrator'):
+    if project not in ('Issuer', 'Issuer.Lifecycle', 'Administrator', 'AppHost'):
         raise ValueError('Unknown discovery project')
     value = json.loads(raw)
     if value.get('schemaVersion') != 1 or not isinstance(value.get('tests'), list):

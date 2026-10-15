@@ -1,6 +1,6 @@
 # Tasks: Engineering standards
 
-**Current delivery dependency (15 October 2026):** the witness-method allowance has expired. Its retirement exists in draft [PR #50](https://github.com/mosesparadise/OpenIdentityAdmin/pull/50), whose required CI failed. [Disposition](witness-ci-disposition.md) records subsequent diagnostic limits and pauses further native runs. Do not repeat the implemented refactor or renew the exception. Its feature 009 T020 remains undelivered on that PR; wider T015 stays open. Feature 010 M02-B planning proceeds independently, while executable delivery retains the shared quality gate.
+**Current delivery (15 October 2026):** PR #50 is squash-merged as `e780cfa9` after all 70 exact-candidate jobs, 42 mutation controls, 55 coverage inputs and nine module floors passed independent review. [Delivery evidence](witness-delivery.md). T020 and the bounded image-preparation T021 are complete; the wider T015 retrofit remains open. The expired allowance is removed without renewal. All historical/human/release gates remain open. Feature 010's implemented BFF store still needs its own acceptance.
 
 ## Governance and foundation
 - [x] T001 Record approved standards in .specify/memory/constitution.md and user decisions in specs/009-engineering-standards/spec.md.
@@ -42,3 +42,10 @@ The user selected these three engineering cleanups while feature 008 T020/T021 r
 Controls: ENG-02/03/04/05/07/09 and NFR-08/11/14. No runtime capability, incident closure, new project or amendment is introduced. ADM-OPS-01 and ADM-EVID-01 remain unresolved and acceptance/release-blocking.
 
 Batch acceptance: T017/T018/T019 were independently AI-reviewed and normally squash-merged in PRs #40/#41/#42 respectively, each after all62 exact-head CI jobs passed. See verification.md for commit/run identities, review dispositions, local controls and limits. Retired47 exact findings (1886→1839); T013–T016 remain open for the wider backlog. The third slice's two initial local static findings were corrected without suppressions. No open review findings remained at merge.
+
+## Witness test exception retirement — 14 October 2026
+
+- [x] T020 [US2] Retire the exact CQ004 witness-ordering exception (expired 15 October; now removed without renewal). Extract cohesive preparation and committed-effect checks while preserving the original test identity, native ordering, resource ownership, deadlines and final mutation assertion. Verify unchanged discovery, both-provider ordinary and omitted-witness mutation controls, full required CI and independent architecture/test/security review before normal squash. This bounded child of T015 does not complete the wider retrofit or close historical findings. See [scope and evidence](witness-refactor.md).
+
+
+- [x] T021 Correct the current-base CI image-preparation gap evidenced by run `38746001120`: acquire and verify the already-pinned provider image before native test startup, with bounded one-attempt failure propagation and seeded preparation/workflow controls. Requirements: ENG-09, NFR-08/11/14. Exact-candidate run `38751626290` and independent reviews passed; PR #50 delivered T020/T021 as squash `e780cfa9`. The separate DCP timeout and historical certificate cause remain unresolved; see `witness-ci-disposition.md`.

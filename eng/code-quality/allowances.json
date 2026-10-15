@@ -17941,18 +17941,5 @@
       "Owner": "Implementation lead"
     }
   ],
-  "Exceptions": [
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Governance/Failures/WitnessOrderingTests.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(string)",
-        "Fingerprint": "BD166629CDB7229B65F5D0ABC043254D049B22A6EC7FE106B531CEDCBDF7D040"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead",
-      "Reason": "Feature009 T015 / governance failure correction: retain the single visible native witness-race ownership and primary mutation assertion stack. One factory-name replacement adds a fixed ordinary-user fixture population before fresh proof preparation; method size, operation deadlines, assertion order and original 2026-10-15 expiry are unchanged. No production or legacy-baseline exception.",
-      "Expires": "2026-10-15"
-    }
-  ]
+  "Exceptions": []
 }

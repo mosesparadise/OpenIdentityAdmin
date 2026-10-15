@@ -144,5 +144,15 @@
         "SqlServer": 162
       }
     }
+  },
+  "apphost_native_groups": {
+    "Foundation": {
+      "PostgreSql": 8,
+      "SqlServer": 8
+    },
+    "BffSessions": {
+      "PostgreSql": 7,
+      "SqlServer": 7
+    }
   }
 }

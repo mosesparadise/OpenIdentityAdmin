@@ -62,7 +62,7 @@ Schemas and repeated upgrade; they are reused rather than copied into a new
 BffSessions persistence directory. The new AppHost cases supply store-specific
 behavior. This path refinement does not remove either provider obligation.
 
-- [ ] T023 Resolve implementation acceptance prerequisites: provision enough Docker storage for the unchanged native suites, and integrate the independently accepted witness-allowance retirement without renewing its expiry. Then complete existing T011/T014–T016/T020 evidence once against the actual candidate. This is an operational/dependency task, not authorization to resume paused WebKit diagnostics or waive gates. Requirements: SC-001, SC-005.
+- [ ] T023 Resolve implementation acceptance prerequisites: use hosted Docker capacity for the unchanged native cases and integrate the independently accepted witness-allowance retirement without renewing its expiry. PR #50 is now delivered and integrated; local Docker capacity remains insufficient. Then complete existing T011/T014–T016/T020 evidence once against the actual candidate. This is an operational/dependency task, not authorization to resume paused WebKit diagnostics or waive gates. Requirements: SC-001, SC-005.
 
 No new feature scope or duplicate implementation is required by this convergence
 review. T022 remains the next independent product-design step; browser activation
@@ -71,3 +71,5 @@ and a merge cannot borrow the passing unit/source-review evidence.
 - [x] T024 Correct first-hosted-candidate integration failures: reconcile the issuer selector's independent AppHost count (8→15) and remove the four IDE0005 imports; preserve the failed run and 114 passing prerequisite controls in `verification.md`. Requirements: SC-005. This completes correction evidence only; T020/T021 remain open.
 
 - [x] T025 Correct the test-owned native lock observer to find its unique marker after a possible SQL parameter declaration, preserving the blocked-request predicate and every deadline. Record independent source review and the incomplete SQL evidence in `verification.md`; native acceptance remains in T020, not this checkbox. Requirements: FR-004, FR-006, SC-001.
+
+- [x] T026 Divide native AppHost execution into two mandatory groups (eight existing cases plus seven BFF cases per provider), preserving exact discovery identities, strict separate native reports, 660-second invocation bounds, the 20-minute job and 55 coverage inputs. Six seeded controls, both-provider native discovery and independent reviews pass. Record the twelve-pass incomplete SQL evidence in `verification.md`; T020/T021 still require exact-candidate acceptance and merge. Requirements: SC-001, SC-005.

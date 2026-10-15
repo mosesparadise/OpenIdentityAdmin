@@ -26,6 +26,32 @@ internal static class WitnessEvidence
     internal static async Task<GovernanceRequest> RequestAsync(GovernanceScenario scenario) =>
         await scenario.RequestAsync(GovernanceAction.RemoveBundle, scenario.ActorId, await GovernanceCommands.RoleAsync(scenario, Platform));
 
+    /// <summary>Prepares the populated native witness and four password failures before capturing the self-demotion request and fresh proof; the returned action performs the fifth failure.</summary>
+    internal static async Task<(WitnessSecurity Witness, Func<CancellationToken, Task> Security, GovernanceRequest Request, string Code)>
+        PrepareCommitRaceAsync(GovernanceScenario scenario)
+    {
+        SetupDiagnostics.Write(SetupStage.WitnessCreate);
+        var witness = await WitnessPopulation.CreateAsync(scenario);
+        SetupDiagnostics.Write(SetupStage.WitnessSecurityPreparation);
+        var security = await witness.PrepareAsync(scenario, WitnessSecurity.Lockout);
+        SetupDiagnostics.Write(SetupStage.RequestPreparation);
+        var request = await RequestAsync(scenario);
+        SetupDiagnostics.Write(SetupStage.CodePreparation);
+        var code = await scenario.UnusedCodeAsync();
+        return (witness, security, request, code);
+    }
+
+    /// <summary>After all race tasks drain, requires committed lockout, exact authority effects and no usable administrator using the ambient test lifetime.</summary>
+    internal static async Task RequireCommittedLockoutAsync(GovernanceScenario scenario, WitnessSecurity witness, GovernanceRequest request)
+    {
+        WitnessDiagnostics.Write(WitnessStage.Security);
+        await RequireSecurityAsync(scenario, witness, WitnessSecurity.Lockout);
+        WitnessDiagnostics.Write(WitnessStage.Authority);
+        await RequireAuthorityAsync(scenario, request, accepted: true);
+        WitnessDiagnostics.Write(WitnessStage.Usable);
+        Assert.Empty((await scenario.ReadAsync()).UsableAdministrators);
+    }
+
     /// <summary>Owns an independent complete service invocation under the caller's cancellable lifetime.</summary>
     internal static async Task<GovernanceOutcome> ExecuteAsync(GovernanceScenario scenario, GovernanceRequest request, CancellationToken token)
     {

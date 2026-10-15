@@ -90,6 +90,7 @@ jobs:
           global-json-file: global.json
       - run: dotnet restore --locked-mode
       - run: python3 scripts/test_supply_chain.py
+      - run: python3 scripts/test_prepare_native_image.py
       - name: Check current NuGet advisories
         run: |
           mkdir -p artifacts/security
@@ -183,11 +184,15 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_issuer_selection.py
+      - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
+      - name: Prepare pinned native database image
+        if: matrix.profile != 'unit'
+        run: python3 scripts/prepare_native_image.py ${{ matrix.profile }}
       - name: Trust local HTTPS certificate
         if: matrix.profile != 'unit'
         shell: bash
@@ -235,11 +240,14 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_issuer_selection.py
+      - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
+      - name: Prepare pinned native database image
+        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}
       - name: Trust local HTTPS certificate
         shell: bash
         run: |
@@ -331,6 +339,8 @@ jobs:
           global-json-file: global.json
       - run: dotnet restore --locked-mode
       - run: python3 scripts/test_mutations.py
+      - name: Prepare pinned native database image
+        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}
       - name: Trust local HTTPS certificate
         shell: bash
         run: |
@@ -370,6 +380,8 @@ jobs:
           global-json-file: global.json
       - run: dotnet restore --locked-mode
       - run: python3 scripts/test_mutations.py
+      - name: Prepare pinned native database image
+        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}
       - name: Trust local HTTPS certificate
         shell: bash
         run: |
@@ -409,6 +421,8 @@ jobs:
           global-json-file: global.json
       - run: dotnet restore --locked-mode
       - run: python3 scripts/test_mutations.py
+      - name: Prepare pinned native database image
+        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}
       - name: Trust local HTTPS certificate
         shell: bash
         run: |
