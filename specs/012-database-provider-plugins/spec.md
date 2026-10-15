@@ -2,7 +2,7 @@
 
 **Feature Branch**: `058-database-provider-plugins`
 **Created**: 15 October 2026
-**Status**: Approved scope; implementation pending
+**Status**: Delivered internally in PR #58 (`f8539bf`); [accepted evidence](delivery.md). External/human/release gates remain open.
 **Authority**: [A-008](../../docs/amendments/A-008-database-provider-plugins.md), including the user's three explicit clarification answers.
 
 ## User Scenarios & Testing

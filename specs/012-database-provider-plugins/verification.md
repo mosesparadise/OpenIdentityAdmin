@@ -1,6 +1,6 @@
 # Verification
 
-Baseline: main `38eb41e06d40b6addbe57e3af839f912645e6dea`; remote reverified 15 October 2026. Implementation is complete locally; real database/full CI acceptance and delivery remain pending. No production database operation has run.
+Baseline: main `38eb41e06d40b6addbe57e3af839f912645e6dea`; remote reverified 15 October 2026. PR #58 is delivered as `f8539bf`; [final exact-head acceptance and artifact reconciliation](delivery.md) supersede the pending states below. Earlier attempts remain historical evidence. No production database operation has run.
 
 ## Scope and traceability
 
@@ -17,7 +17,7 @@ SDK10.0.401 (repository roll-forward), Linux. Full solution build passed with ze
 - Python issuer selection: 9/9; persistence selection: 5/5.
 - Roslyn source-quality check: PASS; 66 obsolete exact legacy entries retired, no new allowance/exception. Existing debt remains tracked.
 - All 44 generated migration/designer/snapshot SHA256 values match the frozen baseline.
-- Frozen producer restored with its separate locked graph and compiled against the verified detached baseline. Its dependency graph contains none of the new provider modules. The process has not populated a database locally.
+- Frozen producer restored with its separate locked graph and compiled against the verified detached baseline. Its dependency graph contains none of the new provider modules. The process has not populated a database locally; final hosted execution is recorded in delivery.md.
 
 The first full Host run found two existing account connection timeout assertions failing (native connection changed, EF cached string did not). `AccountDatabaseBounds` now synchronizes the bounded string through EF; the corrected full 430-case run passes. An initial model invocation used stale copied local DLLs; selecting each assembly's own build corrected the harness. These initial failures are not counted as acceptance.
 
@@ -29,7 +29,7 @@ Security: scoped source PASS after context/store rejection, entry/pre-launch can
 
 Aspire: design/source review resolved exact returned-provider instance validation and unsupported provisioning preflight. Four new adapter controls pass locally. Native lifecycle/credential behavior still requires the ordinary CI partitions.
 
-## Required remaining evidence
+## Required evidence before final acceptance (now satisfied)
 
 Run the exact published head through all required CI jobs. PostgreSQL and SQL Server foundation jobs build the old producer, retain its complete file manifest, populate disposable databases with native managers, then run the new migrator twice on those same physical databases. Require schema/history/all-row fingerprints unchanged, real runtime manager/readiness/grant controls, nested timeout/connection restoration and governed contention/commit/rollback. Persistence discovery is exact at five cases/provider. Unit inventory is 525 (430 Host,65 Harness,25 Core,5 Architecture).
 
