@@ -9,14 +9,15 @@ import time
 from test_selection import catalogue
 from verify_contrast_experiment import execute, install_cancellation_handler
 from history_navigation_receipt import require_receipt
+from history_document_receipt import combine_receipts, require_document
 
 ROOT = Path(__file__).resolve().parents[1]
 METHOD = 'IdentityPlatform.Administrator.Tests.Features.Browser.HistoryObservationTests.Given_RealNoStorePost_When_BackCannotRestoreDocument_Then_NativeRefusalHasNoResponseCommitOrResubmission'
 NAMESPACE = 'IdentityPlatform.Administrator.Tests.Features.Browser'
 PROVIDER = 'PostgreSql'
 TOTAL_SECONDS = 180
-PARENT = '8578441753d847a49d3f2de0137152ad5fe88c2e'
-REF = 'refs/heads/055-firefox-native-observation'
+PARENT = '8eea5e3f554827ae190e8b57bc93a3f70867287e'
+REF = 'refs/heads/056-history-navigation-boundary'
 
 
 def require_launch(environment, event, head, parents):
@@ -52,7 +53,7 @@ def main():
     install_cancellation_handler()
     end = time.monotonic() + TOTAL_SECONDS
     project = ROOT / 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
-    results = ROOT / 'artifacts/native-history-observation'
+    results = ROOT / 'artifacts/history-document-observation'
     results.mkdir(parents=True, exist_ok=True)
     report = results / 'observation.trx'
     if report.exists():
@@ -79,6 +80,7 @@ def main():
         native_error = error
     try:
         receipt = require_receipt(report, identity[0], native_error.returncode if native_error else 0)
+        receipt = combine_receipts(receipt, require_document(report))
     except Exception:
         (results / 'receipt.json').write_text(json.dumps({'evidence_complete': False, 'acceptance_credit': False}) + '\n')
         if native_error:
@@ -87,7 +89,9 @@ def main():
     (results / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
     if native_error:
         raise native_error
-    print('One diagnostic receipt reconciled; no database, ordinary acceptance, coverage or causal-closure credit.')
+    if not receipt['document_identity_supported']:
+        raise RuntimeError('Native error document identity remains incomplete; no correction or acceptance follows')
+    print('One finite document observation reconciled; no navigation ownership, acceptance or causal-closure credit.')
 
 
 if __name__ == '__main__':

@@ -61,8 +61,10 @@ public sealed class HistoryObservationTests
         await page.WaitForURLAsync(server.Origin + HistoryControlServer.SafePath);
         await AdministratorHistory.RequireNoRedisplayAsync(page, HistoryControlServer.Canary);
         Assert.Equal(1, server.Posts);
+        using var document = new HistoryDocumentEvidence(page, server);
+        await document.RequirePriorAsync();
         evidence.MoveTo(HistoryNavigationPhase.Back);
-        var outcome = await AdministratorHistory.ObserveAsync(page, HistoryControlServer.Canary, () => page.GoBackAsync(), evidence.Catch);
+        var outcome = await document.ObserveAsync(evidence);
         const string Firefox = "firefox";
         if (BrowserSession.Engine == Firefox)
         {
