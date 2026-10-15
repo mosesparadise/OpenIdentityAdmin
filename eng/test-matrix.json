@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 400,
+      "Host": 404,
       "Architecture": 5,
       "AppHost": 61
     },
