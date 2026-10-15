@@ -1,6 +1,6 @@
 # Tasks: Administrator issuer/client integration
 
-Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exists, not B2 runtime acceptance. Runtime implementation remains unaccepted; checked prerequisite tasks denote only their stated evidence. T003 denotes the planning delivery supplied by this PR; its exact-head checks and squash are recorded on the PR, not presumed from this checkbox. Requirement IDs refer to [spec.md](spec.md); scenario IDs below are planned evidence labels, not executed test identities.
+Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exists, not B2 runtime acceptance. Runtime implementation remains unaccepted; checked prerequisite tasks denote only their stated evidence. T003 denotes the planning delivery merged in PR #55 as `98139cc942467f4094434691c30668ba72dbeb70`; its exact-head checks and squash are recorded on that PR, not presumed from this checkbox. Requirement IDs refer to [spec.md](spec.md); scenario IDs below are planned evidence labels, not executed test identities.
 
 ## Phase 1 — Planning and dependencies
 

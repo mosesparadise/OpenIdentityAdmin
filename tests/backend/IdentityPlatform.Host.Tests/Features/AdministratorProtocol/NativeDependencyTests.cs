@@ -11,7 +11,7 @@ namespace IdentityPlatform.Host.Tests.Features.AdministratorProtocol;
 /// <summary>Checks the pinned native extension boundaries before administrator composition is implemented.</summary>
 public sealed class NativeDependencyTests
 {
-    /// <summary>Requires a transaction window after durable redemption and before native persistence and response dispatch.</summary>
+    /// <summary>Checks the descriptor window after the native redemption handler and before native creation and response dispatch.</summary>
     [Fact]
     public void Given_PinnedNativeHandlers_When_LocatingTransactionWindows_Then_RedemptionAndResponseRemainOutside()
     {
