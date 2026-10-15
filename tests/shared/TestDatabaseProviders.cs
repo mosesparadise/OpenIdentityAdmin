@@ -1,8 +1,3 @@
-global using IdentityPlatform.Testing;
-global using DatabaseProviderParser = IdentityPlatform.Testing.TestProviderParser;
-global using PersistenceRegistration = IdentityPlatform.Testing.TestPersistenceRegistration;
-global using SchemaCatalog = IdentityPlatform.Testing.TestSchemaCatalog;
-
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Database;
 using IdentityPlatform.Database.PostgreSql;

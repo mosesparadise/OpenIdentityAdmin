@@ -1,7 +1,7 @@
 using IdentityPlatform.Database;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using Microsoft.Data.SqlClient;
 
 namespace IdentityPlatform.Host.Tests.Features.DatabaseProviders;
 

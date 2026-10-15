@@ -22,4 +22,10 @@
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Using Include="IdentityPlatform.Testing" />
+    <Using Include="IdentityPlatform.Testing.TestProviderParser" Alias="DatabaseProviderParser" />
+    <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
+    <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
+  </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Database;
+using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;

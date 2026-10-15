@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;

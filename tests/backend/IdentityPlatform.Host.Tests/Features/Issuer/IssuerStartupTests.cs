@@ -4,7 +4,6 @@ using System.Xml.Linq;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.AuthServer.Features.Pilot;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Host.Tests.Features.Issuer;
 

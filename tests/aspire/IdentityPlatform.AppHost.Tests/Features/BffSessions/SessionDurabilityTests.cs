@@ -2,7 +2,6 @@ using System.Data.Common;
 using System.Text;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 

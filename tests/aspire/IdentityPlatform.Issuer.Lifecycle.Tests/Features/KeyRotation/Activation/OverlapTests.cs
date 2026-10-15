@@ -1,7 +1,6 @@
 using System.Net;
 using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.WebUtilities;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 

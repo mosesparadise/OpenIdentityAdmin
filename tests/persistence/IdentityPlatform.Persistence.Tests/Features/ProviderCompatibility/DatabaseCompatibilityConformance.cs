@@ -1,5 +1,5 @@
-using IdentityPlatform.Database;
 using System.Data.Common;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;

@@ -1,5 +1,3 @@
-using IdentityPlatform.Testing;
-
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 
 // Evidence for this controlled two-node experiment only; not a production cluster ledger.

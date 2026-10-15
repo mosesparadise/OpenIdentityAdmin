@@ -1,7 +1,6 @@
 using System.Net;
 using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
 using OpenIddict.Abstractions;

@@ -38,3 +38,11 @@ Coverage retains all nine original floors and adds the six new production module
 ## First CI correction
 
 PR58 head `578d5ff` started run38820424321. Required jobs exposed stale consumers of the moved image declarations and the increased persistence inventory. Image preparation now reads each explicit hosting adapter and requires its single named image constants plus the original bounded pull/digest inspection. Lifecycle totals increase by exactly the new case/provider. All197 Python seeded controls pass after these corrections. This failed run supplies no native acceptance.
+
+## Second CI correction
+
+Head `132e12d`, run38820632168, reported the new hosting projects resolving vulnerable MessagePack2.5.302 and Persistence discovery rejecting path-dependent UIDs before database execution. The shared hosting project now carries the same existing2.5.307 pin as AppHost; all eight affected graphs resolve2.5.307. A fresh local advisory report covers all30 projects with no known vulnerable package reported;257 package/version license pairs pass existing policy. No suppression or new license exception was introduced.
+
+Persistence now reuses the existing schema2 portable native inventory validator: exact names, full native type and all traits, followed by exact run-local UID/metadata equality between full and selected discovery. TRX remains bound by exact selected names/counts and its own unique internal IDs. The10 reviewed names/provider assignments are unchanged. Independent review accepts this correction; relocation-positive/stale-selection-negative controls pass. The moved image constants also have independent missing/duplicate/change controls.
+
+SDK formatting removed obsolete imports left by the test compatibility aliases; aliases are generated per test project using ordinary SDK Using items, so linked source does not carry aliases unused in some consumers. Current full solution build, style verification and source-quality checks pass; all199 Python controls pass. These are corrections awaiting exact-head hosted verification; they do not establish real database preservation.

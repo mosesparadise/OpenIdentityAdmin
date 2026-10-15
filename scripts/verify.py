@@ -75,7 +75,8 @@ for project, expected_count, story, browser_story in invocations:
         # Invoke the native executable: the SDK's discovery transport does not forward JSON output.
         discovery = ["dotnet", "run", "--project", command[3], "--no-build", "--no-restore", "--",
                      "--pre-enumerate-theories", "on", "--list-tests", "json"]
-        native_inventory = load_inventory(ROOT / "eng/administrator-test-matrix.json") if project == "Administrator" else None
+        native_inventory = (load_inventory(ROOT / "eng/administrator-test-matrix.json") if project == "Administrator" else
+                            load_persistence_inventory(ROOT / "eng/persistence-test-matrix.json") if project == "Persistence" else None)
         def discover(expression=None):
             invocation = discovery + (["--filter", expression] if expression else [])
             result = execute(invocation, os.environ.copy(), timeout=60, capture=True)

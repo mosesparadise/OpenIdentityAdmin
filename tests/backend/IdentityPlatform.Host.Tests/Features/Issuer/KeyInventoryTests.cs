@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Host.Tests.Features.Issuer;
 

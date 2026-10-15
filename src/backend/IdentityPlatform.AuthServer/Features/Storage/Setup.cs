@@ -1,4 +1,3 @@
-using IdentityPlatform.Database;
 using IdentityPlatform.AuthServer.Composition;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Persistence;

@@ -1,4 +1,3 @@
-using IdentityPlatform.Database;
 using IdentityPlatform.Admin.Bff.Composition;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;

@@ -1,8 +1,7 @@
-using IdentityPlatform.Database;
-using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Migrator.Composition;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;

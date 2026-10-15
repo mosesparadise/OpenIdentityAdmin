@@ -1,5 +1,5 @@
-using IdentityPlatform.Database.PostgreSql;
 using IdentityPlatform.Database.Hosting;
+using IdentityPlatform.Database.PostgreSql;
 using IdentityPlatform.Database.PostgreSql.Hosting;
 using IdentityPlatform.Database.SqlServer.Hosting;
 

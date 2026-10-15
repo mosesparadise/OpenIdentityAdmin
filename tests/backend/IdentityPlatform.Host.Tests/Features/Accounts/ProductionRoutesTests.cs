@@ -1,5 +1,4 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Builder;
 
 namespace IdentityPlatform.Host.Tests.Features.Accounts;

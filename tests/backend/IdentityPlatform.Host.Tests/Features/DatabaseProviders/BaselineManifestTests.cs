@@ -1,6 +1,5 @@
 using System.Security.Cryptography;
 using System.Text.Json;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Host.Tests.Features.DatabaseProviders;
 

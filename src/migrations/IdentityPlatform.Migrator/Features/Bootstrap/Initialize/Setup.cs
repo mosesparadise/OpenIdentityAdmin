@@ -1,5 +1,4 @@
 using IdentityPlatform.Database;
-using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;

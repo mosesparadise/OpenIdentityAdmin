@@ -1,7 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;

@@ -1,6 +1,5 @@
-using IdentityPlatform.Database;
-using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Migrator.Features.Database.LocalRoles;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
 using IdentityPlatform.Migrator.Features.Operations;

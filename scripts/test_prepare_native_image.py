@@ -29,6 +29,18 @@ class NativeImagePreparationTests(unittest.TestCase):
         with self.assertRaises(KeyError):
             image_reference('unit', source)
 
+    def test_Given_individually_invalid_constants_When_resolving_Then_preparation_fails(self):
+        """Each adapter constant must be present exactly once with its reviewed literal shape."""
+        for provider, path in SETUPS.items():
+            source = path.read_text()
+            for name in ('DatabaseName', 'ImageTag', 'ImageDigest'):
+                declaration = re.search(rf'const string {name} = "[^"]+";', source).group(0)
+                for invalid in (source.replace(declaration, ''), source + '\n' + declaration):
+                    with self.subTest(provider=provider, constant=name), self.assertRaises(ValueError):
+                        image_reference(provider, invalid)
+            with self.assertRaises(ValueError):
+                image_reference(provider, source.replace('DatabaseName = "database"', 'DatabaseName = "other"'))
+
     def test_Given_exact_inspected_digest_When_preparing_Then_single_bounded_pull_precedes_inspection(self):
         """Canonical Docker namespace forms pass; commands never create or start containers."""
         for provider, repository, digest in [('PostgreSql', 'postgres', PG), ('PostgreSql', 'docker.io/library/postgres', PG),

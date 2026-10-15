@@ -1,7 +1,6 @@
-using IdentityPlatform.Database;
-using IdentityPlatform.Worker.Composition;
 using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Worker.Composition;
 
 namespace IdentityPlatform.Worker.Features.Storage;
 

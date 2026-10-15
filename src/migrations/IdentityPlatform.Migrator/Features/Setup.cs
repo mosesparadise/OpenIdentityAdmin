@@ -1,4 +1,3 @@
-using IdentityPlatform.Database;
 using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Migrator.Features.Bootstrap.Initialize;
 using IdentityPlatform.Migrator.Features.Database;

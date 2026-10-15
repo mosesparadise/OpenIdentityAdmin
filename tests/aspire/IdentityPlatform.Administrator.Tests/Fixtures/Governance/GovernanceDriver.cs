@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using IdentityPlatform.Core.Features.Identity.Governance;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Administrator.Tests.Fixtures.Governance;
 

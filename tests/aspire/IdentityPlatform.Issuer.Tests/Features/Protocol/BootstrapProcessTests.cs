@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using System.Reflection;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 

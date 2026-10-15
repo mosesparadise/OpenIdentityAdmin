@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 

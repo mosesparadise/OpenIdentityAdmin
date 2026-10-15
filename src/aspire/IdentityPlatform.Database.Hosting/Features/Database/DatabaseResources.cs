@@ -1,4 +1,3 @@
-using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 
 namespace IdentityPlatform.Database.Hosting;

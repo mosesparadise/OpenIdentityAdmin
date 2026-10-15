@@ -1,6 +1,6 @@
-using IdentityPlatform.Database;
 using System.Data;
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

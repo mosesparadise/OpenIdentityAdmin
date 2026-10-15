@@ -2,7 +2,6 @@ using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
-using IdentityPlatform.Testing;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Ceremonies;

@@ -3,7 +3,6 @@ using System.Text.Json;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation;

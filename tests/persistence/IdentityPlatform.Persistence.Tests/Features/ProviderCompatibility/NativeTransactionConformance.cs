@@ -1,9 +1,9 @@
+using System.Data.Common;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data.Common;
 
 namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 

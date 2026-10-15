@@ -1,6 +1,5 @@
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Factors;
 

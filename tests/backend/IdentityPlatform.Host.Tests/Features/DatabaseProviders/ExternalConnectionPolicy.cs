@@ -1,5 +1,5 @@
-using IdentityPlatform.Database;
 using System.Data.Common;
+using IdentityPlatform.Database;
 using Npgsql;
 
 namespace IdentityPlatform.Host.Tests.Features.DatabaseProviders;

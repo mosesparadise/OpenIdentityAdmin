@@ -26,4 +26,10 @@
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/BaselineArtifactManifest.cs" Link="Fixtures/BaselineArtifactManifest.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/BaselineProducer.cs" Link="Fixtures/BaselineProducer.cs" /></ItemGroup>
+  <ItemGroup>
+    <Using Include="IdentityPlatform.Testing" />
+    <Using Include="IdentityPlatform.Testing.TestProviderParser" Alias="DatabaseProviderParser" />
+    <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
+    <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
+  </ItemGroup>
 </Project>
