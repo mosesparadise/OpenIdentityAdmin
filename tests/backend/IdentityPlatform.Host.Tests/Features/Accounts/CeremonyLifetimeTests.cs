@@ -1,3 +1,4 @@
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
@@ -19,7 +20,10 @@ public sealed class CeremonyLifetimeTests
     [InlineData(2)]
     public async Task Given_DisposalFailure_When_CeremonyReleasesResources_Then_AllLaterOwnersAreReleased(int failingStage)
     {
-        await using var database = new PlatformDbContext(new DbContextOptionsBuilder<PlatformDbContext>().UseNpgsql(UnusedConnection).Options);
+        var options = new DbContextOptionsBuilder<PlatformDbContext>();
+        const string Provider = "PostgreSql";
+        options.UseDatabaseProvider(TestDatabaseProviders.Resolve(Provider), UnusedConnection, DatabaseStore.Platform);
+        await using var database = new PlatformDbContext(options.Options);
         database.Add(new AdministratorAuthentication { UserId = SyntheticUser });
         using var deadline = new CancellationTokenSource();
         var native = new FailingResource(failingStage == 0);

@@ -17,4 +17,9 @@
     <Compile Include="../IdentityPlatform.Issuer.Lifecycle.Tests/Fixtures/ProcessListener.cs" Link="Fixtures/ProcessListener.cs" />
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/BffSessionFixture.cs" Link="Fixtures/BffSessionFixture.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../shared/TestDatabaseProviders.cs" Link="Fixtures/TestDatabaseProviders.cs" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
+  </ItemGroup>
 </Project>

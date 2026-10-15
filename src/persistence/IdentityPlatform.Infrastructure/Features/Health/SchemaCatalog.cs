@@ -1,36 +1,16 @@
-using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Database;
 
 namespace IdentityPlatform.Infrastructure.Features.Health;
 
-// Runtime services deliberately do not load executable migration assemblies.
-// Architecture tests compare these compatibility contracts to the generated migrations.
-/// <summary>Declares runtime schema readiness without loading executable migration assemblies.</summary>
-/// <example><code>var required = SchemaCatalog.Platform(DatabaseProvider.PostgreSql);</code></example>
+/// <summary>Reads registered runtime metadata without loading executable migrations.</summary>
+/// <example><code>var expected = SchemaCatalog.Platform(provider);</code></example>
 public static class SchemaCatalog
 {
-    private static readonly IReadOnlyList<string> PostgreSqlSessions = Array.AsReadOnly<string>(["20261010011921_InitialSessions", "20261015123931_ProtectedSessionTickets"]);
+    /// <summary>Returns the complete ordered platform history for the selected provider.</summary>
+    /// <example><code>var expected = SchemaCatalog.Platform(provider);</code></example>
+    public static IReadOnlyList<string> Platform(IRelationalDatabaseProvider provider) => provider.Migrations(DatabaseStore.Platform);
 
-    private static readonly IReadOnlyList<string> SqlServerSessions = Array.AsReadOnly<string>(["20261010011939_InitialSessions", "20261015123934_ProtectedSessionTickets"]);
-
-    private static readonly IReadOnlyList<string> SqlServerPlatform = Array.AsReadOnly<string>(["20261010012848_InitialPlatform", "20261010134320_FirstPartyLogin", "20261011131926_BrowserInteractionBudget", "20261012110314_AdministratorBootstrap", "20261012180753_AdministratorFactors", "20261012204848_AdministratorJourneys", "20261012231226_AdministratorRecovery", "20261013132412_AdministratorAuthority"]);
-
-    private static readonly IReadOnlyList<string> PostgreSqlPlatform = Array.AsReadOnly<string>(["20261010012841_InitialPlatform", "20261010134307_FirstPartyLogin", "20261011131900_BrowserInteractionBudget", "20261012110309_AdministratorBootstrap", "20261012180735_AdministratorFactors", "20261012204719_AdministratorJourneys", "20261012231221_AdministratorRecovery", "20261013132308_AdministratorAuthority"]);
-
-    /// <summary>Returns the complete ordered platform migration identities required before accepting runtime traffic.</summary>
-    /// <example><code>var check = new SchemaReadinessCheck&lt;PlatformDbContext&gt;(services, SchemaCatalog.Platform(provider));</code></example>
-    public static IReadOnlyList<string> Platform(DatabaseProvider provider) => provider switch
-    {
-        DatabaseProvider.PostgreSql => PostgreSqlPlatform,
-        DatabaseProvider.SqlServer => SqlServerPlatform,
-        _ => throw new ArgumentOutOfRangeException(nameof(provider))
-    };
-
-    /// <summary>Requires the complete additive session schema before runtime stores become ready.</summary>
-    /// <example><code>var required = SchemaCatalog.Sessions(DatabaseProvider.PostgreSql);</code></example>
-    public static IReadOnlyList<string> Sessions(DatabaseProvider provider) => provider switch
-    {
-        DatabaseProvider.PostgreSql => PostgreSqlSessions,
-        DatabaseProvider.SqlServer => SqlServerSessions,
-        _ => throw new ArgumentOutOfRangeException(nameof(provider))
-    };
+    /// <summary>Returns the complete ordered session history for the selected provider.</summary>
+    /// <example><code>var expected = SchemaCatalog.Sessions(provider);</code></example>
+    public static IReadOnlyList<string> Sessions(IRelationalDatabaseProvider provider) => provider.Migrations(DatabaseStore.Sessions);
 }

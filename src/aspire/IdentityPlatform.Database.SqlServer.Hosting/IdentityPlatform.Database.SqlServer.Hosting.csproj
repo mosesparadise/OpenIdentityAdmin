@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../IdentityPlatform.Database.Hosting/IdentityPlatform.Database.Hosting.csproj" />
+    <ProjectReference Include="../../persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+  </ItemGroup>
+</Project>

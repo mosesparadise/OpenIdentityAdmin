@@ -1,9 +1,14 @@
 <Solution>
   <Folder Name="/Engineering/">
+    <Project Path="eng/IdentityPlatform.ProviderCompatibility.Baseline/IdentityPlatform.ProviderCompatibility.Baseline.csproj" />
     <Project Path="eng/IdentityPlatform.CodeQuality/IdentityPlatform.CodeQuality.csproj" />
   </Folder>
   <Folder Name="/src/" />
   <Folder Name="/src/aspire/">
+    <Project Path="src/aspire/IdentityPlatform.Database.Hosting/IdentityPlatform.Database.Hosting.csproj" />
+    <Project Path="src/aspire/IdentityPlatform.Database.PostgreSql.Hosting/IdentityPlatform.Database.PostgreSql.Hosting.csproj" />
+    <Project Path="src/aspire/IdentityPlatform.Database.SqlServer.Hosting/IdentityPlatform.Database.SqlServer.Hosting.csproj" />
+
     <Project Path="src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
     <Project Path="src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
   </Folder>
@@ -22,6 +27,10 @@
     <Project Path="src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
   </Folder>
   <Folder Name="/src/persistence/">
+    <Project Path="src/persistence/IdentityPlatform.Database.Abstractions/IdentityPlatform.Database.Abstractions.csproj" />
+    <Project Path="src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
+    <Project Path="src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
+
     <Project Path="src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
   </Folder>
   <Folder Name="/tests/" />

@@ -1,13 +1,11 @@
-using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Npgsql;
 
 namespace IdentityPlatform.Infrastructure.Persistence;
 
@@ -15,8 +13,10 @@ namespace IdentityPlatform.Infrastructure.Persistence;
 /// <example><code>services.AddIdentityPersistence(provider, runtimeConnection);</code></example>
 public static class PersistenceRegistration
 {
+    /// <summary>Composes both logical stores using one explicit provider registration.</summary>
+    /// <example><code>services.AddPlatformPersistence(provider, platformConnection, sessionConnection);</code></example>
     public static IServiceCollection AddPlatformPersistence(
-        this IServiceCollection services, DatabaseProvider provider,
+        this IServiceCollection services, IRelationalDatabaseProvider provider,
         string platformConnection, string sessionConnection)
     {
         return services.AddIdentityPersistence(provider, platformConnection)
@@ -24,12 +24,12 @@ public static class PersistenceRegistration
     }
 
     /// <summary>Registers native managers and a guarded factor store using the supplied least-privilege database connection.</summary>
-    /// <example><code>services.AddIdentityPersistence(DatabaseProvider.PostgreSql, configuredRuntimeConnection);</code></example>
+    /// <example><code>services.AddIdentityPersistence(provider, configuredRuntimeConnection);</code></example>
     public static IServiceCollection AddIdentityPersistence(
-        this IServiceCollection services, DatabaseProvider provider, string platformConnection)
+        this IServiceCollection services, IRelationalDatabaseProvider provider, string platformConnection)
     {
         const string PlatformHistory = "PlatformMigrations";
-        ValidateProviderConnection(platformConnection, provider);
+        provider.Connections.Validate(platformConnection);
 
         services.AddDbContext<PlatformDbContext>(options =>
             ConfigureDatabase(options, provider, platformConnection, PlatformHistory));
@@ -50,68 +50,25 @@ public static class PersistenceRegistration
         return services;
     }
 
+    /// <summary>Configures only the isolated session store and its fixed migration history.</summary>
+    /// <example><code>services.AddSessionPersistence(provider, sessionConnection);</code></example>
     public static IServiceCollection AddSessionPersistence(
-        this IServiceCollection services, DatabaseProvider provider, string sessionConnection)
+        this IServiceCollection services, IRelationalDatabaseProvider provider, string sessionConnection)
     {
-        ValidateProviderConnection(sessionConnection, provider);
+        const string SessionHistory = "SessionMigrations";
+        provider.Connections.Validate(sessionConnection);
         services.AddDbContext<AdminSessionDbContext>(options =>
-            ConfigureDatabase(options, provider, sessionConnection, "SessionMigrations"));
+            ConfigureDatabase(options, provider, sessionConnection, SessionHistory));
         return services;
     }
 
-    public static void ConfigureDatabase(DbContextOptionsBuilder options, DatabaseProvider provider,
+    /// <summary>Configures one selected relational implementation and native OpenIddict mappings.</summary>
+    /// <example><code>PersistenceRegistration.ConfigureDatabase(options, provider, connection, "PlatformMigrations");</code></example>
+    public static void ConfigureDatabase(DbContextOptionsBuilder options, IRelationalDatabaseProvider provider,
         string connection, string historyTable)
     {
-        ValidateConnection(connection, "ConnectionStrings");
-        switch (provider)
-        {
-            case DatabaseProvider.PostgreSql:
-                options.UseNpgsql(connection, database => database
-                    .MigrationsAssembly("IdentityPlatform.Migrations.PostgreSql")
-                    .MigrationsHistoryTable(historyTable, historyTable == "SessionMigrations" ? "bff" : "platform")
-                    .CommandTimeout(30));
-                break;
-            case DatabaseProvider.SqlServer:
-                options.UseSqlServer(connection, database => database
-                    .MigrationsAssembly("IdentityPlatform.Migrations.SqlServer")
-                    .MigrationsHistoryTable(historyTable, historyTable == "SessionMigrations" ? "bff" : "platform")
-                    .CommandTimeout(30));
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(provider));
-        }
-
+        options.UseDatabaseProvider(provider, connection, DatabaseStores.FromHistory(historyTable));
         options.UseOpenIddict();
-        // Deliberately no sensitive-data logging or implicit execution-strategy retries.
-    }
-
-    private static void ValidateProviderConnection(string connection, DatabaseProvider provider)
-    {
-        ValidateConnection(connection, "ConnectionStrings");
-        try
-        {
-            var valid = provider switch
-            {
-                DatabaseProvider.PostgreSql => new NpgsqlConnectionStringBuilder(connection) is var value &&
-                    !string.IsNullOrWhiteSpace(value.Host) && !string.IsNullOrWhiteSpace(value.Database),
-                DatabaseProvider.SqlServer => new SqlConnectionStringBuilder(connection) is var value &&
-                    !string.IsNullOrWhiteSpace(value.DataSource) && !string.IsNullOrWhiteSpace(value.InitialCatalog),
-                _ => false
-            };
-            if (valid)
-            {
-                return;
-            }
-        }
-        catch (ArgumentException) { /* Provider messages can echo the supplied setting. */ }
-        throw new ArgumentException("Invalid database connection configuration. An explicit server and database are required.");
-    }
-
-    private static void ValidateConnection(string connection, string setting)
-    {
-        if (string.IsNullOrWhiteSpace(connection))
-        {
-            throw new ArgumentException($"{setting} is required.");
-        }
+        // No sensitive-data logging or implicit execution-strategy retries.
     }
 }

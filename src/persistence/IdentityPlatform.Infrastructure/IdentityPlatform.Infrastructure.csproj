@@ -11,14 +11,12 @@
   <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../core/IdentityPlatform.Core/IdentityPlatform.Core.csproj" />
+    <ProjectReference Include="../IdentityPlatform.Database.Abstractions/IdentityPlatform.Database.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="OpenIddict.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-    <!-- Override the SQL client transitively resolved PKCS package with the reviewed security patch. -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,66 @@
+{
+  "PostgreSql": {
+    "eeb637e8424272770945984c0f66162326095590d158afc4b355eedceb076bd1": [
+      "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: PostgreSql)",
+      "PostgreSql",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "8e0a61637cab7f907b5c3037ac4a96925a449e7cf347dfff6ddaf5b713f7f72e": [
+      "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: PostgreSql)",
+      "PostgreSql",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "3c1a70868d85eeccf040e7e72682c10676cacba77fc999f31a77678205933627": [
+      "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: PostgreSql)",
+      "PostgreSql",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "0c3d170f107f6fdede03bea3466aee8c634bd2c5b035fe69d3063f5e6eab6159": [
+      "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: PostgreSql)",
+      "PostgreSql",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "050037a9e95ca89ab41be4fbfe01ec4458033ce227d118aed34697ba655a0eb0": [
+      "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"PostgreSql\")",
+      "PostgreSql",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility"
+    ]
+  },
+  "SqlServer": {
+    "ab0e5715ece880abd93e6711cbab4e264a7ad64c0067c3b240aa1251c1849690": [
+      "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
+      "SqlServer",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "04e8937edd94f29b654d6b78fa4ec6d5e6cea7c659651ca8286701106e1953df": [
+      "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: SqlServer)",
+      "SqlServer",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "fcc25062e770dddb61e601ebc888cfaf45c9b088773cafc8a0aa75b34b26c32a": [
+      "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: SqlServer)",
+      "SqlServer",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "c41431a7ae04facb98624d5e6f5cd7d9f9fa50498ee23b0fec9128763a4ff422": [
+      "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: SqlServer)",
+      "SqlServer",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features"
+    ],
+    "8835ba776c8a46ae0262f4d40137003bbfa35cd7c8bb604f24930f98879a8678": [
+      "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"SqlServer\")",
+      "SqlServer",
+      false,
+      "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility"
+    ]
+  }
+}

@@ -27,7 +27,7 @@ def select_projects(matrix, profile, browser=None, partition='all'):
 
 def catalogue(raw, lifecycle=False, project=None):
     project = project or ('Issuer.Lifecycle' if lifecycle else 'Issuer')
-    if project not in ('Issuer', 'Issuer.Lifecycle', 'Administrator', 'AppHost'):
+    if project not in ('Issuer', 'Issuer.Lifecycle', 'Administrator', 'AppHost', 'Persistence'):
         raise ValueError('Unknown discovery project')
     value = json.loads(raw)
     if value.get('schemaVersion') != 1 or not isinstance(value.get('tests'), list):
@@ -43,7 +43,7 @@ def catalogue(raw, lifecycle=False, project=None):
         if len(providers) != 1 or providers[0] not in ('PostgreSql', 'SqlServer'):
             raise ValueError('Issuer test lacks one recognized provider')
         browser = any(x == {'key': 'Category', 'value': 'Browser'} for x in traits)
-        if project == 'Issuer.Lifecycle' and (browser or '.Features.Browser' in test['type']['namespace']):
+        if project in ('Issuer.Lifecycle', 'Persistence') and (browser or '.Features.Browser' in test['type']['namespace']):
             raise ValueError('Lifecycle catalogue contains a browser namespace or trait')
         if browser != (test['type']['namespace'] == 'IdentityPlatform.' + project + '.Tests.Features.Browser'):
             raise ValueError('Browser namespace and trait disagree')

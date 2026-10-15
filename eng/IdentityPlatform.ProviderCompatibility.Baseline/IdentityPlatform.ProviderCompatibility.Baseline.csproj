@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <CompatibilitySourceRoot Condition="'$(ProviderCompatibilityBaselineRoot)' == ''">$(MSBuildThisFileDirectory)../..</CompatibilitySourceRoot>
+    <CompatibilitySourceRoot Condition="'$(ProviderCompatibilityBaselineRoot)' != ''">$(ProviderCompatibilityBaselineRoot)</CompatibilitySourceRoot>
+    <NuGetLockFilePath Condition="'$(ProviderCompatibilityBaselineRoot)' != ''">$(MSBuildThisFileDirectory)packages.baseline.lock.json</NuGetLockFilePath>
+    <OutputPath Condition="'$(ProviderCompatibilityBaselineRoot)' != ''">bin/baseline/</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(CompatibilitySourceRoot)/src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+  </ItemGroup>
+</Project>

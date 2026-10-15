@@ -1,4 +1,5 @@
-using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Database;
+using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Migrator.Features.Bootstrap.Initialize;
 using IdentityPlatform.Migrator.Features.Database;
 using IdentityPlatform.Migrator.Features.Operations;
@@ -10,6 +11,9 @@ namespace IdentityPlatform.Migrator.Features;
 
 internal static class Setup
 {
+    private const string ProviderSetting = "Database:Provider";
+
+    /// <summary>Composes storage and only the explicitly requested administrator bootstrap services.</summary>
     internal static HostApplicationBuilder AddFeatures(this HostApplicationBuilder builder)
     {
         builder.AddDatabase();
@@ -20,11 +24,12 @@ internal static class Setup
         return builder;
     }
 
+    /// <summary>Runs the selected bounded bootstrap or upgrade operation with the same registered provider.</summary>
     internal static Task<int> RunFeaturesAsync(this IHost host)
     {
         var configuration = host.Services.GetRequiredService<IConfiguration>();
         return configuration.IsAdministratorBootstrap()
-            ? host.InitializeAdministratorAsync(DatabaseProviderParser.Parse(configuration["Database:Provider"]))
+            ? host.InitializeAdministratorAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting]))
             : host.UpgradeDatabaseAsync();
     }
 }

@@ -5,6 +5,8 @@
     <PackageReference Include="OpenIddict.Server.AspNetCore" />
     <ProjectReference Include="../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
     <ProjectReference Include="../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
+    <ProjectReference Include="../../persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
+    <ProjectReference Include="../../persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/tokens.css" LogicalName="IdentityPlatform.AccountAssets.tokens.css" />

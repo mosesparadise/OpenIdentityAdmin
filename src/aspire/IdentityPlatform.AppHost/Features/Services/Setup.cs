@@ -1,4 +1,4 @@
-using IdentityPlatform.AppHost.Features.Database;
+using IdentityPlatform.Database.Hosting;
 
 namespace IdentityPlatform.AppHost.Features.Services;
 

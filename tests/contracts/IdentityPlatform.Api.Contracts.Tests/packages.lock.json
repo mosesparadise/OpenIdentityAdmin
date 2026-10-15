@@ -175,17 +175,6 @@
         "resolved": "10.0.12",
         "contentHash": "Kd4o2oO1A6dfKxjz5LS16QyLtpCFTUiFWwmBABETAXRsSImBdRdWeKjSgbbRhAMiV3a3/nWr95ZtzClT4uaADQ=="
       },
-      "Microsoft.EntityFrameworkCore.Relational": {
-        "type": "Transitive",
-        "resolved": "10.0.12",
-        "contentHash": "OiHmr8XzX96dbgMsYGe8qoqg4KxibdZG2r0QUVJBGktFInOp8IrABe8jvcbo5hrqeWfbwpK7fCEBiEPbY/ik4A==",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "10.0.12",
-          "Microsoft.Extensions.Caching.Memory": "10.0.12",
-          "Microsoft.Extensions.Configuration.Abstractions": "10.0.12",
-          "Microsoft.Extensions.Logging": "10.0.12"
-        }
-      },
       "Microsoft.Extensions.AmbientMetadata.Application": {
         "type": "Transitive",
         "resolved": "10.8.0",
@@ -874,6 +863,8 @@
         "dependencies": {
           "Asp.Versioning.Http": "[10.2.3, )",
           "Asp.Versioning.OpenApi": "[10.2.3, )",
+          "IdentityPlatform.Database.PostgreSql": "[1.0.0, )",
+          "IdentityPlatform.Database.SqlServer": "[1.0.0, )",
           "IdentityPlatform.Infrastructure": "[1.0.0, )",
           "IdentityPlatform.ServiceDefaults": "[1.0.0, )",
           "Microsoft.AspNetCore.OpenApi": "[10.0.12, )",
@@ -885,6 +876,8 @@
         "dependencies": {
           "Asp.Versioning.Http": "[10.2.3, )",
           "Asp.Versioning.OpenApi": "[10.2.3, )",
+          "IdentityPlatform.Database.PostgreSql": "[1.0.0, )",
+          "IdentityPlatform.Database.SqlServer": "[1.0.0, )",
           "IdentityPlatform.Infrastructure": "[1.0.0, )",
           "IdentityPlatform.ServiceDefaults": "[1.0.0, )",
           "Microsoft.AspNetCore.OpenApi": "[10.0.12, )",
@@ -898,14 +891,34 @@
       "identityplatform.core": {
         "type": "Project"
       },
+      "identityplatform.database.abstractions": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "[10.0.12, )"
+        }
+      },
+      "identityplatform.database.postgresql": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
+        }
+      },
+      "identityplatform.database.sqlserver": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore.SqlServer": "[10.0.12, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )"
+        }
+      },
       "identityplatform.infrastructure": {
         "type": "Project",
         "dependencies": {
           "IdentityPlatform.Core": "[1.0.0, )",
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "[10.0.12, )",
-          "Microsoft.EntityFrameworkCore.SqlServer": "[10.0.12, )",
           "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "[10.0.12, )",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
           "OpenIddict.EntityFrameworkCore": "[7.7.1, )",
           "System.Security.Cryptography.Pkcs": "[10.0.13, )"
         }
@@ -956,6 +969,18 @@
         "contentHash": "7RnQ/UKn+kK3JDLmTpW+vVqNErWthGPAVAy1aIiBzv4ucQ6g9NFvOJUuT0PHcpvcJxGVxctMxj6t+NESWMrgHQ==",
         "dependencies": {
           "Microsoft.OpenApi": "[2.12.0, 3.0.0)"
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Relational": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.12, )",
+        "resolved": "10.0.12",
+        "contentHash": "OiHmr8XzX96dbgMsYGe8qoqg4KxibdZG2r0QUVJBGktFInOp8IrABe8jvcbo5hrqeWfbwpK7fCEBiEPbY/ik4A==",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.12",
+          "Microsoft.Extensions.Caching.Memory": "10.0.12",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.12",
+          "Microsoft.Extensions.Logging": "10.0.12"
         }
       },
       "Microsoft.EntityFrameworkCore.SqlServer": {

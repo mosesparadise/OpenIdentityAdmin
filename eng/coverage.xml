@@ -4,6 +4,8 @@
       <Include><ModulePath>(^|.*[/\\])IdentityPlatform\.[^/\\]+\.dll$</ModulePath></Include>
       <Exclude>
         <ModulePath>.*\.Tests\.dll$</ModulePath>
+        <!-- Frozen pre-refactor binaries are compatibility fixtures, not current implementation coverage. -->
+        <ModulePath>.*[/\\]eng[/\\]IdentityPlatform\.ProviderCompatibility\.Baseline[/\\]bin[/\\]baseline[/\\].*</ModulePath>
         <ModulePath>.*IdentityPlatform\.Migrations\..*\.dll$</ModulePath>
       </Exclude>
     </ModulePaths>

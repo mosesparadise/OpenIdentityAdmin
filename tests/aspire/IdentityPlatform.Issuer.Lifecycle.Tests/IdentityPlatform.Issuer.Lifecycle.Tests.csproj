@@ -19,4 +19,5 @@
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/LifecycleEvidence.cs" Link="Fixtures/LifecycleEvidence.cs" />
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/ProcessTreeEvidence.cs" Link="Fixtures/ProcessTreeEvidence.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/TestDatabaseProviders.cs" Link="Fixtures/TestDatabaseProviders.cs" /></ItemGroup>
 </Project>

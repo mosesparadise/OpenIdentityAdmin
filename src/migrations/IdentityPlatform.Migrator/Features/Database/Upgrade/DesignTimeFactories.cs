@@ -1,4 +1,5 @@
-using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Database;
+using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
@@ -35,13 +36,12 @@ internal static class DesignTimeConfiguration
     private static readonly IServiceProvider ModelServices = new ServiceCollection()
         .Configure<IdentityOptions>(IdentityStoreConfiguration.Configure).BuildServiceProvider();
 
+    /// <summary>Uses the same explicit host registrations and model-only connection supplied by the selected provider.</summary>
     internal static void Configure(DbContextOptionsBuilder options, string[] args, string history)
     {
-        var provider = DatabaseProviderParser.Parse(args.SingleOrDefault());
+        var provider = DatabaseProviderRegistration.Providers.Select(args.SingleOrDefault());
         // Model generation never connects. Real migration execution uses required runtime configuration.
-        var connection = provider == DatabaseProvider.PostgreSql
-            ? "Host=localhost;Database=design_time_only"
-            : "Server=localhost;Database=design_time_only;Integrated Security=true";
+        var connection = provider.DesignTimeConnection;
         options.UseApplicationServiceProvider(ModelServices);
         PersistenceRegistration.ConfigureDatabase(options, provider, connection, history);
     }

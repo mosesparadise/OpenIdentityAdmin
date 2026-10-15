@@ -12,4 +12,10 @@
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrations.SqlServer/IdentityPlatform.Migrations.SqlServer.csproj" />
     <Using Include="Xunit" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../shared/TestDatabaseProviders.cs" Link="Fixtures/TestDatabaseProviders.cs" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
+  </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/BaselineArtifactManifest.cs" Link="Fixtures/BaselineArtifactManifest.cs" /></ItemGroup>
 </Project>

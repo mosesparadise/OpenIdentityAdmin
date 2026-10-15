@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
+    <ProjectReference Include="../../persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
   </ItemGroup>
 </Project>

@@ -1,59 +1,41 @@
-using IdentityPlatform.Core.Features.Configuration;
+using IdentityPlatform.Database.PostgreSql;
+using IdentityPlatform.Database.Hosting;
+using IdentityPlatform.Database.PostgreSql.Hosting;
+using IdentityPlatform.Database.SqlServer.Hosting;
 
 namespace IdentityPlatform.AppHost.Features.Database;
 
 internal static class Setup
 {
+    private const string ProviderSetting = "Database:Provider";
+    private const string PlatformPasswordName = "platform-runtime-password";
+    private const string SessionsPasswordName = "sessions-runtime-password";
+    private const int PasswordLength = 40;
+    private const int MinimumCharacterClass = 2;
+
+    private static readonly DatabaseHostingProviders Providers = new(new PostgreSqlDatabaseHostingProvider(), new SqlServerDatabaseHostingProvider());
+    /// <summary>Selects an explicit local adapter and creates nonpersisted passwords before validated resource wiring.</summary>
     internal static DatabaseResources AddDatabase(this IDistributedApplicationBuilder builder)
     {
-        var provider = DatabaseProviderParser.Parse(builder.Configuration["Database:Provider"] ?? "PostgreSql").ToString();
+        var provider = Providers.Select(builder.Configuration[ProviderSetting] ?? PostgreSqlDatabaseProvider.Identifier);
 
-        var platformPassword = builder.AddParameter("platform-runtime-password", new GenerateParameterDefault
+        var platformPassword = builder.AddParameter(PlatformPasswordName, new GenerateParameterDefault
         {
-            MinLength = 40,
-            MinLower = 2,
-            MinUpper = 2,
-            MinNumeric = 2,
+            MinLength = PasswordLength,
+            MinLower = MinimumCharacterClass,
+            MinUpper = MinimumCharacterClass,
+            MinNumeric = MinimumCharacterClass,
             Special = false
         }, secret: true, persist: false);
-        var sessionsPassword = builder.AddParameter("sessions-runtime-password", new GenerateParameterDefault
+        var sessionsPassword = builder.AddParameter(SessionsPasswordName, new GenerateParameterDefault
         {
-            MinLength = 40,
-            MinLower = 2,
-            MinUpper = 2,
-            MinNumeric = 2,
+            MinLength = PasswordLength,
+            MinLower = MinimumCharacterClass,
+            MinUpper = MinimumCharacterClass,
+            MinNumeric = MinimumCharacterClass,
             Special = false
         }, secret: true, persist: false);
 
-        IResourceBuilder<IResourceWithConnectionString> platform;
-        IResourceBuilder<IResourceWithConnectionString> sessions;
-        ReferenceExpression platformRuntime;
-        ReferenceExpression sessionsRuntime;
-        if (provider == "PostgreSql")
-        {
-            var database = builder.AddPostgres("database")
-                .WithImageTag("18")
-                .WithImageSHA256("74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336");
-            platform = database.AddDatabase("platform");
-            sessions = database.AddDatabase("adminsessions");
-            var endpoint = database.GetEndpoint("tcp");
-            platformRuntime = ReferenceExpression.Create($"Host={endpoint.Property(EndpointProperty.Host)};Port={endpoint.Property(EndpointProperty.Port)};Database=platform;Username=platform_runtime;Password={platformPassword}");
-            sessionsRuntime = ReferenceExpression.Create($"Host={endpoint.Property(EndpointProperty.Host)};Port={endpoint.Property(EndpointProperty.Port)};Database=adminsessions;Username=sessions_runtime;Password={sessionsPassword}");
-        }
-        else
-        {
-            var database = builder.AddSqlServer("database")
-                .WithImageTag("2022-latest")
-                .WithImageSHA256("4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090");
-            platform = database.AddDatabase("platform");
-            sessions = database.AddDatabase("adminsessions");
-            var endpoint = database.GetEndpoint("tcp");
-            // The disposable local SQL container uses its self-signed transport certificate.
-            // This does not alter HTTPS certificate/issuer validation for application traffic.
-            platformRuntime = ReferenceExpression.Create($"Server={endpoint.Property(EndpointProperty.Host)},{endpoint.Property(EndpointProperty.Port)};Database=platform;User ID=platform_runtime;Password={platformPassword};Encrypt=True;TrustServerCertificate=True");
-            sessionsRuntime = ReferenceExpression.Create($"Server={endpoint.Property(EndpointProperty.Host)},{endpoint.Property(EndpointProperty.Port)};Database=adminsessions;User ID=sessions_runtime;Password={sessionsPassword};Encrypt=True;TrustServerCertificate=True");
-        }
-
-        return new DatabaseResources(provider, platformPassword, sessionsPassword, platform, sessions, platformRuntime, sessionsRuntime);
+        return Providers.Add(provider.Provider.Id, builder, platformPassword, sessionsPassword);
     }
 }
