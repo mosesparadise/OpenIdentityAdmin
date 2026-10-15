@@ -1,7 +1,6 @@
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Persistence;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Fixtures;

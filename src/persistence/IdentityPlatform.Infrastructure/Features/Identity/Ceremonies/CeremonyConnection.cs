@@ -1,23 +1,14 @@
 using System.Data;
-using System.Globalization;
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 
 /// <summary>Owns explicit connection, command and session limits, including cleanup discovery outside a transaction.</summary>
 internal sealed class CeremonyConnection(PlatformDbContext database) : IAsyncDisposable
 {
-    private const string SqlRead = "SELECT @@LOCK_TIMEOUT";
-    private const string SqlSet = "SET LOCK_TIMEOUT 5000";
-    private const string SqlRestore = "SET LOCK_TIMEOUT ";
-    private const string PostgresRead = "SELECT current_setting('lock_timeout')";
-    private const string PostgresSet = "SET lock_timeout = '5s'";
-    private const string PostgresRestore = "SELECT set_config('lock_timeout', @previous, false)";
-    private const string PreviousParameter = "previous";
     private readonly int? commandTimeout = database.Database.GetCommandTimeout();
     private object? lockTimeout;
     private bool opened;
@@ -31,9 +22,9 @@ internal sealed class CeremonyConnection(PlatformDbContext database) : IAsyncDis
         database.Database.SetCommandTimeout(AdministratorPolicy.OperationSeconds);
         await using var command = database.Database.GetDbConnection().CreateCommand();
         command.CommandTimeout = AdministratorPolicy.OperationSeconds;
-        command.CommandText = database.Database.IsSqlServer() ? SqlRead : PostgresRead;
+        database.GetDatabaseProvider().Connections.ReadLockTimeout(command);
         lockTimeout = await command.ExecuteScalarAsync(token);
-        command.CommandText = database.Database.IsSqlServer() ? SqlSet : PostgresSet;
+        database.GetDatabaseProvider().Connections.SetLockTimeout(command);
         await command.ExecuteNonQueryAsync(token);
     }
 
@@ -75,18 +66,7 @@ internal sealed class CeremonyConnection(PlatformDbContext database) : IAsyncDis
         using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(AdministratorPolicy.OperationSeconds));
         await using var command = connection.CreateCommand();
         command.CommandTimeout = AdministratorPolicy.OperationSeconds;
-        if (database.Database.IsSqlServer())
-        {
-            command.CommandText = SqlRestore + Convert.ToInt32(lockTimeout, CultureInfo.InvariantCulture).ToString(CultureInfo.InvariantCulture);
-        }
-        else
-        {
-            command.CommandText = PostgresRestore;
-            var previous = command.CreateParameter();
-            previous.ParameterName = PreviousParameter;
-            previous.Value = lockTimeout;
-            command.Parameters.Add(previous);
-        }
+        database.GetDatabaseProvider().Connections.RestoreLockTimeout(command, lockTimeout);
         await command.ExecuteNonQueryAsync(deadline.Token);
     }
 
@@ -96,14 +76,7 @@ internal sealed class CeremonyConnection(PlatformDbContext database) : IAsyncDis
         var connection = database.Database.GetDbConnection();
         try
         {
-            if (connection is SqlConnection sql)
-            {
-                SqlConnection.ClearPool(sql);
-            }
-            if (connection is NpgsqlConnection postgres)
-            {
-                NpgsqlConnection.ClearPool(postgres);
-            }
+            database.GetDatabaseProvider().Connections.ClearPool(connection);
         }
         finally { await connection.CloseAsync(); }
     }

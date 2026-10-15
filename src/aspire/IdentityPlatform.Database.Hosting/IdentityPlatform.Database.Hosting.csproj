@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../persistence/IdentityPlatform.Database.Abstractions/IdentityPlatform.Database.Abstractions.csproj" />
+    <PackageReference Include="Aspire.Hosting" />
+  </ItemGroup>
+  <ItemGroup><PackageReference Include="MessagePack" /></ItemGroup>
+</Project>

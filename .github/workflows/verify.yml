@@ -185,12 +185,16 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_issuer_selection.py
+      - run: python3 scripts/test_persistence_selection.py
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
+      - name: Build frozen provider compatibility producer
+        if: matrix.partition == 'foundation'
+        run: python3 scripts/prepare_provider_baseline.py
       - name: Prepare pinned native database image
         if: matrix.profile != 'unit'
         run: python3 scripts/prepare_native_image.py ${{ matrix.profile }}
@@ -212,6 +216,7 @@ jobs:
           path: |
             artifacts/tests/
             artifacts/coverage/
+            artifacts/provider-compatibility/
           retention-days: 7
           if-no-files-found: error
   browser:
@@ -241,6 +246,7 @@ jobs:
       - run: python3 scripts/check-ai-instructions.py
       - run: python3 scripts/test_lifecycle_selection.py
       - run: python3 scripts/test_issuer_selection.py
+      - run: python3 scripts/test_persistence_selection.py
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py

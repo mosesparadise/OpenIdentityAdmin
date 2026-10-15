@@ -1,6 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityPlatform.Host.Tests.Features.BffSessions;

@@ -6,7 +6,6 @@ using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Keys;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Persistence;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;

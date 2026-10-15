@@ -1,3 +1,4 @@
+using IdentityPlatform.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,42 +12,35 @@ internal static class FactorSchema
     internal const int LabelLength = 32;
     internal const int StampLength = 256;
     internal const int CiphertextLength = 2048;
-    private const string Ordinal = "Latin1_General_100_BIN2";
     private const string ConstraintPrefix = "CK_";
     private const string Separator = "_";
 
     /// <summary>Bounds a text column and keeps SQL Server comparisons ordinal.</summary>
-    internal static void Text<T>(EntityTypeBuilder<T> entity, string name, int length, bool sqlServer) where T : class
+    internal static void Text<T>(EntityTypeBuilder<T> entity, string name, int length, IDatabaseModelDialect dialect) where T : class
     {
         var property = entity.Property<string>(name).HasMaxLength(length);
-        if (sqlServer)
+        if (dialect.IdentityOrdinalCollation is { } ordinal)
         {
-            property.UseCollation(Ordinal);
+            property.UseCollation(ordinal);
         }
     }
 
     /// <summary>Associates product material with durable user authentication state without destructive cascades.</summary>
-    internal static EntityTypeBuilder<T> Material<T>(ModelBuilder builder, bool sqlServer) where T : class
+    internal static EntityTypeBuilder<T> Material<T>(ModelBuilder builder, IDatabaseModelDialect dialect) where T : class
     {
         var entity = builder.Entity<T>();
         entity.Property<Guid>(nameof(AdministratorFactor.Id)).ValueGeneratedNever();
-        Text(entity, nameof(AdministratorFactor.UserId), UserLength, sqlServer);
+        Text(entity, nameof(AdministratorFactor.UserId), UserLength, dialect);
         entity.HasOne<AdministratorAuthentication>().WithMany().HasForeignKey(nameof(AdministratorFactor.UserId)).OnDelete(DeleteBehavior.Restrict);
         return entity;
     }
 
     /// <summary>Uses code-owned expressions and stable constraint names for both provider migrations.</summary>
-    internal static void Check<T>(EntityTypeBuilder<T> entity, string rule, string expression, bool sqlServer) where T : class
+    internal static void Check<T>(EntityTypeBuilder<T> entity, string rule, string expression, IDatabaseModelDialect dialect) where T : class
     {
         var table = typeof(T).Name;
-        var sql = sqlServer ? Brackets(expression) : expression;
+        var sql = dialect.Identifiers(expression);
         entity.ToTable(table, mapping => mapping.HasCheckConstraint(ConstraintPrefix + table + Separator + rule, sql));
     }
 
-    /// <summary>Translates only quoted, code-owned column identifiers to SQL Server delimiters.</summary>
-    private static string Brackets(string expression)
-    {
-        var opening = true;
-        return new string(expression.Select(character => character != '"' ? character : (opening = !opening) ? ']' : '[').ToArray());
-    }
 }

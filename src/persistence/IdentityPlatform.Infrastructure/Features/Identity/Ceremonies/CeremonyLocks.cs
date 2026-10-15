@@ -1,3 +1,4 @@
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
@@ -11,10 +12,9 @@ internal sealed class CeremonyLocks(PlatformDbContext database)
     /// <summary>Serializes optional global boundaries, sorted browsers, then sorted accounts; missing required rows deny.</summary>
     internal async Task AcquireAsync(CeremonyLockPlan plan, CancellationToken token)
     {
-        if (database.Database.IsNpgsql())
+        if (database.GetDatabaseProvider().Connections.TransactionLockLimitSql is { } lockTimeout)
         {
-            const string LockTimeout = "SET LOCAL lock_timeout = '5s'";
-            await database.Database.ExecuteSqlRawAsync(LockTimeout, token);
+            await database.Database.ExecuteSqlRawAsync(lockTimeout, token);
         }
         if (plan.Governance)
         {

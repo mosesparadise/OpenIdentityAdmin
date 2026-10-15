@@ -6,7 +6,6 @@ using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using IdentityPlatform.AppHost.Tests.Features;
 using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 

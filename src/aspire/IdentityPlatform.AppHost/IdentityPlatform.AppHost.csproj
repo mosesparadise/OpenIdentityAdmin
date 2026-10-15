@@ -15,11 +15,11 @@
     <ProjectReference Include="../../backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
     <ProjectReference Include="../../backend/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj" />
     <ProjectReference Include="../../migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
+    <ProjectReference Include="../IdentityPlatform.Database.PostgreSql.Hosting/IdentityPlatform.Database.PostgreSql.Hosting.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="../IdentityPlatform.Database.SqlServer.Hosting/IdentityPlatform.Database.SqlServer.Hosting.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" />
-    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
-    <PackageReference Include="Aspire.Hosting.SqlServer" />
     <!-- Pin the serviced 2.x release above Aspire's vulnerable transitive minimum. -->
     <PackageReference Include="MessagePack" />
     <!-- Aspire resource references do not propagate the application dependency override. -->

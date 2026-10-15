@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from persistence_selection import load_persistence_inventory, require_persistence_selection
 """Run the required matrix cells without silently skipping an unavailable provider."""
 import argparse
 import json
@@ -70,11 +71,12 @@ for project, expected_count, story, browser_story in invocations:
                "--no-build", "--no-restore", "--no-progress", "--report-trx", "--report-trx-filename", f"{project}.trx",
                "--results-directory", str(results), "--pre-enumerate-theories", "on"]
     selected = None
-    if project in ("Issuer", "Issuer.Lifecycle", "Administrator") or (project == "AppHost" and args.profile != "unit"):
+    if project in ("Issuer", "Issuer.Lifecycle", "Administrator", "Persistence") or (project == "AppHost" and args.profile != "unit"):
         # Invoke the native executable: the SDK's discovery transport does not forward JSON output.
         discovery = ["dotnet", "run", "--project", command[3], "--no-build", "--no-restore", "--",
                      "--pre-enumerate-theories", "on", "--list-tests", "json"]
-        native_inventory = load_inventory(ROOT / "eng/administrator-test-matrix.json") if project == "Administrator" else None
+        native_inventory = (load_inventory(ROOT / "eng/administrator-test-matrix.json") if project == "Administrator" else
+                            load_persistence_inventory(ROOT / "eng/persistence-test-matrix.json") if project == "Persistence" else None)
         def discover(expression=None):
             invocation = discovery + (["--filter", expression] if expression else [])
             result = execute(invocation, os.environ.copy(), timeout=60, capture=True)
@@ -90,6 +92,11 @@ for project, expected_count, story, browser_story in invocations:
             require_apphost_selections(all_tests, groups, args.profile, matrix)
             selected = groups[story]
             command += ["--filter", apphost_filter(args.profile, story)]
+        elif project == "Persistence":
+            selected = discover(f"Provider={args.profile}")
+            inventory = load_persistence_inventory(ROOT / "eng/persistence-test-matrix.json")
+            require_persistence_selection(all_tests, selected, args.profile, inventory)
+            command += ["--filter-trait", f"Provider={args.profile}"]
         elif project == "Administrator":
             inventory = {provider: native_inventory[provider] for provider in PROVIDERS}
             if args.browser:
@@ -138,6 +145,6 @@ for project, expected_count, story, browser_story in invocations:
     count = require_complete_trx(report, expected_count=expected_count)
     if selected is not None:
         require_execution_names(report, selected)
-        if project in ("AppHost", "Issuer", "Issuer.Lifecycle", "Administrator"):
+        if project in ("AppHost", "Issuer", "Issuer.Lifecycle", "Administrator", "Persistence"):
             require_lifecycle_execution(report, selected)
     print(f"Verified {project}/{label}: {count} required tests passed; none skipped", flush=True)

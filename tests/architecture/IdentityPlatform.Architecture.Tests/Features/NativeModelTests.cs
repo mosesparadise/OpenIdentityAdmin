@@ -1,5 +1,4 @@
 using IdentityPlatform.Core.Features.Configuration;
-using IdentityPlatform.Infrastructure.Features.Health;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;

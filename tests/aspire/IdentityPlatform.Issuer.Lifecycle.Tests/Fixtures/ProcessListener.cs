@@ -1,5 +1,4 @@
 using System.Globalization;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 

@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text.Json;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Host.Tests.Features.Pilot;
 

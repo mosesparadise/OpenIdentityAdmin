@@ -1,5 +1,4 @@
 using Aspire.Hosting.ApplicationModel;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Issuer.Tests.Fixtures;

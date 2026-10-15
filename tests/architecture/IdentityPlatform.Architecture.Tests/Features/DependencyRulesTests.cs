@@ -1,5 +1,4 @@
 using System.Xml.Linq;
-using IdentityPlatform.Core.Features.Configuration;
 
 namespace IdentityPlatform.Architecture.Tests.Features;
 
@@ -8,19 +7,27 @@ public sealed class DependencyRulesTests
     private static readonly string[] AllowedRuntimeReferences =
     [
         "../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj",
-        "../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj"
+        "../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj",
+        "../../persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj",
+        "../../persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj"
     ];
+    private static readonly string[] AllowedInfrastructureReferences = ["../../core/IdentityPlatform.Core/IdentityPlatform.Core.csproj", "../IdentityPlatform.Database.Abstractions/IdentityPlatform.Database.Abstractions.csproj"];
     private static string Repository => FindRepository();
 
+    /// <summary>Keeps the domain assembly independent of every engine, transport and host project.</summary>
     [Fact]
-    public void Core_has_no_transport_provider_or_host_dependencies()
+    public void Given_CoreAssembly_When_DependenciesAreInspected_Then_NoProviderOrHostIsReferenced()
     {
-        var references = typeof(DatabaseProvider).Assembly.GetReferencedAssemblies();
+        const string PackageReference = "PackageReference";
+        const string ProjectReference = "ProjectReference";
+        const string FrameworkReference = "FrameworkReference";
+        var references = typeof(IdentityPlatform.Core.Features.Configuration.DatabaseProviderParser).Assembly.GetReferencedAssemblies();
         Assert.All(references, reference => Assert.StartsWith("System.", reference.Name));
-        var project = XDocument.Load(Path.Combine(Repository, "src/core/IdentityPlatform.Core/IdentityPlatform.Core.csproj"));
-        Assert.Empty(project.Descendants("PackageReference"));
-        Assert.Empty(project.Descendants("ProjectReference"));
-        Assert.Empty(project.Descendants("FrameworkReference"));
+        const string CoreProject = "src/core/IdentityPlatform.Core/IdentityPlatform.Core.csproj";
+        var project = XDocument.Load(Path.Combine(Repository, CoreProject));
+        Assert.Empty(project.Descendants(PackageReference));
+        Assert.Empty(project.Descendants(ProjectReference));
+        Assert.Empty(project.Descendants(FrameworkReference));
     }
 
     [Fact]
@@ -43,14 +50,19 @@ public sealed class DependencyRulesTests
         }
     }
 
+    /// <summary>Allows vendor-neutral persistence contracts while retaining host-free shared infrastructure.</summary>
     [Fact]
-    public void Infrastructure_and_service_defaults_do_not_reference_host_projects()
+    public void Given_SharedInfrastructure_When_ProjectReferencesAreInspected_Then_OnlyApprovedContractsRemain()
     {
-        var infrastructure = XDocument.Load(Path.Combine(Repository, "src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj"));
-        Assert.All(infrastructure.Descendants("ProjectReference"), reference =>
-            Assert.Equal("../../core/IdentityPlatform.Core/IdentityPlatform.Core.csproj", (string?)reference.Attribute("Include")));
-        var defaults = XDocument.Load(Path.Combine(Repository, "src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj"));
-        Assert.Empty(defaults.Descendants("ProjectReference"));
+        const string InfrastructureProject = "src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj";
+        const string DefaultsProject = "src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj";
+        const string ProjectReference = "ProjectReference";
+        const string IncludeAttribute = "Include";
+        var infrastructure = XDocument.Load(Path.Combine(Repository, InfrastructureProject));
+        Assert.All(infrastructure.Descendants(ProjectReference), reference =>
+            Assert.Contains((string?)reference.Attribute(IncludeAttribute), AllowedInfrastructureReferences));
+        var defaults = XDocument.Load(Path.Combine(Repository, DefaultsProject));
+        Assert.Empty(defaults.Descendants(ProjectReference));
     }
 
     private static string FindRepository()

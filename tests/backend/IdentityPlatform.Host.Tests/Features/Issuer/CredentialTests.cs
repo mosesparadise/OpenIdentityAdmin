@@ -3,7 +3,6 @@ using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

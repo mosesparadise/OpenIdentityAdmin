@@ -1,4 +1,3 @@
-using IdentityPlatform.Testing;
 using Xunit.Sdk;
 
 namespace IdentityPlatform.Host.Tests.Features.Pilot;

@@ -6,7 +6,6 @@ using IdentityPlatform.Admin.Bff.Features.Sessions;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
-using IdentityPlatform.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;

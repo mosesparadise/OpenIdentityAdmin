@@ -3,7 +3,6 @@ using System.Net;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Administrator.Tests.Fixtures;
 

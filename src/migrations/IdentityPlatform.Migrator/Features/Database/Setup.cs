@@ -1,5 +1,5 @@
-using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Migrator.Composition;
 using IdentityPlatform.Migrator.Features.Database.LocalRoles;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
 using IdentityPlatform.Migrator.Features.Operations;
@@ -10,10 +10,15 @@ namespace IdentityPlatform.Migrator.Features.Database;
 
 internal static class Setup
 {
+    private const string ProviderSetting = "Database:Provider";
+    private const string PlatformConnectionSetting = "ConnectionStrings:platform";
+    private const string SessionConnectionSetting = "ConnectionStrings:adminsessions";
+
+    /// <summary>Selects the host-owned provider registration and configures only the stores required by the requested operation.</summary>
     internal static HostApplicationBuilder AddDatabase(this HostApplicationBuilder builder)
     {
-        var provider = DatabaseProviderParser.Parse(builder.Configuration["Database:Provider"]);
-        var platform = builder.Configuration["ConnectionStrings:platform"] ?? "";
+        var provider = DatabaseProviderRegistration.Providers.Select(builder.Configuration[ProviderSetting]);
+        var platform = builder.Configuration[PlatformConnectionSetting] ?? "";
         if (builder.Configuration.IsAdministratorBootstrap())
         {
             builder.Services.AddIdentityPersistence(provider, platform);
@@ -21,7 +26,7 @@ internal static class Setup
         else
         {
             builder.Services.AddPlatformPersistence(provider, platform,
-                builder.Configuration["ConnectionStrings:adminsessions"] ?? "");
+                builder.Configuration[SessionConnectionSetting] ?? "");
         }
         return builder;
     }

@@ -1,5 +1,4 @@
 using IdentityPlatform.Admin.Bff.Features.Sessions;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.AppHost.Tests.Features.BffSessions;
 

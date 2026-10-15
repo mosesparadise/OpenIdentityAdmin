@@ -4,7 +4,6 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 

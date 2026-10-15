@@ -4,7 +4,6 @@ using System.Text;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

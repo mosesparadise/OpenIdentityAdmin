@@ -1,6 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
-using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Governance.Driver.Features;
 using IdentityPlatform.Governance.Driver.Features.Protocol;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;

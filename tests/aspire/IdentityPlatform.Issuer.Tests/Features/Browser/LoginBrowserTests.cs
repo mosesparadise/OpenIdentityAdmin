@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Browser;

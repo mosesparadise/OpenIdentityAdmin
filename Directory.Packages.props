@@ -15,11 +15,13 @@
     <PackageVersion Include="OpenIddict.Client.AspNetCore" Version="7.7.1" />
     <PackageVersion Include="OpenIddict.Client.SystemNetHttp" Version="7.7.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.12" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.12" />
+    <PackageVersion Include="Aspire.Hosting" Version="13.6.1" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.6.1" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.6.1" />
     <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.6.1" />

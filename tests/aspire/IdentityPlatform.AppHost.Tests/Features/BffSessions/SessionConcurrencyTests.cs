@@ -1,6 +1,5 @@
 using IdentityPlatform.Admin.Bff.Features.Sessions;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
-using IdentityPlatform.Testing;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.AppHost.Tests.Features.BffSessions;

@@ -2,7 +2,6 @@ using System.Net;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.AppHost.Tests.Features;

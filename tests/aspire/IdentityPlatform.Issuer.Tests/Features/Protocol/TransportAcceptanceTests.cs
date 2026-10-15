@@ -2,7 +2,6 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 

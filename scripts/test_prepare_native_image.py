@@ -5,7 +5,7 @@ import subprocess
 import unittest
 from unittest.mock import patch
 from control_runner import run
-from prepare_native_image import ROOT, SETUP, image_reference, prepare
+from prepare_native_image import ROOT, SETUPS, image_reference, prepare
 
 PG = '74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336'
 SQL = '4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090'
@@ -16,18 +16,30 @@ class NativeImagePreparationTests(unittest.TestCase):
 
     def test_Given_current_setup_When_resolving_Then_exact_provider_pins_are_used(self):
         """Existing immutable images remain authoritative for both providers."""
-        self.assertEqual(f'docker.io/library/postgres:18@sha256:{PG}', image_reference('PostgreSql', SETUP.read_text()))
-        self.assertEqual(f'mcr.microsoft.com/mssql/server:2022-latest@sha256:{SQL}', image_reference('SqlServer', SETUP.read_text()))
+        self.assertEqual(f'docker.io/library/postgres:18@sha256:{PG}', image_reference('PostgreSql', SETUPS['PostgreSql'].read_text()))
+        self.assertEqual(f'mcr.microsoft.com/mssql/server:2022-latest@sha256:{SQL}', image_reference('SqlServer', SETUPS['SqlServer'].read_text()))
 
     def test_Given_missing_changed_or_ambiguous_pin_When_resolving_Then_preparation_fails(self):
         """No tag-only fallback, guessed digest, duplicate declaration or override is allowed."""
-        source = SETUP.read_text()
-        for invalid in ('', source + source, source.replace(PG, 'bad'), source + '\ndatabase.WithImageRegistry("other");', source.replace('.WithImageTag("18")', '.WithImage("other")'),
-                        source.replace('.WithImageSHA256("' + PG + '");', '.WithImageSHA256("' + PG + '").WithImage("other");')):
+        source = SETUPS['PostgreSql'].read_text()
+        for invalid in ('', source + source, source.replace(PG, 'bad'), source + '\ndatabase.WithImageRegistry("other");', source.replace('.WithImageTag(ImageTag)', '.WithImage("other")'),
+                        source.replace('.WithImageSHA256(ImageDigest);', '.WithImageSHA256(ImageDigest).WithImage("other");')):
             with self.subTest(source=invalid[:20]), self.assertRaises(ValueError):
                 image_reference('PostgreSql', invalid)
         with self.assertRaises(KeyError):
             image_reference('unit', source)
+
+    def test_Given_individually_invalid_constants_When_resolving_Then_preparation_fails(self):
+        """Each adapter constant must be present exactly once with its reviewed literal shape."""
+        for provider, path in SETUPS.items():
+            source = path.read_text()
+            for name in ('DatabaseName', 'ImageTag', 'ImageDigest'):
+                declaration = re.search(rf'const string {name} = "[^"]+";', source).group(0)
+                for invalid in (source.replace(declaration, ''), source + '\n' + declaration):
+                    with self.subTest(provider=provider, constant=name), self.assertRaises(ValueError):
+                        image_reference(provider, invalid)
+            with self.assertRaises(ValueError):
+                image_reference(provider, source.replace('DatabaseName = "database"', 'DatabaseName = "other"'))
 
     def test_Given_exact_inspected_digest_When_preparing_Then_single_bounded_pull_precedes_inspection(self):
         """Canonical Docker namespace forms pass; commands never create or start containers."""
@@ -35,9 +47,9 @@ class NativeImagePreparationTests(unittest.TestCase):
                                              ('SqlServer', 'mcr.microsoft.com/mssql/server', SQL)]:
             with self.subTest(provider=provider), patch('prepare_native_image.subprocess.run') as execute:
                 execute.return_value.stdout = json.dumps([repository + '@sha256:' + digest])
-                prepare(provider, SETUP.read_text())
+                prepare(provider, SETUPS[provider].read_text())
                 self.assertEqual(2, execute.call_count)
-                self.assertEqual(['docker', 'pull', image_reference(provider, SETUP.read_text())], execute.call_args_list[0].args[0])
+                self.assertEqual(['docker', 'pull', image_reference(provider, SETUPS[provider].read_text())], execute.call_args_list[0].args[0])
                 self.assertEqual({'check': True, 'timeout': 300}, execute.call_args_list[0].kwargs)
                 self.assertEqual(15, execute.call_args_list[1].kwargs['timeout'])
                 self.assertTrue(execute.call_args_list[1].kwargs['check'])
@@ -47,7 +59,7 @@ class NativeImagePreparationTests(unittest.TestCase):
         for error in [subprocess.CalledProcessError(1, 'docker'), subprocess.TimeoutExpired('docker', 300), FileNotFoundError()]:
             with self.subTest(error=type(error)), patch('prepare_native_image.subprocess.run', side_effect=error) as execute:
                 with self.assertRaises(type(error)):
-                    prepare('PostgreSql', SETUP.read_text())
+                    prepare('PostgreSql', SETUPS['PostgreSql'].read_text())
                 self.assertEqual(1, execute.call_count)
 
     def test_Given_inspection_failure_or_mismatched_digest_When_preparing_Then_preparation_fails(self):
@@ -57,12 +69,12 @@ class NativeImagePreparationTests(unittest.TestCase):
             with self.subTest(receipt=receipt), patch('prepare_native_image.subprocess.run') as execute:
                 execute.return_value.stdout = receipt
                 with self.assertRaises(ValueError):
-                    prepare('PostgreSql', SETUP.read_text())
+                    prepare('PostgreSql', SETUPS['PostgreSql'].read_text())
                 self.assertEqual(2, execute.call_count)
         for error in [subprocess.CalledProcessError(1, 'docker'), subprocess.TimeoutExpired('docker', 15)]:
             with patch('prepare_native_image.subprocess.run', side_effect=[None, error]) as execute:
                 with self.assertRaises(type(error)):
-                    prepare('PostgreSql', SETUP.read_text())
+                    prepare('PostgreSql', SETUPS['PostgreSql'].read_text())
                 self.assertEqual(2, execute.call_count)
 
     def test_Given_workflow_When_preparing_Then_every_native_job_prepares_before_execution(self):
@@ -85,4 +97,4 @@ class NativeImagePreparationTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    run(6)
+    run(7)

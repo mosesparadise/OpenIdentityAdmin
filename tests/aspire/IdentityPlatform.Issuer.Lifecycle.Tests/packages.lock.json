@@ -67,30 +67,6 @@
         "resolved": "13.6.1",
         "contentHash": "7SleuF3C/vACKF1eN++e31c+LhkbQ9pTbHtlMbHIoN/rNoVaMuyKWT1yhuDBdof+Y8zi5+c2gYtm9tjABBbAcQ=="
       },
-      "Aspire.Hosting": {
-        "type": "Transitive",
-        "resolved": "13.6.1",
-        "contentHash": "gIcP7+rPSBPWLlEpFGCWGKdjoXvyn0rZRCbjxUHTMnw8Y+a6Esp915o8MOROpYI++MQN3Fo55Yu0XuBJ6MqEIw==",
-        "dependencies": {
-          "AspNetCore.HealthChecks.Uris": "9.0.0",
-          "Google.Protobuf": "3.36.1",
-          "Grpc.AspNetCore": "2.83.0",
-          "Grpc.Net.ClientFactory": "2.83.0",
-          "Grpc.Tools": "2.83.0",
-          "Hex1b": "0.168.0",
-          "KubernetesClient": "19.0.2",
-          "MessagePack": "2.5.302",
-          "ModelContextProtocol": "1.4.1",
-          "Newtonsoft.Json": "13.0.4",
-          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.17.0",
-          "OpenTelemetry.Extensions.Hosting": "1.17.0",
-          "Polly.Core": "8.7.0",
-          "Semver": "3.0.0",
-          "StreamJsonRpc": "2.25.29",
-          "System.IO.Hashing": "10.0.12",
-          "YamlDotNet": "18.1.0"
-        }
-      },
       "Aspire.Hosting.Orchestration.linux-x64": {
         "type": "Transitive",
         "resolved": "13.6.1",
@@ -277,14 +253,6 @@
         "type": "Transitive",
         "resolved": "10.0.12",
         "contentHash": "Kd4o2oO1A6dfKxjz5LS16QyLtpCFTUiFWwmBABETAXRsSImBdRdWeKjSgbbRhAMiV3a3/nWr95ZtzClT4uaADQ=="
-      },
-      "Microsoft.EntityFrameworkCore.Relational": {
-        "type": "Transitive",
-        "resolved": "10.0.12",
-        "contentHash": "OiHmr8XzX96dbgMsYGe8qoqg4KxibdZG2r0QUVJBGktFInOp8IrABe8jvcbo5hrqeWfbwpK7fCEBiEPbY/ik4A==",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "10.0.12"
-        }
       },
       "Microsoft.Extensions.AI.Abstractions": {
         "type": "Transitive",
@@ -721,9 +689,9 @@
           "Aspire.Dashboard.Sdk.linux-x64": "[13.6.1, )",
           "Aspire.Hosting.AppHost": "[13.6.1, )",
           "Aspire.Hosting.Orchestration.linux-x64": "[13.6.1, )",
-          "Aspire.Hosting.PostgreSQL": "[13.6.1, )",
-          "Aspire.Hosting.SqlServer": "[13.6.1, )",
           "IdentityPlatform.Core": "[1.0.0, )",
+          "IdentityPlatform.Database.PostgreSql.Hosting": "[1.0.0, )",
+          "IdentityPlatform.Database.SqlServer.Hosting": "[1.0.0, )",
           "MessagePack": "[2.5.307, )",
           "System.Security.Cryptography.Pkcs": "[10.0.13, )"
         }
@@ -731,6 +699,8 @@
       "identityplatform.authserver": {
         "type": "Project",
         "dependencies": {
+          "IdentityPlatform.Database.PostgreSql": "[1.0.0, )",
+          "IdentityPlatform.Database.SqlServer": "[1.0.0, )",
           "IdentityPlatform.Infrastructure": "[1.0.0, )",
           "IdentityPlatform.ServiceDefaults": "[1.0.0, )",
           "OpenIddict.Server.AspNetCore": "[7.7.1, )",
@@ -740,14 +710,58 @@
       "identityplatform.core": {
         "type": "Project"
       },
+      "identityplatform.database.abstractions": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "[10.0.12, )"
+        }
+      },
+      "identityplatform.database.hosting": {
+        "type": "Project",
+        "dependencies": {
+          "Aspire.Hosting": "[13.6.1, )",
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
+          "MessagePack": "[2.5.307, )"
+        }
+      },
+      "identityplatform.database.postgresql": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )"
+        }
+      },
+      "identityplatform.database.postgresql.hosting": {
+        "type": "Project",
+        "dependencies": {
+          "Aspire.Hosting.PostgreSQL": "[13.6.1, )",
+          "IdentityPlatform.Database.Hosting": "[1.0.0, )",
+          "IdentityPlatform.Database.PostgreSql": "[1.0.0, )"
+        }
+      },
+      "identityplatform.database.sqlserver": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
+          "Microsoft.EntityFrameworkCore.SqlServer": "[10.0.12, )",
+          "System.Security.Cryptography.Pkcs": "[10.0.13, )"
+        }
+      },
+      "identityplatform.database.sqlserver.hosting": {
+        "type": "Project",
+        "dependencies": {
+          "Aspire.Hosting.SqlServer": "[13.6.1, )",
+          "IdentityPlatform.Database.Hosting": "[1.0.0, )",
+          "IdentityPlatform.Database.SqlServer": "[1.0.0, )"
+        }
+      },
       "identityplatform.infrastructure": {
         "type": "Project",
         "dependencies": {
           "IdentityPlatform.Core": "[1.0.0, )",
+          "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "[10.0.12, )",
-          "Microsoft.EntityFrameworkCore.SqlServer": "[10.0.12, )",
           "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "[10.0.12, )",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "[10.0.3, )",
           "OpenIddict.EntityFrameworkCore": "[7.7.1, )",
           "System.Security.Cryptography.Pkcs": "[10.0.13, )"
         }
@@ -759,6 +773,31 @@
           "OpenTelemetry.Exporter.OpenTelemetryProtocol": "[1.19.1, )",
           "OpenTelemetry.Extensions.Hosting": "[1.19.1, )",
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.19.0, )"
+        }
+      },
+      "Aspire.Hosting": {
+        "type": "CentralTransitive",
+        "requested": "[13.6.1, )",
+        "resolved": "13.6.1",
+        "contentHash": "gIcP7+rPSBPWLlEpFGCWGKdjoXvyn0rZRCbjxUHTMnw8Y+a6Esp915o8MOROpYI++MQN3Fo55Yu0XuBJ6MqEIw==",
+        "dependencies": {
+          "AspNetCore.HealthChecks.Uris": "9.0.0",
+          "Google.Protobuf": "3.36.1",
+          "Grpc.AspNetCore": "2.83.0",
+          "Grpc.Net.ClientFactory": "2.83.0",
+          "Grpc.Tools": "2.83.0",
+          "Hex1b": "0.168.0",
+          "KubernetesClient": "19.0.2",
+          "MessagePack": "2.5.302",
+          "ModelContextProtocol": "1.4.1",
+          "Newtonsoft.Json": "13.0.4",
+          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.17.0",
+          "OpenTelemetry.Extensions.Hosting": "1.17.0",
+          "Polly.Core": "8.7.0",
+          "Semver": "3.0.0",
+          "StreamJsonRpc": "2.25.29",
+          "System.IO.Hashing": "10.0.12",
+          "YamlDotNet": "18.1.0"
         }
       },
       "Aspire.Hosting.AppHost": {
@@ -861,6 +900,15 @@
         "contentHash": "7W/9vKC65y41W6JXwC6WSU++D43wY/ANhrm7tJdbm2lrbzNkYClja6uL3Cg69y+PJ1Q4nARb3eWs9PNMWCdYxQ==",
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Relational": "10.0.12"
+        }
+      },
+      "Microsoft.EntityFrameworkCore.Relational": {
+        "type": "CentralTransitive",
+        "requested": "[10.0.12, )",
+        "resolved": "10.0.12",
+        "contentHash": "OiHmr8XzX96dbgMsYGe8qoqg4KxibdZG2r0QUVJBGktFInOp8IrABe8jvcbo5hrqeWfbwpK7fCEBiEPbY/ik4A==",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "10.0.12"
         }
       },
       "Microsoft.EntityFrameworkCore.SqlServer": {

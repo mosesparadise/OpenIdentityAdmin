@@ -1,6 +1,5 @@
 using IdentityPlatform.Admin.Bff.Composition;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;

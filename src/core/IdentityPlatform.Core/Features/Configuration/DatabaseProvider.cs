@@ -1,23 +1,18 @@
 namespace IdentityPlatform.Core.Features.Configuration;
 
-public enum DatabaseProvider
-{
-    PostgreSql,
-    SqlServer
-}
-
+/// <summary>Canonicalizes configuration against explicitly registered identifiers without vendor knowledge.</summary>
+/// <example><code>var id = DatabaseProviderParser.Parse(configured, registeredIds);</code></example>
 public static class DatabaseProviderParser
 {
-    public static DatabaseProvider Parse(string? value)
+    private const string InvalidProvider = "Database:Provider must identify a registered database provider.";
+
+    /// <summary>Requires exactly one registered match and never echoes rejected configuration.</summary>
+    /// <example><code>var id = DatabaseProviderParser.Parse(configurationValue, registeredIds);</code></example>
+    public static string Parse(string? value, IReadOnlyCollection<string> registeredIds)
     {
-        // Enum.TryParse also accepts numeric values and combined names; configuration must not.
-        return value?.Trim() switch
-        {
-            { } name when name.Equals("PostgreSql", StringComparison.OrdinalIgnoreCase)
-                => DatabaseProvider.PostgreSql,
-            { } name when name.Equals("SqlServer", StringComparison.OrdinalIgnoreCase)
-                => DatabaseProvider.SqlServer,
-            _ => throw new ArgumentException("Database:Provider must be PostgreSql or SqlServer.")
-        };
+        ArgumentNullException.ThrowIfNull(registeredIds);
+        var matches = registeredIds.Where(id => !string.IsNullOrWhiteSpace(id) &&
+            string.Equals(id, value?.Trim(), StringComparison.OrdinalIgnoreCase)).ToArray();
+        return matches.Length == 1 ? matches[0] : throw new ArgumentException(InvalidProvider);
     }
 }

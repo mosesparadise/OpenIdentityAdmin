@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
-using IdentityPlatform.Testing;
 
 namespace IdentityPlatform.AppHost.Tests.Features;
 

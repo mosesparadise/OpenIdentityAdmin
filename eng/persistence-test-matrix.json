@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 2,
+  "metadata": {
+    "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: PostgreSql)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "DatabaseFailureTests",
+        "methodName": "Partial_initialization_can_resume_and_outages_fail_safely_within_deadline",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "DatabaseFailureTests",
+        "methodName": "Partial_initialization_can_resume_and_outages_fail_safely_within_deadline",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: PostgreSql)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "InteractionBudgetMigrationTests",
+        "methodName": "Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: SqlServer)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "InteractionBudgetMigrationTests",
+        "methodName": "Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: PostgreSql)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "NativePersistenceTests",
+        "methodName": "Migrations_and_native_managers_preserve_state_on_repeated_initialization",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: SqlServer)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "NativePersistenceTests",
+        "methodName": "Migrations_and_native_managers_preserve_state_on_repeated_initialization",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: PostgreSql)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "ProvisioningLogTests",
+        "methodName": "Failed_local_provisioning_does_not_put_passwords_in_database_logs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: SqlServer)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features",
+        "typeName": "ProvisioningLogTests",
+        "methodName": "Failed_local_provisioning_does_not_put_passwords_in_database_logs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "IdentityPlatform.Core.Features.Configuration.DatabaseProvider"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "MigrationCompatibilityTests",
+        "methodName": "Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "MigrationCompatibilityTests",
+        "methodName": "Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    }
+  },
+  "PostgreSql": [
+    "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: PostgreSql)",
+    "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: PostgreSql)",
+    "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: PostgreSql)",
+    "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: PostgreSql)",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"PostgreSql\")"
+  ],
+  "SqlServer": [
+    "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
+    "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: SqlServer)",
+    "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: SqlServer)",
+    "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: SqlServer)",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"SqlServer\")"
+  ]
+}

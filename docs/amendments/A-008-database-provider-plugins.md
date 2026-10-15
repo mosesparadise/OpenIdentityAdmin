@@ -1,0 +1,7 @@
+# A-008 — Project-level relational database providers
+
+Approved by the requesting user on 15 October 2026. The user requested replaceable project-level database implementations and answered: “relational EF Core providers only”; “reorganise both existing providers while preserving databases and migration histories”; “migrate PostgreSQL and SQL Server with reusable provider-conformance tests”. This record authorizes the structural change and its necessary verification; it does not require another approval of the same scope.
+
+Implement explicit registration of trusted provider modules, migrate both existing implementations, preserve existing databases and migration histories, and document how another project implements the contract. Provider support includes the storage semantics used by the product, not merely selecting an EF driver. Runtime projects must not depend on Aspire or executable migration assemblies. Development container hosting and privileged provisioning remain separate capabilities. No third database implementation is requested.
+
+Feature 012 records requirements, design, tests and delivery. After verified delivery, resume feature 011 T005. A-007's temporary Firefox exclusion remains in force. All six historical findings, 48 human rows, production activation and public-release gates remain open. This authorizes no production database operation or revived diagnostic experiment.

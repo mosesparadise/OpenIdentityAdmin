@@ -6,7 +6,6 @@ using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 

@@ -4,7 +4,6 @@ using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

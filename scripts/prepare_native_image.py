@@ -7,7 +7,8 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-SETUP = ROOT / 'src/aspire/IdentityPlatform.AppHost/Features/Database/Setup.cs'
+SETUPS = {provider: ROOT / f'src/aspire/IdentityPlatform.Database.{provider}.Hosting/Features/Database/{provider}DatabaseHostingProvider.cs'
+          for provider in ('PostgreSql', 'SqlServer')}
 PROVIDERS = {
     'PostgreSql': ('Postgres', 'docker.io/library/postgres'),
     'SqlServer': ('SqlServer', 'mcr.microsoft.com/mssql/server'),
@@ -21,13 +22,18 @@ def image_reference(provider, source):
     method, repository = PROVIDERS[provider]
     if re.search(r'\.WithImage(?:Registry)?\s*\(', source):
         raise ValueError('Native database image repository override requires review')
-    pattern = (rf'\bbuilder\.Add{method}\("database"\)\s*'
-               r'\.WithImageTag\("([a-zA-Z0-9][a-zA-Z0-9_.-]*)"\)\s*'
-               r'\.WithImageSHA256\("([0-9a-f]{64})"\);')
-    matches = re.findall(pattern, source)
-    if len(matches) != 1 or len(re.findall(rf'\bAdd{method}\(', source)) != 1:
+    pattern = (rf'\bbuilder\.Add{method}\(DatabaseName\)\s*'
+               r'\.WithImageTag\(ImageTag\)\s*'
+               r'\.WithImageSHA256\(ImageDigest\);')
+    if len(re.findall(pattern, source)) != 1 or len(re.findall(rf'\bAdd{method}\(', source)) != 1:
         raise ValueError('Expected one unchanged digest-pinned native database declaration')
-    tag, digest = matches[0]
+    values = {}
+    for name, value_pattern in (('DatabaseName', 'database'), ('ImageTag', '[a-zA-Z0-9][a-zA-Z0-9_.-]*'), ('ImageDigest', '[0-9a-f]{64}')):
+        matches = re.findall(rf'\bconst string {name} = "({value_pattern})";', source)
+        if len(matches) != 1 or len(re.findall(rf'\bconst string {name}\b', source)) != 1:
+            raise ValueError('Expected one reviewed native image constant')
+        values[name] = matches[0]
+    tag, digest = values['ImageTag'], values['ImageDigest']
     return f'{repository}:{tag}@sha256:{digest}'
 
 
@@ -52,7 +58,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=PROVIDERS)
     args = parser.parse_args()
-    prepare(args.provider, SETUP.read_text())
+    prepare(args.provider, SETUPS[args.provider].read_text())
 
 
 if __name__ == '__main__':

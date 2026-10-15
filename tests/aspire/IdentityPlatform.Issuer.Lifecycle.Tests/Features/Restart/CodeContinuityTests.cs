@@ -3,7 +3,6 @@ using System.Text.Json;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using IdentityPlatform.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
