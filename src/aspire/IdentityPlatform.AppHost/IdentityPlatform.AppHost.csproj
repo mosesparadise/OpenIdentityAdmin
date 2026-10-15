@@ -20,6 +20,8 @@
     <PackageReference Include="Aspire.Hosting.AppHost" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.SqlServer" />
+    <!-- Pin the serviced 2.x release above Aspire's vulnerable transitive minimum. -->
+    <PackageReference Include="MessagePack" />
     <!-- Aspire resource references do not propagate the application dependency override. -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" />
   </ItemGroup>

@@ -1,43 +1,46 @@
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
-from unittest.mock import patch
-from browser_matrix import select, changed_paths
+from browser_matrix import select
 from test_selection import catalogue, require_partition, require_execution_names
 from check_coverage_inputs import require_inputs, browser_labels
 
 
 class BrowserMatrixTests(unittest.TestCase):
+    def test_Given_InitialPhase_When_CliPlansJobs_Then_ContractsAndDeferralAreExplicit(self):
+        """Exercise workflow outputs, retaining all active contract engines and visible nonacceptance."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            event, output, summary = (root / name for name in ('event.json', 'output', 'summary'))
+            event.write_text('{}')
+            environment = dict(os.environ, GITHUB_EVENT_NAME='schedule', GITHUB_EVENT_PATH=str(event),
+                               GITHUB_OUTPUT=str(output), GITHUB_STEP_SUMMARY=str(summary))
+            result = subprocess.run([sys.executable, str(Path(__file__).with_name('browser_matrix.py'))],
+                                    env=environment, capture_output=True, text=True, timeout=10)
+            self.assertEqual(0, result.returncode, result.stderr)
+            values = dict(line.split('=', 1) for line in output.read_text().splitlines())
+            self.assertEqual({'partition': ['core', 'chromium', 'webkit']}, json.loads(values['contracts']))
+            self.require_cells(json.loads(values['matrix']), ['chromium', 'webkit'])
+            self.assertIn('Firefox deferred, not passed', summary.read_text())
+            self.assertIn('before B3', summary.read_text())
+            workflow = Path(__file__).resolve().parents[1] / '.github/workflows/verify.yml'
+            self.assertIn('matrix: ${{ fromJSON(needs.browser-plan.outputs.contracts) }}', workflow.read_text())
+
     def require_cells(self, actual, browsers):
+        """Verify exact phase obligations independently of selector implementation constants."""
         expected = {(provider, browser, partition, story) for provider in ('PostgreSql', 'SqlServer') for browser in browsers for partition in ('standard', 'administrator')
                     for story in (('Accounts', 'Security') if partition == 'administrator' else ('',))}
         pairs = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story']) for cell in actual['include']]
         self.assertEqual(len(pairs), len(set(pairs)))
         self.assertEqual(expected, set(pairs))
 
-    def test_chromium_always_covers_both_providers(self):
-        self.require_cells(select('pull_request', ['docs/roadmap.md']), ['chromium'])
-
-    def test_scheduled_manual_and_unknown_changes_cover_all_provider_partition_cells(self):
-        for event, paths in [('schedule', []), ('workflow_dispatch', []), ('pull_request', None), ('push', None)]:
-            with self.subTest(event=event):
-                self.require_cells(select(event, paths), ['chromium', 'firefox', 'webkit'])
-
-    def test_dependency_harness_and_trust_changes_cover_every_engine(self):
-        for path in ['tests/é\nname.cs', 'global.json', 'NuGet.Config', 'dotnet-tools.json', 'Directory.Packages.props', 'a/packages.lock.json', '.github/workflows/verify.yml',
-                     'tests/shared/IssuerMaterialFixture.cs', 'scripts/verify.py', 'eng/test-matrix.json',
-                     'src/backend/IdentityPlatform.AuthServer/Features/Accounts/Shared/login.css']:
-            with self.subTest(path=path):
-                self.require_cells(select('pull_request', [path]), ['chromium', 'firefox', 'webkit'])
-
-    def test_git_change_parser_preserves_newlines_and_unicode(self):
-        paths = ['tests/é\nname.cs', 'docs/plain.md']
-        with patch('browser_matrix.subprocess.check_output', return_value='\0'.join(paths) + '\0') as command:
-            actual = changed_paths('before', 'after')
-            self.assertEqual(paths, actual)
-            self.assertIn('-z', command.call_args.args[0])
-            self.require_cells(select('pull_request', actual), ['chromium', 'firefox', 'webkit'])
+    def test_Given_FullVerification_When_Selected_Then_BothEnginesCoverEveryProviderAndStory(self):
+        """No change-path or event heuristic can silently remove WebKit during B2 work."""
+        self.require_cells(select(), ['chromium', 'webkit'])
 
     def test_partition_rejects_overlap_gap_wrong_category_and_equal_count_substitution(self):
         all_tests = {'a': ('HTTP', 'PostgreSql', False), 'b': ('Browser', 'PostgreSql', True), 'c': ('Other', 'SqlServer', True)}
@@ -58,9 +61,9 @@ class BrowserMatrixTests(unittest.TestCase):
             catalogue('invalid')
 
     def test_Given_RequiredCoverageCells_When_AnyReportIsMissingEmptyOrDuplicated_Then_AcceptanceFails(self):
-        """Independently enumerate all 55 obligations and reject omission or empty evidence for each."""
-        matrix = select('schedule', [])
-        labels = ['issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'contracts-core', 'contracts-chromium', 'contracts-firefox', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+        """Independently enumerate all 48 initial-phase obligations and reject omission or empty evidence for each."""
+        matrix = select()
+        labels = ['issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'contracts-core', 'contracts-chromium', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
                       'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
               'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + [cell['label'] for cell in matrix['include']]
@@ -70,7 +73,7 @@ class BrowserMatrixTests(unittest.TestCase):
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(55, require_inputs(root, matrix))
+            self.assertEqual(48, require_inputs(root, matrix))
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.unlink()
@@ -83,18 +86,21 @@ class BrowserMatrixTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 require_inputs(root, {'include': matrix['include'] + [matrix['include'][0]]})
 
-    def test_coverage_requires_every_provider_partition_and_exact_label(self):
+    def test_Given_PhaseMatrix_When_ObligationsAreAltered_Then_CoverageRejectsEvidence(self):
+        """Verify exact phase obligations independently of selector implementation constants."""
         import copy
-        matrix = select('workflow_dispatch', [])
-        self.assertEqual(18, len(browser_labels(matrix)))
-        for change in ('missing', 'relabel', 'duplicate', 'unknown', 'partial-engine', 'extra-field'):
+        matrix = select()
+        self.assertEqual(12, len(browser_labels(matrix)))
+        for change in ('missing', 'relabel', 'duplicate', 'unknown', 'partial-engine', 'extra-field', 'deferred-engine', 'chromium-only'):
             with self.subTest(change=change):
                 invalid = copy.deepcopy(matrix)
                 if change == 'missing': invalid['include'] = [cell for cell in invalid['include'] if cell['partition'] != 'administrator']
                 elif change == 'relabel': invalid['include'][0]['label'] = 'unrelated-report'
                 elif change == 'duplicate': invalid['include'][-1] = invalid['include'][0]
                 elif change == 'unknown': invalid['include'][0]['provider'] = 'Other'
-                elif change == 'partial-engine': invalid['include'] = [cell for cell in invalid['include'] if cell['browser'] != 'webkit']
+                elif change == 'partial-engine': invalid['include'] = [cell for cell in invalid['include'] if cell['browser'] != 'chromium']
+                elif change == 'chromium-only': invalid['include'] = [cell for cell in invalid['include'] if cell['browser'] == 'chromium']
+                elif change == 'deferred-engine': invalid['include'][0]['browser'] = 'firefox'
                 elif change == 'extra-field': invalid['include'][0]['optional'] = True
                 with self.assertRaises(ValueError): browser_labels(invalid)
 

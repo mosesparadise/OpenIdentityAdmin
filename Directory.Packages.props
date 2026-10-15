@@ -3,6 +3,7 @@
   <ItemGroup>
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
     <PackageVersion Include="Microsoft.Playwright" Version="1.63.0" />
+    <PackageVersion Include="MessagePack" Version="2.5.307" />
     <PackageVersion Include="Deque.AxeCore.Playwright" Version="4.13.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.23.0" />
     <PackageVersion Include="OpenTelemetry.Exporter.InMemory" Version="1.19.1" />
@@ -11,6 +12,8 @@
     <PackageVersion Include="OpenIddict.EntityFrameworkCore" Version="7.7.1" />
     <PackageVersion Include="OpenIddict.AspNetCore" Version="7.7.1" />
     <PackageVersion Include="OpenIddict.Server.AspNetCore" Version="7.7.1" />
+    <PackageVersion Include="OpenIddict.Client.AspNetCore" Version="7.7.1" />
+    <PackageVersion Include="OpenIddict.Client.SystemNetHttp" Version="7.7.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.12" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12" />

@@ -1,52 +1,36 @@
 #!/usr/bin/env python3
-"""Select browser obligations conservatively; unavailable change evidence means all engines."""
+"""Select every phase-required browser cell; A-007 defers Firefox during internal B2."""
 import json
 import os
-from pathlib import Path
-import subprocess
 
-ENGINES = ('chromium', 'firefox', 'webkit')
+# A-007: restore Firefox before B3 implementation or any production/browser activation.
+ENGINES = ('chromium', 'webkit')
+CONTRACT_PARTITIONS = ('core', *ENGINES)
 PROVIDERS = ('PostgreSql', 'SqlServer')
+PHASE_NOTICE = ('A-007 initial development through B2: Chromium and WebKit required; '
+                'Firefox deferred, not passed. Restore before B3 implementation or activation/release.')
 
 
-def select(event, changed):
-    broad = event in ('schedule', 'workflow_dispatch') or changed is None
-    prefixes = ('.github/', 'eng/', 'scripts/', 'tests/', 'src/backend/IdentityPlatform.AuthServer/',
-                'src/frontend/IdentityPlatform.DesignTokens/', 'src/aspire/', 'src/migrations/', 'src/persistence/')
-    broad |= any(path.startswith(prefixes) or path.endswith(('packages.lock.json', '.props', '.targets', '.csproj'))
-                 or path in ('global.json', 'NuGet.Config', 'dotnet-tools.json') for path in changed or ())
+def select():
+    """Require both active engines and every provider/story on all full verification runs."""
     return {'include': [{'provider': provider, 'browser': browser, 'partition': partition, 'browser_story': story,
                          'label': ('administrator-' if partition == 'administrator' else '') + provider + '-' + browser +
                                   ('-' + story.lower() if story else '')}
-                        for browser in ENGINES if broad or browser == 'chromium'
-                        for provider in PROVIDERS for partition in ('standard', 'administrator')
+                        for browser in ENGINES for provider in PROVIDERS
+                        for partition in ('standard', 'administrator')
                         for story in (('Accounts', 'Security') if partition == 'administrator' else ('',))]}
 
 
-
-def changed_paths(before, after):
-    output = subprocess.check_output(['git', 'diff', '--name-only', '-z', before, after, '--'], text=True, stderr=subprocess.DEVNULL)
-    return [path for path in output.split('\0') if path]
-
-
 def main():
-    event_name = os.environ.get('GITHUB_EVENT_NAME', '')
-    event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
-    changed = None
-    try:
-        if event_name == 'pull_request':
-            before, after = event['pull_request']['base']['sha'], event['pull_request']['head']['sha']
-        elif event_name == 'push':
-            before, after = event['before'], event['after']
-        else:
-            before = after = ''
-        if before and after:
-            changed = changed_paths(before, after)
-    except (KeyError, subprocess.CalledProcessError):
-        changed = None
-    result = json.dumps(select(event_name, changed), separators=(',', ':'))
+    """Publish consistent browser/contract obligations and a visible Firefox deferral notice."""
+    result = json.dumps(select(), separators=(',', ':'))
     with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
         output.write('matrix=' + result + '\n')
+        output.write('contracts=' + json.dumps({'partition': CONTRACT_PARTITIONS}) + '\n')
+    if summary := os.environ.get('GITHUB_STEP_SUMMARY'):
+        with open(summary, 'a') as output:
+            output.write(PHASE_NOTICE + '\n')
+    print(PHASE_NOTICE)
     print(result)
 
 

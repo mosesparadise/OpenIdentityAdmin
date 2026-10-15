@@ -1,6 +1,6 @@
 # B2 planning and future implementation evidence
 
-15 October 2026 (Europe/London). This packet implements feature 010 T022's planning obligation. **B2 runtime implementation and all runtime scenarios are not_run.** B1 remains accepted in PR #52 (`ca410c01`), recorded by PR #54 (`b17e4a7`). This file cannot self-certify its future planning commit; the delivery PR records exact checks/head/squash.
+15 October 2026 (Europe/London). This packet implements feature 010 T022's planning obligation. **B2 runtime scenarios remain not_run; the later prerequisite section records dependency/API work only.** B1 remains accepted in PR #52 (`ca410c01`), recorded by PR #54 (`b17e4a7`). This file cannot self-certify its future planning commit; the delivery PR records exact checks/head/squash.
 
 ## Verified starting point and authority
 
@@ -42,7 +42,7 @@ Independent architecture/test/API and protocol/security packet reviews passed al
 1. Storage budgets now count retained assertion tombstones and all B2-created native server token/authorization rows, with explicit live/retained client-state/PAR caps, serialized creation/reservation, dependency-aware cleanup and partial/unknown-commit reconciliation. The old live-versus-retained ambiguity is removed; failed cleanup cannot authorize live eviction.
 2. Issuance linearizes at successful native code/token persistence commit. Current authority and relevant native persistence must serialize with supported invalidations; invalidation committed first denies issuance. T005 must prove scoped-context/handler/lock ownership, not choose weaker semantics. Network response delivery remains non-atomic and cannot trigger automatic mutation retries.
 
-Review also clarified retained state signing-validation keys alongside decryptors, strict freshness equality and pinned source citation extent. No remaining planning blocker was reported. T004/T005 feasibility and every runtime criterion remain unexecuted; document review does not check them off.
+Review also clarified retained state signing-validation keys alongside decryptors, strict freshness equality and pinned source citation extent. No remaining planning blocker was reported. At the planning review, T004/T005 feasibility and every runtime criterion were unexecuted; document review did not check them off. The later native dependency continuation below records T004 progress while T005 remains open.
 
 Read-only cross-artifact analysis found all 13 FRs and six SCs mapped to 27 unique, sequential tasks, coherent story dependencies and no unresolved critical/high inconsistency after correction. No runtime task is marked complete. No constitution exception or new approval is proposed.
 
@@ -52,7 +52,7 @@ Local checks passed: seven scope controls, AI instruction consistency (eight ski
 
 | Evidence | Status |
 | --- | --- |
-| Client package locked resolution / native API integration | not_run; T004/T005 |
+| Client package locked resolution / native API integration | T004 local restore/build and seven API/transport controls pass; T005 transaction/deadline proof remains open; see [inventory](native-integration-inventory.md) |
 | Both-provider B2 admission, registration, replay and failure cases | not_run; T011/T012/T018/T021/T022 |
 | B2-specific mutations and all existing suites | not_run; T024 |
 | Exact executable-head full CI / coverage / runtime reviews | not_run; T025 |
@@ -63,3 +63,19 @@ Local checks passed: seven scope controls, AI instruction consistency (eight ski
 ## First planning CI and scanner correction
 
 PR #55 head `21621c64c6abae583dbb6519c4393ec1fdd47d1b`, run `38782971396`, passed scope and assurance checks but failed the source-secret scan and final acceptance. All eleven full-suite jobs were intentionally unselected for prose. The exact pinned Gitleaks 8.30.1 archive was verified against workflow SHA-256 `551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb`; a local archive of that exact head reproduced one generic-api-key finding at T018's prose description. The detector matched ordinary wording about registration-key drift and cancellation, not credential material. Rephrased that sentence without changing its test obligation; no scanner rule, allowlist or workflow was changed. The failed run is retained. The corrected complete staged source snapshot passes the same pinned scanner with zero findings; exact corrected-head proportional CI remains required before merge.
+
+## Native dependency continuation
+
+Branch `054-admin-protocol` starts from verified PR #55 planning squash `98139cc942467f4094434691c30668ba72dbeb70`. [Native integration inventory](native-integration-inventory.md) records T004's pinned dependency resolution, advisory/license checks and actual handler/context/transport controls. T005 remains open for scoped native cancellation and transaction/rollback proof; no production path is wired and no B2 acceptance is claimed. The initial local test build exposed a missing namespace import, formatting errors and a dangling generated-output symlink; those failures are retained locally and corrected without changing earlier evidence archives. This paragraph does not certify future exact-head CI or merge.
+
+Local executable validation: Host project/reference build passes with zero warnings/errors; all 400 Host cases pass with zero skips. The seven new prerequisite cases include a four-case negative retry control that fails at the exact one-versus-two request count, followed by byte-exact restoration and 7/7 passing controls. The matrix changes only Host 393→400. No both-provider B2, new B2 mutation, real TLS/redirect or native protocol-exchange acceptance is claimed. Full exact-head CI remains required for this dependency/test checkpoint.
+
+PR #56's first full run `38787608672` exposed an import-order error and newly reported MessagePack advisory GHSA-qhrr-8q5h-9q3h. The [inventory](native-integration-inventory.md#first-full-ci-failures-and-corrections) records the exact failed head, retained hosted artifact, AppHost-owned 2.5.307 patch propagated across all five affected graphs, fresh advisory/license checks and unchanged acceptance obligations. No initial run is called passing; corrected-head full CI remains required.
+
+## A-007 initial-phase continuation — 15 October 2026
+
+The user explicitly requested roadmap implementation and temporary Firefox exclusion. [A-007](../../docs/amendments/A-007-initial-phase-browser-scope.md) records the approved initial scope and restoration boundary. Source begins at PR #56 head `8578441753d847a49d3f2de0137152ad5fe88c2e`, main `98139cc942467f4094434691c30668ba72dbeb70`. Seven Firefox jobs are deferred (93 ordinary cases and four separate history diagnostic executions); all test sources and prior failures remain intact. All full runs now require 48 coverage inputs and unchanged nine floors. Full applicable exact-head verification and independent review remain required before prerequisite delivery. T005/B2 and every historical/human/activation/release gate remain open.
+
+The separate diagnostic sources `8eea5e3f` and `f24be452` remain frozen and do not merge into this prerequisite. The latter native case passed but document identity was unavailable, so its evidence gate failed; no correction is claimed. [PR #56](https://github.com/mosesparadise/OpenIdentityAdmin/pull/56) retains run/artifact/hash dispositions and the upstream draft. Upstream submission was rejected with HTTP 403; no issue was created.
+
+Local A-007 verification: all 192 Python controls pass, including exact two-engine/contract selection, rejection of a missing whole engine, and removal/empty evidence controls for each of 48 inputs. Instruction integrity, all 345 assurance-register entries and whitespace checks pass. Independent architecture/test and security reviews passed the corrected source; their initial WebKit-omission finding was fixed by requiring both active engines on every full run. No native browser/database run was performed locally. Full hosted verification remains pending at this source checkpoint.
