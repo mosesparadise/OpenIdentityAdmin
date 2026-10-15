@@ -1,0 +1,71 @@
+# Tasks: Administrator issuer/client integration
+
+Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exists, not B2 runtime acceptance. All implementation tasks remain unchecked. T003 denotes the planning delivery supplied by this PR; its exact-head checks and squash are recorded on the PR, not presumed from this checkbox. Requirement IDs refer to [spec.md](spec.md); scenario IDs below are planned evidence labels, not executed test identities.
+
+## Phase 1 — Planning and dependencies
+
+- [x] T001 Verify main/B1/authority, inspect actual source and pinned library behavior, and record decisions in `research.md`. FR-001–013; SC-006.
+- [x] T002 Complete independent architecture/test/API and protocol/security review of `spec.md`, `plan.md`, `data-model.md`, `contracts/administrator-protocol.md` and checklists; resolve findings and analyze traceability in `verification.md`. FR-001–013; SC-006.
+- [x] T003 Deliver the prose packet through exact-head proportional checks and normal squash, updating `docs/roadmap.md`, `docs/operations/new-task-handoff.md` and feature 010 T022. SC-006 (planning only).
+
+## Phase 2 — Executable prerequisites
+
+- [ ] T004 Inventory the actual composition/package/manager/test diff in `verification.md`; add only required pinned 7.7.1 client package references in `Directory.Packages.props`, `Admin.Bff.csproj` and affected lock files. Resolve compatible dependencies, advisory/license inventory and no ephemeral keys. FR-010/013; SC-006.
+- [ ] T005 Prove exact native event ordering/APIs in `AuthServer/Features/Protocol/Administrator/` and `ClientAssertions/`, and `Admin.Bff/Features/Authentication/`: post-validation proof checks, consumption/quotas, PAR-versus-cache identity, strict expiry, state/native claim preservation and no-retry transport. Prove source-supported integration realizes the contract's issuance-commit linearization before implementation; infeasibility blocks the affected path, not the product rule. FR-005–011; SC-002/003/005. Do not call source inspection runtime acceptance.
+- [ ] T006 Define seeded failing/valid controls and discovery/coverage/mutation partition plan in existing `eng/test-matrix.json`, selectors and mutation manifests; preserve all old IDs, 55 inputs/nine floors and deadlines, adding required inputs without exclusions. FR-013; SC-001/006.
+
+## Phase 3 — US1: Current administrator admission
+
+Goal: genuine already-authenticated administrator gets only its fixed protocol credential. Independent proof: real account login/MFA plus noninteractive authorize/code exchange on both providers; no production BFF cookie.
+
+- [ ] T007 [US1] Add coherent bounded admission under `src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/`, reusing journey/session/grant/clock/lock policy. Check full source authority, strictly bounded password+factor freshness and at least one approved current permission. FR-001/002/007/009; SC-003.
+- [ ] T008 [US1] Refactor shared server composition in `src/backend/IdentityPlatform.AuthServer/Features/Setup.cs` and `Features/Protocol/Setup.cs`, with feature-local administrator setup and explicit startup validation. Preserve disabled/pilot/admin/combined modes and pilot eligibility. FR-001/012; SC-004.
+- [ ] T009 [US1] Implement administrator authorize/token decisions, exact fixed profile dispatch, noninteractive errors, native principal preservation and minimal claim destinations under `AuthServer/Features/Protocol/Administrator/`; no login continuation or permission snapshot. FR-002/003/007–009; SC-003/004.
+- [ ] T010 [P] [US1] Add pure composition/claim/freshness controls under `tests/backend/IdentityPlatform.Host.Tests/Features/AdministratorProtocol/`; include before/at/after deadlines, max_age and pilot cross-use. FR-001–003/007–009/012; SC-004.
+- [ ] T011 [US1] Add real both-provider authority evidence under `tests/aspire/IdentityPlatform.AppHost.Tests/Features/AdministratorProtocol/` using existing real administrator journey: enabled/locked/revoked/recovery/factor/stamp/generation/freshness, specialist/Auditor admission and loss-of-last-permission before exchange. Define actual source/test IDs for B2-ADM-01–04. FR-001–003/007–009; SC-001/003.
+- [ ] T012 [US1] Prove coherent revocation/grant-removal/registration-change races against authorize/exchange under the same AppHost feature. Record linearization and commit/response-loss bounds; no earlier cookie observation reused as authority. B2-ADM-05. FR-002/007/009/011; SC-003/005.
+
+## Phase 4 — US2: Fixed registration and replay-safe exchanges
+
+Goal: exactly registered backend/destination/resource and single-use protocol artifacts. Independent proof: manager initialization/no-repair plus native request/proof/code races on each provider.
+
+- [ ] T013 [US2] Add fixed profile/replay model and additive Platform migrations in existing PostgreSQL/SQL Server projects, plus schema/readiness/runtime grants. Update actual schema catalog and persistence tests; no BFF platform rights. FR-004/006/011; SC-005.
+- [ ] T014 [US2] Add explicit manager-backed registration initializer under `src/migrations/IdentityPlatform.Migrator/Features/` and narrow shared persistence policy. Prove exact-match idempotence, atomic app/scope/manifest/audit creation, conflicting/partial/disabled rejection and manager transaction participation. B2-REG-01. FR-004/007/011; SC-003/005.
+- [ ] T015 [US2] Implement post-native assertion profile/time checks and durable consumption across PAR/token under `AuthServer/Features/Protocol/ClientAssertions/` plus Infrastructure persistence. Enforce unique digest, monotonic watermark, retained-row capacity and bounded cleanup; no unconsume/retry on grant failure. FR-005/006/009/011; SC-002/005.
+- [ ] T016 [US2] Add PAR native configuration, per-client mandatory requirement, early form/media/duplicate/mixed-method guards and live manager policy checks. Require exact scope/resource, S256 and native PAR reference; keep ordinary cached authorization distinct. FR-001/004–007/012; SC-004.
+- [ ] T017 [P] [US2] Add strict proof/registration/claim-boundary pure controls under `Host.Tests/Features/AdministratorProtocol/`, including endpoint-as-audience, omitted jti/iat, expiry equality, embedded key references and duplicate fields. FR-004–009; SC-002/005.
+- [ ] T018 [US2] Add both-provider two-instance native assertion/PAR/code replay and binding suites under `AppHost.Tests/Features/AdministratorProtocol/`. Include cross-endpoint assertion reuse, wrong client/redirect/scopes/PKCE, unknown/revoked authorization, native linked issued-token entry revocation after valid code replay (not offline API enforcement), disabled/key-drifted profile, cancellation/ambiguous commit and all retained server token/authorization budgets. Prove quota equality/over-limit, concurrent reservation, failed cleanup and partial-create rollback/reconciliation. B2-REG-02 and B2-PROOF-01–04. FR-004–009/011; SC-001–003/005.
+
+## Phase 5 — US3: Durable native client and isolated operation
+
+Goal: actual native client interoperability and persistent callback state, without product browser activation. Independent proof: two client instances with shared Sessions DB/keys and test-owned callback transport.
+
+- [ ] T019 [US3] Add internal opt-in native core/client registration under `src/backend/IdentityPlatform.Admin.Bff/Features/Authentication/`, explicitly using `AdminSessionDbContext`, fixed issuer/endpoints/profile and durable separate assertion/state credentials. Require PAR/S256/method support with no downgrade. FR-005/010/012; SC-004.
+- [ ] T020 [US3] Configure native client state lifetime/correlation and no automatic PAR/token retries. Enforce transport limits and bounded native state creation/cleanup without live eviction; add only reviewed additive Sessions migration if required by proven quota ownership. FR-006/009–011; SC-002/005.
+- [ ] T021 [US3] Add test-owned native callback transport using existing `tests/shared/` and AppHost harness, with real administrator login. Verify end-to-end PAR/code/private_key_jwt and native state/correlation/nonce/issuer/audience/type failures; never mint a B1/product cookie or bypass native processing. B2-CLIENT-01/02. FR-001–010/012; SC-001/002/004.
+- [ ] T022 [US3] Prove both-provider restart/two-instance callback replay, expired/error callback consumption, lost PAR/token responses without resubmission, cancellation, database/key outage, retained signing-validation/decryption keys, key replacement, state quota/concurrent reservation/cleanup failure/unknown-commit reconciliation and safe logs. B2-CLIENT-03/04 and B2-OPS-01. FR-006/009–011; SC-001/002/005.
+- [ ] T023 [US3] Add an operator runbook under `docs/operations/` for explicit initialization/upgrade, least privilege, separate credentials, finite diagnostics, cleanup, rollback and restore invalidation. Record unimplemented generic audit/cleanup and production/browser gaps. FR-004/010–012; SC-005.
+
+## Phase 6 — Acceptance and handoff
+
+- [ ] T024 Add B2-specific security mutation targets and decisive failure controls for omitted current authority, assertion replay and profile/client binding; run original/mutant/restored evidence on both providers. Preserve every existing mutation suite. FR-001/002/005–007/013; SC-001–003/006.
+- [ ] T025 Reconcile actual native discovery, mandatory coverage/partitions, route inventories, all applicable exact-head CI and raw evidence; independently review architecture/test/security/API boundaries and resolve findings in `verification.md`. FR-001–013; SC-001–006.
+- [ ] T026 Normally squash only the accepted B2 implementation; update this task list, roadmap and handoff with exact source/run/tree/merge and limits. Mark no B3/C/D/E or human/release gate complete. SC-006.
+- [ ] T027 Prepare B3 request-bound fresh login, product callback/B1 ticket establishment, cookie/CSRF/fixation and local/accurately bounded remote logout specification, including three-engine browser acceptance and dependencies on issuer end-session/refresh policy. FR-003/012; roadmap M02-B/C, not B2 completion evidence.
+
+## Dependencies and parallel opportunities
+
+T001–003 establish the reviewed packet. T004–006 precede executable changes; native event/transaction feasibility is evidence work, not authority to weaken requirements. T007–012, T013–018 and T019–023 are cohesive stories but share fixed-profile contracts: implement/review those interfaces before concurrent source edits. Complete US1–US3 together for B2 acceptance; no helper-only delivery. T024–026 integrate all stories; T027 prepares the next boundary.
+
+Independent architecture/test/API and security reviews may run in parallel. T010 and T017 pure test design can proceed independently once their shared contracts are fixed. The main agent owns edits/integration; do not race edits in shared setup, schema, manifests or verification scripts. External/human work remains separate.
+
+## Planned evidence map
+
+| Requirement group | Scenario labels | Primary tasks |
+| --- | --- | --- |
+| FR-001/002/003/007/008/009 | B2-ADM-01 eligible real session; 02 denied/stale/recovery; 03 permission removal; 04 pilot isolation; 05 serialized races | T007–012 |
+| FR-004/005/006/007/009/011 | B2-REG-01 atomic fixed initialization; 02 drift; B2-PROOF-01 assertion policy/replay; 02 PAR; 03 code; 04 cancellation/quotas | T013–018 |
+| FR-005/006/009/010/011/012 | B2-CLIENT-01 native positive flow; 02 validation denials; 03 durable/error replay; 04 transport no-retry; B2-OPS-01 keys/grants/restore | T019–023 |
+| FR-013 and all SC | B2 acceptance packet with actual native IDs, mutation controls, coverage, review and delivery | T004–006, T024–026 |
+
+All runtime evidence is **not_run** at planning. Scenario labels are not discovered test counts or results.

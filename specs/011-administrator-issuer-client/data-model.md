@@ -1,0 +1,31 @@
+# B2 data and ownership model
+
+Planned additions; migrations and native behavior remain unexecuted. Both providers must implement identical contracts with ordinal protocol identity matching, UTC timestamps, bounded columns and portable optimistic concurrency.
+
+| Owner / entity | Required state and lifecycle |
+| --- | --- |
+| Platform native application and scope | Application manager owns fixed client type, public JWKS, redirect, permissions, requirements, consent and settings. Scope manager owns exact API resource. Keep authorization/token stores enabled. Creation participates in one product-audited transaction. |
+| Platform `AdministratorProtocolProfile` (planned) | Singleton fixed profile ID; native app/scope IDs, enabled flag, exact configured callback/key fingerprint binding, portable revision and replay clock watermark. Binds expected native policy; not a duplicate source of native protocol settings. Explicit initializer rejects foreign/partial/drifted state, including disabled native metadata. |
+| Platform `AdministratorClientAssertionUse` (planned) | 64-character lowercase SHA-256 digest primary/unique key over length-prefixed client ID+jti; created time, strict proof expiry and retain-until; no raw JWT or private key. Native-validated insertion, watermark/capacity decision and commit form the consumption boundary. No endpoint component in uniqueness. |
+| Existing product audit intent | Registration creation/change has sanitized actor/operation/profile/revision/outcome/time/correlation in the same transaction. No JWKS private fields, assertion, code or credential output. Failed creation rolls back both native managers and product rows. Assertion consumption is minimal security state; finite outcomes do not claim a complete audit export service. |
+| Existing native server request/code/authorization/token rows | Library owns serialization, signatures, references and redemption. Product constrains profile, scopes/resource, current authority and lifetime. Native storage remains in platform DB; no homemade request/code table. Total retained fixed-profile tokens are capped at 20,000 and authorizations at 2,000, including consumed/expired rows until safely deleted; PAR sublimits also apply. |
+| Existing native client state rows | Client/core managers explicitly use BFF `AdminSessionDbContext` with session-only rights. Persistent reference state survives restart, binds native correlation/nonce/PKCE and is single-use. No identity-store access from BFF. At most 1,024 live and 10,000 retained state rows; transactional coordination covers creation/reservation/reconciliation. |
+| Existing administrator session/grants | Reused for coherent current admission; no duplicated credential/factor records, no stored permission snapshot as future authority. |
+| Existing B1 protected tickets | Unchanged; B2 test callback does not issue one. B3 later binds a successfully validated native result to the accepted store. |
+
+## Bounds and concurrency
+
+Profile lock/watermark, validated proof time/capacity and unique insertion must commit together within the existing five-second authority budget. An insertion collision denies replay. Keep at most 10,000 retained proof rows for the fixed profile; reclaim at most 100 eligible expired rows per cleanup invocation, with deletion-time predicate recheck. Expiry equality at `exp` rejects use, but retention extends through `exp+30` so an entry is never removed while another accepted clock could treat it as valid. Effective time does not move backward; anomalous rollback denies rather than extending a proof.
+
+Only a native-valid fixed-client request may create a replay entry. No eviction of live entries to admit work. Separate replay consumption from subsequent grant transactions: a failed or cancelled grant cannot unconsume its proof. Unknown commit means deny/reconcile, never retry the same assertion automatically. Demonstrate this on both providers with unique-key races and lost responses.
+
+Native PAR and client state still need product bounds: allow at most 128 live PAR references and 1,024 live callback-state records, with at most 10,000 retained rows in each category and cleanup batches of 100. Require implementation inventory of native manager creation/cleanup transactions; serialize quota checks with creation, adding a narrow coordination row only if needed to enforce that bound. Never delete an active request/state record to fit a quota. Source-supported storage defaults are not proof of bounded retention or replay semantics.
+
+## Schema, privileges and recovery
+
+Use additive Platform migrations in both existing provider projects for profile/replay state; preserve native tables and B1 ticket semantics. If proven native client quota ownership requires a Sessions coordination row, include an explicit additive migration/grant test on both providers; do not assume such schema already exists. Use explicit Migrator, no web-start migration/registration. Prove real AuthServer runtime grants allow required product/native writes while BFF session credentials cannot read platform identity state; runtime credentials cannot alter schema. Include repeated initialization and upgrade from the accepted pre-B2 schema.
+
+Keep prior client-state signing-validation keys and decryptors for the lifetime of pending state; replacement keys invalidate or preserve pending operations only according to explicit runbook policy. A restored backup may contain unused copies of consumed proofs/codes/state. Document mandatory invalidation of affected profile credentials/native grants/source sessions/pending state before activation; a passing backup load is not safe restore acceptance. Audit retention/export and generic native-token cleanup jobs remain separately tracked where outside the bounded B2 lifecycle.
+
+
+All B2-created native token/authorization rows participate in the [complete native storage budget](contracts/administrator-protocol.md#complete-native-storage-budget), including partial-create/unknown-commit reservations. Manager saves, budget ownership and response publication must have a proved transaction boundary. Scoped B2 cleanup is required; deferring a generic platform job cannot defer these caps.
