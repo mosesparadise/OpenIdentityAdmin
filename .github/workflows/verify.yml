@@ -21,11 +21,8 @@ jobs:
       TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
       DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
       DOTNET_NOLOGO: '1'
-      NUGET_PACKAGES: ${{ runner.temp }}/identity-diagnostic-nuget
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/identity-diagnostic-browsers
       PACKET: ${{ github.workspace }}/diagnostic/diagnostics/webkit-ci
       SOURCE: ${{ github.workspace }}/source
-      EVIDENCE: ${{ runner.temp }}/identity-webkit-ci
     defaults:
       run:
         shell: bash
@@ -44,6 +41,12 @@ jobs:
           expected = os.environ['EXPECTED_DIAGNOSTIC_SHA']
           assert re.fullmatch('[0-9a-f]{40}', expected)
           assert expected == os.environ['GITHUB_SHA']
+          root = os.environ['RUNNER_TEMP']
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              for name, leaf in [('NUGET_PACKAGES', 'identity-diagnostic-nuget'),
+                                 ('PLAYWRIGHT_BROWSERS_PATH', 'identity-diagnostic-browsers'),
+                                 ('EVIDENCE', 'identity-webkit-ci')]:
+                  output.write(name + '=' + root + '/' + leaf + '\n')
           PY
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
