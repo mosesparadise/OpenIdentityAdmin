@@ -56,3 +56,41 @@ allowances remain byte-for-byte equivalent and the one exception is removed by
 the original refactor. Source/test/policy paths are unchanged from PR #50's old
 head; this merge requires fresh hosted acceptance but no duplicate local native
 diagnostic or mutation run.
+
+
+## Current-base failures and bounded image preparation correction
+
+[Run 38746001120](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/38746001120), attempt 1, tested head `2581cfac2f31b9b11a98796b88058f5290bf4199` through merge `e17e15d1cb704ed6be168bbd90f89ceb63dc476a`. Both have tree `39184462c784256321c5ab82e245734391b37ed6`. Final result: **65 successful jobs, four failed jobs, one skipped coverage job**. Quality checks pass with the exception actually removed; final verification does not pass.
+
+Independent review reconciled all six actual mutation ZIPs: **42 kills, 42 passing baseline controls, 42 passing restored controls**, zero skips. Exact head/merge, source, manifest, mutant hashes and native identities agree. These are verifier receipts; raw mutant TRX is not in the artifacts.
+
+| Suite | Provider | Kills | Artifact | ZIP SHA-256 |
+| --- | --- | ---: | --- | --- |
+| issuer | PostgreSql | 7 | 11979947197 | `bde2809bc8a9f6b45b6f549372ba14b396627bd666cbe1e52d238942ce49215f` |
+| administrator | PostgreSql | 8 | 11978309181 | `3c2a64b950f2d8c5829be1313fd507ca890f440878e4ff56e8164fa9584ee457` |
+| governance | PostgreSql | 6 | 11979407272 | `88b15a3631447e25141327cbeca0ebc614c3441f2080c7a7fff6ff22ecff75ad` |
+| issuer | SqlServer | 7 | 11979143234 | `b608687617d7ee19436cf8356ac09f9e5b7cd667e61b4b3686ec210852489a86` |
+| administrator | SqlServer | 8 | 11980565977 | `1cb80091d9bccc2f8e76124a933747b144e58bb55b360765a57acbd959f5c3b5` |
+| governance | SqlServer | 6 | 11979572811 | `e98c7cdd39b9d8f9e1c6290ec98d2d9dc0fec88a313d5ce3ebd91223f8ff8a50` |
+
+Three native cases failed before their security assertions:
+
+- PostgreSQL recovery: 19 executed, 18 passed, one failed, zero skipped. The first host remained in startup while the pinned PostgreSQL image's layer `c8145e79cc2b` was incomplete. At approximately 180 seconds startup cancellation propagated; cleanup contributed to the 210.079-second failed-case duration.
+- PostgreSQL issuer boundaries: 162 executed, 161 passed, one failed, zero skipped. The same layer was still incomplete before startup cancellation at approximately 180 seconds. The failed case took 210.227 seconds.
+- PostgreSQL/WebKit administrator Accounts: eight executed, seven passed, one failed, zero skipped. Image acquisition finished after approximately 122 seconds; the database became healthy and migration completed. Auth/worker creation subsequently hit a distinct 20-second DCP API timeout waiting for HTTP/2 response headers. This case reached authentication readiness, unlike the two image-download failures.
+
+| Failed job artifact | ID | ZIP SHA-256 |
+| --- | --- | --- |
+| Recovery | 11978789142 | `0571a454dd6bfb5778dc51bfa9687882d21d432fa5e22c3dc2f0378be2bee47c` |
+| Issuer boundaries | 11979078314 | `5b2f7a4efaea4eb8d7d2f92cd813250fbae6759c7c7c88c9a80ec99abd66b2a8` |
+| WebKit Accounts | 11979834247 | `4787b5f7adaee03d10d2d2cd4da807af086412d0b0194bf44fa573005ba43664` |
+
+Retained native TRX and job logs support these sequences. They do not explain the registry delay or DCP timeout; artifacts contain no separate daemon/registry/runner-resource telemetry. No certificate-oracle failure or production defect is established by these three receipts.
+
+The correction adds `scripts/prepare_native_image.py` before native provider, browser (including the earlier Firefox history comparison) and mutation invocations. It reads the exact current AppHost tag/digest chains, rejects ambiguous/missing pins and repository overrides, performs one pull bounded to 300 seconds, then verifies the exact local repository digest with a 15-second inspection bound. Failure stops the job before native tests. There is no retry, tag fallback, TLS weakening, container creation or daemon cleanup. The pull limit bounds the Docker CLI; it does not prove instantaneous daemon download quiescence after a client timeout. A failed preparation never starts native tests. Unit, contract and synthetic contrast jobs do not acquire database images.
+
+All existing job, invocation, fixture startup, case and cleanup deadlines remain unchanged. Fresh native container/database creation, migrations, readiness, isolation, startup-cancellation and teardown assertions remain under their existing bounds. The new preparation uses part of the unchanged job budget. It establishes a warm image prerequisite, not cold-download startup performance.
+
+Six seeded pure controls cover exact pins, drift/ambiguity/overrides, provider rejection, pull failure/timeout, inspection failure/mismatch, mandatory workflow ordering and unchanged job bounds. The actual helper has not been run locally because Docker storage is insufficient. Required hosted native acceptance remains outstanding. This preparation change addresses the demonstrated acquisition gap; it is not a proven fix for the separate DCP timeout, PR #52's SQL timeout or historical certificate cancellation. No diagnostic is relaunched and no historical/human/release gate closes.
+
+Local verification passes: six image-preparation controls, seven scope controls, actionlint 1.7.7, AI instruction consistency, diff whitespace and the mandatory code-quality gate with seeded rule controls against main `ab281729`. Independent architecture/test and security implementation reviews pass. No local Docker pull or native test ran for this correction. Hosted exact-candidate acceptance is pending.

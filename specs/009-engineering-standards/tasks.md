@@ -46,3 +46,6 @@ Batch acceptance: T017/T018/T019 were independently AI-reviewed and normally squ
 ## Witness test exception retirement — 14 October 2026
 
 - [ ] T020 [US2] Retire the exact CQ004 witness-ordering exception before its 15 October expiry. Extract cohesive preparation and committed-effect checks while preserving the original test identity, native ordering, resource ownership, deadlines and final mutation assertion. Verify unchanged discovery, both-provider ordinary and omitted-witness mutation controls, full required CI and independent architecture/test/security review before normal squash. This bounded child of T015 does not complete the wider retrofit or close historical findings. See [scope and evidence](witness-refactor.md).
+
+
+- [x] T021 Correct the current-base CI image-preparation gap evidenced by run `38746001120`: acquire and verify the already-pinned provider image before native test startup, with bounded one-attempt failure propagation and seeded preparation/workflow controls. Requirements: ENG-09, NFR-08/11/14. This records preparation implementation only; T020 remains undelivered until full exact-candidate acceptance. The separate DCP timeout and historical certificate cause remain unresolved; see `witness-ci-disposition.md`.
