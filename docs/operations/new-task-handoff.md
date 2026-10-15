@@ -1,8 +1,16 @@
 # OpenIdentityAdmin new-task handoff
 
-## Current engineering continuation
+**Current acceptance continuation (15 October 2026):** following the user’s request to resolve acceptance dependencies and conditionally squash, PR #50 incorporates main `ab281729` without repeating its witness refactor. Only the overlapping handoff/roadmap introductions required resolution. The existing failure and nonreproducing diagnostics remain recorded; no causal correction is claimed. Required checks must pass on the new candidate before delivery. Further diagnostic launches remain paused. PR #52 contains the separate BFF store implementation; its integration failures are being corrected independently.
 
-On 14 October 2026 (Europe/London), the user approved the recommended retirement of the witness-test size exception. Main was verified at PR #49's squash `5f4fce7fe0c7761e6eab7308f2cd38908937af51`. Feature 009 T020 is the bounded child of T015; [scope and current evidence](../../specs/009-engineering-standards/witness-refactor.md). Verify its actual PR/head/check state before continuing. The refactor extracts preparation and committed-effect checks while preserving native race ownership, cancellation/drain, test identity and the original decisive mutation assertion. Delivery requires both-provider evidence, independent review and full exact-head CI. Do not renew the exception or close historical/human/release gates.
+## Historical planning continuation — before PR #51 merged
+
+The user requested visible roadmap delivery and approved M02-B scope/dependency preparation. Resume [feature 010](../../specs/010-bff-session-foundation/spec.md), its [plan](../../specs/010-bff-session-foundation/plan.md), [tasks](../../specs/010-bff-session-foundation/tasks.md) and [verification](../../specs/010-bff-session-foundation/verification.md). First implementation target: a complete internal durable protected BFF ticket store, including both-provider persistence, separate keys, expiry, concurrency, revocation, audit intent and cleanup. This planning packet does not implement or activate login, proxy, API or React access.
+
+Latest verified main before this packet is PR #49 squash `5f4fce7fe0c7761e6eab7308f2cd38908937af51`; recheck actual remote head and planning PR/merge. PR #50 remains draft/unmerged at `6fcb96216eca0974041d3e8346adc4ce8458789d`; its refactor exists and must not be repeated. [Current CI/diagnostic disposition](../../specs/009-engineering-standards/witness-ci-disposition.md) preserves failed required CI, passing nonreproducing diagnostics and the pause on further native runs. Main's witness allowance expired on 15 October and blocks clean executable delivery until properly retired; no renewal.
+
+M02-B planning is independent of PR #50 source; executable delivery still requires unchanged checks. Existing `bff` native state tables are reusable; the product store and BFF key boundary are missing. Actual administrator login needs a distinct issuer/client integration: the pilot rejects administrator roles/MFA and lacks PAR/refresh/end-session support. Do not broaden the pilot or infer current authority from a stored ticket. Later B2/B3/C/D/E packages remain explicit.
+
+All six findings, 48 human rows and activation/public-release gates remain open. A-004 is expired; A-005/A-006 concluded. Preserve `046-governance-diagnostic-proposal` at `3699718603d90665117e384128803aa5f75ad12e`; the retired WebKit diagnostic branch must not merge. Earlier sections retain historical checkpoints, superseded by verified later delivery records.
 
 ## Latest delivered checkpoint
 
@@ -126,3 +134,8 @@ Old checkout was `/workspace/work/OpenIdentityAdmin`; new task need not use that
 Ignored logs/TRX, bin/obj, disposable worktrees and agent sessions are not durable across tasks. Sanitized evidence is committed. Do not transfer raw credentials, signed redirect URLs, connection strings or mutated binaries. Recreate disposable resources when authorized. Original uploaded editorconfig/gitignore references may not transfer; current approved repository files govern unless original-file comparison is requested.
 
 This handoff is sufficient to locate the authoritative decisions and resume the current investigation; retaining every conversational detail requires separately retaining/exporting the original conversation if the client provides that capability.
+
+
+## Historical engineering continuation — 14 October 2026
+
+On 14 October 2026 (Europe/London), the user approved the recommended retirement of the witness-test size exception. Main was verified at PR #49's squash `5f4fce7fe0c7761e6eab7308f2cd38908937af51`. Feature 009 T020 is the bounded child of T015; [scope and current evidence](../../specs/009-engineering-standards/witness-refactor.md). Verify its actual PR/head/check state before continuing. The refactor extracts preparation and committed-effect checks while preserving native race ownership, cancellation/drain, test identity and the original decisive mutation assertion. Delivery requires both-provider evidence, independent review and full exact-head CI. Do not renew the exception or close historical/human/release gates.

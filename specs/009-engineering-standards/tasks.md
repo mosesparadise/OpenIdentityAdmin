@@ -1,5 +1,7 @@
 # Tasks: Engineering standards
 
+**Current delivery dependency (15 October 2026):** the witness-method allowance has expired. Its retirement exists in draft [PR #50](https://github.com/mosesparadise/OpenIdentityAdmin/pull/50), whose required CI failed. [Disposition](witness-ci-disposition.md) records subsequent diagnostic limits and pauses further native runs. Do not repeat the implemented refactor or renew the exception. Its feature 009 T020 remains undelivered on that PR; wider T015 stays open. Feature 010 M02-B planning proceeds independently, while executable delivery retains the shared quality gate.
+
 ## Governance and foundation
 - [x] T001 Record approved standards in .specify/memory/constitution.md and user decisions in specs/009-engineering-standards/spec.md.
 - [x] T002 Propagate principal-engineer rules to AGENTS.md, .agents/skills/identity-*/SKILL.md, .codex/agents and docs/engineering/code-quality.md.
