@@ -1,13 +1,12 @@
 using System.Data;
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Database;
-using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 
 /// <summary>Owns explicit connection, command and session limits, including cleanup discovery outside a transaction.</summary>
-internal sealed class CeremonyConnection(PlatformDbContext database) : IAsyncDisposable
+internal sealed class CeremonyConnection(DbContext database) : IAsyncDisposable
 {
     private readonly int? commandTimeout = database.Database.GetCommandTimeout();
     private object? lockTimeout;

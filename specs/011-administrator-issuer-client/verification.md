@@ -119,3 +119,8 @@ Supply-chain artifact `12006090707` (ZIP SHA-256 `572f49cff17dc9668984296761b8be
 The separate [T005 native-store prerequisite](native-store-ownership.md) adds four installed-manager controls and raises Host discovery to 404; those cases are not part of the PR #56 run above. Local complete Host evidence passes 404/404 and preserves all prior 400 native case display names; 192 Python controls, code quality, instruction integrity, assurance-register integrity and the staged secret scan pass. Failed local setup attempts and their corrections remain recorded in that prerequisite. Its own full exact-head CI is required before delivery.
 
 T005 and B2 acceptance remain open. Next: implement the reviewed opt-in cancellation/operation owner while preserving native getter/enumerator behavior, then prove exact transaction participation and rollback on both providers for Platform and Sessions contexts and actual native dispatcher paths. All six historical findings, 48 human rows and activation/public-release gates remain open. Restore Firefox at T028 before the A-007 boundary.
+
+
+## Native ownership implementation candidate — 16 October 2026
+
+[Implementation and verification boundary](native-ownership-implementation.md) records the opt-in owner, four adapters, 27 new pure cases and four actual provider/store fixtures. Local complete Host 457/457 and code quality pass. Exact-head CI, both-provider native execution and final evidence review remain required; this paragraph does not certify future results. T005 and B2 remain open.

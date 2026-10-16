@@ -28,19 +28,19 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 430,
+      "Host": 457,
       "Architecture": 5,
       "AppHost": 65
     },
     "PostgreSql": {
-      "Persistence": 5,
+      "Persistence": 7,
       "AppHost": 15,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
       "Administrator": 445
     },
     "SqlServer": {
-      "Persistence": 5,
+      "Persistence": 7,
       "AppHost": 15,
       "Issuer": 292,
       "Issuer.Lifecycle": 41,
