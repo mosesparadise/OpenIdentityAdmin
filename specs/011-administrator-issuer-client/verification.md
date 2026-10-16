@@ -124,3 +124,7 @@ T005 and B2 acceptance remain open. Next: implement the reviewed opt-in cancella
 ## Native ownership implementation candidate — 16 October 2026
 
 [Implementation and verification boundary](native-ownership-implementation.md) records the opt-in owner, four adapters, 27 new pure cases and four actual provider/store fixtures. Local complete Host 457/457 and code quality pass. Exact-head CI, both-provider native execution and final evidence review remain required; this paragraph does not certify future results. T005 and B2 remain open.
+
+## Native ownership prerequisite delivery — 16 October 2026
+
+[PR #60 delivery evidence](native-ownership-delivery.md) records normal squash `a4db4228026d2b02cd1d4ba38995fe8e84384752`, exact source/run/tree bindings, 63 successful jobs, 552 unit cases, 22 native foundation cases per provider, 48 coverage inputs/15 floors, 42 existing security mutation kills and two separate local negative controls with their limits. Independent architecture/test and security reviews pass the bounded scope. The earlier failed import-formatting run remains recorded. T005/B2 stay open for shared multi-scope request lifetime, actual dispatcher cleanup, early durable proof/redemption, quotas and issuance linearization. All historical/human/activation/release gates remain open.

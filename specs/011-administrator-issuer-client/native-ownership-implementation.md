@@ -1,5 +1,7 @@
 # Opt-in native ownership implementation
 
+**Delivered checkpoint:** [PR #60 acceptance and squash](native-ownership-delivery.md) supersedes the pending candidate status below. T005/B2 remain open.
+
 16 October 2026 (Europe/London). This is the bounded executable continuation of [native store ownership](native-store-ownership.md), from verified main `456a99c362ba3fb397901cfe41e1e086e2036268`. Feature 012 and the earlier four characterization cases remain delivered. This candidate does not complete T005 or B2.
 
 ## Implementation boundary
