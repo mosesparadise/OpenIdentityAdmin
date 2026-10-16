@@ -190,6 +190,86 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"PostgreSql\", store: Platform)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeOwnershipTests",
+        "methodName": "Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Database.DatabaseStore"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"PostgreSql\", store: Sessions)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeOwnershipTests",
+        "methodName": "Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Database.DatabaseStore"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"SqlServer\", store: Platform)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeOwnershipTests",
+        "methodName": "Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Database.DatabaseStore"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"SqlServer\", store: Sessions)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeOwnershipTests",
+        "methodName": "Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Database.DatabaseStore"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -197,13 +277,17 @@
     "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: PostgreSql)",
     "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: PostgreSql)",
     "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: PostgreSql)",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"PostgreSql\", store: Platform)",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"PostgreSql\", store: Sessions)"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
     "IdentityPlatform.Persistence.Tests.Features.InteractionBudgetMigrationTests.Given_PreBudgetSchema_When_Upgraded_Then_LegacyInteractionsAndRestrictiveOwnershipRemain(provider: SqlServer)",
     "IdentityPlatform.Persistence.Tests.Features.NativePersistenceTests.Migrations_and_native_managers_preserve_state_on_repeated_initialization(provider: SqlServer)",
     "IdentityPlatform.Persistence.Tests.Features.ProvisioningLogTests.Failed_local_provisioning_does_not_put_passwords_in_database_logs(provider: SqlServer)",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.MigrationCompatibilityTests.Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(name: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"SqlServer\", store: Platform)",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"SqlServer\", store: Sessions)"
   ]
 }
