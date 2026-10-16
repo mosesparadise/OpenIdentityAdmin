@@ -1,5 +1,3 @@
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-
 namespace IdentityPlatform.Host.Tests.Features.ProtocolStorage;
 
 /// <summary>Proves cleanup closes admission synchronously while cancellation callbacks run independently.</summary>
