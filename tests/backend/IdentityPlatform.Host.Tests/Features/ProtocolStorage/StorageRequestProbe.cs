@@ -9,7 +9,10 @@ namespace IdentityPlatform.Host.Tests.Features.ProtocolStorage;
 internal sealed class StorageRequestProbe : IAsyncDisposable
 {
     private const string UnopenedConnection = "Host=localhost;Database=unused_request_probe";
-    internal StorageProbe.ProbeClock Clock { get; } = new();
+    internal StorageProbe.ProbeClock Clock
+    {
+        get;
+    }
     internal List<StorageProbe.ProbeContext> Databases { get; } = [];
     internal ServiceProvider Root
     {
@@ -18,14 +21,18 @@ internal sealed class StorageRequestProbe : IAsyncDisposable
     internal IServiceScopeFactory Factory => Root.GetRequiredService<IServiceScopeFactory>();
 
     /// <summary>Allows native dispatcher registrations while preserving actual DI child-scope ownership.</summary>
-    internal StorageRequestProbe(Action<IServiceCollection>? configure = null)
+    internal StorageRequestProbe(Action<IServiceCollection>? configure = null, StorageProbe.ProbeClock? clock = null)
     {
+        Clock = clock ?? new();
         var services = new ServiceCollection().AddLogging();
         services.AddSingleton<TimeProvider>(Clock);
         services.AddScoped(_ =>
         {
             var database = new StorageProbe.ProbeContext(new DbContextOptionsBuilder().UseNpgsql(UnopenedConnection).Options);
-            Databases.Add(database);
+            lock (Databases)
+            {
+                Databases.Add(database);
+            }
             return database;
         });
         services.AddScoped<IOpenIddictEntityFrameworkCoreContext, NativeContext>();

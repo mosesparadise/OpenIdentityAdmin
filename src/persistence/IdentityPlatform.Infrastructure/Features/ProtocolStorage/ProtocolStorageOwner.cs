@@ -17,6 +17,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     private ProtocolStoragePhase? phase;
     private ProtocolStorageLifetime? request;
     private ProtocolStorageRequest? original;
+    internal ProtocolStorageChildren Children { get; } = new();
     internal ProtocolDispatchTracker Dispatches { get; } = new();
     internal CancellationToken RequestToken => request?.Token ?? throw Unavailable();
     private DbContext? database;
@@ -63,7 +64,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     {
         lock (sync)
         {
-            if (request is null || faulted || disposed)
+            if (request is null || faulted || disposed || !Children.IsIdle)
             {
                 throw Unavailable();
             }
@@ -103,6 +104,25 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
         }
     }
 
+    /// <summary>Suspends parent database work while a native client service owns a nested transport scope.</summary>
+    internal IDisposable BeginChild()
+    {
+        lock (sync)
+        {
+            try
+            {
+                Require(phase, false);
+                if (original is null || executing || readers.Count != 0 || Transaction is not null)
+                {
+                    throw Unavailable();
+                }
+                Dispatches.RequireCommitContext();
+                return Children.Enter();
+            }
+            catch { Fail(); throw; }
+        }
+    }
+
     /// <summary>Captures the original epoch synchronously, before a deferred query can be returned to a manager.</summary>
     internal ProtocolStoragePhase Capture(bool write = false)
     {
@@ -118,7 +138,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     {
         try
         {
-            if (request is null || expected is null || !ReferenceEquals(phase, expected) || closing || faulted)
+            if (request is null || expected is null || !ReferenceEquals(phase, expected) || closing || faulted || !Children.IsIdle)
             {
                 throw Unavailable();
             }
@@ -255,6 +275,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
             var remaining = request!.Remaining;
             var limit = remaining < ProtocolStorageLifetime.TransactionLimit ? remaining : ProtocolStorageLifetime.TransactionLimit;
             phase = new(new(clock, limit, request.Token));
+            original?.Track(phase);
             Transaction = new(this, phase);
             return Transaction;
         }

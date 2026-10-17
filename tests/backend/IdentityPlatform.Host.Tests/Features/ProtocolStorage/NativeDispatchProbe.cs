@@ -48,9 +48,15 @@ internal sealed class NativeDispatchProbe : IAsyncDisposable
     /// <summary>Exercises the actual native ASP.NET request-to-error transition.</summary>
     private async ValueTask<bool> InvokeAsync(ProtocolStorageScope scope, CancellationToken token)
     {
-        Active = scope;
         InitialToken = IncomingToken ?? token;
-        Http = new DefaultHttpContext { RequestServices = scope.Services, RequestAborted = InitialToken };
+        return await InvokeAsync(new DefaultHttpContext { RequestServices = scope.Services, RequestAborted = InitialToken }, scope);
+    }
+
+    /// <summary>Runs the installed native HTTP handler inside an already-owned response boundary.</summary>
+    internal async ValueTask<bool> InvokeAsync(HttpContext context, ProtocolStorageScope scope)
+    {
+        Active = scope;
+        Http = context;
         IAuthenticationRequestHandler handler;
         string name;
         if (client)

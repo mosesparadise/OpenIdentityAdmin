@@ -7,6 +7,10 @@ namespace IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationToken token)
 {
     private readonly long started = clock.GetTimestamp();
+    private readonly object sync = new();
+    private readonly List<ProtocolStorageScope> scopes = [];
+    private readonly List<Task> acquisitionCleanup = [];
+    private readonly List<ProtocolStoragePhase> phases = [];
     private int active;
     private int faulted;
     internal TimeProvider Clock => clock;
@@ -52,13 +56,16 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         var scope = await ProtocolStorageScope.OpenAsync(factory, token, this);
         Exception? failure = null;
         T result = default!;
+        var previous = ProtocolStorageAmbient.Current;
         try
         {
+            ProtocolStorageAmbient.Current = new(this, scope);
             result = await operation(scope, scope.Owner.RequestToken);
             scope.Owner.RequireCompleted();
             RequireCurrent();
         }
         catch (Exception error) { failure = error; }
+        finally { ProtocolStorageAmbient.Current = previous; }
         try
         {
             await scope.DisposeAsync();
@@ -72,6 +79,67 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
             ExceptionDispatchInfo.Capture(failure).Throw();
         }
         return result;
+    }
+
+    /// <summary>Retains actual scope completion even when bounded caller cleanup enters quarantine.</summary>
+    internal void Track(ProtocolStorageScope scope)
+    {
+        lock (sync)
+        {
+            scopes.Add(scope);
+        }
+    }
+
+    /// <summary>Retains failed pre-owner acquisition cleanup until the live HTTP request can safely return.</summary>
+    internal void Track(Task cleanup)
+    {
+        lock (sync)
+        {
+            acquisitionCleanup.Add(cleanup);
+        }
+    }
+
+    /// <summary>Records every write phase before native transaction acquisition can begin.</summary>
+    internal void Track(ProtocolStoragePhase phase)
+    {
+        lock (sync)
+        {
+            phases.Add(phase);
+        }
+    }
+
+    /// <summary>Joins all actual cleanup without detaching a live HTTP context after a caller timeout.</summary>
+    internal async Task DrainAsync()
+    {
+        Task[] pending;
+        lock (sync)
+        {
+            pending = scopes.Select(scope => scope.ActualCompletion).Concat(acquisitionCleanup).ToArray();
+        }
+        await Task.WhenAll(pending);
+    }
+
+    /// <summary>Separates read-only responses, committed writes and native errors without treating rollback as success.</summary>
+    internal void RequirePublication(ProtocolResponseOutcome outcome)
+    {
+        RequireCurrent();
+        lock (sync)
+        {
+            if (outcome == ProtocolResponseOutcome.NativeError)
+            {
+                return;
+            }
+            if (outcome == ProtocolResponseOutcome.ReadOnly && phases.Count == 0)
+            {
+                return;
+            }
+            if (outcome == ProtocolResponseOutcome.Committed && phases.Count != 0 && phases.All(phase => phase.Committed))
+            {
+                return;
+            }
+        }
+        Fail();
+        throw ProtocolStorageOwner.Unavailable();
     }
 
     /// <summary>Prevents any later child from treating a swallowed owner failure as a fresh request.</summary>

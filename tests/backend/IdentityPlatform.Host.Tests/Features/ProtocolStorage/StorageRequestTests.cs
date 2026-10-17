@@ -8,6 +8,7 @@ public sealed class StorageRequestTests
     private const int SecondScope = 2;
     private const int RequestAgeSeconds = 9;
     private const int DeadlineSeconds = 10;
+    private const int WallClockDelayMilliseconds = 25;
     /// <summary>Checks original expiry before resolution, including an already-completed second operation.</summary>
     [Theory]
     [InlineData(9999, true)]
@@ -15,13 +16,18 @@ public sealed class StorageRequestTests
     [InlineData(10001, false)]
     public async Task Given_FreshScope_When_OriginalDeadlineExpires_Then_OriginalBudgetWins(int milliseconds, bool accepted)
     {
-        await using var probe = new StorageRequestProbe();
+        await using var probe = new StorageRequestProbe(clock: new ControlledProbeClock());
         var request = new ProtocolStorageRequest(probe.Clock, TestContext.Current.CancellationToken);
         Assert.Equal(1, await request.RunAsync(probe.Factory, (scope, token) => new ValueTask<int>(probe.Databases.Count)));
         probe.Clock.Advance(TimeSpan.FromMilliseconds(milliseconds));
         if (accepted)
         {
-            Assert.Equal(SecondScope, await request.RunAsync(probe.Factory, (scope, token) => new ValueTask<int>(probe.Databases.Count)));
+            Assert.Equal(SecondScope, await request.RunAsync(probe.Factory, async (scope, token) =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(WallClockDelayMilliseconds), TestContext.Current.CancellationToken);
+                Assert.False(token.IsCancellationRequested);
+                return probe.Databases.Count;
+            }));
             Assert.NotSame(probe.Databases[0], probe.Databases[1]);
         }
         else
