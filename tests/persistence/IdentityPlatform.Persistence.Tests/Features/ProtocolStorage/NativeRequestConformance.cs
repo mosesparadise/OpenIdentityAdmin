@@ -14,6 +14,7 @@ internal static class NativeRequestConformance
     /// <summary>Uses one original request for commit and later failure, then independently observes both durable outcomes.</summary>
     internal static async Task VerifyAsync(ServiceProvider root, CancellationToken token)
     {
+        await NativeResponseConformance.VerifyAsync(root, token);
         var factory = root.GetRequiredService<IServiceScopeFactory>();
         var request = new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token);
         var id = await request.RunAsync(factory, CreateApplicationAsync);

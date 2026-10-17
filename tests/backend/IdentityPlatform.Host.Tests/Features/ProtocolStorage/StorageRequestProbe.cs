@@ -25,7 +25,10 @@ internal sealed class StorageRequestProbe : IAsyncDisposable
         services.AddScoped(_ =>
         {
             var database = new StorageProbe.ProbeContext(new DbContextOptionsBuilder().UseNpgsql(UnopenedConnection).Options);
-            Databases.Add(database);
+            lock (Databases)
+            {
+                Databases.Add(database);
+            }
             return database;
         });
         services.AddScoped<IOpenIddictEntityFrameworkCoreContext, NativeContext>();

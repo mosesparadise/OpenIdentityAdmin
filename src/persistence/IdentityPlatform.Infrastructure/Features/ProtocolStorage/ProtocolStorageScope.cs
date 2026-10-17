@@ -10,6 +10,9 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
     private readonly ProtocolStorageOwner owner;
     private readonly object sync = new();
     private Task? cleanup;
+    private Task? activation;
+    private readonly TaskCompletionSource completed = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    internal Task ActualCompletion => completed.Task;
     internal IServiceProvider Services => cleanup is null ? scope.ServiceProvider : throw ProtocolStorageOwner.Unavailable();
     internal ProtocolStorageOwner Owner => owner;
     internal Task Completion => cleanup ?? Task.CompletedTask;
@@ -21,6 +24,40 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
         this.owner = owner;
     }
 
+    /// <summary>Allocates a tracked child synchronously without blocking on native context activation.</summary>
+    internal static ProtocolStorageScope Create(IServiceScopeFactory factory, ProtocolStorageRequest original)
+    {
+        original.RequireCurrent();
+        var child = factory.CreateAsyncScope();
+        try
+        {
+            var result = new ProtocolStorageScope(child, child.ServiceProvider.GetRequiredService<ProtocolStorageOwner>());
+            original.Track(result);
+            return result;
+        }
+        catch
+        {
+            original.Fail();
+            var cleanup = child.DisposeAsync().AsTask();
+            original.Track(cleanup);
+            ProtocolStorageQuarantine.Retain(cleanup);
+            throw;
+        }
+    }
+
+    /// <summary>Activates once at an asynchronous native factory boundary before dispatch or store access.</summary>
+    internal Task ActivateAsync(ProtocolStorageRequest? original, CancellationToken token)
+    {
+        lock (sync)
+        {
+            if (cleanup is not null)
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            return activation ??= owner.StartAsync(this, token, original);
+        }
+    }
+
     /// <summary>Creates isolated native ownership; callers must use this handle rather than disposing its child scope themselves.</summary>
     internal static async Task<ProtocolStorageScope> OpenAsync(IServiceScopeFactory factory, CancellationToken token, ProtocolStorageRequest? original = null)
     {
@@ -30,9 +67,9 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
         ProtocolStorageScope? result = null;
         try
         {
-            var owner = child.ServiceProvider.GetRequiredService<ProtocolStorageOwner>();
-            result = new(child, owner);
-            await owner.StartAsync(result, token, original);
+            result = new(child, child.ServiceProvider.GetRequiredService<ProtocolStorageOwner>());
+            original?.Track(result);
+            await result.ActivateAsync(original, token);
             return result;
         }
         catch
@@ -63,7 +100,7 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
             if (cleanup is null)
             {
                 owner.StopAdmission();
-                cleanup = CleanupAsync();
+                cleanup = CompleteCleanupAsync();
             }
             task = cleanup;
         }
@@ -79,6 +116,16 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
         }
     }
 
+    /// <summary>Signals actual completion only after the full child graph has stopped using its services.</summary>
+    private async Task CompleteCleanupAsync()
+    {
+        try
+        {
+            await CleanupAsync();
+        }
+        finally { completed.TrySetResult(); }
+    }
+
     /// <summary>Closes epochs, drains real calls/readers, releases transactional resources, then permits DI context disposal.</summary>
     private async Task CleanupAsync()
     {
@@ -91,6 +138,15 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
         catch (Exception error) { failures.Add(error); }
         try
         {
+            if (activation is not null)
+            {
+                await activation;
+            }
+        }
+        catch { owner.Fail(); }
+        try
+        {
+            await owner.Children.DrainAsync();
             await owner.Dispatches.DrainAsync();
             await owner.DrainAsync();
         }

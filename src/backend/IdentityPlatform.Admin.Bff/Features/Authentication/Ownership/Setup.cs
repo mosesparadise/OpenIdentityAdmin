@@ -13,4 +13,13 @@ internal static class Setup
         services.Replace(ServiceDescriptor.Scoped<IOpenIddictClientDispatcher, OwnedClientDispatcher>());
         return services;
     }
+    /// <summary>Opts into request-owned scopes for native PAR/token/metadata service calls without replacing the root scope factory.</summary>
+    internal static IServiceCollection AddOwnedClientServiceScopes(this IServiceCollection services)
+    {
+        services.AddScoped<NativeClientActivation>();
+        services.TryAddScoped<OpenIddictClientFactory>();
+        services.Replace(ServiceDescriptor.Scoped<IOpenIddictClientFactory, OwnedClientFactory>());
+        services.Replace(ServiceDescriptor.Singleton(provider => new OpenIddictClientService(new NativeClientProvider(provider))));
+        return services;
+    }
 }
