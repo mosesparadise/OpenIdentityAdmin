@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,7 @@ namespace IdentityPlatform.Host.Tests.Features.ProtocolTransport;
 /// <summary>Proves actual transport abort does not detach a request delegate or release its concurrency slot.</summary>
 public sealed class ResponseKestrelTests
 {
+    private const string CompletionFailure = "synthetic transport completion failure";
     private const int ClientTimeoutSeconds = 25;
     private const int TestWaitSeconds = 5;
     private const int EarliestAbortSeconds = 8;
@@ -25,7 +27,21 @@ public sealed class ResponseKestrelTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task Given_NoncooperativeWork_When_DeadlineAbortsKestrel_Then_RequestAndSlotRemainOwnedUntilActualCompletion(bool publication)
+    public async Task Given_NoncooperativeWork_When_DeadlineAbortsKestrel_Then_RequestAndSlotRemainOwnedUntilActualCompletion(bool publication) =>
+        await VerifyAsync(publication, false);
+
+    /// <summary>Retains the original watchdog and delegate while native response completion remains blocked.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Given_BlockedResponseCompletion_When_DeadlineAbortsKestrel_Then_RequestAndSlotRemainOwned(bool rejection) =>
+        await VerifyAsync(rejection, true);
+
+    /// <summary>Aborts an already-started response when actual terminal completion fails on either publication path.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Given_FailedResponseCompletion_When_PublicationStarted_Then_ConnectionAbortsAndOwnershipSettles(bool rejection)
     {
         await using var probe = new StorageRequestProbe();
         using var slot = new SemaphoreSlim(1, 1);
@@ -33,7 +49,39 @@ public sealed class ResponseKestrelTests
         var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var finished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         HttpContext? active = null;
-        await using var app = CreateApplication(probe, slot, entered, release, finished, publication, http => active = http);
+        await using var app = CreateApplication(probe, slot, entered, release, finished, rejection, true, http => active = http);
+        await app.StartAsync(TestContext.Current.CancellationToken);
+        using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(ClientTimeoutSeconds) };
+        var address = app.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();
+        var sending = client.GetAsync(address, TestContext.Current.CancellationToken);
+        BlockingResponseCompletion? completing = null;
+        try
+        {
+            await entered.Task.WaitAsync(TimeSpan.FromSeconds(TestWaitSeconds), TestContext.Current.CancellationToken);
+            Assert.Equal(rejection ? StatusCodes.Status503ServiceUnavailable : StatusCodes.Status200OK, active!.Response.StatusCode);
+            Assert.Same(probe.Root, active.RequestServices);
+            completing = Assert.IsType<BlockingResponseCompletion>(active.Features.Get<IHttpResponseBodyFeature>());
+            Assert.False(finished.Task.IsCompleted);
+            Assert.Equal(0, slot.CurrentCount);
+        }
+        finally { release.TrySetException(new IOException(CompletionFailure)); }
+        await Assert.ThrowsAsync<HttpRequestException>(() => sending);
+        await finished.Task.WaitAsync(TimeSpan.FromSeconds(TestWaitSeconds), TestContext.Current.CancellationToken);
+        Assert.Equal(1, slot.CurrentCount);
+        Assert.Equal(1, Assert.Single(probe.Databases).Disposals);
+        Assert.Equal(1, completing!.Completions);
+    }
+
+    /// <summary>Checks actual client failure, child disposal and delegate ownership before releasing noncooperative transport work.</summary>
+    private static async Task VerifyAsync(bool publication, bool completion)
+    {
+        await using var probe = new StorageRequestProbe();
+        using var slot = new SemaphoreSlim(1, 1);
+        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var finished = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        HttpContext? active = null;
+        await using var app = CreateApplication(probe, slot, entered, release, finished, publication, completion, http => active = http);
         await app.StartAsync(TestContext.Current.CancellationToken);
         using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(ClientTimeoutSeconds) };
         var address = app.Services.GetRequiredService<IServer>().Features.Get<IServerAddressesFeature>()!.Addresses.Single();
@@ -44,10 +92,14 @@ public sealed class ResponseKestrelTests
             await entered.Task.WaitAsync(TimeSpan.FromSeconds(TestWaitSeconds), TestContext.Current.CancellationToken);
             await Assert.ThrowsAsync<HttpRequestException>(() => sending);
             Assert.InRange(stopwatch.Elapsed.TotalSeconds, EarliestAbortSeconds, LatestAbortSeconds);
+            if (completion)
+            {
+                Assert.Equal(publication ? StatusCodes.Status503ServiceUnavailable : StatusCodes.Status200OK, active!.Response.StatusCode);
+            }
             Assert.False(finished.Task.IsCompleted);
             Assert.Equal(0, slot.CurrentCount);
-            Assert.Equal(publication ? 1 : 0, Assert.Single(probe.Databases).Disposals);
-            Assert.Equal(publication, ReferenceEquals(probe.Root, active!.RequestServices));
+            Assert.Equal(publication || completion ? 1 : 0, Assert.Single(probe.Databases).Disposals);
+            Assert.Equal(publication || completion, ReferenceEquals(probe.Root, active!.RequestServices));
         }
         finally { release.TrySetResult(); }
         await finished.Task.WaitAsync(TimeSpan.FromSeconds(TestWaitSeconds), TestContext.Current.CancellationToken);
@@ -57,7 +109,7 @@ public sealed class ResponseKestrelTests
 
     /// <summary>Installs the real Kestrel request delegate while exposing its retained context to the lifecycle assertions.</summary>
     private static WebApplication CreateApplication(StorageRequestProbe probe, SemaphoreSlim slot,
-        TaskCompletionSource entered, TaskCompletionSource release, TaskCompletionSource finished, bool publication, Action<HttpContext> observe)
+        TaskCompletionSource entered, TaskCompletionSource release, TaskCompletionSource finished, bool publication, bool completion, Action<HttpContext> observe)
     {
         var builder = WebApplication.CreateBuilder();
         builder.Logging.ClearProviders();
@@ -68,13 +120,18 @@ public sealed class ResponseKestrelTests
             await slot.WaitAsync(TestContext.Current.CancellationToken);
             observe(http);
             http.RequestServices = probe.Root;
-            if (publication)
+            if (completion)
+            {
+                http.Features.Set<IHttpResponseBodyFeature>(new BlockingResponseCompletion(
+                    http.Features.Get<IHttpResponseBodyFeature>()!, entered, release));
+            }
+            else if (publication)
             {
                 http.Response.OnStarting(async () => { entered.SetResult(); await release.Task; });
             }
             try
             {
-                await ExecuteAsync(http, probe, publication, entered, release);
+                await ExecuteAsync(http, probe, publication, completion, entered, release);
             }
             finally { slot.Release(); finished.SetResult(); }
         });
@@ -82,7 +139,7 @@ public sealed class ResponseKestrelTests
     }
 
     /// <summary>Deliberately ignores cancellation until released, so the test measures transport abort independently of cooperative work.</summary>
-    private static Task ExecuteAsync(HttpContext http, StorageRequestProbe probe, bool publication,
+    private static Task ExecuteAsync(HttpContext http, StorageRequestProbe probe, bool publication, bool completion,
         TaskCompletionSource entered, TaskCompletionSource release) =>
         ProtocolHttpBoundary.RunAsync(http, probe.Factory, probe.Clock, async (_, _, _) =>
         {
@@ -90,8 +147,11 @@ public sealed class ResponseKestrelTests
             {
                 return ProtocolResponseOutcome.NativeError;
             }
-            entered.SetResult();
-            await release.Task;
+            if (!completion)
+            {
+                entered.SetResult();
+                await release.Task;
+            }
             return ProtocolResponseOutcome.ReadOnly;
         });
 }

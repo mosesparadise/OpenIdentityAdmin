@@ -102,6 +102,7 @@ internal static class ProtocolHttpBoundary
         request.RequirePublication(outcome);
         await body.Stream.WriteAsync(capture.Bytes, request.Token);
         await body.Stream.FlushAsync(request.Token);
+        await body.CompleteAsync();
         request.RequirePublication(outcome);
     }
 
@@ -114,6 +115,7 @@ internal static class ProtocolHttpBoundary
         response.Headers.CacheControl = FailureCacheControl;
         await body.StartAsync(token);
         await body.Stream.FlushAsync(token);
+        await body.CompleteAsync();
     }
 
 }
