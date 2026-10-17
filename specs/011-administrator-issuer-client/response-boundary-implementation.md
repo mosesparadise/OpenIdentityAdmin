@@ -1,5 +1,7 @@
 # Dormant HTTP response and native client scope boundary
 
+**Delivered:** [PR #64 acceptance and normal squash](response-boundary-delivery.md) supersede the pending-hosted statements in the retained source checkpoints below. All 63 exact-head jobs pass at source `3354384`; squash `4e0e5c4` shares the tested source tree. T005/B2 and historical/human/activation/release gates remain open.
+
 17 October 2026, Europe/London. Bounded T005 continuation from verified remote main `4aabebf1b6277c6fbf9135e9660fbe9137c5dc6e`. PR #58 provider extensibility and PR #60/#62 ownership remain preserved. FR-005–011/013 and SC-002/003/005/006 govern this prerequisite. T005/B2 remain open.
 
 ## Behavior and integration limits

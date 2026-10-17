@@ -128,3 +128,8 @@ T005 and B2 acceptance remain open. Next: implement the reviewed opt-in cancella
 ## Native ownership prerequisite delivery — 16 October 2026
 
 [PR #60 delivery evidence](native-ownership-delivery.md) records normal squash `a4db4228026d2b02cd1d4ba38995fe8e84384752`, exact source/run/tree bindings, 63 successful jobs, 552 unit cases, 22 native foundation cases per provider, 48 coverage inputs/15 floors, 42 existing security mutation kills and two separate local negative controls with their limits. Independent architecture/test and security reviews pass the bounded scope. The earlier failed import-formatting run remains recorded. T005/B2 stay open for shared multi-scope request lifetime, actual dispatcher cleanup, early durable proof/redemption, quotas and issuance linearization. All historical/human/activation/release gates remain open.
+
+
+## Dormant response and native client scope delivery — 17 October 2026
+
+[PR #64 delivery evidence](response-boundary-delivery.md) binds source `3354384`, full run `39072758180`, tested merge `578d611` and normal squash `4e0e5c4` to the same tree. All 63 jobs pass, with independent raw review of 644 unit and 44 native cases, all 48 coverage inputs/15 floors and 42 existing mutation kills. The new controls include six real Kestrel deadline/completion cases and actual native client-service-created scopes. The source remains dormant; complete native interoperability, early durable proof/redemption, quota reservation and issuance linearization remain open under T005. All historical/human/activation/release gates remain open; A-007 still governs Firefox restoration.
