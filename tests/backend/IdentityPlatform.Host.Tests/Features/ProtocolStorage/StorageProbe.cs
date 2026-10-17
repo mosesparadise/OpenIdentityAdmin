@@ -39,14 +39,14 @@ internal sealed class StorageProbe : IAsyncDisposable
     public ValueTask DisposeAsync() => Root.DisposeAsync();
 
     /// <summary>Allows elapsed-time checks to be tested independently of timer callback scheduling.</summary>
-    internal sealed class ProbeClock : TimeProvider
+    internal class ProbeClock : TimeProvider
     {
         private long ticks;
         public override long TimestampFrequency => TimeSpan.TicksPerSecond;
         /// <summary>Returns the controlled monotonic timestamp.</summary>
         public override long GetTimestamp() => ticks;
         /// <summary>Advances elapsed time while leaving real timers alone to expose completed-task expiry checks.</summary>
-        internal void Advance(TimeSpan elapsed) => ticks += elapsed.Ticks;
+        internal virtual void Advance(TimeSpan elapsed) => ticks += elapsed.Ticks;
     }
 
     /// <summary>Counts actual context disposal so a caller timeout cannot masquerade as safe cleanup.</summary>

@@ -1,6 +1,5 @@
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.Extensions.DependencyInjection;
-using OpenIddict.Client;
 
 namespace IdentityPlatform.Host.Tests.Features.ProtocolStorage;
 

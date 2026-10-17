@@ -36,3 +36,11 @@ Native PostgreSQL/SQL Server runtime execution, aggregate coverage, mutations an
 ## Remaining roadmap work
 
 The source is dormant and does not establish complete native backchannel/HTTP interoperability, early durable proof/redemption, proof/issuance quotas or issuance linearization. T005 stays unchecked. Continue with those source-supported integration obligations after this prerequisite's full CI and independent evidence review. All six historical findings, 48 human rows and production activation/public-release gates remain open.
+
+## Retained initial hosted failure
+
+Run `39071115865` at source `f7515f12472615b28bc2b007d657c446ebd577dd` is not accepting evidence. Its unit job executed Core 25/25 and Host 544/545; Architecture/AppHost were not reached. The existing 9,999 ms accepted-boundary row failed when a real one-millisecond child timer cancelled despite its synthetic monotonic clock remaining at 9,999 ms. The fixture now uses one controlled timeline for timestamps and timer callbacks in that exact boundary test. Its 9,999/10,000/10,001 expectations, all production deadlines, real Kestrel tests and real quarantine timers remain unchanged. The original artifact/report and independent review are retained; a new source revision requires a complete fresh hosted run.
+
+The same initial run's strict unused-import check also rejected one unnecessary `OpenIddict.Client` using in NativeServiceScopeTests. It is removed. The earlier local style invocation omitted `--severity info` and therefore did not observe this informational diagnostic; the corrected local verification uses the hosted severity. Neither initial failure is treated as an infrastructure retry or hidden by a rerun of the old head.
+
+Corrected local validation passes all 545 Host cases under dotnet-coverage 18.12.0 with zero skips, including a deliberate 25 ms wall-clock delay while the controlled boundary clock remains at 9,999 ms. The independent fixture review confirms no production or oracle relaxation. Host build, code-quality and informational unused-import verification pass; corrected-source hosted evidence remains pending.
