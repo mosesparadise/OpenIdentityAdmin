@@ -736,6 +736,82 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.ToTable("SecurityAuditIntent", "platform");
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator.AdministratorClientAssertionUse", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .UseCollation("C");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.ToTable("AdministratorClientAssertionUse", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorClientAssertionUse_Lifetime", "\"CreatedAt\" >= 0 AND \"ExpiresAt\" > \"CreatedAt\" AND \"RetainUntil\" = \"ExpiresAt\" + 30");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator.AdministratorProtocolProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)")
+                        .UseCollation("C");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("LockRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PublicKeyFingerprint")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .UseCollation("C");
+
+                    b.Property<string>("RedirectUri")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .UseCollation("C");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ScopeId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)")
+                        .UseCollation("C");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdministratorProtocolProfile", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorProtocolProfile_State", "\"Id\" = 1 AND \"Revision\" > 0 AND \"LockRevision\" >= 0 AND \"ObservedAt\" >= 0");
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")

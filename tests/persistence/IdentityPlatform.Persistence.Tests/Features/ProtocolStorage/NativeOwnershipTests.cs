@@ -50,6 +50,12 @@ public sealed class NativeOwnershipTests
         }
         await NativeOwnershipConformance.VerifyAsync(root, deadline.Token);
         await NativeRequestConformance.VerifyAsync(root, deadline.Token);
+        await NativeConsumptionConformance.VerifyAsync(root, store, deadline.Token);
+        await NativeConsumptionBindings.VerifyAsync(root, store, deadline.Token);
+        await NativeConsumptionRows.VerifyAsync(root, store, deadline.Token);
+        await using var independent = CreateRoot(fixture, store);
+        await NativeConsumptionRaces.VerifyAsync(root, independent, store, new NativeLockObservation(name, connection), deadline.Token);
+        await NativeConsumptionBoundaries.VerifyAsync(root, store, deadline.Token);
     }
 
     /// <summary>Selects native context composition explicitly; production registration remains unchanged.</summary>
@@ -62,9 +68,16 @@ public sealed class NativeOwnershipTests
             services.AddOpenIddict().AddCore(core => core.UseEntityFrameworkCore().UseDbContext<AdminSessionDbContext>());
         }
         services.AddSingleton<CancelNativeUpdate>();
-        services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>()));
-        services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>()));
+        services.AddSingleton<NativeConsumptionClock>();
+        services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
+        services.AddSingleton<NativeConsumptionCommit>();
+        services.AddSingleton<NativeRedemptionBarrier>();
+        services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
+            provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
+        services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
+            provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
         services.AddProtocolStorageOwnership();
+        NativeConsumptionSetup.Configure(services, store);
         return services.BuildServiceProvider(validateScopes: true);
     }
 

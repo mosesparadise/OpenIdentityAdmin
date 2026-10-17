@@ -1,5 +1,6 @@
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.EntityFrameworkCore.Models;
@@ -21,6 +22,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         LoginModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
         AdministratorModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
         FactorModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
+        AdministratorProtocolModel.ConfigurePlatform(builder, ProviderOptions.Provider(options).Model);
 
         if (ProviderOptions.Provider(options).Model.IdentityOrdinalCollation is { } ordinal)
         {

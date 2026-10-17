@@ -22,4 +22,16 @@ internal static class Setup
         services.Replace(ServiceDescriptor.Singleton(provider => new OpenIddictClientService(new NativeClientProvider(provider))));
         return services;
     }
+
+    /// <summary>Keeps native early-state filters/order while consuming the fixed registration before any remote transport.</summary>
+    internal static OpenIddictClientBuilder AddDurableClientConsumption(this OpenIddictClientBuilder builder)
+    {
+        var redemption = OpenIddictClientHandlers.RedeemStateTokenEntry.Descriptor;
+        builder.RemoveEventHandler(redemption);
+        builder.Services.AddScoped<OpenIddictClientHandlers.RedeemStateTokenEntry>();
+        builder.Services.TryAddScoped<OpenIddictClientHandlers.Protection.ValidateTokenEntry>();
+        builder.AddEventHandler(OpenIddictClientHandlerDescriptor.CreateBuilder<OpenIddictClientEvents.ProcessAuthenticationContext>()
+            .Import(redemption).UseScopedHandler<DurableClientRedemption>().SetType(OpenIddictClientHandlerType.Custom).Build());
+        return builder;
+    }
 }
