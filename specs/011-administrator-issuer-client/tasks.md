@@ -1,5 +1,7 @@
 # Tasks: Administrator issuer/client integration
 
+**Active batch:** the user selected T005–T009 including required tests and dependencies. The [native consumption checkpoint](native-consumption-implementation.md) records ongoing implementation from PR #65. No task in this batch is completed by that prerequisite alone.
+
 Feature 011 owns these IDs. Checked planning tasks mean a reviewed document exists, not B2 runtime acceptance. Runtime implementation remains unaccepted; checked prerequisite tasks denote only their stated evidence. T003 denotes the planning delivery merged in PR #55 as `98139cc942467f4094434691c30668ba72dbeb70`; its exact-head checks and squash are recorded on that PR, not presumed from this checkbox. Requirement IDs refer to [spec.md](spec.md); scenario IDs below are planned evidence labels, not executed test identities.
 
 ## Phase 1 — Planning and dependencies

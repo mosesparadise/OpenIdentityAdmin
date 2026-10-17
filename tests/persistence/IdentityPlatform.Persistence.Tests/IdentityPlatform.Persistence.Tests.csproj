@@ -6,6 +6,8 @@
     <PackageReference Include="Testcontainers.MsSql" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrations.PostgreSql/IdentityPlatform.Migrations.PostgreSql.csproj" />

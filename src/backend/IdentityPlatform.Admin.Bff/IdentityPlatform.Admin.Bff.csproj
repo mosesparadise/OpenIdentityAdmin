@@ -20,6 +20,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
     <InternalsVisibleTo Include="IdentityPlatform.Api.Contracts.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
   </ItemGroup>
   <ItemGroup><EmbeddedResource Include="Features/Documentation/Assets/*" />

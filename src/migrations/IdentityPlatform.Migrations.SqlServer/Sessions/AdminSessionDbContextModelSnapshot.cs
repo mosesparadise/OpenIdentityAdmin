@@ -23,6 +23,29 @@ namespace IdentityPlatform.Migrations.SqlServer.Sessions
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator.AdministratorClientStateBudget", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdministratorClientStateBudget", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorClientStateBudget_State", "[Id] = 1 AND [Revision] >= 0");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Revision = 0L
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Persistence.AdminSessionAudit", b =>
                 {
                     b.Property<Guid>("Id")
