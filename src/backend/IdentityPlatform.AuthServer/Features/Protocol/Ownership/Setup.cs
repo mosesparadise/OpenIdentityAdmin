@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Server;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Ownership;
@@ -27,6 +28,17 @@ internal static class Setup
             .Import(redemption).UseScopedHandler<DurableServerRedemption>().SetType(OpenIddictServerHandlerType.Custom).Build());
         builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.ValidateTokenContext>()
             .Import(validation).UseScopedHandler<DurableServerValidation>().SetType(OpenIddictServerHandlerType.Custom).Build());
+        return builder;
+    }
+
+    /// <summary>Freezes explicit protocol scope mode between actual native extraction and validation while preserving the owned-only setup.</summary>
+    internal static OpenIddictServerBuilder AddServerStoreSelection(this OpenIddictServerBuilder builder)
+    {
+        builder.Services.AddProtocolStorageSelection();
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessRequestContext>(handler => handler.UseScopedHandler<ServerStoreSelection>()
+            .SetOrder(OpenIddictServerHandlers.Exchange.ExtractTokenRequest.Descriptor.Order + ServerStoreSelection.AfterExtraction));
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<ServerStoreFence>()
+            .SetOrder(OpenIddictServerHandlers.ValidateSignInDemand.Descriptor.Order - 1));
         return builder;
     }
 }

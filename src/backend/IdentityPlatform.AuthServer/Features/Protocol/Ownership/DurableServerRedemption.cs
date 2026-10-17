@@ -37,8 +37,7 @@ internal sealed class DurableServerRedemption(IServiceScopeFactory factory, Open
             TokenId = principal!.GetTokenId(),
             AuthorizationId = principal.GetAuthorizationId()
         };
-        await DurableServerToken.RunAsync(factory, validation,
-            services => services.GetRequiredService<OpenIddictServerHandlers.RedeemTokenEntry>().HandleAsync(context));
+        await DurableServerConsumption.CaptureAsync(factory, context, validation);
         if (validation.IsRejected)
         {
             context.Reject(validation.Error, validation.ErrorDescription, validation.ErrorUri);

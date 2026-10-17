@@ -12,6 +12,8 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 /// <summary>Uses independent providers and original requests to exercise serialized replay and native bulk-revocation ordering.</summary>
 internal static class NativeConsumptionRaces
 {
+    private const string PilotClient = "identityplatform-pilot";
+    private const string CaseVariantClient = "IDENTITY-ADMIN-BFF";
     /// <summary>Both stale prevalidated contenders reach independent native contexts; only one may consume the durable token.</summary>
     internal static async Task VerifyAsync(IServiceProvider first, IServiceProvider second, DatabaseStore store, NativeLockObservation observer, CancellationToken token)
     {
@@ -149,6 +151,13 @@ internal static class NativeConsumptionRaces
         });
         var unrelated = await NativeConsumptionSeed.TokenAsync(first, OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode, token);
         Assert.True(await NativeConsumptionConformance.ConsumeAsync(first, principal, token));
+        foreach (var client in new string?[] { PilotClient, null, CaseVariantClient })
+        {
+            Assert.False(await new ProtocolStorageRequest(second.GetRequiredService<TimeProvider>(), token).RunAsync(second.GetRequiredService<IServiceScopeFactory>(),
+                (scope, _) => NativeConsumptionDispatch.ValidateAsync(scope, principal, client)));
+            await NativeConsumptionConformance.RequireStatusAsync(first, linked, OpenIddictConstants.Statuses.Valid, token);
+            await NativeConsumptionConformance.RequireStatusAsync(first, principal, OpenIddictConstants.Statuses.Redeemed, token);
+        }
         Assert.False(await new ProtocolStorageRequest(second.GetRequiredService<TimeProvider>(), token).RunAsync(second.GetRequiredService<IServiceScopeFactory>(),
             (scope, _) => NativeConsumptionDispatch.ValidateAsync(scope, principal)));
         await NativeConsumptionConformance.RequireStatusAsync(first, linked, OpenIddictConstants.Statuses.Revoked, token);

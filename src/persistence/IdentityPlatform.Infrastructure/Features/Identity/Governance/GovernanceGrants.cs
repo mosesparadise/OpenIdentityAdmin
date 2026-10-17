@@ -3,6 +3,7 @@ using IdentityPlatform.Core.Features.Identity.Governance;
 using IdentityPlatform.Core.Features.Identity.Permissions;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
+using IdentityPlatform.Infrastructure.Features.Identity.ProtocolAdmission;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,11 +46,26 @@ internal sealed class GovernanceGrants(PlatformDbContext database)
     {
         transaction.RequireContext(database);
         transaction.RequireGovernance();
-        var roles = (await ReadRolesAsync(transaction.Token)).ToDictionary(role => role.Id, StringComparer.Ordinal);
+        return await ReadCoreAsync(transaction.Plan.Users, targetRole, transaction.Token);
+    }
+
+    /// <summary>Reuses bounded persisted grant semantics for exactly one account under the live protocol issuance locks.</summary>
+    internal async Task<GovernanceGrantView> ReadProtocolAsync(ProtocolAdmissionOwnership ownership, CancellationToken token)
+    {
+        ownership.RequireExecution(database, token);
+        var result = await ReadCoreAsync([ownership.UserId], null, token);
+        ownership.RequireExecution(database, token);
+        return result;
+    }
+
+    /// <summary>Reads only the declared accounts and relevant persisted role claims after the caller has proved its lock ownership.</summary>
+    private async Task<GovernanceGrantView> ReadCoreAsync(IReadOnlyList<string> users, string? targetRole, CancellationToken token)
+    {
+        var roles = (await ReadRolesAsync(token)).ToDictionary(role => role.Id, StringComparer.Ordinal);
         var memberships = new Dictionary<string, FrozenSet<string>>(StringComparer.Ordinal);
-        foreach (var userId in transaction.Plan.Users)
+        foreach (var userId in users)
         {
-            memberships.Add(userId, await ReadMembershipsAsync(userId, roles, transaction.Token));
+            memberships.Add(userId, await ReadMembershipsAsync(userId, roles, token));
         }
         var relevant = memberships.Values.SelectMany(value => value).ToHashSet(StringComparer.Ordinal);
         if (targetRole is not null)
@@ -63,7 +79,7 @@ internal sealed class GovernanceGrants(PlatformDbContext database)
             {
                 throw new FactorUnavailableException();
             }
-            grants.Add(roleId, await ReadClaimsAsync(role, transaction.Token));
+            grants.Add(roleId, await ReadClaimsAsync(role, token));
         }
         return new GovernanceGrantView(roles.Values, memberships, grants);
     }

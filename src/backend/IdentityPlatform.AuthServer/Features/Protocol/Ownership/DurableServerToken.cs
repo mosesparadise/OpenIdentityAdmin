@@ -12,7 +12,7 @@ internal static class DurableServerToken
 {
     /// <summary>Preserves native rejection details and durable replay-chain revocation without continuing dispatch in a closed owner.</summary>
     internal static async ValueTask RunAsync(IServiceScopeFactory factory, OpenIddictServerEvents.ValidateTokenContext validation,
-        Func<IServiceProvider, ValueTask>? consume = null)
+        Func<IServiceProvider, ValueTask>? consume = null, Action<ConsumptionStamp>? committed = null)
     {
         var clock = ProtocolStorageAmbient.Current?.Request.Clock ?? throw ProtocolStorageOwner.Unavailable();
         var expiration = await ProtocolStorageChild.RunAsync(factory, async (scope, cancellation) =>
@@ -35,7 +35,7 @@ internal static class DurableServerToken
                 {
                     await consume(scope.Services);
                 }
-                if (!AdministratorNativeToken.IsCurrent(bound, scope.Owner.Clock))
+                if (!AdministratorNativeToken.IsCurrent(bound.Expiration, scope.Owner.Clock))
                 {
                     validation.Reject(OpenIddictConstants.Errors.InvalidToken);
                 }
@@ -43,14 +43,18 @@ internal static class DurableServerToken
             await transaction.CommitAsync(cancellation);
             return bound;
         });
-        if (!AdministratorNativeToken.IsCurrent(expiration, clock))
+        if (!AdministratorNativeToken.IsCurrent(expiration?.Expiration, clock))
         {
             validation.Reject(OpenIddictConstants.Errors.InvalidToken);
+        }
+        if (!validation.IsRejected && expiration is not null)
+        {
+            committed?.Invoke(expiration);
         }
     }
 
     /// <summary>Checks the authoritative fixed registration and exact native token bindings before native replay revocation can write.</summary>
-    private static async ValueTask<DateTimeOffset?> ExpirationAsync(ProtocolStorageScope scope, OpenIddictServerEvents.ValidateTokenContext context,
+    private static async ValueTask<ConsumptionStamp?> ExpirationAsync(ProtocolStorageScope scope, OpenIddictServerEvents.ValidateTokenContext context,
         CancellationToken cancellation)
     {
         var profile = await scope.Owner.RunAsync(token => new ValueTask<AdministratorProtocolProfile?>(scope.Owner.Database
@@ -73,8 +77,9 @@ internal static class DurableServerToken
         {
             return null;
         }
-        return type is OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode or OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken
+        var expiration = type is OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode or OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken
             ? await AdministratorNativeToken.ExpirationAsync(scope, principal, type, profile.ApplicationId, cancellation) : null;
+        return expiration is { } bound ? new(profile.Revision, profile.ApplicationId, bound) : null;
     }
 
     /// <summary>Selects only the fixed client's protected code/request principals; other profiles retain their native handler.</summary>
@@ -82,3 +87,6 @@ internal static class DurableServerToken
         principal is not null && principal.GetPresenters() is [AdministratorProtocolIdentity.ClientId] &&
         principal.GetTokenType() is OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode or OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken;
 }
+
+/// <summary>Records the actual serialized profile revision and minimum native/principal expiry after successful cleanup.</summary>
+internal sealed record ConsumptionStamp(long Revision, string ApplicationId, DateTimeOffset Expiration);

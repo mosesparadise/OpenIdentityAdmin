@@ -55,6 +55,10 @@ public sealed class NativeOwnershipTests
         await NativeConsumptionRows.VerifyAsync(root, store, deadline.Token);
         await using var independent = CreateRoot(fixture, store);
         await NativeConsumptionRaces.VerifyAsync(root, independent, store, new NativeLockObservation(name, connection), deadline.Token);
+        if (store == DatabaseStore.Platform)
+        {
+            await NativeConsumptionReceipts.VerifyAsync(root, independent, deadline.Token);
+        }
         await NativeConsumptionBoundaries.VerifyAsync(root, store, deadline.Token);
     }
 

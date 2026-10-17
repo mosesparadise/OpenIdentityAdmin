@@ -96,13 +96,19 @@ internal sealed class CeremonyClock(TimeProvider time)
     /// <summary>Returns the exact accepted sample so consumers never prune or timestamp against an unrecorded clock read.</summary>
     internal bool Observe(AdministratorAuthentication state, out long now)
     {
-        now = Now;
-        if (now < 0 || state.ObservedAt is < 0 || state.ObservedAt > now + AdministratorPolicy.ClockSkewSeconds)
+        if (!TryRead(state, out now))
         {
             return false;
         }
         state.ObservedAt = Math.Max(state.ObservedAt ?? now, now);
         return true;
+    }
+
+    /// <summary>Checks rollback against the existing durable fence without adding unsaved metadata during a final issuance check.</summary>
+    internal bool TryRead(AdministratorAuthentication state, out long now)
+    {
+        now = Now;
+        return now >= 0 && state.ObservedAt is not < 0 && !(state.ObservedAt > now + AdministratorPolicy.ClockSkewSeconds);
     }
 }
 

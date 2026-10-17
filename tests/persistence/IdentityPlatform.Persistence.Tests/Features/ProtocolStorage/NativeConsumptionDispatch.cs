@@ -17,9 +17,10 @@ internal static class NativeConsumptionDispatch
         principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken) ? ClientAsync(scope, principal) : ServerAsync(scope, principal);
 
     /// <summary>Exercises the actual validation adapter, whose native replay path performs durable authorization-chain revocation.</summary>
-    internal static async ValueTask<bool> ValidateAsync(ProtocolStorageScope scope, ClaimsPrincipal principal)
+    internal static async ValueTask<bool> ValidateAsync(ProtocolStorageScope scope, ClaimsPrincipal principal, string? client = Client)
     {
         var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
+        transaction.Request = new OpenIddictRequest { ClientId = client };
         var context = new OpenIddictServerEvents.ValidateTokenContext(transaction)
         {
             Principal = principal,
@@ -52,7 +53,11 @@ internal static class NativeConsumptionDispatch
     }
 
     /// <summary>Stores the actual authentication notification consumed by native server early redemption.</summary>
-    private static async ValueTask<bool> ServerAsync(ProtocolStorageScope scope, ClaimsPrincipal principal)
+    private static async ValueTask<bool> ServerAsync(ProtocolStorageScope scope, ClaimsPrincipal principal) =>
+        !(await ServerContextAsync(scope, principal)).IsRejected;
+
+    /// <summary>Retains the actual sign-in context so issuance controls can claim only its completed redemption receipt.</summary>
+    internal static async ValueTask<OpenIddictServerEvents.ProcessSignInContext> ServerContextAsync(ProtocolStorageScope scope, ClaimsPrincipal principal)
     {
         var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
         var requestToken = principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken);
@@ -66,7 +71,7 @@ internal static class NativeConsumptionDispatch
         transaction.SetProperty(typeof(OpenIddictServerEvents.ProcessAuthenticationContext).FullName!, authentication);
         var context = new OpenIddictServerEvents.ProcessSignInContext(transaction) { Principal = principal };
         await scope.Services.GetRequiredService<IOpenIddictServerDispatcher>().DispatchAsync(context);
-        return !context.IsRejected;
+        return context;
     }
 
     /// <summary>Runs early native state consumption before registration resolution, correlation or remote transport.</summary>
