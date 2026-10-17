@@ -16,6 +16,9 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     private bool disposed;
     private ProtocolStoragePhase? phase;
     private ProtocolStorageLifetime? request;
+    private ProtocolStorageRequest? original;
+    internal ProtocolDispatchTracker Dispatches { get; } = new();
+    internal CancellationToken RequestToken => request?.Token ?? throw Unavailable();
     private DbContext? database;
     private ProtocolStorageScope? owningScope;
     internal ProtocolStorageTransaction? Transaction
@@ -29,7 +32,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     internal static InvalidOperationException Unavailable() => new(UnavailableMessage);
 
     /// <summary>Activates only for the scope handle that retains the complete native resource graph through cleanup.</summary>
-    internal async Task StartAsync(ProtocolStorageScope scope, CancellationToken token)
+    internal async Task StartAsync(ProtocolStorageScope scope, CancellationToken token, ProtocolStorageRequest? original = null)
     {
         ArgumentNullException.ThrowIfNull(scope);
         if (request is not null)
@@ -37,15 +40,67 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
             throw Unavailable();
         }
         owningScope = scope;
-        request = new(clock, ProtocolStorageLifetime.RequestLimit, token);
+        this.original = original;
+        if (original is not null && !ReferenceEquals(original.Clock, clock))
+        {
+            throw Unavailable();
+        }
+        original?.RequireCurrent();
+        request = new(clock, original?.Remaining ?? ProtocolStorageLifetime.RequestLimit, token);
         request.RequireCurrent();
         database = await native.GetDbContextAsync(request.Token);
+        original?.RequireCurrent();
         request.RequireCurrent();
         if (Database.Database.CurrentTransaction is not null)
         {
             throw Unavailable();
         }
         phase = new(new(clock, request.Remaining, request.Token));
+    }
+
+    /// <summary>Rejects swallowed faults and late dispatch results without reopening a completed transaction phase.</summary>
+    internal void RequireHealthy()
+    {
+        lock (sync)
+        {
+            if (request is null || faulted || disposed)
+            {
+                throw Unavailable();
+            }
+            original?.RequireCurrent();
+            request.RequireCurrent();
+        }
+    }
+
+    /// <summary>Requires all callback-owned native work to finish before accepting its result.</summary>
+    internal void RequireCompleted()
+    {
+        lock (sync)
+        {
+            RequireHealthy();
+            if (executing || readers.Count != 0 || !Dispatches.IsIdle)
+            {
+                throw Unavailable();
+            }
+        }
+    }
+
+    /// <summary>Admits a native dispatch atomically with storage closure while keeping its lifetime separate from EF execution.</summary>
+    internal ProtocolDispatchTracker.Frame BeginDispatch()
+    {
+        lock (sync)
+        {
+            Require(phase, false);
+            try
+            {
+                if (original is null || executing)
+                {
+                    throw Unavailable();
+                }
+                return Dispatches.Enter();
+            }
+            catch { Fail(); throw; }
+        }
     }
 
     /// <summary>Captures the original epoch synchronously, before a deferred query can be returned to a manager.</summary>
@@ -67,6 +122,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
             {
                 throw Unavailable();
             }
+            original?.RequireCurrent();
             request.RequireCurrent();
             expected.RequireCurrent(Database, write);
         }
@@ -128,6 +184,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
         lock (sync)
         {
             faulted = true;
+            original?.Fail();
         }
     }
 
@@ -208,6 +265,11 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     {
         lock (sync)
         {
+            try
+            {
+                Dispatches.RequireCommitContext();
+            }
+            catch { Fail(); throw; }
             if (readers.Count != 0)
             {
                 faulted = true;
@@ -222,6 +284,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
         lock (sync)
         {
             token.ThrowIfCancellationRequested();
+            original?.RequireCurrent();
             request!.RequireCurrent();
             expected.Lifetime.RequireCurrent();
             var current = Database.Database.CurrentTransaction;
@@ -230,6 +293,7 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
             {
                 throw Unavailable();
             }
+            Dispatches.RequireCommitContext();
             expected.Committed = true;
         }
     }

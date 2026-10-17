@@ -49,6 +49,7 @@ public sealed class NativeOwnershipTests
             Assert.Same(expected, await owned.Services.GetRequiredService<OpenIddict.EntityFrameworkCore.IOpenIddictEntityFrameworkCoreContext>().GetDbContextAsync(deadline.Token));
         }
         await NativeOwnershipConformance.VerifyAsync(root, deadline.Token);
+        await NativeRequestConformance.VerifyAsync(root, deadline.Token);
     }
 
     /// <summary>Selects native context composition explicitly; production registration remains unchanged.</summary>

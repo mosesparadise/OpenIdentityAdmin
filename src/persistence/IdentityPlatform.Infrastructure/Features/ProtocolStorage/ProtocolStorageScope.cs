@@ -22,16 +22,17 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
     }
 
     /// <summary>Creates isolated native ownership; callers must use this handle rather than disposing its child scope themselves.</summary>
-    internal static async Task<ProtocolStorageScope> OpenAsync(IServiceScopeFactory factory, CancellationToken token)
+    internal static async Task<ProtocolStorageScope> OpenAsync(IServiceScopeFactory factory, CancellationToken token, ProtocolStorageRequest? original = null)
     {
         token.ThrowIfCancellationRequested();
+        original?.RequireCurrent();
         var child = factory.CreateAsyncScope();
         ProtocolStorageScope? result = null;
         try
         {
             var owner = child.ServiceProvider.GetRequiredService<ProtocolStorageOwner>();
             result = new(child, owner);
-            await owner.StartAsync(result, token);
+            await owner.StartAsync(result, token, original);
             return result;
         }
         catch
@@ -51,6 +52,11 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
     /// <summary>Bounds only the caller's cleanup wait; a timeout retains the same task and never disposes active EF resources.</summary>
     public async ValueTask DisposeAsync()
     {
+        if (owner.Dispatches.IsCurrentFlow)
+        {
+            owner.Fail();
+            throw ProtocolStorageOwner.Unavailable();
+        }
         Task task;
         lock (sync)
         {
@@ -85,6 +91,7 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
         catch (Exception error) { failures.Add(error); }
         try
         {
+            await owner.Dispatches.DrainAsync();
             await owner.DrainAsync();
         }
         catch (Exception error) { failures.Add(error); }
