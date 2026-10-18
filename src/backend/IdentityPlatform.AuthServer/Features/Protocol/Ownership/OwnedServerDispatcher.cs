@@ -16,10 +16,17 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
             token => context.CancellationToken = token, () => DispatchNativeAsync(context));
     }
 
-    /// <summary>Routes only explicitly enabled fixed-client PAR issuance into a fresh child; all other native paths preserve their dispatcher.</summary>
+    /// <summary>Routes only explicitly enabled fixed-client issuance into a fresh child; all other native paths preserve their dispatcher.</summary>
     private ValueTask DispatchNativeAsync<TContext>(TContext context) where TContext : OpenIddictServerEvents.BaseContext
     {
-        if (context is OpenIddictServerEvents.ProcessSignInContext signIn && signIn.EndpointType == OpenIddictServerEndpointType.PushedAuthorization &&
+        if (context is OpenIddictServerEvents.ProcessRequestContext request && services.GetService<AdministratorAccountIssuanceEnabled>() is not null)
+        {
+            return AdministratorPassthrough.TrackAsync(request, () => native.DispatchAsync(request));
+        }
+        if (context is OpenIddictServerEvents.ProcessSignInContext signIn &&
+            (signIn.EndpointType == OpenIddictServerEndpointType.PushedAuthorization ||
+                (signIn.EndpointType is OpenIddictServerEndpointType.Authorization or OpenIddictServerEndpointType.Token &&
+                    services.GetService<AdministratorAccountIssuanceEnabled>() is not null)) &&
             signIn.ClientId == AdministratorProtocolIdentity.ClientId && services.GetService<AdministratorIssuanceCoordinator>() is { } coordinator)
         {
             return coordinator.RunAsync(signIn);

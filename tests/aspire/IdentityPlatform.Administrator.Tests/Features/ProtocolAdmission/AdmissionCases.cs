@@ -26,6 +26,8 @@ public static class AdmissionCases
     public static IEnumerable<TheoryDataRow<string, string>> Bundles => GovernanceRows.For(GrantCases.Platform, GrantCases.Application, GrantCases.Identity, GrantCases.Auditor);
     public static IEnumerable<TheoryDataRow<string, string>> Time => GovernanceRows.For(Before, Equality, After, ShortBefore, ShortEquality, Zero, Wider, Rollback);
     public static IEnumerable<TheoryDataRow<string, string>> Drift => GovernanceRows.For(Disabled, Suspended, MissingFactor, NoGrants, Authentication, Revoked, Factor);
+    public static IEnumerable<TheoryDataRow<string, string>> ResponseFields => GovernanceRows.For(NativeAccountResponseFault.AuthorizationRefresh,
+        NativeAccountResponseFault.AuthorizationIdentity, NativeAccountResponseFault.TokenRefresh, NativeAccountResponseFault.TokenIdentity);
     public static IEnumerable<TheoryDataRow<string, string>> Sessions => GovernanceRows.For(GovernanceSessionDamage.Missing, GovernanceSessionDamage.Revoked,
         GovernanceSessionDamage.DifferentUser, GovernanceSessionDamage.AuthenticationGeneration, GovernanceSessionDamage.FactorGeneration,
         GovernanceSessionDamage.SecurityStamp, GovernanceSessionDamage.Idle, GovernanceSessionDamage.Absolute, GovernanceSessionDamage.Recovery);

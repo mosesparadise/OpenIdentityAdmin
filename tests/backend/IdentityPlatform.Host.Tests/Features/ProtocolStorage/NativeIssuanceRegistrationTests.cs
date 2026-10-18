@@ -14,6 +14,38 @@ public sealed class NativeIssuanceRegistrationTests
     private const string Token = "/token";
     private const string Par = "/par";
 
+    /// <summary>Account composition retains both real native passthrough slots and requires the early durable redemption prerequisite.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Given_AccountComposition_When_HostRegistrationOrderChanges_Then_NativeHandoffAndConsumptionRemain(bool hostFirst)
+    {
+        var services = new ServiceCollection().AddLogging();
+        var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow().SetAuthorizationEndpointUris(Authorize)
+            .SetTokenEndpointUris(Token).SetPushedAuthorizationEndpointUris(Par).AddEphemeralSigningKey().AddEphemeralEncryptionKey();
+        if (hostFirst)
+        {
+            builder.UseAspNetCore();
+        }
+        builder.AddAdministratorAccountIssuance();
+        if (!hostFirst)
+        {
+            builder.UseAspNetCore();
+        }
+        using var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<OpenIddictServerOptions>>().Value;
+        Assert.NotNull(provider.GetService<AdministratorAccountIssuanceEnabled>());
+        Require(options, OpenIddictServerAspNetCoreHandlers.EnablePassthroughMode<OpenIddictServerEvents.HandleAuthorizationRequestContext,
+            OpenIddictServerAspNetCoreHandlerFilters.RequireAuthorizationEndpointPassthroughEnabled>.Descriptor,
+            typeof(NativeAdministratorPassthrough<OpenIddictServerEvents.HandleAuthorizationRequestContext,
+                OpenIddictServerAspNetCoreHandlerFilters.RequireAuthorizationEndpointPassthroughEnabled>));
+        Require(options, OpenIddictServerAspNetCoreHandlers.EnablePassthroughMode<OpenIddictServerEvents.HandleTokenRequestContext,
+            OpenIddictServerAspNetCoreHandlerFilters.RequireTokenEndpointPassthroughEnabled>.Descriptor,
+            typeof(NativeAdministratorPassthrough<OpenIddictServerEvents.HandleTokenRequestContext,
+                OpenIddictServerAspNetCoreHandlerFilters.RequireTokenEndpointPassthroughEnabled>));
+        Require(options, OpenIddictServerHandlers.RedeemTokenEntry.Descriptor, typeof(DurableServerRedemption));
+    }
+
     /// <summary>Both ASP.NET Core registration orders retain exactly one observed native slot and install owned dispatch without a separate prerequisite call.</summary>
     [Theory]
     [InlineData(false)]
@@ -36,6 +68,7 @@ public sealed class NativeIssuanceRegistrationTests
         var options = provider.GetRequiredService<IOptions<OpenIddictServerOptions>>().Value;
         var dispatcher = Assert.Single(services, descriptor => descriptor.ServiceType == typeof(IOpenIddictServerDispatcher));
         Assert.Equal(typeof(OwnedServerDispatcher), dispatcher.ImplementationType);
+        Require(options, OpenIddictServerHandlers.AttachAuthorization.Descriptor, typeof(NativeAuthorizationCreation));
         Require(options, OpenIddictServerHandlers.Protection.CreateTokenEntry.Descriptor, typeof(NativeTokenCreation));
         Require(options, OpenIddictServerHandlers.Protection.GenerateIdentityModelToken.Descriptor, typeof(NativeTokenSigning));
         Require(options, OpenIddictServerHandlers.Protection.AttachTokenPayload.Descriptor, typeof(NativeTokenPayload));

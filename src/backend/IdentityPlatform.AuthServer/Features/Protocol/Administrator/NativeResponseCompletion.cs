@@ -24,7 +24,7 @@ internal sealed class NativeResponseCompletion(OpenIddictServerEvents.ProcessSig
         var original = ProtocolStorageAmbient.Current?.Request ?? throw ProtocolStorageOwner.Unavailable();
         if (completed is not null || context.IsRequestHandled || context.IsRequestSkipped ||
             !ReferenceEquals(context.Transaction, signIn.Transaction) || !Expected(context) ||
-            !string.IsNullOrEmpty(signIn.Response.Error) || http.Features.Get<IHttpResponseFeature>() is not ProtocolResponseCapture current ||
+            !NativeAccountResponse.Allows(signIn) || http.Features.Get<IHttpResponseFeature>() is not ProtocolResponseCapture current ||
             !current.BelongsTo(original) || current.HasStarted || !current.Bytes.IsEmpty)
         {
             throw ProtocolStorageOwner.Unavailable();

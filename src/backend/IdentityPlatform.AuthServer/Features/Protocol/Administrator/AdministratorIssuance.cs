@@ -6,7 +6,7 @@ using OpenIddict.Server;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 
-/// <summary>Owns the fixed PAR issuance transaction from live registration through native persistence, final proof checks and commit.</summary>
+/// <summary>Owns the fixed native issuance transaction from live registration through native persistence, final proof checks and commit.</summary>
 internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddictServerEvents.ProcessSignInContext context,
     AdministratorRegistrationPolicy policy) : IAsyncDisposable
 {
@@ -15,21 +15,36 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
     private DurableClientAssertion? assertion;
     private AdministratorTokenBudget? budget;
     private NativeIssuanceProof? native;
+    private AdministratorAccountAuthority? account;
     private long maximumExpiration;
 
     /// <summary>Resolves only the state attached by the fresh response-child coordinator.</summary>
     internal static AdministratorIssuance? Find(OpenIddictServerTransaction transaction) =>
         transaction.GetProperty<AdministratorIssuance>(typeof(AdministratorIssuance).FullName!);
 
-    /// <summary>Opens the issuance epoch after early durable work; non-PAR paths remain denied until their admission integration is installed.</summary>
+    /// <summary>Opens the fresh issuance epoch after early durable work, acquiring account locks before any registration read on account-bound paths.</summary>
     internal async ValueTask OpenAsync(CancellationToken token)
     {
-        if (transaction is not null || context.EndpointType != OpenIddictServerEndpointType.PushedAuthorization)
+        if (transaction is not null || context.EndpointType is not (OpenIddictServerEndpointType.PushedAuthorization or
+            OpenIddictServerEndpointType.Authorization or OpenIddictServerEndpointType.Token))
         {
             context.Reject(OpenIddictConstants.Errors.InvalidRequest);
             return;
         }
         transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+        if (context.EndpointType != OpenIddictServerEndpointType.PushedAuthorization)
+        {
+            account = new(scope, context);
+            await account.OpenAsync(policy, token);
+            registration = account.Registration;
+            return;
+        }
+        await OpenParAsync(token);
+    }
+
+    /// <summary>PAR has no account source; its issuance epoch serializes only fixed registration, assertion and server capacity.</summary>
+    private async ValueTask OpenParAsync(CancellationToken token)
+    {
         await AdministratorProtocolLocks.AcquireProfileAsync(scope.Owner, token);
         registration = await AdministratorRegistration.ReadLockedAsync(scope, policy, token);
         assertion = context.Transaction.GetProperty<DurableClientAssertion>(typeof(DurableClientAssertion).FullName!);
@@ -70,6 +85,11 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
     /// <summary>Bounds the prepared native request principal before any token creation or cryptographic signing occurs.</summary>
     internal void BoundExpiration()
     {
+        if (account is not null)
+        {
+            account.BoundExpiration();
+            return;
+        }
         if (native is null || context.RequestTokenPrincipal is not { } principal ||
             principal.GetClaim(OpenIddictConstants.Claims.Private.RequestTokenType) != OpenIddictConstants.RequestTokenTypes.Private.PushedAuthorizationRequest ||
             principal.GetExpirationDate() is not { } expiration)
@@ -82,21 +102,25 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
     /// <summary>Requires actual native creation/formatting, exact final counts and current proof immediately before the one issuance commit.</summary>
     internal async ValueTask<bool> CommitAsync(CancellationToken token)
     {
-        if (transaction is null || registration is null || assertion is null || native is null || budget is null ||
+        if (transaction is null || registration is null || native is null || budget is null ||
             !await native.VerifyAsync(registration.ApplicationId, token) || !await budget.IsCurrentAsync(token))
         {
             return false;
         }
         var current = await AdministratorRegistration.ReadLockedAsync(scope, policy, token);
-        if (current is null || !assertion.IsCurrent(scope, context, current, token) ||
-            context.RequestTokenPrincipal?.GetExpirationDate() is not { } expiration ||
-            expiration.ToUnixTimeSeconds() > maximumExpiration || expiration <= scope.Owner.Clock.GetUtcNow())
+        if (current is null || (account is not null ? !await account.IsCurrentAsync(current, token) : !ParIsCurrent(current, token)))
         {
             return false;
         }
         await transaction.CommitAsync(token);
         return true;
     }
+
+    /// <summary>Rechecks strict PAR proof and prepared lifetime after native output and final registration reads.</summary>
+    private bool ParIsCurrent(AdministratorRegistrationBinding current, CancellationToken token) =>
+        assertion is not null && assertion.IsCurrent(scope, context, current, token) &&
+        context.RequestTokenPrincipal?.GetExpirationDate() is { } expiration &&
+        expiration.ToUnixTimeSeconds() <= maximumExpiration && expiration > scope.Owner.Clock.GetUtcNow();
 
     /// <summary>Allows safe quota cleanup progress only for the explicit capacity-denied path with zero native creation.</summary>
     internal async ValueTask CompleteDenialAsync(CancellationToken token)

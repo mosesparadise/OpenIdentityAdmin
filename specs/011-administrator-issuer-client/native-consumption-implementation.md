@@ -134,3 +134,21 @@ Verified artifact IDs/SHA-256: unit `12122420950` / `41190df58057535773fc58a7b29
 Source inspection identifies an invalid fixture request: it supplied `resource=identity-admin-api`. Pinned native `ValidatePushedResourceParameter` requires an absolute RFC 8707 URI, while the approved opaque identifier is the persisted scope resource and issued audience. The fixture now omits this optional indicator and uses a canonical RFC 7636 S256 challenge; the approved scope/resource/registration values remain unchanged. Four installed-native syntax controls distinguish omission/empty input, invalid opaque input and valid absolute URI syntax. A valid foreign URI's syntax alone grants no product permission. Independent review confirms the resource interpretation; native resource checks are not disabled. The failed hosted report did not retain the native rejection category, so this source-supported defect is not asserted to be the sole cause of the failed permit. Future fixture outcomes retain only a finite native category, never descriptions, arbitrary errors or credential values.
 
 The correction was built and tested in an isolated checkout excluding unfinished authorize/token edits: final Host 770/770 passes, zero skips (51.194 seconds), and Host/Persistence builds have zero warnings/errors. The initial syntax fixture omitted its native null logger and failed one case; the corrected fixture supplies the real handler a null logger and the final full run passes. No provider experiment runs locally. New hosted source evidence remains required.
+
+
+### Verified PAR and admission checkpoint (18 October 2026)
+
+Source `b7a3853905c348aaab06e753de9cfd5fcfa4dae3` passes all **65 jobs** in [run 39090288342](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/39090288342), attempt 1. Tested merge `869fbf92c3a90ede2fc9de146eba144574fd61d9` has base `1ffe5ed1481d065f487f12aeef80657cc955003d` and the identical source tree `e6b0289f552138abde68562ac42154cb7e8964d2`. Independent raw review reconciles **865 unit cases**, **56 admission cases** (28/provider) and **44 foundation cases** (22/provider), all passing with zero skips. The previous 961 reviewed identities are preserved, with four added native resource-syntax controls.
+
+Both provider Platform cases reach the real native PAR handled outcome, 201 response, bounded reference/lifetime, independently persisted token, protected reference validation and all eleven injected fault controls. Those controls are nested assertions bound to the exact source, not eleven separately discovered cases. Subsequent assertion-ledger, quota and observed concurrency/final persistence controls complete. Aggregate review independently verifies all **50 required coverage inputs and 15 module floors**. All 65 changed executable production C# files are included. One included file has zero hits: `Migrator/Features/AdministratorProtocol/Setup.cs` (20 sequence points); its one-shot operation entry path still needs meaningful tests before complete acceptance.
+
+Verified artifact IDs and SHA-256:
+
+- unit: `12123190049` / `135d2f826ebe19f6b984f53ab35ee45ec95a61945d6be52fb17a21d5250ec2fd`.
+- PostgreSql: `12122567264` / `437bda6034496ff98be9d2edab96ebcb4379854735cad58ccebd9e551a3b68d0`.
+- administrator-PostgreSql-protocoladmission: `12122762119` / `987207a6124aeda0d6f517cf8a7aceb2f5c01e9b52f58d73bea21ba16f44b3d2`.
+- administrator-SqlServer-protocoladmission: `12123265011` / `b9e2fb58d5e31b99168879f809bffd745786410f5c9ecdd67cd43e93fcd506d2`.
+- SqlServer: `12122693685` / `fe231f2967ba0e03cda428c6c4a4e276a2563336e26d8bd9d2f964b1353574a5`.
+- Aggregate coverage: `12122638665` / `11eac8199f87c26dc054882e73fa1c20d2904df83a171dcb3d9fcdef4beb0100`.
+
+This closes the published fixture correction's verification, not T005–T009/B2 acceptance. The [account issuance continuation](account-issuance-implementation.md) is newer source and requires separate hosted evidence. PR #66 remains draft/unmerged; all historical, human and activation/release gates remain open.

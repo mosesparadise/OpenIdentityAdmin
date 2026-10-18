@@ -447,6 +447,22 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"missing-session\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"restricted-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"revoked-session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"NativeRequest\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"PrincipalClone\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"PrivateResource\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"PublicSubject\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"NativeRequest\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"PrincipalClone\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"PrivateResource\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"PublicSubject\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"ApplicationAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"Auditor\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"IdentityAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"PlatformAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"authorization-identity\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"authorization-refresh\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"token-identity\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"token-refresh\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.NativeConcurrencyTests.Given_ClaimedRecoveryCode_When_NativeConcurrencyCheckFails_Then_EntireTransactionRollsBackBeforeExplicitRetry(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAdmissionTests.Given_EnrolledAccount_When_RecoveryPasswordIsVerified_Then_OnlyRestrictedCodeChallengeIsAdmitted(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"PostgreSql\")",
@@ -1040,6 +1056,22 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"missing-session\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"restricted-recovery\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"revoked-session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"NativeRequest\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"PrincipalClone\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"PrivateResource\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"PublicSubject\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"NativeRequest\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"PrincipalClone\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"PrivateResource\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"PublicSubject\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"ApplicationAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"Auditor\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"IdentityAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"PlatformAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"authorization-identity\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"authorization-refresh\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"token-identity\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"token-refresh\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.NativeConcurrencyTests.Given_ClaimedRecoveryCode_When_NativeConcurrencyCheckFails_Then_EntireTransactionRollsBackBeforeExplicitRetry(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAdmissionTests.Given_EnrolledAccount_When_RecoveryPasswordIsVerified_Then_OnlyRestrictedCodeChallengeIsAdmitted(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"SqlServer\")",
@@ -23154,6 +23186,662 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
         "typeName": "AdmissionTests",
         "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"NativeRequest\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"PrincipalClone\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"PrivateResource\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: False, mutation: \"PublicSubject\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"NativeRequest\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"PrincipalClone\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"PrivateResource\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"PostgreSql\", authorization: True, mutation: \"PublicSubject\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"NativeRequest\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"PrincipalClone\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"PrivateResource\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: False, mutation: \"PublicSubject\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"NativeRequest\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"PrincipalClone\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"PrivateResource\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountFinalReadTests.Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish(provider: \"SqlServer\", authorization: True, mutation: \"PublicSubject\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountFinalReadTests",
+        "methodName": "Given_FormattedNativeCredential_When_FinalAuthorityReadMutatesContinuation_Then_NoCredentialCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"ApplicationAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"Auditor\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"IdentityAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"PostgreSql\", bundle: \"PlatformAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"ApplicationAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"Auditor\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"IdentityAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountIssuanceTests.Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive(provider: \"SqlServer\", bundle: \"PlatformAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountIssuanceTests",
+        "methodName": "Given_RealAdministratorCookie_When_NativeCodeFlowCompletes_Then_OriginalProofAndFixedAudienceSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"authorization-identity\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"authorization-refresh\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"token-identity\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"PostgreSql\", fault: \"token-refresh\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"authorization-identity\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"authorization-refresh\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"token-identity\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountResponseTests.Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains(provider: \"SqlServer\", fault: \"token-refresh\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountResponseTests",
+        "methodName": "Given_NativeGeneratedCredential_When_UnexpectedResponseFieldIsAdded_Then_IssuanceRollsBackAndConsumptionRemains",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

@@ -13,6 +13,7 @@ internal sealed class NativeIssuanceProof
     private readonly OpenIddictServerEvents.ProcessSignInContext context;
     private readonly AdministratorIssuancePlan plan;
     private readonly NativeResponseCompletion response;
+    private readonly NativeIssuedAuthorization authorization;
     private readonly Dictionary<string, NativeIssuedToken> tokens = new(StringComparer.Ordinal);
     private NativeIssuedToken? active;
 
@@ -38,9 +39,22 @@ internal sealed class NativeIssuanceProof
         this.context = context;
         this.plan = plan;
         response = new(context, callback);
+        authorization = new(scope, context);
         request = ProtocolStorageAmbient.Current?.Request ?? throw ProtocolStorageOwner.Unavailable();
         phase = scope.Owner.Capture(write: true);
         RequireCurrent();
+    }
+
+    /// <summary>Observes native authorization attachment and latches any swallowed creation or binding failure.</summary>
+    internal async ValueTask AttachAuthorizationAsync(Func<ValueTask> native)
+    {
+        try
+        {
+            RequireCurrent();
+            await authorization.ObserveAsync(native);
+            RequireCurrent();
+        }
+        catch { request.Fail(); scope.Owner.Fail(); throw; }
     }
 
     /// <summary>Observes exactly the expected nested native generations; early handled/skipped paths cannot manufacture completion.</summary>
@@ -109,7 +123,8 @@ internal sealed class NativeIssuanceProof
         RequireCurrent();
         if (active is not null || tokens.Count != plan.TokenTypes.Count || context.IsRejected || context.IsRequestSkipped ||
             !string.IsNullOrEmpty(context.Response.Error) || !response.IsCurrent() ||
-            (context.EndpointType == OpenIddictServerEndpointType.PushedAuthorization && !NativeParResponse.Allows(context.Response)))
+            !await authorization.VerifyAsync(application, token) ||
+            !NativeAccountResponse.Allows(context))
         {
             return false;
         }
@@ -122,7 +137,7 @@ internal sealed class NativeIssuanceProof
             }
         }
         RequireCurrent();
-        return true;
+        return authorization.IsBound() && response.IsCurrent() && !context.IsRejected && !context.IsRequestSkipped;
     }
 
     /// <summary>Checks the library's actual reference prefix and final code/access/identity-token output fields.</summary>

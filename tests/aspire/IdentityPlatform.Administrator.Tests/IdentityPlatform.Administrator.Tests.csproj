@@ -37,6 +37,7 @@
   </Target>
   <ItemGroup>
     <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeAssertionMaterial.cs" Link="Fixtures/Protocol/NativeAssertionMaterial.cs" />
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeHttpCompletion.cs" Link="Fixtures/Protocol/NativeHttpCompletion.cs" />
     <Compile Include="../../shared/TestDatabaseProviders.cs" Link="Fixtures/TestDatabaseProviders.cs" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />

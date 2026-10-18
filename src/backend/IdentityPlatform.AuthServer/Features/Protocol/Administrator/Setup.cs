@@ -15,6 +15,7 @@ internal static class Setup
         builder.Services.AddOwnedServerDispatcher();
         builder.Services.AddScoped<AdministratorIssuanceCoordinator>();
         builder.AddNativeIssuanceObservations();
+        AddRequestPolicy(builder);
         builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<OpenAdministratorIssuance>()
             .SetOrder(OpenIddictServerHandlers.RestoreInternalClaims.Descriptor.Order + BetweenNativeHandlers));
         builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<ReserveAdministratorIssuance>()
@@ -24,9 +25,45 @@ internal static class Setup
         return builder;
     }
 
+    /// <summary>Applies fixed-profile request policy after native validation for each supported endpoint.</summary>
+    private static void AddRequestPolicy(OpenIddictServerBuilder builder)
+    {
+        builder.AddEventHandler<OpenIddictServerEvents.ValidatePushedAuthorizationRequestContext>(handler => handler
+            .UseSingletonHandler<AdministratorRequestPolicy>().SetOrder(AdministratorRequestPolicy.AfterNativeValidation));
+        builder.AddEventHandler<OpenIddictServerEvents.ValidateAuthorizationRequestContext>(handler => handler
+            .UseSingletonHandler<AdministratorRequestPolicy>().SetOrder(AdministratorRequestPolicy.AfterNativeValidation));
+        builder.AddEventHandler<OpenIddictServerEvents.ValidateTokenRequestContext>(handler => handler
+            .UseSingletonHandler<AdministratorRequestPolicy>().SetOrder(AdministratorRequestPolicy.AfterNativeValidation));
+    }
+
+    /// <summary>Explicitly composes account-bound issuance together with its mandatory early durable native redemption.</summary>
+    internal static OpenIddictServerBuilder AddAdministratorAccountIssuance(this OpenIddictServerBuilder builder)
+    {
+        builder.AddAdministratorParIssuance().AddDurableServerConsumption();
+        builder.Services.AddSingleton<AdministratorAccountIssuanceEnabled>();
+        AddPassthrough<OpenIddictServerEvents.HandleAuthorizationRequestContext,
+            OpenIddictServerAspNetCoreHandlerFilters.RequireAuthorizationEndpointPassthroughEnabled>(builder);
+        AddPassthrough<OpenIddictServerEvents.HandleTokenRequestContext,
+            OpenIddictServerAspNetCoreHandlerFilters.RequireTokenEndpointPassthroughEnabled>(builder);
+        return builder;
+    }
+
+    /// <summary>Preserves original native passthrough filters and ordering while recording its genuine endpoint handoff.</summary>
+    private static void AddPassthrough<TContext, TFilter>(OpenIddictServerBuilder builder)
+        where TContext : OpenIddictServerEvents.BaseRequestContext
+        where TFilter : class, IOpenIddictServerHandlerFilter<TContext>
+    {
+        var descriptor = OpenIddictServerAspNetCoreHandlers.EnablePassthroughMode<TContext, TFilter>.Descriptor;
+        builder.RemoveEventHandler(descriptor);
+        builder.Services.AddSingleton<OpenIddictServerAspNetCoreHandlers.EnablePassthroughMode<TContext, TFilter>>();
+        builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<TContext>().Import(descriptor)
+            .UseSingletonHandler<NativeAdministratorPassthrough<TContext, TFilter>>().SetType(OpenIddictServerHandlerType.Custom).Build());
+    }
+
     /// <summary>Retains actual native handlers and imports their original filters/orders into explicitly selected wrappers.</summary>
     internal static OpenIddictServerBuilder AddNativeIssuanceObservations(this OpenIddictServerBuilder builder)
     {
+        AddAuthorization(builder);
         var creation = OpenIddictServerHandlers.Protection.CreateTokenEntry.Descriptor;
         var signing = OpenIddictServerHandlers.Protection.GenerateIdentityModelToken.Descriptor;
         var payload = OpenIddictServerHandlers.Protection.AttachTokenPayload.Descriptor;
@@ -50,6 +87,16 @@ internal static class Setup
         return builder;
     }
 
+    /// <summary>Observes actual ad-hoc authorization creation while retaining every native filter and ordering constraint.</summary>
+    private static void AddAuthorization(OpenIddictServerBuilder builder)
+    {
+        var descriptor = OpenIddictServerHandlers.AttachAuthorization.Descriptor;
+        builder.RemoveEventHandler(descriptor);
+        builder.Services.AddScoped<OpenIddictServerHandlers.AttachAuthorization>();
+        builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.ProcessSignInContext>()
+            .Import(descriptor).UseScopedHandler<NativeAuthorizationCreation>().SetType(OpenIddictServerHandlerType.Custom).Build());
+    }
+
     /// <summary>Keeps endpoint-specific native JSON descriptors intact while observing actual serialization and handled completion.</summary>
     private static void AddJson<TContext>(OpenIddictServerBuilder builder) where TContext : OpenIddictServerEvents.BaseRequestContext
     {
@@ -60,3 +107,6 @@ internal static class Setup
             .UseScopedHandler<NativeJsonResponse<TContext>>().SetType(OpenIddictServerHandlerType.Custom).Build());
     }
 }
+
+/// <summary>Marks only explicit internal account-issuance composition; it neither maps endpoints nor activates production.</summary>
+internal sealed class AdministratorAccountIssuanceEnabled;

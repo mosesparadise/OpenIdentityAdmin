@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-  <ItemGroup><InternalsVisibleTo Include="IdentityPlatform.Host.Tests" /><InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" /></ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="IdentityPlatform.Host.Tests" /><InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" /><InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" /></ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Security.Cryptography.Pkcs" />
     <PackageReference Include="OpenIddict.Server.AspNetCore" />
