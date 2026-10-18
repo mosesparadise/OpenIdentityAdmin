@@ -37,7 +37,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
         using var material = new NativeClientCredentialFixture();
         using var firstKeys = Load(material);
         using var secondKeys = Load(material);
-        var profile = NativeClientProfile.Create(Issuer, Client, Callback, KeyId, firstKeys);
+        var profile = Profile(firstKeys);
         await using var issuer = await AdministratorProtocolScenario.CreateAsync(fixture, provider, profile.Registration);
         Assert.Equal(profile.Issuer, issuer.Issuer);
         await using var database = await fixture.LeaseSessionsAsync(provider);
@@ -82,7 +82,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
     }
 
     /// <summary>Requires an actual native redirect and a distinct secure native correlation cookie, without exposing either value.</summary>
-    private static async Task<NativeClientHttpResult> ChallengeAsync(NativeClientHttp client)
+    internal static async Task<NativeClientHttpResult> ChallengeAsync(NativeClientHttp client)
     {
         var result = await client.InvokeAsync();
         RequireClean(result);
@@ -111,7 +111,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
     }
 
     /// <summary>Follows only the exact native issuer destination with the real account cookie, preserving returned state/code bytes.</summary>
-    private static async Task<Uri> AuthorizeAsync(AdministratorProtocolScenario issuer, NativeClientHttpResult challenge, bool cookie)
+    internal static async Task<Uri> AuthorizeAsync(AdministratorProtocolScenario issuer, NativeClientHttpResult challenge, bool cookie)
     {
         var location = new Uri(challenge.Location);
         Assert.True(location.GetLeftPart(UriPartial.Path) == new Uri(issuer.Issuer, AdministratorProtocolScenario.AuthorizePath).AbsoluteUri);
@@ -140,7 +140,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
     }
 
     /// <summary>Reads actual committed statuses through a fresh native scope; no state payload or reference value is printed.</summary>
-    private static Task<bool> RequireStatesAsync(NativeClientHttp client, int total, int redeemed) =>
+    internal static Task<bool> RequireStatesAsync(NativeClientHttp client, int total, int redeemed) =>
         new ProtocolStorageRequest(client.Services.GetRequiredService<TimeProvider>(), TestContext.Current.CancellationToken)
             .RunAsync(client.Services.GetRequiredService<IServiceScopeFactory>(), async (scope, token) =>
             {
@@ -148,14 +148,18 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
                     .Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().Select(row => row.Status).ToListAsync(current)), token);
                 Assert.Equal(total, statuses.Count);
                 Assert.Equal(redeemed, statuses.Count(value => value == OpenIddictConstants.Statuses.Redeemed));
+                Assert.Equal(total - redeemed, statuses.Count(value => value == OpenIddictConstants.Statuses.Valid));
                 return true;
             });
 
     /// <summary>Imports independently owned durable client certificates from protected synthetic files.</summary>
-    private static NativeClientCredentials Load(NativeClientCredentialFixture material) => NativeClientCredentials.Load(
+    internal static NativeClientCredentials Load(NativeClientCredentialFixture material) => NativeClientCredentials.Load(
         new ConfigurationBuilder().AddInMemoryCollection(material.Settings()).Build().GetSection(CredentialSection), DateTimeOffset.UtcNow);
 
+    /// <summary>Shares the exact immutable native client profile between positive and awaited-mutation provider controls.</summary>
+    internal static NativeClientProfile Profile(NativeClientCredentials credentials) => NativeClientProfile.Create(Issuer, Client, Callback, KeyId, credentials);
+
     /// <summary>Reports only safe exception type/stack, never native error descriptions or credential-bearing responses.</summary>
-    private static void RequireClean(NativeClientHttpResult result) =>
+    internal static void RequireClean(NativeClientHttpResult result) =>
         Assert.True(result.Failure is null, result.Failure?.GetType().FullName + Environment.NewLine + result.Failure?.StackTrace);
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.WebUtilities;
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
 /// <summary>Replaces only network I/O, preserving native serialization and issuer handling without claiming TLS interoperability.</summary>
-internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario issuer) : HttpMessageHandler
+internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario issuer) : DelegatingHandler
 {
     internal int ParSends
     {

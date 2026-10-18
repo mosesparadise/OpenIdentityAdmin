@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
-using IdentityPlatform.Testing;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityPlatform.Host.Tests.Features.AdministratorClient;

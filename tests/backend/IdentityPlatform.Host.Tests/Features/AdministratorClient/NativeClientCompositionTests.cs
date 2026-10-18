@@ -113,8 +113,12 @@ public sealed class NativeClientCompositionTests(NativeClientCredentialFixture f
     }
 
     /// <summary>Builds actual services against an unused synthetic connection; these controls never execute database operations.</summary>
-    internal static ServiceProvider Create(NativeClientCredentials credentials) => new ServiceCollection().AddLogging()
-        .AddSessionPersistence(DatabaseProvider.PostgreSql, Connection)
-        .AddAdministratorClient(NativeClientProfile.Create(NativeClientProfileTests.Issuer, NativeClientProfileTests.Client,
-            NativeClientProfileTests.Callback, NativeClientProfileTests.KeyId, credentials), credentials).BuildServiceProvider(validateScopes: true);
+    internal static ServiceProvider Create(NativeClientCredentials credentials, Action<IServiceCollection>? configure = null)
+    {
+        var services = new ServiceCollection().AddLogging().AddSessionPersistence(DatabaseProvider.PostgreSql, Connection)
+            .AddAdministratorClient(NativeClientProfile.Create(NativeClientProfileTests.Issuer, NativeClientProfileTests.Client,
+                NativeClientProfileTests.Callback, NativeClientProfileTests.KeyId, credentials), credentials);
+        configure?.Invoke(services);
+        return services.BuildServiceProvider(validateScopes: true);
+    }
 }

@@ -32,7 +32,8 @@ internal sealed class NativeClientHttp : IAsyncDisposable
     private readonly NativeClientProfile profile;
 
     /// <summary>Creates one independent native client instance; supplied protected credentials remain caller-owned until disposal completes.</summary>
-    internal NativeClientHttp(BootstrapSessions database, AdministratorProtocolScenario issuer, NativeClientProfile profile, NativeClientCredentials credentials)
+    internal NativeClientHttp(BootstrapSessions database, AdministratorProtocolScenario issuer, NativeClientProfile profile, NativeClientCredentials credentials,
+        Action<IServiceCollection>? configure = null)
     {
         this.profile = profile;
         Bridge = new(issuer);
@@ -42,11 +43,12 @@ internal sealed class NativeClientHttp : IAsyncDisposable
         services.AddAdministratorClient(profile, credentials);
         services.AddOpenIddict().AddClient().UseAspNetCore().EnableRedirectionEndpointPassthrough();
         services.AddOptions<OpenIddictClientOptions>().Configure(options => options.TimeProvider = issuer.Account.Journey.Clock);
-        services.ConfigureAll<HttpClientFactoryOptions>(options => options.HttpMessageHandlerBuilderActions.Add(builder =>
+        services.ConfigureAll<HttpClientFactoryOptions>(options =>
         {
-            builder.PrimaryHandler.Dispose();
-            builder.PrimaryHandler = Bridge;
-        }));
+            options.HandlerLifetime = Timeout.InfiniteTimeSpan;
+            options.HttpMessageHandlerBuilderActions.Add(builder => builder.AdditionalHandlers.Add(Bridge));
+        });
+        configure?.Invoke(services);
         Services = services.BuildServiceProvider(validateScopes: true);
     }
 
