@@ -78,7 +78,7 @@ internal static class ProtocolHttpBoundary
         {
             var outcome = await operation(context, scope, token);
             features.RequireIntact(request);
-            await capture.FinishAsync();
+            await capture.SealAsync();
             features.RequireIntact(request);
             request.RequirePublication(outcome);
             return outcome;

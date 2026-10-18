@@ -11,38 +11,18 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 internal static class NativeConsumptionSeed
 {
     private const string Client = "identity-admin-bff";
-    private const string Scope = "identity.admin";
     private const string Subject = "durable-consumption-subject";
-    private const string Redirect = "https://consumption.example.test/callback";
-    private const string Fingerprint = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     private const int LifetimeSeconds = 60;
 
-    /// <summary>Creates fixture registration in one manager-owned transaction; production initialization is a separate task.</summary>
-    internal static Task InitializeAsync(IServiceProvider root, DatabaseStore store, CancellationToken token) =>
-        new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token).RunAsync(root.GetRequiredService<IServiceScopeFactory>(), async (scope, cancellation) =>
+    /// <summary>Uses the actual explicit initializer and verifies its exact repeat is a no-op; consumption principals remain synthetic.</summary>
+    internal static async Task InitializeAsync(IServiceProvider root, DatabaseStore store, CancellationToken token)
+    {
+        if (store == DatabaseStore.Sessions)
         {
-            if (store == DatabaseStore.Sessions)
-            {
-                return true;
-            }
-            await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
-            var applications = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
-            var application = await applications.CreateAsync(new OpenIddictApplicationDescriptor { ClientId = Client, ClientType = OpenIddictConstants.ClientTypes.Public }, cancellation);
-            var scopes = scope.Services.GetRequiredService<IOpenIddictScopeManager>();
-            var registrationScope = await scopes.CreateAsync(new OpenIddictScopeDescriptor { Name = Scope }, cancellation);
-            scope.Owner.Database.Add(new AdministratorProtocolProfile
-            {
-                ApplicationId = (await applications.GetIdAsync(application, cancellation))!,
-                ScopeId = (await scopes.GetIdAsync(registrationScope, cancellation))!,
-                RedirectUri = Redirect,
-                PublicKeyFingerprint = Fingerprint,
-                Revision = 1,
-                Enabled = true
-            });
-            await scope.Owner.Database.SaveChangesAsync(cancellation);
-            await transaction.CommitAsync(cancellation);
-            return true;
-        });
+            return;
+        }
+        await NativeRegistrationInitialization.VerifyAsync(root, token);
+    }
 
     /// <summary>Uses native manager creation and records native identifiers in an already-validated test principal.</summary>
     internal static Task<ClaimsPrincipal> TokenAsync(IServiceProvider root, string type, CancellationToken token) =>

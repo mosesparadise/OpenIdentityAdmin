@@ -12,23 +12,29 @@ internal static class AdministratorAssertionLedger
     internal static async ValueTask<bool> ReserveAsync(ProtocolStorageOwner owner, AdministratorAssertion assertion, CancellationToken token)
     {
         await AdministratorProtocolLocks.AcquireProfileAsync(owner, token);
-        return await owner.RunAsync(async cancellation =>
+        return await ReserveLockedAsync(owner, assertion, token) is not null;
+    }
+
+    /// <summary>Reserves after the caller has acquired profile serialization and verified the complete current registration in that same transaction.</summary>
+    internal static ValueTask<long?> ReserveLockedAsync(ProtocolStorageOwner owner, AdministratorAssertion assertion, CancellationToken token)
+    {
+        return owner.RunAsync<long?>(async cancellation =>
         {
             var profile = await owner.Database.Set<AdministratorProtocolProfile>().SingleOrDefaultAsync(
                 row => row.Id == AdministratorProtocolProfile.SingletonId, cancellation);
             if (profile is not { Enabled: true } || !TryTime(profile, owner.Clock, out var now))
             {
-                return false;
+                return null;
             }
             if (!assertion.Allows(now))
             {
-                return false;
+                return null;
             }
             await CleanupAsync(owner.Database, now, cancellation);
             var ledger = owner.Database.Set<AdministratorClientAssertionUse>();
             if (await ledger.AnyAsync(row => row.Digest == assertion.Digest, cancellation) || await ledger.CountAsync(cancellation) >= RetainedLimit)
             {
-                return false;
+                return null;
             }
             profile.ObservedAt = now;
             ledger.Add(new AdministratorClientAssertionUse
@@ -39,7 +45,7 @@ internal static class AdministratorAssertionLedger
                 RetainUntil = assertion.ExpiresAt + AdministratorAssertion.ClockSkewSeconds
             });
             await owner.Database.SaveChangesAsync(cancellation);
-            return TryTime(profile, owner.Clock, out var finalNow) && assertion.Allows(finalNow);
+            return TryTime(profile, owner.Clock, out var finalNow) && assertion.Allows(finalNow) ? profile.ObservedAt : null;
         }, token, write: true);
     }
 

@@ -41,7 +41,8 @@ public sealed class NativeOwnershipTests
             Assert.Equal(0, await DatabaseUpgrade.RunAsync(migrator, deadline.Token));
         }
         await fixture.PrepareRuntimePrincipals(deadline.Token);
-        await using var root = CreateRoot(fixture, store);
+        using var material = new NativeAssertionMaterial();
+        await using var root = CreateRoot(fixture, store, material);
         await using (var owned = await NativeOwnershipConformance.OpenAsync(root, deadline.Token))
         {
             var expected = store == DatabaseStore.Platform ? (DbContext)owned.Services.GetRequiredService<PlatformDbContext>() : owned.Services.GetRequiredService<AdminSessionDbContext>();
@@ -53,18 +54,19 @@ public sealed class NativeOwnershipTests
         await NativeConsumptionConformance.VerifyAsync(root, store, deadline.Token);
         await NativeConsumptionBindings.VerifyAsync(root, store, deadline.Token);
         await NativeConsumptionRows.VerifyAsync(root, store, deadline.Token);
-        await using var independent = CreateRoot(fixture, store);
+        await using var independent = CreateRoot(fixture, store, material);
         await NativeConsumptionRaces.VerifyAsync(root, independent, store, new NativeLockObservation(name, connection), deadline.Token);
         if (store == DatabaseStore.Platform)
         {
             await NativeConsumptionReceipts.VerifyAsync(root, independent, deadline.Token);
+            await NativeAssertionAuthentication.VerifyAsync(fixture, material, deadline.Token);
             await NativeAssertionLedger.VerifyAsync(root, independent, deadline.Token);
         }
         await NativeConsumptionBoundaries.VerifyAsync(root, store, deadline.Token);
     }
 
     /// <summary>Selects native context composition explicitly; production registration remains unchanged.</summary>
-    internal static ServiceProvider CreateRoot(NativeProviderFixture fixture, DatabaseStore store)
+    internal static ServiceProvider CreateRoot(NativeProviderFixture fixture, DatabaseStore store, NativeAssertionMaterial material)
     {
         var services = new ServiceCollection().AddLogging().AddPlatformPersistence(fixture.Provider,
             fixture.RuntimeConnection(DatabaseStore.Platform), fixture.RuntimeConnection(DatabaseStore.Sessions));
@@ -76,12 +78,15 @@ public sealed class NativeOwnershipTests
         services.AddSingleton<NativeConsumptionClock>();
         services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
         services.AddSingleton<NativeConsumptionCommit>();
+        services.AddSingleton<NativeRegistrationAuditFailure>();
         services.AddSingleton<NativeRedemptionBarrier>();
         services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
-            provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
+            provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>(),
+            provider.GetRequiredService<NativeRegistrationAuditFailure>()));
         services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
             provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
         services.AddProtocolStorageOwnership();
+        services.AddSingleton(material.Policy);
         NativeConsumptionSetup.Configure(services, store);
         return services.BuildServiceProvider(validateScopes: true);
     }

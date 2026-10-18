@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.Migrator" />
     <InternalsVisibleTo Include="IdentityPlatform.Admin.Bff" />
     <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
