@@ -79,12 +79,14 @@ public sealed class NativeOwnershipTests
         services.AddSingleton<NativeConsumptionClock>();
         services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
         services.AddSingleton<NativeConsumptionCommit>();
+        services.AddSingleton<NativeConsumptionRead>();
         services.AddSingleton<NativeRegistrationAuditFailure>();
         services.AddSingleton<NativeTokenCleanupFault>();
         services.AddSingleton<NativeRedemptionBarrier>();
         services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
             provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>(),
-            provider.GetRequiredService<NativeRegistrationAuditFailure>(), provider.GetRequiredService<NativeTokenCleanupFault>()));
+            provider.GetRequiredService<NativeRegistrationAuditFailure>(), provider.GetRequiredService<NativeTokenCleanupFault>(),
+            provider.GetRequiredService<NativeConsumptionRead>()));
         services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
             provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
         services.AddProtocolStorageOwnership();

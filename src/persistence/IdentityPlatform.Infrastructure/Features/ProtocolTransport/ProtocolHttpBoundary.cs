@@ -28,9 +28,11 @@ internal static class ProtocolHttpBoundary
         {
             capture.Headers[header.Key] = header.Value;
         }
-        features.Install();
         try
         {
+            // Framework input-pipe cleanup belongs to the original host, before any owned child response/services exist.
+            _ = context.Request.BodyReader;
+            features.Install();
             var outcome = await InvokeAsync(context, factory, operation, request, capture, features);
             await request.DrainAsync();
             request.RequirePublication(outcome);

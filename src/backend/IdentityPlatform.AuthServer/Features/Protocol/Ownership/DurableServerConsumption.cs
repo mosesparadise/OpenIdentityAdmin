@@ -16,6 +16,9 @@ internal sealed class DurableServerConsumption
     private readonly ClaimsPrincipal principal;
     private readonly ConsumptionStamp stamp;
     private readonly string binding;
+    private readonly OpenIddictRequest nativeRequest;
+    private readonly OpenIddictServerEndpointType endpoint;
+    private readonly OpenIddictServerEvents.ProcessAuthenticationContext? authentication;
     private ProtocolStorageOwner? issuanceOwner;
     private ProtocolStoragePhase? issuancePhase;
     private int claimed;
@@ -26,6 +29,10 @@ internal sealed class DurableServerConsumption
     {
         this.context = context;
         this.request = request;
+        nativeRequest = context.Request;
+        endpoint = context.EndpointType;
+        authentication = context.Transaction.GetProperty<OpenIddictServerEvents.ProcessAuthenticationContext>(
+            typeof(OpenIddictServerEvents.ProcessAuthenticationContext).FullName!);
         this.principal = principal;
         this.stamp = stamp;
         binding = Binding(principal);
@@ -34,7 +41,8 @@ internal sealed class DurableServerConsumption
     /// <summary>Claims this receipt for exactly one fresh issuance epoch; later checks cannot transfer it to another owner or phase.</summary>
     internal void Claim(ProtocolStorageScope scope, OpenIddictServerEvents.ProcessSignInContext current)
     {
-        if (Interlocked.Exchange(ref claimed, 1) != 0 || !ReferenceEquals(context, current) ||
+        if (Interlocked.Exchange(ref claimed, 1) != 0 || !ReferenceEquals(context, current) || current.IsRejected || current.IsRequestSkipped || current.IsRequestHandled ||
+            !ReferenceEquals(nativeRequest, current.Request) || endpoint != current.EndpointType ||
             !ReferenceEquals(request, ProtocolStorageAmbient.Current?.Request) || !ReferenceEquals(scope, ProtocolStorageAmbient.Current?.Scope) ||
             scope.Owner.Transaction is null)
         {
@@ -54,12 +62,15 @@ internal sealed class DurableServerConsumption
         var original = ProtocolStorageAmbient.Current ?? throw ProtocolStorageOwner.Unavailable();
         var frozen = new ClaimsPrincipal(validation.Principal!.Identities.Select(identity => new ClaimsIdentity(identity)));
         var expected = Binding(frozen);
+        var nativeRequest = context.Request;
+        var endpoint = context.EndpointType;
         await DurableServerToken.RunAsync(factory, validation,
             services => services.GetRequiredService<OpenIddictServerHandlers.RedeemTokenEntry>().HandleAsync(context),
             stamp =>
             {
                 if (!ReferenceEquals(original.Request, ProtocolStorageAmbient.Current?.Request) ||
-                    validation.Principal is null || expected != Binding(validation.Principal))
+                    validation.Principal is null || expected != Binding(validation.Principal) ||
+                    !ReferenceEquals(nativeRequest, context.Request) || endpoint != context.EndpointType)
                 {
                     validation.Reject(OpenIddictConstants.Errors.InvalidToken);
                 }
@@ -73,10 +84,9 @@ internal sealed class DurableServerConsumption
     /// <summary>Checks the consumed row after reacquiring the profile lock without misclassifying this continuation as a replay.</summary>
     internal async ValueTask<bool> IsCurrentAsync(ProtocolStorageScope scope, OpenIddictServerEvents.ProcessSignInContext current, CancellationToken token)
     {
-        if (!ReferenceEquals(issuanceOwner, scope.Owner) || issuancePhase is null || !ReferenceEquals(context, current) ||
+        if (!ReferenceEquals(issuanceOwner, scope.Owner) || issuancePhase is null || !ContinuationMatches(current) ||
             !ReferenceEquals(request, ProtocolStorageAmbient.Current?.Request) || !ReferenceEquals(scope, ProtocolStorageAmbient.Current?.Scope) ||
             scope.Owner.Transaction is null || !OriginalClaimsRemain() ||
-            !string.Equals(current.ClientId, AdministratorProtocolIdentity.ClientId, StringComparison.Ordinal) ||
             !AdministratorNativeToken.IsCurrent(stamp.Expiration, scope.Owner.Clock))
         {
             return false;
@@ -99,15 +109,24 @@ internal sealed class DurableServerConsumption
         var authorized = await AuthorizationIsCurrentAsync(scope, token);
         scope.Owner.Check(issuancePhase, token);
         request.RequireCurrent();
-        return authorized && OriginalClaimsRemain() && ReferenceEquals(scope, ProtocolStorageAmbient.Current?.Scope) &&
+        return authorized && ContinuationMatches(current) && OriginalClaimsRemain() && ReferenceEquals(scope, ProtocolStorageAmbient.Current?.Scope) &&
             AdministratorNativeToken.IsCurrent(expiration, scope.Owner.Clock) && AdministratorNativeToken.IsCurrent(stamp.Expiration, scope.Owner.Clock);
     }
+
+    /// <summary>Checks terminal outcome and exact native identities both before and after asynchronous final-authority reads.</summary>
+    private bool ContinuationMatches(OpenIddictServerEvents.ProcessSignInContext current) => ReferenceEquals(context, current) &&
+        !current.IsRejected && !current.IsRequestSkipped && ReferenceEquals(nativeRequest, current.Request) && endpoint == current.EndpointType &&
+        string.Equals(current.ClientId, AdministratorProtocolIdentity.ClientId, StringComparison.Ordinal) &&
+        ReferenceEquals(request, ProtocolStorageAmbient.Current?.Request);
 
     /// <summary>Rejects mutation of the original protected input or replacement of its code subject after durable consumption.</summary>
     private bool OriginalClaimsRemain()
     {
-        var authentication = context.Transaction.GetProperty<OpenIddictServerEvents.ProcessAuthenticationContext>(
-            typeof(OpenIddictServerEvents.ProcessAuthenticationContext).FullName!);
+        if (!ReferenceEquals(authentication, context.Transaction.GetProperty<OpenIddictServerEvents.ProcessAuthenticationContext>(
+            typeof(OpenIddictServerEvents.ProcessAuthenticationContext).FullName!)))
+        {
+            return false;
+        }
         var code = principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode);
         var original = code ? authentication?.AuthorizationCodePrincipal : authentication?.RequestTokenPrincipal;
         return original is not null && binding == Binding(original) &&
@@ -135,6 +154,12 @@ internal sealed class DurableServerConsumption
         {
             return principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken);
         }
+        var manager = scope.Services.GetRequiredService<IOpenIddictAuthorizationManager>();
+        var entry = await manager.FindByIdAsync(principal.GetAuthorizationId()!, token);
+        if (entry is null || !await ProtocolStorageRows.ReloadAsync(scope, entry, token))
+        {
+            return false;
+        }
         var validation = new OpenIddictServerEvents.ValidateTokenContext(context.Transaction)
         {
             Principal = principal,
@@ -152,9 +177,7 @@ internal sealed class DurableServerConsumption
         {
             return false;
         }
-        var manager = scope.Services.GetRequiredService<IOpenIddictAuthorizationManager>();
-        var entry = await manager.FindByIdAsync(principal.GetAuthorizationId()!, token);
-        return entry is not null &&
+        return
             string.Equals(await manager.GetApplicationIdAsync(entry, token), stamp.ApplicationId, StringComparison.Ordinal) &&
             string.Equals(await manager.GetSubjectAsync(entry, token), principal.GetClaim(OpenIddictConstants.Claims.Subject), StringComparison.Ordinal);
     }

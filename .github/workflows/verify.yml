@@ -159,6 +159,8 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Policy, label: administrator-SqlServer-governance-policy }
           - { profile: SqlServer, partition: administrator, story: Governance.Commands, label: administrator-SqlServer-governance-commands }
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
+          - { profile: PostgreSql, partition: administrator, story: ProtocolAdmission, label: administrator-PostgreSql-protocoladmission }
+          - { profile: SqlServer, partition: administrator, story: ProtocolAdmission, label: administrator-SqlServer-protocoladmission }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }

@@ -4,6 +4,7 @@ using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -80,26 +81,32 @@ internal static class NativeParIssuance
         http.Request.ContentType = FormMediaType;
         http.Request.ContentLength = body.Length;
         http.Request.Body = body;
+        var host = new NativeHttpCompletion();
+        http.Features.Set<IHttpResponseFeature>(host);
         http.Response.Body = output;
         var claimed = false;
         Exception? failure = null;
-        await ProtocolHttpBoundary.RunAsync(http, root.GetRequiredService<IServiceScopeFactory>(), root.GetRequiredService<TimeProvider>(), async (_, scope, cancellation) =>
+        try
         {
-            try
+            await ProtocolHttpBoundary.RunAsync(http, root.GetRequiredService<IServiceScopeFactory>(), root.GetRequiredService<TimeProvider>(), async (_, scope, cancellation) =>
             {
-                var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
-                transaction.BaseUri = new Uri(NativeAssertionMaterial.Issuer);
-                transaction.RequestUri = new Uri(transaction.BaseUri, Path);
-                transaction.Properties[typeof(HttpRequest).FullName!] = new WeakReference<HttpRequest>(http.Request);
-                var context = new OpenIddictServerEvents.ProcessRequestContext(transaction) { CancellationToken = cancellation };
-                await scope.Services.GetRequiredService<IOpenIddictServerDispatcher>().DispatchAsync(context);
-                root.GetRequiredService<NativeParFault>().AfterDispatch(context);
-                AdministratorIssuanceCoordinator.ClaimPublication(http, context);
-                claimed = true;
-                return ProtocolResponseOutcome.Committed;
-            }
-            catch (Exception error) { failure = error; throw; }
-        });
+                try
+                {
+                    var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
+                    transaction.BaseUri = new Uri(NativeAssertionMaterial.Issuer);
+                    transaction.RequestUri = new Uri(transaction.BaseUri, Path);
+                    transaction.Properties[typeof(HttpRequest).FullName!] = new WeakReference<HttpRequest>(http.Request);
+                    var context = new OpenIddictServerEvents.ProcessRequestContext(transaction) { CancellationToken = cancellation };
+                    await scope.Services.GetRequiredService<IOpenIddictServerDispatcher>().DispatchAsync(context);
+                    root.GetRequiredService<NativeParFault>().AfterDispatch(context);
+                    AdministratorIssuanceCoordinator.ClaimPublication(http, context);
+                    claimed = true;
+                    return ProtocolResponseOutcome.Committed;
+                }
+                catch (Exception error) { failure = error; throw; }
+            });
+        }
+        finally { await host.CompleteAsync(); }
         return new(http.Response.StatusCode, output.ToArray(), claimed, failure);
     }
 

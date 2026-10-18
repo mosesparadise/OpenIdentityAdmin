@@ -17,6 +17,7 @@ internal static class NativeConsumptionReceipts
     /// <summary>Runs identical real-provider controls for replay, revision, protected claim and expiry changes before reacquisition.</summary>
     internal static async Task VerifyAsync(IServiceProvider first, IServiceProvider second, CancellationToken token)
     {
+        await NativeConsumptionFreshness.VerifyAsync(first, token);
         await VerifyCommitMutationAsync(first, token);
         await VerifyDuplicateClaimAsync(first, token);
         await VerifyForeignScopeAsync(first, token);

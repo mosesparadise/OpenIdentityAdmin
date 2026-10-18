@@ -2,7 +2,6 @@ using System.Security.Claims;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
-using Microsoft.EntityFrameworkCore;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 
@@ -125,7 +124,7 @@ internal sealed class NativeIssuedToken
             return false;
         }
         var row = await manager.FindByIdAsync(identifier!, token);
-        if (row is null || !await ReloadAsync(scope, row, token))
+        if (row is null || !await ProtocolStorageRows.ReloadAsync(scope, row, token))
         {
             return false;
         }
@@ -141,14 +140,6 @@ internal sealed class NativeIssuedToken
         var resolved = reference ? await manager.FindByReferenceIdAsync(returned, token) : row;
         return resolved is not null && await manager.GetIdAsync(resolved, token) == identifier;
     }
-
-    /// <summary>Reloads the exact tracked native row so EF identity resolution cannot hide a same-transaction persisted mutation.</summary>
-    private static ValueTask<bool> ReloadAsync(ProtocolStorageScope scope, object row, CancellationToken token) => scope.Owner.RunAsync(async current =>
-    {
-        var entry = scope.Owner.Database.Entry(row);
-        await entry.ReloadAsync(current);
-        return entry.State != EntityState.Detached;
-    }, token);
 
     /// <summary>Detects claim or destination mutation between native signing, response formatting and final persistence reconciliation.</summary>
     private static string Binding(ClaimsPrincipal value) => FactorBinding.Digest(value.Claims.Select(claim => new

@@ -419,6 +419,34 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_ValidAmbientMaterialSelection_When_GovernanceEvaluatesActiveAuthority_Then_SelectionIsRejected(provider: \"PostgreSql\", selection: \"staged\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_ValidStagedFactor_When_ActiveMaterialIsUnusable_Then_StagedAccessCannotSupplySurvivorAuthority(provider: \"PostgreSql\", condition: \"corrupt-active\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_ValidStagedFactor_When_ActiveMaterialIsUnusable_Then_StagedAccessCannotSupplySurvivorAuthority(provider: \"PostgreSql\", condition: \"missing-active\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"changed-authentication-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"changed-factor-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"disabled-account\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"missing-active-factor\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"no-current-grants\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"revoked-session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"suspended-enrollment\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"ApplicationAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"Auditor\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"IdentityAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"PlatformAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"after-default-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"at-default-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"at-short-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"before-default-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"before-short-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"clock-rollback\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"wider-age-cannot-extend\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"zero-age\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"absolute-expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"changed-authentication-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"changed-factor-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"changed-security-stamp\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"different-user\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"idle-expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"missing-session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"restricted-recovery\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"revoked-session\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.NativeConcurrencyTests.Given_ClaimedRecoveryCode_When_NativeConcurrencyCheckFails_Then_EntireTransactionRollsBackBeforeExplicitRetry(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAdmissionTests.Given_EnrolledAccount_When_RecoveryPasswordIsVerified_Then_OnlyRestrictedCodeChallengeIsAdmitted(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"PostgreSql\")",
@@ -984,6 +1012,34 @@
     "IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_ValidAmbientMaterialSelection_When_GovernanceEvaluatesActiveAuthority_Then_SelectionIsRejected(provider: \"SqlServer\", selection: \"staged\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_ValidStagedFactor_When_ActiveMaterialIsUnusable_Then_StagedAccessCannotSupplySurvivorAuthority(provider: \"SqlServer\", condition: \"corrupt-active\")",
     "IdentityPlatform.Administrator.Tests.Features.Governance.Policy.PopulationTests.Given_ValidStagedFactor_When_ActiveMaterialIsUnusable_Then_StagedAccessCannotSupplySurvivorAuthority(provider: \"SqlServer\", condition: \"missing-active\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"changed-authentication-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"changed-factor-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"disabled-account\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"missing-active-factor\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"no-current-grants\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"revoked-session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"suspended-enrollment\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"ApplicationAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"Auditor\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"IdentityAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"PlatformAdministrator\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"after-default-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"at-default-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"at-short-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"before-default-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"before-short-deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"clock-rollback\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"wider-age-cannot-extend\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"zero-age\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"absolute-expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"changed-authentication-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"changed-factor-generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"changed-security-stamp\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"different-user\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"idle-expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"missing-session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"restricted-recovery\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"revoked-session\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.NativeConcurrencyTests.Given_ClaimedRecoveryCode_When_NativeConcurrencyCheckFails_Then_EntireTransactionRollsBackBeforeExplicitRetry(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAdmissionTests.Given_EnrolledAccount_When_RecoveryPasswordIsVerified_Then_OnlyRestrictedCodeChallengeIsAdmitted(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"SqlServer\")",
@@ -21983,6 +22039,1126 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"disabled-account\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"suspended-enrollment\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"missing-active-factor\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"no-current-grants\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"changed-authentication-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"revoked-session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"PostgreSql\", damage: \"changed-factor-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"disabled-account\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"suspended-enrollment\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"missing-active-factor\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"no-current-grants\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"changed-authentication-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"revoked-session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionDriftTests.Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize(provider: \"SqlServer\", damage: \"changed-factor-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionDriftTests",
+        "methodName": "Given_AcceptedAdmission_When_PersistedAuthorityChangesBeforeCommit_Then_OriginalProofCannotAuthorize",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"PlatformAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"ApplicationAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"IdentityAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"PostgreSql\", bundle: \"Auditor\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"PlatformAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"ApplicationAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"IdentityAdministrator\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry(provider: \"SqlServer\", bundle: \"Auditor\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_CurrentBundleQualifies_Then_ClaimsRetainOriginalProofAndFiniteExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"before-default-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"at-default-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"after-default-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"before-short-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"at-short-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"zero-age\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"wider-age-cannot-extend\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"PostgreSql\", boundary: \"clock-rollback\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"before-default-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"at-default-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"after-default-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"before-short-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"at-short-deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"zero-age\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"wider-age-cannot-extend\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies(provider: \"SqlServer\", boundary: \"clock-rollback\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealFullSession_When_ProofTimeReachesBoundary_Then_OnlyStrictlyFreshObservationQualifies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"missing-session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"revoked-session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"different-user\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"changed-authentication-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"changed-factor-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"changed-security-stamp\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"idle-expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"absolute-expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"PostgreSql\", damage: \"restricted-recovery\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"missing-session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"revoked-session\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"different-user\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"changed-authentication-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"changed-factor-generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"changed-security-stamp\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"idle-expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"absolute-expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.AdmissionTests.Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin(provider: \"SqlServer\", damage: \"restricted-recovery\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "AdmissionTests",
+        "methodName": "Given_RealSessionAuthority_When_SourceIsMissingChangedOrRestricted_Then_AdmissionRequiresLogin",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
         ]
       },
       "traits": [

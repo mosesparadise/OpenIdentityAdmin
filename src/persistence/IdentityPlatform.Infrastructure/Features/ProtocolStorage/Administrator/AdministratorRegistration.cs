@@ -23,7 +23,7 @@ internal static class AdministratorRegistration
         var scopes = scope.Services.GetRequiredService<IOpenIddictScopeManager>();
         var application = await applications.FindByClientIdAsync(AdministratorProtocolIdentity.ClientId, token);
         var resource = await scopes.FindByNameAsync(AdministratorProtocolIdentity.Scope, token);
-        if (application is null || resource is null || !await ReloadAsync(scope, application, token) || !await ReloadAsync(scope, resource, token) ||
+        if (application is null || resource is null || !await ProtocolStorageRows.ReloadAsync(scope, application, token) || !await ProtocolStorageRows.ReloadAsync(scope, resource, token) ||
             await applications.GetIdAsync(application, token) != profile.ApplicationId ||
             await scopes.GetIdAsync(resource, token) != profile.ScopeId)
         {
@@ -36,13 +36,7 @@ internal static class AdministratorRegistration
         owner.Check(phase, token);
         return expected.Matches(applicationDescriptor, scopeDescriptor) ? new(profile.ApplicationId, profile.ScopeId, profile.Revision, profile.ObservedAt) : null;
     }
-    /// <summary>Refreshes persisted native state so tracked identity resolution cannot hide registration drift during the same issuance epoch.</summary>
-    private static ValueTask<bool> ReloadAsync(ProtocolStorageScope scope, object row, CancellationToken token) => scope.Owner.RunAsync(async current =>
-    {
-        var entry = scope.Owner.Database.Entry(row);
-        await entry.ReloadAsync(current);
-        return entry.State != EntityState.Detached;
-    }, token);
+
 }
 
 /// <summary>Identifies the just-verified registration only; this snapshot is not a reusable authority grant.</summary>

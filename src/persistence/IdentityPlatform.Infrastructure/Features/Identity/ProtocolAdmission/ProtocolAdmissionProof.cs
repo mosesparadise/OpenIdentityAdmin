@@ -19,11 +19,14 @@ internal sealed class ProtocolAdmissionProof
     private readonly AdministratorAuthentication authentication;
     private readonly AdministratorSession session;
     private readonly long? maximumAge;
+    private readonly UserManager<PlatformUser> users;
+    private readonly NativeOperation operation;
     private readonly string binding;
 
     /// <summary>Captures only fresh state whose current factor and persisted permission were verified under the same locks.</summary>
     private ProtocolAdmissionProof(ProtocolAdmissionOwnership ownership, PlatformDbContext database, PlatformUser user,
-        AdministratorEnrollment enrollment, AdministratorAuthentication authentication, AdministratorSession session, long? maximumAge)
+        AdministratorEnrollment enrollment, AdministratorAuthentication authentication, AdministratorSession session, long? maximumAge,
+        UserManager<PlatformUser> users, NativeOperation operation)
     {
         this.ownership = ownership;
         this.database = database;
@@ -32,12 +35,14 @@ internal sealed class ProtocolAdmissionProof
         this.authentication = authentication;
         this.session = session;
         this.maximumAge = maximumAge;
+        this.users = users;
+        this.operation = operation;
         binding = Binding();
     }
 
     /// <summary>Rechecks the original state and strict time immediately before native issuance commit without refreshing proof.</summary>
     internal ValueTask<bool> IsCurrentAsync(CeremonyClock clock, CancellationToken token) =>
-        ownership.RunAsync(database, cancellation => new ValueTask<bool>(IsCurrent(clock, cancellation, out _)), token);
+        ownership.RunAsync(database, async cancellation => await ReadCurrentAsync(clock, cancellation) is not null, token);
 
     /// <summary>Checks live state only while the original owner's execution lease excludes competing operations.</summary>
     private bool IsCurrent(CeremonyClock clock, CancellationToken token, out long now)
@@ -60,9 +65,34 @@ internal sealed class ProtocolAdmissionProof
 
     /// <summary>Derives bounded claim inputs from one checked sample; callers cannot supply a time or read unchecked authority fields.</summary>
     internal ValueTask<ProtocolAdmissionClaims?> DescribeAsync(CeremonyClock clock, CancellationToken token) =>
-        ownership.RunAsync(database, cancellation => ValueTask.FromResult<ProtocolAdmissionClaims?>(IsCurrent(clock, cancellation, out var now)
-            ? new(user.Id, session.PublicId, session.PasswordVerifiedAt, session.FactorVerifiedAt, session.ExpiresAt,
-                ProtocolAdmissionTime.CodeExpiry(session, now, maximumAge), ProtocolAdmissionTime.TokenExpiry(session, now)) : null), token);
+        ownership.RunAsync(database, async cancellation => await ReadCurrentAsync(clock, cancellation) is { } now
+            ? new ProtocolAdmissionClaims(user.Id, session.PublicId, session.PasswordVerifiedAt, session.FactorVerifiedAt, session.ExpiresAt,
+                ProtocolAdmissionTime.CodeExpiry(session, now, maximumAge), ProtocolAdmissionTime.TokenExpiry(session, now)) : null, token);
+
+    /// <summary>Refreshes persisted source, native factor and current grants without renewing the original proof or its clock fence.</summary>
+    private async ValueTask<long?> ReadCurrentAsync(CeremonyClock clock, CancellationToken token)
+    {
+        if (!IsCurrent(clock, token, out _))
+        {
+            return null;
+        }
+        await database.Entry(user).ReloadAsync(token);
+        await database.Entry(enrollment).ReloadAsync(token);
+        await database.Entry(authentication).ReloadAsync(token);
+        await database.Entry(session).ReloadAsync(token);
+        if (!IsCurrent(clock, token, out _))
+        {
+            return null;
+        }
+        using var native = operation.Enter(token);
+        ((AdministratorUserManager)users).RequireOperation(database, token);
+        if (string.IsNullOrEmpty(await users.GetAuthenticatorKeyAsync(user)))
+        {
+            return null;
+        }
+        var grants = await new GovernanceGrants(database).ReadProtocolAsync(ownership, token);
+        return grants.Permissions(ownership.UserId).Count > 0 && IsCurrent(clock, token, out var now) ? now : null;
+    }
 
     /// <summary>Detects in-process replacement of protected source fields without retaining printable secret-bearing state.</summary>
     private string Binding() => FactorBinding.Digest(new { user, enrollment, authentication, session });
@@ -100,7 +130,9 @@ internal sealed class ProtocolAdmissionProof
         {
             return new(ProtocolAdmissionOutcome.AccessDenied, null);
         }
-        var proof = new ProtocolAdmissionProof(ownership, database, user, enrollment, authentication, session, maximumAge);
+        var proof = new ProtocolAdmissionProof(ownership, database, user, enrollment, authentication, session, maximumAge, users, operation);
+        // Persist the checked observation before any later reload; the caller still owns the uncommitted issuance transaction.
+        await database.SaveChangesAsync(token);
         return proof.IsCurrent(clock, token, out _) ? new(ProtocolAdmissionOutcome.Allowed, proof) : new(ProtocolAdmissionOutcome.LoginRequired, null);
     }
 

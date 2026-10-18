@@ -19,7 +19,7 @@ internal static class AdministratorNativeToken
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var entry = await manager.FindByIdAsync(identifier, cancellation);
         var subject = expectedType == OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken ? null : principal.GetClaim(OpenIddictConstants.Claims.Subject);
-        if (entry is null || !string.Equals(await manager.GetTypeAsync(entry, cancellation), expectedType, StringComparison.Ordinal) ||
+        if (entry is null || !await ProtocolStorageRows.ReloadAsync(scope, entry, cancellation) || !string.Equals(await manager.GetTypeAsync(entry, cancellation), expectedType, StringComparison.Ordinal) ||
             !string.Equals(await manager.GetApplicationIdAsync(entry, cancellation), applicationId, StringComparison.Ordinal) ||
             !string.Equals(await manager.GetAuthorizationIdAsync(entry, cancellation), principal.GetAuthorizationId(), StringComparison.Ordinal) ||
             !string.Equals(await manager.GetSubjectAsync(entry, cancellation), subject, StringComparison.Ordinal))

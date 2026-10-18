@@ -3,6 +3,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
