@@ -3,17 +3,14 @@ using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Administrator.Tests.Fixtures.Governance;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
-using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
-using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
-using IdentityPlatform.AuthServer.Features.Protocol.Keys;
+using IdentityPlatform.AuthServer.Features.Protocol;
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Migrator.Features.AdministratorProtocol;
 using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using OpenIddict.Abstractions;
 using OpenIddict.Server;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
@@ -64,12 +61,8 @@ internal sealed class AdministratorProtocolScenario(GovernanceScenario account, 
         services.AddSingleton(UrlEncoder.Default).AddSingleton(material.Policy).AddProtocolStorageOwnership();
         AccountSchemes.AddAdministrator(services, pilot: false);
         services.AddOptions<CookieAuthenticationOptions>(AccountSchemes.Administrator).Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
-        var server = services.AddOpenIddict().AddServer().SetIssuer(credentials.Issuer)
-            .SetAuthorizationEndpointUris(AuthorizePath).SetTokenEndpointUris(TokenPath).SetPushedAuthorizationEndpointUris(ParPath)
-            .AllowAuthorizationCodeFlow().RequireProofKeyForCodeExchange().RegisterScopes(OpenIddictConstants.Scopes.OpenId, AdministratorProtocolIdentity.Scope)
-            .SetAuthorizationCodeLifetime(TimeSpan.FromSeconds(ArtifactSeconds))
-            .DisableAccessTokenEncryption().AddIssuerKeyPolicy(credentials).AddAdministratorAssertions().AddAdministratorAccountIssuance();
-        server.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();
+        services.AddProtocol(credentials, new ProtocolProfiles(false, material.Policy));
+        var server = services.AddOpenIddict().AddServer();
         NativeAccountClockAdvance.Configure(server);
         NativeAccountResponseFault.Configure(server);
         NativeAccountFinalRead.Configure(server);

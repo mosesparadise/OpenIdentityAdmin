@@ -1,47 +1,55 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
-using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Authorize;
+using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.AuthServer.Features.Protocol.Keys;
+using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol;
 
 internal static class Setup
 {
-    internal static IServiceCollection AddProtocol(this IServiceCollection services, IssuerCredentials credentials)
+    /// <summary>Preserves the complete standalone pilot configuration.</summary>
+    internal static IServiceCollection AddProtocol(this IServiceCollection services, IssuerCredentials credentials) =>
+        services.AddProtocol(credentials, new ProtocolProfiles(true, null));
+
+    /// <summary>Registers one native server using the explicitly enabled profile union and durable issuer keys.</summary>
+    internal static IServiceCollection AddProtocol(this IServiceCollection services, IssuerCredentials credentials, ProtocolProfiles profiles)
     {
+        services.AddSingleton(profiles);
         services.AddOpenIddict().AddServer(options =>
         {
             options.SetIssuer(credentials.Issuer);
-            options.SetAuthorizationEndpointUris("/connect/authorize");
-            options.SetTokenEndpointUris("/connect/token");
-            options.SetJsonWebKeySetEndpointUris("/connect/jwks");
+            options.SetAuthorizationEndpointUris(ProtocolOptions.AuthorizePath);
+            options.SetTokenEndpointUris(ProtocolOptions.TokenPath);
+            options.SetJsonWebKeySetEndpointUris(ProtocolOptions.KeysPath);
             options.AllowAuthorizationCodeFlow();
             options.RequireProofKeyForCodeExchange();
-            options.RegisterScopes(OpenIddictConstants.Scopes.OpenId, PilotProfile.Scope);
             options.RegisterClaims(OpenIddictConstants.Claims.AuthenticationTime, OpenIddictConstants.Claims.Nonce, OpenIddictConstants.Claims.AccessTokenHash);
             options.AddIssuerKeyPolicy(credentials);
             options.DisableAccessTokenEncryption();
-            options.SetAuthorizationCodeLifetime(TimeSpan.FromSeconds(60));
-            options.SetAccessTokenLifetime(TimeSpan.FromMinutes(5));
-            options.SetIdentityTokenLifetime(TimeSpan.FromMinutes(5));
-            options.Configure(configuration =>
-            {
-                configuration.RequestTokenLifetime = TimeSpan.FromSeconds(PilotProfile.InteractionSeconds);
-                configuration.CodeChallengeMethods.Clear();
-                configuration.CodeChallengeMethods.Add(OpenIddictConstants.CodeChallengeMethods.Sha256);
-                configuration.PromptValues.Clear();
-                configuration.PromptValues.UnionWith([OpenIddictConstants.PromptValues.None, OpenIddictConstants.PromptValues.Login]);
-                configuration.ResponseModes.Clear();
-                configuration.ResponseModes.Add(OpenIddictConstants.ResponseModes.Query);
-                configuration.ClientAuthenticationMethods.Clear();
-                configuration.ClientAuthenticationMethods.Add(OpenIddictConstants.ClientAuthenticationMethods.ClientSecretBasic);
-            });
+            options.SetAuthorizationCodeLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.ProofLifetimeSeconds));
+            options.SetAccessTokenLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds));
+            options.SetIdentityTokenLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds));
             options.AddFormExtractionProtection().AddTokenExtraction();
-            options.EnableAuthorizationRequestCaching();
+            if (profiles.Pilot)
+            {
+                options.EnableAuthorizationRequestCaching();
+            }
+            if (profiles.Administrator is { } administrator)
+            {
+                services.AddSingleton(administrator);
+                options.SetPushedAuthorizationEndpointUris(ProtocolOptions.ParPath);
+                options.AddServerStoreSelection().AddAdministratorAssertions().AddAdministratorAccountIssuance();
+                options.AddProtocolHosting();
+            }
             options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();
+            options.Configure(configuration => ProtocolOptions.Configure(configuration, profiles));
         });
         return services;
     }

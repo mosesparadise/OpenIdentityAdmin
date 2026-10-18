@@ -28,21 +28,21 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 832,
+      "Host": 896,
       "Architecture": 5,
       "AppHost": 65
     },
     "PostgreSql": {
       "Persistence": 7,
       "AppHost": 15,
-      "Issuer": 292,
+      "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 489
     },
     "SqlServer": {
       "Persistence": 7,
       "AppHost": 15,
-      "Issuer": 292,
+      "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 594
     }
@@ -120,6 +120,7 @@
       "classes": [
         "BootstrapAcceptanceTests",
         "CodeFlowTests",
+        "CombinedProtocolTests",
         "CurrentStateTests",
         "DenialTests",
         "InitializationTests",
@@ -129,8 +130,8 @@
         "OperationsTests"
       ],
       "counts": {
-        "PostgreSql": 130,
-        "SqlServer": 130
+        "PostgreSql": 131,
+        "SqlServer": 131
       }
     },
     "Boundaries": {

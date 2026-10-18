@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;
@@ -36,6 +37,10 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator) : IP
             if (route is null || !string.Equals(template, route, StringComparison.Ordinal))
             {
                 model.Selectors.RemoveAt(index);
+            }
+            else if (pilot && PilotPages.ContainsKey(model.ViewEnginePath))
+            {
+                model.Selectors[index].EndpointMetadata.Add(new PilotAccountEndpoint());
             }
         }
     }

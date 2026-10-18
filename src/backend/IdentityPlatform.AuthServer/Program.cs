@@ -2,6 +2,7 @@ using IdentityPlatform.AuthServer.Composition;
 using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 
 using var startup = new StartupContext(args);
 try
@@ -30,6 +31,11 @@ catch (PilotConfigurationException exception)
     return 2;
 }
 catch (AdministratorConfigurationException exception)
+{
+    Console.Error.WriteLine(exception.Message);
+    return 2;
+}
+catch (AdministratorProtocolConfigurationException exception)
 {
     Console.Error.WriteLine(exception.Message);
     return 2;

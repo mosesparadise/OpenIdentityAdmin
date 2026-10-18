@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Server;
@@ -12,8 +13,25 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
     public ValueTask DispatchAsync<TContext>(TContext context) where TContext : OpenIddictServerEvents.BaseContext
     {
         ArgumentNullException.ThrowIfNull(context);
+        if (services.GetService<ProtocolHostRequest>() is { } host && ProtocolStorageAmbient.Current is null)
+        {
+            return DispatchUnownedAsync(context, host);
+        }
         return ProtocolStorageDispatch.RunAsync(owner, () => context.CancellationToken,
             token => context.CancellationToken = token, () => DispatchNativeAsync(context));
+    }
+
+    /// <summary>Preserves only the explicitly selected pilot transport or the outer unknown-path inference without activating owned stores.</summary>
+    private async ValueTask DispatchUnownedAsync<TContext>(TContext context, ProtocolHostRequest host) where TContext : OpenIddictServerEvents.BaseContext
+    {
+        owner.RequireNeverActivated();
+        host.RequireUnowned(context);
+        await native.DispatchAsync(context);
+        owner.RequireNeverActivated();
+        if (context is OpenIddictServerEvents.ProcessRequestContext request)
+        {
+            host.RequireInferred(request);
+        }
     }
 
     /// <summary>Routes only explicitly enabled fixed-client issuance into a fresh child; all other native paths preserve their dispatcher.</summary>
@@ -21,6 +39,7 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
     {
         if (context is OpenIddictServerEvents.ProcessRequestContext request && services.GetService<AdministratorAccountIssuanceEnabled>() is not null)
         {
+            services.GetService<ProtocolHostRequest>()?.Track(request);
             return AdministratorPassthrough.TrackAsync(request, () => native.DispatchAsync(request));
         }
         if (context is OpenIddictServerEvents.ProcessSignInContext signIn &&

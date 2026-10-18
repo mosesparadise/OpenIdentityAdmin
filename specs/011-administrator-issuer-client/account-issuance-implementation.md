@@ -35,3 +35,18 @@ All six historical findings, 48 human rows and activation/public-release blocker
 ### Hosted selection correction — 18 October 2026
 
 Source `a9881110` run `39092047743` stopped ordinary test lanes before .NET execution: the independent lifecycle partition control retained the earlier administrator/provider totals. The 32 additive native account cases require administrator totals 489 PostgreSQL / 594 SQL Server and complete provider totals 844 / 949. The correction updates only those independent expectations; selection, inventory, assertions, deadlines and coverage floors remain unchanged. All 206 Python controls pass locally. This failed run supplies no native account execution acceptance; a new exact-source run remains required.
+
+### Verified account checkpoint — 18 October 2026
+
+Source `a5a0f463ae13be5a840a3d867ab1f754020b55d5`, tree `b2c8a74a1ac82af0b2c5451e62d7ce0fdbd0ccd9`, was tested as merge `d86ff31491ddd7ce57b3ac804cb0a0aa9096b905` against main `1ffe5ed`. [Run 39092523489](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/39092523489) passes all 65 jobs. Independent raw review reconciles 927 unit, 88 admission (44/provider), and 44 foundation (22/provider) cases with zero failures/skips; all 965 prior reviewed identities remain and all 32 account additions executed. The positive cases reach both clock advances and validate native code/access credentials plus independent ID-token signature/issuer/audience/nonce/at_hash. Negative cases reach their exact injected fault, suppress output, roll back issuance, and retain earlier durable consumption.
+
+All 50 mandatory coverage inputs and 15 floors pass independent recomputation. All 73 changed executable files appear; the previously recorded Migrator initialization entry-path zero-hit gap remains. This checkpoint excludes newer shared-host wiring, native BFF-client interoperability and B2 acceptance.
+
+| Artifact | ID | SHA-256 |
+| --- | --- | --- |
+| foundation-unit | 12123655989 | `5f209682a834a083229800ad201b456f94583bc16ebb422e34bedd1f5c63c3ae` |
+| foundation-PostgreSql | 12123373073 | `de7aa904fb626ff191e03b8f36600c04bc58cc24f05bfa89a27569b3cbd9a3ad` |
+| foundation-SqlServer | 12124045834 | `a52f9e0c0d85e800fd61e5ed93fe6a33f4edc8e5f4bac1144d9eb8501eeba6a5` |
+| foundation-administrator-PostgreSql-protocoladmission | 12122708953 | `dfdf97424654c76e50f261e6e0b6aceea4ce8e5de5611f06e48647eda666da42` |
+| foundation-administrator-SqlServer-protocoladmission | 12123645546 | `cb8d57bfa378254214c6f46340e57ca7b794fa863c95d66e71c11af3a9a476e5` |
+| foundation-coverage | 12124105224 | `6bbaf71a1cfaff6e335285a27a2520e5151362a780c62b68ee8a93463a78cae0` |

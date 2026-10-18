@@ -43,16 +43,16 @@ class IssuerSelectionTests(unittest.TestCase):
         return {uid: test for uid, test in self.all_tests.items()
                 if test[1] == provider and not test[2] and test[3] in issuer_types(self.matrix, group)}
 
-    def test_Given_ReviewedGroups_When_Combined_Then_All292HttpCasesAppearExactlyOnce(self):
-        """Preserve the reviewed 130/162 split and all 30 separately required browser cases per provider."""
+    def test_Given_ReviewedGroups_When_Combined_Then_All293HttpCasesAppearExactlyOnce(self):
+        """Preserve the reviewed 131/162 split and all 30 separately required browser cases per provider."""
         require_issuer_inventory(self.all_tests, self.matrix)
         for provider in PROVIDERS:
-            self.assertEqual([('Flows', 130), ('Boundaries', 162)], issuer_invocations(self.matrix, provider))
+            self.assertEqual([('Flows', 131), ('Boundaries', 162)], issuer_invocations(self.matrix, provider))
             subsets = [self.selection(provider, group) for group in GROUPS]
             self.assertFalse(subsets[0].keys() & subsets[1].keys())
             expected = {uid: test for uid, test in self.all_tests.items() if test[1] == provider and not test[2]}
             self.assertEqual(expected, subsets[0] | subsets[1])
-            self.assertEqual(292, len(expected))
+            self.assertEqual(293, len(expected))
             for group in GROUPS:
                 require_issuer_group(self.all_tests, self.selection(provider, group), provider, group, self.matrix)
 
@@ -127,7 +127,7 @@ class IssuerSelectionTests(unittest.TestCase):
             foundation = select_projects(self.matrix, provider, partition='foundation')
             issuer = select_projects(self.matrix, provider, partition='issuer')
             self.assertEqual({'Persistence': 7, 'AppHost': 15}, foundation)
-            self.assertEqual({'Issuer': 292}, issuer)
+            self.assertEqual({'Issuer': 293}, issuer)
             self.assertFalse(foundation.keys() & issuer.keys())
             self.assertEqual(select_projects(self.matrix, provider, partition='standard'), foundation | issuer)
         for partition in ('foundation', 'issuer'):

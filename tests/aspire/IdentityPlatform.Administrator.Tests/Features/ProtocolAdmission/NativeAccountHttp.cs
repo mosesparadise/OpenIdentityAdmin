@@ -1,6 +1,4 @@
-using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
@@ -12,7 +10,7 @@ using OpenIddict.Server.AspNetCore;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
-/// <summary>Drives the actual installed ASP.NET handler and endpoint result inside the production ownership boundary.</summary>
+/// <summary>Drives actual native HTTP and shared production profile dispatch inside the production hosting/ownership boundary.</summary>
 internal static class NativeAccountHttp
 {
     private static readonly object ContextKey = new();
@@ -33,22 +31,24 @@ internal static class NativeAccountHttp
         using var form = new FormUrlEncodedContent(fields);
         await using var input = await form.ReadAsStreamAsync(token);
         await using var output = new MemoryStream();
+        await using var requestScope = scenario.Services.CreateAsyncScope();
         var http = Create(scenario, path, fields, input, cookie);
+        http.RequestServices = requestScope.ServiceProvider;
         var completion = new NativeHttpCompletion();
         http.Features.Set<IHttpResponseFeature>(completion);
         http.Response.Body = output;
         var result = new NativeAccountResult();
         try
         {
-            await ProtocolHttpBoundary.RunAsync(http, scenario.Services.GetRequiredService<IServiceScopeFactory>(), scenario.Account.Journey.Clock,
-                async (_, scope, _) =>
+            await ProtocolHosting.InvokeAsync(http, async context =>
+            {
+                try
                 {
-                    try
-                    {
-                        return await DispatchAsync(http, scope, path, result);
-                    }
-                    catch (Exception error) { result.Failure = error; throw; }
-                });
+                    await DispatchAsync(context, path, result);
+                }
+                catch (Exception error) { result.Failure = error; throw; }
+            });
+            result.Claimed = http.Response.StatusCode is StatusCodes.Status200OK or StatusCodes.Status201Created or StatusCodes.Status302Found;
         }
         finally { await completion.CompleteAsync(); }
         result.Status = http.Response.StatusCode;
@@ -83,28 +83,22 @@ internal static class NativeAccountHttp
     }
 
     /// <summary>Executes native authentication/passthrough and actual SignIn results; handled/skipped return alone never grants publication.</summary>
-    private static async ValueTask<ProtocolResponseOutcome> DispatchAsync(HttpContext http, ProtocolStorageScope scope, string path, NativeAccountResult result)
+    private static async Task DispatchAsync(HttpContext http, string path, NativeAccountResult result)
     {
-        var handler = ActivatorUtilities.CreateInstance<OpenIddictServerAspNetCoreHandler>(scope.Services);
+        var handler = ActivatorUtilities.CreateInstance<OpenIddictServerAspNetCoreHandler>(http.RequestServices);
         await handler.InitializeAsync(new AuthenticationScheme(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, null, handler.GetType()), http);
         var handled = await handler.HandleRequestAsync();
         var outer = (OpenIddictServerEvents.ProcessRequestContext)http.Items[ContextKey]!;
         result.Outcome = outer.IsRejected ? NativeAccountOutcome.Rejected : handled ? NativeAccountOutcome.Handled : NativeAccountOutcome.Passthrough;
-        if (path == AdministratorProtocolScenario.ParPath)
-        {
-            AdministratorIssuanceCoordinator.ClaimPublication(http, outer);
-        }
-        else
+        if (path != AdministratorProtocolScenario.ParPath)
         {
             Assert.False(handled);
             Assert.True(outer.IsRequestSkipped);
             var decision = path == AdministratorProtocolScenario.AuthorizePath
-                ? await AdministratorDecision.AuthorizeAsync(http) : await AdministratorDecision.ExchangeAsync(http);
+                ? await ProtocolDecisions.AuthorizeAsync(http) : await ProtocolDecisions.ExchangeAsync(http);
             await decision.ExecuteAsync(http);
-            AdministratorIssuanceCoordinator.ClaimEndpointPublication(http);
         }
-        result.Claimed = true;
-        return ProtocolResponseOutcome.Committed;
+
     }
 }
 

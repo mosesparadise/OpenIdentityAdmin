@@ -1262,26 +1262,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Pilot.Setup.InitializePilotAsync(thisWebApplication)",
-        "Fingerprint": "71B65009BFB48FA37684D8BDA1424B94AC237CACC14CD1C221437067B7C265CF"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Pilot/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Pilot.Setup.InitializePilotAsync(thisWebApplication)",
-        "Fingerprint": "71B65009BFB48FA37684D8BDA1424B94AC237CACC14CD1C221437067B7C265CF"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ003",
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Authorize/AuthorizeEndpoint.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Authorize.AuthorizeEndpoint",
@@ -1726,26 +1706,6 @@
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ProtocolError.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.ProtocolError.Create(string)",
         "Fingerprint": "39784A9CA1F42A7F3615EA6DF11CBD560F7242F05EFF8DC306732A3FB5974C8E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Setup.AddProtocol(thisIServiceCollection,IssuerCredentials)",
-        "Fingerprint": "91FAC0F36B48E9F7D8EA11779B5AF087A508D33564328331C50DC89E0A5FD90E"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Setup.AddProtocol(thisIServiceCollection,IssuerCredentials)",
-        "Fingerprint": "91FAC0F36B48E9F7D8EA11779B5AF087A508D33564328331C50DC89E0A5FD90E"
       },
       "Task": "T014",
       "Owner": "Implementation lead"

@@ -11,10 +11,14 @@ internal static class ProtocolHttpBoundary
     private const string FailureCacheControl = "no-store";
 
     /// <summary>Aborts transport at the original deadline but never detaches work that still references its HTTP context.</summary>
-    internal static async Task RunAsync(HttpContext context, IServiceScopeFactory factory, TimeProvider clock,
+    internal static Task RunAsync(HttpContext context, IServiceScopeFactory factory, TimeProvider clock,
+        Func<HttpContext, ProtocolStorageScope, CancellationToken, ValueTask<ProtocolResponseOutcome>> operation) =>
+        RunAsync(context, factory, new ProtocolStorageRequest(clock, context.RequestAborted), operation);
+
+    /// <summary>Retains a budget started before asynchronous host classification so entering owned execution cannot renew the request.</summary>
+    internal static async Task RunAsync(HttpContext context, IServiceScopeFactory factory, ProtocolStorageRequest request,
         Func<HttpContext, ProtocolStorageScope, CancellationToken, ValueTask<ProtocolResponseOutcome>> operation)
     {
-        var request = new ProtocolStorageRequest(clock, context.RequestAborted);
         using var capture = new ProtocolResponseCapture(request);
         var features = new ProtocolResponseFeatures(context, capture);
         var response = features.Response;

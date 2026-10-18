@@ -79,6 +79,7 @@ internal static class NativeAccountFlow
         new ProtocolStorageRequest(scenario.Account.Journey.Clock, TestContext.Current.CancellationToken)
             .RunAsync(scenario.Services.GetRequiredService<IServiceScopeFactory>(), async (scope, token) =>
             {
+                scope.Services.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.Owned);
                 var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
                 transaction.BaseUri = scenario.Issuer;
                 transaction.EndpointType = OpenIddictServerEndpointType.Token;

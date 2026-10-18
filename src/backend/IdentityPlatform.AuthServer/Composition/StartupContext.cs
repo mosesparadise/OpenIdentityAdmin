@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 
 namespace IdentityPlatform.AuthServer.Composition;
 
@@ -16,6 +17,11 @@ internal sealed class StartupContext(string[] arguments) : IDisposable
     }
 
     internal bool AdministratorEnabled
+    {
+        get; set;
+    }
+
+    internal AdministratorRegistrationPolicy? AdministratorProtocol
     {
         get; set;
     }

@@ -30,6 +30,7 @@ internal static class AdministratorRegistrationInitializer
         {
             return await request.RunAsync(services.GetRequiredService<IServiceScopeFactory>(), async (scope, cancellation) =>
             {
+                scope.Services.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.Owned);
                 await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
                 await LockInitializationAsync(scope.Owner, cancellation);
                 if (await ExistsAsync(scope.Owner, cancellation))
