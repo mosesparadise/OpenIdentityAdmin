@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
@@ -17,6 +18,8 @@ internal sealed class AdministratorIssuanceCoordinator(IServiceScopeFactory fact
         var http = context.Transaction.GetHttpRequest()?.HttpContext ?? throw ProtocolStorageOwner.Unavailable();
         var request = ProtocolStorageAmbient.Current?.Request ?? throw ProtocolStorageOwner.Unavailable();
         var passthrough = context.EndpointType == OpenIddictServerEndpointType.PushedAuthorization ? null : AdministratorPassthrough.Claim(context);
+        var origin = NativeErrorOrigin.Find(context.Transaction);
+        origin?.BeginIssuance(context);
         var result = await ProtocolResponseChild.RunAsync(http, factory, async (scope, response, token) =>
         {
             await using var issuance = new AdministratorIssuance(scope, context, policy);
@@ -44,6 +47,7 @@ internal sealed class AdministratorIssuanceCoordinator(IServiceScopeFactory fact
                 context.Transaction.SetProperty<NativeIssuanceProof>(typeof(NativeIssuanceProof).FullName!, null);
             }
         });
+        origin?.EndIssuance(context);
         if (result.Result && result.Output is { } output)
         {
             await output.CopyAndSealParentAsync(context.CancellationToken);

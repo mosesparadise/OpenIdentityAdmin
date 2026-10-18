@@ -20,6 +20,7 @@ internal static class ProtocolHttpBoundary
         Func<HttpContext, ProtocolStorageScope, CancellationToken, ValueTask<ProtocolResponseOutcome>> operation)
     {
         using var capture = new ProtocolResponseCapture(request);
+        request.BindResponse(capture);
         var features = new ProtocolResponseFeatures(context, capture);
         var response = features.Response;
         await using var deadline = new ProtocolResponseDeadline(context, request);

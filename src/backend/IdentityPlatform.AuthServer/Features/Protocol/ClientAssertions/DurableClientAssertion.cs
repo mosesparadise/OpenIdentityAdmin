@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
@@ -44,6 +45,7 @@ internal sealed class DurableClientAssertion
         var consumed = await ProtocolStorageChild.RunAsync(factory, async (scope, cancellation) =>
         {
             await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+            NativeErrorOrigin.RecordPhase(context.Transaction, scope.Owner);
             await AdministratorProtocolLocks.AcquireProfileAsync(scope.Owner, cancellation);
             var binding = proof.IsCurrent(context) ? await AdministratorRegistration.ReadLockedAsync(scope, policy, cancellation) : null;
             var watermark = binding is not null ? await AdministratorAssertionLedger.ReserveLockedAsync(scope.Owner, proof.Assertion, cancellation) : null;

@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
@@ -32,6 +33,7 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
             return;
         }
         transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+        NativeErrorOrigin.RecordPhase(context.Transaction, scope.Owner);
         if (context.EndpointType != OpenIddictServerEndpointType.PushedAuthorization)
         {
             account = new(scope, context);

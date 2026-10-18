@@ -13,6 +13,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 /// <summary>Drives actual native HTTP and shared production profile dispatch inside the production hosting/ownership boundary.</summary>
 internal static class NativeAccountHttp
 {
+    private const string CookieHeader = "Set-Cookie";
+
     private static readonly object ContextKey = new();
     private const string FormMediaType = "application/x-www-form-urlencoded";
 
@@ -54,6 +56,7 @@ internal static class NativeAccountHttp
         result.Status = http.Response.StatusCode;
         result.Body = output.ToArray();
         result.Location = http.Response.Headers.Location.ToString();
+        result.HasCookie = http.Response.Headers.ContainsKey(CookieHeader);
         return result;
     }
 
@@ -90,7 +93,7 @@ internal static class NativeAccountHttp
         var handled = await handler.HandleRequestAsync();
         var outer = (OpenIddictServerEvents.ProcessRequestContext)http.Items[ContextKey]!;
         result.Outcome = outer.IsRejected ? NativeAccountOutcome.Rejected : handled ? NativeAccountOutcome.Handled : NativeAccountOutcome.Passthrough;
-        if (path != AdministratorProtocolScenario.ParPath)
+        if (path != AdministratorProtocolScenario.ParPath && !handled)
         {
             Assert.False(handled);
             Assert.True(outer.IsRequestSkipped);
@@ -111,6 +114,10 @@ internal sealed class NativeAccountResult
     }
     internal byte[] Body { get; set; } = [];
     internal string Location { get; set; } = string.Empty;
+    internal bool HasCookie
+    {
+        get; set;
+    }
     internal bool Claimed
     {
         get; set;

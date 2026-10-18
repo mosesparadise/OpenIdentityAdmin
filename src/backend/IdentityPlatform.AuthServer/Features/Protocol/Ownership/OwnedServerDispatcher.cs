@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
@@ -40,7 +41,7 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
         if (context is OpenIddictServerEvents.ProcessRequestContext request && services.GetService<AdministratorAccountIssuanceEnabled>() is not null)
         {
             services.GetService<ProtocolHostRequest>()?.Track(request);
-            return AdministratorPassthrough.TrackAsync(request, () => native.DispatchAsync(request));
+            return NativeErrorOrigin.TrackAsync(request, () => AdministratorPassthrough.TrackAsync(request, () => native.DispatchAsync(request)));
         }
         if (context is OpenIddictServerEvents.ProcessSignInContext signIn &&
             (signIn.EndpointType == OpenIddictServerEndpointType.PushedAuthorization ||
@@ -49,6 +50,15 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
             signIn.ClientId == AdministratorProtocolIdentity.ClientId && services.GetService<AdministratorIssuanceCoordinator>() is { } coordinator)
         {
             return coordinator.RunAsync(signIn);
+        }
+        if (context is OpenIddictServerEvents.ProcessErrorContext or OpenIddictServerEvents.ProcessChallengeContext &&
+            NativeErrorOrigin.Find(context.Transaction) is not null && services.GetService<NativeErrorCoordinator>() is { } errors)
+        {
+            return errors.RunAsync((OpenIddictServerEvents.BaseRequestContext)(object)context);
+        }
+        if (context is OpenIddictServerEvents.ValidateAuthorizationRequestContext validation && NativeErrorOrigin.Find(context.Transaction) is { } origin)
+        {
+            return origin.ObserveValidationAsync(validation, () => native.DispatchAsync(validation));
         }
         return context is OpenIddictServerEvents.GenerateTokenContext generation && NativeIssuanceProof.Find(context.Transaction) is { } proof
             ? proof.GenerateAsync(generation, () => native.DispatchAsync(context)) : native.DispatchAsync(context);

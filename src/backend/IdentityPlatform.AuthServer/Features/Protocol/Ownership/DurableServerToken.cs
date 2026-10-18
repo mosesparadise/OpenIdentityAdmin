@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ internal static class DurableServerToken
         var expiration = await ProtocolStorageChild.RunAsync(factory, async (scope, cancellation) =>
         {
             await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+            NativeErrorOrigin.RecordPhase(validation.Transaction, scope.Owner);
             await AdministratorProtocolLocks.AcquireProfileAsync(scope.Owner, cancellation);
             var bound = await ExpirationAsync(scope, validation, cancellation);
             if (bound is null)

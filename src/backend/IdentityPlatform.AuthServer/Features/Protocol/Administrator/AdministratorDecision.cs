@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.Policy;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -60,18 +61,18 @@ internal sealed class AdministratorDecision
         var native = http.GetOpenIddictServerRequest() ?? throw ProtocolStorageOwner.Unavailable();
         if (!AdministratorDecisionPolicy.AllowsAuthorization(native, out var age))
         {
-            return ProtocolError.Create(OpenIddictConstants.Errors.InvalidRequest);
+            return NativeErrorOrigin.Deny(http, OpenIddictConstants.Errors.InvalidRequest);
         }
         var authentication = await http.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         var original = authentication.Properties?.GetParameter<ClaimsPrincipal>(OpenIddictServerAspNetCoreConstants.Properties.RequestTokenPrincipal);
         if (!authentication.Succeeded || original is null || !AdministratorDecisionPolicy.IsPushedRequest(original))
         {
-            return ProtocolError.Create(OpenIddictConstants.Errors.InvalidRequest);
+            return NativeErrorOrigin.Deny(http, OpenIddictConstants.Errors.InvalidRequest);
         }
         var candidate = await AdministratorSecurityBrowser.CandidateAsync(http);
         if (candidate is null || string.IsNullOrEmpty(candidate.UserId) || string.IsNullOrEmpty(candidate.SessionId))
         {
-            return ProtocolError.Create(OpenIddictConstants.Errors.LoginRequired);
+            return NativeErrorOrigin.Deny(http, OpenIddictConstants.Errors.LoginRequired);
         }
         var principal = new ClaimsPrincipal(new ClaimsIdentity(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme));
         principal.SetClaim(OpenIddictConstants.Claims.Subject, candidate.UserId);
@@ -85,14 +86,14 @@ internal sealed class AdministratorDecision
         var native = http.GetOpenIddictServerRequest() ?? throw ProtocolStorageOwner.Unavailable();
         if (native.ClientId != AdministratorProtocolIdentity.ClientId || !native.IsAuthorizationCodeGrantType() || !ProofKeyPolicy.IsVerifier(native.CodeVerifier))
         {
-            return ProtocolError.Create(OpenIddictConstants.Errors.InvalidGrant);
+            return NativeErrorOrigin.Deny(http, OpenIddictConstants.Errors.InvalidGrant);
         }
         var authentication = await http.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         var original = authentication.Principal;
         if (!authentication.Succeeded || original is null || !AdministratorDecisionPolicy.IsCode(original) ||
             !AdministratorPrincipal.TryReadMaximumAge(original, out var age))
         {
-            return ProtocolError.Create(OpenIddictConstants.Errors.InvalidGrant);
+            return NativeErrorOrigin.Deny(http, OpenIddictConstants.Errors.InvalidGrant);
         }
         var principal = original.Clone(static _ => true);
         return Attach(http, new(http, native, OpenIddictServerEndpointType.Token, original, principal,

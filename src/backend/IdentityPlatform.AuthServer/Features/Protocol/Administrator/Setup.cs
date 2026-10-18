@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 using OpenIddict.Server;
 using OpenIddict.Server.AspNetCore;
@@ -14,6 +15,7 @@ internal static class Setup
     {
         builder.Services.AddOwnedServerDispatcher();
         builder.Services.AddScoped<AdministratorIssuanceCoordinator>();
+        builder.AddNativeErrors();
         builder.AddNativeIssuanceObservations();
         AddRequestPolicy(builder);
         builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<OpenAdministratorIssuance>()

@@ -69,6 +69,7 @@ internal sealed class ProtocolResponseCapture : IHttpResponseFeature, IHttpRespo
     public Stream Stream => buffer;
     public PipeWriter Writer => writer;
     internal ReadOnlyMemory<byte> Bytes => buffer.Bytes;
+    internal bool IsSealed => seal?.IsCompletedSuccessfully == true;
 
     /// <summary>Rejects nesting a response stage under a capture owned by another original request.</summary>
     internal bool BelongsTo(ProtocolStorageRequest current) => ReferenceEquals(request, current);

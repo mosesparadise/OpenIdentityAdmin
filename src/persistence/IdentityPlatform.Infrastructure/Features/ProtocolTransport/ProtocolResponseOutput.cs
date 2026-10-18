@@ -62,16 +62,28 @@ internal sealed class ProtocolResponseOutput
     /// <summary>Checks immutable output and original request/scope identity; no disposed child service is needed for publication admission.</summary>
     internal void RequireFrozenParent()
     {
-        parent.Request.RequireCurrent();
+        RequireFrozenCapture(parent.Request, destination);
         if (Volatile.Read(ref copied) != 1 || !ReferenceEquals(ProtocolStorageAmbient.Current?.Request, parent.Request) ||
             !ReferenceEquals(ProtocolStorageAmbient.Current?.Scope, parent.Scope) ||
             !ReferenceEquals(context.Features.Get<IHttpResponseFeature>(), destination) || !ReferenceEquals(context.Features.Get<IHttpResponseBodyFeature>(), destination) ||
-            destination.StatusCode != status || destination.ReasonPhrase != reason || !destination.Bytes.Span.SequenceEqual(body) ||
-            destination.Headers.Count != headers.Length || headers.Any(pair => !destination.Headers.TryGetValue(pair.Key, out var actual) ||
-                !actual.ToArray().SequenceEqual(pair.Value, StringComparer.Ordinal)))
+            !destination.IsSealed)
         {
             parent.Request.Fail();
             throw ProtocolStorageOwner.Unavailable();
         }
     }
+    /// <summary>Checks sealed data at final HTTP gates after parent-scope disposal without requiring disposed ambient services or restored feature identity.</summary>
+    internal void RequireFrozenCapture(ProtocolStorageRequest request, ProtocolResponseCapture response)
+    {
+        request.RequireCurrent();
+        if (!ReferenceEquals(parent.Request, request) || !ReferenceEquals(destination, response) || !response.BelongsTo(request) ||
+            Volatile.Read(ref copied) != 1 || !response.IsSealed || response.StatusCode != status || response.ReasonPhrase != reason ||
+            !response.Bytes.Span.SequenceEqual(body) || response.Headers.Count != headers.Length ||
+            headers.Any(pair => !response.Headers.TryGetValue(pair.Key, out var actual) || !actual.ToArray().SequenceEqual(pair.Value, StringComparer.Ordinal)))
+        {
+            request.Fail();
+            throw ProtocolStorageOwner.Unavailable();
+        }
+    }
+
 }

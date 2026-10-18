@@ -29,11 +29,15 @@ internal static class NativeAccountPersistence
     });
 
     /// <summary>Verifies early native consumption remains durable despite rollback of the later issuance epoch.</summary>
-    internal static Task<bool> IsRedeemedAsync(AdministratorProtocolScenario scenario, string identifier) => ReadAsync(scenario, async (scope, token) =>
+    internal static async Task<bool> IsRedeemedAsync(AdministratorProtocolScenario scenario, string identifier) =>
+        await StatusAsync(scenario, identifier) == OpenIddictConstants.Statuses.Redeemed;
+
+    /// <summary>Reads the actual durable native status so pre-sign-in denials cannot be mistaken for redemption.</summary>
+    internal static Task<string?> StatusAsync(AdministratorProtocolScenario scenario, string identifier) => ReadAsync(scenario, async (scope, token) =>
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var row = await manager.FindByIdAsync(identifier, token);
-        return row is not null && await manager.GetStatusAsync(row, token) == OpenIddictConstants.Statuses.Redeemed;
+        return row is null ? null : await manager.GetStatusAsync(row, token);
     });
 
     /// <summary>Starts a fresh original read request for each independent persisted observation.</summary>

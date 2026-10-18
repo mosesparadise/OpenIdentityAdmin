@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using OpenIddict.Server;
@@ -66,6 +67,10 @@ internal static class ProtocolHosting
     {
         var outer = request.Outer ?? throw ProtocolStorageOwner.Unavailable();
         request.RequireInferred(outer);
+        if (NativeErrorCoordinator.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.VerifiedNativeError;
+        }
         if (outer.IsRejected)
         {
             return ProtocolResponseOutcome.NativeError;

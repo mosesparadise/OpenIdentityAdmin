@@ -19,7 +19,7 @@ internal sealed class AdministratorPassthrough
     private readonly string baseline;
     private readonly OpenIddictServerEvents.ProcessRequestContext outer;
     private OpenIddictServerEvents.BaseRequestContext? inner;
-    private OpenIddictServerEvents.ProcessSignInContext? signIn;
+    private OpenIddictServerEvents.BaseValidatingContext? signIn;
     private OpenIddictRequest? parameters;
     private string? digest;
     private bool returned;
@@ -112,7 +112,13 @@ internal sealed class AdministratorPassthrough
             (OpenIddictServerEndpointType.Token, OpenIddictServerEvents.HandleTokenRequestContext);
 
     /// <summary>Consumes the private handoff only after the outer native handler has returned to its application endpoint.</summary>
-    internal static AdministratorPassthrough Claim(OpenIddictServerEvents.ProcessSignInContext context)
+    internal static AdministratorPassthrough Claim(OpenIddictServerEvents.ProcessSignInContext context) => ClaimCore(context);
+
+    /// <summary>Consumes the same real handoff for a privately authorized endpoint denial.</summary>
+    internal static AdministratorPassthrough ClaimChallenge(OpenIddictServerEvents.ProcessChallengeContext context) => ClaimCore(context);
+
+    /// <summary>Claims one terminal native continuation without allowing arbitrary base-context substitutions.</summary>
+    private static AdministratorPassthrough ClaimCore(OpenIddictServerEvents.BaseValidatingContext context)
     {
         var http = context.Transaction.GetHttpRequest()?.HttpContext ?? throw ProtocolStorageOwner.Unavailable();
         if (!http.Items.Remove(Key, out var value) || value is not AdministratorPassthrough receipt ||
@@ -128,14 +134,20 @@ internal sealed class AdministratorPassthrough
     }
 
     /// <summary>Rechecks the completed sign-in identity and original handoff after child cleanup and before success publication.</summary>
-    internal bool Allows(OpenIddictServerEvents.ProcessSignInContext context) => IsCurrent() && ReferenceEquals(signIn, context) &&
+    internal bool Allows(OpenIddictServerEvents.ProcessSignInContext context) => AllowsCore(context, true);
+
+    /// <summary>Rechecks denial handoff inside its child and again with full parent identity after cleanup.</summary>
+    internal bool AllowsChallenge(OpenIddictServerEvents.ProcessChallengeContext context, bool parent) => AllowsCore(context, parent);
+
+    /// <summary>Requires exact terminal identity and preserved handoff; final publication always requires parent ownership.</summary>
+    private bool AllowsCore(OpenIddictServerEvents.BaseValidatingContext context, bool parent) => IsCurrent(parent) && ReferenceEquals(signIn, context) &&
         context.IsRequestHandled && !context.IsRequestSkipped && !context.IsRejected &&
         context.EndpointType == outer.EndpointType && ReferenceEquals(context.Transaction, outer.Transaction);
 
     /// <summary>Detects changes to native handoff contexts and parameters without retaining any scoped service.</summary>
-    private bool IsCurrent() => returned && inner is { IsRequestSkipped: true, IsRequestHandled: false } && Matches(inner) &&
+    private bool IsCurrent(bool parent = true) => returned && inner is { IsRequestSkipped: true, IsRequestHandled: false } && Matches(inner) &&
         outer.IsRequestSkipped && !outer.IsRequestHandled && !outer.IsRejected &&
-        OwnsParent() && ReferenceEquals(parameters, outer.Transaction.Request) &&
+        (!parent || OwnsParent()) && ReferenceEquals(request, ProtocolStorageAmbient.Current?.Request) && ReferenceEquals(parameters, outer.Transaction.Request) &&
         parameters is not null && digest == Parameters(parameters) &&
         inner is not OpenIddictServerEvents.HandleAuthorizationRequestContext { IsRejected: true } &&
         inner is not OpenIddictServerEvents.HandleTokenRequestContext { IsRejected: true };

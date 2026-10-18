@@ -20,6 +20,19 @@ internal sealed class ProtocolStoragePhase(ProtocolStorageLifetime lifetime)
         get; set;
     }
 
+    internal bool CommitAttempted
+    {
+        get; set;
+    }
+    internal bool RolledBack
+    {
+        get; set;
+    }
+    internal bool CleanupCompleted
+    {
+        get; set;
+    }
+
     /// <summary>Checks exact native transaction ownership and rejects writes outside an explicit transaction.</summary>
     internal void RequireCurrent(DbContext database, bool write)
     {

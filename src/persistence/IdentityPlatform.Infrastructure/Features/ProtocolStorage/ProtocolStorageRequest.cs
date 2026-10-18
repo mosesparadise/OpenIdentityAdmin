@@ -1,4 +1,5 @@
 using System.Runtime.ExceptionServices;
+using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -11,6 +12,9 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
     private readonly List<ProtocolStorageScope> scopes = [];
     private readonly List<Task> acquisitionCleanup = [];
     private readonly List<ProtocolStoragePhase> phases = [];
+    private ProtocolResponseCapture? response;
+    private ProtocolResponseOutput? errorOutput;
+    private ProtocolStorageCheckpoint? errorCheckpoint;
     private int active;
     private int faulted;
     internal TimeProvider Clock => clock;
@@ -119,12 +123,61 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         await Task.WhenAll(pending);
     }
 
+    /// <summary>Binds one root HTTP capture; a later child or another HTTP boundary cannot replace its publication destination.</summary>
+    internal void BindResponse(ProtocolResponseCapture capture)
+    {
+        RequireCurrent();
+        if (Interlocked.CompareExchange(ref response, capture, null) is not null || !capture.BelongsTo(this))
+        {
+            Fail();
+            throw ProtocolStorageOwner.Unavailable();
+        }
+    }
+
+    /// <summary>Captures only the coordinator's exact recognized phase sequence after actual transactional child cleanup.</summary>
+    internal ProtocolStorageCheckpoint CaptureErrorCheckpoint(IReadOnlyList<ProtocolStoragePhase> recognized)
+    {
+        RequireCurrent();
+        lock (sync)
+        {
+            if (!phases.SequenceEqual(recognized, ReferenceEqualityComparer.Instance))
+            {
+                Fail();
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            return new(this, phases);
+        }
+    }
+
+    /// <summary>Accepts one privately verified native error output; a generic error outcome never calls this admission method.</summary>
+    internal void AdmitError(ProtocolResponseOutput output, ProtocolStorageCheckpoint checkpoint)
+    {
+        RequireCurrent();
+        lock (sync)
+        {
+            if (errorOutput is not null || response is null || !checkpoint.Matches(this, phases))
+            {
+                Fail();
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            output.RequireFrozenCapture(this, response);
+            errorOutput = output;
+            errorCheckpoint = checkpoint;
+        }
+    }
+
     /// <summary>Separates read-only responses, committed writes and native errors without treating rollback as success.</summary>
     internal void RequirePublication(ProtocolResponseOutcome outcome)
     {
         RequireCurrent();
         lock (sync)
         {
+            if (outcome == ProtocolResponseOutcome.VerifiedNativeError && errorOutput is not null && response is not null &&
+                errorCheckpoint?.Matches(this, phases) == true)
+            {
+                errorOutput.RequireFrozenCapture(this, response);
+                return;
+            }
             if (outcome == ProtocolResponseOutcome.NativeError)
             {
                 return;
