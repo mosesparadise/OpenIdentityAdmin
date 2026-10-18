@@ -61,6 +61,7 @@ public sealed class NativeOwnershipTests
             await NativeConsumptionReceipts.VerifyAsync(root, independent, deadline.Token);
             await NativeAssertionAuthentication.VerifyAsync(fixture, material, deadline.Token);
             await NativeAssertionLedger.VerifyAsync(root, independent, deadline.Token);
+            await NativeTokenBudgets.VerifyAsync(root, independent, new NativeLockObservation(name, connection), deadline.Token);
         }
         await NativeConsumptionBoundaries.VerifyAsync(root, store, deadline.Token);
     }
@@ -79,10 +80,11 @@ public sealed class NativeOwnershipTests
         services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
         services.AddSingleton<NativeConsumptionCommit>();
         services.AddSingleton<NativeRegistrationAuditFailure>();
+        services.AddSingleton<NativeTokenCleanupFault>();
         services.AddSingleton<NativeRedemptionBarrier>();
         services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
             provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>(),
-            provider.GetRequiredService<NativeRegistrationAuditFailure>()));
+            provider.GetRequiredService<NativeRegistrationAuditFailure>(), provider.GetRequiredService<NativeTokenCleanupFault>()));
         services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
             provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
         services.AddProtocolStorageOwnership();

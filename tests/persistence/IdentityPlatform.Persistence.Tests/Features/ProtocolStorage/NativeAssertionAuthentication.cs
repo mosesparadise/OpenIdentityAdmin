@@ -44,7 +44,11 @@ internal static class NativeAssertionAuthentication
             Assert.Equal(1, await CountAsync(second, token));
             Assert.Equal(OpenIddictConstants.Errors.InvalidClient, (await AuthenticateAsync(second, assertion, true, token)).Error);
             var grant = material.Sign(now.ToUnixTimeSeconds());
-            Assert.Equal(OpenIddictConstants.Errors.InvalidGrant, (await AuthenticateAsync(first, grant, true, token)).Error);
+            var invalid = await AuthenticateAsync(first, grant, true, token);
+            Assert.Equal(OpenIddictConstants.Errors.InvalidToken, invalid.Error);
+            invalid.Transaction.Response = new OpenIddictResponse { Error = invalid.Error };
+            await new OpenIddictServerHandlers.Exchange.NormalizeErrorResponse().HandleAsync(new(invalid.Transaction));
+            Assert.Equal(OpenIddictConstants.Errors.InvalidGrant, invalid.Transaction.Response.Error);
             Assert.Equal(ReservedBeforeBoundaries, await CountAsync(second, token));
             Assert.Equal(OpenIddictConstants.Errors.InvalidClient, (await AuthenticateAsync(second, grant, false, token)).Error);
             await VerifyCommitBoundariesAsync(first, second, material, now, token);
