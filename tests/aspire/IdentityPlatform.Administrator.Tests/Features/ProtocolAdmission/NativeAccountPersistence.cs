@@ -39,5 +39,9 @@ internal static class NativeAccountPersistence
     /// <summary>Starts a fresh original read request for each independent persisted observation.</summary>
     private static Task<T> ReadAsync<T>(AdministratorProtocolScenario scenario, Func<ProtocolStorageScope, CancellationToken, ValueTask<T>> read) =>
         new ProtocolStorageRequest(scenario.Account.Journey.Clock, TestContext.Current.CancellationToken)
-            .RunAsync(scenario.Services.GetRequiredService<IServiceScopeFactory>(), read);
+            .RunAsync(scenario.Services.GetRequiredService<IServiceScopeFactory>(), (scope, token) =>
+            {
+                scope.Services.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.Owned);
+                return read(scope, token);
+            });
 }
