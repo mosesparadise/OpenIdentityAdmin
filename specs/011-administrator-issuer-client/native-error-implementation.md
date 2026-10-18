@@ -4,6 +4,12 @@ This implements part of the authorized T005–T009 batch and its required tests/
 
 ## Source boundaries
 
+### Real command composition correction
+
+Source `edfa1ba10e917cd0a0188692fe0d8951bfc751bb`, run `39096411673`, reached all 50 ProtocolAdmission cases per provider. Each provider passed 47 and failed the three new real-command cases; all six new native-denial cases passed. The protocol initializer incorrectly took Migrator's two-store upgrade composition because storage selection recognized only the original administrator bootstrap as Platform-only. With the intentionally absent Sessions connection, configuration failed before reading protocol input. Select Platform-only storage for either explicit initializer, preserving two-store validation for upgrade. Do not widen fixture credentials to hide the bug.
+
+Six new pure composition cases cover both providers and both initializer/upgrade selections. Two new real-process cases prove malformed redirected protocol input reaches its safe parser error with only Platform configuration and no database execution. All 25 focused Migrator configuration cases pass locally in 2.550 seconds; the project builds without warnings/errors. The Host inventory adds exactly eight cases (920 to 928). Real successful initialization, repeat and denied-audit rollback still require the corrected hosted run; the failed reports remain evidence of the startup defect, not acceptance.
+
 The cancelled first run retained a complete SQL Server persistence TRX: all seven cases passed there, including both transaction-replacement cells. Unlike Npgsql, that provider silently accepted rollback on the disposed original transaction. This exposed a proof gap: before recording a confirmed rollback, production must require the database's current transaction to be the exact owned transaction. Missing/replaced ownership now fails inside the existing disposal `try/finally`, retaining resource cleanup and leaving rollback/cleanup proof false on both providers. The commit-attempt/unknown-commit branch is unchanged. Architecture review agrees; corrected exact-head hosted evidence remains required.
 
 ### First hosted failure corrections
