@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
 using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 using IdentityPlatform.Database;
@@ -54,6 +55,7 @@ internal static class NativeAssertionAuthentication
             await VerifyCommitBoundariesAsync(first, second, material, now, token);
             await NativeAssertionContinuations.VerifyAsync(first, material, now, token);
             await NativeAssertionCleanup.VerifyAsync(first, second, material, now, token);
+            await NativeParIssuance.VerifyAsync(first, second, material, now, token);
         }
         finally
         {
@@ -127,13 +129,17 @@ internal static class NativeAssertionAuthentication
         services.AddSingleton<NativeConsumptionClock>();
         services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
         services.AddSingleton<NativeConsumptionCommit>();
+        services.AddSingleton<NativeParFault>();
         services.AddSingleton<NativeAssertionCleanupClock>();
         services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<NativeConsumptionCommit>(),
             provider.GetRequiredService<NativeAssertionCleanupClock>()));
         services.AddProtocolStorageOwnership().AddOwnedServerDispatcher();
-        services.AddOpenIddict().AddServer().SetIssuer(new Uri(NativeAssertionMaterial.Issuer))
+        var server = services.AddOpenIddict().AddServer().SetIssuer(new Uri(NativeAssertionMaterial.Issuer))
             .SetAuthorizationEndpointUris(AuthorizePath).SetTokenEndpointUris(TokenPath).SetPushedAuthorizationEndpointUris(ParPath)
-            .AllowAuthorizationCodeFlow().AddEphemeralSigningKey().AddEphemeralEncryptionKey().AddAdministratorAssertions().UseAspNetCore();
+            .AllowAuthorizationCodeFlow().AddEphemeralSigningKey().AddEphemeralEncryptionKey().AddAdministratorAssertions();
+        server.UseAspNetCore();
+        server.AddAdministratorParIssuance();
+        NativeParFault.Configure(server);
         services.AddOptions<OpenIddictServerOptions>().Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
         return services.BuildServiceProvider(validateScopes: true);
     }
