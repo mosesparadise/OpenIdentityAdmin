@@ -3,7 +3,6 @@ using Microsoft.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
-using OpenIddict.Server.AspNetCore;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
