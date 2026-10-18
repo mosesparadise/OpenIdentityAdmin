@@ -16,7 +16,7 @@ internal static class NativeParIssuance
 {
     private const string Path = "/par";
     private const string FormMediaType = "application/x-www-form-urlencoded";
-    private const string Challenge = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFG";
+    private const string Challenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM";
     private const string Nonce = "native-par-correlation";
     private const int MaximumLifetime = 60;
     private const int ResponseParameters = 2;
@@ -28,6 +28,7 @@ internal static class NativeParIssuance
     {
         var before = await NativeTokenBudgetFixture.CountAsync(second, token);
         var accepted = await InvokeAsync(first, material, now, token);
+        Assert.Equal(NativeParOutcome.Handled, accepted.Outcome);
         Assert.True(accepted.Failure is null, accepted.Failure?.GetType().FullName + Environment.NewLine + accepted.Failure?.StackTrace);
         Assert.True(accepted.Claimed);
         Assert.Equal(StatusCodes.Status201Created, accepted.Status);
@@ -84,6 +85,7 @@ internal static class NativeParIssuance
         var host = new NativeHttpCompletion();
         http.Features.Set<IHttpResponseFeature>(host);
         http.Response.Body = output;
+        var outcome = NativeParOutcome.NotReturned;
         var claimed = false;
         Exception? failure = null;
         try
@@ -99,6 +101,7 @@ internal static class NativeParIssuance
                     var context = new OpenIddictServerEvents.ProcessRequestContext(transaction) { CancellationToken = cancellation };
                     await scope.Services.GetRequiredService<IOpenIddictServerDispatcher>().DispatchAsync(context);
                     root.GetRequiredService<NativeParFault>().AfterDispatch(context);
+                    outcome = NativeParObservation.Read(context);
                     AdministratorIssuanceCoordinator.ClaimPublication(http, context);
                     claimed = true;
                     return ProtocolResponseOutcome.Committed;
@@ -107,7 +110,7 @@ internal static class NativeParIssuance
             });
         }
         finally { await host.CompleteAsync(); }
-        return new(http.Response.StatusCode, output.ToArray(), claimed, failure);
+        return new(http.Response.StatusCode, output.ToArray(), claimed, failure, outcome);
     }
 
     /// <summary>Supplies only the fixed confidential code/S256/PAR request through the native form extractor.</summary>
@@ -119,7 +122,6 @@ internal static class NativeParIssuance
         [OpenIddictConstants.Parameters.ResponseType] = OpenIddictConstants.ResponseTypes.Code,
         [OpenIddictConstants.Parameters.RedirectUri] = material.Policy.RedirectUri,
         [OpenIddictConstants.Parameters.Scope] = RequestedScopes,
-        [OpenIddictConstants.Parameters.Resource] = AdministratorProtocolIdentity.Resource,
         [OpenIddictConstants.Parameters.CodeChallenge] = Challenge,
         [OpenIddictConstants.Parameters.CodeChallengeMethod] = OpenIddictConstants.CodeChallengeMethods.Sha256,
         [OpenIddictConstants.Parameters.Nonce] = Nonce,
@@ -156,5 +158,5 @@ internal static class NativeParIssuance
         });
 
     /// <summary>Retains bounded output and explicit completion observations so a catch-all boundary cannot hide failed assertions.</summary>
-    private sealed record Result(int Status, byte[] Body, bool Claimed, Exception? Failure);
+    private sealed record Result(int Status, byte[] Body, bool Claimed, Exception? Failure, NativeParOutcome Outcome);
 }

@@ -17,6 +17,8 @@ Planned contract; no runtime support is claimed by this document. Applies only t
 | Discovery/JWKS | Native canonical issuer discovery and configured key endpoint; advertise only enabled profiles/capabilities |
 | Excluded grants/routes | No refresh/offline_access, end-session, UserInfo, client credentials, device, generic consent, management API or product BFF callback in B2 |
 
+The opaque `identity-admin-api` is the persisted scope resource and emitted token audience. It is not an RFC 8707 request resource indicator. Fixed-profile requests omit `resource` and `audience`; explicit caller overrides, including empty-present fields, are rejected. Native resource syntax validation remains enabled.
+
 Global native support may include Basic for the unchanged pilot and private_key_jwt for B2, but administrator policy accepts only private_key_jwt and the pilot retains its own method contract. A global supported-method list is not per-client authorization.
 
 ## Backend assertion
