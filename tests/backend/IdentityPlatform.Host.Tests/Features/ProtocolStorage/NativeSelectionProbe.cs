@@ -35,9 +35,13 @@ internal sealed class NativeSelectionProbe : IAsyncDisposable
     {
         get; private set;
     }
+    internal Action? BeforeManager
+    {
+        get; set;
+    }
 
     /// <summary>Uses the real native request/extraction dispatchers, filters, Basic parser and application consistency guard.</summary>
-    internal NativeSelectionProbe() => Storage = new StorageRequestProbe(Configure);
+    internal NativeSelectionProbe() => Storage = new StorageRequestProbe(Configure, new ControlledProbeClock());
 
     /// <summary>Sends an HTTPS form or query through the installed ASP.NET request handler and retains its native error.</summary>
     internal Task<bool> RunAsync(bool tokenEndpoint, string values, string? basicClient = null)
@@ -88,6 +92,7 @@ internal sealed class NativeSelectionProbe : IAsyncDisposable
             .UseInlineHandler(context =>
             {
                 var scope = ProtocolStorageAmbient.Current!.Scope;
+                BeforeManager?.Invoke();
                 Owned = scope.Services.GetRequiredService<ProtocolStorageSelection>().ResolveOwned();
                 scope.Services.GetRequiredService<IOpenIddictTokenManager>();
                 context.HandleRequest();

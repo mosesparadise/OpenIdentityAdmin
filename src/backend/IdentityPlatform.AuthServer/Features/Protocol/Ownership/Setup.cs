@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Ownership;

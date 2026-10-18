@@ -13,6 +13,18 @@ namespace IdentityPlatform.Host.Tests.Features.ProtocolStorage;
 /// <summary>Exercises actual native extraction before immutable manager selection and rejects later profile substitution.</summary>
 public sealed class NativeSelectionTests
 {
+    private const int OriginalRequestSeconds = 10;
+    private const string PilotQuery = "client_id=identityplatform-pilot";
+
+    /// <summary>The selection fixture advances both elapsed checks and timer cancellation on the original ten-second boundary.</summary>
+    [Fact]
+    public async Task Given_OriginalDeadlineReached_When_NativeExtractionContinues_Then_NoSelectionResultCanSucceed()
+    {
+        await using var probe = new NativeSelectionProbe();
+        probe.BeforeManager = () => probe.Storage.Clock.Advance(TimeSpan.FromSeconds(OriginalRequestSeconds));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => probe.RunAsync(false, PilotQuery));
+    }
+
     /// <summary>Only an exact scalar pilot identity extracted on an approved endpoint selects legacy native stores.</summary>
     [Theory]
     [InlineData(false, "client_id=identityplatform-pilot", null, false)]
