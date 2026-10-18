@@ -508,7 +508,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1123,7 +1124,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -24097,6 +24099,44 @@
         {
           "key": "Provider",
           "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeGenerationTests",
+        "methodName": "Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeGenerationTests",
+        "methodName": "Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
         }
       ]
     }

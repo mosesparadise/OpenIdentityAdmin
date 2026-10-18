@@ -11,6 +11,8 @@ internal sealed class OwnedClientDispatcher(OpenIddictClientDispatcher native, P
     {
         ArgumentNullException.ThrowIfNull(context);
         return ProtocolStorageDispatch.RunAsync(owner, () => context.CancellationToken,
-            token => context.CancellationToken = token, () => native.DispatchAsync(context));
+            token => context.CancellationToken = token, () =>
+                context is OpenIddictClientEvents.GenerateTokenContext generation && NativeStateGeneration.Find(context.Transaction) is { } proof
+                    ? proof.GenerateAsync(generation, () => native.DispatchAsync(context)) : native.DispatchAsync(context));
     }
 }

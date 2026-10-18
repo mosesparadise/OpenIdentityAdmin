@@ -34,4 +34,38 @@ internal static class Setup
             .Import(redemption).UseScopedHandler<DurableClientRedemption>().SetType(OpenIddictClientHandlerType.Custom).Build());
         return builder;
     }
+
+    /// <summary>Preserves the installed native state-generation slot while moving its manager writes into fresh committed Sessions ownership.</summary>
+    internal static OpenIddictClientBuilder AddDurableClientState(this OpenIddictClientBuilder builder)
+    {
+        ReplaceGeneration<OpenIddictClientHandlers.Protection.AttachSecurityCredentials, NativeStateCredentials>(builder,
+            OpenIddictClientHandlers.Protection.AttachSecurityCredentials.Descriptor);
+        ReplaceGeneration<OpenIddictClientHandlers.Protection.AttachTokenSubject, NativeStateSubject>(builder,
+            OpenIddictClientHandlers.Protection.AttachTokenSubject.Descriptor);
+        ReplaceGeneration<OpenIddictClientHandlers.Protection.AttachTokenMetadata, NativeStateMetadata>(builder,
+            OpenIddictClientHandlers.Protection.AttachTokenMetadata.Descriptor);
+        var generation = OpenIddictClientHandlers.GenerateLoginStateToken.Descriptor;
+        builder.RemoveEventHandler(generation);
+        builder.Services.AddScoped<OpenIddictClientHandlers.GenerateLoginStateToken>();
+        builder.AddEventHandler(OpenIddictClientHandlerDescriptor.CreateBuilder<OpenIddictClientEvents.ProcessChallengeContext>()
+            .Import(generation).UseScopedHandler<DurableClientState>().SetType(OpenIddictClientHandlerType.Custom).Build());
+        ReplaceGeneration<OpenIddictClientHandlers.Protection.CreateTokenEntry, NativeStateCreation>(builder,
+            OpenIddictClientHandlers.Protection.CreateTokenEntry.Descriptor);
+        ReplaceGeneration<OpenIddictClientHandlers.Protection.GenerateIdentityModelToken, NativeStateSigning>(builder,
+            OpenIddictClientHandlers.Protection.GenerateIdentityModelToken.Descriptor);
+        ReplaceGeneration<OpenIddictClientHandlers.Protection.AttachTokenPayload, NativeStatePayload>(builder,
+            OpenIddictClientHandlers.Protection.AttachTokenPayload.Descriptor);
+        return builder;
+    }
+
+    /// <summary>Preserves native descriptor filters/order and explicit delegated service registration after removing its pipeline slot.</summary>
+    private static void ReplaceGeneration<TNative, TObserver>(OpenIddictClientBuilder builder, OpenIddictClientHandlerDescriptor descriptor)
+        where TNative : class, IOpenIddictClientHandler<OpenIddictClientEvents.GenerateTokenContext>
+        where TObserver : class, IOpenIddictClientHandler<OpenIddictClientEvents.GenerateTokenContext>
+    {
+        builder.RemoveEventHandler(descriptor);
+        builder.Services.AddScoped<TNative>();
+        builder.AddEventHandler(OpenIddictClientHandlerDescriptor.CreateBuilder<OpenIddictClientEvents.GenerateTokenContext>()
+            .Import(descriptor).UseScopedHandler<TObserver>().SetType(OpenIddictClientHandlerType.Custom).Build());
+    }
 }

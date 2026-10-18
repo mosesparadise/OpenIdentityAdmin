@@ -1332,56 +1332,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Keys/ActiveKeyPolicy.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Keys.ActiveKeyPolicy",
-        "Fingerprint": "175745612228FD2877D280608FBD8C19A9B1E20EA644B887901398BDB9555465"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Keys/ActiveKeyPolicy.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Keys.ActiveKeyPolicy.ApplyAsync(GenerateTokenContext,IssuerCredentials)",
-        "Fingerprint": "686399AC88910A0B842A52926E1C45F2E44BB02D8FD6292666FBD9E4A7221D9B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Keys/ActiveKeyPolicy.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Keys.ActiveKeyPolicy.ApplyAsync(GenerateTokenContext,IssuerCredentials)",
-        "Fingerprint": "686399AC88910A0B842A52926E1C45F2E44BB02D8FD6292666FBD9E4A7221D9B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Keys/ActiveKeyPolicy.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Keys.ActiveKeyPolicy.ApplyAsync(GenerateTokenContext,IssuerCredentials)",
-        "Fingerprint": "686399AC88910A0B842A52926E1C45F2E44BB02D8FD6292666FBD9E4A7221D9B"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Keys/ActiveKeyPolicy.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Keys.ActiveKeyPolicy.ValidNow(X509Certificate2,DateTimeOffset)",
-        "Fingerprint": "25959125AD5F4E8C3FF5D9679EC472092B3CD69DBAD9DCEECF4C050EAC81AF40"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Keys/Setup.cs",
         "Symbol": "IdentityPlatform.AuthServer.Features.Protocol.Keys.Setup.AddIssuerKeyPolicy(thisOpenIddictServerBuilder,IssuerCredentials)",

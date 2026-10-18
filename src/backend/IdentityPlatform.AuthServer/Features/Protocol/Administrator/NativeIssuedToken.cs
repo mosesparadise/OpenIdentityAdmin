@@ -1,7 +1,7 @@
 using System.Security.Claims;
-using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
+using Microsoft.IdentityModel.JsonWebTokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 
@@ -14,6 +14,8 @@ internal sealed class NativeIssuedToken
     private readonly ClaimsPrincipal principal;
     private readonly string type;
     private readonly bool reference;
+    private readonly string preparedClaims;
+    private readonly ProtocolTokenPreparation preparation;
     private string? identifier;
     private string? serialized;
     private string? returned;
@@ -26,7 +28,10 @@ internal sealed class NativeIssuedToken
         this.context = context;
         principal = context.Principal;
         type = context.TokenType;
+        preparedClaims = ProtocolTokenDescriptorSnapshot.Claims(principal, omitIdentifier: true);
         reference = type is OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken or OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode;
+        preparation = new(context.SecurityTokenDescriptor, context.Options.JsonWebTokenHandler, typeof(JsonWebTokenHandler), reference,
+            context.Options.SigningCredentials, context.Options.EncryptionCredentials);
         if (!context.CreateTokenEntry || context.IsReferenceToken != reference || context.PersistTokenPayload != reference ||
             context.TokenFormat != OpenIddictConstants.TokenFormats.Private.JsonWebToken || context.ClientId != AdministratorProtocolIdentity.ClientId ||
             !string.IsNullOrEmpty(context.Token) || !string.IsNullOrEmpty(principal.GetTokenId()))
@@ -38,7 +43,8 @@ internal sealed class NativeIssuedToken
     /// <summary>Checks exact context and immutable native generation settings before and after every observed native handler.</summary>
     internal void RequireContext(OpenIddictServerEvents.GenerateTokenContext current)
     {
-        if (!ReferenceEquals(context, current) || !ReferenceEquals(principal, current.Principal) || current.TokenType != type ||
+        preparation.RequireCurrent(current.SecurityTokenDescriptor, current.SecurityTokenHandler);
+        if (preparedClaims != ProtocolTokenDescriptorSnapshot.Claims(principal, omitIdentifier: true) || !ReferenceEquals(context, current) || !ReferenceEquals(principal, current.Principal) || current.TokenType != type ||
             current.ClientId != AdministratorProtocolIdentity.ClientId || !current.CreateTokenEntry || current.PersistTokenPayload != reference ||
             current.IsReferenceToken != reference || current.TokenFormat != OpenIddictConstants.TokenFormats.Private.JsonWebToken ||
             current.IsRejected || current.IsRequestHandled || current.IsRequestSkipped)
@@ -46,6 +52,14 @@ internal sealed class NativeIssuedToken
             throw ProtocolStorageOwner.Unavailable();
         }
     }
+
+    /// <summary>Allows only the actual native descriptor preparation stages in their installed order.</summary>
+    internal ValueTask PrepareAsync(ProtocolTokenPreparation.Stage next, Func<ValueTask> native) =>
+        preparation.AdvanceAsync(next, context.SecurityTokenDescriptor, () => context.SecurityTokenHandler, native);
+
+    /// <summary>Allows the existing issuer policy to select its active credentials at its exact slot.</summary>
+    internal ValueTask RefreshCredentialsAsync(Func<ValueTask> native) =>
+        preparation.RefreshCredentialsAsync(context.SecurityTokenDescriptor, () => context.SecurityTokenHandler, native);
 
     /// <summary>Observes exactly one actual native create and requires its newly assigned persistent identifier.</summary>
     internal async ValueTask CreateAsync(Func<ValueTask> native)
@@ -68,6 +82,7 @@ internal sealed class NativeIssuedToken
     internal async ValueTask SignAsync(Func<ValueTask> native)
     {
         RequireContext(context);
+        preparation.RequireReady(context.SecurityTokenDescriptor, context.SecurityTokenHandler);
         if (identifier is null || serialized is not null || !string.IsNullOrEmpty(context.Token))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -142,13 +157,5 @@ internal sealed class NativeIssuedToken
     }
 
     /// <summary>Detects claim or destination mutation between native signing, response formatting and final persistence reconciliation.</summary>
-    private static string Binding(ClaimsPrincipal value) => FactorBinding.Digest(value.Claims.Select(claim => new
-    {
-        claim.Type,
-        claim.Value,
-        claim.ValueType,
-        claim.Issuer,
-        claim.OriginalIssuer,
-        Properties = claim.Properties.OrderBy(pair => pair.Key, StringComparer.Ordinal).ToArray()
-    }).ToArray());
+    private static string Binding(ClaimsPrincipal value) => ProtocolTokenDescriptorSnapshot.Claims(value);
 }

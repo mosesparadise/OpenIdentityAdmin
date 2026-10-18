@@ -65,6 +65,7 @@ internal sealed class AdministratorProtocolScenario(GovernanceScenario account, 
         var server = services.AddOpenIddict().AddServer();
         NativeAccountClockAdvance.Configure(server);
         NativeAccountResponseFault.Configure(server);
+        NativeGenerationFault.Configure(server);
         NativeAccountFinalRead.Configure(server);
         server.AddEventHandler<OpenIddictServerEvents.ProcessRequestContext>(handler => handler.SetOrder(int.MinValue)
             .UseInlineHandler(NativeAccountHttp.Remember));

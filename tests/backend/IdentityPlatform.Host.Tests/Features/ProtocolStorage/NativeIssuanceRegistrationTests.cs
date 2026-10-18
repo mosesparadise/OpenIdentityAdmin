@@ -69,6 +69,9 @@ public sealed class NativeIssuanceRegistrationTests
         var dispatcher = Assert.Single(services, descriptor => descriptor.ServiceType == typeof(IOpenIddictServerDispatcher));
         Assert.Equal(typeof(OwnedServerDispatcher), dispatcher.ImplementationType);
         Require(options, OpenIddictServerHandlers.AttachAuthorization.Descriptor, typeof(NativeAuthorizationCreation));
+        Require(options, OpenIddictServerHandlers.Protection.AttachSecurityCredentials.Descriptor, typeof(NativeTokenCredentials));
+        Require(options, OpenIddictServerHandlers.Protection.AttachTokenSubject.Descriptor, typeof(NativeTokenSubject));
+        Require(options, OpenIddictServerHandlers.Protection.AttachTokenMetadata.Descriptor, typeof(NativeTokenMetadata));
         Require(options, OpenIddictServerHandlers.Protection.CreateTokenEntry.Descriptor, typeof(NativeTokenCreation));
         Require(options, OpenIddictServerHandlers.Protection.GenerateIdentityModelToken.Descriptor, typeof(NativeTokenSigning));
         Require(options, OpenIddictServerHandlers.Protection.AttachTokenPayload.Descriptor, typeof(NativeTokenPayload));

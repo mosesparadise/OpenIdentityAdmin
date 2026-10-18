@@ -66,6 +66,12 @@ internal static class Setup
     internal static OpenIddictServerBuilder AddNativeIssuanceObservations(this OpenIddictServerBuilder builder)
     {
         AddAuthorization(builder);
+        ReplaceGeneration<OpenIddictServerHandlers.Protection.AttachSecurityCredentials, NativeTokenCredentials>(builder,
+            OpenIddictServerHandlers.Protection.AttachSecurityCredentials.Descriptor);
+        ReplaceGeneration<OpenIddictServerHandlers.Protection.AttachTokenSubject, NativeTokenSubject>(builder,
+            OpenIddictServerHandlers.Protection.AttachTokenSubject.Descriptor);
+        ReplaceGeneration<OpenIddictServerHandlers.Protection.AttachTokenMetadata, NativeTokenMetadata>(builder,
+            OpenIddictServerHandlers.Protection.AttachTokenMetadata.Descriptor);
         var creation = OpenIddictServerHandlers.Protection.CreateTokenEntry.Descriptor;
         var signing = OpenIddictServerHandlers.Protection.GenerateIdentityModelToken.Descriptor;
         var payload = OpenIddictServerHandlers.Protection.AttachTokenPayload.Descriptor;
@@ -108,7 +114,19 @@ internal static class Setup
         builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<TContext>().Import(descriptor)
             .UseScopedHandler<NativeJsonResponse<TContext>>().SetType(OpenIddictServerHandlerType.Custom).Build());
     }
+    /// <summary>Preserves native descriptor filters/order and explicit delegated service registration after removing its pipeline slot.</summary>
+    private static void ReplaceGeneration<TNative, TObserver>(OpenIddictServerBuilder builder, OpenIddictServerHandlerDescriptor descriptor)
+        where TNative : class, IOpenIddictServerHandler<OpenIddictServerEvents.GenerateTokenContext>
+        where TObserver : class, IOpenIddictServerHandler<OpenIddictServerEvents.GenerateTokenContext>
+    {
+        builder.RemoveEventHandler(descriptor);
+        builder.Services.AddScoped<TNative>();
+        builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.GenerateTokenContext>()
+            .Import(descriptor).UseScopedHandler<TObserver>().SetType(OpenIddictServerHandlerType.Custom).Build());
+    }
 }
 
 /// <summary>Marks only explicit internal account-issuance composition; it neither maps endpoints nor activates production.</summary>
-internal sealed class AdministratorAccountIssuanceEnabled;
+internal sealed class AdministratorAccountIssuanceEnabled
+{
+}

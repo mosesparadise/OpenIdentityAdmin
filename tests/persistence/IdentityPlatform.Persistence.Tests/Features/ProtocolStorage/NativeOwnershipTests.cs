@@ -66,6 +66,28 @@ public sealed class NativeOwnershipTests
         await NativeConsumptionBoundaries.VerifyAsync(root, store, deadline.Token);
     }
 
+    /// <summary>Exercises native client-state cryptography, cleanup substitutions and serialized hard budgets with isolated runtime grants.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Given_NativeClientState_When_CreationAndQuotaBoundariesAreExercised_Then_OnlyVerifiedBoundedStateCommits(string name)
+    {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        deadline.CancelAfter(TimeSpan.FromMinutes(DeadlineMinutes));
+        await using var postgres = new PostgreSqlBuilder(PostgresImage).Build();
+        await using var sql = new MsSqlBuilder(SqlImage).Build();
+        var connection = name == Postgres ? await StartPostgresAsync(postgres, deadline.Token) : await StartSqlAsync(sql, deadline.Token);
+        var fixture = NativeProviderFixtures.Create(name, connection);
+        await using (var migrator = new ServiceCollection().AddLogging().AddPlatformPersistence(fixture.Provider, connection, connection)
+            .BuildServiceProvider(validateScopes: true))
+        {
+            Assert.Equal(0, await DatabaseUpgrade.RunAsync(migrator, deadline.Token));
+        }
+        await fixture.PrepareRuntimePrincipals(deadline.Token);
+        await NativeClientStateCreation.VerifyAsync(fixture, deadline.Token);
+        await NativeClientStateQuotas.VerifyAsync(fixture, new NativeLockObservation(name, connection), deadline.Token);
+    }
+
     /// <summary>Selects native context composition explicitly; production registration remains unchanged.</summary>
     internal static ServiceProvider CreateRoot(NativeProviderFixture fixture, DatabaseStore store, NativeAssertionMaterial material)
     {
