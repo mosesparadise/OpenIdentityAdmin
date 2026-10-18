@@ -125,13 +125,16 @@ internal static class NativeAssertionLedger
         }
     }
 
-    /// <summary>Commits one accepted or denied reservation exactly once; no endpoint or signature acceptance is implied by this fixture.</summary>
+    /// <summary>Commits only accepted consumption; a denial rolls back speculative cleanup and grants no signature authority.</summary>
     private static Task<bool> ConsumeAsync(IServiceProvider root, AdministratorAssertion proof, CancellationToken token) =>
         new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token).RunAsync(root.GetRequiredService<IServiceScopeFactory>(), async (scope, cancellation) =>
         {
             await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
             var accepted = await AdministratorAssertionLedger.ReserveAsync(scope.Owner, proof, cancellation);
-            await transaction.CommitAsync(cancellation);
+            if (accepted)
+            {
+                await transaction.CommitAsync(cancellation);
+            }
             return accepted;
         });
 

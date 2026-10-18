@@ -33,9 +33,9 @@ internal static class AdministratorRegistration
         await applications.PopulateAsync(applicationDescriptor, application, token);
         await scopes.PopulateAsync(scopeDescriptor, resource, token);
         owner.Check(phase, token);
-        return expected.Matches(applicationDescriptor, scopeDescriptor) ? new(profile.ApplicationId, profile.ScopeId, profile.Revision) : null;
+        return expected.Matches(applicationDescriptor, scopeDescriptor) ? new(profile.ApplicationId, profile.ScopeId, profile.Revision, profile.ObservedAt) : null;
     }
 }
 
 /// <summary>Identifies the just-verified registration only; this snapshot is not a reusable authority grant.</summary>
-internal sealed record AdministratorRegistrationBinding(string ApplicationId, string ScopeId, long Revision);
+internal sealed record AdministratorRegistrationBinding(string ApplicationId, string ScopeId, long Revision, long ObservedAt);

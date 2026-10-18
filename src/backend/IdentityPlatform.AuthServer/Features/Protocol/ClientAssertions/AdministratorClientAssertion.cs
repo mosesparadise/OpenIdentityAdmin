@@ -1,4 +1,3 @@
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -22,21 +21,20 @@ internal sealed class AdministratorClientAssertion(IServiceScopeFactory factory,
             context.Reject(OpenIddictConstants.Errors.InvalidClient);
             return;
         }
-        var clock = ProtocolStorageAmbient.Current?.Request.Clock ?? throw ProtocolStorageOwner.Unavailable();
-        var consumed = await ProtocolStorageChild.RunAsync(factory, async (scope, cancellation) =>
-        {
-            await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
-            await AdministratorProtocolLocks.AcquireProfileAsync(scope.Owner, cancellation);
-            var current = proof.IsCurrent(context) && await AdministratorRegistration.ReadLockedAsync(scope, policy, cancellation) is not null
-                ? await AdministratorAssertionLedger.ReserveLockedAsync(scope.Owner, proof.Assertion, cancellation) : null;
-            await transaction.CommitAsync(cancellation);
-            return current;
-        });
-        var sample = clock.GetUtcNow().ToUnixTimeSeconds();
-        if (consumed is not { } watermark || !proof.IsCurrent(context) || sample < 0 ||
-            watermark - sample > AdministratorAssertion.ClockSkewSeconds || !proof.Assertion.Allows(Math.Max(sample, watermark)))
+        var key = typeof(DurableClientAssertion).FullName!;
+        if (context.Transaction.GetProperty<DurableClientAssertion>(key) is not null)
         {
             context.Reject(OpenIddictConstants.Errors.InvalidClient);
+            return;
+        }
+        var receipt = await DurableClientAssertion.ConsumeAsync(factory, policy, context, proof);
+        if (receipt is null)
+        {
+            context.Reject(OpenIddictConstants.Errors.InvalidClient);
+        }
+        else
+        {
+            context.Transaction.SetProperty(key, receipt);
         }
     }
 

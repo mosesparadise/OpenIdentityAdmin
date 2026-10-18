@@ -52,6 +52,8 @@ internal static class NativeAssertionAuthentication
             Assert.Equal(ReservedBeforeBoundaries, await CountAsync(second, token));
             Assert.Equal(OpenIddictConstants.Errors.InvalidClient, (await AuthenticateAsync(second, grant, false, token)).Error);
             await VerifyCommitBoundariesAsync(first, second, material, now, token);
+            await NativeAssertionContinuations.VerifyAsync(first, material, now, token);
+            await NativeAssertionCleanup.VerifyAsync(first, second, material, now, token);
         }
         finally
         {
@@ -88,8 +90,9 @@ internal static class NativeAssertionAuthentication
     }
 
     /// <summary>Uses actual native authentication and all default validation handlers; no prevalidated principal is injected.</summary>
-    private static Task<OpenIddictServerEvents.ProcessAuthenticationContext> AuthenticateAsync(IServiceProvider root, string assertion,
-        bool tokenEndpoint, CancellationToken token) => new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token)
+    internal static Task<OpenIddictServerEvents.ProcessAuthenticationContext> AuthenticateAsync(IServiceProvider root, string assertion,
+        bool tokenEndpoint, CancellationToken token,
+        Func<OpenIddictServerEvents.ProcessAuthenticationContext, CancellationToken, ValueTask>? continuation = null) => new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token)
         .RunAsync(root.GetRequiredService<IServiceScopeFactory>(), async (scope, cancellation) =>
         {
             var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();
@@ -108,6 +111,10 @@ internal static class NativeAssertionAuthentication
             await scope.Services.GetRequiredService<IOpenIddictServerDispatcher>().DispatchAsync(context);
             Assert.False(context.IsRequestHandled);
             Assert.False(context.IsRequestSkipped);
+            if (continuation is not null)
+            {
+                await continuation(context, cancellation);
+            }
             return context;
         });
 
@@ -120,7 +127,9 @@ internal static class NativeAssertionAuthentication
         services.AddSingleton<NativeConsumptionClock>();
         services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
         services.AddSingleton<NativeConsumptionCommit>();
-        services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<NativeConsumptionCommit>()));
+        services.AddSingleton<NativeAssertionCleanupClock>();
+        services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<NativeConsumptionCommit>(),
+            provider.GetRequiredService<NativeAssertionCleanupClock>()));
         services.AddProtocolStorageOwnership().AddOwnedServerDispatcher();
         services.AddOpenIddict().AddServer().SetIssuer(new Uri(NativeAssertionMaterial.Issuer))
             .SetAuthorizationEndpointUris(AuthorizePath).SetTokenEndpointUris(TokenPath).SetPushedAuthorizationEndpointUris(ParPath)

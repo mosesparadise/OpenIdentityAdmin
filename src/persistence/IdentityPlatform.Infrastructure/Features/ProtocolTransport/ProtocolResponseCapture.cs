@@ -70,6 +70,9 @@ internal sealed class ProtocolResponseCapture : IHttpResponseFeature, IHttpRespo
     public PipeWriter Writer => writer;
     internal ReadOnlyMemory<byte> Bytes => buffer.Bytes;
 
+    /// <summary>Rejects nesting a response stage under a capture owned by another original request.</summary>
+    internal bool BelongsTo(ProtocolStorageRequest current) => ReferenceEquals(request, current);
+
     /// <summary>Allocates bounded staging independent of the server's original response implementation.</summary>
     internal ProtocolResponseCapture(ProtocolStorageRequest request)
     {

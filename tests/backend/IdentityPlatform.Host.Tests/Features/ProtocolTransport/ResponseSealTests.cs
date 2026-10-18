@@ -59,14 +59,17 @@ public sealed class ResponseSealTests
         using var output = new MemoryStream();
         var http = new DefaultHttpContext { RequestServices = storage.Root };
         http.Response.Body = output;
+        var rejectionObserved = false;
         await ProtocolHttpBoundary.RunAsync(http, storage.Factory, storage.Clock, async (_, _, _) =>
         {
             http.Response.Redirect(Redirect);
             var capture = Assert.IsType<ProtocolResponseCapture>(http.Features.Get<IHttpResponseFeature>());
             await capture.SealAsync();
             await Assert.ThrowsAsync<InvalidOperationException>(() => http.Response.Body.WriteAsync(new byte[] { 1 }, TestContext.Current.CancellationToken).AsTask());
+            rejectionObserved = true;
             return ProtocolResponseOutcome.ReadOnly;
         });
+        Assert.True(rejectionObserved);
         Assert.Equal(StatusCodes.Status503ServiceUnavailable, http.Response.StatusCode);
         Assert.Empty(http.Response.Headers.Location.ToString());
         Assert.Empty(output.ToArray());

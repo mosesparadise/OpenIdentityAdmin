@@ -40,7 +40,7 @@ internal sealed class NativeAssertionMaterial : IDisposable
     }
 
     /// <summary>Signs a fresh intentional proof with real RSA; native server validation must verify it against persisted public registration.</summary>
-    internal string Sign(long now, string? identifier = null)
+    internal string Sign(long now, string? identifier = null, int lifetime = ProofSeconds)
     {
         var descriptor = new SecurityTokenDescriptor
         {
@@ -52,7 +52,7 @@ internal sealed class NativeAssertionMaterial : IDisposable
                 [JwtRegisteredClaimNames.Jti] = identifier ?? Guid.NewGuid().ToString()
             },
             IssuedAt = DateTimeOffset.FromUnixTimeSeconds(now).UtcDateTime,
-            Expires = DateTimeOffset.FromUnixTimeSeconds(now + ProofSeconds).UtcDateTime,
+            Expires = DateTimeOffset.FromUnixTimeSeconds(now + lifetime).UtcDateTime,
             TokenType = OpenIddictConstants.JsonWebTokenTypes.ClientAuthentication,
             SigningCredentials = new SigningCredentials(new RsaSecurityKey(rsa) { KeyId = KeyId }, SecurityAlgorithms.RsaSha256)
         };

@@ -52,6 +52,13 @@ internal static class NativeConsumptionRows
         }
         Assert.False(await NativeConsumptionConformance.ConsumeAsync(root, principal, token));
         await NativeConsumptionConformance.RequireStatusAsync(root, principal, OpenIddictConstants.Statuses.Valid, token);
+        await WriteAsync(root, principal, async (scope, cancellation) =>
+        {
+            var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
+            var row = await manager.FindByIdAsync(principal.GetTokenId()!, cancellation);
+            Assert.NotNull(row);
+            await manager.DeleteAsync(row, cancellation);
+        }, token);
     }
 
     /// <summary>An otherwise valid code cannot be redeemed after its native authorization has been revoked.</summary>

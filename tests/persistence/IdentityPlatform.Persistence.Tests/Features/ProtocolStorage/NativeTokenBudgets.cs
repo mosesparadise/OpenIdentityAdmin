@@ -33,8 +33,9 @@ internal static class NativeTokenBudgets
             await VerifyUnknownCommitAsync(first, second, token);
             await VerifyCategoryCapsAsync(first, second, token);
             await NativeTokenCleanup.VerifyAsync(first, second, token);
+            await NativeTokenBudgetFixture.ClearAsync(first, token);
         }
-        finally { clock.Reset(); other.Reset(); await NativeTokenBudgetFixture.ClearAsync(first, token); }
+        finally { clock.Reset(); other.Reset(); }
     }
 
     /// <summary>A partial native creation must roll back; exact creation commits only after authoritative row reconciliation.</summary>
