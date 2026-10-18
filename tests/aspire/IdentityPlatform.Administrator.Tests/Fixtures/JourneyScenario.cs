@@ -8,6 +8,7 @@ namespace IdentityPlatform.Administrator.Tests.Fixtures;
 /// <summary>Owns real-provider native journey services for fault injection that cannot be performed through browser inputs.</summary>
 internal sealed class JourneyScenario : IAsyncDisposable
 {
+    private const string IssuerSetting = "Identity:Issuer";
     private readonly BootstrapDatabase lease;
     private readonly IssuerMaterialFixture material;
     private readonly FactorServices services;
@@ -37,11 +38,15 @@ internal sealed class JourneyScenario : IAsyncDisposable
 
     /// <summary>Initializes the real protected bootstrap operation, then registers isolated journey dependencies.</summary>
     internal static async Task<JourneyScenario> CreateAsync(BootstrapFixture fixture, string provider,
-        Action<IServiceCollection>? configure = null)
+        Action<IServiceCollection>? configure = null, Uri? issuer = null)
     {
         SetupDiagnostics.Write(SetupStage.JourneyLease);
         var lease = await fixture.LeaseAsync(provider);
         var material = new IssuerMaterialFixture();
+        if (issuer is not null)
+        {
+            material.Settings[IssuerSetting] = issuer.AbsoluteUri;
+        }
         var clock = new FactorClock(DateTimeOffset.UtcNow);
         FactorServices? services = null;
         try

@@ -157,7 +157,8 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
         new ConfigurationBuilder().AddInMemoryCollection(material.Settings()).Build().GetSection(CredentialSection), DateTimeOffset.UtcNow);
 
     /// <summary>Shares the exact immutable native client profile between positive and awaited-mutation provider controls.</summary>
-    internal static NativeClientProfile Profile(NativeClientCredentials credentials) => NativeClientProfile.Create(Issuer, Client, Callback, KeyId, credentials);
+    internal static NativeClientProfile Profile(NativeClientCredentials credentials, Uri? issuer = null) =>
+        NativeClientProfile.Create(issuer?.AbsoluteUri ?? Issuer, Client, Callback, KeyId, credentials);
 
     /// <summary>Reports only safe exception type/stack, never native error descriptions or credential-bearing responses.</summary>
     internal static void RequireClean(NativeClientHttpResult result) =>

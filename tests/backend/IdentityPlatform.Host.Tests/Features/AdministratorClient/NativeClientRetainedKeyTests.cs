@@ -41,14 +41,14 @@ public sealed class NativeClientRetainedKeyTests(NativeClientCredentialFixture f
     }
 
     /// <summary>Executes real native credential/subject/metadata/crypto handlers with no database persistence claimed by this pure control.</summary>
-    private static async Task<string> GenerateAsync(IServiceProvider provider, NativeClientCredentials credentials)
+    internal static async Task<string> GenerateAsync(IServiceProvider provider, NativeClientCredentials credentials, ClaimsPrincipal? principal = null)
     {
         var options = provider.GetRequiredService<IOptionsMonitor<OpenIddictClientOptions>>().CurrentValue;
         var now = DateTimeOffset.UtcNow;
         var transaction = new OpenIddictClientTransaction { Options = options, Registration = Assert.Single(options.Registrations), Logger = NullLogger.Instance };
         var context = new OpenIddictClientEvents.GenerateTokenContext(transaction)
         {
-            Principal = new ClaimsPrincipal(new ClaimsIdentity([new(OpenIddictConstants.Claims.Subject, Subject)]))
+            Principal = principal ?? new ClaimsPrincipal(new ClaimsIdentity([new(OpenIddictConstants.Claims.Subject, Subject)]))
                 .SetCreationDate(now).SetExpirationDate(now.AddSeconds(LifetimeSeconds))
                 .SetClaim(OpenIddictConstants.Claims.Private.Issuer, NativeClientProfileTests.Client),
             TokenType = OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken,
@@ -65,7 +65,7 @@ public sealed class NativeClientRetainedKeyTests(NativeClientCredentialFixture f
     }
 
     /// <summary>Resolves actual native validation/decryption keys from finalized restarted options and verifies both signature and ciphertext.</summary>
-    private static async Task ValidateAsync(OpenIddictClientOptions options, string token)
+    internal static async Task<ClaimsPrincipal> ValidateAsync(OpenIddictClientOptions options, string token)
     {
         var transaction = new OpenIddictClientTransaction { Options = options, Registration = Assert.Single(options.Registrations), Logger = NullLogger.Instance };
         var context = new OpenIddictClientEvents.ValidateTokenContext(transaction) { Token = token };
@@ -76,5 +76,7 @@ public sealed class NativeClientRetainedKeyTests(NativeClientCredentialFixture f
         await new OpenIddictClientHandlers.Protection.ValidateIdentityModelToken().HandleAsync(context);
         Assert.False(context.IsRejected, context.ErrorDescription);
         Assert.Equal(Subject, context.Principal?.GetClaim(OpenIddictConstants.Claims.Subject));
+        await new OpenIddictClientHandlers.Protection.MapInternalClaims().HandleAsync(context);
+        return context.Principal!;
     }
 }

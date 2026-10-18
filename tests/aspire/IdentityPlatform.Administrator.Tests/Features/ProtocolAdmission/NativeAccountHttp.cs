@@ -67,7 +67,7 @@ internal static class NativeAccountHttp
     {
         var http = new DefaultHttpContext { RequestServices = scenario.Services, RequestAborted = cancellation };
         http.Request.Scheme = Uri.UriSchemeHttps;
-        http.Request.Host = new HostString(scenario.Issuer.Host);
+        http.Request.Host = new HostString(scenario.Issuer.Host, scenario.Issuer.Port);
         http.Request.Path = path;
         http.Request.Method = path is AdministratorProtocolScenario.ParPath or AdministratorProtocolScenario.TokenPath ? HttpMethods.Post : HttpMethods.Get;
         if (HttpMethods.IsGet(http.Request.Method))
@@ -88,7 +88,7 @@ internal static class NativeAccountHttp
     }
 
     /// <summary>Executes native authentication/passthrough and actual SignIn results; handled/skipped return alone never grants publication.</summary>
-    private static async Task DispatchAsync(HttpContext http, string path, NativeAccountResult result)
+    internal static async Task DispatchAsync(HttpContext http, string path, NativeAccountResult result)
     {
         var handler = ActivatorUtilities.CreateInstance<OpenIddictServerAspNetCoreHandler>(http.RequestServices);
         await handler.InitializeAsync(new AuthenticationScheme(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, null, handler.GetType()), http);

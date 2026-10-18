@@ -33,14 +33,14 @@ internal sealed class AdministratorProtocolScenario(GovernanceScenario account, 
 
     /// <summary>Initializes actual manager-backed registration and obtains a cookie only from the completed production enrollment grant.</summary>
     internal static async Task<AdministratorProtocolScenario> CreateAsync(BootstrapFixture fixture, string provider,
-        AdministratorRegistrationPolicy? policy = null)
+        AdministratorRegistrationPolicy? policy = null, Uri? issuer = null)
     {
         var material = policy is null ? new NativeAssertionMaterial() : null;
         policy ??= material!.Policy;
         GovernanceScenario? account = null;
         try
         {
-            account = await GovernanceScenario.CreateAsync(fixture, provider, services => Configure(services, policy));
+            account = await GovernanceScenario.CreateAsync(fixture, provider, services => Configure(services, policy), issuer);
             var scenario = new AdministratorProtocolScenario(account, material);
             Assert.True(await AdministratorRegistrationInitializer.RunAsync(scenario.Services, policy, Operator, Guid.NewGuid(), TestContext.Current.CancellationToken));
             await scenario.IssueCookieAsync();
@@ -85,7 +85,7 @@ internal sealed class AdministratorProtocolScenario(GovernanceScenario account, 
         await using var scope = account.CreateScope();
         var http = new DefaultHttpContext { RequestServices = scope.ServiceProvider, RequestAborted = TestContext.Current.CancellationToken };
         http.Request.Scheme = Uri.UriSchemeHttps;
-        http.Request.Host = new HostString(Issuer.Host);
+        http.Request.Host = new HostString(Issuer.Host, Issuer.Port);
         await scope.ServiceProvider.GetRequiredService<AdministratorTicketPermit>().IssueAsync(http, account.Grant);
         var cookies = http.Response.Headers.SetCookie.Where(value => value is not null &&
             value.StartsWith(AccountSchemes.AdministratorCookie, StringComparison.Ordinal)).Select(value => value!.Split(';')[0]).ToArray();

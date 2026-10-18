@@ -3,6 +3,7 @@ using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
@@ -18,6 +19,12 @@ internal static class NativeAccountPersistence
     internal static Task<(long Tokens, long Authorizations)> CountAsync(AdministratorProtocolScenario scenario) => ReadAsync(scenario, async (scope, token) =>
         (await scope.Services.GetRequiredService<IOpenIddictTokenManager>().CountAsync(token),
             await scope.Services.GetRequiredService<IOpenIddictAuthorizationManager>().CountAsync(token)));
+
+    /// <summary>Counts committed native access-token entries independently of a deliberately lost token response.</summary>
+    internal static Task<int> AccessTokensAsync(AdministratorProtocolScenario scenario) => ReadAsync(scenario, (scope, token) =>
+        scope.Owner.RunAsync(current => new ValueTask<int>(scope.Owner.Database.Set<OpenIddictEntityFrameworkCoreToken>()
+            .AsNoTracking().CountAsync(row => row.Type == OpenIddictConstants.TokenTypeHints.AccessToken &&
+                row.Status == OpenIddictConstants.Statuses.Valid, current)), token));
 
     /// <summary>Resolves the actual native reference identifier before later redemption so rollback assertions do not depend on HTTP success.</summary>
     internal static Task<string> ReferenceIdAsync(AdministratorProtocolScenario scenario, string reference) => ReadAsync(scenario, async (scope, token) =>

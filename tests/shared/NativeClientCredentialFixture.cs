@@ -17,8 +17,13 @@ public sealed class NativeClientCredentialFixture : IDisposable
     private const string PasswordSuffix = ":Password";
     private readonly IssuerMaterialFixture material = new();
 
-    /// <summary>Generates one additional test-only signing key so assertion and state roles cannot share public key material.</summary>
-    public NativeClientCredentialFixture() => material.AddCertificate(Assertion, X509KeyUsageFlags.DigitalSignature);
+    /// <summary>Generates independent client roles so neither state nor assertion keys share the issuer fixture's cached baseline.</summary>
+    public NativeClientCredentialFixture()
+    {
+        material.AddCertificate(Signing, X509KeyUsageFlags.DigitalSignature);
+        material.AddCertificate(Encryption, X509KeyUsageFlags.KeyEncipherment);
+        material.AddCertificate(Assertion, X509KeyUsageFlags.DigitalSignature);
+    }
 
     /// <summary>Returns a fresh settings dictionary for each independent corruption/configuration control.</summary>
     internal Dictionary<string, string?> Settings()

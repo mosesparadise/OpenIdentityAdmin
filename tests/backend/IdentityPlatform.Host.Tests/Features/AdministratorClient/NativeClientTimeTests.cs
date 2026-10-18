@@ -73,7 +73,7 @@ public sealed class NativeClientTimeTests(NativeClientCredentialFixture fixture)
         const int InitialAgeSeconds = 297;
         return Principal(-InitialAgeSeconds, expires)
             .SetClaim(OpenIddictConstants.Claims.Private.RegistrationId, Registration)
-            .SetClaim(OpenIddictConstants.Claims.Private.Issuer, NativeClientProfileTests.Client)
+            .SetClaim(OpenIddictConstants.Claims.Issuer, NativeClientProfileTests.Client)
             .SetClaim(OpenIddictConstants.Claims.AuthorizationServer, NativeClientProfileTests.Issuer)
             .SetClaim(OpenIddictConstants.Claims.Private.RedirectUri, NativeClientProfileTests.Callback)
             .SetClaim(OpenIddictConstants.Claims.Private.GrantType, OpenIddictConstants.GrantTypes.AuthorizationCode)

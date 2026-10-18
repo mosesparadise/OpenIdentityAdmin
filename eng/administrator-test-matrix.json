@@ -511,7 +511,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientInteroperabilityTests.Given_DurableNativeClient_When_SeparateInstanceProcessesCallback_Then_OnlyOneBoundExchangeCompletes(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCallbackMutationTests.Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCallbackMutationTests.Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1129,7 +1130,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientInteroperabilityTests.Given_DurableNativeClient_When_SeparateInstanceProcessesCallback_Then_OnlyOneBoundExchangeCompletes(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCallbackMutationTests.Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCallbackMutationTests.Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -24207,6 +24209,44 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
         "typeName": "NativeClientCallbackMutationTests",
         "methodName": "Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientHttpsTests",
+        "methodName": "Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientHttpsTests",
+        "methodName": "Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

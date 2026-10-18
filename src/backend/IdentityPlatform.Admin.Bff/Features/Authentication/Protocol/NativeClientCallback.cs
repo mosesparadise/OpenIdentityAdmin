@@ -51,7 +51,7 @@ internal sealed class NativeClientCallback
         if (!ReferenceEquals(current, context) || !ReferenceEquals(current.StateTokenPrincipal, principal) || !ReferenceEquals(current.Request, request) ||
             input != Input(current.Request) || claims != NativeStateBinding.Claims(principal) ||
             !DurableClientState.IsCurrent(principal, current.Options.TimeProvider!) ||
-            principal.GetClaim(OpenIddictConstants.Claims.Private.Issuer) != profile.ClientUri.AbsoluteUri ||
+            principal.GetClaim(OpenIddictConstants.Claims.Issuer) != profile.ClientUri.AbsoluteUri ||
             principal.GetClaim(OpenIddictConstants.Claims.AuthorizationServer) != profile.Issuer.AbsoluteUri ||
             principal.GetClaim(OpenIddictConstants.Claims.Private.RedirectUri) != profile.Callback.AbsoluteUri ||
             principal.GetClaim(OpenIddictConstants.Claims.Private.GrantType) != OpenIddictConstants.GrantTypes.AuthorizationCode ||

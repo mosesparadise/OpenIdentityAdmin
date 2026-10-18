@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
+using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityPlatform.Host.Tests.Features.AdministratorClient;
@@ -46,6 +47,24 @@ public sealed class NativeClientCredentialTests(NativeClientCredentialFixture fi
         using var secondSigning = second.Assertion.GetRSAPrivateKey();
         Assert.True(validation.VerifyData(probe, secondSigning!.SignData(probe, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1),
             HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1));
+    }
+
+    /// <summary>Real issuer and native-client imports never share public key material even though both reuse protected-file fixture mechanics.</summary>
+    [Fact]
+    public void Given_SeparateIssuerAndClientFixtures_When_ActualCredentialsLoad_Then_AllSixKeyRolesAreDistinct()
+    {
+        using var issuerMaterial = new IssuerMaterialFixture();
+        using var issuer = IssuerCredentials.Load(issuerMaterial.Configuration, DateTimeOffset.UtcNow);
+        using var client = Load(fixture.Settings(), DateTimeOffset.UtcNow);
+        X509Certificate2[] roles = [issuer.Signing, issuer.Encryption, issuer.Wrapping,
+            client.StateSigning.Active, client.StateEncryption.Active, client.Assertion];
+        var fingerprints = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var role in roles)
+        {
+            using var key = role.GetRSAPublicKey();
+            Assert.True(fingerprints.Add(Convert.ToHexString(SHA256.HashData(key!.ExportSubjectPublicKeyInfo()))));
+        }
+        Assert.Equal(6, fingerprints.Count);
     }
 
     /// <summary>All invalid role/configuration/time samples produce only the fixed public failure category without an inner exception.</summary>
