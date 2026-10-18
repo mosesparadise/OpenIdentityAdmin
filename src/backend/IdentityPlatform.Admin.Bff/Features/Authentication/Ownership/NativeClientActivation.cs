@@ -1,4 +1,6 @@
+using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using Microsoft.Extensions.Logging.Abstractions;
 using OpenIddict.Client;
 
 namespace IdentityPlatform.Admin.Bff.Features.Authentication.Ownership;
@@ -14,9 +16,9 @@ internal sealed class NativeClientActivation
 
 /// <summary>Activates a service-created child before forwarding to the installed native factory.</summary>
 internal sealed class OwnedClientFactory(OpenIddictClientFactory native, NativeClientActivation activation,
-    ProtocolStorageOwner owner) : IOpenIddictClientFactory
+    ProtocolStorageOwner owner, NativeClientProfile? profile = null) : IOpenIddictClientFactory
 {
-    /// <summary>Preserves the native transaction/options/logger while requiring an active original owner.</summary>
+    /// <summary>Preserves the native transaction/options and suppresses credential-bearing native diagnostics only for the fixed client profile.</summary>
     public async ValueTask<OpenIddictClientTransaction> CreateTransactionAsync()
     {
         if (activation.Scope is not null)
@@ -24,6 +26,11 @@ internal sealed class OwnedClientFactory(OpenIddictClientFactory native, NativeC
             await activation.Scope.ActivateAsync();
         }
         owner.RequireHealthy();
-        return await native.CreateTransactionAsync();
+        var transaction = await native.CreateTransactionAsync();
+        if (profile is not null)
+        {
+            transaction.Logger = NullLogger.Instance;
+        }
+        return transaction;
     }
 }

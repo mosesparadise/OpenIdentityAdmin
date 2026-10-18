@@ -12,6 +12,7 @@
     <ProjectReference Include="../../../src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
     <Using Include="Xunit" />
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.Issuer.Tests/Fixtures/IssuerEnvironment.cs" Link="Fixtures/IssuerEnvironment.cs" />
@@ -48,4 +49,5 @@
     <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientCredentialFixture.cs" Link="Fixtures/NativeClientCredentialFixture.cs" /></ItemGroup>
 </Project>

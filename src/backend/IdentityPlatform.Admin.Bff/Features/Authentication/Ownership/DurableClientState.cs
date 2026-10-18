@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
@@ -7,7 +8,7 @@ using OpenIddict.Client;
 namespace IdentityPlatform.Admin.Bff.Features.Authentication.Ownership;
 
 /// <summary>Commits actual native reference-state creation in an isolated child before the challenge may send PAR.</summary>
-internal sealed class DurableClientState(IServiceScopeFactory factory) : IOpenIddictClientHandler<OpenIddictClientEvents.ProcessChallengeContext>
+internal sealed class DurableClientState(IServiceScopeFactory factory, NativeClientProfile? profile = null) : IOpenIddictClientHandler<OpenIddictClientEvents.ProcessChallengeContext>
 {
     /// <summary>Retains the original native principal and proves its stored reference before publishing the state to later native handlers.</summary>
     public async ValueTask HandleAsync(OpenIddictClientEvents.ProcessChallengeContext context)
@@ -19,6 +20,10 @@ internal sealed class DurableClientState(IServiceScopeFactory factory) : IOpenId
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        if (profile is not null)
+        {
+            NativeClientChallenge.RequireState(context, profile);
+        }
         var binding = new NativeStateBinding(context);
         var proof = await ProtocolStorageChild.RunAsync(factory, (scope, cancellation) => CreateAsync(scope, context, binding, cancellation));
         binding.RequireCurrent();
@@ -27,6 +32,10 @@ internal sealed class DurableClientState(IServiceScopeFactory factory) : IOpenId
             throw ProtocolStorageOwner.Unavailable();
         }
         proof.Release();
+        if (profile is not null)
+        {
+            NativeClientContinuation.Attach(context, profile);
+        }
     }
 
     /// <summary>Completes native generation and authoritative row reconciliation inside the single quota-owning transaction.</summary>

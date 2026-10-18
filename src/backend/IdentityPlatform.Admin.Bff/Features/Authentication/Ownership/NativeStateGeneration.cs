@@ -69,6 +69,10 @@ internal sealed class NativeStateGeneration
     internal ValueTask PrepareAsync(OpenIddictClientEvents.GenerateTokenContext current, ProtocolTokenPreparation.Stage next, Func<ValueTask> native) =>
         ObserveAsync(current, () => preparation!.AdvanceAsync(next, current.SecurityTokenDescriptor, () => current.SecurityTokenHandler, native));
 
+    /// <summary>Allows the installed client key policy to select active material while retaining previous validation/decryption keys.</summary>
+    internal ValueTask RefreshCredentialsAsync(OpenIddictClientEvents.GenerateTokenContext current, Func<ValueTask> native) =>
+        ObserveAsync(current, () => preparation!.RefreshCredentialsAsync(current.SecurityTokenDescriptor, () => current.SecurityTokenHandler, native));
+
     /// <summary>Records the actual native row identity before cryptographic generation may begin.</summary>
     internal ValueTask CreateAsync(OpenIddictClientEvents.GenerateTokenContext current, Func<ValueTask> native) => ObserveAsync(current, async () =>
     {

@@ -25,17 +25,26 @@ public sealed class BootstrapTestGroup : ICollectionFixture<BootstrapFixture>;
 
 public sealed class BootstrapFixture : IAsyncLifetime
 {
+    /// <summary>Uses the already running provider graph and its existing Sessions runtime password.</summary>
+    internal async Task<BootstrapSessions> LeaseSessionsAsync(string provider) =>
+        await (await HostAsync(provider)).LeaseSessionsAsync(TestContext.Current.CancellationToken);
+
     private readonly Dictionary<string, BootstrapHost> hosts = new(StringComparer.Ordinal);
     public ValueTask InitializeAsync() => ValueTask.CompletedTask;
 
+    /// <summary>Leases one isolated Platform database from the existing shared provider graph.</summary>
     public async Task<BootstrapDatabase> LeaseAsync(string provider)
+        => await (await HostAsync(provider)).LeaseAsync(TestContext.Current.CancellationToken);
+
+    /// <summary>Shares only the running provider graph; each caller still receives its own disposable database.</summary>
+    private async Task<BootstrapHost> HostAsync(string provider)
     {
         if (!hosts.TryGetValue(provider, out var host))
         {
             host = await BootstrapHost.CreateAsync(provider, TestContext.Current.CancellationToken);
             hosts.Add(provider, host);
         }
-        return await host.LeaseAsync(TestContext.Current.CancellationToken);
+        return host;
     }
 
     public async ValueTask DisposeAsync()
@@ -55,6 +64,39 @@ public sealed class BootstrapFixture : IAsyncLifetime
 
 public sealed class BootstrapHost : IAsyncDisposable
 {
+    private const string SessionsPasswordParameter = "sessions-runtime-password";
+    private const string SessionsRuntimePrincipal = "sessions_runtime";
+
+    /// <summary>Creates a distinct database, migrates only Sessions and preserves the host's current runtime login password.</summary>
+    internal async Task<BootstrapSessions> LeaseSessionsAsync(CancellationToken token)
+    {
+        var name = DatabasePrefix + Guid.NewGuid().ToString(IdentifierFormat);
+        await using var connection = Connection(administratorConnection);
+        await connection.OpenAsync(token);
+        await using var command = connection.CreateCommand();
+        command.CommandTimeout = DatabaseCommandSeconds;
+        command.CommandText = string.Format(System.Globalization.CultureInfo.InvariantCulture,
+            provider == DatabaseProvider.PostgreSql ? PostgreSqlCreate : SqlServerCreate, name);
+        await command.ExecuteNonQueryAsync(token);
+        try
+        {
+            var model = application!.Services.GetRequiredService<DistributedApplicationModel>();
+            var password = (await model.Resources.OfType<ParameterResource>()
+                .Single(value => value.Name == SessionsPasswordParameter).GetValueAsync(token))!;
+            var admin = WithDatabase(administratorConnection, name);
+            var runtime = new DbConnectionStringBuilder { ConnectionString = admin };
+            runtime[provider == DatabaseProvider.PostgreSql ? PostgreSqlUserKey : SqlServerUserKey] = SessionsRuntimePrincipal;
+            runtime[PasswordKey] = password;
+            await BootstrapSessions.InitializeAsync(provider, admin, password, token);
+            return new(provider, runtime.ConnectionString, () => DropAsync(name));
+        }
+        catch
+        {
+            await DropAsync(name);
+            throw new InvalidOperationException(DatabaseFailure);
+        }
+    }
+
     private const int StartupMinutes = 3;
     private const int DatabaseCommandSeconds = 15;
     private const string DevelopmentArgument = "--environment=Development";

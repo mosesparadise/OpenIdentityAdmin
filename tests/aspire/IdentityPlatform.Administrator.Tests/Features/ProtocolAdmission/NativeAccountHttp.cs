@@ -27,14 +27,14 @@ internal static class NativeAccountHttp
 
     /// <summary>Supplies real form/query/cookie bytes and runs host completion even if the owned operation fails before returning.</summary>
     internal static async Task<NativeAccountResult> InvokeAsync(AdministratorProtocolScenario scenario, string path,
-        Dictionary<string, string> fields, bool cookie = false)
+        Dictionary<string, string> fields, bool cookie = false, CancellationToken? cancellation = null)
     {
-        var token = TestContext.Current.CancellationToken;
+        var token = cancellation ?? TestContext.Current.CancellationToken;
         using var form = new FormUrlEncodedContent(fields);
         await using var input = await form.ReadAsStreamAsync(token);
         await using var output = new MemoryStream();
         await using var requestScope = scenario.Services.CreateAsyncScope();
-        var http = Create(scenario, path, fields, input, cookie);
+        var http = Create(scenario, path, fields, input, cookie, token);
         http.RequestServices = requestScope.ServiceProvider;
         var completion = new NativeHttpCompletion();
         http.Features.Set<IHttpResponseFeature>(completion);
@@ -55,19 +55,21 @@ internal static class NativeAccountHttp
         finally { await completion.CompleteAsync(); }
         result.Status = http.Response.StatusCode;
         result.Body = output.ToArray();
+        result.ContentType = http.Response.ContentType;
         result.Location = http.Response.Headers.Location.ToString();
         result.HasCookie = http.Response.Headers.ContainsKey(CookieHeader);
         return result;
     }
 
     /// <summary>Uses HTTPS and the exact configured issuer; only authorization receives the real administrator cookie.</summary>
-    private static DefaultHttpContext Create(AdministratorProtocolScenario scenario, string path, Dictionary<string, string> fields, Stream body, bool cookie)
+    private static DefaultHttpContext Create(AdministratorProtocolScenario scenario, string path, Dictionary<string, string> fields, Stream body, bool cookie,
+        CancellationToken cancellation)
     {
-        var http = new DefaultHttpContext { RequestServices = scenario.Services, RequestAborted = TestContext.Current.CancellationToken };
+        var http = new DefaultHttpContext { RequestServices = scenario.Services, RequestAborted = cancellation };
         http.Request.Scheme = Uri.UriSchemeHttps;
         http.Request.Host = new HostString(scenario.Issuer.Host);
         http.Request.Path = path;
-        http.Request.Method = path == AdministratorProtocolScenario.AuthorizePath ? HttpMethods.Get : HttpMethods.Post;
+        http.Request.Method = path is AdministratorProtocolScenario.ParPath or AdministratorProtocolScenario.TokenPath ? HttpMethods.Post : HttpMethods.Get;
         if (HttpMethods.IsGet(http.Request.Method))
         {
             http.Request.QueryString = QueryString.Create(fields.Select(pair => KeyValuePair.Create<string, string?>(pair.Key, pair.Value)));
@@ -93,7 +95,7 @@ internal static class NativeAccountHttp
         var handled = await handler.HandleRequestAsync();
         var outer = (OpenIddictServerEvents.ProcessRequestContext)http.Items[ContextKey]!;
         result.Outcome = outer.IsRejected ? NativeAccountOutcome.Rejected : handled ? NativeAccountOutcome.Handled : NativeAccountOutcome.Passthrough;
-        if (path != AdministratorProtocolScenario.ParPath && !handled)
+        if (path is AdministratorProtocolScenario.AuthorizePath or AdministratorProtocolScenario.TokenPath && !handled)
         {
             Assert.False(handled);
             Assert.True(outer.IsRequestSkipped);
@@ -108,6 +110,10 @@ internal static class NativeAccountHttp
 /// <summary>Retains synthetic response material in memory without a generated credential-bearing ToString implementation.</summary>
 internal sealed class NativeAccountResult
 {
+    internal string? ContentType
+    {
+        get; set;
+    }
     internal int Status
     {
         get; set;

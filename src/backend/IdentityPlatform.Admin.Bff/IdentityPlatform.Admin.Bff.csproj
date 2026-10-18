@@ -22,6 +22,7 @@
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
   </ItemGroup>
   <ItemGroup><EmbeddedResource Include="Features/Documentation/Assets/*" />
     <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/tokens.css" LogicalName="IdentityPlatform.Admin.Bff.Features.Documentation.Assets.tokens.css" /></ItemGroup>

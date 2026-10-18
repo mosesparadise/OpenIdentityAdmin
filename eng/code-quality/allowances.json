@@ -2944,16 +2944,6 @@
       "Finding": {
         "Rule": "CQ002",
         "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/BootstrapFixture.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.BootstrapFixture.LeaseAsync(string)",
-        "Fingerprint": "A73796C7A6429D404B3770E99FB68EFBD0FFDB45AC1EECB10ABB18E68AD35241"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Fixtures/BootstrapFixture.cs",
         "Symbol": "IdentityPlatform.Administrator.Tests.Fixtures.BootstrapFixture.DisposeAsync()",
         "Fingerprint": "DCCE23E7ECDE4CEBDCB113361655035F6DD8F20C0D7462F324E9B1970ABE4688"
       },

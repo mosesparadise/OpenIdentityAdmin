@@ -32,4 +32,5 @@
     <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientCredentialFixture.cs" Link="Fixtures/NativeClientCredentialFixture.cs" /></ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using OpenIddict.Client;
 
 namespace IdentityPlatform.Admin.Bff.Features.Authentication.Ownership;
@@ -17,7 +18,9 @@ internal sealed class NativeStateSigning(OpenIddictClientHandlers.Protection.Gen
 {
     /// <summary>Records the actual native cryptographic output before reference substitution.</summary>
     public ValueTask HandleAsync(OpenIddictClientEvents.GenerateTokenContext context) =>
-        NativeStateGeneration.Find(context.Transaction) is { } proof ? proof.SignAsync(context, () => native.HandleAsync(context)) : native.HandleAsync(context);
+        NativeStateGeneration.Find(context.Transaction) is { } proof ? proof.SignAsync(context, () => native.HandleAsync(context))
+            : NativeClientAssertion.Find(context.Transaction) is { } assertion
+                ? assertion.SignAsync(context, () => native.HandleAsync(context)) : native.HandleAsync(context);
 }
 
 /// <summary>Retains native payload persistence and opaque-reference generation.</summary>

@@ -1,3 +1,4 @@
+using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Client;
 
@@ -10,7 +11,9 @@ internal sealed class NativeStateCredentials(OpenIddictClientHandlers.Protection
     /// <summary>Freezes the actual descriptor between native stages only for privately owned administrator generation.</summary>
     public ValueTask HandleAsync(OpenIddictClientEvents.GenerateTokenContext context) =>
         NativeStateGeneration.Find(context.Transaction) is { } proof
-            ? proof.PrepareAsync(context, ProtocolTokenPreparation.Stage.Credentials, () => native.HandleAsync(context)) : native.HandleAsync(context);
+            ? proof.PrepareAsync(context, ProtocolTokenPreparation.Stage.Credentials, () => native.HandleAsync(context))
+            : NativeClientAssertion.Find(context.Transaction) is { } assertion
+                ? assertion.PrepareAsync(context, ProtocolTokenPreparation.Stage.Credentials, () => native.HandleAsync(context)) : native.HandleAsync(context);
 }
 
 /// <summary>Observes actual native subject preparation and preserves its installed pipeline slot.</summary>
@@ -20,7 +23,9 @@ internal sealed class NativeStateSubject(OpenIddictClientHandlers.Protection.Att
     /// <summary>Freezes the actual descriptor between native stages only for privately owned administrator generation.</summary>
     public ValueTask HandleAsync(OpenIddictClientEvents.GenerateTokenContext context) =>
         NativeStateGeneration.Find(context.Transaction) is { } proof
-            ? proof.PrepareAsync(context, ProtocolTokenPreparation.Stage.Subject, () => native.HandleAsync(context)) : native.HandleAsync(context);
+            ? proof.PrepareAsync(context, ProtocolTokenPreparation.Stage.Subject, () => native.HandleAsync(context))
+            : NativeClientAssertion.Find(context.Transaction) is { } assertion
+                ? assertion.PrepareAsync(context, ProtocolTokenPreparation.Stage.Subject, () => native.HandleAsync(context)) : native.HandleAsync(context);
 }
 
 /// <summary>Observes actual native metadata preparation and preserves its installed pipeline slot.</summary>
@@ -30,5 +35,7 @@ internal sealed class NativeStateMetadata(OpenIddictClientHandlers.Protection.At
     /// <summary>Freezes the actual descriptor between native stages only for privately owned administrator generation.</summary>
     public ValueTask HandleAsync(OpenIddictClientEvents.GenerateTokenContext context) =>
         NativeStateGeneration.Find(context.Transaction) is { } proof
-            ? proof.PrepareAsync(context, ProtocolTokenPreparation.Stage.Metadata, () => native.HandleAsync(context)) : native.HandleAsync(context);
+            ? proof.PrepareAsync(context, ProtocolTokenPreparation.Stage.Metadata, () => native.HandleAsync(context))
+            : NativeClientAssertion.Find(context.Transaction) is { } assertion
+                ? assertion.PrepareAsync(context, ProtocolTokenPreparation.Stage.Metadata, () => native.HandleAsync(context)) : native.HandleAsync(context);
 }
