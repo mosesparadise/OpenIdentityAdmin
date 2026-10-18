@@ -4,6 +4,8 @@ This implements part of the authorized T005–T009 batch and its required tests/
 
 ## Source boundaries
 
+The cancelled first run retained a complete SQL Server persistence TRX: all seven cases passed there, including both transaction-replacement cells. Unlike Npgsql, that provider silently accepted rollback on the disposed original transaction. This exposed a proof gap: before recording a confirmed rollback, production must require the database's current transaction to be the exact owned transaction. Missing/replaced ownership now fails inside the existing disposal `try/finally`, retaining resource cleanup and leaving rollback/cleanup proof false on both providers. The commit-attempt/unknown-commit branch is unchanged. Architecture review agrees; corrected exact-head hosted evidence remains required.
+
 ### First hosted failure corrections
 
 Source `320d541030e20e7932e91f8cc1369b5af8869aa4`, run `39095737954`, exposed an omitted portable administrator inventory update: the twelve new cases were discovered locally and included in aggregate counts, but their exact metadata was absent from `eng/administrator-test-matrix.json`. The complete-inventory gate correctly rejected administrator execution. Add exactly those twelve discovered records, preserving all 1,109 existing names/metadata and all selection requirements; complete local discovery now agrees with all 1,121 entries. The 206 CI-control tests pass after the correction.

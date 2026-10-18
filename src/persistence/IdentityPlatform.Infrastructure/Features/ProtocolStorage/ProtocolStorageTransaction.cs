@@ -131,6 +131,10 @@ internal sealed class ProtocolStorageTransaction(ProtocolStorageOwner owner, Pro
                 {
                     if (!phase.CommitAttempted)
                     {
+                        if (!ReferenceEquals(owner.Database.Database.CurrentTransaction, transaction))
+                        {
+                            throw ProtocolStorageOwner.Unavailable();
+                        }
                         await transaction.RollbackAsync(execution.Token);
                         phase.RolledBack = true;
                     }
