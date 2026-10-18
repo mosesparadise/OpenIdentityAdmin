@@ -76,12 +76,27 @@ internal static class NativeOwnershipFailures
     private static async Task RejectReplacedTransactionAsync(IServiceProvider root, CancellationToken token)
     {
         await using var scope = await NativeOwnershipConformance.OpenAsync(root, token);
-        await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+        var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
+        var phase = scope.Owner.Capture(write: true);
         var original = scope.Owner.Database.Database.CurrentTransaction!;
         await original.DisposeAsync();
-        await using var replacement = await scope.Owner.Database.Database.BeginTransactionAsync(token);
+        var replacement = await scope.Owner.Database.Database.BeginTransactionAsync(token);
         Assert.NotSame(original, replacement);
-        await Assert.ThrowsAsync<InvalidOperationException>(() => transaction.CommitAsync(token));
+        try
+        {
+            await Assert.ThrowsAsync<InvalidOperationException>(() => transaction.CommitAsync(token));
+            Assert.False(phase.CommitAttempted);
+        }
+        finally
+        {
+            await replacement.DisposeAsync();
+            var failure = await Assert.ThrowsAsync<AggregateException>(() => transaction.DisposeAsync().AsTask());
+            Assert.IsAssignableFrom<InvalidOperationException>(Assert.Single(failure.Flatten().InnerExceptions));
+        }
+        Assert.False(phase.Committed);
+        Assert.False(phase.RolledBack);
+        Assert.False(phase.CleanupCompleted);
+        Assert.Throws<InvalidOperationException>(scope.Owner.RequireHealthy);
     }
 }
 

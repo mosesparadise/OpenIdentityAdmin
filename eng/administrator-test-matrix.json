@@ -502,7 +502,13 @@
     "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLiveCapacityTests.Given_EightLiveSessions_When_AuthenticatorIsReplaced_Then_PredecessorsRemainRevokedAndOneSessionIsCurrent(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLiveCapacityTests.Given_EightLiveSessions_When_RecoveryCodesAreRegenerated_Then_PredecessorsRemainRevokedAndOneSessionIsCurrent(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLostResponseTests.Given_UnreceivedSecurityCompletion_When_CommitSurvivesTransportLoss_Then_ReplayPreservesCodesAndFreshLoginIsRequired(provider: \"PostgreSql\", replacement: False)",
-    "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLostResponseTests.Given_UnreceivedSecurityCompletion_When_CommitSurvivesTransportLoss_Then_ReplayPreservesCodesAndFreshLoginIsRequired(provider: \"PostgreSql\", replacement: True)"
+    "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLostResponseTests.Given_UnreceivedSecurityCompletion_When_CommitSurvivesTransportLoss_Then_ReplayPreservesCodesAndFreshLoginIsRequired(provider: \"PostgreSql\", replacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"PostgreSql\", authorization: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"PostgreSql\", authorization: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1111,7 +1117,13 @@
     "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLiveCapacityTests.Given_EightLiveSessions_When_AuthenticatorIsReplaced_Then_PredecessorsRemainRevokedAndOneSessionIsCurrent(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLiveCapacityTests.Given_EightLiveSessions_When_RecoveryCodesAreRegenerated_Then_PredecessorsRemainRevokedAndOneSessionIsCurrent(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLostResponseTests.Given_UnreceivedSecurityCompletion_When_CommitSurvivesTransportLoss_Then_ReplayPreservesCodesAndFreshLoginIsRequired(provider: \"SqlServer\", replacement: False)",
-    "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLostResponseTests.Given_UnreceivedSecurityCompletion_When_CommitSurvivesTransportLoss_Then_ReplayPreservesCodesAndFreshLoginIsRequired(provider: \"SqlServer\", replacement: True)"
+    "IdentityPlatform.Administrator.Tests.Features.Security.SecurityLostResponseTests.Given_UnreceivedSecurityCompletion_When_CommitSurvivesTransportLoss_Then_ReplayPreservesCodesAndFreshLoginIsRequired(provider: \"SqlServer\", replacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"SqlServer\", authorization: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"SqlServer\", authorization: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -23846,6 +23858,238 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"PostgreSql\", authorization: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountDenialTests",
+        "methodName": "Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"PostgreSql\", authorization: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountDenialTests",
+        "methodName": "Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"SqlServer\", authorization: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountDenialTests",
+        "methodName": "Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption(provider: \"SqlServer\", authorization: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountDenialTests",
+        "methodName": "Given_LastPermissionRemoved_When_NativeIssuanceRechecksAuthority_Then_DenialRollsBackIssuanceAndKeepsConsumption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountDenialTests",
+        "methodName": "Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAccountDenialTests.Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAccountDenialTests",
+        "methodName": "Given_ValidParWithoutCookie_When_AuthorizationIsDenied_Then_NativeLoginRequiredPreservesUnredeemedRequest",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "ProtocolInitializationCommandTests",
+        "methodName": "Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "ProtocolInitializationCommandTests",
+        "methodName": "Given_AuditInsertDenied_When_OneShotCommandRuns_Then_SafeFailureRollsBackAllRegistrationState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "ProtocolInitializationCommandTests",
+        "methodName": "Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "ProtocolInitializationCommandTests",
+        "methodName": "Given_CurrentSchemaAndPublicInput_When_OneShotCommandRunsAndRepeats_Then_RegistrationIsAtomicAndIdempotent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "ProtocolInitializationCommandTests",
+        "methodName": "Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.ProtocolInitializationCommandTests.Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "ProtocolInitializationCommandTests",
+        "methodName": "Given_MalformedPublicInput_When_OneShotCommandRuns_Then_SafeInputFailureLeavesNoRegistration",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
           "System.String"
         ]
       },
