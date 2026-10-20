@@ -58,9 +58,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
         }
         await RequireStatesAsync(first, total: 1, redeemed: 1);
         var replay = await first.InvokeAsync(callback, challenge.Cookie);
-        RequireClean(replay);
-        Assert.Equal(StatusCodes.Status400BadRequest, replay.Status);
-        Assert.False(replay.Authentication?.Succeeded == true);
+        NativeClientDenial.RequireReplay(replay);
         await RequireStatesAsync(second, total: 1, redeemed: 1);
         await DeniedAsync(first, second, issuer, issuerCookie: true, expectedStates: SecondStateCount);
         await DeniedAsync(first, second, issuer, issuerCookie: false, expectedStates: ThirdStateCount);

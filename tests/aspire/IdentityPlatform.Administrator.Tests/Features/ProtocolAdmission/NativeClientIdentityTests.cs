@@ -59,9 +59,7 @@ public sealed class NativeClientIdentityTests(BootstrapFixture fixture)
         Assert.Equal(issued + 1, await NativeAccountPersistence.AccessTokensAsync(issuer));
         await NativeClientInteroperabilityTests.RequireStatesAsync(first, total, redeemed: total);
         var replay = await first.InvokeAsync(callback, challenge.Cookie);
-        NativeClientInteroperabilityTests.RequireClean(replay);
-        Assert.Equal(StatusCodes.Status400BadRequest, replay.Status);
-        Assert.False(replay.Authentication?.Succeeded == true);
+        NativeClientDenial.RequireReplay(replay);
         Assert.Equal(total, first.Bridge.TokenSends + second.Bridge.TokenSends);
     }
 }

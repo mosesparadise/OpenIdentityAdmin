@@ -23,7 +23,7 @@ internal static class NativeAccountPersistence
     /// <summary>Counts committed native access-token entries independently of a deliberately lost token response.</summary>
     internal static Task<int> AccessTokensAsync(AdministratorProtocolScenario scenario) => ReadAsync(scenario, (scope, token) =>
         scope.Owner.RunAsync(current => new ValueTask<int>(scope.Owner.Database.Set<OpenIddictEntityFrameworkCoreToken>()
-            .AsNoTracking().CountAsync(row => row.Type == OpenIddictConstants.TokenTypeHints.AccessToken &&
+            .AsNoTracking().CountAsync(row => row.Type == OpenIddictConstants.TokenTypeIdentifiers.AccessToken &&
                 row.Status == OpenIddictConstants.Statuses.Valid, current)), token));
 
     /// <summary>Resolves the actual native reference identifier before later redemption so rollback assertions do not depend on HTTP success.</summary>

@@ -111,9 +111,7 @@ public sealed class NativeClientHttpsTests(BootstrapFixture fixture)
         var after = await NativeAccountPersistence.AccessTokensAsync(issuer);
         Assert.Equal(before + (fault == NativeIssuerHttpsHost.Fault.TokenLoss ? 1 : 0), after);
         var replay = await first.InvokeAsync(callback, challenge.Cookie);
-        NativeClientInteroperabilityTests.RequireClean(replay);
-        Assert.Equal(StatusCodes.Status400BadRequest, replay.Status);
-        Assert.False(replay.Authentication?.Succeeded == true);
+        NativeClientDenial.RequireReplay(replay);
         await host.DrainAsync();
         Assert.Equal(sends + 1, host.TokenSends);
     }

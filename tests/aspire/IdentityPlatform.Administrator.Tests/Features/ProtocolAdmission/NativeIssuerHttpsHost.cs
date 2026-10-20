@@ -124,15 +124,18 @@ internal sealed class NativeIssuerHttpsHost : IAsyncDisposable
         var originalBody = http.Features.Get<IHttpResponseBodyFeature>()!;
         await using var scope = issuer.Services.CreateAsyncScope();
         http.RequestServices = scope.ServiceProvider;
+        NativeLostResponse? loss = null;
         if (fault == Fault.ParLoss && path == AdministratorProtocolScenario.ParPath ||
             fault == Fault.TokenLoss && path == AdministratorProtocolScenario.TokenPath)
         {
-            http.Features.Set<IHttpResponseBodyFeature>(new NativeLostResponse(http, originalBody, () => Interlocked.Increment(ref losses)));
+            loss = new NativeLostResponse(http, originalBody, () => Interlocked.Increment(ref losses));
+            http.Features.Set<IHttpResponseBodyFeature>(loss);
         }
         try
         {
             await ProtocolHosting.InvokeAsync(http, context => DispatchNativeAsync(context, path));
         }
+        catch (Exception error) when (loss?.Caused(error) == true) { }
         finally
         {
             http.RequestServices = originalServices;

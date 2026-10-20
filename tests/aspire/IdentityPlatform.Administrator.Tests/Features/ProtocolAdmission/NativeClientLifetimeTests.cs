@@ -57,10 +57,18 @@ public sealed class NativeClientLifetimeTests(BootstrapFixture fixture)
     /// <summary>Requires the designated winner and blocked peer outcomes together with exact sends and independently committed state.</summary>
     private static async Task RequireOutcomesAsync(NativeClientHttpResult[] results, bool concurrent, NativeClientHttp first, NativeClientHttp second)
     {
-        foreach (var result in results)
+        for (var index = 0; index < results.Length; index++)
         {
+            var result = results[index];
             NativeClientInteroperabilityTests.RequireClean(result);
-            Assert.Equal(result.Authentication?.Succeeded == true ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest, result.Status);
+            if (!concurrent && index > 0)
+            {
+                NativeClientDenial.RequireReplay(result);
+            }
+            else
+            {
+                Assert.Equal(result.Authentication?.Succeeded == true ? StatusCodes.Status200OK : StatusCodes.Status400BadRequest, result.Status);
+            }
         }
         Assert.Equal(concurrent, results[0].Authentication?.Succeeded == true);
         Assert.False(results[1].Authentication?.Succeeded == true);
