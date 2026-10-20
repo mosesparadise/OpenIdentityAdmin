@@ -50,4 +50,7 @@
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
   <ItemGroup><Compile Include="../../shared/NativeClientCredentialFixture.cs" Link="Fixtures/NativeClientCredentialFixture.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/NativeLockObservation.cs" Link="Fixtures/Protocol/NativeLockObservation.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeRaceCleanup.cs" Link="Fixtures/NativeRaceCleanup.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientRejection.cs" Link="Fixtures/NativeClientRejection.cs" /></ItemGroup>
 </Project>

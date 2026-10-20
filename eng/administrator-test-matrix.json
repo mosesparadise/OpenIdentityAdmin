@@ -512,7 +512,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientInteroperabilityTests.Given_DurableNativeClient_When_SeparateInstanceProcessesCallback_Then_OnlyOneBoundExchangeCompletes(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCallbackMutationTests.Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: True, expiredSeconds: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 301)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1131,7 +1134,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeGenerationTests.Given_NativeCodeGeneration_When_PreparedPrincipalOrCryptoDescriptorChanges_Then_IssuanceRollsBackWithoutOutput(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientInteroperabilityTests.Given_DurableNativeClient_When_SeparateInstanceProcessesCallback_Then_OnlyOneBoundExchangeCompletes(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCallbackMutationTests.Given_ValidatedNativeCallback_When_ActualReadOrChildDisposalChangesState_Then_NoSubstitutedExchangeOccurs(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: True, expiredSeconds: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 301)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -24251,6 +24257,132 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLifetimeTests",
+        "methodName": "Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: True, expiredSeconds: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLifetimeTests",
+        "methodName": "Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLifetimeTests",
+        "methodName": "Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: True, expiredSeconds: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLifetimeTests",
+        "methodName": "Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 301)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLifetimeTests",
+        "methodName": "Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 301)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLifetimeTests",
+        "methodName": "Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Int32"
         ]
       },
       "traits": [

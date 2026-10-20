@@ -42,6 +42,12 @@ internal sealed class NativeClientHttp : IAsyncDisposable
         services.AddSingleton(UrlEncoder.Default).AddSingleton<TimeProvider>(issuer.Account.Journey.Clock);
         services.AddAdministratorClient(profile, credentials);
         services.AddOpenIddict().AddClient().UseAspNetCore().EnableRedirectionEndpointPassthrough();
+        services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessErrorContext>(builder =>
+            builder.SetOrder(int.MinValue).UseInlineHandler(context =>
+            {
+                context.Transaction.SetProperty(NativeClientRejection.Property, NativeClientRejection.Describe(context.Error, context.ErrorUri));
+                return ValueTask.CompletedTask;
+            }));
         services.AddOptions<OpenIddictClientOptions>().Configure(options => options.TimeProvider = issuer.Account.Journey.Clock);
         if (!network)
         {
@@ -103,6 +109,8 @@ internal sealed class NativeClientHttp : IAsyncDisposable
         var handler = ActivatorUtilities.CreateInstance<OpenIddictClientAspNetCoreHandler>(http.RequestServices);
         await handler.InitializeAsync(new AuthenticationScheme(OpenIddictClientAspNetCoreDefaults.AuthenticationScheme, null, handler.GetType()), http);
         var handled = await handler.HandleRequestAsync();
+        result.Rejection = http.Features.Get<OpenIddictClientAspNetCoreFeature>()?.Transaction?
+            .GetProperty<string>(NativeClientRejection.Property) ?? NativeClientRejection.None;
         if (callback)
         {
             if (!handled)
@@ -131,6 +139,7 @@ internal sealed class NativeClientHttp : IAsyncDisposable
 /// <summary>Keeps synthetic authentication material in memory without credential-bearing record formatting.</summary>
 internal sealed class NativeClientHttpResult
 {
+    internal string Rejection { get; set; } = NativeClientRejection.None;
     internal int Status
     {
         get; set;

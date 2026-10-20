@@ -7,8 +7,20 @@ namespace IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator
 /// <summary>Checks fresh native row bindings under the caller's owning-store lock before native status validation or redemption.</summary>
 internal static class AdministratorNativeToken
 {
-    /// <summary>Requires a real matching row and strict native/principal expiry without reconstructing or revalidating token cryptography.</summary>
+    /// <summary>Requires a structurally bound native server artifact whose earlier persisted/protected deadline is still strictly current.</summary>
     internal static async ValueTask<DateTimeOffset?> ExpirationAsync(ProtocolStorageScope scope, ClaimsPrincipal principal,
+        string expectedType, string? applicationId, CancellationToken cancellation)
+    {
+        var bound = await ReadBoundAsync(scope, principal, expectedType, applicationId, cancellation);
+        return IsCurrent(bound, scope.Owner.Clock) ? bound : null;
+    }
+
+    /// <summary>Returns only a matching client-state bound, including expiry, so native redemption can commit before strict acceptance denial.</summary>
+    internal static ValueTask<DateTimeOffset?> StateExpirationAsync(ProtocolStorageScope scope, ClaimsPrincipal principal, CancellationToken cancellation) =>
+        ReadBoundAsync(scope, principal, OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken, applicationId: null, cancellation);
+
+    /// <summary>Requires fresh native type/application/authorization/subject bindings and both finite deadlines without reconstructing token cryptography.</summary>
+    private static async ValueTask<DateTimeOffset?> ReadBoundAsync(ProtocolStorageScope scope, ClaimsPrincipal principal,
         string expectedType, string? applicationId, CancellationToken cancellation)
     {
         var identifier = principal.GetTokenId();
@@ -32,8 +44,7 @@ internal static class AdministratorNativeToken
         {
             return null;
         }
-        var bound = expires < principalExpires ? expires : principalExpires;
-        return bound > scope.Owner.Clock.GetUtcNow() ? bound : null;
+        return expires < principalExpires ? expires : principalExpires;
     }
 
     /// <summary>Rechecks expiry after native awaited work; equality never extends a consumed proof's useful lifetime.</summary>

@@ -56,7 +56,7 @@ public sealed class NativeClientHttpsTests(BootstrapFixture fixture)
         var callback = await NativeClientInteroperabilityTests.AuthorizeAsync(issuer, challenge, cookie: true);
         var accepted = await second.InvokeAsync(callback, challenge.Cookie);
         NativeClientInteroperabilityTests.RequireClean(accepted);
-        Assert.Equal(StatusCodes.Status200OK, accepted.Status);
+        NativeClientInteroperabilityTests.RequireAccepted(accepted);
         Assert.True(accepted.Authentication?.Succeeded == true);
         await host.DrainAsync();
         Assert.Equal(0, host.Failures);

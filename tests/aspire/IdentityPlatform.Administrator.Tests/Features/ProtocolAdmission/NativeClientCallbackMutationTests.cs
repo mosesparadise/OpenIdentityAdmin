@@ -57,7 +57,7 @@ public sealed class NativeClientCallbackMutationTests(BootstrapFixture fixture)
         var callback = await NativeClientInteroperabilityTests.AuthorizeAsync(issuer, challenge, cookie: true);
         var result = await second.InvokeAsync(callback, challenge.Cookie);
         NativeClientInteroperabilityTests.RequireClean(result);
-        Assert.Equal(StatusCodes.Status200OK, result.Status);
+        NativeClientInteroperabilityTests.RequireAccepted(result);
         Assert.True(result.Authentication?.Succeeded == true);
         await NativeClientInteroperabilityTests.RequireStatesAsync(first, total: 1, redeemed: 1);
         Assert.Equal(1, second.Bridge.TokenSends);

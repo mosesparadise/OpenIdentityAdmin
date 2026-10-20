@@ -34,7 +34,7 @@ internal static class NativeConsumptionBoundaries
         finally { clock.Reset(); root.GetRequiredService<NativeConsumptionCommit>().AfterCommit = null; }
     }
 
-    /// <summary>Independently varies the row or protected principal expiry; the earlier bound always governs consumption.</summary>
+    /// <summary>Independently varies both deadlines; expired bound client state is consumed and denied while expired server artifacts remain unusable and unconsumed.</summary>
     private static async Task VerifyExpiryAsync(IServiceProvider root, string type, DateTimeOffset expiration, bool accepted, bool persisted, CancellationToken token)
     {
         var principal = await NativeConsumptionSeed.TokenAsync(root, type, token);
@@ -47,7 +47,8 @@ internal static class NativeConsumptionBoundaries
             principal.SetExpirationDate(expiration);
         }
         Assert.Equal(accepted, await NativeConsumptionConformance.ConsumeAsync(root, principal, token));
-        await NativeConsumptionConformance.RequireStatusAsync(root, principal, accepted ? OpenIddictConstants.Statuses.Redeemed : OpenIddictConstants.Statuses.Valid, token);
+        await NativeConsumptionConformance.RequireStatusAsync(root, principal, accepted || type == OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken
+            ? OpenIddictConstants.Statuses.Redeemed : OpenIddictConstants.Statuses.Valid, token);
     }
 
     /// <summary>Changes the native row only under its owning lock using native manager population/update semantics.</summary>

@@ -88,7 +88,9 @@ public sealed class BootstrapHost : IAsyncDisposable
             runtime[provider == DatabaseProvider.PostgreSql ? PostgreSqlUserKey : SqlServerUserKey] = SessionsRuntimePrincipal;
             runtime[PasswordKey] = password;
             await BootstrapSessions.InitializeAsync(provider, admin, password, token);
-            return new(provider, runtime.ConnectionString, () => DropAsync(name));
+            var observer = new IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.NativeLockObservation(
+                provider == DatabaseProvider.PostgreSql ? nameof(DatabaseProvider.PostgreSql) : nameof(DatabaseProvider.SqlServer), admin);
+            return new(provider, runtime.ConnectionString, () => DropAsync(name), observer.WaitAsync);
         }
         catch
         {

@@ -26,4 +26,5 @@
     <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeRaceCleanup.cs" Link="Fixtures/NativeRaceCleanup.cs" /></ItemGroup>
 </Project>

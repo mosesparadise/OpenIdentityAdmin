@@ -1,3 +1,4 @@
+using System.Runtime.ExceptionServices;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,7 @@ internal static class NativeClientStateRace
         Task? waiting = null;
         using var observation = CancellationTokenSource.CreateLinkedTokenSource(token);
         var observed = false;
+        ExceptionDispatchInfo? failure = null;
         try
         {
             await RequireSignalAsync(reserved.Task, winner, token);
@@ -34,28 +36,10 @@ internal static class NativeClientStateRace
                 observed = true;
             }
         }
+        catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
         finally
         {
-            release.TrySetResult();
-            try
-            {
-                await observation.CancelAsync();
-            }
-            finally
-            {
-                try
-                {
-                    if (waiting is not null)
-                    {
-                        try
-                        {
-                            await waiting;
-                        }
-                        catch (OperationCanceledException) when (observation.IsCancellationRequested) { }
-                    }
-                }
-                finally { await Task.WhenAll(winner, peer ?? Task.CompletedTask); }
-            }
+            await NativeRaceCleanup.CompleteAsync(release, observation, waiting, winner, peer, failure);
         }
         Assert.True(observed);
         Assert.True(await winner);

@@ -31,8 +31,7 @@ internal sealed class DurableClientRedemption(IServiceScopeFactory factory, Open
         {
             await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
             await AdministratorProtocolLocks.AcquireClientStateAsync(scope.Owner, cancellation);
-            var bound = await AdministratorNativeToken.ExpirationAsync(scope, principal,
-                OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken, applicationId: null, cancellation);
+            var bound = await AdministratorNativeToken.StateExpirationAsync(scope, principal, cancellation);
             binding.RequireCurrent();
             if (bound is not null)
             {

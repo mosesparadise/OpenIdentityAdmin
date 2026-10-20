@@ -48,7 +48,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
         var callback = await AuthorizeAsync(issuer, challenge, cookie: true);
         var accepted = await second.InvokeAsync(callback, challenge.Cookie);
         RequireClean(accepted);
-        Assert.Equal(StatusCodes.Status200OK, accepted.Status);
+        RequireAccepted(accepted);
         Assert.Equal(0, accepted.BodyLength);
         Assert.True(accepted.Authentication?.Succeeded == true);
         Assert.True(accepted.Authentication.Principal!.GetClaim(OpenIddictConstants.Claims.Subject) == issuer.Account.ActorId);
@@ -159,6 +159,16 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
     /// <summary>Shares the exact immutable native client profile between positive and awaited-mutation provider controls.</summary>
     internal static NativeClientProfile Profile(NativeClientCredentials credentials, Uri? issuer = null) =>
         NativeClientProfile.Create(issuer?.AbsoluteUri ?? Issuer, Client, Callback, KeyId, credentials);
+
+    private static readonly System.Text.CompositeFormat BaselineStatus = System.Text.CompositeFormat.Parse("Status={0}; native={1}");
+
+    /// <summary>Identifies a failed positive baseline using only status and a closed allowlist of native error categories.</summary>
+    internal static void RequireAccepted(NativeClientHttpResult result)
+    {
+        RequireClean(result);
+        Assert.True(result.Status == StatusCodes.Status200OK, string.Format(System.Globalization.CultureInfo.InvariantCulture, BaselineStatus, result.Status, result.Rejection));
+        Assert.True(result.Authentication?.Succeeded == true);
+    }
 
     /// <summary>Reports only safe exception type/stack, never native error descriptions or credential-bearing responses.</summary>
     internal static void RequireClean(NativeClientHttpResult result) =>

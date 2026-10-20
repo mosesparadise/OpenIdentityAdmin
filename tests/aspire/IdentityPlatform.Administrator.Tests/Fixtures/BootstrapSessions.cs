@@ -8,10 +8,13 @@ using Microsoft.Extensions.Logging;
 namespace IdentityPlatform.Administrator.Tests.Fixtures;
 
 /// <summary>Retains a Sessions-only runtime connection in memory and drops its disposable database after all clients finish.</summary>
-internal sealed class BootstrapSessions(DatabaseProvider provider, string runtimeConnection, Func<Task> drop) : IAsyncDisposable
+internal sealed class BootstrapSessions(DatabaseProvider provider, string runtimeConnection, Func<Task> drop, Func<int, int, CancellationToken, Task> observe) : IAsyncDisposable
 {
     /// <summary>Registers the tested client using only its least-privilege Sessions principal.</summary>
     internal IServiceCollection AddPersistence(IServiceCollection services) => services.AddSessionPersistence(provider, runtimeConnection);
+
+    /// <summary>Observes only exact session blocking through the fixture's separate privileged connection; runtime rights stay unchanged.</summary>
+    internal Task ObserveAsync(int session, int blocker, CancellationToken token) => observe(session, blocker, token);
 
     /// <summary>Runs privileged migration/provisioning before exposing a runtime lease; credentials never enter diagnostics.</summary>
     internal static async Task InitializeAsync(DatabaseProvider provider, string connection, string password, CancellationToken token)

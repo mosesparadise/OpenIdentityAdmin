@@ -55,9 +55,20 @@ internal static class Setup
             options.TokenValidationParameters.ValidIssuers = [profile.ClientUri.AbsoluteUri];
         });
         client.AddRegistration(Registration(profile, credentials));
+        StateExpiration(client);
         Handlers(client);
         Transport(client);
         NativeClientTransportOwnership.Add(client);
+    }
+
+    /// <summary>Defers only the fixed native callback state's expiration denial until its durable consumption; all other native lifetime handling stays intact.</summary>
+    private static void StateExpiration(OpenIddictClientBuilder client)
+    {
+        var expiration = OpenIddictClientHandlers.Protection.ValidateExpirationDate.Descriptor;
+        client.RemoveEventHandler(expiration);
+        client.Services.AddSingleton<OpenIddictClientHandlers.Protection.ValidateExpirationDate>();
+        client.AddEventHandler(OpenIddictClientHandlerDescriptor.CreateBuilder<OpenIddictClientEvents.ValidateTokenContext>()
+            .Import(expiration).UseSingletonHandler<NativeClientStateExpiration>().SetType(OpenIddictClientHandlerType.Custom).Build());
     }
 
     /// <summary>Places profile guards after native parsing and before protected output or optional transport.</summary>
