@@ -82,12 +82,12 @@ internal sealed class NativeTokenSnapshot(string identifier, PropertyValues orig
         return true;
     });
 
-    /// <summary>Starts a fresh owned scope for each detached observation or explicit test-only write.</summary>
+    /// <summary>Starts fresh ownership and selects it for the dual-mode server; the client already registers only owned stores.</summary>
     private static Task<T> ReadAsync<T>(IServiceProvider root, Func<ProtocolStorageScope, CancellationToken, ValueTask<T>> read) =>
         new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), TestContext.Current.CancellationToken)
             .RunAsync(root.GetRequiredService<IServiceScopeFactory>(), (scope, token) =>
             {
-                scope.Services.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.Owned);
+                scope.Services.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.Owned);
                 return read(scope, token);
             });
 }
