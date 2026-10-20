@@ -1,5 +1,15 @@
 # OpenIdentityAdmin new-task handoff
 
+**Delivered coherent B2 (20 October 2026):** [PR #66](https://github.com/mosesparadise/OpenIdentityAdmin/pull/66) is squash-merged as `42214382f5b6246332fe9b1ecfe00463a5ed9965` after all 67 exact-head jobs pass. Independent review verifies 3,378/3,378 raw executions, zero skips, all 50 coverage inputs/15 unchanged module floors and 48 mutation kills with passing baseline/restored controls. Feature 011 T005–T026, including the requested T005–T009 batch and its required coherent dependencies, are complete for internal B2. Production BFF login, product cookies, API enforcement, refresh and React remain unactivated. [Exact delivery evidence](../../specs/011-administrator-issuer-client/b2-delivery.md).
+
+**Next bounded step:** T027 prepares B3 request-bound fresh login, product callback/B1 ticket establishment, cookie/CSRF/fixation and accurately bounded logout specifications with three-engine acceptance and issuer-policy dependencies. T027/T028 remain unchecked; this record does not implement or activate B3. Preserve the delivered provider plugins, existing databases and migration histories; do not repeat the accepted ownership or B2 work.
+
+All six historical findings, 48 human rows, 345 not-assessed assurance controls and production/public-release gates remain open. A-004 remains expired and A-005/A-006 concluded. Firefox was deferred only for internal B2 under A-007; T028 must restore it before B3 implementation, activation or release.
+
+The checkpoint statements below retain their historical dates and results. Earlier pending/unaccepted wording is superseded by the delivered status above; failed evidence and its limits are preserved.
+
+## Historical implementation and review checkpoints
+
 **Current final-boundary continuation (20 October):** [native quota, PAR contention and restored-state evidence](../../specs/011-administrator-issuer-client/native-budget-replay-and-restore.md) adds twelve provider cases and explicit PAR expiry boundaries. Local build/discovery preserves all prior identities, total 1,241. Initial hosted admission passes 109/110 on each provider; both new restore cases fail before restoration because the fixture requires a server-only selector from the client. The reviewed fixture correction preserves all oracles; corrected hosted execution is pending. The initial run also retains a PostgreSQL WebKit certificate-negative recurrence and skipped aggregate coverage. Complete exact-head evidence and coherent T005–T009/B2 acceptance before conditional squash. PR #66 remains draft; historical, human and activation/public-release gates remain open.
 
 **Current graceful-process continuation (20 October):** [native client restart and private input controls](../../specs/011-administrator-issuer-client/native-client-process-restart.md) adds actual separate-process challenge/callback/replay on both providers, reusing native execution and established process ownership. Local builds, 1,229-case discovery and six non-database framing controls pass; hosted restart execution remains pending. Published `b3bfc6f` passes all 67 jobs: independently verified 3,362 executions, 50 coverage inputs/15 floors and 48 mutation kills. Continue coherent T005–T009/B2 acceptance; PR #66 remains draft and all external gates stay open.
@@ -45,7 +55,7 @@
 
 **Current delivered checkpoint (15 October 2026):** PR [#52](https://github.com/mosesparadise/OpenIdentityAdmin/pull/52) is squash-merged as `ca410c01a161032c1f09e2bd92439cb48b046476`. Feature 010's internal B1 ticket store is accepted after all 70 jobs in run `38769486233`, both-provider raw reports, 55 coverage inputs/nine floors and final independent reviews. [Exact delivery evidence](../../specs/010-bff-session-foundation/delivery.md). PR #50 (`e780cfa9`) and its delivery record PR #53 (`bb377510`) are already merged; no allowance was renewed. Verify current remote main rather than assuming this prose commit's future identity.
 
-## Current product continuation — 17 October 2026
+## Historical pre-B2 product continuation — 17 October 2026
 
 Read [feature 010](../../specs/010-bff-session-foundation/spec.md), its [plan](../../specs/010-bff-session-foundation/plan.md), [tasks](../../specs/010-bff-session-foundation/tasks.md), [delivery](../../specs/010-bff-session-foundation/delivery.md) and [verification](../../specs/010-bff-session-foundation/verification.md). B1 is complete: protected native tickets, both-provider additive schema/grants, separate encrypted BFF protection, bounded lifetimes, concurrency/revocation, atomic audit intent and cleanup. Do not repeat implementation or the completed acceptance run. Production composition remains dormant.
 

@@ -1,5 +1,15 @@
 # B2 verification and historical planning evidence
 
+**Delivered coherent B2 (20 October 2026):** [PR #66](https://github.com/mosesparadise/OpenIdentityAdmin/pull/66) is squash-merged as `42214382f5b6246332fe9b1ecfe00463a5ed9965` after all 67 exact-head jobs pass. Independent review verifies 3,378/3,378 raw executions, zero skips, all 50 coverage inputs/15 unchanged module floors and 48 mutation kills with passing baseline/restored controls. Feature 011 T005–T026, including the requested T005–T009 batch and its required coherent dependencies, are complete for internal B2. Production BFF login, product cookies, API enforcement, refresh and React remain unactivated. [Exact delivery evidence](b2-delivery.md).
+
+**Next bounded step:** T027 prepares B3 request-bound fresh login, product callback/B1 ticket establishment, cookie/CSRF/fixation and accurately bounded logout specifications with three-engine acceptance and issuer-policy dependencies. T027/T028 remain unchecked; this record does not implement or activate B3. Preserve the delivered provider plugins, existing databases and migration histories; do not repeat the accepted ownership or B2 work.
+
+All six historical findings, 48 human rows, 345 not-assessed assurance controls and production/public-release gates remain open. A-004 remains expired and A-005/A-006 concluded. Firefox was deferred only for internal B2 under A-007; T028 must restore it before B3 implementation, activation or release.
+
+The checkpoint statements below retain their historical dates and results. Earlier pending/unaccepted wording is superseded by the delivered status above; failed evidence and its limits are preserved.
+
+## Historical implementation and review checkpoints
+
 **20 October implementation reconciliation:** the [B2 acceptance map](b2-acceptance-map.md) binds FR-001–013, SC-001–006 and T005–T026 to concrete source and controls. [Final boundary evidence](native-budget-replay-and-restore.md) adds native quota/expiry/PAR contention and scoped restored-state consequences. Final exact-head runtime/coverage/mutation review and conditional normal squash remain pending; no production, historical or human/release gate closes here. The dated records below preserve their earlier planning/prerequisite scope.
 
 ## Historical planning checkpoint
