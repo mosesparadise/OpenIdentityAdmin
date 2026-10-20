@@ -90,8 +90,8 @@ public sealed class NativeAccountDenialTests(BootstrapFixture fixture)
     internal static void RequireJson(NativeAccountResult response, string error)
     {
         RequireNoFailure(response);
-        Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
-        Assert.Empty(response.Location);
+        Assert.Equal(error == OpenIddictConstants.Errors.InvalidClient ? StatusCodes.Status401Unauthorized : StatusCodes.Status400BadRequest, response.Status);
+        Assert.True(response.Location.Length == 0);
         using var json = JsonDocument.Parse(response.Body);
         Assert.Equal(JsonFields, json.RootElement.EnumerateObject().Count());
         Assert.True(json.RootElement.GetProperty(OpenIddictConstants.Parameters.Error).GetString() == error);

@@ -532,7 +532,13 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"PostgreSql\", authorization: True, issuanceFirst: False, changeValue: 2)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"PostgreSql\", authorization: True, issuanceFirst: True, changeValue: 0)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"PostgreSql\", authorization: True, issuanceFirst: True, changeValue: 1)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"PostgreSql\", authorization: True, issuanceFirst: True, changeValue: 2)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"PostgreSql\", authorization: True, issuanceFirst: True, changeValue: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"PostgreSql\", callbackFailure: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"PostgreSql\", callbackFailure: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1171,7 +1177,13 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"SqlServer\", authorization: True, issuanceFirst: False, changeValue: 2)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"SqlServer\", authorization: True, issuanceFirst: True, changeValue: 0)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"SqlServer\", authorization: True, issuanceFirst: True, changeValue: 1)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"SqlServer\", authorization: True, issuanceFirst: True, changeValue: 2)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorityRaceTests.Given_IndependentAuthorityChange_When_ActualIssuanceContendsAtCommit_Then_OnlyTheFirstCommittedAuthorityAllowsCredentials(provider: \"SqlServer\", authorization: True, issuanceFirst: True, changeValue: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"SqlServer\", callbackFailure: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"SqlServer\", callbackFailure: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -25146,6 +25158,262 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"PostgreSql\", callbackFailure: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientDatabaseFailureTests",
+        "methodName": "Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"SqlServer\", callbackFailure: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientDatabaseFailureTests",
+        "methodName": "Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"PostgreSql\", callbackFailure: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientDatabaseFailureTests",
+        "methodName": "Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientDatabaseFailureTests.Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState(provider: \"SqlServer\", callbackFailure: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientDatabaseFailureTests",
+        "methodName": "Given_ActualSessionsReadDenied_When_NativeChallengeOrCallbackRuns_Then_NoExchangeOccursAndRestoredAccessPreservesPendingState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuerReplayTests",
+        "methodName": "Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuerReplayTests",
+        "methodName": "Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeProtocolMutationTests",
+        "methodName": "Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "protocol-current-authority"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeProtocolMutationTests",
+        "methodName": "Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "protocol-current-authority"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeProtocolMutationTests",
+        "methodName": "Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "protocol-assertion-replay"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeProtocolMutationTests",
+        "methodName": "Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "protocol-assertion-replay"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeProtocolMutationTests",
+        "methodName": "Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "protocol-profile-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeProtocolMutationTests",
+        "methodName": "Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "protocol-profile-binding"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

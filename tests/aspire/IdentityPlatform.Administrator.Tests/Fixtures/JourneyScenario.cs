@@ -85,6 +85,10 @@ internal sealed class JourneyScenario : IAsyncDisposable
     /// <summary>Creates an independently disposed native service scope for real competing database operations.</summary>
     internal AsyncServiceScope CreateScope() => services.Services.CreateAsyncScope();
 
+    /// <summary>Builds an independent issuer root over the same lease and durable files; the caller disposes it before this owning scenario.</summary>
+    internal FactorServices CreatePeer(string provider, Action<IServiceCollection> configure) =>
+        new(provider, lease, material, Clock, collection => { Register(collection); configure(collection); });
+
     /// <summary>Creates actual password-bound random enrollment staging without minting a session.</summary>
     internal async Task StageAsync()
     {

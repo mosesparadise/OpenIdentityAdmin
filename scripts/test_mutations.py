@@ -668,6 +668,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(7, len(manifest(ROOT)))
         self.assertEqual(8, len(manifest(ROOT, "administrator")))
         self.assertEqual(6, len(manifest(ROOT, "governance")))
+        self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 
@@ -702,6 +703,27 @@ class MutationEvidenceTests(unittest.TestCase):
         command.assert_called_once_with(['dotnet', 'build', verifier.PROJECT, '--no-restore', '--nologo', '-m:1', '-nr:false'], 180, environment)
         with patch.object(verifier, 'run', return_value=(1, '')):
             with self.assertRaises(ValueError): verifier.build(environment)
+
+    def test_Given_ProtocolMutations_When_TargetsEscapeTheThreeReviewedFiles_Then_VerificationRejectsThem(self):
+        """Keep B2 mutants bounded to three exact files, preserving all older suite boundaries."""
+        reviewed = json.loads((ROOT / 'eng/administrator-protocol-mutations.json').read_text())
+        reader = Path.read_text
+        for target in (
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/Setup.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorProtocolLocks.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionOwnership.cs',
+            'tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/NativeProtocolMutationTests.cs',
+        ):
+            value = json.loads(json.dumps(reviewed))
+            value['mutations'][0]['path'] = target
+            def read(path, *arguments, **keywords):
+                """Replace only the reviewed manifest, leaving source validation real."""
+                if path == ROOT / 'eng/administrator-protocol-mutations.json':
+                    return json.dumps(value)
+                return reader(path, *arguments, **keywords)
+            with self.subTest(target=target), patch.object(Path, 'read_text', read):
+                with self.assertRaises(ValueError):
+                    manifest(ROOT, 'administrator-protocol')
 
 
     def test_Given_AdministratorMutantDiscovery_When_MetadataDiffers_Then_IdentityCatalogueCannotAcceptIt(self):

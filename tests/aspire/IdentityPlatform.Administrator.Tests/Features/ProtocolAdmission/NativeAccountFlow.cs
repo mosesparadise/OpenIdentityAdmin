@@ -21,9 +21,13 @@ internal static class NativeAccountFlow
     private const int ParFields = 2;
 
     /// <summary>Obtains a real native protected PAR reference using fresh private-key authentication and the fixed code/S256 profile.</summary>
-    internal static async Task<string> PushAsync(AdministratorProtocolScenario scenario)
+    internal static async Task<string> PushAsync(AdministratorProtocolScenario scenario, IServiceProvider? services = null)
+        => ReadReference(await NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, PushFields(scenario), services: services));
+
+    /// <summary>Builds the fixed valid PAR message, optionally retaining an exact assertion for cross-endpoint replay controls.</summary>
+    internal static Dictionary<string, string> PushFields(AdministratorProtocolScenario scenario, string? assertion = null)
     {
-        var fields = Assertion(scenario);
+        var fields = Assertion(scenario, assertion);
         fields.Add(OpenIddictConstants.Parameters.ResponseType, OpenIddictConstants.ResponseTypes.Code);
         fields.Add(OpenIddictConstants.Parameters.RedirectUri, scenario.Material.Policy.RedirectUri);
         fields.Add(OpenIddictConstants.Parameters.Scope, Scopes);
@@ -32,7 +36,12 @@ internal static class NativeAccountFlow
         fields.Add(OpenIddictConstants.Parameters.Prompt, OpenIddictConstants.PromptValues.None);
         fields.Add(OpenIddictConstants.Parameters.State, State);
         fields.Add(OpenIddictConstants.Parameters.Nonce, Nonce);
-        var response = await NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, fields);
+        return fields;
+    }
+
+    /// <summary>Accepts only the native two-field successful PAR response without printing the opaque reference.</summary>
+    internal static string ReadReference(NativeAccountResult response)
+    {
         RequireSuccess(response, StatusCodes.Status201Created);
         using var json = JsonDocument.Parse(response.Body);
         Assert.Equal(ParFields, json.RootElement.EnumerateObject().Count());
@@ -42,12 +51,12 @@ internal static class NativeAccountFlow
     }
 
     /// <summary>Submits only the native PAR reference and fixed client while carrying the genuine administrator cookie.</summary>
-    internal static Task<NativeAccountResult> AuthorizeAsync(AdministratorProtocolScenario scenario, string reference) =>
+    internal static Task<NativeAccountResult> AuthorizeAsync(AdministratorProtocolScenario scenario, string reference, IServiceProvider? services = null) =>
         NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.AuthorizePath, new()
         {
             [OpenIddictConstants.Parameters.ClientId] = AdministratorProtocolIdentity.ClientId,
             [OpenIddictConstants.Parameters.RequestUri] = reference
-        }, cookie: true);
+        }, cookie: true, services: services);
 
     /// <summary>Accepts a code only from the exact fixed native query callback, preserving original state and issuer binding.</summary>
     internal static string ReadCode(AdministratorProtocolScenario scenario, NativeAccountResult response)
@@ -64,14 +73,18 @@ internal static class NativeAccountFlow
     }
 
     /// <summary>Uses a different signed client assertion for the one-time code exchange; there is no retry or password/factor renewal.</summary>
-    internal static Task<NativeAccountResult> ExchangeAsync(AdministratorProtocolScenario scenario, string code)
+    internal static Task<NativeAccountResult> ExchangeAsync(AdministratorProtocolScenario scenario, string code, IServiceProvider? services = null)
+        => NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.TokenPath, ExchangeFields(scenario, code), services: services);
+
+    /// <summary>Builds an otherwise valid exchange while allowing a deliberately reused signed assertion in replay controls.</summary>
+    internal static Dictionary<string, string> ExchangeFields(AdministratorProtocolScenario scenario, string code, string? assertion = null)
     {
-        var fields = Assertion(scenario);
+        var fields = Assertion(scenario, assertion);
         fields.Add(OpenIddictConstants.Parameters.GrantType, OpenIddictConstants.GrantTypes.AuthorizationCode);
         fields.Add(OpenIddictConstants.Parameters.Code, code);
         fields.Add(OpenIddictConstants.Parameters.CodeVerifier, Verifier);
         fields.Add(OpenIddictConstants.Parameters.RedirectUri, scenario.Material.Policy.RedirectUri);
-        return NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.TokenPath, fields);
+        return fields;
     }
 
     /// <summary>Validates signature/decryption and native persisted status in a separate owned scope rather than decoding untrusted JWT text.</summary>
@@ -108,10 +121,10 @@ internal static class NativeAccountFlow
     }
 
     /// <summary>Signs against the exact durable fixture issuer rather than assuming the assertion helper's default audience.</summary>
-    private static Dictionary<string, string> Assertion(AdministratorProtocolScenario scenario) => new()
+    private static Dictionary<string, string> Assertion(AdministratorProtocolScenario scenario, string? assertion = null) => new()
     {
         [OpenIddictConstants.Parameters.ClientId] = AdministratorProtocolIdentity.ClientId,
         [OpenIddictConstants.Parameters.ClientAssertionType] = OpenIddictConstants.ClientAssertionTypes.JwtBearer,
-        [OpenIddictConstants.Parameters.ClientAssertion] = scenario.Material.Sign(scenario.Account.Journey.Clock.Now.ToUnixTimeSeconds(), audience: scenario.Issuer.AbsoluteUri)
+        [OpenIddictConstants.Parameters.ClientAssertion] = assertion ?? scenario.Material.Sign(scenario.Account.Journey.Clock.Now.ToUnixTimeSeconds(), audience: scenario.Issuer.AbsoluteUri)
     };
 }
