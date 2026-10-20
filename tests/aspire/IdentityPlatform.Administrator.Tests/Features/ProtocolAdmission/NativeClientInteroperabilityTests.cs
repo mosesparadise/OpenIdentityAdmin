@@ -83,17 +83,23 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
     internal static async Task<NativeClientHttpResult> ChallengeAsync(NativeClientHttp client)
     {
         var result = await client.InvokeAsync();
+        RequireChallenge(result);
+        return result;
+    }
+
+    /// <summary>Checks the same real challenge projection for in-process and separately exited process callers.</summary>
+    internal static void RequireChallenge(NativeClientHttpResult result)
+    {
         RequireClean(result);
         Assert.Equal(StatusCodes.Status302Found, result.Status);
         Assert.False(string.IsNullOrEmpty(result.Location));
         var cookieCount = result.Cookies.Length;
         Assert.Equal(1, cookieCount);
         RequireCookie(result.Cookies[0], attributes: true);
-        return result;
     }
 
     /// <summary>Reports only booleans when a native cookie violates its policy, never the correlation value.</summary>
-    private static void RequireCookie(string cookie, bool attributes)
+    internal static void RequireCookie(string cookie, bool attributes)
     {
         var prefix = cookie.StartsWith(ClientSetup.CorrelationPrefix, StringComparison.Ordinal);
         Assert.True(prefix);

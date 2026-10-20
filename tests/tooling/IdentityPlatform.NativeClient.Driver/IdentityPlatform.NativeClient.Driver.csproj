@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <UseMicrosoftTestingPlatformRunner>false</UseMicrosoftTestingPlatformRunner>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
+    <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
+    <Compile Include="../../shared/TestDatabaseProviders.cs" Link="Fixtures/TestDatabaseProviders.cs" />
+    <Compile Include="../../shared/NativeClientRequest.cs" Link="Fixtures/NativeClientRequest.cs" />
+    <Compile Include="../../shared/NativeClientRejection.cs" Link="Fixtures/NativeClientRejection.cs" />
+    <Compile Include="../../shared/NativeRequestPause.cs" Link="Fixtures/NativeRequestPause.cs" />
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeHttpCompletion.cs" Link="Fixtures/NativeHttpCompletion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="IdentityPlatform.Testing" />
+    <Using Include="IdentityPlatform.Testing.TestProviderParser" Alias="DatabaseProviderParser" />
+    <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
+    <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
+  </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientProcessMessages.cs" Link="Fixtures/NativeClientProcessMessages.cs" /></ItemGroup>
+</Project>

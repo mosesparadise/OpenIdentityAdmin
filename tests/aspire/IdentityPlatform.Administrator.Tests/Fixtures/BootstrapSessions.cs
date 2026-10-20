@@ -11,6 +11,7 @@ namespace IdentityPlatform.Administrator.Tests.Fixtures;
 internal sealed class BootstrapSessions(DatabaseProvider provider, string runtimeConnection, Func<Task> drop, Func<int, int, CancellationToken, Task> observe, BootstrapSessionAccess access) : IAsyncDisposable
 {
     internal BootstrapSessionAccess Access => access;
+    internal string RuntimeConnection => runtimeConnection;
 
     /// <summary>Registers the tested client using only its least-privilege Sessions principal.</summary>
     internal IServiceCollection AddPersistence(IServiceCollection services) => services.AddSessionPersistence(provider, runtimeConnection);
