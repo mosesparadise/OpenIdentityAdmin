@@ -562,7 +562,13 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: Cancellation)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: CommitObservation)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientProcessTests.Given_InvalidPrivateFrames_When_ClientProcessStarts_Then_InputFailureNeverReachesNativeServices(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientProcessTests.Given_ChallengeProcessHasExited_When_NewProcessesCompleteAndReplayCallback_Then_ExactlyOneGenuineExchangeSurvivesRestart(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientProcessTests.Given_ChallengeProcessHasExited_When_NewProcessesCompleteAndReplayCallback_Then_ExactlyOneGenuineExchangeSurvivesRestart(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeParRaceTests.Given_OneGenuineParAcrossTwoIssuers_When_AuthorizeRequestsContendAtRedemption_Then_OnlyOneCodeIsIssued(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRestoreConsequenceTests.Given_ConsumedCodeAndStateImages_When_RestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndCallbackCannotIssueAgain(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"PostgreSql\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"PostgreSql\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1231,7 +1237,13 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: Cancellation)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: CommitObservation)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientProcessTests.Given_InvalidPrivateFrames_When_ClientProcessStarts_Then_InputFailureNeverReachesNativeServices(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientProcessTests.Given_ChallengeProcessHasExited_When_NewProcessesCompleteAndReplayCallback_Then_ExactlyOneGenuineExchangeSurvivesRestart(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientProcessTests.Given_ChallengeProcessHasExited_When_NewProcessesCompleteAndReplayCallback_Then_ExactlyOneGenuineExchangeSurvivesRestart(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeParRaceTests.Given_OneGenuineParAcrossTwoIssuers_When_AuthorizeRequestsContendAtRedemption_Then_OnlyOneCodeIsIssued(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRestoreConsequenceTests.Given_ConsumedCodeAndStateImages_When_RestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndCallbackCannotIssueAgain(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"SqlServer\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"SqlServer\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -26419,6 +26431,238 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
         "typeName": "NativeClientProcessTests",
         "methodName": "Given_ChallengeProcessHasExited_When_NewProcessesCompleteAndReplayCallback_Then_ExactlyOneGenuineExchangeSurvivesRestart",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeParRaceTests.Given_OneGenuineParAcrossTwoIssuers_When_AuthorizeRequestsContendAtRedemption_Then_OnlyOneCodeIsIssued(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeParRaceTests",
+        "methodName": "Given_OneGenuineParAcrossTwoIssuers_When_AuthorizeRequestsContendAtRedemption_Then_OnlyOneCodeIsIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeParRaceTests.Given_OneGenuineParAcrossTwoIssuers_When_AuthorizeRequestsContendAtRedemption_Then_OnlyOneCodeIsIssued(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeParRaceTests",
+        "methodName": "Given_OneGenuineParAcrossTwoIssuers_When_AuthorizeRequestsContendAtRedemption_Then_OnlyOneCodeIsIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRestoreConsequenceTests.Given_ConsumedCodeAndStateImages_When_RestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndCallbackCannotIssueAgain(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRestoreConsequenceTests",
+        "methodName": "Given_ConsumedCodeAndStateImages_When_RestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndCallbackCannotIssueAgain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRestoreConsequenceTests.Given_ConsumedCodeAndStateImages_When_RestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndCallbackCannotIssueAgain(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRestoreConsequenceTests",
+        "methodName": "Given_ConsumedCodeAndStateImages_When_RestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndCallbackCannotIssueAgain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"PostgreSql\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"PostgreSql\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"SqlServer\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"SqlServer\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireQuotaTests",
+        "methodName": "Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

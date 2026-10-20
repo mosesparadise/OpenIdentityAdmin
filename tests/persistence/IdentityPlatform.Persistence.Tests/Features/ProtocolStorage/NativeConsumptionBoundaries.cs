@@ -22,16 +22,26 @@ internal static class NativeConsumptionBoundaries
         try
         {
             var now = clock.Freeze();
-            foreach (var offset in ExpiryOffsets)
+            await VerifyDeadlinesAsync(root, type, now, token);
+            if (store == DatabaseStore.Platform)
             {
-                await VerifyExpiryAsync(root, type, now.AddSeconds(offset), offset > 0, false, token);
-                await VerifyExpiryAsync(root, type, now.AddSeconds(offset), offset > 0, true, token);
+                await VerifyDeadlinesAsync(root, OpenIddictConstants.TokenTypeIdentifiers.Private.RequestToken, now, token);
             }
             await VerifyLateCommitAsync(root, type, clock, token);
             clock.Reset();
             await VerifyUnknownCommitAsync(root, type, token);
         }
         finally { clock.Reset(); root.GetRequiredService<NativeConsumptionCommit>().AfterCommit = null; }
+    }
+
+    /// <summary>Applies before/equality/after expiration to both native persisted and already-validated principal deadlines for each independent token type.</summary>
+    private static async Task VerifyDeadlinesAsync(IServiceProvider root, string type, DateTimeOffset now, CancellationToken token)
+    {
+        foreach (var offset in ExpiryOffsets)
+        {
+            await VerifyExpiryAsync(root, type, now.AddSeconds(offset), offset > 0, false, token);
+            await VerifyExpiryAsync(root, type, now.AddSeconds(offset), offset > 0, true, token);
+        }
     }
 
     /// <summary>Independently varies both deadlines; expired bound client state is consumed and denied while expired server artifacts remain unusable and unconsumed.</summary>

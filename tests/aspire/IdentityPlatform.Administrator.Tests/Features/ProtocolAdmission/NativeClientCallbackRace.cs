@@ -1,5 +1,4 @@
 using System.Data.Common;
-using System.Runtime.ExceptionServices;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
@@ -61,61 +60,18 @@ internal sealed class NativeClientCallbackRace : DbCommandInterceptor
         command.CommandText.Contains(table, StringComparison.Ordinal);
 
     /// <summary>Requires a provider-observed blocked peer before release; every exceptional path releases and joins both native callbacks.</summary>
-    internal static async Task<NativeClientHttpResult[]> InvokeAsync(BootstrapSessions database, NativeClientHttp first, NativeClientHttp second,
+    internal static Task<NativeClientHttpResult[]> InvokeAsync(BootstrapSessions database, NativeClientHttp first, NativeClientHttp second,
         NativeClientCallbackRace winnerProbe, NativeClientCallbackRace peerProbe, Uri callback, string cookie)
     {
-        var token = TestContext.Current.CancellationToken;
         var reserved = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
         var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var session = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
         winnerProbe.Locked = reserved;
         winnerProbe.Release = release.Task;
-        var winner = first.InvokeAsync(callback, cookie);
-        Task<NativeClientHttpResult>? peer = null;
-        Task? waiting = null;
-        using var observation = CancellationTokenSource.CreateLinkedTokenSource(token);
-        var observed = false;
-        var phase = NativeRaceCleanup.Phase.WinnerLock;
-        ExceptionDispatchInfo? failure = null;
-        try
+        return NativeBlockedRace.InvokeAsync(() => first.InvokeAsync(callback, cookie), reserved.Task, () =>
         {
-            await RequireSignalAsync(reserved.Task, winner, token);
-            phase = NativeRaceCleanup.Phase.PeerLock;
-            var session = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
             peerProbe.BeforeLock = session;
-            peer = second.InvokeAsync(callback, cookie);
-            await RequireSignalAsync(session.Task, peer, token, winner);
-            phase = NativeRaceCleanup.Phase.BlockedPeer;
-            waiting = database.ObserveAsync(await session.Task, await reserved.Task, observation.Token);
-            if (await Task.WhenAny(waiting, peer, winner).WaitAsync(token) == waiting)
-            {
-                await waiting;
-                observed = true;
-            }
-            await NativeRaceCleanup.RequirePendingAsync(winner);
-            phase = NativeRaceCleanup.Phase.ReleaseJoin;
-        }
-        catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
-        finally
-        {
-            NativeRaceCleanup.Report(phase, observed, winner, peer);
-            await NativeRaceCleanup.CompleteAsync(release, observation, waiting, winner, peer, failure);
-        }
-        Assert.True(observed);
-        return [await winner, await peer!];
-    }
-
-    /// <summary>Rejects an early completed invocation instead of waiting indefinitely for an unreachable lock signal.</summary>
-    private static async Task RequireSignalAsync(Task signal, Task operation, CancellationToken token, Task? winner = null)
-    {
-        await Task.WhenAny(signal, operation, winner ?? operation).WaitAsync(token);
-        if (winner is not null)
-        {
-            await NativeRaceCleanup.RequirePendingAsync(winner);
-        }
-        if (!signal.IsCompleted)
-        {
-            await operation;
-            throw new InvalidOperationException();
-        }
+            return second.InvokeAsync(callback, cookie);
+        }, session.Task, release, database.ObserveAsync);
     }
 }

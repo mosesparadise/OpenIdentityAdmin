@@ -65,4 +65,8 @@
   <ItemGroup><Compile Include="../../shared/NativeRequestPause.cs" Link="Fixtures/NativeRequestPause.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/NativeClientRequest.cs" Link="Fixtures/NativeClientRequest.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/NativeClientProcessMessages.cs" Link="Fixtures/NativeClientProcessMessages.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeTokenBudgetFixture.cs" Link="Fixtures/Protocol/NativeTokenBudgetFixture.cs" />
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeRedemptionBarrier.cs" Link="Fixtures/Protocol/NativeRedemptionBarrier.cs" />
+  </ItemGroup>
 </Project>

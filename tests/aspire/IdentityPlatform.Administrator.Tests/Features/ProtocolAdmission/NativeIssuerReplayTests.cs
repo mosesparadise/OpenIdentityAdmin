@@ -35,17 +35,23 @@ public sealed class NativeIssuerReplayTests(BootstrapFixture fixture)
         Assert.Equal(1, await NativeAccountPersistence.AccessTokensAsync(scenario));
         var before = await NativeAccountPersistence.CountAsync(scenario);
         var replay = await NativeAccountFlow.AuthorizeAsync(scenario, reference, peer.Services);
-        Assert.True(replay.Failure is null, replay.Failure?.GetType().FullName + Environment.NewLine + replay.Failure?.StackTrace);
-        Assert.Equal(StatusCodes.Status400BadRequest, replay.Status);
-        Assert.False(replay.HasCookie);
-        Assert.True(replay.Location.Length == 0);
-        Assert.Equal(LocalContentType, replay.ContentType);
-        Assert.True(Encoding.UTF8.GetString(replay.Body).Replace(WindowsNewLine, UnixNewLine, StringComparison.Ordinal) == LocalReplayError);
+        RequireParReplay(replay);
         Assert.Equal(before, await NativeAccountPersistence.CountAsync(scenario));
         Assert.Equal(1, await NativeAccountPersistence.AccessTokensAsync(scenario));
         Assert.Equal(OpenIddictConstants.Statuses.Valid, await NativeAccountPersistence.StatusAsync(scenario, access.GetTokenId()!));
         Assert.True(await NativeAccountPersistence.IsRedeemedAsync(scenario, identifier));
         _ = await NativeAccountFlow.PushAsync(scenario, peer.Services);
+    }
+
+    /// <summary>Requires the exact local safe native PAR replay error with no credential redirect or cookie.</summary>
+    internal static void RequireParReplay(NativeAccountResult response)
+    {
+        Assert.True(response.Failure is null, response.Failure?.GetType().FullName + Environment.NewLine + response.Failure?.StackTrace);
+        Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
+        Assert.False(response.HasCookie);
+        Assert.True(response.Location.Length == 0);
+        Assert.Equal(LocalContentType, response.ContentType);
+        Assert.True(Encoding.UTF8.GetString(response.Body).Replace(WindowsNewLine, UnixNewLine, StringComparison.Ordinal) == LocalReplayError);
     }
 
     /// <summary>A fresh client assertion cannot redeem an already exchanged code; native linked-token revocation remains isolated from another grant.</summary>

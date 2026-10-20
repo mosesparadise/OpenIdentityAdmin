@@ -59,10 +59,11 @@ internal sealed class AdministratorProtocolScenario(GovernanceScenario account, 
     }
 
     /// <summary>Imports independent credentials/services over the existing database and protection files without reenrollment or registration repair.</summary>
-    internal FactorServices CreatePeer(string provider) => account.Journey.CreatePeer(provider, services =>
+    internal FactorServices CreatePeer(string provider, Action<IServiceCollection>? configure = null) => account.Journey.CreatePeer(provider, services =>
     {
         services.AddAdministratorGovernance();
         Configure(services, Services.GetRequiredService<AdministratorRegistrationPolicy>());
+        configure?.Invoke(services);
     });
 
     /// <summary>Uses the same protected issuer material as the journey; neither ephemeral server keys nor a synthetic authentication handler are installed.</summary>
