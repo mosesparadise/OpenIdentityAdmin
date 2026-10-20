@@ -1,5 +1,15 @@
 # B2 implementation acceptance map
 
+**Delivered coherent B2 (20 October 2026):** [PR #66](https://github.com/mosesparadise/OpenIdentityAdmin/pull/66) is squash-merged as `42214382f5b6246332fe9b1ecfe00463a5ed9965` after all 67 exact-head jobs pass. Independent review verifies 3,378/3,378 raw executions, zero skips, all 50 coverage inputs/15 unchanged module floors and 48 mutation kills with passing baseline/restored controls. Feature 011 T005–T026, including the requested T005–T009 batch and its required coherent dependencies, are complete for internal B2. Production BFF login, product cookies, API enforcement, refresh and React remain unactivated. [Exact delivery evidence](b2-delivery.md).
+
+**Next bounded step:** T027 prepares B3 request-bound fresh login, product callback/B1 ticket establishment, cookie/CSRF/fixation and accurately bounded logout specifications with three-engine acceptance and issuer-policy dependencies. T027/T028 remain unchecked; this record does not implement or activate B3. Preserve the delivered provider plugins, existing databases and migration histories; do not repeat the accepted ownership or B2 work.
+
+All six historical findings, 48 human rows, 345 not-assessed assurance controls and production/public-release gates remain open. A-004 remains expired and A-005/A-006 concluded. Firefox was deferred only for internal B2 under A-007; T028 must restore it before B3 implementation, activation or release.
+
+The checkpoint statements below retain their historical dates and results. Earlier pending/unaccepted wording is superseded by the delivered status above; failed evidence and its limits are preserved.
+
+## Historical implementation and review checkpoints
+
 20 October 2026. Independent architecture/test/API source review maps the coherent feature 011 implementation to actual requirements, scenarios and tasks. The requesting user selected T005–T009 including required dependencies/tests; the approved plan requires US1–US3 together before B2 acceptance. This map includes the [final boundary additions](native-budget-replay-and-restore.md), whose hosted execution is pending. It is source traceability, not a passing runtime receipt or merge authorization by itself.
 
 ## Disposition
