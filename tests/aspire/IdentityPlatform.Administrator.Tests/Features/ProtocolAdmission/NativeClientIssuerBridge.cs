@@ -1,12 +1,23 @@
 using System.Net;
 using System.Net.Http.Headers;
+using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
 /// <summary>Replaces only network I/O, preserving native serialization and issuer handling without claiming TLS interoperability.</summary>
 internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario issuer) : DelegatingHandler
 {
+    private const int ExpiryAdvanceSeconds = 1;
+    internal NativeIdentityResponse.Fault? IdentityFault
+    {
+        get; set;
+    }
+    internal int IdentityRewrites
+    {
+        get; private set;
+    }
     internal int ParSends
     {
         get; private set;
@@ -53,10 +64,28 @@ internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario iss
         Count(path);
         var result = await NativeAccountHttp.InvokeAsync(issuer, path, fields, cancellation: token);
         Assert.True(result.Failure is null, result.Failure?.GetType().FullName + Environment.NewLine + result.Failure?.StackTrace);
-        var response = new HttpResponseMessage((HttpStatusCode)result.Status) { Content = new ByteArrayContent(result.Body) };
+        var response = new HttpResponseMessage((HttpStatusCode)result.Status) { Content = new ByteArrayContent(RewriteIdentity(path, result)) };
         Assert.True(MediaTypeHeaderValue.TryParse(result.ContentType, out var contentType));
         response.Content.Headers.ContentType = contentType;
         return response;
+    }
+
+    /// <summary>Intervenes only after successful real token issuance, with an explicit one-second fixture advance for strict expiry equality.</summary>
+    private byte[] RewriteIdentity(string path, NativeAccountResult result)
+    {
+        if (path != AdministratorProtocolScenario.TokenPath || IdentityFault is not { } fault)
+        {
+            return result.Body;
+        }
+        Assert.Equal((int)HttpStatusCode.OK, result.Status);
+        var clock = issuer.Account.Journey.Clock;
+        if (fault == NativeIdentityResponse.Fault.Expiry)
+        {
+            clock.Now = DateTimeOffset.FromUnixTimeSeconds(clock.Now.ToUnixTimeSeconds() + ExpiryAdvanceSeconds);
+        }
+        var body = NativeIdentityResponse.Rewrite(result.Body, issuer.Services.GetRequiredService<IssuerCredentials>().Signing, fault, clock.Now);
+        IdentityRewrites++;
+        return body;
     }
 
     /// <summary>Separates proof-bearing operations from public discovery reads without recording credentials or URLs.</summary>

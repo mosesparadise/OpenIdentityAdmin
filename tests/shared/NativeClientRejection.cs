@@ -12,7 +12,7 @@ internal static class NativeClientRejection
     private const string Unknown = "unknown";
     private static readonly string[] Identifiers =
     [
-        "ID2000", "ID2004", "ID2019", "ID2029", "ID2093", "ID2094", "ID2119", "ID2120", "ID2121", "ID2122",
+        "ID2000", "ID2004", "ID2019", "ID2029", "ID2088", "ID2089", "ID2090", "ID2091", "ID2093", "ID2094", "ID2119", "ID2120", "ID2121", "ID2122",
         "ID2123", "ID2124", "ID2126", "ID2129", "ID2130", "ID2138", "ID2139", "ID2142", "ID2163", "ID2164",
         "ID2170", "ID2184", "ID2185"
     ];

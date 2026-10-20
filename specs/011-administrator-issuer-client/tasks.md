@@ -1,5 +1,7 @@
 # Tasks: Administrator issuer/client integration
 
+**Current native ID-token correction (20 October):** [public-date regression and signed-response controls](native-client-identity.md) records a real native original-fail/corrected-pass defect: ID tokens retain public `iat`/`exp`, while state uses private mapped dates. Strict public-date handling, hostile signed-response provider tests and improved quota-race observation are under verification. PR #66 stays draft/unmerged; continue coherent T005–T009 acceptance.
+
 **20 October callback continuation:** [expiry correction and preserved rejection evidence](native-client-lifetime.md) records the completed `efcd61f5` run: both providers still reject the first positive native callback; SQL foundation also failed. Strict expired-state consumption, observed callback races and safe causal diagnostics are under verification. Continue the coherent T005–T009 batch; PR #66 remains draft/unmerged and all external gates remain open.
 
 **Current callback/HTTPS continuation:** [native round-trip correction and real transport controls](native-client-https.md) records the callback issuer-representation defect, original-fail/corrected-pass regression, independently generated client keys and pending real HTTPS failure scenarios. Corrected local Host 1,083/1,083 passes. Both-provider callback/mutation/HTTPS acceptance remains pending; continue the coherent batch, with PR #66 draft/unmerged and all external gates open.

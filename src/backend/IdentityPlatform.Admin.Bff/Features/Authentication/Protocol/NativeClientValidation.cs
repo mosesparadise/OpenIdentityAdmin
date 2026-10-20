@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Security.Claims;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Ownership;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.IdentityModel.Tokens;
@@ -39,12 +41,27 @@ internal sealed class NativeClientTokenTime : IOpenIddictClientHandler<OpenIddic
     /// <summary>Requires explicit finite dates and strictly positive remaining lifetime without extending expiry by native skew.</summary>
     internal static bool Current(System.Security.Claims.ClaimsPrincipal? principal, TimeProvider clock)
     {
-        var created = principal?.GetCreationDate();
-        var expires = principal?.GetExpirationDate();
+        var created = NumericDate(principal, OpenIddictConstants.Claims.IssuedAt);
+        var expires = NumericDate(principal, OpenIddictConstants.Claims.ExpiresAt);
         var now = clock.GetUtcNow();
         return created is { } issued && expires is { } end && end > now && end > issued &&
             issued <= now.AddSeconds(AdministratorAssertion.ClockSkewSeconds) &&
             end - issued <= TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds);
+    }
+
+    /// <summary>Reads one public integral NumericDate from native ID-token output; duplicate, textual or unrepresentable dates fail closed.</summary>
+    private static DateTimeOffset? NumericDate(ClaimsPrincipal? principal, string name)
+    {
+        const int DuplicateCount = 2;
+        var claims = principal?.FindAll(name).Take(DuplicateCount).ToArray();
+        if (claims is not [{ } claim] || claim.ValueType is not (ClaimValueTypes.Integer or ClaimValueTypes.Integer32 or
+            ClaimValueTypes.Integer64 or ClaimValueTypes.UInteger32 or ClaimValueTypes.UInteger64) ||
+            !long.TryParse(claim.Value, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var seconds) ||
+            seconds < DateTimeOffset.MinValue.ToUnixTimeSeconds() || seconds > DateTimeOffset.MaxValue.ToUnixTimeSeconds())
+        {
+            return null;
+        }
+        return DateTimeOffset.FromUnixTimeSeconds(seconds);
     }
 }
 

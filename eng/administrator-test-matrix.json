@@ -515,7 +515,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 0)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: True, expiredSeconds: 0)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 301)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 301)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientIdentityTests.Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1137,7 +1138,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientHttpsTests.Given_TrustedNativeHttps_When_ParOrTokenResponseIsLostOrRejected_Then_NoRetryOrRedirectCanCompleteAuthentication(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 0)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: True, expiredSeconds: 0)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 301)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 301)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientIdentityTests.Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -24383,6 +24385,44 @@
           "System.String",
           "System.Boolean",
           "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientIdentityTests.Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientIdentityTests",
+        "methodName": "Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientIdentityTests.Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientIdentityTests",
+        "methodName": "Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
         ]
       },
       "traits": [

@@ -31,11 +31,69 @@ public sealed class NativeClientTimeTests(NativeClientCredentialFixture fixture)
         Assert.Equal(!valid, context.IsRejected);
     }
 
+    public enum MalformedDate
+    {
+        Duplicate, Text, Fraction, Overflow, BeforeRange, AfterRange
+    }
+
+    /// <summary>Malformed public dates always deny without throwing, including identical duplicates and private-date rescue attempts.</summary>
+    [Theory]
+    [InlineData(true, MalformedDate.Duplicate)]
+    [InlineData(false, MalformedDate.Duplicate)]
+    [InlineData(true, MalformedDate.Text)]
+    [InlineData(false, MalformedDate.Text)]
+    [InlineData(true, MalformedDate.Fraction)]
+    [InlineData(false, MalformedDate.Fraction)]
+    [InlineData(true, MalformedDate.Overflow)]
+    [InlineData(false, MalformedDate.Overflow)]
+    [InlineData(true, MalformedDate.BeforeRange)]
+    [InlineData(false, MalformedDate.BeforeRange)]
+    [InlineData(true, MalformedDate.AfterRange)]
+    [InlineData(false, MalformedDate.AfterRange)]
+    public async Task Given_MalformedPublicDate_When_StrictIdentityLifetimeRuns_Then_NoPrivateDateCanRescueAcceptance(bool issuance, MalformedDate malformed)
+    {
+        const int ValidRemainingSeconds = 59;
+        var principal = Principal(-1, ValidRemainingSeconds).SetCreationDate(Now).SetExpirationDate(Now.AddSeconds(ValidRemainingSeconds));
+        var name = issuance ? OpenIddictConstants.Claims.IssuedAt : OpenIddictConstants.Claims.ExpiresAt;
+        var original = Assert.Single(principal.FindAll(name));
+        var identity = Assert.IsType<ClaimsIdentity>(principal.Identity);
+        if (malformed == MalformedDate.Duplicate)
+        {
+            identity.AddClaim(original);
+        }
+        else
+        {
+            identity.RemoveClaim(original);
+            identity.AddClaim(Malformed(name, original.Value, malformed));
+        }
+        var context = new OpenIddictClientEvents.ValidateTokenContext(Transaction()) { Principal = principal };
+        context.ValidTokenTypes.Add(OpenIddictConstants.TokenTypeIdentifiers.IdentityToken);
+        await new NativeClientTokenTime().HandleAsync(context);
+        Assert.True(context.IsRejected);
+    }
+
+    /// <summary>Builds independent invalid NumericDate representations without relying on the production reader.</summary>
+    private static Claim Malformed(string name, string original, MalformedDate malformed)
+    {
+        const string Fraction = "1.5";
+        const string Overflow = "9223372036854775808";
+        var value = malformed switch
+        {
+            MalformedDate.Fraction => Fraction,
+            MalformedDate.Overflow => Overflow,
+            MalformedDate.BeforeRange => (DateTimeOffset.MinValue.ToUnixTimeSeconds() - 1).ToString(System.Globalization.CultureInfo.InvariantCulture),
+            MalformedDate.AfterRange => (DateTimeOffset.MaxValue.ToUnixTimeSeconds() + 1).ToString(System.Globalization.CultureInfo.InvariantCulture),
+            _ => original
+        };
+        var type = malformed == MalformedDate.Text ? ClaimValueTypes.String : malformed == MalformedDate.Fraction ? ClaimValueTypes.Double : ClaimValueTypes.Integer64;
+        return new(name, value, type);
+    }
+
     /// <summary>State expiry remains for durable redemption so an expired but cryptographically valid callback can still be consumed.</summary>
     [Fact]
     public async Task Given_ExpiredNativeState_When_IdentityTokenTimeGuardRuns_Then_DurableConsumptionIsNotPreempted()
     {
-        var context = new OpenIddictClientEvents.ValidateTokenContext(Transaction()) { Principal = Principal(-LifetimeSeconds, 0) };
+        var context = new OpenIddictClientEvents.ValidateTokenContext(Transaction()) { Principal = StatePrincipal(-LifetimeSeconds, 0) };
         context.ValidTokenTypes.Add(OpenIddictConstants.TokenTypeIdentifiers.Private.StateToken);
         await new NativeClientTokenTime().HandleAsync(context);
         Assert.False(context.IsRejected);
@@ -71,7 +129,7 @@ public sealed class NativeClientTimeTests(NativeClientCredentialFixture fixture)
     private static ClaimsPrincipal State(int expires)
     {
         const int InitialAgeSeconds = 297;
-        return Principal(-InitialAgeSeconds, expires)
+        return StatePrincipal(-InitialAgeSeconds, expires)
             .SetClaim(OpenIddictConstants.Claims.Private.RegistrationId, Registration)
             .SetClaim(OpenIddictConstants.Claims.Issuer, NativeClientProfileTests.Client)
             .SetClaim(OpenIddictConstants.Claims.AuthorizationServer, NativeClientProfileTests.Issuer)
@@ -84,8 +142,13 @@ public sealed class NativeClientTimeTests(NativeClientCredentialFixture fixture)
     /// <summary>Uses a deterministic native clock rather than wall-time sleeps around exact expiration equality.</summary>
     private static OpenIddictClientTransaction Transaction() => new() { Options = new() { TimeProvider = new Clock() } };
 
-    /// <summary>Uses native private date claims as produced by cryptographic validation.</summary>
+    /// <summary>Models the public integral NumericDates retained by actual native identity-token validation.</summary>
     private static ClaimsPrincipal Principal(int created, int expires) => new ClaimsPrincipal(new ClaimsIdentity())
+        .SetClaim(OpenIddictConstants.Claims.IssuedAt, Now.AddSeconds(created).ToUnixTimeSeconds())
+        .SetClaim(OpenIddictConstants.Claims.ExpiresAt, Now.AddSeconds(expires).ToUnixTimeSeconds());
+
+    /// <summary>State keeps its separate native private date representation after internal mapping.</summary>
+    private static ClaimsPrincipal StatePrincipal(int created, int expires) => new ClaimsPrincipal(new ClaimsIdentity())
         .SetCreationDate(Now.AddSeconds(created)).SetExpirationDate(Now.AddSeconds(expires));
 
     /// <summary>Supplies a stable native observation instant to every boundary sample.</summary>

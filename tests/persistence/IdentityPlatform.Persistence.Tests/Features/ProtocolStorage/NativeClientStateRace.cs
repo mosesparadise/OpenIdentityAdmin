@@ -21,24 +21,30 @@ internal static class NativeClientStateRace
         Task? waiting = null;
         using var observation = CancellationTokenSource.CreateLinkedTokenSource(token);
         var observed = false;
+        var phase = NativeRaceCleanup.Phase.WinnerLock;
         ExceptionDispatchInfo? failure = null;
         try
         {
             await RequireSignalAsync(reserved.Task, winner, token);
+            phase = NativeRaceCleanup.Phase.PeerLock;
             var session = new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously);
             second.GetRequiredService<NativeClientStateQueries>().BeforeLock = session;
             peer = NativeClientStateQuotas.AttemptAsync(second, token);
-            await RequireSignalAsync(session.Task, peer, token);
+            await RequireSignalAsync(session.Task, peer, token, winner);
+            phase = NativeRaceCleanup.Phase.BlockedPeer;
             waiting = observer.WaitAsync(await session.Task, await reserved.Task, observation.Token);
-            if (await Task.WhenAny(waiting, peer).WaitAsync(token) == waiting)
+            if (await Task.WhenAny(waiting, peer, winner).WaitAsync(token) == waiting)
             {
                 await waiting;
                 observed = true;
             }
+            await NativeRaceCleanup.RequirePendingAsync(winner);
+            phase = NativeRaceCleanup.Phase.ReleaseJoin;
         }
         catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
         finally
         {
+            NativeRaceCleanup.Report(phase, observed, winner, peer);
             await NativeRaceCleanup.CompleteAsync(release, observation, waiting, winner, peer, failure);
         }
         Assert.True(observed);
@@ -47,9 +53,13 @@ internal static class NativeClientStateRace
     }
 
     /// <summary>Fails immediately if a competitor exits before reaching its intended database observation boundary.</summary>
-    private static async Task RequireSignalAsync(Task signal, Task operation, CancellationToken token)
+    private static async Task RequireSignalAsync(Task signal, Task operation, CancellationToken token, Task? winner = null)
     {
-        await Task.WhenAny(signal, operation).WaitAsync(token);
+        await Task.WhenAny(signal, operation, winner ?? operation).WaitAsync(token);
+        if (winner is not null)
+        {
+            await NativeRaceCleanup.RequirePendingAsync(winner);
+        }
         if (!signal.IsCompleted)
         {
             await operation;

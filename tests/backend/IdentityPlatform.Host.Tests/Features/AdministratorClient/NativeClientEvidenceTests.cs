@@ -36,4 +36,28 @@ public sealed class NativeClientEvidenceTests
         Assert.Same(primary ? original : (Exception)secondary, error);
         Assert.True(peer.Task.IsCompletedSuccessfully);
     }
+    /// <summary>A completed held winner stops peer observation immediately; an original failure is never replaced by a generic phase error.</summary>
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Given_HeldWinner_When_ItCompletesBeforeRelease_Then_ObservationStopsWithTheOriginalFailure(bool faulted)
+    {
+        var failure = new NotSupportedException();
+        var pending = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        await NativeRaceCleanup.RequirePendingAsync(pending.Task);
+        Assert.False(pending.Task.IsCompleted);
+        var winner = faulted ? Task.FromException(failure) : Task.CompletedTask;
+        var error = await Record.ExceptionAsync(() => NativeRaceCleanup.RequirePendingAsync(winner));
+        if (faulted)
+        {
+            Assert.Same(failure, error);
+        }
+        else
+        {
+            Assert.IsType<InvalidOperationException>(error);
+        }
+        pending.SetResult();
+        await pending.Task;
+    }
+
 }

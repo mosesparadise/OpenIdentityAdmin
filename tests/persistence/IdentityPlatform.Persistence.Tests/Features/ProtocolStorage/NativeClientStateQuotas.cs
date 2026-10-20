@@ -29,6 +29,12 @@ internal static class NativeClientStateQuotas
     private static async Task LiveRaceAsync(IServiceProvider first, IServiceProvider second, NativeLockObservation observer, CancellationToken token)
     {
         await NativeClientStateFixture.ClearAsync(first, token);
+        foreach (var root in new[] { first, second })
+        {
+            var state = await NativeClientStateFixture.GenerateAsync(root, token);
+            Assert.True(await NativeClientStateFixture.ValidateAsync(root, state, token));
+        }
+        await NativeClientStateFixture.ClearAsync(first, token);
         await NativeClientStateQuotaFixture.FillAsync(first, LiveBefore, NativeClientStateQuotaFixture.Kind.Live, token);
         await NativeClientStateRace.VerifyAsync(first, second, observer, token);
         Assert.Equal(LiveLimit, await NativeClientStateFixture.CountAsync(second, token));
