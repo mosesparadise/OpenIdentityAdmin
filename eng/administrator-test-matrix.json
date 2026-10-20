@@ -551,7 +551,16 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: ChallengeMethod)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Client)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Redirect)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Verifier)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Verifier)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"PostgreSql\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"PostgreSql\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLoggingTests.Given_TraceDiagnosticsEnabled_When_NativeExchangeAndReplayRun_Then_ObservedCredentialsNeverEnterMessagesOrScopes(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: True, mode: BeforeCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: True, mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: True, mode: CommitObservation)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: BeforeCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: CommitObservation)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1209,7 +1218,16 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: ChallengeMethod)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Client)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Redirect)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Verifier)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Verifier)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"SqlServer\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"SqlServer\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLoggingTests.Given_TraceDiagnosticsEnabled_When_NativeExchangeAndReplayRun_Then_ObservedCredentialsNeverEnterMessagesOrScopes(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: True, mode: BeforeCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: True, mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: True, mode: CommitObservation)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: BeforeCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: CommitObservation)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -25955,6 +25973,376 @@
         "parameterTypeFullNames": [
           "System.String",
           "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+ExchangeChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"PostgreSql\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCreationTests",
+        "methodName": "Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"SqlServer\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCreationTests",
+        "methodName": "Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"PostgreSql\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCreationTests",
+        "methodName": "Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCreationTests.Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry(provider: \"SqlServer\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCreationTests",
+        "methodName": "Given_StateCommitted_When_CommitObservationOrChildCleanupFails_Then_NoChallengeIsPublishedAndFreshRootReconcilesWithoutRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLoggingTests.Given_TraceDiagnosticsEnabled_When_NativeExchangeAndReplayRun_Then_ObservedCredentialsNeverEnterMessagesOrScopes(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLoggingTests",
+        "methodName": "Given_TraceDiagnosticsEnabled_When_NativeExchangeAndReplayRun_Then_ObservedCredentialsNeverEnterMessagesOrScopes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLoggingTests.Given_TraceDiagnosticsEnabled_When_NativeExchangeAndReplayRun_Then_ObservedCredentialsNeverEnterMessagesOrScopes(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientLoggingTests",
+        "methodName": "Given_TraceDiagnosticsEnabled_When_NativeExchangeAndReplayRun_Then_ObservedCredentialsNeverEnterMessagesOrScopes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: True, mode: BeforeCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: True, mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: True, mode: CommitObservation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: BeforeCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"PostgreSql\", authorization: False, mode: CommitObservation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: True, mode: BeforeCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: True, mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: True, mode: CommitObservation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: BeforeCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceCompletionTests.Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled(provider: \"SqlServer\", authorization: False, mode: CommitObservation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuanceCompletionTests",
+        "methodName": "Given_DurableConsumptionAndNativeGeneration_When_IssuanceCompletionFails_Then_NoOutputEscapesAndCommittedOutcomeIsReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuanceFailureMode"
         ]
       },
       "traits": [

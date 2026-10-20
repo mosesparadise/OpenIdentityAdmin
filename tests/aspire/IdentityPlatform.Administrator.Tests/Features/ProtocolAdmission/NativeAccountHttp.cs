@@ -35,6 +35,8 @@ internal static class NativeAccountHttp
         await using var output = new MemoryStream();
         await using var requestScope = (services ?? scenario.Services).CreateAsyncScope();
         var http = Create(scenario, path, fields, input, cookie, token);
+        var lifetime = new NativeRequestLifetime(token);
+        http.Features.Set<IHttpRequestLifetimeFeature>(lifetime);
         http.RequestServices = requestScope.ServiceProvider;
         var completion = new NativeHttpCompletion();
         http.Features.Set<IHttpResponseFeature>(completion);
@@ -50,9 +52,10 @@ internal static class NativeAccountHttp
                 }
                 catch (Exception error) { result.Failure = error; throw; }
             });
-            result.Claimed = http.Response.StatusCode is StatusCodes.Status200OK or StatusCodes.Status201Created or StatusCodes.Status302Found;
+            result.Claimed = !lifetime.Aborted && http.Response.StatusCode is StatusCodes.Status200OK or StatusCodes.Status201Created or StatusCodes.Status302Found;
         }
         finally { await completion.CompleteAsync(); }
+        result.Aborted = lifetime.Aborted;
         result.Status = http.Response.StatusCode;
         result.Body = output.ToArray();
         result.ContentType = http.Response.ContentType;
@@ -110,6 +113,10 @@ internal static class NativeAccountHttp
 /// <summary>Retains synthetic response material in memory without a generated credential-bearing ToString implementation.</summary>
 internal sealed class NativeAccountResult
 {
+    internal bool Aborted
+    {
+        get; set;
+    }
     internal string? ContentType
     {
         get; set;
