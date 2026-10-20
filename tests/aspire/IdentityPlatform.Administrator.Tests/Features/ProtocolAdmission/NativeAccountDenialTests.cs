@@ -71,7 +71,7 @@ public sealed class NativeAccountDenialTests(BootstrapFixture fixture)
     }
 
     /// <summary>Requires the fixed callback, original state/issuer and exactly the safe error fields, with no product cookie.</summary>
-    private static void RequireRedirect(AdministratorProtocolScenario scenario, NativeAccountResult response, string error)
+    internal static void RequireRedirect(AdministratorProtocolScenario scenario, NativeAccountResult response, string error)
     {
         RequireNoFailure(response);
         Assert.Equal(StatusCodes.Status302Found, response.Status);
@@ -87,7 +87,7 @@ public sealed class NativeAccountDenialTests(BootstrapFixture fixture)
     }
 
     /// <summary>Requires exactly the safe native code-exchange error; success token fields or redirect headers cannot survive.</summary>
-    private static void RequireJson(NativeAccountResult response, string error)
+    internal static void RequireJson(NativeAccountResult response, string error)
     {
         RequireNoFailure(response);
         Assert.Equal(StatusCodes.Status400BadRequest, response.Status);

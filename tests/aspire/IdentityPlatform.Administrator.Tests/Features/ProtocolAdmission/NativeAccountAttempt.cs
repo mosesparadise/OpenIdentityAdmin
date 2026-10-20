@@ -7,6 +7,9 @@ namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 internal sealed class NativeAccountAttempt(AdministratorProtocolScenario scenario, bool authorization, string reference,
     string? code, string consumed, (long Tokens, long Authorizations) before)
 {
+    internal string Consumed => consumed;
+    internal (long Tokens, long Authorizations) Before => before;
+
     /// <summary>Completes real PAR and optional authorization before arming an issuance-only failure.</summary>
     internal static async Task<NativeAccountAttempt> PrepareAsync(AdministratorProtocolScenario scenario, bool authorization)
     {
