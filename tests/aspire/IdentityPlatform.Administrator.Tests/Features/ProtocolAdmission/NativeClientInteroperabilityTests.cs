@@ -164,6 +164,7 @@ public sealed class NativeClientInteroperabilityTests(BootstrapFixture fixture)
     internal static void RequireAccepted(NativeClientHttpResult result)
     {
         RequireClean(result);
+        Assert.False(result.Aborted);
         Assert.True(result.Status == StatusCodes.Status200OK, string.Format(System.Globalization.CultureInfo.InvariantCulture, BaselineStatus, result.Status, result.Rejection));
         Assert.True(result.Authentication?.Succeeded == true);
     }

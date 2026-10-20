@@ -36,6 +36,10 @@ internal sealed class NativeIssuerHttpsHost : IAsyncDisposable
     {
         get; set;
     }
+    internal NativeRequestPause? Pause
+    {
+        get; set;
+    }
     internal Uri Issuer { get; private set; } = null!;
     internal long Requests => Interlocked.Read(ref nextRequest);
     internal int ParSends => Volatile.Read(ref parSends);
@@ -115,6 +119,10 @@ internal sealed class NativeIssuerHttpsHost : IAsyncDisposable
     {
         var path = http.Request.Path.Value!;
         Count(path);
+        if (Pause is { } pause && await pause.TryPauseAsync(http))
+        {
+            return;
+        }
         var fault = Selected;
         if (Reject(http, path, fault))
         {

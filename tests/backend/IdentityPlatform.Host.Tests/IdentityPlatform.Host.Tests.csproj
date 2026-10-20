@@ -36,4 +36,5 @@
   <ItemGroup><Compile Include="../../shared/NativeRaceCleanup.cs" Link="Fixtures/NativeRaceCleanup.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/NativeClientRejection.cs" Link="Fixtures/NativeClientRejection.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/NativeLostResponse.cs" Link="Fixtures/NativeLostResponse.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeRequestPause.cs" Link="Fixtures/NativeRequestPause.cs" /></ItemGroup>
 </Project>

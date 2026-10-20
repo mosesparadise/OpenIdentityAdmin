@@ -1,5 +1,7 @@
 # Tasks: Administrator issuer/client integration
 
+**Current state-key/cancellation continuation (20 October):** [native correction and explicit HTTPS cancellation](native-client-cancellation.md) records 59/60 admission passes per provider at `9a9fc45`, with the missing-retained-signer native exception preserved. The narrow compatibility fix has an unchanged-test original-fail/corrected-pass reproduction; all 1,126 local Host controls pass. Four new provider cancellation cases await hosted execution. Continue coherent T005–T009/B2 acceptance; PR #66 remains draft and all external gates remain open.
+
 **Current durable-client continuation (20 October):** [reached denial controls and credential reload](native-client-reload.md) records both-provider positive callback, awaited-mutation and concurrent-callback progress at `50d8bb7`, with five later admission failures per provider preserved. Reviewed test corrections and persisted-state reload/retained-key controls are under verification. Continue coherent T005–T009 acceptance; PR #66 remains draft/unmerged and all external gates remain open.
 
 **Current native ID-token correction (20 October):** [public-date regression and signed-response controls](native-client-identity.md) records a real native original-fail/corrected-pass defect: ID tokens retain public `iat`/`exp`, while state uses private mapped dates. Strict public-date handling, hostile signed-response provider tests and improved quota-race observation are under verification. PR #66 stays draft/unmerged; continue coherent T005–T009 acceptance.

@@ -62,11 +62,13 @@ internal sealed class NativeClientHttp : IAsyncDisposable
     }
 
     /// <summary>Runs a real named native handler under the production response/storage boundary and completes the original host callbacks.</summary>
-    internal async Task<NativeClientHttpResult> InvokeAsync(Uri? callback = null, string? cookie = null)
+    internal async Task<NativeClientHttpResult> InvokeAsync(Uri? callback = null, string? cookie = null, CancellationToken? cancellation = null)
     {
         await using var initial = Services.CreateAsyncScope();
         var uri = callback ?? new Uri(profile.ClientUri, ChallengePath);
-        var http = new DefaultHttpContext { RequestServices = initial.ServiceProvider, RequestAborted = TestContext.Current.CancellationToken };
+        var lifetime = new NativeRequestLifetime(cancellation ?? TestContext.Current.CancellationToken);
+        var http = new DefaultHttpContext { RequestServices = initial.ServiceProvider };
+        http.Features.Set<IHttpRequestLifetimeFeature>(lifetime);
         http.Request.Scheme = uri.Scheme;
         http.Request.Host = new HostString(uri.Host, uri.Port);
         http.Request.Path = uri.AbsolutePath;
@@ -100,6 +102,7 @@ internal sealed class NativeClientHttp : IAsyncDisposable
         result.Cookies = http.Response.Headers.SetCookie.Where(value => value is not null).Select(value => value!).ToArray();
         result.Cookie = string.Join(CookieSeparator, result.Cookies.Select(value => value.Split(';')[0]));
         result.BodyLength = output.Length;
+        result.Aborted = lifetime.Aborted;
         return result;
     }
 
@@ -139,6 +142,10 @@ internal sealed class NativeClientHttp : IAsyncDisposable
 /// <summary>Keeps synthetic authentication material in memory without credential-bearing record formatting.</summary>
 internal sealed class NativeClientHttpResult
 {
+    internal bool Aborted
+    {
+        get; set;
+    }
     internal string Rejection { get; set; } = NativeClientRejection.None;
     internal int Status
     {

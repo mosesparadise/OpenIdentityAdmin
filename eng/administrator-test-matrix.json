@@ -518,7 +518,9 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"PostgreSql\", concurrent: False, expiredSeconds: 301)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientIdentityTests.Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientReloadTests.Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange(provider: \"PostgreSql\", replace: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientReloadTests.Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange(provider: \"PostgreSql\", replace: True)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientReloadTests.Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange(provider: \"PostgreSql\", replace: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"PostgreSql\", tokenExchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"PostgreSql\", tokenExchange: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1143,7 +1145,9 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientLifetimeTests.Given_DurableCallback_When_ExpirationOrConcurrentDeliveryOccurs_Then_ConsumptionBoundsTokenExchange(provider: \"SqlServer\", concurrent: False, expiredSeconds: 301)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientIdentityTests.Given_ActualSignedIdentityResponse_When_OneBindingChanges_Then_NativeClientDeniesAndConsumedStateCannotResubmit(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientReloadTests.Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange(provider: \"SqlServer\", replace: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientReloadTests.Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange(provider: \"SqlServer\", replace: True)"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientReloadTests.Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange(provider: \"SqlServer\", replace: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"SqlServer\", tokenExchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"SqlServer\", tokenExchange: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -24502,6 +24506,86 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
         "typeName": "NativeClientReloadTests",
         "methodName": "Given_PersistedPendingCallback_When_ClientRootsAndStateKeysAreReloaded_Then_OnlyCapableKeysCompleteOneExchange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"PostgreSql\", tokenExchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCancellationTests",
+        "methodName": "Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"SqlServer\", tokenExchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCancellationTests",
+        "methodName": "Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"PostgreSql\", tokenExchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCancellationTests",
+        "methodName": "Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeClientCancellationTests.Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate(provider: \"SqlServer\", tokenExchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeClientCancellationTests",
+        "methodName": "Given_ActualNativeHttps_When_ParOrTokenRequestIsExplicitlyCancelled_Then_ObservedDisconnectCannotRetryOrAuthenticate",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

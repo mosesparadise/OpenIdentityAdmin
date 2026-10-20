@@ -55,10 +55,21 @@ internal static class Setup
             options.TokenValidationParameters.ValidIssuers = [profile.ClientUri.AbsoluteUri];
         });
         client.AddRegistration(Registration(profile, credentials));
+        StateValidation(client);
         StateExpiration(client);
         Handlers(client);
         Transport(client);
         NativeClientTransportOwnership.Add(client);
+    }
+
+    /// <summary>Retains native filters/order and cryptography while correcting only its pre-registration state-key refresh lookup.</summary>
+    private static void StateValidation(OpenIddictClientBuilder client)
+    {
+        var validation = OpenIddictClientHandlers.Protection.ValidateIdentityModelToken.Descriptor;
+        client.RemoveEventHandler(validation);
+        client.Services.AddSingleton<OpenIddictClientHandlers.Protection.ValidateIdentityModelToken>();
+        client.AddEventHandler(OpenIddictClientHandlerDescriptor.CreateBuilder<OpenIddictClientEvents.ValidateTokenContext>()
+            .Import(validation).UseSingletonHandler<NativeClientStateValidation>().SetType(OpenIddictClientHandlerType.Custom).Build());
     }
 
     /// <summary>Defers only the fixed native callback state's expiration denial until its durable consumption; all other native lifetime handling stays intact.</summary>

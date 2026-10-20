@@ -53,4 +53,5 @@
   <ItemGroup><Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/NativeLockObservation.cs" Link="Fixtures/Protocol/NativeLockObservation.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/NativeRaceCleanup.cs" Link="Fixtures/NativeRaceCleanup.cs" /></ItemGroup>
   <ItemGroup><Compile Include="../../shared/NativeClientRejection.cs" Link="Fixtures/NativeClientRejection.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeRequestPause.cs" Link="Fixtures/NativeRequestPause.cs" /></ItemGroup>
 </Project>
