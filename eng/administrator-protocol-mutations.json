@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "protocol-current-authority",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs",
+      "before": "return grants.Permissions(ownership.UserId).Count > 0 && IsCurrent(clock, token, out var now) ? now : null;",
+      "after": "return IsCurrent(clock, token, out var now) ? now : null;",
+      "marker": "protocol-current-authority-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny"
+    },
+    {
+      "id": "protocol-assertion-replay",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs",
+      "before": "var ledger = owner.Database.Set<AdministratorClientAssertionUse>();",
+      "after": "var ledger = owner.Database.Set<AdministratorClientAssertionUse>();\n            if (await ledger.AnyAsync(row => row.Digest == assertion.Digest, cancellation))\n            {\n                return now;\n            }",
+      "marker": "protocol-assertion-replay-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued"
+    },
+    {
+      "id": "protocol-profile-binding",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs",
+      "before": "        ReadInteger(code, ProfileRevision) == revision &&\n",
+      "after": "",
+      "marker": "protocol-profile-binding-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued"
+    }
+  ]
+}

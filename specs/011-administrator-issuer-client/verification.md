@@ -1,4 +1,8 @@
-# B2 planning and future implementation evidence
+# B2 verification and historical planning evidence
+
+**20 October implementation reconciliation:** the [B2 acceptance map](b2-acceptance-map.md) binds FR-001–013, SC-001–006 and T005–T026 to concrete source and controls. [Final boundary evidence](native-budget-replay-and-restore.md) adds native quota/expiry/PAR contention and scoped restored-state consequences. Final exact-head runtime/coverage/mutation review and conditional normal squash remain pending; no production, historical or human/release gate closes here. The dated records below preserve their earlier planning/prerequisite scope.
+
+## Historical planning checkpoint
 
 15 October 2026 (Europe/London). This packet implements feature 010 T022's planning obligation. **B2 runtime scenarios remain not_run; the later prerequisite section records dependency/API work only.** B1 remains accepted in PR #52 (`ca410c01`), recorded by PR #54 (`b17e4a7`). This file cannot self-certify its future planning commit; the delivery PR records exact checks/head/squash.
 

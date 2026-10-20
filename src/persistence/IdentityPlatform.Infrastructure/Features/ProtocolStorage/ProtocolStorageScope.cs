@@ -25,12 +25,13 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
     }
 
     /// <summary>Allocates a tracked child synchronously without blocking on native context activation.</summary>
-    internal static ProtocolStorageScope Create(IServiceScopeFactory factory, ProtocolStorageRequest original)
+    internal static ProtocolStorageScope Create(IServiceScopeFactory factory, ProtocolStorageRequest original, Action<Task>? failedAcquisition = null)
     {
         original.RequireCurrent();
         var child = factory.CreateAsyncScope();
         try
         {
+            child.ServiceProvider.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.Owned);
             var result = new ProtocolStorageScope(child, child.ServiceProvider.GetRequiredService<ProtocolStorageOwner>());
             original.Track(result);
             return result;
@@ -41,6 +42,7 @@ internal sealed class ProtocolStorageScope : IAsyncDisposable
             var cleanup = child.DisposeAsync().AsTask();
             original.Track(cleanup);
             ProtocolStorageQuarantine.Retain(cleanup);
+            failedAcquisition?.Invoke(cleanup);
             throw;
         }
     }

@@ -4,6 +4,8 @@ using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol;
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.AuthServer.Features.Storage;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.ServiceDefaults;
@@ -26,17 +28,22 @@ internal static class Setup
         startup.Credentials = builder.Services.AddIssuer(builder.Configuration);
         startup.AdministratorEnabled = AdministratorConfiguration.IsEnabled(builder.Configuration, startup.Credentials);
         startup.PilotEnabled = PilotConfiguration.IsEnabled(builder.Configuration, builder.Environment, startup.Credentials);
+        startup.AdministratorProtocol = AdministratorProtocolConfiguration.Read(builder.Configuration, startup.AdministratorEnabled, startup.Credentials);
         if (startup.InitializePilot && !startup.PilotEnabled)
         {
             throw new PilotConfigurationException();
         }
         if (startup.PilotEnabled)
         {
-            builder.Services.AddFirstPartyPilot(startup.Credentials!, startup.AdministratorEnabled);
+            builder.Services.AddPilotServices();
         }
-        else if (startup.AdministratorEnabled)
+        if (startup.PilotEnabled || startup.AdministratorEnabled)
         {
-            builder.Services.AddAccounts(pilot: false, administrator: true);
+            builder.Services.AddAccounts(startup.PilotEnabled, startup.AdministratorEnabled);
+        }
+        if (startup.PilotEnabled || startup.AdministratorProtocol is not null)
+        {
+            builder.Services.AddProtocol(startup.Credentials!, new ProtocolProfiles(startup.PilotEnabled, startup.AdministratorProtocol));
         }
         if (startup.AdministratorEnabled)
         {
@@ -53,9 +60,17 @@ internal static class Setup
             app.UseRouting();
             app.UseRequestTimeouts();
             app.UseAccountProtection(startup.PilotEnabled);
+            if (startup.AdministratorProtocol is not null)
+            {
+                app.UseProtocolHosting();
+            }
             app.UseAuthentication();
             app.UseAuthorization();
-            if (startup.PilotEnabled)
+            if (startup.AdministratorProtocol is not null)
+            {
+                app.MapSharedProtocol();
+            }
+            else if (startup.PilotEnabled)
             {
                 app.MapProtocol();
             }

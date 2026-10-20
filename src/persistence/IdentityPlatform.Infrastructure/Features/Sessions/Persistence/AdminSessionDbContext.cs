@@ -1,4 +1,5 @@
 using IdentityPlatform.Database;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
@@ -16,5 +17,6 @@ public sealed class AdminSessionDbContext(DbContextOptions<AdminSessionDbContext
         const string SessionSchema = "bff";
         modelBuilder.HasDefaultSchema(SessionSchema);
         AdminSessionModel.Configure(modelBuilder, ProviderOptions.Provider(options).Model);
+        AdministratorProtocolModel.ConfigureSessions(modelBuilder, ProviderOptions.Provider(options).Model);
     }
 }

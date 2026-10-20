@@ -11,6 +11,7 @@ internal sealed class NativeClientScope : IServiceScope, IAsyncDisposable
     private readonly ProtocolStorageAmbient binding;
     private readonly object sync = new();
     private Task? cleanup;
+    private Task? acquisitionCleanup;
     public IServiceProvider ServiceProvider => scope.Services;
 
     /// <summary>Captures the caller capability synchronously before the native service resolves any child service.</summary>
@@ -21,7 +22,7 @@ internal sealed class NativeClientScope : IServiceScope, IAsyncDisposable
         lease = parent.Scope.Owner.BeginChild();
         try
         {
-            scope = ProtocolStorageScope.Create(factory, parent.Request);
+            scope = ProtocolStorageScope.Create(factory, parent.Request, cleanup => acquisitionCleanup = cleanup);
             binding = new(parent.Request, scope);
             scope.Services.GetRequiredService<NativeClientActivation>().Scope = this;
         }
@@ -34,10 +35,23 @@ internal sealed class NativeClientScope : IServiceScope, IAsyncDisposable
             }
             else
             {
-                lease.Dispose();
+                ProtocolStorageQuarantine.Retain(ReleaseAcquisitionAsync());
             }
             throw;
         }
+    }
+
+    /// <summary>Retains parent suspension when service resolution fails after a child has already acquired disposable resources.</summary>
+    private async Task ReleaseAcquisitionAsync()
+    {
+        try
+        {
+            if (acquisitionCleanup is not null)
+            {
+                await acquisitionCleanup;
+            }
+        }
+        finally { lease.Dispose(); }
     }
 
     /// <summary>Publishes the new child only in the native service's current execution context.</summary>

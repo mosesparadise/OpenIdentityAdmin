@@ -44,11 +44,11 @@ class AdministratorSelectionTests(unittest.TestCase):
 
 class AdministratorStoryTests(unittest.TestCase):
     def setUp(self):
-        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures')},
-                       'profiles': {p: {'Administrator': 9} for p in ('PostgreSql', 'SqlServer')}}
+        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission')},
+                       'profiles': {p: {'Administrator': 10} for p in ('PostgreSql', 'SqlServer')}}
         self.catalogue = {p + s: (p + s, p, False, 'IdentityPlatform.Administrator.Tests.Features.' + s, None)
-                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures')}
-        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures')] for p in ('PostgreSql', 'SqlServer')}
+                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission')}
+        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission')] for p in ('PostgreSql', 'SqlServer')}
         self.selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
 
     def verify(self):
@@ -56,7 +56,7 @@ class AdministratorStoryTests(unittest.TestCase):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
+        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1), ('ProtocolAdmission', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
         self.assertEqual([('Factors', 1)], administrator_invocations(self.matrix, 'PostgreSql', 'Factors'))
         for story in ('Restart', 'Unknown'):
             with self.assertRaises(ValueError): administrator_invocations(self.matrix, 'PostgreSql', story)
@@ -76,7 +76,7 @@ class AdministratorStoryTests(unittest.TestCase):
                 elif change == 'balanced-drift':
                     stories['Factors']['SqlServer'] = 2
                     stories['Bootstrap']['SqlServer'] = 2
-                    self.matrix['profiles']['SqlServer']['Administrator'] = 11
+                    self.matrix['profiles']['SqlServer']['Administrator'] = 12
                 with self.assertRaises(ValueError): self.verify()
 
     def test_complete_inventory_and_exact_story_selection_remain_mandatory(self):
@@ -94,6 +94,51 @@ class AdministratorStoryTests(unittest.TestCase):
                     row = self.catalogue['SqlServerBootstrap']
                     self.catalogue['SqlServerBootstrap'] = (*row[:3], 'IdentityPlatform.Administrator.Tests.Features.Factors', None)
                 with self.assertRaises(ValueError): self.verify()
+
+
+class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
+    """Keep the new admission partition mandatory and isolated without substituting aggregate counts."""
+    def test_Given_AdmissionStory_When_SelectingEitherProvider_Then_OnlyExactRunIdentitiesPass(self):
+        for provider in ('PostgreSql', 'SqlServer'):
+            self.setUp()
+            name = provider + 'ProtocolAdmission'
+            selected = {name: self.catalogue[name]}
+            require_administrator_story(self.catalogue, selected, provider, 'ProtocolAdmission', self.matrix, self.inventory)
+            self.assertEqual([('ProtocolAdmission', 1)], administrator_invocations(self.matrix, provider, 'ProtocolAdmission'))
+            for invalid in ({}, {'stale-uid': self.catalogue[name]},
+                            {provider + 'Factors': self.catalogue[provider + 'Factors']},
+                            {'SqlServerProtocolAdmission' if provider == 'PostgreSql' else 'PostgreSqlProtocolAdmission':
+                             self.catalogue['SqlServerProtocolAdmission' if provider == 'PostgreSql' else 'PostgreSqlProtocolAdmission']}):
+                with self.assertRaises(ValueError):
+                    require_administrator_story(self.catalogue, invalid, provider, 'ProtocolAdmission', self.matrix, self.inventory)
+
+    def test_Given_BalancedTotals_When_AdmissionStoryIsRemoved_Then_SelectionRejectsIt(self):
+        del self.matrix['administrator_stories']['ProtocolAdmission']
+        for provider in ('PostgreSql', 'SqlServer'):
+            self.matrix['administrator_stories']['Factors'][provider] += 1
+            with self.assertRaises(ValueError): administrator_invocations(self.matrix, provider)
+
+    def test_Given_AdmissionCli_When_ProfilePartitionOrBrowserConflicts_Then_NoExecutionStarts(self):
+        import subprocess
+        import sys
+        script = Path(__file__).with_name('verify.py')
+        for arguments in (['unit', '--partition', 'administrator'], ['PostgreSql', '--partition', 'lifecycle'],
+                          ['SqlServer', '--partition', 'standard'], ['PostgreSql', '--partition', 'administrator', '--browser', 'chromium']):
+            result = subprocess.run([sys.executable, str(script), *arguments, '--story', 'ProtocolAdmission'],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(2, result.returncode)
+            self.assertIn('error:', result.stderr)
+
+    def test_Given_HostedAdmission_When_Configured_Then_BothProvidersRetainExistingDeadlines(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / '.github/workflows/verify.yml').read_text()
+        import re
+        verify = re.split(r'\n  [A-Za-z][\w-]*:', workflow.split('  verify:\n', 1)[1], maxsplit=1)[0]
+        self.assertIn('    timeout-minutes: 20', verify)
+        for provider in ('PostgreSql', 'SqlServer'):
+            cell = '{ profile: ' + provider + ', partition: administrator, story: ProtocolAdmission, label: administrator-' + provider + '-protocoladmission }'
+            self.assertEqual(1, verify.count(cell))
+        self.assertIn('timeout=180 if args.profile == "unit" else 660', (root / 'scripts/verify.py').read_text())
 
 
 class AdministratorBrowserSelectionTests(AdministratorStoryTests):

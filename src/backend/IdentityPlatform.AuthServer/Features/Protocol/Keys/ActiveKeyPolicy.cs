@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
@@ -7,16 +8,32 @@ using static OpenIddict.Server.OpenIddictServerEvents;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Keys;
 
+/// <summary>Selects the configured active issuer certificates while preserving native validation inventories and bounded token lifetimes.</summary>
+/// <example><code>
+/// // Invoke from the configured native GenerateTokenContext handler after credential attachment.
+/// await ActiveKeyPolicy.ApplyAsync(context, configuredIssuerCredentials);
+/// // A rejected context must remain rejected; no credential or token value is logged.
+/// </code></example>
 public static class ActiveKeyPolicy
 {
+    private const int CodeLifetimeSeconds = 60;
+    private const int TokenLifetimeSeconds = 300;
     public const string SafeDescription = "The issuer cannot issue tokens with the configured key policy.";
 
-    public static ValueTask ApplyAsync(GenerateTokenContext context, IssuerCredentials credentials)
+    /// <summary>Observes the existing active-key selection only within an owned administrator generation.</summary>
+    /// <example><code>await ActiveKeyPolicy.ApplyAsync(context, configuredIssuerCredentials);</code></example>
+    public static ValueTask ApplyAsync(GenerateTokenContext context, IssuerCredentials credentials) =>
+        NativeIssuanceProof.Find(context.Transaction) is { } proof
+            ? proof.ObserveAsync(context, entry => entry.RefreshCredentialsAsync(() => ApplyPolicyAsync(context, credentials)))
+            : ApplyPolicyAsync(context, credentials);
+
+    /// <summary>Retains the configured certificate validity and token-lifetime policy.</summary>
+    private static ValueTask ApplyPolicyAsync(GenerateTokenContext context, IssuerCredentials credentials)
     {
         var maximum = context.TokenType switch
         {
-            TokenTypeIdentifiers.Private.AuthorizationCode => 60,
-            TokenTypeIdentifiers.AccessToken or TokenTypeIdentifiers.IdentityToken or TokenTypeIdentifiers.Private.RequestToken => 300,
+            TokenTypeIdentifiers.Private.AuthorizationCode => CodeLifetimeSeconds,
+            TokenTypeIdentifiers.AccessToken or TokenTypeIdentifiers.IdentityToken or TokenTypeIdentifiers.Private.RequestToken => TokenLifetimeSeconds,
             _ => 0
         };
         var encrypted = context.TokenType is TokenTypeIdentifiers.Private.AuthorizationCode or TokenTypeIdentifiers.Private.RequestToken;
@@ -47,6 +64,7 @@ public static class ActiveKeyPolicy
         return ValueTask.CompletedTask;
     }
 
+    /// <summary>Requires the configured certificate to be valid at the observed issuance instant.</summary>
     private static bool ValidNow(X509Certificate2 certificate, DateTimeOffset now) =>
         now >= certificate.NotBefore.ToUniversalTime() && now < certificate.NotAfter.ToUniversalTime();
 }

@@ -1,6 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../../persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
     <ProjectReference Include="../IdentityPlatform.Migrations.PostgreSql/IdentityPlatform.Migrations.PostgreSql.csproj" />
     <ProjectReference Include="../IdentityPlatform.Migrations.SqlServer/IdentityPlatform.Migrations.SqlServer.csproj" />

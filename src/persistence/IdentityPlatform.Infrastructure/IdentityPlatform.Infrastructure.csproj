@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.Migrator" />
     <InternalsVisibleTo Include="IdentityPlatform.Admin.Bff" />
     <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
@@ -7,6 +8,7 @@
     <InternalsVisibleTo Include="IdentityPlatform.Governance.Driver" />
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.NativeClient.Driver" />
   </ItemGroup>
   <ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup>
   <ItemGroup>

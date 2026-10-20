@@ -55,6 +55,7 @@ internal sealed class ProtocolStorageTransaction(ProtocolStorageOwner owner, Pro
             using var execution = owner.Enter(phase, token, write: true);
             owner.RequireNoReaders();
             execution.RequireCurrent();
+            phase.CommitAttempted = true;
             await transaction!.CommitAsync(execution.Token);
             owner.CompleteCommit(phase, execution.Token);
         }
@@ -108,15 +109,7 @@ internal sealed class ProtocolStorageTransaction(ProtocolStorageOwner owner, Pro
         catch (Exception error) { failures.Add(error); }
         try
         {
-            using var execution = await owner.EnterCleanupAsync(phase);
-            try
-            {
-                if (transaction is not null)
-                {
-                    await transaction.DisposeAsync();
-                }
-            }
-            finally { if (connection is not null) { await connection.DisposeAsync(); } }
+            await DisposeResourcesAsync();
         }
         catch (Exception error) { owner.Fail(); failures.Add(error); }
         finally { owner.EndPhase(phase); }
@@ -124,5 +117,32 @@ internal sealed class ProtocolStorageTransaction(ProtocolStorageOwner owner, Pro
         {
             throw new AggregateException(CleanupMessage, failures);
         }
+        phase.CleanupCompleted = true;
     }
+    /// <summary>Records definite rollback only before any commit attempt; disposal alone never proves the database outcome.</summary>
+    private async Task DisposeResourcesAsync()
+    {
+        using var execution = await owner.EnterCleanupAsync(phase);
+        try
+        {
+            if (transaction is not null)
+            {
+                try
+                {
+                    if (!phase.CommitAttempted)
+                    {
+                        if (!ReferenceEquals(owner.Database.Database.CurrentTransaction, transaction))
+                        {
+                            throw ProtocolStorageOwner.Unavailable();
+                        }
+                        await transaction.RollbackAsync(execution.Token);
+                        phase.RolledBack = true;
+                    }
+                }
+                finally { await transaction.DisposeAsync(); }
+            }
+        }
+        finally { if (connection is not null) { await connection.DisposeAsync(); } }
+    }
+
 }

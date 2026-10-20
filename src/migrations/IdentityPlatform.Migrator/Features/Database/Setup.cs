@@ -19,7 +19,7 @@ internal static class Setup
     {
         var provider = DatabaseProviderRegistration.Providers.Select(builder.Configuration[ProviderSetting]);
         var platform = builder.Configuration[PlatformConnectionSetting] ?? "";
-        if (builder.Configuration.IsAdministratorBootstrap())
+        if (builder.Configuration.SelectedOperation() != MigratorOperation.Upgrade)
         {
             builder.Services.AddIdentityPersistence(provider, platform);
         }

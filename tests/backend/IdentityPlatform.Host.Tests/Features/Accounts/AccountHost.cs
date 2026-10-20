@@ -26,12 +26,13 @@ internal sealed class AccountHost : IAsyncDisposable
     internal IServiceProvider Services => app!.Services;
 
     /// <summary>Starts the exact host setup with independent feature switches; unwinds credentials if startup fails.</summary>
-    internal static async Task<AccountHost> StartAsync(bool pilot, bool administrator, Action<WebApplication>? configure = null, Action<IServiceCollection>? configureServices = null)
+    internal static async Task<AccountHost> StartAsync(bool pilot, bool administrator, Action<WebApplication>? configure = null, Action<IServiceCollection>? configureServices = null, Action<IConfiguration>? configureConfiguration = null)
     {
         var host = new AccountHost();
         try
         {
             var builder = host.Builder(pilot, administrator);
+            configureConfiguration?.Invoke(builder.Configuration);
             builder.AddConfigurations().ConfigureServices(host.startup);
             configureServices?.Invoke(builder.Services);
             host.app = builder.Build();

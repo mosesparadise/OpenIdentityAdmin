@@ -41,7 +41,8 @@ public sealed class NativeOwnershipTests
             Assert.Equal(0, await DatabaseUpgrade.RunAsync(migrator, deadline.Token));
         }
         await fixture.PrepareRuntimePrincipals(deadline.Token);
-        await using var root = CreateRoot(fixture, store);
+        using var material = new NativeAssertionMaterial();
+        await using var root = CreateRoot(fixture, store, material);
         await using (var owned = await NativeOwnershipConformance.OpenAsync(root, deadline.Token))
         {
             var expected = store == DatabaseStore.Platform ? (DbContext)owned.Services.GetRequiredService<PlatformDbContext>() : owned.Services.GetRequiredService<AdminSessionDbContext>();
@@ -50,10 +51,45 @@ public sealed class NativeOwnershipTests
         }
         await NativeOwnershipConformance.VerifyAsync(root, deadline.Token);
         await NativeRequestConformance.VerifyAsync(root, deadline.Token);
+        await NativeConsumptionConformance.VerifyAsync(root, store, deadline.Token);
+        await NativeConsumptionBindings.VerifyAsync(root, store, deadline.Token);
+        await NativeConsumptionRows.VerifyAsync(root, store, deadline.Token);
+        await using var independent = CreateRoot(fixture, store, material);
+        await NativeConsumptionRaces.VerifyAsync(root, independent, store, new NativeLockObservation(name, connection), deadline.Token);
+        if (store == DatabaseStore.Platform)
+        {
+            await NativeConsumptionReceipts.VerifyAsync(root, independent, deadline.Token);
+            await NativeAssertionAuthentication.VerifyAsync(fixture, material, deadline.Token);
+            await NativeAssertionLedger.VerifyAsync(root, independent, deadline.Token);
+            await NativeTokenBudgets.VerifyAsync(root, independent, new NativeLockObservation(name, connection), deadline.Token);
+        }
+        await NativeConsumptionBoundaries.VerifyAsync(root, store, deadline.Token);
+    }
+
+    /// <summary>Exercises native client-state cryptography, cleanup substitutions and serialized hard budgets with isolated runtime grants.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Given_NativeClientState_When_CreationAndQuotaBoundariesAreExercised_Then_OnlyVerifiedBoundedStateCommits(string name)
+    {
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        deadline.CancelAfter(TimeSpan.FromMinutes(DeadlineMinutes));
+        await using var postgres = new PostgreSqlBuilder(PostgresImage).Build();
+        await using var sql = new MsSqlBuilder(SqlImage).Build();
+        var connection = name == Postgres ? await StartPostgresAsync(postgres, deadline.Token) : await StartSqlAsync(sql, deadline.Token);
+        var fixture = NativeProviderFixtures.Create(name, connection);
+        await using (var migrator = new ServiceCollection().AddLogging().AddPlatformPersistence(fixture.Provider, connection, connection)
+            .BuildServiceProvider(validateScopes: true))
+        {
+            Assert.Equal(0, await DatabaseUpgrade.RunAsync(migrator, deadline.Token));
+        }
+        await fixture.PrepareRuntimePrincipals(deadline.Token);
+        await NativeClientStateCreation.VerifyAsync(fixture, deadline.Token);
+        await NativeClientStateQuotas.VerifyAsync(fixture, new NativeLockObservation(name, connection), deadline.Token);
     }
 
     /// <summary>Selects native context composition explicitly; production registration remains unchanged.</summary>
-    internal static ServiceProvider CreateRoot(NativeProviderFixture fixture, DatabaseStore store)
+    internal static ServiceProvider CreateRoot(NativeProviderFixture fixture, DatabaseStore store, NativeAssertionMaterial material)
     {
         var services = new ServiceCollection().AddLogging().AddPlatformPersistence(fixture.Provider,
             fixture.RuntimeConnection(DatabaseStore.Platform), fixture.RuntimeConnection(DatabaseStore.Sessions));
@@ -62,9 +98,22 @@ public sealed class NativeOwnershipTests
             services.AddOpenIddict().AddCore(core => core.UseEntityFrameworkCore().UseDbContext<AdminSessionDbContext>());
         }
         services.AddSingleton<CancelNativeUpdate>();
-        services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>()));
-        services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>()));
+        services.AddSingleton<NativeConsumptionClock>();
+        services.AddSingleton<TimeProvider>(provider => provider.GetRequiredService<NativeConsumptionClock>());
+        services.AddSingleton<NativeConsumptionCommit>();
+        services.AddSingleton<NativeConsumptionRead>();
+        services.AddSingleton<NativeRegistrationAuditFailure>();
+        services.AddSingleton<NativeTokenCleanupFault>();
+        services.AddSingleton<NativeRedemptionBarrier>();
+        services.AddDbContext<PlatformDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
+            provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>(),
+            provider.GetRequiredService<NativeRegistrationAuditFailure>(), provider.GetRequiredService<NativeTokenCleanupFault>(),
+            provider.GetRequiredService<NativeConsumptionRead>()));
+        services.AddDbContext<AdminSessionDbContext>((provider, options) => options.AddInterceptors(provider.GetRequiredService<CancelNativeUpdate>(),
+            provider.GetRequiredService<NativeConsumptionCommit>(), provider.GetRequiredService<NativeRedemptionBarrier>()));
         services.AddProtocolStorageOwnership();
+        services.AddSingleton(material.Policy);
+        NativeConsumptionSetup.Configure(services, store);
         return services.BuildServiceProvider(validateScopes: true);
     }
 

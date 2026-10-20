@@ -12,8 +12,8 @@ public sealed class SqlServerDatabaseProvider : IRelationalDatabaseProvider
     private const string DesignConnection = "Server=localhost;Database=design_time_only;Integrated Security=true";
     private const string MigrationAssembly = "IdentityPlatform.Migrations.SqlServer";
     private const int CommandSeconds = 30;
-    private static readonly IReadOnlyList<string> PlatformMigrations = Array.AsReadOnly<string>(["20261010012848_InitialPlatform", "20261010134320_FirstPartyLogin", "20261011131926_BrowserInteractionBudget", "20261012110314_AdministratorBootstrap", "20261012180753_AdministratorFactors", "20261012204848_AdministratorJourneys", "20261012231226_AdministratorRecovery", "20261013132412_AdministratorAuthority"]);
-    private static readonly IReadOnlyList<string> SessionMigrations = Array.AsReadOnly<string>(["20261010011939_InitialSessions", "20261015123934_ProtectedSessionTickets"]);
+    private static readonly IReadOnlyList<string> PlatformMigrations = Array.AsReadOnly<string>(["20261010012848_InitialPlatform", "20261010134320_FirstPartyLogin", "20261011131926_BrowserInteractionBudget", "20261012110314_AdministratorBootstrap", "20261012180753_AdministratorFactors", "20261012204848_AdministratorJourneys", "20261012231226_AdministratorRecovery", "20261013132412_AdministratorAuthority", "20261017224016_AdministratorProtocol"]);
+    private static readonly IReadOnlyList<string> SessionMigrations = Array.AsReadOnly<string>(["20261010011939_InitialSessions", "20261015123934_ProtectedSessionTickets", "20261017224019_AdministratorClientStateBudget"]);
     public string Id => Identifier;
     public string EfProviderName => EfName;
     public string DesignTimeConnection => DesignConnection;

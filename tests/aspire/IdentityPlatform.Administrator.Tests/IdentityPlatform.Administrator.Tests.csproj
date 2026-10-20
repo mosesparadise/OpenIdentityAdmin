@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="../../tooling/IdentityPlatform.Governance.Driver/IdentityPlatform.Governance.Driver.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../../tooling/IdentityPlatform.NativeClient.Driver/IdentityPlatform.NativeClient.Driver.csproj" ReferenceOutputAssembly="false" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="xunit.v3.mtp-v2" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
@@ -12,6 +13,7 @@
     <ProjectReference Include="../../../src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj" />
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
     <Using Include="Xunit" />
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.Issuer.Tests/Fixtures/IssuerEnvironment.cs" Link="Fixtures/IssuerEnvironment.cs" />
@@ -35,7 +37,17 @@
           DestinationFiles="@(GovernanceDriverFiles->'$(TargetDir)governance-driver/%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
+  <Target Name="CopyNativeClientDriver" AfterTargets="Build">
+    <ItemGroup>
+      <NativeClientDriverFiles Include="$(MSBuildProjectDirectory)/../../tooling/IdentityPlatform.NativeClient.Driver/bin/$(Configuration)/$(TargetFramework)/**/*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NativeClientDriverFiles)"
+          DestinationFiles="@(NativeClientDriverFiles->'$(TargetDir)native-client-driver/%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
   <ItemGroup>
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeAssertionMaterial.cs" Link="Fixtures/Protocol/NativeAssertionMaterial.cs" />
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeHttpCompletion.cs" Link="Fixtures/Protocol/NativeHttpCompletion.cs" />
     <Compile Include="../../shared/TestDatabaseProviders.cs" Link="Fixtures/TestDatabaseProviders.cs" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.PostgreSql/IdentityPlatform.Database.PostgreSql.csproj" />
     <ProjectReference Include="../../../src/persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
@@ -45,5 +57,16 @@
     <Using Include="IdentityPlatform.Testing.TestProviderParser" Alias="DatabaseProviderParser" />
     <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
+  </ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientCredentialFixture.cs" Link="Fixtures/NativeClientCredentialFixture.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/NativeLockObservation.cs" Link="Fixtures/Protocol/NativeLockObservation.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeRaceCleanup.cs" Link="Fixtures/NativeRaceCleanup.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientRejection.cs" Link="Fixtures/NativeClientRejection.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeRequestPause.cs" Link="Fixtures/NativeRequestPause.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientRequest.cs" Link="Fixtures/NativeClientRequest.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../../shared/NativeClientProcessMessages.cs" Link="Fixtures/NativeClientProcessMessages.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeTokenBudgetFixture.cs" Link="Fixtures/Protocol/NativeTokenBudgetFixture.cs" />
+    <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeRedemptionBarrier.cs" Link="Fixtures/Protocol/NativeRedemptionBarrier.cs" />
   </ItemGroup>
 </Project>

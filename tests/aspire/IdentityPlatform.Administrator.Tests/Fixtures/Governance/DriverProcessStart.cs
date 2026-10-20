@@ -7,6 +7,8 @@ internal static class DriverProcessStart
 {
     private const string DriverDirectory = "governance-driver";
     private const string Executable = "IdentityPlatform.Governance.Driver.dll";
+    private const string NativeClientDirectory = "native-client-driver";
+    private const string NativeClientExecutable = "IdentityPlatform.NativeClient.Driver.dll";
     private const string HostVariable = "DOTNET_HOST_PATH";
     private const string Dotnet = "dotnet";
     private const string Setsid = "setsid";
@@ -52,9 +54,10 @@ internal static class DriverProcessStart
         """;
 
     /// <summary>Launches a dedicated setsid group while retaining the complete isolated dependency directory for the actual driver.</summary>
-    internal static ProcessStartInfo Create(GovernanceDriverControl mode)
+    internal static ProcessStartInfo Create(GovernanceDriverControl mode, DriverExecutable executable = DriverExecutable.Governance)
     {
         Assert.True(OperatingSystem.IsLinux(), LinuxRequired);
+        Assert.True(executable == DriverExecutable.Governance || mode == GovernanceDriverControl.None);
         var start = new ProcessStartInfo(Setsid)
         {
             UseShellExecute = false,
@@ -74,7 +77,12 @@ internal static class DriverProcessStart
         else
         {
             Assert.True(mode == GovernanceDriverControl.None);
-            var path = Path.Combine(AppContext.BaseDirectory, DriverDirectory, Executable);
+            var path = executable switch
+            {
+                DriverExecutable.Governance => Path.Combine(AppContext.BaseDirectory, DriverDirectory, Executable),
+                DriverExecutable.NativeClient => Path.Combine(AppContext.BaseDirectory, NativeClientDirectory, NativeClientExecutable),
+                _ => throw new InvalidOperationException()
+            };
             Assert.True(File.Exists(path));
             start.ArgumentList.Add(Environment.GetEnvironmentVariable(HostVariable) ?? Dotnet);
             start.ArgumentList.Add(path);
@@ -87,4 +95,10 @@ internal static class DriverProcessStart
 internal enum GovernanceDriverControl
 {
     None, LeaderExit, Stubborn
+}
+
+/// <summary>Restricts ordinary child startup to reviewed compiled test drivers; input frames cannot choose an executable.</summary>
+internal enum DriverExecutable
+{
+    Governance, NativeClient
 }

@@ -32,6 +32,19 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
     /// <summary>Provides a finite safe ownership error without disclosing native connection or request material.</summary>
     internal static InvalidOperationException Unavailable() => new(UnavailableMessage);
 
+    /// <summary>Permits a separately composed legacy/unknown native path only before any ownership activation or failure.</summary>
+    internal void RequireNeverActivated()
+    {
+        lock (sync)
+        {
+            if (request is not null || owningScope is not null || original is not null || faulted || disposed || closing ||
+                executing || readers.Count != 0 || Transaction is not null || !Children.IsIdle || !Dispatches.IsIdle)
+            {
+                throw Unavailable();
+            }
+        }
+    }
+
     /// <summary>Activates only for the scope handle that retains the complete native resource graph through cleanup.</summary>
     internal async Task StartAsync(ProtocolStorageScope scope, CancellationToken token, ProtocolStorageRequest? original = null)
     {

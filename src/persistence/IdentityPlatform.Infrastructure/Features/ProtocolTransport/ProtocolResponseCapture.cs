@@ -16,6 +16,7 @@ internal sealed class ProtocolResponseCapture : IHttpResponseFeature, IHttpRespo
     private readonly List<(Func<object, Task> Callback, object State)> starting = [];
     private readonly AsyncLocal<bool> inCallback = new();
     private Task? start;
+    private Task? seal;
     private int status = Microsoft.AspNetCore.Http.StatusCodes.Status200OK;
     private string? reason;
     public int StatusCode
@@ -68,6 +69,10 @@ internal sealed class ProtocolResponseCapture : IHttpResponseFeature, IHttpRespo
     public Stream Stream => buffer;
     public PipeWriter Writer => writer;
     internal ReadOnlyMemory<byte> Bytes => buffer.Bytes;
+    internal bool IsSealed => seal?.IsCompletedSuccessfully == true;
+
+    /// <summary>Rejects nesting a response stage under a capture owned by another original request.</summary>
+    internal bool BelongsTo(ProtocolStorageRequest current) => ReferenceEquals(request, current);
 
     /// <summary>Allocates bounded staging independent of the server's original response implementation.</summary>
     internal ProtocolResponseCapture(ProtocolStorageRequest request)
@@ -123,6 +128,28 @@ internal sealed class ProtocolResponseCapture : IHttpResponseFeature, IHttpRespo
     {
         await writer.FinishAsync();
         await StartAsync();
+    }
+    /// <summary>Finishes callbacks and closes all staging producers once while the native issuance child still owns its services.</summary>
+    internal Task SealAsync()
+    {
+        if (inCallback.Value)
+        {
+            throw Reject();
+        }
+        lock (sync)
+        {
+            return seal ??= SealCoreAsync();
+        }
+    }
+    /// <summary>Retains actual producer completion even on failure; a successful seal admits no subsequent body or callback producer.</summary>
+    private async Task SealCoreAsync()
+    {
+        try
+        {
+            await FinishAsync();
+        }
+        finally { await JoinCallbacksAsync(); }
+        request.RequireCurrent();
     }
     /// <summary>Joins an already-started callback task even when downstream throws or abandons its write.</summary>
     internal async Task JoinCallbacksAsync()

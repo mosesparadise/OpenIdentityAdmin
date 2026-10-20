@@ -43,6 +43,26 @@ public sealed class MigratorConfigurationTests
         await RequireSafeFailureAsync(start, MigrationFailure);
     }
 
+    /// <summary>The actual protocol command reaches bounded input validation with only Platform configuration and never opens a database.</summary>
+    [Theory]
+    [InlineData("PostgreSql", "Host=localhost;Database=unused")]
+    [InlineData("SqlServer", "Server=localhost;Database=unused;Integrated Security=true;Encrypt=true")]
+    public async Task Given_PlatformOnlyProtocolCommand_When_RedirectedInputIsMalformed_Then_ReportsSafeInputFailure(string provider, string connection)
+    {
+        const string Operation = "Operation";
+        const string ProtocolOperation = "initialize-administrator-protocol";
+        const string InputFailure = "Invalid administrator protocol initialization input.";
+        const string Malformed = "{";
+        var start = CreateStart(typeof(DatabaseUpgrade).Assembly.Location);
+        start.RedirectStandardInput = true;
+        start.Environment[Operation] = ProtocolOperation;
+        start.Environment[ProviderKey] = provider;
+        start.Environment[PlatformConnection] = connection;
+        start.Environment.Remove(SessionsConnection);
+        start.Environment.Remove(ProvisionRuntimeRoles);
+        await RequireSafeFailureAsync(start, InputFailure, Malformed);
+    }
+
     /// <summary>Supply invalid provider, missing connection and incomplete connection cases for every runtime host.</summary>
     public static IEnumerable<object[]> RuntimeConfigurationCases()
     {
@@ -110,9 +130,14 @@ public sealed class MigratorConfigurationTests
     }
 
     /// <summary>Bound process exit, drain both streams and reject secret disclosure while retaining tree cleanup on timeout.</summary>
-    private static async Task RequireSafeFailureAsync(ProcessStartInfo start, string expectedDiagnostic)
+    private static async Task RequireSafeFailureAsync(ProcessStartInfo start, string expectedDiagnostic, string? input = null)
     {
         using var process = Process.Start(start)!;
+        if (input is not null)
+        {
+            await process.StandardInput.WriteAsync(input);
+            process.StandardInput.Close();
+        }
         var output = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
         var error = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);

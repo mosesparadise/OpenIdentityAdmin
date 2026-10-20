@@ -20,7 +20,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
     <InternalsVisibleTo Include="IdentityPlatform.Api.Contracts.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.NativeClient.Driver" />
   </ItemGroup>
   <ItemGroup><EmbeddedResource Include="Features/Documentation/Assets/*" />
     <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/tokens.css" LogicalName="IdentityPlatform.Admin.Bff.Features.Documentation.Assets.tokens.css" /></ItemGroup>

@@ -57,6 +57,7 @@
   </Folder>
   <Folder Name="/tests/tooling/">
     <Project Path="tests/tooling/IdentityPlatform.Governance.Driver/IdentityPlatform.Governance.Driver.csproj" />
+    <Project Path="tests/tooling/IdentityPlatform.NativeClient.Driver/IdentityPlatform.NativeClient.Driver.csproj" />
     <Project Path="tests/tooling/IdentityPlatform.BrowserInstaller/IdentityPlatform.BrowserInstaller.csproj" />
   </Folder>
   <Folder Name="/src/frontend/">

@@ -1,3 +1,4 @@
+using System.Runtime.ExceptionServices;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 
 namespace IdentityPlatform.Host.Tests.Features.ProtocolStorage;
@@ -42,17 +43,43 @@ public sealed class StorageQuarantineTests
             entered.SetResult();
             release.Wait(TestContext.Current.CancellationToken);
         });
+        List<Exception> failures = [];
+        var disposal = Task.Run(() => scope.DisposeAsync().AsTask(), CancellationToken.None);
         try
         {
-            var disposal = scope.DisposeAsync().AsTask();
             await entered.Task.WaitAsync(CompletionBound, TestContext.Current.CancellationToken);
             await Assert.ThrowsAsync<InvalidOperationException>(() => disposal);
             Assert.Equal(0, probe.Database.Disposals);
             Assert.False(scope.Completion.IsCompleted);
         }
+        catch (Exception error) { failures.Add(error); }
         finally { release.Set(); }
-        await scope.Completion.WaitAsync(CompletionBound, TestContext.Current.CancellationToken);
-        await scope.DisposeAsync();
-        Assert.Equal(1, probe.Database.Disposals);
+        await FinishCallbackAsync(scope, disposal, probe, failures);
+    }
+
+    /// <summary>Joins invocation and retained cleanup even after callback-admission failure, preserving the original failure alongside teardown errors.</summary>
+    private static async Task FinishCallbackAsync(ProtocolStorageScope scope, Task disposal, StorageProbe probe, List<Exception> failures)
+    {
+        try
+        {
+            await disposal.WaitAsync(CompletionBound, CancellationToken.None);
+        }
+        catch (InvalidOperationException) { }
+        catch (Exception error) { failures.Add(error); }
+        try
+        {
+            await scope.Completion.WaitAsync(CompletionBound, CancellationToken.None);
+            await scope.DisposeAsync();
+            Assert.Equal(1, probe.Database.Disposals);
+        }
+        catch (Exception error) { failures.Add(error); }
+        if (failures.Count == 1)
+        {
+            ExceptionDispatchInfo.Capture(failures[0]).Throw();
+        }
+        if (failures.Count > 1)
+        {
+            throw new AggregateException(failures);
+        }
     }
 }

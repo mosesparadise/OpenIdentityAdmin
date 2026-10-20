@@ -28,23 +28,23 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 549,
+      "Host": 1126,
       "Architecture": 5,
       "AppHost": 65
     },
     "PostgreSql": {
-      "Persistence": 7,
+      "Persistence": 8,
       "AppHost": 15,
-      "Issuer": 292,
+      "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 445
+      "Administrator": 555
     },
     "SqlServer": {
-      "Persistence": 7,
+      "Persistence": 8,
       "AppHost": 15,
-      "Issuer": 292,
+      "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 550
+      "Administrator": 660
     }
   },
   "browser": {
@@ -105,6 +105,10 @@
     "Governance.Failures": {
       "PostgreSql": 61,
       "SqlServer": 166
+    },
+    "ProtocolAdmission": {
+      "PostgreSql": 110,
+      "SqlServer": 110
     }
   },
   "administrator_browser_stories": {
@@ -116,6 +120,7 @@
       "classes": [
         "BootstrapAcceptanceTests",
         "CodeFlowTests",
+        "CombinedProtocolTests",
         "CurrentStateTests",
         "DenialTests",
         "InitializationTests",
@@ -125,8 +130,8 @@
         "OperationsTests"
       ],
       "counts": {
-        "PostgreSql": 130,
-        "SqlServer": 130
+        "PostgreSql": 131,
+        "SqlServer": 131
       }
     },
     "Boundaries": {

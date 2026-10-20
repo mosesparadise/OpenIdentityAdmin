@@ -1,4 +1,5 @@
 using IdentityPlatform.Migrator.Composition;
+using IdentityPlatform.Migrator.Features.AdministratorProtocol;
 using IdentityPlatform.Migrator.Features.Bootstrap.Initialize;
 using IdentityPlatform.Migrator.Features.Database;
 using IdentityPlatform.Migrator.Features.Operations;
@@ -20,6 +21,10 @@ internal static class Setup
         {
             builder.Services.AddAdministratorBootstrap();
         }
+        else if (builder.Configuration.SelectedOperation() == MigratorOperation.AdministratorProtocol)
+        {
+            builder.Services.AddAdministratorProtocolInitialization();
+        }
         return builder;
     }
 
@@ -27,8 +32,11 @@ internal static class Setup
     internal static Task<int> RunFeaturesAsync(this IHost host)
     {
         var configuration = host.Services.GetRequiredService<IConfiguration>();
-        return configuration.IsAdministratorBootstrap()
-            ? host.InitializeAdministratorAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting]))
-            : host.UpgradeDatabaseAsync();
+        return configuration.SelectedOperation() switch
+        {
+            MigratorOperation.Administrator => host.InitializeAdministratorAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting])),
+            MigratorOperation.AdministratorProtocol => host.InitializeAdministratorProtocolAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting])),
+            _ => host.UpgradeDatabaseAsync()
+        };
     }
 }

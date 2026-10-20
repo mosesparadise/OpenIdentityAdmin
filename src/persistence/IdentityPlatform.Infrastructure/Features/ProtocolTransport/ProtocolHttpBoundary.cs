@@ -11,11 +11,16 @@ internal static class ProtocolHttpBoundary
     private const string FailureCacheControl = "no-store";
 
     /// <summary>Aborts transport at the original deadline but never detaches work that still references its HTTP context.</summary>
-    internal static async Task RunAsync(HttpContext context, IServiceScopeFactory factory, TimeProvider clock,
+    internal static Task RunAsync(HttpContext context, IServiceScopeFactory factory, TimeProvider clock,
+        Func<HttpContext, ProtocolStorageScope, CancellationToken, ValueTask<ProtocolResponseOutcome>> operation) =>
+        RunAsync(context, factory, new ProtocolStorageRequest(clock, context.RequestAborted), operation);
+
+    /// <summary>Retains a budget started before asynchronous host classification so entering owned execution cannot renew the request.</summary>
+    internal static async Task RunAsync(HttpContext context, IServiceScopeFactory factory, ProtocolStorageRequest request,
         Func<HttpContext, ProtocolStorageScope, CancellationToken, ValueTask<ProtocolResponseOutcome>> operation)
     {
-        var request = new ProtocolStorageRequest(clock, context.RequestAborted);
         using var capture = new ProtocolResponseCapture(request);
+        request.BindResponse(capture);
         var features = new ProtocolResponseFeatures(context, capture);
         var response = features.Response;
         await using var deadline = new ProtocolResponseDeadline(context, request);
@@ -28,9 +33,11 @@ internal static class ProtocolHttpBoundary
         {
             capture.Headers[header.Key] = header.Value;
         }
-        features.Install();
         try
         {
+            // Framework input-pipe cleanup belongs to the original host, before any owned child response/services exist.
+            _ = context.Request.BodyReader;
+            features.Install();
             var outcome = await InvokeAsync(context, factory, operation, request, capture, features);
             await request.DrainAsync();
             request.RequirePublication(outcome);
@@ -78,7 +85,7 @@ internal static class ProtocolHttpBoundary
         {
             var outcome = await operation(context, scope, token);
             features.RequireIntact(request);
-            await capture.FinishAsync();
+            await capture.SealAsync();
             features.RequireIntact(request);
             request.RequirePublication(outcome);
             return outcome;

@@ -12,7 +12,7 @@ POLICY_FILES = frozenset(('docs/approval.md',))
 ROOT_DOCUMENTS = frozenset(('README.md', 'CONTRIBUTING.md', 'CHANGELOG.md'))
 ALWAYS_JOBS = frozenset(('scope', 'assurance', 'source-secrets'))
 FULL_JOBS = frozenset(('browser-plan', 'static-analysis', 'supply-chain', 'verify',
-                       'browser', 'contrast-experiment', 'mutations', 'administrator-mutations', 'governance-mutations', 'contracts', 'coverage'))
+                       'browser', 'contrast-experiment', 'mutations', 'administrator-mutations', 'governance-mutations', 'administrator-protocol-mutations', 'contracts', 'coverage'))
 ORDINARY_MODES = frozenset(('100644', '000000'))
 SUCCESS = 'success'
 SKIPPED = 'skipped'

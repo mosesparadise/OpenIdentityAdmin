@@ -20,6 +20,10 @@ public sealed class StartupTests
     private const string Address = "http://127.0.0.1:0";
     private const string Sentinel = "synthetic-private-setting";
     private const string Unknown = "unknown";
+    private const string Protocol = "protocol";
+    private const string ProtocolEnabledKey = "Identity__AdministratorProtocol__Enabled";
+    private const string ProtocolMessage = "Invalid administrator protocol configuration. Explicit activation requires administrator accounts, issuer protection and the fixed public registration profile.";
+    private const string AccountMessage = "Invalid administrator account configuration. Explicit activation requires configured issuer protection.";
     private const string Invalid = "invalid";
     private const int DeadlineSeconds = 20;
     private const int CleanupSeconds = 5;
@@ -29,6 +33,7 @@ public sealed class StartupTests
     [InlineData("invalid")]
     [InlineData("unknown")]
     [InlineData("unprotected")]
+    [InlineData("protocol")]
     public async Task Given_InvalidAdministratorSettings_When_ExecutableStarts_Then_ItExitsWithoutListeningOrLeaking(string scenario)
     {
         const string DisclosureFailure = "Startup diagnostics must not disclose configuration values.";
@@ -42,7 +47,7 @@ public sealed class StartupTests
             await process.WaitForExitAsync(deadline.Token);
             Assert.Equal(2, process.ExitCode);
             var diagnostic = await output + await errors;
-            Assert.Contains("Invalid administrator account configuration. Explicit activation requires configured issuer protection.", diagnostic);
+            Assert.Contains(scenario == Protocol ? ProtocolMessage : AccountMessage, diagnostic);
             Assert.False(diagnostic.Contains(Sentinel, StringComparison.Ordinal), DisclosureFailure);
             Assert.DoesNotContain("Now listening on:", diagnostic);
         }
@@ -83,6 +88,11 @@ public sealed class StartupTests
         {
             start.Environment[EnabledKey] = bool.FalseString;
             start.Environment[UnknownKey] = Sentinel;
+        }
+        if (scenario == Protocol)
+        {
+            start.Environment[EnabledKey] = bool.FalseString;
+            start.Environment[ProtocolEnabledKey] = Sentinel;
         }
         return start;
     }

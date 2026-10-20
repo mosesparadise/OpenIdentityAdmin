@@ -1,3 +1,4 @@
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 
@@ -12,5 +13,32 @@ internal static class Setup
         services.TryAddScoped<OpenIddictServerDispatcher>();
         services.Replace(ServiceDescriptor.Scoped<IOpenIddictServerDispatcher, OwnedServerDispatcher>());
         return services;
+    }
+
+    /// <summary>Preserves native filter/order metadata while explicitly opting into fresh durable administrator consumption.</summary>
+    internal static OpenIddictServerBuilder AddDurableServerConsumption(this OpenIddictServerBuilder builder)
+    {
+        var redemption = OpenIddictServerHandlers.RedeemTokenEntry.Descriptor;
+        var validation = OpenIddictServerHandlers.Protection.ValidateTokenEntry.Descriptor;
+        builder.RemoveEventHandler(redemption).RemoveEventHandler(validation);
+        builder.Services.AddScoped<OpenIddictServerHandlers.RedeemTokenEntry>();
+        builder.Services.AddScoped<OpenIddictServerHandlers.Protection.ValidateTokenEntry>();
+        builder.Services.TryAddScoped<OpenIddictServerHandlers.Protection.ValidateAuthorizationEntry>();
+        builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.ProcessSignInContext>()
+            .Import(redemption).UseScopedHandler<DurableServerRedemption>().SetType(OpenIddictServerHandlerType.Custom).Build());
+        builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.ValidateTokenContext>()
+            .Import(validation).UseScopedHandler<DurableServerValidation>().SetType(OpenIddictServerHandlerType.Custom).Build());
+        return builder;
+    }
+
+    /// <summary>Freezes explicit protocol scope mode between actual native extraction and validation while preserving the owned-only setup.</summary>
+    internal static OpenIddictServerBuilder AddServerStoreSelection(this OpenIddictServerBuilder builder)
+    {
+        builder.Services.AddProtocolStorageSelection();
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessRequestContext>(handler => handler.UseScopedHandler<ServerStoreSelection>()
+            .SetOrder(OpenIddictServerHandlers.Exchange.ExtractTokenRequest.Descriptor.Order + ServerStoreSelection.AfterExtraction));
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<ServerStoreFence>()
+            .SetOrder(OpenIddictServerHandlers.ValidateSignInDemand.Descriptor.Order - 1));
+        return builder;
     }
 }
