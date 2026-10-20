@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
@@ -11,6 +12,42 @@ namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 [Collection("administrator-bootstrap")]
 public sealed class NativeIssuerReplayTests(BootstrapFixture fixture)
 {
+    private const string LocalReplayError = "error:invalid_token\nerror_description:The request could not be completed.\n";
+    private const string LocalContentType = "text/plain;charset=UTF-8";
+    private const string WindowsNewLine = "\r\n";
+    private const string UnixNewLine = "\n";
+
+    /// <summary>A consumed genuine PAR reference cannot authorize twice on another root; local denial neither redirects nor revokes the already-issued grant.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant(string provider)
+    {
+        await using var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider);
+        await using var peer = scenario.CreatePeer(provider);
+        var reference = await NativeAccountFlow.PushAsync(scenario);
+        var identifier = await NativeAccountPersistence.ReferenceIdAsync(scenario, reference);
+        var code = NativeAccountFlow.ReadCode(scenario, await NativeAccountFlow.AuthorizeAsync(scenario, reference));
+        var principal = await NativeAccountFlow.ValidateAsync(scenario, code, OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode);
+        var issuedBefore = await NativeAccountPersistence.CountAsync(scenario);
+        var access = await NativeMutationGrant.RequireAsync(scenario, await NativeAccountFlow.ExchangeAsync(scenario, code, peer.Services), principal, issuedBefore);
+        Assert.True(await NativeAccountPersistence.IsRedeemedAsync(scenario, identifier));
+        Assert.Equal(1, await NativeAccountPersistence.AccessTokensAsync(scenario));
+        var before = await NativeAccountPersistence.CountAsync(scenario);
+        var replay = await NativeAccountFlow.AuthorizeAsync(scenario, reference, peer.Services);
+        Assert.True(replay.Failure is null, replay.Failure?.GetType().FullName + Environment.NewLine + replay.Failure?.StackTrace);
+        Assert.Equal(StatusCodes.Status400BadRequest, replay.Status);
+        Assert.False(replay.HasCookie);
+        Assert.True(replay.Location.Length == 0);
+        Assert.Equal(LocalContentType, replay.ContentType);
+        Assert.True(Encoding.UTF8.GetString(replay.Body).Replace(WindowsNewLine, UnixNewLine, StringComparison.Ordinal) == LocalReplayError);
+        Assert.Equal(before, await NativeAccountPersistence.CountAsync(scenario));
+        Assert.Equal(1, await NativeAccountPersistence.AccessTokensAsync(scenario));
+        Assert.Equal(OpenIddictConstants.Statuses.Valid, await NativeAccountPersistence.StatusAsync(scenario, access.GetTokenId()!));
+        Assert.True(await NativeAccountPersistence.IsRedeemedAsync(scenario, identifier));
+        _ = await NativeAccountFlow.PushAsync(scenario, peer.Services);
+    }
+
     /// <summary>A fresh client assertion cannot redeem an already exchanged code; native linked-token revocation remains isolated from another grant.</summary>
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]

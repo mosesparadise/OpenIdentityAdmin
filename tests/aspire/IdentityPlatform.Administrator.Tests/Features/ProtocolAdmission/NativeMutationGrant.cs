@@ -11,7 +11,7 @@ internal static class NativeMutationGrant
     private const int ExchangeTokenRows = 2;
 
     /// <summary>Validates native access and ID tokens, original subject/authorization, redemption and exact retained-row effects.</summary>
-    internal static async Task RequireAsync(AdministratorProtocolScenario scenario, NativeAccountResult response,
+    internal static async Task<ClaimsPrincipal> RequireAsync(AdministratorProtocolScenario scenario, NativeAccountResult response,
         ClaimsPrincipal code, (long Tokens, long Authorizations) before)
     {
         NativeAccountFlow.RequireSuccess(response, StatusCodes.Status200OK);
@@ -27,5 +27,6 @@ internal static class NativeMutationGrant
         Assert.True(identity.GetClaim(OpenIddictConstants.Claims.Subject) == code.GetClaim(OpenIddictConstants.Claims.Subject));
         Assert.True(await NativeAccountPersistence.IsRedeemedAsync(scenario, code.GetTokenId()!));
         Assert.Equal((before.Tokens + ExchangeTokenRows, before.Authorizations), await NativeAccountPersistence.CountAsync(scenario));
+        return access;
     }
 }

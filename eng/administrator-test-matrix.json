@@ -538,7 +538,20 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"PostgreSql\", orphan: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"PostgreSql\", orphan: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"Disabled\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"ManifestKey\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"ApplicationRedirect\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"ScopeResource\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Redirect)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Scope)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: ChallengeMethod)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Client)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Redirect)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Verifier)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1183,7 +1196,20 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_TwoIssuerRootsWithRealNativeGrants_When_CodeIsReplayedWithFreshAssertion_Then_LinkedAccessIsRevokedAndUnrelatedGrantSurvives(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"SqlServer\", orphan: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"SqlServer\", orphan: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"Disabled\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"ManifestKey\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"ApplicationRedirect\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"ScopeResource\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Redirect)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Scope)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: ChallengeMethod)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Client)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Redirect)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Verifier)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -25414,6 +25440,524 @@
           "key": "CriticalDecision",
           "value": "protocol-profile-binding"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"PostgreSql\", orphan: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAuthorizationStateTests",
+        "methodName": "Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"PostgreSql\", orphan: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAuthorizationStateTests",
+        "methodName": "Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"SqlServer\", orphan: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAuthorizationStateTests",
+        "methodName": "Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeAuthorizationStateTests.Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant(provider: \"SqlServer\", orphan: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeAuthorizationStateTests",
+        "methodName": "Given_RealCodeWithChangedAuthorization_When_PeerExchangesIt_Then_DenialPreservesCodeAndUnrelatedGrant",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuerReplayTests",
+        "methodName": "Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeIssuerReplayTests.Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeIssuerReplayTests",
+        "methodName": "Given_ConsumedNativePar_When_AnotherIssuerReplaysIt_Then_LocalDenialPreservesIssuedGrant",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"Disabled\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"ManifestKey\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"ApplicationRedirect\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"PostgreSql\", changeName: \"ScopeResource\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"Disabled\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"ManifestKey\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"ApplicationRedirect\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeRegistrationDriftTests.Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair(provider: \"SqlServer\", changeName: \"ScopeResource\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeRegistrationDriftTests",
+        "methodName": "Given_WarmedIssuerAndRealCode_When_StoredRegistrationDrifts_Then_ExchangeDeniesWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Redirect)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Scope)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: ChallengeMethod)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"PostgreSql\", change: Client)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Redirect)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Scope)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: ChallengeMethod)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds(provider: \"SqlServer\", change: Client)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_FixedRegistration_When_ParChangesRequiredBindings_Then_NativeRequestDeniesAndFreshFlowSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+PushedChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Redirect)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+ExchangeChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"PostgreSql\", change: Verifier)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+ExchangeChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Redirect)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+ExchangeChange"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests.Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable(provider: \"SqlServer\", change: Verifier)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "NativeWireBindingTests",
+        "methodName": "Given_RealCodeOnAnotherIssuer_When_ExchangeChangesRedirectOrVerifier_Then_NoCredentialIsIssuedAndCodeRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireBindingTests+ExchangeChange"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"
