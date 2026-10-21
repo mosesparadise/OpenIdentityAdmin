@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Select every phase-required browser cell; A-007 defers Firefox during internal B2."""
+"""Select every required browser cell after the internal B2 Firefox deferral."""
 import json
 import os
 
-# A-007: restore Firefox before B3 implementation or any production/browser activation.
-ENGINES = ('chromium', 'webkit')
+# A-007 restoration: every full run requires all three engines; no phase skip remains.
+ENGINES = ('chromium', 'firefox', 'webkit')
 CONTRACT_PARTITIONS = ('core', *ENGINES)
 PROVIDERS = ('PostgreSql', 'SqlServer')
-PHASE_NOTICE = ('A-007 initial development through B2: Chromium and WebKit required; '
-                'Firefox deferred, not passed. Restore before B3 implementation or activation/release.')
+BROWSER_NOTICE = ('Chromium, Firefox and WebKit required on both providers for full verification. '
+                  'Execution does not by itself close historical findings or activation/release gates.')
 
 
 def select():
-    """Require both active engines and every provider/story on all full verification runs."""
+    """Require all three engines and every provider/story on all full verification runs."""
     return {'include': [{'provider': provider, 'browser': browser, 'partition': partition, 'browser_story': story,
                          'label': ('administrator-' if partition == 'administrator' else '') + provider + '-' + browser +
                                   ('-' + story.lower() if story else '')}
@@ -22,15 +22,15 @@ def select():
 
 
 def main():
-    """Publish consistent browser/contract obligations and a visible Firefox deferral notice."""
+    """Publish consistent browser/contract obligations and an explicit three-engine verification notice."""
     result = json.dumps(select(), separators=(',', ':'))
     with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
         output.write('matrix=' + result + '\n')
         output.write('contracts=' + json.dumps({'partition': CONTRACT_PARTITIONS}) + '\n')
     if summary := os.environ.get('GITHUB_STEP_SUMMARY'):
         with open(summary, 'a') as output:
-            output.write(PHASE_NOTICE + '\n')
-    print(PHASE_NOTICE)
+            output.write(BROWSER_NOTICE + '\n')
+    print(BROWSER_NOTICE)
     print(result)
 
 

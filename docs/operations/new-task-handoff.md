@@ -6,6 +6,8 @@
 
 **Next bounded step:** complete feature 011 T028 Firefox restoration before B3 executable work: restore all original 55 coverage inputs plus new obligations (at least 57 at the delivered B2 checkpoint), both providers/all three engines and independently reviewed history-evidence disposition. Then feature 013 T003 proves the native integration/transaction prerequisites. Preserve provider plugins, existing databases/migration histories and all delivered B1/B2 work.
 
+**T028 restoration in progress (21 October):** [Mandatory Firefox policy and evidence](../../specs/011-administrator-issuer-client/firefox-restoration.md) restores the three-engine selection and 57 coverage obligations with independent regression controls. Exact-head full execution is pending. The distinct readiness and native no-store history findings remain unresolved; restoring the matrix does not complete T028 or permit B3 implementation.
+
 All six historical findings, 48 human rows, 345 not-assessed assurance controls and production/public-release gates remain open. A-004 remains expired and A-005/A-006 concluded. Firefox was deferred only for internal B2 under A-007; T028 must restore it before B3 implementation, activation or release.
 
 The checkpoint statements below retain their historical dates and results. Earlier pending/unaccepted wording is superseded by the delivered status above; failed evidence and its limits are preserved.
