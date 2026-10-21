@@ -1,0 +1,75 @@
+# B3 browser and issuer contracts (planned)
+
+Applies only to the fixed administrator BFF. This is a reviewed design target, not an implemented API or activation record. Requirements refer to [feature 013](../spec.md). Existing [B2 native contract](../../011-administrator-issuer-client/contracts/administrator-protocol.md) and [B1 ticket contract](../../010-bff-session-foundation/contracts/ticket-store.md) remain in force except for the explicitly scoped B3 additions below.
+
+## Endpoint ownership
+
+| Planned BFF route | Contract |
+| --- | --- |
+| `GET /bff/session` | Safe minimal status: authenticated boolean, and only for a valid ticket its subject identifier and effective local expiry. No tokens, raw handle, source-session ID, roles/permissions or private claims; `Cache-Control: no-store`. Invalid/expired authentication returns unauthenticated status; unavailable persistence returns sanitized 503, not a false logged-out success. No renewal side effect. |
+| `POST /bff/login` | Protected same-origin explicit start/replacement. No client/issuer/callback/return-URL input. Creates a new browser generation and bounded intent, deliberately revoking the former local generation if replacing. Failure does not silently discard a valid prior session. |
+| `GET /bff/login/resume` | Narrow cross-origin protocol continuation: original browser binding plus pending generation/intent, exact bounded completion selector, one use. Never establishes authentication itself. Creates a fresh native B2 challenge only after durable reservation; attacker-supplied selectors cannot replace server-owned expectations. |
+| Configured native callback | Existing one exact registered HTTPS URI; do not add an alternate. Native state/correlation/nonce/code/TLS validation, strict deadline and consumed-state ownership precede canonical ticket creation. Error callbacks terminate their attempt and never trigger a retry loop. |
+| `POST /bff/logout` | Protected same-origin mutation; compare expected browser generation, revoke its ticket and invalidate pending establishment in the same Sessions-owned order. Return committed local outcome before any remote success claim; expire local cookie only with truthful commit status. |
+| `GET /bff/logout/return` | Bounded one-use logout correlation; no login establishment or ticket renewal. A browser return means “issuer sign-out result unverified”; it never proves issuer revocation. The issuer and independent tests observe its own committed result. |
+
+An inert server-rendered entry/confirmation page supplies native antiforgery tokens for POST flows. API routes never redirect unauthenticated calls to HTML; protected future routes use 401/403. Public status and bounded protocol returns have their explicit contracts above. Reject unsupported methods, duplicate/oversized parameters and unexpected callback content types. Expose a versioned authoritative browser OpenAPI contract through existing tooling; native protocol routes retain OpenIddict responses and are not republished as browser API operations. React generation/integration remains M02-E.
+
+## Fresh-login sequence
+
+1. A same-origin POST with valid antiforgery creates a random 256-bit intent and a separate browser correlation proof; persistence stores digests and server-owned expected generation/destinations. Maximum duration is 300 seconds from creation, including resume. Browser cookies do not turn an unauthenticated context into identity authority.
+2. Navigate only to a fixed issuer administrator continuation entry with the opaque intent. The request grants no OAuth authority and chooses neither client nor return URL. Reject arbitrary continuation parameters on existing query-free account routes; add a narrowly owned route instead of weakening them globally.
+3. The issuer binds its own browser proof and intent to the existing native administrator password/TOTP ceremony, with all lockout, factor-replay, security stamp/generation, capacity and audited commit rules intact. The user-selected policy requires a new ceremony even when an issuer cookie is fresh. No enrollment/recovery/pilot session satisfies completion.
+4. Persist completion linked to the actual new subject/source session and original intent. Return only a high-entropy one-use completion selector to the fixed BFF resume route. No OAuth token, password, factor or source deadline is trusted from this browser hop.
+5. After validating its original browser proof and pending generation, the BFF reserves the intent for exactly one fresh B2 challenge. Use new state, nonce, PKCE, PAR and assertion proofs. Retain `prompt=none`, PAR 60 seconds, code 60 seconds, state 300 seconds and all shorter authority/intent deadlines. No previous PAR or state is revived.
+6. The fixed-client native PAR extension admits exactly the intent/completion pair in addition to existing B2 fields; it is rejected for every other client/flow. Protected native request storage binds the pair. The issuer consumes/attaches the completion once, verifies its original expiry and fixed registration, and at authorization requires the current issuer browser session to be exactly the completed session. Exchange rechecks B2 authority and preserved binding. No opaque reference or timestamp comparison alone grants authority.
+7. The native callback verifies the B3 ID-token claims below against its protected expected intent. Expected subject/session come from the issuer-bound completed ceremony, never from a browser assertion; the validated signed result supplies those identity values. A Sessions transaction then checks generation, consumes establishment, creates the canonical B1 ticket and records its actor-bound audit intent. Only after commit/disposal may a cookie be emitted.
+
+Exact native handler names/order, reserve/consume transaction placement and failure publication must be proven in T003. No custom OAuth signing/parsing or weakening of B2's fail-closed guards is authorized to make this sequence work.
+
+## B3-only authenticated claims
+
+| Claim | Validation and destination |
+| --- | --- |
+| `sub`, `sid` | Existing unique ordinal issuer values; native validated client audience/issuer/nonce binding. No parsing expiry or granting permission from `sid`. |
+| `admin_session_expires_at` | Exactly one JSON integer UTC epoch second: original persisted issuer source-session deadline. Must be future at callback acceptance, consistent with issuer policy and never widened by the BFF. Do not reconstruct session creation/deadline from auth_time or token exp; only the issuer supplies the original deadline. ID token only for a successfully bound fixed-client B3 exchange; code-private binding preserved through exchange. |
+| `admin_login_intent` | Exactly one canonical uppercase 64-hex SHA-256 intent digest computed from the original opaque intent bytes. Exact comparison against protected client expectation; ID token only for that B3 exchange, never an access-token permission. |
+| `auth_time`, `amr` | Preserve B2's validated original password time and full `pwd otp` methods. Do not infer a new completed ceremony from these claims without the intent binding. |
+
+Reject missing, duplicate, wrongly typed or contradictory required claims before B1 creation. Native ID token validation remains mandatory; do not authenticate from the access token or unverified browser JSON. Source expiry may outlive ID-token expiry; it is not the ID token's lifetime. The local ticket deadline remains the earliest B1 source/absolute/idle constraint. Later upstream revocation/policy changes are not automatically visible in B1 and must not be marketed as live API authorization.
+
+Construct a new one-identity ticket in exact scheme/authentication type `IdentityPlatform.Admin.Bff.Session`, with a unique bounded `sub` and `sid` and explicitly selected server-held token properties. No role/permission snapshot, arbitrary native principal, factor secret or stamp is copied. Enforce existing B1 payload/envelope bounds, dedicated Data Protection purpose and key-retention rules. Keep access and ID token material only where the server needs it; no refresh token is requested or stored in this slice.
+
+## Cookies and browser mutation protection
+
+Use product session name `__Host-identity-admin-session`, Path `/`, no Domain, Secure, HttpOnly, SameSite=Lax; no persistent browser lifetime beyond the server deadline. The value is only B1's fresh canonical opaque handle, never a serialized ticket or OAuth token. Browser generation proof, pre-login correlation, native client correlation and logout correlation use distinct host-only names/purposes with their own bounded lifetime. Keep native client correlation validation and separate key purposes; do not reuse an issuer cookie or authentication scheme.
+
+Use ASP.NET Core antiforgery for same-origin POSTs, paired with exact origin validation and bounded media/form guards. Rotate antiforgery/browser-operation bindings on intentional login replacement and logout; a stale token from a prior generation cannot mutate the new session. Callback/resume/logout-return GETs are explicit protocol exceptions with their own state/correlation proofs and no general mutation endpoint exemption. Deny cross-origin credentialed CORS. Reject any browser Authorization header as a substitute for the BFF cookie; no proxy is implemented here.
+
+Apply no-store and `Referrer-Policy: no-referrer` to sensitive pages/returns. Scrub query/body/header secrets before request logging, tracing and retained browser artifacts. Render only finite safe error categories and a new explicit user-started recovery action. Never echo raw protocol errors, selectors, tokens or connection details.
+
+## Establishment, logout and response loss
+
+Browser coordination and ticket persistence must share the owning Sessions transaction; no lock is held during PAR/token HTTP. Logout that commits first invalidates the callback's generation. Establishment that commits first is discoverable and revoked by the subsequent logout. The cookie writer cannot make a stale generation usable even if an already prepared response is delivered late. Verify current generation on every product ticket acceptance as well as on creation.
+
+Native callback consumption and issuer exchange are separate commits. If local establishment fails afterward, no token exchange retry, new cookie or silent success is allowed. Unknown local commit retains bounded state for reconciliation; a replayed callback cannot turn it into another establishment. A committed ticket whose cookie response was lost is an orphan, not a successful browser login. New explicit sign-in advances generation and revokes any previous committed ticket under that browser context. Expiry/cleanup remains bounded if the browser never returns.
+
+If local revoke definitely rolls back, report local failure and do not claim sign-out. If commit is ambiguous, report local outcome unknown and do not treat a cookie clear as proof. A later explicit user retry may reconcile/revoke only the bound existing generation without reissuing authority. Existing reads admitted before revoke commit may finish; no atomic network cancellation is promised.
+
+## Issuer-assisted logout dependency
+
+After committed local sign-out, initiate only the fixed issuer's native end-session route. Validate the fixed client and exact registered post-logout URI through OpenIddict. Prefer native `client_id` plus a narrowly interpreted opaque `logout_hint` source-session selector, not browser-visible ID/access tokens. The hint is untrusted input until compared with a currently authenticated issuer administrator session. Require an inert GET confirmation and an antiforgery-protected explicit POST before issuer revocation; no cross-site GET performs logout.
+
+Reuse the issuer's serialized, audited single-session revocation. A different issuer account/session must not be silently revoked on behalf of the former BFF session. Missing/mismatched issuer authority yields a bounded incomplete/unverified result and safe recovery guidance. A validated native return destination cannot attest revocation. The BFF reports its committed local outcome and an unverified remote outcome even after a correlated return; it never displays “issuer sign-out completed” based on query parameters. The issuer may accurately describe its own post-commit outcome. Full B3 remote acceptance requires actual native end-session and independently verified issuer effects in both-provider/browser tests, not an invented BFF attestation endpoint.
+
+The existing fixed registration rejects all post-logout URIs and any permission/settings drift. Before enabling end-session, perform an explicit audited upgrade under profile ownership from the exact old manifest/revision to the exact B3 manifest. Preserve disabled state; advance revision so old codes fail existing code-principal binding checks, and explicitly revoke scoped pending PAR through native managers in the same owned upgrade transaction. Pending PAR has no existing code-principal revision check. An exact already-upgraded profile is idempotent; stale preconditions or arbitrary drift deny. No automatic startup repair or silent reenabling is allowed. Test both providers, rollback/unknown commit and separate old-code/old-PAR invalidation.
+
+Refresh is currently disabled, so no refresh-revocation completion is claimed. Before later M02-C enables refresh, logout must revoke its server-held refresh capability under that feature's reviewed contract. No arbitrary-client front/back-channel logout, global user logout or production rollout is included.
+
+## Capacity, audit and operations
+
+[Data model](../data-model.md) defines bounded new records and cleanup. Existing B1/B2 quotas and deadlines remain intact and cannot be traded away for these new capacities. Keep state ownership in the appropriate database and use the delivered relational provider interfaces; no BFF Platform query or new database-specific switch in application features.
+
+Mutation audit intent shares its local commit. Authenticated actor comes from validated canonical subject/session; initial anonymous intent uses a finite anonymous event category and correlation, never a claimed browser username. Issuer and BFF audit events are linked by a safe generated correlation, not secret proof values. Central export/retention and human assurance remain separate release obligations; this packet closes none.
+
+Restore may revive consumed intents/tickets/native state. The runbook must invalidate pending browser generations, source authority and affected registration/state before a restored boundary is enabled. No automatic production correction is authorized. Tests must demonstrate retained-key restart, missing/corrupt keys, rollback, restore and orphan cleanup on both providers without dumping credentials.
