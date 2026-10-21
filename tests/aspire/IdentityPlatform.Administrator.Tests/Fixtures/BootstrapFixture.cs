@@ -125,7 +125,7 @@ public sealed class BootstrapHost : IAsyncDisposable
     private string runtimePassword = "";
     private DatabaseProvider provider;
 
-    /// <summary>Starts the existing real provider graph within its linked startup deadline; failure disposes the owned host and retains the fixed harness error.</summary>
+    /// <summary>Starts the real provider graph within its linked deadline; captures safe startup states before cleanup and retains the fixed harness error.</summary>
     public static async Task<BootstrapHost> CreateAsync(string providerName, CancellationToken cancellationToken)
     {
         var host = new BootstrapHost { provider = DatabaseProviderParser.Parse(providerName) };
@@ -138,16 +138,19 @@ public sealed class BootstrapHost : IAsyncDisposable
                 [DevelopmentArgument, ProviderArgumentPrefix + providerName, DisabledPilotArgument], startup.Token);
             SetupDiagnostics.Write(SetupStage.HostBuild);
             host.application = await host.builder.BuildAsync(startup.Token);
-            SetupDiagnostics.Write(SetupStage.HostStart);
-            await host.application.StartAsync(startup.Token);
-            SetupDiagnostics.Write(SetupStage.AuthReadiness);
-            await host.application.ResourceNotifications.WaitForResourceHealthyAsync(AuthResource, startup.Token);
-            host.lifecycle = LifecycleEvidence.Capture(host.application);
-            host.administratorConnection = (await host.application.GetConnectionStringAsync(PlatformDatabase, startup.Token))!;
-            var model = host.application.Services.GetRequiredService<DistributedApplicationModel>();
-            host.runtimePassword = (await model.Resources.OfType<ParameterResource>()
-                .Single(value => value.Name == RuntimePasswordParameter).GetValueAsync(startup.Token))!;
-            SetupDiagnostics.Write(SetupStage.HostReady);
+            await ProfileStartupEvidence.ObserveAsync(host.application, async () =>
+            {
+                SetupDiagnostics.Write(SetupStage.HostStart);
+                await host.application.StartAsync(startup.Token);
+                SetupDiagnostics.Write(SetupStage.AuthReadiness);
+                await host.application.ResourceNotifications.WaitForResourceHealthyAsync(AuthResource, startup.Token);
+                host.lifecycle = LifecycleEvidence.Capture(host.application);
+                host.administratorConnection = (await host.application.GetConnectionStringAsync(PlatformDatabase, startup.Token))!;
+                var model = host.application.Services.GetRequiredService<DistributedApplicationModel>();
+                host.runtimePassword = (await model.Resources.OfType<ParameterResource>()
+                    .Single(value => value.Name == RuntimePasswordParameter).GetValueAsync(startup.Token))!;
+                SetupDiagnostics.Write(SetupStage.HostReady);
+            });
             return host;
         }
         catch
