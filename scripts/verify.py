@@ -13,6 +13,7 @@ from test_selection import catalogue, require_partition, require_execution_names
 
 from apphost_selection import apphost_invocations, apphost_catalogue, apphost_filter, require_apphost_selections
 from issuer_selection import issuer_catalogue, issuer_invocations, issuer_filter, require_issuer_inventory, require_issuer_selections
+from browser_deferrals import CERTIFICATE_METHOD, select_required, receipt as browser_deferral_receipt
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -121,7 +122,19 @@ for project, expected_count, story, browser_story in invocations:
             require_partition(all_tests, http, browser, args.profile, matrix["profiles"][args.profile]["Issuer"], matrix["browser"]["Issuer"])
             expression = browser_filter if args.browser else issuer_filter(matrix, args.profile, story)
             if args.browser:
-                selected = browser
+                selected, deferred = select_required(browser, args.browser, args.profile)
+                (results / 'browser-deferrals.json').write_text(json.dumps(
+                    browser_deferral_receipt(deferred, args.browser, args.profile), indent=2) + '\n')
+                if deferred:
+                    expression += '&FullyQualifiedName!~' + CERTIFICATE_METHOD
+                    if discover(expression) != selected:
+                        raise ValueError('Native filter does not match the exact A-009 required identity set')
+                    expected_count -= len(deferred)
+                    notice = f'A-009: {args.profile}/{args.browser}: one exact certificate evidence case deferred, not passed; all other cases required.'
+                    print(notice, flush=True)
+                    if summary := os.environ.get('GITHUB_STEP_SUMMARY'):
+                        with open(summary, 'a') as output:
+                            output.write(notice + '\n')
             else:
                 groups = {group: discover(issuer_filter(matrix, args.profile, group))
                           for group, _ in issuer_invocations(matrix, args.profile)}

@@ -1,5 +1,7 @@
 # Documentation approval
 
+**Current roadmap continuation (22 October 2026):** the user explicitly requested actual roadmap implementation with Playwright/Firefox blockers documented and bypassed. [A-009](amendments/A-009-roadmap-browser-deferral.md) records this new authority, superseding the pre-B3 Firefox sequencing hold while preserving concrete authentication/transaction requirements and external acceptance gates. Continue feature 013 implementation; do not restart diagnostic-only loops.
+
 **Current provider continuation (15 October 2026):** the user approved project-level relational EF Core providers, migration of both existing implementations with databases/history preserved, and reusable conformance tests. [A-008](amendments/A-008-database-provider-plugins.md) records this authority; [feature 012](../specs/012-database-provider-plugins/spec.md) governs implementation before resuming feature 011 T005. All existing external gates remain open.
 
 **Current continuation (15 October 2026):** the user explicitly requested roadmap implementation and exclusion of Firefox testing for the initial phase. [A-007](amendments/A-007-initial-phase-browser-scope.md) records the approved scope through internal B2 development, the unchanged non-Firefox gates and mandatory restoration before B3 implementation/activation/release. This supersedes the Firefox-only delivery hold for PR #56 after all amended exact-head checks pass. All six findings, 48 human rows and release blockers remain open. No expired diagnostic approval is renewed.

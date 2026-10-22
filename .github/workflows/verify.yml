@@ -42,6 +42,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - run: python3 scripts/test_browser_matrix.py
+      - run: python3 scripts/test_browser_deferrals.py
       - id: matrix
         run: python3 scripts/browser_matrix.py
   assurance:

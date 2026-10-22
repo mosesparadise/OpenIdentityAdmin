@@ -26,7 +26,8 @@ class BrowserMatrixTests(unittest.TestCase):
             self.assertEqual({'partition': ['core', 'chromium', 'webkit']}, json.loads(values['contracts']))
             self.require_cells(json.loads(values['matrix']), ['chromium', 'webkit'])
             self.assertIn('Firefox deferred, not passed', summary.read_text())
-            self.assertIn('before B3', summary.read_text())
+            self.assertIn('A-009 internal roadmap development', summary.read_text())
+            self.assertIn('before release acceptance', summary.read_text())
             workflow = Path(__file__).resolve().parents[1] / '.github/workflows/verify.yml'
             self.assertIn('matrix: ${{ fromJSON(needs.browser-plan.outputs.contracts) }}', workflow.read_text())
 

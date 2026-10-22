@@ -1,5 +1,7 @@
 # Feature Specification: Administrator browser sessions (B3)
 
+**22 October implementation amendment:** [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md) supersedes the older Firefox-before-B3 sequencing statements in this planning record. T028 stays deferred/open; it does not block code. T003 native identity/state feasibility and T007 pure validation/projection may proceed independently of the remaining native transaction/end-session work. Concrete security prerequisites for dependent routes and external acceptance remain required.
+
 **Feature Branch**: `068-administrator-browser-plan` (feature directory `013-administrator-browser-session`)
 
 **Created**: 21 October 2026, Europe/London
