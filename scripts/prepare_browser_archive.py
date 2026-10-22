@@ -8,11 +8,20 @@ from urllib.parse import urlsplit, urlunsplit
 
 REGIONAL = 'azure.archive.ubuntu.com'
 OFFICIAL = 'archive.ubuntu.com'
+HOSTED_MIRROR = 'mirror+file:/etc/apt/apt-mirrors.txt'
+HOSTED_OFFICIAL = 'https://archive.ubuntu.com/ubuntu/'
+
+
+def targets_archive(value):
+    """Recognize direct regional references and the hosted image's exact mirror-list family."""
+    return REGIONAL in value.lower() or 'apt-mirrors' in value.lower()
 
 
 def archive_uri(value):
     """Replace only the exact Ubuntu archive origin; reject ambiguous matching references."""
-    if REGIONAL not in value.lower():
+    if value == HOSTED_MIRROR:
+        return HOSTED_OFFICIAL
+    if not targets_archive(value):
         return value
     uri = urlsplit(value)
     if (uri.scheme not in ('http', 'https') or uri.netloc != REGIONAL or
@@ -34,16 +43,16 @@ def rewrite(source, deb822):
                     field = declaration[1].lower()
                 elif not line[0].isspace():
                     field = None
-                if REGIONAL in line.lower():
+                if targets_archive(line):
                     if field != 'uris':
                         raise ValueError('Regional archive outside a URIs field')
                     line = re.sub(r'\S+', lambda match: archive_uri(match[0]), line)
-            elif REGIONAL in line.split('#', 1)[0].lower():
+            elif targets_archive(line.split('#', 1)[0]):
                 declaration = re.match(r'^(deb(?:-src)?\s+(?:\[[^\]\r\n]+\]\s+)?)(\S+)(\s+.+)$', line)
                 if not declaration:
                     raise ValueError('Malformed regional archive declaration')
                 uri = archive_uri(declaration[2])
-                if uri == declaration[2] or REGIONAL in (declaration[1] + declaration[3]).lower():
+                if uri == declaration[2] or targets_archive(declaration[1] + declaration[3]):
                     raise ValueError('Regional archive outside a repository URI')
                 line = line[:declaration.start(2)] + uri + line[declaration.end(2):]
         result.append(line)

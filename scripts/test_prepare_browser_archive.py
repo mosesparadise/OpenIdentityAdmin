@@ -29,6 +29,28 @@ class BrowserArchiveTests(unittest.TestCase):
         continuation = 'URIs: https://security.ubuntu.com/ubuntu/\r\n http://azure.archive.ubuntu.com/ubuntu\r\n'
         self.assertEqual(continuation.replace('azure.archive.', 'archive.'), rewrite(continuation, True))
 
+    def test_Given_HostedMirrorList_When_Preparing_Then_OfficialHttpsReplacesTheSelector(self):
+        """The runner's local mirror list prioritizes Azure; replacing direct hostnames alone was a no-op."""
+        hosted_selector = 'mirror+file:/etc/apt/apt-mirrors.txt'
+        hosted = SOURCE.replace('http://azure.archive.ubuntu.com/ubuntu/', hosted_selector)
+        expected = SOURCE.replace('http://azure.archive.ubuntu.com/ubuntu/', 'https://archive.ubuntu.com/ubuntu/')
+        self.assertEqual(expected, rewrite(hosted, True))
+        legacy = 'deb ' + hosted_selector + ' noble main\n'
+        self.assertEqual('deb https://archive.ubuntu.com/ubuntu/ noble main\n', rewrite(legacy, False))
+        for invalid in [hosted_selector + '?x=1', hosted_selector + '.other',
+                        hosted_selector.replace('mirror+file:', 'file:'),
+                        hosted_selector.replace('/etc/apt/', '/other/')]:
+            with self.subTest(uri=invalid), self.assertRaises(ValueError):
+                archive_uri(invalid)
+        with tempfile.TemporaryDirectory() as directory, patch('prepare_browser_archive.subprocess.run') as execute:
+            root = Path(directory)
+            path = root / 'sources.list.d' / 'ubuntu.sources'
+            path.parent.mkdir()
+            path.write_text(hosted)
+            prepare(root)
+            self.assertEqual(expected, path.read_text())
+            execute.assert_called_once_with(['apt-get', 'update'], check=True, timeout=120)
+
     def test_Given_legacy_sources_When_rewriting_Then_options_and_comments_are_preserved(self):
         """Constrain changes to the URI after the optional apt options, without weakening signed-by."""
         source = ('# deb http://azure.archive.ubuntu.com/ubuntu noble main\n'
@@ -121,4 +143,4 @@ class BrowserArchiveTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    run(6)
+    run(7)
