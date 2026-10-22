@@ -10,6 +10,7 @@
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/index.html": "ef86fe0bec3a4da2a7f08e1c7f01c2cb398d83e24ef2b98124fb256f73f08133"
   },
   "requestSha256": "2f06a0763ca4349b6f91041e82d6017a5fb76ff4c8b66773ba1bc2226d0a77e1",
-  "responseSha256": "bab55479f6d0603509f74be8a81c297c1e1a95e7bed7bea1369424218242e6b0",
-  "configurationAssessment": "vendor/configuration-review-2026-10-12.json"
+  "responseSha256": "64c58b7bf7c123141e9d753d980c48eaacd4a038f7ae877445c2f5a13411a21f",
+  "configurationAssessment": "vendor/configuration-review-2026-10-12.json",
+  "supplementalConfigurationAssessment": "vendor/configuration-review-2026-10-22.json"
 }

@@ -8,6 +8,10 @@
 
 [Native integration and implementation](native-integration.md) records the first dormant B3 production policy and 66 actual focused Host executions, all passed with zero skips. T002 records A-009; T003/T007 are partially implemented, not completed. Build and code-quality checks pass. Full Host execution passes **1,192/1,192**, zero failures/skips; all **211 Python controls** pass. Native Host TRX SHA-256: `8178558adb8ba94e58242ad667ddb3c951592f1cfe79450191c756497885aac2`. Independent architecture/test and security source reviews pass. Hosted exact-head verification remains pending; no B3 database/browser execution is claimed. The first full Host attempt failed 32 process-start controls because the restored SDK was not on the subprocess PATH; correcting the command environment produced the full passing result without a source/test assertion change. All prior planning-only observations retain their dates.
 
+## Shared transaction continuation — 22 October
+
+[Implementation, invariants, independent reviews and test inventory](native-transactions.md) record the next T003 prerequisite. Local builds, formatting, code quality and native selector reconciliation pass; new database execution awaits the corrected hosted head. Initial PR #71 static/advisory failures and their scoped corrections are preserved in that record. No full B3 acceptance claim is made.
+
 ## Verified starting checkpoint
 
 Remote main was verified as `2da9ef03dda7d2e7f019ad5f813b8d0515b2b9cf` (PR #67 B2 delivery record), tree `e47d3c84dc946118ff2e63272b5417586ed5a99a`, after B2 implementation PR #66 squash `42214382f5b6246332fe9b1ecfe00463a5ed9965`. The workspace was clean before branch `068-administrator-browser-plan` was created from that main. [B2 delivery](../011-administrator-issuer-client/b2-delivery.md) records 67 successful exact-head jobs, 3,378/3,378 raw executions, zero skips, 50 coverage inputs/15 unchanged floors and 48 mutation kills with baseline/restored controls. None is B3 execution evidence.

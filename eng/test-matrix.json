@@ -34,14 +34,14 @@
     },
     "PostgreSql": {
       "Persistence": 8,
-      "AppHost": 15,
+      "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 555
     },
     "SqlServer": {
       "Persistence": 8,
-      "AppHost": 15,
+      "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 660
@@ -156,8 +156,8 @@
       "SqlServer": 8
     },
     "BffSessions": {
-      "PostgreSql": 7,
-      "SqlServer": 7
+      "PostgreSql": 10,
+      "SqlServer": 10
     }
   }
 }

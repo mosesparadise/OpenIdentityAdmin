@@ -13,62 +13,27 @@ internal sealed class SessionTicketPersistence(AdminSessionDbContext database, T
     internal async Task<bool> CreateAsync(AdminSessionTicket row, CancellationToken cancellationToken)
     {
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
-        database.Add(row);
-        await database.SaveChangesAsync(cancellationToken);
-        if (!LiveAtCurrentTime(row))
-        {
-            return false;
-        }
-        await AuditAsync(row.Digest, row.Revision, SessionMutation.Create, cancellationToken);
-        if (!LiveAtCurrentTime(row))
-        {
-            return false;
-        }
-        await transaction.CommitAsync(cancellationToken);
-        return true;
+        var participant = new SessionTicketTransaction(database, transaction, clock);
+        return await participant.CreateAsync(row, cancellationToken) && await participant.CommitAsync(cancellationToken);
     }
 
-    /// <summary>Updates one live expected revision without upsert/retry, checking expiry again after lock and audit waits.</summary>
+    /// <summary>Updates one live expected revision without upsert/retry inside an owned transaction.</summary>
     internal async Task<bool> RenewAsync(AdminSessionTicket original, AdminSessionTicket replacement, CancellationToken cancellationToken)
     {
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
-        var now = clock.GetUtcNow().UtcTicks;
-        var changed = await database.Set<AdminSessionTicket>().Where(row => row.Digest == original.Digest &&
-            row.Revision == original.Revision && row.RevokedAt == null && row.CreatedAt <= now &&
-            row.LastActivityAt <= now && row.IdleExpiresAt > now && row.AbsoluteExpiresAt > now)
-            .ExecuteUpdateAsync(update => update
-                .SetProperty(row => row.LastActivityAt, replacement.LastActivityAt)
-                .SetProperty(row => row.IdleExpiresAt, replacement.IdleExpiresAt)
-                .SetProperty(row => row.Revision, replacement.Revision)
-                .SetProperty(row => row.ProtectedTicket, replacement.ProtectedTicket), cancellationToken);
-        if (changed != 1 || !LiveAtCurrentTime(original) || !LiveAtCurrentTime(replacement))
-        {
-            return false;
-        }
-        await AuditAsync(original.Digest, replacement.Revision, SessionMutation.Renew, cancellationToken);
-        if (!LiveAtCurrentTime(original) || !LiveAtCurrentTime(replacement))
-        {
-            return false;
-        }
-        await transaction.CommitAsync(cancellationToken);
-        return true;
+        var participant = new SessionTicketTransaction(database, transaction, clock);
+        return await participant.RenewAsync(original, replacement, cancellationToken) && await participant.CommitAsync(cancellationToken);
     }
 
-    /// <summary>Revokes whichever revision currently exists; the write lock retains its revision until atomic intent commits.</summary>
+    /// <summary>Revokes the current revision and audit atomically; absent rows remain an idempotent no-op.</summary>
     internal async Task RevokeAsync(string digest, CancellationToken cancellationToken)
     {
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
-        var now = clock.GetUtcNow().UtcTicks;
-        var changed = await database.Set<AdminSessionTicket>().Where(row => row.Digest == digest && row.RevokedAt == null)
-            .ExecuteUpdateAsync(update => update.SetProperty(row => row.RevokedAt, now), cancellationToken);
-        if (changed == 0)
+        var participant = new SessionTicketTransaction(database, transaction, clock);
+        if (await participant.RevokeAsync(digest, cancellationToken))
         {
-            return;
+            await participant.CommitAsync(cancellationToken);
         }
-        var revision = await database.Set<AdminSessionTicket>().Where(row => row.Digest == digest)
-            .Select(row => row.Revision).SingleAsync(cancellationToken);
-        await AuditAsync(digest, revision, SessionMutation.Revoke, cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
     }
 
     /// <summary>Deletes at most the bounded candidate set, rechecking expiry/revocation after any concurrent renewal.</summary>
@@ -84,27 +49,4 @@ internal sealed class SessionTicketPersistence(AdminSessionDbContext database, T
     private IQueryable<AdminSessionTicket> Eligible(long now) => database.Set<AdminSessionTicket>()
         .Where(row => row.RevokedAt != null || row.IdleExpiresAt <= now || row.AbsoluteExpiresAt <= now);
 
-    /// <summary>Resamples time after asynchronous waits so stale pre-lock time cannot revive expired tickets.</summary>
-    private bool LiveAtCurrentTime(AdminSessionTicket row)
-    {
-        var now = clock.GetUtcNow().UtcTicks;
-        return row.RevokedAt is null && now >= row.CreatedAt && now >= row.LastActivityAt &&
-            now < row.IdleExpiresAt && now < row.AbsoluteExpiresAt;
-    }
-
-    /// <summary>Appends minimal intent inside the caller transaction; failures escape so transaction disposal rolls back state.</summary>
-    private async Task AuditAsync(string digest, long revision, SessionMutation operation, CancellationToken cancellationToken)
-    {
-        database.Add(new AdminSessionAudit
-        {
-            Id = Guid.NewGuid(),
-            CorrelationId = Guid.NewGuid(),
-            OccurredAt = clock.GetUtcNow().UtcTicks,
-            Digest = digest,
-            Revision = revision,
-            Operation = operation,
-            Outcome = SessionMutationOutcome.Committed
-        });
-        await database.SaveChangesAsync(cancellationToken);
-    }
 }

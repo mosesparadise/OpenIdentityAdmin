@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
 using Microsoft.AspNetCore.Authentication;

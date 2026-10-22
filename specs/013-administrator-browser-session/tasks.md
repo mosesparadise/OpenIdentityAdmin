@@ -13,6 +13,8 @@ Task IDs belong to feature 013. The reviewed planning packet supplies feature 01
 
 **Implementation progress (22 October):** [native identity/state slice](native-integration.md) implements strict signed B3 binding, protected-state expectation and canonical B1 projection with 66 focused tests. T003 remains open for PAR/completion, shared Sessions transactions and end-session/registration; T007 remains open for cookie/CSRF/generation/composition policy. T004 Host inventory is updated to 1,192; no new module or coverage exclusion.
 
+**Shared transaction progress (22 October):** [ticket transaction participation](native-transactions.md) preserves B1 wrappers and adds guarded single commit, immutable final expiry and permanent failure/overlap denial. Six new actual-provider controls build and reconcile in native discovery (AppHost 18 per provider); execution remains pending. T003 remains partial; no generation/intent table, actor-bound audit or complete B3 task is marked complete.
+
 ## Foundational ownership
 
 - [ ] T005 Add bounded browser coordination, intent and logout correlation persistence under `src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/`, with additive migrations in both existing provider assemblies. Implement atomic generation/intent/ticket/audit composition, portable quota ownership and cleanup; preserve B1 CAS and provider extension contracts. FR-005/008/009/011/012; B3-STATE-01–04, B3-OPS-01–03.
