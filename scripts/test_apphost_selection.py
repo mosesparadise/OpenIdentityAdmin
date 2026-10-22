@@ -14,12 +14,12 @@ class AppHostSelectionTests(unittest.TestCase):
     """Use independent native-shaped identities, counts and namespace expectations."""
 
     def setUp(self):
-        """Create eight foundation and seven BFF identities for each real provider."""
+        """Create eight foundation and ten BFF identities for each real provider."""
         self.matrix = json.loads((ROOT / 'eng/test-matrix.json').read_text())
         self.rows = {}
         for provider in ('PostgreSql', 'SqlServer'):
             self.rows[provider] = []
-            for group, namespace, count in [('Foundation', BASE, 8), ('BffSessions', BASE + '.BffSessions', 7)]:
+            for group, namespace, count in [('Foundation', BASE, 8), ('BffSessions', BASE + '.BffSessions', 10)]:
                 for index in range(count):
                     self.rows[provider].append({'uid': provider + group + str(index),
                         'displayName': f'{namespace}.FixtureTests.Case{index}({provider})',
@@ -36,11 +36,11 @@ class AppHostSelectionTests(unittest.TestCase):
         return {'Foundation': {uid: test for uid, test in tests.items() if test[3] == BASE},
                 'BffSessions': {uid: test for uid, test in tests.items() if test[3] == BASE + '.BffSessions'}}
 
-    def test_Given_current_matrix_When_grouping_Then_all_fifteen_cases_remain_mandatory(self):
-        """Both providers retain independent eight-plus-seven expectations and the original total."""
+    def test_Given_current_matrix_When_grouping_Then_all_eighteen_cases_remain_mandatory(self):
+        """Both providers retain independent eight-plus-ten expectations including shared transaction controls."""
         for provider in self.rows:
-            self.assertEqual([('Foundation', 8), ('BffSessions', 7)], apphost_invocations(self.matrix, provider))
-            self.assertEqual(15, self.matrix['profiles'][provider]['AppHost'])
+            self.assertEqual([('Foundation', 8), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
+            self.assertEqual(18, self.matrix['profiles'][provider]['AppHost'])
             require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
 
     def test_Given_manifest_drift_When_grouping_Then_missing_groups_and_invalid_counts_fail(self):

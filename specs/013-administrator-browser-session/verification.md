@@ -1,6 +1,16 @@
 # B3 planning verification and acceptance map
 
+**22 October implementation amendment:** [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md) supersedes the older Firefox-before-B3 sequencing statements in this planning record. T028 stays deferred/open; it does not block code. T003 native identity/state feasibility and T007 pure validation/projection may proceed independently of the remaining native transaction/end-session work. Concrete security prerequisites for dependent routes and external acceptance remain required.
+
 21 October 2026, Europe/London. This packet completes specification/planning only. All B3 runtime scenarios below are **not_run**; their labels are planned scenario IDs, not discovered case counts. Feature 011 T028 and feature 013 T002–T024 remain open.
+
+## Executable identity/state slice — 22 October
+
+[Native integration and implementation](native-integration.md) records the first dormant B3 production policy and 66 actual focused Host executions, all passed with zero skips. T002 records A-009; T003/T007 are partially implemented, not completed. Build and code-quality checks pass. Full Host execution passes **1,192/1,192**, zero failures/skips; all **211 Python controls** pass. Native Host TRX SHA-256: `8178558adb8ba94e58242ad667ddb3c951592f1cfe79450191c756497885aac2`. Independent architecture/test and security source reviews pass. Hosted exact-head verification remains pending; no B3 database/browser execution is claimed. The first full Host attempt failed 32 process-start controls because the restored SDK was not on the subprocess PATH; correcting the command environment produced the full passing result without a source/test assertion change. All prior planning-only observations retain their dates.
+
+## Shared transaction continuation — 22 October
+
+[Implementation, invariants, independent reviews and test inventory](native-transactions.md) record the next T003 prerequisite. Local builds, formatting, code quality and native selector reconciliation pass; new database execution awaits the corrected hosted head. Initial PR #71 static/advisory failures and their scoped corrections are preserved in that record. No full B3 acceptance claim is made.
 
 ## Verified starting checkpoint
 

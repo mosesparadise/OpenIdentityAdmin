@@ -77,10 +77,11 @@ internal sealed class SessionStoreHarness : IAsyncDisposable
     }
 
     /// <summary>Provides test-only owner access for persisted-state assertions and controlled native locks; production never receives it.</summary>
-    internal AdminSessionDbContext Database(bool runtime = false)
+    internal AdminSessionDbContext Database(bool runtime = false, params IInterceptor[] interceptors)
     {
         var options = new DbContextOptionsBuilder<AdminSessionDbContext>();
         PersistenceRegistration.ConfigureDatabase(options, provider, runtime ? runtimeConnection : ownerConnection, History);
+        options.AddInterceptors(interceptors);
         return new(options.Options);
     }
 

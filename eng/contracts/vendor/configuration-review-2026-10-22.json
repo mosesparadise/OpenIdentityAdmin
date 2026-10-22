@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-22T22:01:33.298106+00:00",
+  "repositoryHead": "8511df7858a2f8f4fdb47f73165a643b1e9dded0",
+  "failedRun": 39860041729,
+  "failedJob": 120108200419,
+  "failureStage": "check_contract_supply_chain.check_viewer_advisories -> require_reviewed_advisories; new or changed advisory rejection before npm audit",
+  "historicalPayloadLimit": "Failed hosted raw HTTP response was not retained by the fail-closed script. Current query reproduces rejection with three newly present entries; it is not proof of exact failed-run response bytes.",
+  "query": {
+    "endpoint": "https://registry.npmjs.org/-/npm/v1/security/advisories/bulk",
+    "requestSha256": "2f06a0763ca4349b6f91041e82d6017a5fb76ff4c8b66773ba1bc2226d0a77e1",
+    "currentResponseSha256": "64c58b7bf7c123141e9d753d980c48eaacd4a038f7ae877445c2f5a13411a21f",
+    "reviewedPreviousResponseSha256": "bab55479f6d0603509f74be8a81c297c1e1a95e7bed7bea1369424218242e6b0",
+    "newCount": 3,
+    "changedExistingCount": 0,
+    "removedCount": 0,
+    "previousCount": 8,
+    "currentCount": 11
+  },
+  "byteVerification": {
+    "nuget": "Swashbuckle.AspNetCore.SwaggerUI",
+    "nugetVersion": "10.3.0",
+    "nugetArchiveSha256": "fae94d74c5e8453e2da253aa0feba892ba1656d787d871ed443ab36723a8dcdd",
+    "resourceContainer": "lib/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll",
+    "gzipResourceByteOffset": 111104,
+    "assetSha256": "050bc415ee7048dcd881682678f720264e7da5e373f7461d7c58c755305255f7",
+    "assetBytes": 1586002,
+    "dompurifyVersion": "3.4.13",
+    "versionExcerptByteOffset": 1414318,
+    "sanitizerExcerptByteOffset": 1434523,
+    "existingReachabilityExcerptsMatch": true,
+    "applicationSanitizeCalls": 1,
+    "applicationAddHookCalls": 1,
+    "applicationSetConfigCalls": 0
+  },
+  "configurationHashes": {
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Setup.cs": {
+      "actual": "468dd496873c70add826b65348079ed4ee21ce541b7143a76e39da8e31f781f1",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/swagger.js": {
+      "actual": "c97036cbc88ad336f5a5c72bea74f2f719e4c627f1b5c3c5a94e7732a6ccab00",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": {
+      "actual": "17514cf19496dd40ed7d046acdf6f60e85d4a8b55542b5ce9757b3e8398f9e1f",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationPolicy.cs": {
+      "actual": "d87dd51b11eafa9b3c4dc2ea317cfd28ddbbb229cc9fdc62f07bc12cabe0af14",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationAssets.cs": {
+      "actual": "44c7c9cbfe901c6a4dd864b85a580a2fd487f0dfced61d48070ff707c01d9260",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationOptions.cs": {
+      "actual": "b4babe3c2a25ca7c7ae1d0e33e4e60ed96201fc3e26d340a4026a246589577bc",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/index.html": {
+      "actual": "ef86fe0bec3a4da2a7f08e1c7f01c2cb398d83e24ef2b98124fb256f73f08133",
+      "matchesReviewed": true
+    }
+  },
+  "advisories": [
+    {
+      "id": "GHSA-cg2g-xh64-v4q7",
+      "primarySource": "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+      "patchedUpstreamVersion": "3.4.17",
+      "affectedConditions": "SAFE_FOR_TEMPLATES plus DOM-returning or IN_PLACE mode with attached shadow-root content and downstream template evaluation.",
+      "boundedDisposition": "not_affected_in_exact_configured_sanitizer",
+      "rationale": "Actual Markdown caller rejects non-string source, passes rendered string, and omits SAFE_FOR_TEMPLATES, RETURN_DOM, RETURN_DOM_FRAGMENT and IN_PLACE. Exact embedded sanitizer defaults all four false.",
+      "currentRegistryEntry": {
+        "id": 1242880,
+        "url": "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+        "title": "DOMPurify SAFE_FOR_TEMPLATES bypass: split template expressions survive in attached shadow root content on DOM output modes",
+        "severity": "critical",
+        "vulnerable_versions": ">=3.4.4 <=3.4.16",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      }
+    },
+    {
+      "id": "GHSA-mrv2-3pqr-j5jr",
+      "primarySource": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+      "patchedUpstreamVersion": "3.4.17",
+      "affectedConditions": "IN_PLACE mode plus a hook removing an ancestor or later sibling; all five element/attribute hook phases are affected.",
+      "boundedDisposition": "not_affected_in_exact_configured_sanitizer",
+      "rationale": "Actual call omits IN_PLACE (embedded default false). The sole application beforeSanitizeElements hook adds rel=noopener noreferrer and never removes nodes. Hook phase alone is NOT an exclusion.",
+      "currentRegistryEntry": {
+        "id": 1242881,
+        "url": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+        "title": "DOMPurify IN_PLACE: hook that removes a parent or sibling leaves the detached subtree's event handlers armed (incomplete fix for GHSA-p98j-92pf-mc4p)",
+        "severity": "high",
+        "vulnerable_versions": "<=3.4.16",
+        "cwe": [
+          "CWE-79",
+          "CWE-693"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      }
+    },
+    {
+      "id": "GHSA-c6gr-qvv4-5v3f",
+      "primarySource": "https://github.com/advisories/GHSA-c6gr-qvv4-5v3f",
+      "patchedUpstreamVersion": "3.4.17",
+      "affectedConditions": "PARSER_MEDIA_TYPE=application/xhtml+xml plus relevant SVG animate/attributeName input.",
+      "boundedDisposition": "not_affected_in_exact_configured_sanitizer",
+      "rationale": "Actual sanitizer omits PARSER_MEDIA_TYPE; exact embedded default is text/html. No application setConfig call overrides it.",
+      "currentRegistryEntry": {
+        "id": 1242882,
+        "url": "https://github.com/advisories/GHSA-c6gr-qvv4-5v3f",
+        "title": "DOMPurify: SMIL attributeName=href guard is skipped when PARSER_MEDIA_TYPE is application/xhtml+xml",
+        "severity": "low",
+        "vulnerable_versions": "<=3.4.16",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      }
+    }
+  ],
+  "productionMapping": "rg under both production backend projects finds MapDocumentation definitions only, no production invocation. Existing bootstrap plugins only wrap authorization components; no sanitizer option/hook extension.",
+  "recommendation": "Record three explicit source/config-bound dispositions with primary advisory links and exact current candidate entries; archive the fresh response and update exact response hash after review. Preserve strict unknown/changed advisory rejection, config/hash binding, unresolved qs/inventory and activation/license/public-release gates. No package/severity allowlisting, no npm override claim to patch NuGet-embedded assets.",
+  "limits": [
+    "No exploit/browser/build/test execution by reviewer.",
+    "No blanket DOMPurify/XSS or full vendor inventory clearance.",
+    "Existing Swagger source-map inconsistency and two unresolved qs candidate advisories remain open.",
+    "Any configuration, plugin, hook, NuGet version or asset-byte change requires reassessment.",
+    "Upstream patched version 3.4.17 does not imply the current embedded 3.4.13 package is patched.",
+    "Health-only wording is historical scope; current production documentation unmapped status was checked independently.",
+    "Root owns changes; reviewer edited only scratch evidence."
+  ]
+}

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Select every phase-required browser cell; A-007 defers Firefox during internal B2."""
+"""Select every phase-required browser cell; A-009 defers Firefox during internal roadmap development."""
 import json
 import os
 
-# A-007: restore Firefox before B3 implementation or any production/browser activation.
+# A-009: retain Firefox as deferred evidence until browser-support/release acceptance.
 ENGINES = ('chromium', 'webkit')
 CONTRACT_PARTITIONS = ('core', *ENGINES)
 PROVIDERS = ('PostgreSql', 'SqlServer')
-PHASE_NOTICE = ('A-007 initial development through B2: Chromium and WebKit required; '
-                'Firefox deferred, not passed. Restore before B3 implementation or activation/release.')
+PHASE_NOTICE = ('A-009 internal roadmap development: Chromium and WebKit required; '
+                'Firefox deferred, not passed. Known browser issues are tracked; restore before release acceptance.')
 
 
 def select():

@@ -1,5 +1,7 @@
 # B3 source research and design decisions
 
+**22 October implementation amendment:** [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md) supersedes the older Firefox-before-B3 sequencing statements in this planning record. T028 stays deferred/open; it does not block code. T003 native identity/state feasibility and T007 pure validation/projection may proceed independently of the remaining native transaction/end-session work. Concrete security prerequisites for dependent routes and external acceptance remain required.
+
 21 October 2026, Europe/London. Read-only research against main `2da9ef03dda7d2e7f019ad5f813b8d0515b2b9cf`, following B2 squash `42214382f5b6246332fe9b1ecfe00463a5ed9965`. These are design decisions and source observations, not executed B3 evidence.
 
 ## R1 — Separate human login from the native exchange
