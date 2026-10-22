@@ -35,3 +35,5 @@ Initial source `8511df7858a2f8f4fdb47f73165a643b1e9dded0`, run [39860041729](htt
 An independent [exact-byte/configuration advisory review](../../eng/contracts/vendor/configuration-review-2026-10-22.json) records three newly observed DOMPurify advisories and their absent required sanitizer modes. The assessed registry response/hash is refreshed while strict unknown/changed-advisory detection, unresolved vendor inventory/qs findings and activation/public-release blockers remain unchanged. The full local supply-chain gate passes. The failed hosted HTTP response was not archived; the fresh response reproduces rejection but cannot establish the exact historical response bytes.
 
 All six historical findings, 48 human rows and 345 not-assessed controls remain open. PR #69 is preserved draft/unmerged. No production activation, SQL diagnostic experiment or public-release claim follows from this implementation.
+
+[Browser provisioning correction](browser-provisioning.md) preserves the two failed attempts and the official Ubuntu archive selection needed for complete hosted evidence. No product assertion or deadline changes.
