@@ -568,7 +568,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"PostgreSql\", retained: False)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"PostgreSql\", retained: True)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1243,7 +1246,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"SqlServer\", retained: False)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneNativeParSlot_When_IndependentIssuerCreatesThenExceedsCapacity_Then_EqualitySucceedsAndNextRequestDenies(provider: \"SqlServer\", retained: True)",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_OneAuthorizationSlot_When_TwoRealParRequestsAuthorize_Then_OnlyFirstCreatesCodeAndDeniedConsumptionRemains(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -26663,6 +26669,120 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
         "typeName": "NativeWireQuotaTests",
         "methodName": "Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeEndSessionTests",
+        "methodName": "Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeEndSessionTests",
+        "methodName": "Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeEndSessionTests",
+        "methodName": "Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeEndSessionTests",
+        "methodName": "Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeEndSessionTests",
+        "methodName": "Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeEndSessionTests",
+        "methodName": "Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

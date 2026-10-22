@@ -2,6 +2,8 @@
 
 22 October 2026. First executable B3 slice under [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md), based on verified main `f0f5460c482029286dd0113be0f5a1cba37a691e`. PR #69 and its separate restoration/diagnostic work remain preserved. This implements the identity-validation/projection portion of T007 and proves the identity/state portion of T003; neither whole task is complete.
 
+**Later exact-source verification:** [prerequisite evidence](prerequisite-delivery.md) records both-provider execution and the current delivery status. The implementation-time pending statements below retain their original scope.
+
 ## Implemented behavior
 
 `Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity` validates the original B3 source-session deadline and expected login-intent digest against the exact native-validated ID token and principal. `BrowserSessionClaims` rejects missing, duplicate, case-aliased, array-shaped, wrongly typed or noncanonical required fields. Subject/session are bounded to the existing B1 limit. Authentication methods are exactly `pwd` and `otp`; password proof freshness is strictly less than 300 seconds, with the existing 30-second future-clock tolerance. Source expiry equality denies and its supplied original value is preserved, subject to the eight-hour policy ceiling. It is never derived from ID-token expiry, password time or session ID.

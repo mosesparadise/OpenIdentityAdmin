@@ -12,6 +12,14 @@
 
 [Implementation, invariants, independent reviews and test inventory](native-transactions.md) record the next T003 prerequisite. Local builds, formatting, code quality and native selector reconciliation pass; new database execution awaits the corrected hosted head. Initial PR #71 static/advisory failures and their scoped corrections are preserved in that record. No full B3 acceptance claim is made.
 
+## Exact-source prerequisite evidence — 22 October
+
+[Delivery evidence](prerequisite-delivery.md) records final source `53c78662dc9db8a90d1dd1352392f9855178183e`, all 67 successful jobs, both native providers, 48 mutation kills, 50 coverage inputs/15 floors, retained artifacts, independent review and the raw XML transfer limitation. PR #71 is squash-merged as `017bfaa5396e6d2931c99af110faa0710c60e7bb`; source/tested merge/squash share the recorded tree. This supersedes the pending statements above. T003/T007 remain partial; complete product scenarios below remain not_run.
+
+## Native end-session validation preparation — 22 October
+
+[Fixture and evidence limits](native-end-session.md) record six discovered cases, zero-warning/error build and independent architecture/test/security/API source review. All 1,241 prior native identities and portable metadata remain; discovery totals 1,247. Provider execution is pending. This is native validation characterization, not product logout or complete T003/B3 acceptance.
+
 ## Verified starting checkpoint
 
 Remote main was verified as `2da9ef03dda7d2e7f019ad5f813b8d0515b2b9cf` (PR #67 B2 delivery record), tree `e47d3c84dc946118ff2e63272b5417586ed5a99a`, after B2 implementation PR #66 squash `42214382f5b6246332fe9b1ecfe00463a5ed9965`. The workspace was clean before branch `068-administrator-browser-plan` was created from that main. [B2 delivery](../011-administrator-issuer-client/b2-delivery.md) records 67 successful exact-head jobs, 3,378/3,378 raw executions, zero skips, 50 coverage inputs/15 unchanged floors and 48 mutation kills with baseline/restored controls. None is B3 execution evidence.

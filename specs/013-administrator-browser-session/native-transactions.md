@@ -2,6 +2,8 @@
 
 22 October 2026. Continuation of [native identity/state work](native-integration.md) in [PR #71](https://github.com/mosesparadise/OpenIdentityAdmin/pull/71), under [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md). This implements the ticket participation prerequisite within T003. Complete B3 integration, generation/intent persistence, actor-bound audit, issuer completion and logout remain open.
 
+**Later exact-source verification:** [prerequisite evidence](prerequisite-delivery.md) records both-provider execution and the current delivery status. The implementation-time pending statements below retain their original scope.
+
 ## Implementation
 
 `SessionTicketTransaction` binds one existing `AdminSessionDbContext` and its exact current native transaction. It opens no transaction or service scope and owns no disposal. It stages the existing B1 create/renew/revoke writes and their audit records, preserving CAS predicates, post-write expiry checks and idempotent absent revocation. `SessionTicketPersistence` retains the existing B1 begin/dispose boundary and delegates those operations to the participant. Cleanup is unchanged; there are no schema or migration changes.
