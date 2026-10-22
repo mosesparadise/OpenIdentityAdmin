@@ -113,7 +113,8 @@ public sealed class SessionTransactionTests
             database.Add(marker);
             await database.SaveChangesAsync(token);
             var participant = new SessionTicketTransaction(database, transaction, harness.Clock);
-            await Assert.ThrowsAsync<InvalidOperationException>(() => participant.CreateAsync(row, token));
+            var error = await Assert.ThrowsAsync<DbUpdateException>(() => participant.CreateAsync(row, token));
+            Assert.IsType<InvalidOperationException>(error.InnerException);
             Assert.Equal(1, fault.Attempts);
             Assert.False(await participant.CommitAsync(token));
         }
