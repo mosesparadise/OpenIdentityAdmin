@@ -1,4 +1,5 @@
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -10,13 +11,13 @@ namespace IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 /// <summary>Admits only password-verified restricted interactions; it cannot issue a session or activate an account.</summary>
 internal sealed class JourneyPassword(PlatformDbContext database, NativeOperation operation, UserManager<PlatformUser> users,
     CeremonyBudget budget, CeremonyClock clock, CeremonyAdmission admission, CeremonyGenerations generations,
-    JourneyEligibility eligibility, JourneyLocator locator, FactorProtection protection)
+    JourneyEligibility eligibility, JourneyLocator locator, FactorProtection protection, IssuerContinuationCeremony continuations)
 {
     /// <summary>Locks fresh account state and allocates staging only after native password verification and capacity checks.</summary>
     internal async Task<JourneyPasswordResult> BeginAsync(string userName, string password, string purpose, string budgetSecret,
-        string correlation, CancellationToken token, JourneySessionCandidate? session = null)
+        string correlation, CancellationToken token, JourneySessionCandidate? session = null, IssuerContinuationRequest? continuation = null)
     {
-        if (purpose is not (AdministratorPolicy.Enrollment or AdministratorPolicy.Login or AdministratorPolicy.Recovery or
+        if ((continuation is not null && purpose != AdministratorPolicy.Login) || purpose is not (AdministratorPolicy.Enrollment or AdministratorPolicy.Login or AdministratorPolicy.Recovery or
             AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration) ||
             !CeremonySecrets.IsIdentifier(budgetSecret) || !CeremonySecrets.IsIdentifier(correlation))
         {
@@ -52,12 +53,12 @@ internal sealed class JourneyPassword(PlatformDbContext database, NativeOperatio
             await transaction.CommitAsync(CeremonyEvent.Password, false, account.User.Id, clock.Now);
             return new JourneyPasswordResult(null, false);
         }
-        return new JourneyPasswordResult(await AdmitAsync(transaction, account, proof, purpose, budgetSecret, correlation, authority), false);
+        return new JourneyPasswordResult(await AdmitAsync(transaction, account, proof, purpose, budgetSecret, correlation, authority, continuation), false);
     }
 
     /// <summary>Stages a manager-generated random key without changing the active factor or granting password-only authority.</summary>
     private async Task<string?> AdmitAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyPassword proof,
-        string purpose, string browser, string correlation, JourneySessionProof? authority)
+        string purpose, string browser, string correlation, JourneySessionProof? authority, IssuerContinuationRequest? continuation)
     {
         var destination = purpose == AdministratorPolicy.Enrollment
             ? await generations.AllocateAsync(transaction, account) : account.Enrollment.FactorGeneration;
@@ -77,7 +78,11 @@ internal sealed class JourneyPassword(PlatformDbContext database, NativeOperatio
         }
         authority?.RequireCurrent(transaction, account, clock.Now);
         interaction.SessionPublicId = authority?.PublicId;
-        await transaction.CommitAsync(CeremonyEvent.Password, true, account.User.Id, clock.Now);
+        if (continuation is not null)
+        {
+            await continuations.BindAsync(transaction, interaction, continuation);
+        }
+        await transaction.CommitAsync(CeremonyEvent.Password, true, account.User.Id, clock.Now, clock);
         return interaction.PublicId;
     }
 }

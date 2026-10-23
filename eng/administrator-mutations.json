@@ -52,7 +52,7 @@
     {
       "id": "administrator-precommit-cookie",
       "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs",
-      "before": "await transaction.CommitAsync(Event(interaction.Row.Purpose), true, account.User.Id, now);",
+      "before": "await transaction.CommitAsync(Event(interaction.Row.Purpose), true, account.User.Id, now, clock);",
       "after": "await database.SaveChangesAsync(transaction.Token);",
       "marker": "administrator-precommit-cookie-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes"

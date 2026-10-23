@@ -23,6 +23,114 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion.IssuerContinuation", b =>
+                {
+                    b.Property<string>("IntentDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("BrowserBudgetId")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("BrowserDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("CompletionDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("InteractionBrowserDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("InteractionId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RequestId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("SessionExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SessionId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("IntentDigest");
+
+                    b.HasIndex("BrowserDigest");
+
+                    b.HasIndex("CompletionDigest")
+                        .IsUnique()
+                        .HasFilter("[CompletionDigest] IS NOT NULL");
+
+                    b.HasIndex("InteractionId")
+                        .IsUnique()
+                        .HasFilter("[InteractionId] IS NOT NULL");
+
+                    b.HasIndex("RequestId")
+                        .IsUnique()
+                        .HasFilter("[RequestId] IS NOT NULL");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.ToTable("AdministratorIssuerContinuation", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_AdministratorIssuerContinuation_Revision", "[Revision] > 0");
+
+                            t.HasCheckConstraint("CK_AdministratorIssuerContinuation_Time", "[CreatedAt] > 0 AND [ExpiresAt] > [CreatedAt] AND [RetainUntil] >= [ExpiresAt]");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAdmission", b =>
                 {
                     b.Property<int>("Id")
@@ -263,6 +371,11 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                     b.Property<string>("BrowserDigest")
                         .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("BrowserIntentDigest")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
                         .UseCollation("Latin1_General_100_BIN2");

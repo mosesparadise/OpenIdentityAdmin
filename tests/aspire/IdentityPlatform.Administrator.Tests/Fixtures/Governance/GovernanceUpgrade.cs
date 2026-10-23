@@ -1,4 +1,5 @@
 using IdentityPlatform.Infrastructure.Features.Health;
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ internal static class GovernanceUpgrade
         Assert.Equal(expected, await database.Database.GetAppliedMigrationsAsync(token));
         await RequireReadyAsync(lease, expected, HealthStatus.Healthy);
         await RequirePopulatedAsync(database);
+        await RequireNoContinuationAsync(database);
         var before = await GovernanceUpgradeSnapshot.ReadAsync(database);
         await database.GetService<IMigrator>().MigrateAsync(provider == PostgreSql ? PreviousPostgreSql : PreviousSqlServer, token);
         database.ChangeTracker.Clear();
@@ -39,10 +41,19 @@ internal static class GovernanceUpgrade
         await database.Database.MigrateAsync(token);
         database.ChangeTracker.Clear();
         Assert.Equal(before, await GovernanceUpgradeSnapshot.ReadAsync(database));
+        await RequireNoContinuationAsync(database);
         Assert.Equal(0, await database.Set<AdministratorGovernance>().Select(row => row.AuthorityRevision).SingleAsync(token));
         Assert.True(await database.Set<AdministratorGovernance>().Select(row => row.BootstrapConsumed).SingleAsync(token));
         Assert.Equal(expected, await database.Database.GetAppliedMigrationsAsync(token));
         await RequireReadyAsync(lease, expected, HealthStatus.Healthy);
+    }
+
+    /// <summary>Prevents the historical downgrade fixture from discarding real continuation data and requires null defaults after re-upgrade.</summary>
+    private static async Task RequireNoContinuationAsync(PlatformDbContext database)
+    {
+        var token = TestContext.Current.CancellationToken;
+        Assert.False(await database.Set<IssuerContinuation>().AnyAsync(token));
+        Assert.False(await database.Set<AdministratorInteraction>().AnyAsync(row => row.BrowserIntentDigest != null, token));
     }
 
     /// <summary>Calls the actual bounded production readiness check through runtime credentials; no service command touches old layout.</summary>
@@ -65,6 +76,7 @@ internal static class GovernanceUpgrade
         Assert.NotEmpty(await database.Set<AdministratorFactor>().Select(row => row.Id).ToArrayAsync(token));
         Assert.NotEmpty(await database.Set<AdministratorRecoveryCode>().Select(row => row.Id).ToArrayAsync(token));
         Assert.NotEmpty(await database.Set<AdministratorSession>().Select(row => row.Id).ToArrayAsync(token));
+        Assert.NotEmpty(await database.Set<AdministratorInteraction>().Select(row => row.Id).ToArrayAsync(token));
         Assert.Single(await database.Set<AdministratorBootstrapReceipt>().Select(row => row.Id).ToArrayAsync(token));
     }
 }

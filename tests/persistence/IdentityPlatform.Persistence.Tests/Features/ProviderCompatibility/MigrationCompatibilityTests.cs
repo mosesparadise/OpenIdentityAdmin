@@ -27,6 +27,7 @@ public sealed class MigrationCompatibilityTests
     public async Task Given_FrozenImplementationDatabase_When_ProviderPluginsUpgrade_Then_SchemaHistoryAndDataRemain(string name)
     {
         AdministratorUpgradeWitnessControls.Verify();
+        IssuerContinuationUpgradeWitnessControls.Verify(name);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromMinutes(DeadlineMinutes));
         await using var postgres = new PostgreSqlBuilder(PostgresImage).Build();
@@ -41,6 +42,8 @@ public sealed class MigrationCompatibilityTests
             (database, token) => DatabaseSnapshot.CaptureAsync(database, indexQuery, checkQuery, token),
             async token => AdministratorUpgradeWitness.Require(TestDatabaseProviders.Resolve(name), baseline,
                 await DatabaseSnapshot.CaptureRowsAsync(fixture, indexQuery, checkQuery, token)),
+            IssuerContinuationUpgradeWitness.HistoryIds(baseline[AdministratorUpgradeWitness.PlatformHistory]),
+            IssuerContinuationUpgradeWitness.HistoryIds(baseline[AdministratorUpgradeWitness.SessionHistory]),
             name == Postgres ? PostgresIdentity : SqlIdentity, deadline.Token);
         await NativeProviderConformance.VerifyAsync(NativeProviderFixtures.Create(name, connection), deadline.Token);
     }

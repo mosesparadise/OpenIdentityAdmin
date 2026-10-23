@@ -7,15 +7,15 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 internal static class AdministratorUpgradeWitness
 {
     private const string TableQueryPrefix = "SELECT * FROM \"";
-    private const string PlatformHistory = "SELECT * FROM \"platform\".\"PlatformMigrations\"";
-    private const string SessionHistory = "SELECT * FROM \"bff\".\"SessionMigrations\"";
-    private const string ProductVersion = "10.0.12";
+    internal const string PlatformHistory = "SELECT * FROM \"platform\".\"PlatformMigrations\"";
+    internal const string SessionHistory = "SELECT * FROM \"bff\".\"SessionMigrations\"";
     private const int BudgetIndex = 2;
+    private const int ContinuationIndex = 3;
     private static readonly string[] InitialBudget = ["1", "0"];
     private static readonly (string Schema, string Table)[] AddedTables = [("platform", "AdministratorProtocolProfile"),
-        ("platform", "AdministratorClientAssertionUse"), ("bff", "AdministratorClientStateBudget")];
+        ("platform", "AdministratorClientAssertionUse"), ("bff", "AdministratorClientStateBudget"), ("platform", "AdministratorIssuerContinuation")];
     private static readonly string[] AddedQueries = ["SELECT * FROM \"platform\".\"AdministratorProtocolProfile\"",
-        "SELECT * FROM \"platform\".\"AdministratorClientAssertionUse\"", "SELECT * FROM \"bff\".\"AdministratorClientStateBudget\""];
+        "SELECT * FROM \"platform\".\"AdministratorClientAssertionUse\"", "SELECT * FROM \"bff\".\"AdministratorClientStateBudget\"", IssuerContinuationUpgradeWitness.ContinuationQuery];
 
     /// <summary>Checks all old objects and data, exact new history rows and inert initialization rather than refreshing the frozen producer.</summary>
     internal static void Require(IRelationalDatabaseProvider provider, Dictionary<string, string[]> before, Dictionary<string, string[]> after)
@@ -28,7 +28,12 @@ internal static class AdministratorUpgradeWitness
             {
                 var store = query == PlatformHistory ? DatabaseStore.Platform : DatabaseStore.Sessions;
                 Assert.Equal(DatabaseSnapshot.Fingerprint(rows), DatabaseSnapshot.Fingerprint(after[query].Intersect(rows).Order(StringComparer.Ordinal)));
-                Assert.Equal(JsonSerializer.Serialize(new[] { provider.Migrations(store)[^1], ProductVersion }), Assert.Single(after[query].Except(rows)));
+                IssuerContinuationUpgradeWitness.RequireHistory(provider, store, after[query].Except(rows));
+            }
+            else if (query == IssuerContinuationUpgradeWitness.InteractionQuery)
+            {
+                IssuerContinuationUpgradeWitness.RequireRows(rows, after[query],
+                    before[DatabaseSnapshot.Columns].Count(IssuerContinuationUpgradeWitness.IsInteraction));
             }
             else if (query.StartsWith(TableQueryPrefix, StringComparison.Ordinal))
             {
@@ -36,21 +41,28 @@ internal static class AdministratorUpgradeWitness
             }
             else
             {
-                RequireCatalog(rows, after[query]);
+                RequireCatalog(rows, after[query], query, provider.Id);
             }
         }
         Assert.Empty(after[AddedQueries[0]]);
         Assert.Empty(after[AddedQueries[1]]);
+        Assert.Empty(after[AddedQueries[ContinuationIndex]]);
         Assert.Equal(JsonSerializer.Serialize(InitialBudget), Assert.Single(after[AddedQueries[BudgetIndex]]));
     }
 
     /// <summary>Retains duplicate old metadata and accepts new rows only with unambiguous independently queried schema/table provenance.</summary>
-    internal static void RequireCatalog(string[] before, string[] after)
+    internal static void RequireCatalog(string[] before, string[] after, string? query = null, string? provider = null)
     {
         var additions = after.ToList();
         foreach (var row in before)
         {
             Assert.True(additions.Remove(row));
+        }
+        if (query == DatabaseSnapshot.Columns)
+        {
+            var column = Assert.Single(additions, IssuerContinuationUpgradeWitness.IsInteraction);
+            IssuerContinuationUpgradeWitness.RequireColumn(provider!, column, before);
+            Assert.True(additions.Remove(column));
         }
         foreach (var row in additions)
         {

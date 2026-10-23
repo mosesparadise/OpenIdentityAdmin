@@ -27,7 +27,7 @@ internal static class NativeAccountHttp
 
     /// <summary>Supplies real form/query/cookie bytes and runs host completion even if the owned operation fails before returning.</summary>
     internal static async Task<NativeAccountResult> InvokeAsync(AdministratorProtocolScenario scenario, string path,
-        Dictionary<string, string> fields, bool cookie = false, CancellationToken? cancellation = null, IServiceProvider? services = null)
+        Dictionary<string, string> fields, bool cookie = false, CancellationToken? cancellation = null, IServiceProvider? services = null, Action<HttpContext>? configureHttp = null)
     {
         var token = cancellation ?? TestContext.Current.CancellationToken;
         using var form = new FormUrlEncodedContent(fields);
@@ -44,6 +44,7 @@ internal static class NativeAccountHttp
         var result = new NativeAccountResult();
         try
         {
+            configureHttp?.Invoke(http);
             await ProtocolHosting.InvokeAsync(http, async context =>
             {
                 try

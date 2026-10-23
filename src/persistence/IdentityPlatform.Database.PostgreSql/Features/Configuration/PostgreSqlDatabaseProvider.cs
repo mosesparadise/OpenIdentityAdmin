@@ -12,7 +12,7 @@ public sealed class PostgreSqlDatabaseProvider : IRelationalDatabaseProvider
     private const string DesignConnection = "Host=localhost;Database=design_time_only";
     private const string MigrationAssembly = "IdentityPlatform.Migrations.PostgreSql";
     private const int CommandSeconds = 30;
-    private static readonly IReadOnlyList<string> PlatformMigrations = Array.AsReadOnly<string>(["20261010012841_InitialPlatform", "20261010134307_FirstPartyLogin", "20261011131900_BrowserInteractionBudget", "20261012110309_AdministratorBootstrap", "20261012180735_AdministratorFactors", "20261012204719_AdministratorJourneys", "20261012231221_AdministratorRecovery", "20261013132308_AdministratorAuthority", "20261017224010_AdministratorProtocol"]);
+    private static readonly IReadOnlyList<string> PlatformMigrations = Array.AsReadOnly<string>(["20261010012841_InitialPlatform", "20261010134307_FirstPartyLogin", "20261011131900_BrowserInteractionBudget", "20261012110309_AdministratorBootstrap", "20261012180735_AdministratorFactors", "20261012204719_AdministratorJourneys", "20261012231221_AdministratorRecovery", "20261013132308_AdministratorAuthority", "20261017224010_AdministratorProtocol", "20261023223630_AdministratorIssuerContinuation"]);
     private static readonly IReadOnlyList<string> SessionMigrations = Array.AsReadOnly<string>(["20261010011921_InitialSessions", "20261015123931_ProtectedSessionTickets", "20261017224013_AdministratorClientStateBudget"]);
     public string Id => Identifier;
     public string EfProviderName => EfName;

@@ -1,6 +1,4 @@
 using System.Security.Claims;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using OpenIddict.Abstractions;
 
@@ -13,8 +11,6 @@ internal sealed class BrowserLoginBinding
     internal const string CompletionParameter = "admin_login_completion";
     internal const string IntentClaim = "oi_b3_intent_selector";
     internal const string CompletionClaim = "oi_b3_completion_selector";
-    private const int SelectorBytes = 32;
-    private const int SelectorCharacters = 43;
     private const int PairFields = 2;
     private const int MultiplicityProbe = PairFields + 1;
 
@@ -36,7 +32,7 @@ internal sealed class BrowserLoginBinding
     {
         Intent = intent;
         Completion = completion;
-        IntentDigest = Convert.ToHexString(SHA256.HashData(WebEncoders.Base64UrlDecode(intent)));
+        IntentDigest = BrowserLoginSelector.Digest(intent)!;
     }
 
     /// <summary>Inspects original HTTP cardinality before native normalization can discard empty fields or collapse arrays.</summary>
@@ -99,23 +95,7 @@ internal sealed class BrowserLoginBinding
     }
 
     /// <summary>Rejects alternate trailing pad bits and every noncanonical spelling before hashing or future persistence lookup.</summary>
-    private static bool Canonical(string? value)
-    {
-        if (value is not { Length: SelectorCharacters } ||
-            !value.All(character => char.IsAsciiLetterOrDigit(character) || character is '-' or '_'))
-        {
-            return false;
-        }
-        try
-        {
-            var bytes = WebEncoders.Base64UrlDecode(value);
-            return bytes.Length == SelectorBytes && WebEncoders.Base64UrlEncode(bytes) == value;
-        }
-        catch (FormatException)
-        {
-            return false;
-        }
-    }
+    private static bool Canonical(string? value) => BrowserLoginSelector.Digest(value) is not null;
 }
 
 /// <summary>Separates representation absence, malformed presence and a complete canonical pair without granting authentication.</summary>

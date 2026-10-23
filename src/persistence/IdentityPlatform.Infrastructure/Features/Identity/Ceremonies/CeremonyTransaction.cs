@@ -1,5 +1,6 @@
 using System.Data;
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Persistence;
@@ -41,6 +42,28 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     /// <summary>Opens one bounded transaction, discards clean stale tracking and acquires the entire declared lock set.</summary>
     internal static Task<CeremonyTransaction> OpenAsync(PlatformDbContext database, NativeOperation operation,
         CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, CeremonyMode.Authentication, cancellationToken);
+
+    /// <summary>Owns only anonymous continuation admission; it cannot commit account or credential work.</summary>
+    internal static Task<CeremonyTransaction> OpenContinuationAsync(PlatformDbContext database, NativeOperation operation,
+        CancellationToken token) => OpenCoreAsync(database, operation, new CeremonyLockPlan(false, true, [], []), CeremonyMode.Continuation, token);
+
+    /// <summary>Commits only one new continuation and its anonymous audit under the original bounded transaction.</summary>
+    internal async Task CommitContinuationAsync(IssuerContinuation row, CeremonyClock clock)
+    {
+        RequireCurrent();
+        var entries = database.ChangeTracker.Entries().ToArray();
+        if (mode != CeremonyMode.Continuation || entries is not [var entry] || entry.State != EntityState.Added ||
+            !ReferenceEquals(entry.Entity, row) || !IssuerContinuationPolicy.IsStart(row) ||
+            !IssuerContinuationPolicy.Observe(row, clock.Now))
+        {
+            throw new FactorUnavailableException();
+        }
+        IssuerContinuationAudit.Add(database, row, attached: false);
+        await database.SaveChangesAsync(Token);
+        RequireContinuationTime(clock);
+        await transaction.CommitAsync(Token);
+        completed = true;
+    }
 
     /// <summary>Explicitly selects metadata-only cleanup ownership; ordinary ceremonies cannot use its unaudited commit.</summary>
     internal static Task<CeremonyTransaction> OpenMaintenanceAsync(PlatformDbContext database, NativeOperation operation,
@@ -130,7 +153,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     }
 
     /// <summary>Commits a fixed audit event and all native/product writes before any caller may release authority.</summary>
-    internal async Task CommitAsync(CeremonyEvent action, bool accepted, string userId, long now)
+    internal async Task CommitAsync(CeremonyEvent action, bool accepted, string userId, long now, CeremonyClock? clock = null)
     {
         RequireCurrent();
         if (mode != CeremonyMode.Authentication || !Plan.Users.Contains(userId, StringComparer.Ordinal))
@@ -139,8 +162,21 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
         }
         CeremonyAudit.Add(database, action, accepted, userId, now);
         await database.SaveChangesAsync(Token);
+        RequireContinuationTime(clock);
         await transaction.CommitAsync(Token);
         completed = true;
+    }
+
+    /// <summary>Checks original continuation expiry again after actual persistence and before commit; no delayed write may revive it.</summary>
+    private void RequireContinuationTime(CeremonyClock? clock)
+    {
+        foreach (var entry in database.ChangeTracker.Entries<IssuerContinuation>())
+        {
+            if (clock is null || !IssuerContinuationPolicy.IsCurrent(entry.Entity, clock.Now))
+            {
+                throw new FactorUnavailableException();
+            }
+        }
     }
 
     /// <summary>Commits metadata-only maintenance without inventing an authentication or credential-change audit.</summary>
@@ -225,5 +261,5 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
 
 internal enum CeremonyMode
 {
-    Authentication, Maintenance, Governance
+    Authentication, Maintenance, Governance, Continuation
 }

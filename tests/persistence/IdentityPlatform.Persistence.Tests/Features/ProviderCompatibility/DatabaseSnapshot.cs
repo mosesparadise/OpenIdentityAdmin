@@ -9,7 +9,7 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 internal static class DatabaseSnapshot
 {
     private const string Tables = "SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema IN ('platform', 'bff') AND table_type = 'BASE TABLE' ORDER BY table_schema, table_name";
-    private const string Columns = "SELECT table_schema, table_name, c.* FROM information_schema.columns c WHERE table_schema IN ('platform', 'bff')";
+    internal const string Columns = "SELECT table_schema, table_name, c.* FROM information_schema.columns c WHERE table_schema IN ('platform', 'bff')";
     private const string Constraints = "SELECT table_schema, table_name, c.* FROM information_schema.table_constraints c WHERE table_schema IN ('platform', 'bff')";
     private const string Keys = "SELECT table_schema, table_name, c.* FROM information_schema.key_column_usage c WHERE table_schema IN ('platform', 'bff')";
     private const string References = "SELECT t.table_schema, t.table_name, r.* FROM information_schema.referential_constraints r LEFT JOIN information_schema.table_constraints t ON t.constraint_catalog=r.constraint_catalog AND t.constraint_schema=r.constraint_schema AND t.constraint_name=r.constraint_name WHERE r.constraint_schema IN ('platform', 'bff')";

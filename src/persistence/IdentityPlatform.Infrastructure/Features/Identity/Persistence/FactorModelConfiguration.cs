@@ -85,6 +85,7 @@ internal static class FactorModelConfiguration
     private static void ConfigureAuthorization(ModelBuilder builder, IDatabaseModelDialect dialect)
     {
         var entity = builder.Entity<AdministratorInteraction>();
+        FactorSchema.Text(entity, nameof(AdministratorInteraction.BrowserIntentDigest), FactorSchema.DigestLength, dialect);
         FactorSchema.Text(entity, nameof(AdministratorInteraction.AuthorizationKind), FactorSchema.LabelLength, dialect);
         FactorSchema.Text(entity, nameof(AdministratorInteraction.SessionPublicId), FactorSchema.DigestLength, dialect);
         const string Rule = "Authorization";
