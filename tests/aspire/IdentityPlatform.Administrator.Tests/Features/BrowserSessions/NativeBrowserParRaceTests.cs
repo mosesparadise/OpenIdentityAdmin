@@ -5,7 +5,6 @@ using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Administrator.Tests.Fixtures.Governance;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;

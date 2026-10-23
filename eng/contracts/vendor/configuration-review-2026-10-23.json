@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-23T23:05:03.792666+00:00",
+  "repositoryHead": "0504a1f56a020be462cc5926274f75758fef26ac",
+  "scope": "Independent bounded source and supply-chain evidence review for the dormant viewer; no clean runtime, activation or public-release clearance.",
+  "failureStage": "Reported PR76 Contracts core failure: check_contract_supply_chain.require_reviewed_advisories rejected new or changed viewer advisory after core/native entrypoint tests.",
+  "historicalPayloadLimit": "Failed hosted raw HTTP response was not retained. The current query reproduces a new-entry rejection; it does not establish the exact failed-run response bytes. Hosted result details were supplied by the integrating agent, not independently recovered in this review.",
+  "query": {
+    "endpoint": "https://registry.npmjs.org/-/npm/v1/security/advisories/bulk",
+    "method": "POST",
+    "httpStatus": 200,
+    "responseDateHeader": "Fri, 23 Oct 2026 23:02:50 GMT",
+    "requestSha256": "2f06a0763ca4349b6f91041e82d6017a5fb76ff4c8b66773ba1bc2226d0a77e1",
+    "currentResponseSha256": "b1079839a3bca9a0c781e73b141469af1fae88fd2a69064f6ef544ec3b1ee793",
+    "reviewedPreviousResponseSha256": "64c58b7bf7c123141e9d753d980c48eaacd4a038f7ae877445c2f5a13411a21f",
+    "previousCount": 11,
+    "currentCount": 12,
+    "newCount": 1,
+    "changedExistingCount": 0,
+    "removedCount": 0,
+    "scratchResponse": "/tmp/viewer-security-review-current.json"
+  },
+  "configurationHashes": {
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Setup.cs": {
+      "actual": "468dd496873c70add826b65348079ed4ee21ce541b7143a76e39da8e31f781f1",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/swagger.js": {
+      "actual": "c97036cbc88ad336f5a5c72bea74f2f719e4c627f1b5c3c5a94e7732a6ccab00",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": {
+      "actual": "17514cf19496dd40ed7d046acdf6f60e85d4a8b55542b5ce9757b3e8398f9e1f",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationPolicy.cs": {
+      "actual": "d87dd51b11eafa9b3c4dc2ea317cfd28ddbbb229cc9fdc62f07bc12cabe0af14",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationAssets.cs": {
+      "actual": "44c7c9cbfe901c6a4dd864b85a580a2fd487f0dfced61d48070ff707c01d9260",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationOptions.cs": {
+      "actual": "b4babe3c2a25ca7c7ae1d0e33e4e60ed96201fc3e26d340a4026a246589577bc",
+      "matchesReviewed": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/index.html": {
+      "actual": "ef86fe0bec3a4da2a7f08e1c7f01c2cb398d83e24ef2b98124fb256f73f08133",
+      "matchesReviewed": true
+    }
+  },
+  "byteVerification": {
+    "nuget": "Scalar.AspNetCore",
+    "nugetVersion": "2.17.14",
+    "nugetArchiveSha256": "00eb4acf750ebe0f725552ce66866653fcd69b5f44bbb0c4c4fbeea023796922",
+    "cachedNugetArchiveVerified": true,
+    "resourceContainer": "lib/net10.0/Scalar.AspNetCore.dll",
+    "gzipResourceByteOffset": 384012,
+    "embeddedAssetByteIdentityReverified": true,
+    "npm": "@scalar/api-reference",
+    "npmVersion": "1.73.0",
+    "npmTarball": "https://registry.npmjs.org/@scalar/api-reference/-/api-reference-1.73.0.tgz",
+    "npmArchiveSha256": "b088524c0664c3e43d62cc534c34903148095daadb6ecb31a652264bcd9d25cf",
+    "npmArchiveRedownloadHashVerified": true,
+    "assetPath": "package/dist/browser/standalone.js",
+    "assetSha256": "26b06691fc0e2e35c631f1455371d9cd4cf17e3565d2a93d623d0017951e48ac",
+    "assetBytes": 4418213,
+    "sourceMapSha256": "8acc49810b282fa538d3aafd03f72436ac83d03bc58dc56733ebf70b05b28f18",
+    "sourceMapHashReverified": true,
+    "zodVersion": "4.4.3",
+    "sourceMapIndex": 1366,
+    "sourceMapPath": "../../../../node_modules/.pnpm/zod@4.4.3/node_modules/zod/v4/core/schemas.js",
+    "sourceObservation": "Mapped source lines 674-712 append every element issue, allocate Array(input.length), and iterate every array element without an initial collection size gate. This supports affected-code presence; it is not a complete caller reachability analysis."
+  },
+  "advisories": [
+    {
+      "id": "GHSA-mrhx-c7xc-m3w5",
+      "cve": "CVE-2023-54404",
+      "package": "zod",
+      "embeddedVersion": "4.4.3",
+      "primarySource": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "upstreamFix": "https://github.com/colinhacks/zod/commit/a0ebf97",
+      "patchedUpstreamVersion": "4.6.6",
+      "currentRegistryEntry": {
+        "id": 1243066,
+        "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+        "title": "Zod can exhaust memory while validating oversized constrained collections",
+        "severity": "high",
+        "vulnerable_versions": "<4.6.6",
+        "cwe": [
+          "CWE-770"
+        ],
+        "cvss": {
+          "score": 7.5,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      },
+      "primarySourceObservation": "GitHub advisory was reviewed/updated October 23, 2026 and lists versions below 4.6.6. Upstream fix checks array, set and map upper-size bounds before visiting elements in both interpreted and compiled paths. The advisory description mentions unconstrained arrays, while the linked fix specifically demonstrates constrained collections; do not infer that existing max/length/size constraints make the old version safe.",
+      "exploitPreconditions": "An attacker-controlled sufficiently large collection must reach an affected Zod schema in an executing viewer or other consumer; repeated element validation and issue allocation can exhaust the JavaScript execution environment. Exact current viewer input-to-parser exploit reachability has not been established.",
+      "boundedDisposition": "affected_embedded_component_runtime_reachability_unresolved_activation_blocked",
+      "rationale": "Zod 4.4.3 is confirmed in the exact shipped Scalar bundle. Production backend source has only MapDocumentation definitions and no production mapping call, so the current dormant composition exposes no viewer route. This boundary supports continuing unrelated T006 work, not declaring the component patched or the active viewer safe.",
+      "nonMitigations": [
+        "jitless=true changes compilation behavior but does not remove the interpreted vulnerable path.",
+        "CSP, disabled agent/telemetry, hidden request buttons, same-origin fetches and no credential persistence are not collection-size limits.",
+        "A max/length/size constraint in this affected version alone is not a proven early bound."
+      ],
+      "preActivationRemediation": "Before activation, replace the actual NuGet-embedded Scalar asset with a verified fixed Zod version (at least 4.6.6 for this advisory) or demonstrate enforceable early input bounds on every reachable affected parser path with negative and boundary controls. Reverify shipped bytes, source-map association, dependency inventory, exact configuration and all other open advisory/notice/license gates. An application npm override does not patch the embedded NuGet asset."
+    }
+  ],
+  "productionMapping": {
+    "search": "rg -n MapDocumentation\\( src/backend",
+    "result": "Definitions only in Admin.Api and Admin.Bff Features/Documentation/Setup.cs; no production invocation.",
+    "configuration": "Fixed v1 and bff-v1 documents; PersistentAuthentication=false; request/client buttons hidden; agent, telemetry and developer tools disabled; same-origin CSP; no unsafe-eval; these retained settings do not establish a memory-exhaustion mitigation."
+  },
+  "recommendation": "Evidence-only refresh is justified for continuing the dormant T006 boundary: archive the exact new response, bind its hash, and add this explicitly unresolved affected-component assessment while preserving the October 22 assessment. Keep strict unknown/changed-entry comparison, configuration hashes and all activation/public-release gates. No severity/package wildcard or clean-runtime disposition.",
+  "limits": [
+    "No exploit, browser, build, test, SQL, production or activation execution by this reviewer.",
+    "Repository files were not edited; only scratch evidence was written.",
+    "Exact bundle identity and vulnerable code presence were verified; complete active-viewer caller reachability was not.",
+    "GitHub advisory and fix were read through the web tool after direct api.github.com access returned proxy CONNECT403.",
+    "The old npm summary carries its historical October 12 scope; this supplemental review concerns the current response, not retrospective rewriting of that historical query.",
+    "Existing Swagger source-map inconsistency, unresolved qs findings, incomplete inventory, notice/license obligations, historical security findings and human/public-release gates remain open.",
+    "Any viewer mapping, configuration, dependency or asset-byte change requires reassessment."
+  ]
+}
