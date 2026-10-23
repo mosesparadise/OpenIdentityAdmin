@@ -571,7 +571,39 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_CommittedUpgrade_When_ReconciliationInputChanges_Then_OnlyTheOriginalCommandCanReturnUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: ApplicationDisabled)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: ExtraProperty)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: RequestCase)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: Revision)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: ScopeDisabled)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: StatusCase)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"PostgreSql\", enabled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"PostgreSql\", enabled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_GenuineOldCodeAndPendingPar_When_UpgradeCommits_Then_IndependentInvalidationPreservesFreshB3Issuance(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"PostgreSql\", drift: DuplicateReceipt)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"PostgreSql\", drift: ReceiptActor)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"PostgreSql\", drift: ReceiptOutcome)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_LastUpgradableRevision_When_UpgradeAndReplayRun_Then_MaximumRevisionIsRecordedExactly(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"PostgreSql\", seconds: 30)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"PostgreSql\", seconds: 31)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"PostgreSql\", requests: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"PostgreSql\", requests: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_StagedUpgradeAudit_When_FinalClockRollsBack_Then_NoUpgradeEffectCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditInsert_When_ExplicitUpgradeCommandRuns_Then_AllStateRollsBackWithSafeFailure(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditRead_When_UpgradeCommandRuns_Then_ItCannotInventAReceiptOrChangeRegistration(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InitializedProfile_When_ExplicitUpgradeCommandRunsTwice_Then_OnlyOneAuditedTransitionPersists(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InvalidUpgradeInput_When_CommandRuns_Then_OnlyTheSafeInputFailureIsReported(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: AfterCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Application)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Audit)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: BeforeCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Revocation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1249,7 +1281,39 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeWireQuotaTests.Given_TwoRetainedTokenSlots_When_ExchangeFillsBudget_Then_ParAuthorizeAndExchangeCannotExceedIt(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredWebClient_When_NoTokenHintIsSupplied_Then_NativeValidationDoesNotRevokeTheIssuerSession(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_RegisteredReturnUri_When_ClientOrDestinationChanges_Then_NativeValidationRejectsTheRequest(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeEndSessionTests.Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_CommittedUpgrade_When_ReconciliationInputChanges_Then_OnlyTheOriginalCommandCanReturnUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: ApplicationDisabled)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: ExtraProperty)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: RequestCase)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: Revision)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: ScopeDisabled)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: StatusCase)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"SqlServer\", enabled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"SqlServer\", enabled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_GenuineOldCodeAndPendingPar_When_UpgradeCommits_Then_IndependentInvalidationPreservesFreshB3Issuance(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"SqlServer\", drift: DuplicateReceipt)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"SqlServer\", drift: ReceiptActor)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"SqlServer\", drift: ReceiptOutcome)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_LastUpgradableRevision_When_UpgradeAndReplayRun_Then_MaximumRevisionIsRecordedExactly(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"SqlServer\", seconds: 30)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"SqlServer\", seconds: 31)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"SqlServer\", requests: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"SqlServer\", requests: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_StagedUpgradeAudit_When_FinalClockRollsBack_Then_NoUpgradeEffectCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditInsert_When_ExplicitUpgradeCommandRuns_Then_AllStateRollsBackWithSafeFailure(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditRead_When_UpgradeCommandRuns_Then_ItCannotInventAReceiptOrChangeRegistration(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InitializedProfile_When_ExplicitUpgradeCommandRunsTwice_Then_OnlyOneAuditedTransitionPersists(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InvalidUpgradeInput_When_CommandRuns_Then_OnlyTheSafeInputFailureIsReported(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: AfterCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Application)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Audit)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: BeforeCommit)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Revocation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -26783,6 +26847,1268 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "NativeEndSessionTests",
         "methodName": "Given_PersistedEndpointPermission_When_MetadataChanges_Then_NativeCompatibilityDoesNotDefineTheProductProfile",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_CommittedUpgrade_When_ReconciliationInputChanges_Then_OnlyTheOriginalCommandCanReturnUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_CommittedUpgrade_When_ReconciliationInputChanges_Then_OnlyTheOriginalCommandCanReturnUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_CommittedUpgrade_When_ReconciliationInputChanges_Then_OnlyTheOriginalCommandCanReturnUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_CommittedUpgrade_When_ReconciliationInputChanges_Then_OnlyTheOriginalCommandCanReturnUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: ApplicationDisabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: ExtraProperty)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: RequestCase)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: Revision)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: ScopeDisabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"PostgreSql\", drift: StatusCase)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: ApplicationDisabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: ExtraProperty)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: RequestCase)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: Revision)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: ScopeDisabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits(provider: \"SqlServer\", drift: StatusCase)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_DriftedOldRegistration_When_UpgradeRuns_Then_NoMetadataTokenOrAuditChangeCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"PostgreSql\", enabled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"PostgreSql\", enabled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"SqlServer\", enabled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits(provider: \"SqlServer\", enabled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_ExactOldRegistration_When_ExplicitUpgradeAndReplayRun_Then_StateIsPreservedAndOnlyOneTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_GenuineOldCodeAndPendingPar_When_UpgradeCommits_Then_IndependentInvalidationPreservesFreshB3Issuance(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_GenuineOldCodeAndPendingPar_When_UpgradeCommits_Then_IndependentInvalidationPreservesFreshB3Issuance",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_GenuineOldCodeAndPendingPar_When_UpgradeCommits_Then_IndependentInvalidationPreservesFreshB3Issuance(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_GenuineOldCodeAndPendingPar_When_UpgradeCommits_Then_IndependentInvalidationPreservesFreshB3Issuance",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"PostgreSql\", drift: DuplicateReceipt)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"PostgreSql\", drift: ReceiptActor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"PostgreSql\", drift: ReceiptOutcome)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"SqlServer\", drift: DuplicateReceipt)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"SqlServer\", drift: ReceiptActor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRegistrationUpgradeTests.Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair(provider: \"SqlServer\", drift: ReceiptOutcome)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRegistrationUpgradeTests",
+        "methodName": "Given_UpgradedRegistrationWithReceiptDrift_When_Replayed_Then_TheDriftIsRejectedWithoutRepair",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeDrift"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_LastUpgradableRevision_When_UpgradeAndReplayRun_Then_MaximumRevisionIsRecordedExactly(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_LastUpgradableRevision_When_UpgradeAndReplayRun_Then_MaximumRevisionIsRecordedExactly",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_LastUpgradableRevision_When_UpgradeAndReplayRun_Then_MaximumRevisionIsRecordedExactly(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_LastUpgradableRevision_When_UpgradeAndReplayRun_Then_MaximumRevisionIsRecordedExactly",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"PostgreSql\", seconds: 30)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"PostgreSql\", seconds: 31)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"SqlServer\", seconds: 30)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits(provider: \"SqlServer\", seconds: 31)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_PersistedWatermark_When_ClockMovesBackward_Then_OnlyTheAllowedBoundaryCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"PostgreSql\", requests: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"PostgreSql\", requests: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"SqlServer\", requests: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced(provider: \"SqlServer\", requests: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_RetainedNativeCapacity_When_UpgradeRuns_Then_TheExactInclusiveLimitIsEnforced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_StagedUpgradeAudit_When_FinalClockRollsBack_Then_NoUpgradeEffectCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_StagedUpgradeAudit_When_FinalClockRollsBack_Then_NoUpgradeEffectCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeBoundaryTests.Given_StagedUpgradeAudit_When_FinalClockRollsBack_Then_NoUpgradeEffectCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeBoundaryTests",
+        "methodName": "Given_StagedUpgradeAudit_When_FinalClockRollsBack_Then_NoUpgradeEffectCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditInsert_When_ExplicitUpgradeCommandRuns_Then_AllStateRollsBackWithSafeFailure(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_DeniedAuditInsert_When_ExplicitUpgradeCommandRuns_Then_AllStateRollsBackWithSafeFailure",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditInsert_When_ExplicitUpgradeCommandRuns_Then_AllStateRollsBackWithSafeFailure(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_DeniedAuditInsert_When_ExplicitUpgradeCommandRuns_Then_AllStateRollsBackWithSafeFailure",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditRead_When_UpgradeCommandRuns_Then_ItCannotInventAReceiptOrChangeRegistration(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_DeniedAuditRead_When_UpgradeCommandRuns_Then_ItCannotInventAReceiptOrChangeRegistration",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_DeniedAuditRead_When_UpgradeCommandRuns_Then_ItCannotInventAReceiptOrChangeRegistration(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_DeniedAuditRead_When_UpgradeCommandRuns_Then_ItCannotInventAReceiptOrChangeRegistration",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InitializedProfile_When_ExplicitUpgradeCommandRunsTwice_Then_OnlyOneAuditedTransitionPersists(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_InitializedProfile_When_ExplicitUpgradeCommandRunsTwice_Then_OnlyOneAuditedTransitionPersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InitializedProfile_When_ExplicitUpgradeCommandRunsTwice_Then_OnlyOneAuditedTransitionPersists(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_InitializedProfile_When_ExplicitUpgradeCommandRunsTwice_Then_OnlyOneAuditedTransitionPersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InvalidUpgradeInput_When_CommandRuns_Then_OnlyTheSafeInputFailureIsReported(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_InvalidUpgradeInput_When_CommandRuns_Then_OnlyTheSafeInputFailureIsReported",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeCommandTests.Given_InvalidUpgradeInput_When_CommandRuns_Then_OnlyTheSafeInputFailureIsReported(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeCommandTests",
+        "methodName": "Given_InvalidUpgradeInput_When_CommandRuns_Then_OnlyTheSafeInputFailureIsReported",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: AfterCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Application)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Audit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: BeforeCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Revocation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: AfterCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Application)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Audit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: BeforeCommit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Revocation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeFailureTests",
+        "methodName": "Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.UpgradeFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeIssuanceRaceTests",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeIssuanceRaceTests",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeIssuanceRaceTests",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeIssuanceRaceTests",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeRaceTests",
+        "methodName": "Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserUpgradeRaceTests",
+        "methodName": "Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

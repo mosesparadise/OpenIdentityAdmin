@@ -88,9 +88,9 @@ internal static class NativeAccountFlow
     }
 
     /// <summary>Validates signature/decryption and native persisted status in a separate owned scope rather than decoding untrusted JWT text.</summary>
-    internal static Task<ClaimsPrincipal> ValidateAsync(AdministratorProtocolScenario scenario, string value, string type) =>
+    internal static Task<ClaimsPrincipal> ValidateAsync(AdministratorProtocolScenario scenario, string value, string type, IServiceProvider? services = null) =>
         new ProtocolStorageRequest(scenario.Account.Journey.Clock, TestContext.Current.CancellationToken)
-            .RunAsync(scenario.Services.GetRequiredService<IServiceScopeFactory>(), async (scope, token) =>
+            .RunAsync((services ?? scenario.Services).GetRequiredService<IServiceScopeFactory>(), async (scope, token) =>
             {
                 scope.Services.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.Owned);
                 var transaction = await scope.Services.GetRequiredService<IOpenIddictServerFactory>().CreateTransactionAsync();

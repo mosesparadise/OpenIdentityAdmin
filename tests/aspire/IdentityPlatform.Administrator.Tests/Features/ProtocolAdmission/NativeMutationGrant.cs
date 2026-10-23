@@ -12,14 +12,14 @@ internal static class NativeMutationGrant
 
     /// <summary>Validates native access and ID tokens, original subject/authorization, redemption and exact retained-row effects.</summary>
     internal static async Task<ClaimsPrincipal> RequireAsync(AdministratorProtocolScenario scenario, NativeAccountResult response,
-        ClaimsPrincipal code, (long Tokens, long Authorizations) before)
+        ClaimsPrincipal code, (long Tokens, long Authorizations) before, IServiceProvider? services = null)
     {
         NativeAccountFlow.RequireSuccess(response, StatusCodes.Status200OK);
         Assert.False(response.HasCookie);
         Assert.True(response.Location.Length == 0);
         using var json = JsonDocument.Parse(response.Body);
         var value = json.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!;
-        var access = await NativeAccountFlow.ValidateAsync(scenario, value, OpenIddictConstants.TokenTypeIdentifiers.AccessToken);
+        var access = await NativeAccountFlow.ValidateAsync(scenario, value, OpenIddictConstants.TokenTypeIdentifiers.AccessToken, services);
         var identity = await NativeIdentityTokenOracle.ValidateAsync(scenario,
             json.RootElement.GetProperty(OpenIddictConstants.Parameters.IdToken).GetString()!, value);
         Assert.True(access.GetClaim(OpenIddictConstants.Claims.Subject) == code.GetClaim(OpenIddictConstants.Claims.Subject));

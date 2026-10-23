@@ -10,6 +10,7 @@ internal static class Setup
     private const string Upgrade = "upgrade";
     private const string Administrator = "initialize-administrator";
     private const string AdministratorProtocol = "initialize-administrator-protocol";
+    private const string BrowserRegistration = "upgrade-administrator-browser-registration";
     private const string InvalidOperation = "Invalid migrator operation.";
     private const string ProvisionRoles = "LocalDevelopment:ProvisionRuntimeRoles";
     private const string Disabled = "false";
@@ -21,6 +22,7 @@ internal static class Setup
         null or Upgrade => MigratorOperation.Upgrade,
         Administrator => MigratorOperation.Administrator,
         AdministratorProtocol => MigratorOperation.AdministratorProtocol,
+        BrowserRegistration => MigratorOperation.BrowserRegistration,
         _ => throw new ArgumentException(InvalidOperation)
     };
 
@@ -47,5 +49,5 @@ internal static class Setup
 /// <summary>Enumerates the mutually exclusive one-shot operations; no initialization is implied by schema upgrade.</summary>
 internal enum MigratorOperation
 {
-    Upgrade, Administrator, AdministratorProtocol
+    Upgrade, Administrator, AdministratorProtocol, BrowserRegistration
 }

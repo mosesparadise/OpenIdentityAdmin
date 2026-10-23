@@ -17,6 +17,8 @@ public sealed class MigratorStoreSelectionTests
 
     /// <summary>Both initializer operations require only Platform credentials, even when an unusable Sessions setting is present.</summary>
     [Theory]
+    [InlineData("upgrade-administrator-browser-registration", "PostgreSql", "Host=localhost;Database=unused")]
+    [InlineData("upgrade-administrator-browser-registration", "SqlServer", "Server=localhost;Database=unused;Integrated Security=true;Encrypt=true")]
     [InlineData("initialize-administrator", "PostgreSql", "Host=localhost;Database=unused")]
     [InlineData("initialize-administrator-protocol", "PostgreSql", "Host=localhost;Database=unused")]
     [InlineData("initialize-administrator", "SqlServer", "Server=localhost;Database=unused;Integrated Security=true;Encrypt=true")]
