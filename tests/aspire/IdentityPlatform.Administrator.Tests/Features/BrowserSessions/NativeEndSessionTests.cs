@@ -26,6 +26,7 @@ public sealed class NativeEndSessionTests(BootstrapFixture fixture)
     {
         await using var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider);
         await NativeEndSessionFixture.ConfigureAsync(scenario, OpenIddictConstants.Permissions.Endpoints.EndSession);
+        Assert.True(await NativeEndSessionFixture.RequireConfiguredAsync(scenario));
         var before = await scenario.Account.SnapshotAsync();
         var tokens = await NativeAccountPersistence.CountAsync(scenario);
         foreach (var hint in new string?[] { null, scenario.Account.Session.SessionId, ForeignSession })
@@ -46,6 +47,7 @@ public sealed class NativeEndSessionTests(BootstrapFixture fixture)
     {
         await using var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider);
         await NativeEndSessionFixture.ConfigureAsync(scenario, OpenIddictConstants.Permissions.Endpoints.EndSession);
+        Assert.True(await NativeEndSessionFixture.RequireConfiguredAsync(scenario));
         NativeEndSessionFixture.RequireAccepted(await NativeEndSessionFixture.ValidateAsync(scenario, NativeEndSessionFixture.Request()));
         var unknown = NativeEndSessionFixture.Request();
         unknown.ClientId = UnknownClient;
@@ -69,6 +71,7 @@ public sealed class NativeEndSessionTests(BootstrapFixture fixture)
     {
         await using var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider);
         await NativeEndSessionFixture.ConfigureAsync(scenario, OpenIddictConstants.Permissions.Endpoints.EndSession);
+        Assert.True(await NativeEndSessionFixture.RequireConfiguredAsync(scenario));
         var inferred = NativeEndSessionFixture.Request();
         inferred.ClientId = null;
         var inferredResult = await NativeEndSessionFixture.ValidateAsync(scenario, inferred);
@@ -81,6 +84,7 @@ public sealed class NativeEndSessionTests(BootstrapFixture fixture)
         await NativeEndSessionFixture.ConfigureAsync(scenario, NativeEndSessionFixture.LegacyPermission);
         NativeEndSessionFixture.RequireAccepted(await NativeEndSessionFixture.ValidateAsync(scenario, NativeEndSessionFixture.Request()));
         await NativeEndSessionFixture.ConfigureAsync(scenario, OpenIddictConstants.Permissions.Endpoints.EndSession);
+        Assert.True(await NativeEndSessionFixture.RequireConfiguredAsync(scenario));
         NativeEndSessionFixture.RequireAccepted(await NativeEndSessionFixture.ValidateAsync(scenario, NativeEndSessionFixture.Request()));
     }
 

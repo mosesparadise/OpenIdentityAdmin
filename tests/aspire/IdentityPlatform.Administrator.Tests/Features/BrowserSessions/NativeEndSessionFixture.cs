@@ -23,11 +23,10 @@ internal static class NativeEndSessionFixture
             var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
             var application = await manager.FindByClientIdAsync(AdministratorProtocolIdentity.ClientId, token);
             Assert.NotNull(application);
-            var descriptor = new OpenIddictApplicationDescriptor();
-            await manager.PopulateAsync(descriptor, application, token);
-            descriptor.ApplicationType = OpenIddictConstants.ApplicationTypes.Web;
-            descriptor.PostLogoutRedirectUris.Clear();
-            descriptor.PostLogoutRedirectUris.Add(new Uri(ReturnUri));
+            var policy = scope.Services.GetRequiredService<AdministratorRegistrationPolicy>().ForBrowserSessions();
+            Assert.NotNull(policy);
+            var descriptor = policy.Application();
+            Assert.Equal(ReturnUri, Assert.Single(descriptor.PostLogoutRedirectUris).OriginalString);
             descriptor.Permissions.Remove(OpenIddictConstants.Permissions.Endpoints.EndSession);
             descriptor.Permissions.Remove(LegacyPermission);
             if (permission is not null)
@@ -38,6 +37,25 @@ internal static class NativeEndSessionFixture
             await transaction.CommitAsync(token);
             return true;
         });
+
+    /// <summary>Reads committed metadata through fresh native managers and requires the exact B3 contract while B2 still denies it.</summary>
+    internal static Task<bool> RequireConfiguredAsync(AdministratorProtocolScenario scenario) => RunAsync(scenario, async (scope, token) =>
+    {
+        var applications = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
+        var scopes = scope.Services.GetRequiredService<IOpenIddictScopeManager>();
+        var application = await applications.FindByClientIdAsync(AdministratorProtocolIdentity.ClientId, token);
+        var resource = await scopes.FindByNameAsync(AdministratorProtocolIdentity.Scope, token);
+        Assert.NotNull(application);
+        Assert.NotNull(resource);
+        var descriptor = new OpenIddictApplicationDescriptor();
+        var scopeDescriptor = new OpenIddictScopeDescriptor();
+        await applications.PopulateAsync(descriptor, application, token);
+        await scopes.PopulateAsync(scopeDescriptor, resource, token);
+        var legacy = scope.Services.GetRequiredService<AdministratorRegistrationPolicy>();
+        Assert.False(legacy.Matches(descriptor, scopeDescriptor));
+        Assert.True(legacy.ForBrowserSessions()!.Matches(descriptor, scopeDescriptor));
+        return true;
+    });
 
     /// <summary>Runs every installed native validation handler in a fresh owned scope; no synthetic authentication result is supplied.</summary>
     internal static Task<OpenIddictServerEvents.ValidateEndSessionRequestContext> ValidateAsync(
