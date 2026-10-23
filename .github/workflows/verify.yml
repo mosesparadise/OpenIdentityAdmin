@@ -163,6 +163,8 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
           - { profile: PostgreSql, partition: administrator, story: ProtocolAdmission, label: administrator-PostgreSql-protocoladmission }
           - { profile: SqlServer, partition: administrator, story: ProtocolAdmission, label: administrator-SqlServer-protocoladmission }
+          - { profile: PostgreSql, partition: administrator, story: BrowserSessions, label: administrator-PostgreSql-browsersessions }
+          - { profile: SqlServer, partition: administrator, story: BrowserSessions, label: administrator-SqlServer-browsersessions }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }

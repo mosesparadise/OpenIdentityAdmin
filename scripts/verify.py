@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
 parser.add_argument("--partition", choices=["all", "standard", "foundation", "issuer", "lifecycle", "administrator"], default="all")
-parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission"])
+parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission", "BrowserSessions"])
 parser.add_argument("--browser-story", choices=["Accounts", "Security"])
 parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
 args = parser.parse_args()
@@ -32,7 +32,7 @@ if args.browser_story and (not args.browser or args.partition != "administrator"
     parser.error("Browser story requires an administrator browser invocation")
 install_cancellation_handler()
 if args.story and (args.partition not in ("lifecycle", "administrator") or
-                   (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission")) != (args.partition == "administrator")):
+                   (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission", "BrowserSessions")) != (args.partition == "administrator")):
     parser.error("Story selection requires its matching lifecycle or administrator partition")
 if args.browser and args.story:
     parser.error("HTTP story and browser selection cannot be combined")
