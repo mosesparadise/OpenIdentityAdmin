@@ -250,7 +250,7 @@ Pause output after real commit, prove state/audit externally, kill exact driver 
 
 Rows: `five-second-budget`, `caller-cancellation`.
 
-Native observed contention then actual five-second operation cancellation or earlier caller cancellation; no blanket retries. Await owned task, verify runtime-session drain and reacquire protected locks; timing alone is not ownership proof.
+Native observed contention then bounded five-second termination through the original canceled operation token or an exact approved SQL command/lock timeout, or earlier caller cancellation; no blanket retries. Provider timeout evidence requires the elapsed budget and no caller cancellation, and does not claim that the managed timer fired. Cancellation-shaped failures still require the original canceled token; early, unrelated and malformed provider failures are rejected by seeded controls. Await owned task, verify runtime-session drain and reacquire protected locks; timing alone is not ownership proof.
 
 ### F08 — GOV-11 (1 rows/provider)
 `IdentityPlatform.Administrator.Tests.Features.Governance.Failures.PersistenceTests.Given_PreGovernanceSchemaAndData_When_Migrated_Then_AdditiveRevisionPreservesExistingAuthority`

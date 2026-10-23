@@ -27,7 +27,7 @@ public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
         _ = await NativeAccountFlow.PushAsync(scenario);
         var input = BrowserUpgradeFixture.Input(scenario);
         var observer = new NativeLockObservation(provider, scenario.Account.Journey.Lease.AdministratorConnection);
-        Func<Task<object>> issue = async () => await NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, NativeAccountFlow.PushFields(scenario));
+        Func<Task<object>> issue = () => InvokeIssuanceAsync(scenario);
         Func<Task<object>> change = async () => await BrowserUpgradeFixture.UpgradeAsync(scenario, input, operatorRoot.Services);
         issuance.Armed = true;
         upgrade.Armed = true;
@@ -50,6 +50,11 @@ public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
         await using var browser = scenario.CreatePeer(provider, policy: input.Policy.ForBrowserSessions());
         await BrowserUpgradeEffects.RequireFreshGrantAsync(scenario, browser.Services);
     }
+
+    /// <summary>Schedules the entire joined request so native synchronous signing-key resolution cannot block the race observer's startup.</summary>
+    private static Task<object> InvokeIssuanceAsync(AdministratorProtocolScenario scenario) => Task.Run<object>(async () =>
+        await NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, NativeAccountFlow.PushFields(scenario)),
+        TestContext.Current.CancellationToken);
 
     /// <summary>Separates definite denied admission from an earlier committed reference invalidated by the subsequent upgrade.</summary>
     private static async Task RequireOutcomeAsync(AdministratorProtocolScenario scenario, NativeAccountResult response, bool upgradeFirst)
