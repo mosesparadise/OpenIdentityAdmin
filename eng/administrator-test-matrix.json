@@ -603,7 +603,12 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Revocation)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_OnlyTransportedPair_When_NoTestTransferIsInstalled_Then_ExistingB2FlowGrantsNoB3Binding(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"PostgreSql\", substitute: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"PostgreSql\", substitute: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"PostgreSql\", foreignClient: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"PostgreSql\", foreignClient: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1313,7 +1318,12 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Revocation)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_OnlyTransportedPair_When_NoTestTransferIsInstalled_Then_ExistingB2FlowGrantsNoB3Binding(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"SqlServer\", substitute: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"SqlServer\", substitute: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"SqlServer\", foreignClient: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"SqlServer\", foreignClient: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -28113,6 +28123,204 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_OnlyTransportedPair_When_NoTestTransferIsInstalled_Then_ExistingB2FlowGrantsNoB3Binding(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_OnlyTransportedPair_When_NoTestTransferIsInstalled_Then_ExistingB2FlowGrantsNoB3Binding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_OnlyTransportedPair_When_NoTestTransferIsInstalled_Then_ExistingB2FlowGrantsNoB3Binding(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_OnlyTransportedPair_When_NoTestTransferIsInstalled_Then_ExistingB2FlowGrantsNoB3Binding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"PostgreSql\", substitute: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"PostgreSql\", substitute: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"SqlServer\", substitute: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData(provider: \"SqlServer\", substitute: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_PrivateBinding_When_NativeParAndCodeCrossIndependentRoots_Then_OuterParametersCannotReplaceProtectedData",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"PostgreSql\", foreignClient: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"PostgreSql\", foreignClient: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"SqlServer\", foreignClient: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserBindingTests.Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies(provider: \"SqlServer\", foreignClient: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserBindingTests",
+        "methodName": "Given_TransportedPair_When_ClientOrResponseFlowIsForeign_Then_NativeAdmissionStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
         ]
       },
       "traits": [

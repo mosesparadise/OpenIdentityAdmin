@@ -19,7 +19,9 @@ Task IDs belong to feature 013. The reviewed planning packet supplies feature 01
 
 **Registration contract accepted (23 October):** [PR #73](browser-registration-contract.md#accepted-contract--23-october-2026) is squash-merged as `98fed50b4a97a20de9a216770c0c5ac489148368` after all 69 jobs pass. The explicit browser manifest preserves B2 defaults; Host inventory is 1,215 and native inventory 1,247.
 
-**Audited upgrade progress (23 October):** [registration upgrade](registration-upgrade.md) implements the explicit revision/precondition-bound transition, same-command reconciliation, disabled-profile preservation and separate old-code/old-PAR invalidation controls. Process, failure, time/capacity and real contention tests are under verification. T003/T018 remain partial: issuer/PAR/completion integration and product end-session policy/composition are still pending. T004 inventories grow only by new cases; no provider, browser, deadline, floor or prior identity is removed.
+**Audited upgrade accepted (23 October):** [PR #74 evidence](registration-upgrade.md#accepted-upgrade--23-october-2026) records squash `892267a`, all 69 jobs, Host 1,240 and native discovery 1,311 with every prior identity preserved. T003/T018 remain partial for issuer/PAR/completion and product end-session policy/composition.
+
+**Native transport progress (23 October):** [intent/completion binding](native-intent-binding.md) implements dormant canonical parsing, decoded-byte digest and immutable private representation, with native PAR/code/client-state tests. Native discovery preserves 1,311 prior identities and adds ten (1,321 total); Host inventory is 1,270 and BrowserSessions is 40/provider. Hosted acceptance remains pending. T003/T007 remain partial; T006 durable ceremony completion/one-use attachment is the next dependent slice. No provider, browser, deadline, floor or prior identity is removed.
 
 ## Foundational ownership
 
