@@ -24,6 +24,7 @@ public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
         await using var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider, configure: issuance.Configure);
         await using var operatorRoot = scenario.CreatePeer(provider, upgrade.Configure);
         _ = await NativeAccountFlow.PushAsync(scenario, operatorRoot.Services);
+        _ = await NativeAccountFlow.PushAsync(scenario);
         var input = BrowserUpgradeFixture.Input(scenario);
         var observer = new NativeLockObservation(provider, scenario.Account.Journey.Lease.AdministratorConnection);
         Func<Task<object>> issue = async () => await NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, NativeAccountFlow.PushFields(scenario));
@@ -41,7 +42,7 @@ public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
             Assert.Equal(1, upgrade.Commits);
             Assert.Equal(upgradeFirst ? 0 : 1, issuance.Commits);
         }
-        finally { issuance.Armed = false; upgrade.Armed = false; }
+        finally { issuance.Report(); upgrade.Report(); issuance.Armed = false; upgrade.Armed = false; }
         Assert.True(Assert.IsType<bool>(outcomes[upgradeFirst ? 0 : 1]));
         var response = Assert.IsType<NativeAccountResult>(outcomes[upgradeFirst ? 1 : 0]);
         await RequireOutcomeAsync(scenario, response, upgradeFirst);
