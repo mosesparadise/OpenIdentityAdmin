@@ -13,9 +13,16 @@ internal static class NativeAuthorityCodeOracle
     /// <summary>Uses installed native crypto handlers and strict issuer/lifetime validation without treating disabled-profile eligibility as cryptographic invalidity.</summary>
     internal static async Task<ClaimsPrincipal> ReadAsync(AdministratorProtocolScenario scenario, string code)
     {
+        var principal = await ReadValidArtifactAsync(scenario, code);
+        await RequireIneligibleAsync(scenario, code);
+        return principal;
+    }
+
+    /// <summary>Independently proves cryptographic validity and unchanged valid row binding without assuming the reason live admission denies.</summary>
+    internal static async Task<ClaimsPrincipal> ReadValidArtifactAsync(AdministratorProtocolScenario scenario, string code)
+    {
         var principal = await ReadProtectedPayloadAsync(scenario, code);
         await RequireRowAsync(scenario, principal);
-        await RequireIneligibleAsync(scenario, code);
         return principal;
     }
 

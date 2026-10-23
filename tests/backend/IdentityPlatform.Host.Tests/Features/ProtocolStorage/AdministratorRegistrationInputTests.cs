@@ -58,6 +58,7 @@ public sealed class AdministratorRegistrationInputTests(AdministratorRegistratio
 
     /// <summary>Protocol initialization is a separately explicit selection, never an implicit consequence of schema upgrade.</summary>
     [Theory]
+    [InlineData("upgrade-administrator-browser-registration", 3)]
     [InlineData(null, 0)]
     [InlineData("upgrade", 0)]
     [InlineData("initialize-administrator", 1)]

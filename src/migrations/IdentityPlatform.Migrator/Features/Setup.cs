@@ -21,7 +21,7 @@ internal static class Setup
         {
             builder.Services.AddAdministratorBootstrap();
         }
-        else if (builder.Configuration.SelectedOperation() == MigratorOperation.AdministratorProtocol)
+        else if (builder.Configuration.SelectedOperation() is MigratorOperation.AdministratorProtocol or MigratorOperation.BrowserRegistration)
         {
             builder.Services.AddAdministratorProtocolInitialization();
         }
@@ -36,6 +36,7 @@ internal static class Setup
         {
             MigratorOperation.Administrator => host.InitializeAdministratorAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting])),
             MigratorOperation.AdministratorProtocol => host.InitializeAdministratorProtocolAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting])),
+            MigratorOperation.BrowserRegistration => host.UpgradeAdministratorBrowserRegistrationAsync(DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting])),
             _ => host.UpgradeDatabaseAsync()
         };
     }

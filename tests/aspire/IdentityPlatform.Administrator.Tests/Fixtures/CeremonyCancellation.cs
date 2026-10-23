@@ -72,6 +72,14 @@ internal static class CeremonyCancellation
             errors[0] == (LockTimeout, LockClass) && inner is null);
     }
 
+    /// <summary>Recognizes only the exact independently configured SQL command or lock timeout, never managed cancellation.</summary>
+    internal static bool IsProviderTimeout(Exception? failure, bool sqlAllowed)
+    {
+        RequireTimeoutControls();
+        return sqlAllowed && failure is SqlException sql &&
+            MatchesTimeout(sql.Errors.Cast<SqlError>().Select(error => (error.Number, error.Class)).ToArray(), sql.InnerException);
+    }
+
     /// <summary>Proves companion errors, wrong causes/classes and unrelated provider failures never count as deadline evidence.</summary>
     private static void RequireTimeoutControls()
     {

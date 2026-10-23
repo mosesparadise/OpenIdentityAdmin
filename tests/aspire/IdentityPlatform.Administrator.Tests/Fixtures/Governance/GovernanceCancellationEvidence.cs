@@ -1,5 +1,7 @@
 using System.Data.Common;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -12,6 +14,13 @@ internal sealed class GovernanceCancellationEvidence : DbCommandInterceptor
     internal const string Users = "AspNetUsers";
     internal const string Singleton = "AdministratorGovernance";
     private const int OperationSeconds = 5;
+    private const string MissingCallback = "No matching native callback.";
+    private const string CallbackFormat = "callback={0}; cancellationShape={1}; deadlineShape={2}; caller={3}; observedCanceled={4}; callbackCanceled={5}; budgetElapsed={6}";
+    private static readonly CompositeFormat DiagnosticFormat = CompositeFormat.Parse(CallbackFormat);
+    private enum CallbackKind
+    {
+        Failed, Canceled
+    }
     private PlatformDbContext? owner;
     private string table = string.Empty;
     private bool sqlAllowed;
@@ -30,7 +39,7 @@ internal sealed class GovernanceCancellationEvidence : DbCommandInterceptor
     {
         get; private set;
     }
-    internal bool NativeDeadlineCancellation
+    internal bool NativeDeadlineTermination
     {
         get; private set;
     }
@@ -38,6 +47,7 @@ internal sealed class GovernanceCancellationEvidence : DbCommandInterceptor
     {
         get; private set;
     }
+    internal string NativeFailureEvidence { get; private set; } = MissingCallback;
 
     /// <summary>Targets one exact context and table; an empty table selects native role/user statements for no-command ownership assertions.</summary>
     internal void Arm(PlatformDbContext context, string selectedTable, bool sql, Func<bool> requested,
@@ -76,9 +86,13 @@ internal sealed class GovernanceCancellationEvidence : DbCommandInterceptor
     {
         if (Matches(command, eventData.Context))
         {
+            var facts = Snapshot(cancellationToken);
             NativeCallerCancellation |= CeremonyCancellation.IsCallerCancellation(eventData.Exception, sqlAllowed,
-                callerRequested() && ObservedToken.IsCancellationRequested);
-            NativeDeadlineCancellation |= CeremonyCancellation.IsDeadlineFailure(eventData.Exception, sqlAllowed, DeadlineExpired());
+                facts.Caller && facts.ObservedCanceled);
+            NativeDeadlineTermination |= GovernanceDeadlineEvidence.Accept(facts.Caller, facts.BudgetElapsed, facts.ObservedCanceled,
+                CeremonyCancellation.IsCallerCancellation(eventData.Exception, sqlAllowed, true),
+                CeremonyCancellation.IsProviderTimeout(eventData.Exception, sqlAllowed));
+            Capture(CallbackKind.Failed, eventData.Exception, facts);
         }
         return Task.CompletedTask;
     }
@@ -87,12 +101,35 @@ internal sealed class GovernanceCancellationEvidence : DbCommandInterceptor
     public override Task CommandCanceledAsync(DbCommand command, CommandEndEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        if (Matches(command, eventData.Context) && cancellationToken.IsCancellationRequested && ObservedToken.IsCancellationRequested)
+        if (Matches(command, eventData.Context))
         {
-            NativeCallerCancellation |= callerRequested();
-            NativeDeadlineCancellation |= DeadlineExpired();
+            var facts = Snapshot(cancellationToken);
+            if (facts.CallbackCanceled && facts.ObservedCanceled)
+            {
+                NativeCallerCancellation |= facts.Caller;
+                NativeDeadlineTermination |= facts.DeadlineExpired;
+            }
+            Capture(CallbackKind.Canceled, null, facts);
         }
         return Task.CompletedTask;
+    }
+
+    /// <summary>Snapshots finite classifier and token facts at the original callback, never after cleanup cancellation.</summary>
+    private void Capture(CallbackKind callback, Exception? failure, CallbackFacts facts)
+    {
+        var cancellationShape = CeremonyCancellation.IsCallerCancellation(failure, sqlAllowed, true);
+        var deadlineShape = CeremonyCancellation.IsDeadlineFailure(failure, sqlAllowed, true);
+        NativeFailureEvidence = string.Format(CultureInfo.InvariantCulture, DiagnosticFormat, callback, cancellationShape, deadlineShape,
+            facts.Caller, facts.ObservedCanceled, facts.CallbackCanceled, facts.BudgetElapsed);
+    }
+
+    /// <summary>Samples callback-entry facts once so diagnostic work cannot create deadline acceptance.</summary>
+    private CallbackFacts Snapshot(CancellationToken token) => new(callerRequested(), ObservedToken.IsCancellationRequested,
+        token.IsCancellationRequested, elapsed is { } watch && watch.Elapsed >= TimeSpan.FromSeconds(OperationSeconds));
+
+    private readonly record struct CallbackFacts(bool Caller, bool ObservedCanceled, bool CallbackCanceled, bool BudgetElapsed)
+    {
+        internal bool DeadlineExpired => !Caller && ObservedCanceled && BudgetElapsed;
     }
 
     /// <summary>Captures no SQL, parameters, error text or exception object; token equality remains independent of owner validation.</summary>
@@ -105,10 +142,6 @@ internal sealed class GovernanceCancellationEvidence : DbCommandInterceptor
             TokenMatched &= token.CanBeCanceled && (expectedToken is null || token == expectedToken.Value);
         }
     }
-
-    /// <summary>Accepts deadline credit only after the unchanged five-second budget and actual production token cancellation, without caller cancellation.</summary>
-    private bool DeadlineExpired() => !callerRequested() && ObservedToken.IsCancellationRequested &&
-        elapsed is { } watch && watch.Elapsed >= TimeSpan.FromSeconds(OperationSeconds);
 
     /// <summary>Filters by real context identity and a closed table catalogue, excluding unrelated startup/account statements.</summary>
     private bool Matches(DbCommand command, Microsoft.EntityFrameworkCore.DbContext? context) => owner is not null &&

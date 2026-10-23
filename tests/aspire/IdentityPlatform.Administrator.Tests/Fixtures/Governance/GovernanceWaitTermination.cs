@@ -28,7 +28,7 @@ internal static class GovernanceWaitTermination
             }
             var failure = await Record.ExceptionAsync(() => subject.WaitAsync(TimeSpan.FromSeconds(DrainSeconds)));
             Assert.True(subject.IsCompleted && failure is not null);
-            Assert.True(cancel ? evidence.NativeCallerCancellation : evidence.NativeDeadlineCancellation);
+            Assert.True(cancel ? evidence.NativeCallerCancellation : evidence.NativeDeadlineTermination, evidence.NativeFailureEvidence);
             if (service)
             {
                 Assert.True(failure is OperationCanceledException or GovernanceUnavailableException);
