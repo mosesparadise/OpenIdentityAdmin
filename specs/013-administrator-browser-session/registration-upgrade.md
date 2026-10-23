@@ -2,6 +2,12 @@
 
 23 October 2026, Europe/London. Feature 013 T003/T018; FR-010/011/013, B3-END-02/03 and B3-OPS-04. This implements the explicit fixed-registration transition following accepted [PR #73](browser-registration-contract.md#accepted-contract--23-october-2026), base `98fed50b4a97a20de9a216770c0c5ac489148368`. Product login/logout composition, complete B3 acceptance and activation remain pending.
 
+## Accepted upgrade — 23 October 2026
+
+[PR #74](https://github.com/mosesparadise/OpenIdentityAdmin/pull/74) was squash-merged as `892267a4b4fc7ea154bba70318cb13b55d536af3`. Exact source `6077d9b89c76a175bccfa3525f1b636c1ac6a584`, tested merge `250ed25ede308206d1a5371a671ab6ea53fb42a1` and accepted tree `50ff2f98864cb23005525c02375b484f778b8c2b` bind [run 39940315315, attempt 1](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/39940315315): all 69 jobs succeeded. Host passed 1,240; BrowserSessions passed 35 per provider; SQL governance passed 166. Native discovery preserves all prior 1,247 identities and adds 64, total 1,311. All 52 coverage inputs and 15 unchanged floors passed. All 48 mutation kills have passing baseline/restored controls and source restoration.
+
+Independent architecture/test and security source reviews passed. Independent evidence review bound exact source/tested tree, strict verifier output, finite job logs and artifact API metadata/digests. Raw XML/JSON artifact transfer was unavailable; no independent raw-artifact recount is claimed. Earlier failed runs and the scheduling/SQL timeout corrections below remain historical evidence, not closed incident findings. T003/T018 remain partial for completion, product end-session and composition. All historical, human, assurance, activation and release gates remain open.
+
 ## Implemented boundary
 
 The one-shot Migrator selects `upgrade-administrator-browser-registration` explicitly. It requires redirected bounded UTF-8 public input, the current Platform schema and the registered relational provider. It uses the existing Platform-only operation path, clears provider logging, opens no listener, provisions no role and performs no schema migration. Neither a live issuer nor startup initialization calls the upgrade. [Operator instructions](../../docs/operations/administrator-registration-upgrade.md) record the required receipt-read privilege and intentional reconciliation procedure.
