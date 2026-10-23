@@ -1,5 +1,6 @@
 using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
@@ -18,6 +19,7 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
     private NativeIssuanceProof? native;
     private AdministratorAccountAuthority? account;
     private long maximumExpiration;
+    private IssuerParCompletion? completion;
 
     /// <summary>Resolves only the state attached by the fresh response-child coordinator.</summary>
     internal static AdministratorIssuance? Find(OpenIddictServerTransaction transaction) =>
@@ -60,6 +62,10 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
         {
             context.Reject(OpenIddictConstants.Errors.InvalidClient);
         }
+        if (!context.IsRejected && scope.Services.GetService<BrowserCompletionPar>() is { } browser)
+        {
+            completion = await browser.OpenAsync(scope, context, token);
+        }
         maximumExpiration = checked(Math.Max(scope.Owner.Clock.GetUtcNow().ToUnixTimeSeconds(), registration.ObservedAt) +
             AdministratorAssertion.LifetimeSeconds);
     }
@@ -99,6 +105,7 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
             throw ProtocolStorageOwner.Unavailable();
         }
         principal.SetExpirationDate(DateTimeOffset.FromUnixTimeSeconds(Math.Min(expiration.ToUnixTimeSeconds(), maximumExpiration)));
+        completion?.BindPrincipal(principal, context.CancellationToken);
     }
 
     /// <summary>Requires actual native creation/formatting, exact final counts and current proof immediately before the one issuance commit.</summary>
@@ -114,6 +121,14 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
         {
             return false;
         }
+        if (completion is not null)
+        {
+            await completion.AttachAsync(context.RequestTokenPrincipal!, context.Request, token);
+            if (!ParIsCurrent(current, token))
+            {
+                return false;
+            }
+        }
         await transaction.CommitAsync(token);
         return true;
     }
@@ -122,7 +137,8 @@ internal sealed class AdministratorIssuance(ProtocolStorageScope scope, OpenIddi
     private bool ParIsCurrent(AdministratorRegistrationBinding current, CancellationToken token) =>
         assertion is not null && assertion.IsCurrent(scope, context, current, token) &&
         context.RequestTokenPrincipal?.GetExpirationDate() is { } expiration &&
-        expiration.ToUnixTimeSeconds() <= maximumExpiration && expiration > scope.Owner.Clock.GetUtcNow();
+        expiration.ToUnixTimeSeconds() <= maximumExpiration && expiration > scope.Owner.Clock.GetUtcNow() &&
+        (completion is null || completion.Current(context.RequestTokenPrincipal, context.Request, token));
 
     /// <summary>Allows safe quota cleanup progress only for the explicit capacity-denied path with zero native creation.</summary>
     internal async ValueTask CompleteDenialAsync(CancellationToken token)

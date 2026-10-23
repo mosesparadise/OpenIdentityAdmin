@@ -96,6 +96,11 @@ public sealed class AdministratorInteraction
     {
         get; set;
     }
+    /// <summary>Requires the persisted browser continuation when this real login interaction completes.</summary>
+    public string? BrowserIntentDigest
+    {
+        get; set;
+    }
     public string? StagedSeed
 
     {

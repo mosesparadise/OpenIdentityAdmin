@@ -1,16 +1,18 @@
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 
 /// <summary>Completes native MFA under serialized authority and returns a result only after audited commit and disposal.</summary>
 internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperation operation, JourneyLocator locator,
     JourneyEligibility eligibility, CeremonyClock clock, CeremonyBudget budget, CeremonyReplay replay,
-    CeremonyAdmission admission, JourneyActivation activation, UserManager<PlatformUser> users, FactorAccess access, JourneyRevocation revocation)
+    CeremonyAdmission admission, JourneyActivation activation, UserManager<PlatformUser> users, FactorAccess access, JourneyRevocation revocation, IssuerContinuationCeremony continuations)
 {
     /// <summary>Resolves locking candidates, rechecks every binding, and withholds all response material until commit succeeds.</summary>
     internal Task<Grant?> CompleteAsync(string publicId, string correlation, string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null) =>
@@ -51,12 +53,13 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
     /// <summary>Consumes only a native unused factor; failed bound proof and its audit share the transaction.</summary>
     private async Task<Completion?> VerifyAsync(CeremonyTransaction transaction, CeremonyAccount account, CeremonyInteraction interaction, string code, JourneySessionProof? authority)
     {
+        _ = await continuations.ReadAsync(transaction, interaction.Row);
         var installing = interaction.Row.Purpose is AdministratorPolicy.Enrollment or AdministratorPolicy.Replacement;
         var proof = await replay.VerifyAsync(transaction, account, interaction, code, installing);
         if (proof is null)
         {
             await budget.FailAsync(transaction, account, interaction);
-            await transaction.CommitAsync(CeremonyEvent.Factor, false, account.User.Id, clock.Now);
+            await transaction.CommitAsync(CeremonyEvent.Factor, false, account.User.Id, clock.Now, clock);
             return null;
         }
         authority?.RequireCurrent(transaction, account, clock.Now);
@@ -77,8 +80,38 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
         authority?.RequireTime(now);
         var session = CreateSession(account, interaction.Row, proof, now);
         database.Add(session);
-        await transaction.CommitAsync(Event(interaction.Row.Purpose), true, account.User.Id, now);
-        return new Completion(session.PublicId, session.UserId, session.ExpiresAt, codes);
+        var completion = await CompleteBrowserAsync(transaction, interaction.Row, session);
+        await transaction.CommitAsync(Event(interaction.Row.Purpose), true, account.User.Id, now, clock);
+        return new Completion(session.PublicId, session.UserId, session.ExpiresAt, codes, completion);
+    }
+
+    /// <summary>Stages a proof only from the exact new session inside the MFA transaction; the owning grant releases it after commit/disposal.</summary>
+    private async Task<string?> CompleteBrowserAsync(CeremonyTransaction transaction, AdministratorInteraction interaction, AdministratorSession session)
+    {
+        var row = await continuations.ReadAsync(transaction, interaction);
+        if (row is null)
+        {
+            return null;
+        }
+        if (session.UserId != interaction.UserId || session.PasswordVerifiedAt != interaction.PasswordVerifiedAt ||
+            session.CreatedAt < row.CreatedAt || session.FactorVerifiedAt < interaction.PasswordVerifiedAt ||
+            session.ExpiresAt <= clock.Now || database.Entry(session).State != EntityState.Added)
+        {
+            throw new FactorUnavailableException();
+        }
+        var selector = IssuerContinuationPolicy.CreateSelector();
+        row.CompletionDigest = IssuerContinuationPolicy.Digest(selector)!;
+        row.SessionId = session.PublicId;
+        row.SessionExpiresAt = session.ExpiresAt;
+        row.State = IssuerContinuationPolicy.Completed;
+        row.Revision = checked(row.Revision + 1);
+        row.RetainUntil = Math.Max(row.RetainUntil, checked(session.ExpiresAt + IssuerContinuationPolicy.ClockToleranceSeconds));
+        if (!IssuerContinuationPolicy.Observe(row, clock.Now))
+        {
+            throw new FactorUnavailableException();
+        }
+        IssuerContinuationAudit.Complete(database, row, session.UserId);
+        return selector;
     }
 
     /// <summary>Rotates verifier generation and all previous local authority while preserving the current factor and its replay ledger.</summary>
@@ -124,7 +157,7 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
         ExpiresAt = checked(now + AdministratorPolicy.SessionSeconds)
     };
     /// <summary>Remains private to completion until audited commit and all transaction owners have been disposed.</summary>
-    private sealed record Completion(string SessionId, string UserId, long ExpiresAt, string[] RecoveryCodes);
+    private sealed record Completion(string SessionId, string UserId, long ExpiresAt, string[] RecoveryCodes, string? BrowserCompletion);
 
     /// <summary>Carries committed authority without a caller-accessible constructor or mutable cloning operation.</summary>
     internal sealed class Grant
@@ -145,15 +178,20 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
         {
             get;
         }
+        internal string? BrowserCompletion
+        {
+            get;
+        }
         private int claimed;
 
         /// <summary>Captures only a successfully committed result constructed by the owning completion mechanism.</summary>
-        private Grant(string sessionId, string userId, long expiresAt, string[] recoveryCodes)
+        private Grant(string sessionId, string userId, long expiresAt, string[] recoveryCodes, string? browserCompletion)
         {
             SessionId = sessionId;
             UserId = userId;
             ExpiresAt = expiresAt;
             RecoveryCodes = recoveryCodes;
+            BrowserCompletion = browserCompletion;
         }
 
         /// <summary>Constructs signing authority only by executing the actual native completion and disposed commit path.</summary>
@@ -161,7 +199,7 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
             string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null)
         {
             var result = await owner.CompleteCoreAsync(publicId, correlation, purpose, code, token, session);
-            return result is null ? null : new Grant(result.SessionId, result.UserId, result.ExpiresAt, result.RecoveryCodes);
+            return result is null ? null : new Grant(result.SessionId, result.UserId, result.ExpiresAt, result.RecoveryCodes, result.BrowserCompletion);
         }
 
         /// <summary>Allows the postcommit result to authorize only one signing attempt.</summary>

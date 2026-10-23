@@ -21,6 +21,7 @@ internal sealed class AdministratorRegistrationPolicy
     {
         get;
     }
+    internal bool IsBrowserSession => logoutReturn is not null;
     internal AdministratorPublicKey Key
     {
         get;

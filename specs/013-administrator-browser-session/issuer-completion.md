@@ -1,0 +1,40 @@
+# Durable issuer continuation and native PAR attachment
+
+23 October 2026. Feature 013 T006 and dependent T003/T004 groundwork; FR-001–003/011–013, B3-AUTH-01–04 and B3-STATE-03/04. Base is accepted PR #75 squash `9f062444d23cbf817905aff5d214ef51c48c294f`. This is a dormant infrastructure slice; product routes, browser generation, source-session authorization and B3 claims remain later dependencies.
+
+## Persistence and ownership
+
+The Platform continuation retains canonical decoded-byte intent/browser digests, independent audit correlation, original expiry, monotonic observation, revision and exact interaction/account/new-session snapshots. Pending entry becomes completed only inside the private real `JourneyCompletion` path after password and unused native MFA verification. The raw completion selector is returned only through the existing post-commit/post-disposal grant. Password admission alone cannot issue it; an existing session cannot substitute for a fresh ceremony.
+
+Anonymous entry uses a distinct transaction mode, the existing installation admission lock and a restricted fresh-pending commit. The commit constructs its own finite anonymous audit and rejects extra tracked entities or prepopulated authority. Bounds are 128 live, 10,000 retained, one live per issuer browser and 300 seconds from original admission. Duplicate/capacity denial preserves existing records. Cleanup removes at most 100 strictly eligible records and retains equality/future-watermark rows. Late password binding clamps the interaction expiry to the original continuation expiry; completed state retains through the actual new session expiry plus 30 seconds.
+
+Additive native EF migrations append to each existing Platform history and provider catalog. They add `AdministratorIssuerContinuation` and the nullable interaction marker, with bounded ordinal fields, revision/time constraints and unique nullable interaction/completion/request references. PostgreSQL native nullable uniqueness and SQL Server filtered unique indexes permit independent unbound entries. No database/provider implementation, existing migration identity or history table is replaced.
+
+The frozen-provider compatibility witness now permits exactly the additional table, known migration IDs and one appended nullable 64-character interaction marker. It binds exact columns-query provenance and both owner copies, rejects altered existing metadata, requires every old interaction's new marker to be null and compares every preceding field. The reusable conformance runner receives independently captured old history IDs instead of assuming a fixed number of missing migrations. The frozen producer is unchanged. Two standalone seeded controls pass without database startup; both native compatibility runs remain required.
+
+## Native attachment
+
+Explicit `AddBrowserCompletionPar` composition is dormant and absent from product startup. Canonical raw/native pair agreement is required when present. Existing profile ownership precedes the admission lock; attachment creates no nested transaction or HTTP-held ownership. The completion stays detached during native capacity checks so denial/cleanup cannot accidentally save it.
+
+The adapter freezes immutable browser/interaction/account/source-session provenance, original deadlines, state and revision. It adds private binding to the actual native request principal, limits expiry to the earlier request/continuation/session deadline, and attaches exactly once to the actual token ID only after existing native issuance verification. Attachment and finite client audit share the original issuance commit. Original binding and permitted state/revision transition are checked again before commit. Source-session authorization is a separate T009 obligation: the dormant adapter rejects bound authorization after native parameter restoration until that policy is implemented.
+
+## Review corrections and regressions
+
+Independent architecture and security review identified and corrected:
+
+- Missing interaction marker could fall back to ordinary completion despite an inverse continuation reference. The unchanged completion overload now checks that reference and fails closed.
+- Completion staging accepted an arbitrary caller-staged session. Staging is now private to the actual MFA owner and receives its exact locally created session.
+- Final clock checks dirtied tracked state after persistence. Final checks are nonmutating; observations happen before writes. Detached PAR attachment explicitly marks the updated watermark for persistence.
+- Late-created interaction expiry could exceed continuation retention. Both now share the earlier original expiry; completed retention follows the actual source session.
+- PAR final checks lacked immutable provenance and exact transition checks. The original snapshot and expected state/revision/request identity are retained across native persistence.
+- The schema needed unique binding indexes and completion needed an explicit account-derived audit with the same independent correlation. Both are included.
+
+Provider controls exercise real fresh password/native MFA, consumed-factor replay, missing marker/row, wrong browser/purpose and strict original expiry; actual denied audit INSERT rollback; inclusive capacity/cleanup and provider-observed admission contention. Additional clock and schema controls use actual write boundaries and native constraint errors. Synthetic occupancy/corruption fixtures never stand in for an authentication proof. Native PAR controls additionally require actual saved native-token observation before an owned commit race or denied audit INSERT, independently spent fresh assertions, a fresh persisted watermark read and exact original live response-start loss after commit. The response-loss case is in-process publication evidence, not new TLS or provider commit-acknowledgment-loss evidence. Permission-denial fixtures always restore through an independent bounded cleanup token, including ambiguous denial/cancellation, and preserve both primary and restoration failures. No automatic security retry, relaxed timeout, provider omission or inherited test removal is permitted.
+
+## Verification status and remaining work
+
+Local solution build passes with zero warnings/errors; all 1,291 Host controls pass with zero failures/skips. Native discovery preserves every previous 1,321 name/type/trait record and adds 76 cases (1,397 total). Required BrowserSessions counts rise from 40 to 78 per provider; ordinary Administrator counts are 633 PostgreSQL / 738 SQL Server, with browser-inclusive inventories 646 / 751. Persistence discovery preserves all 16 prior identities and adds the two standalone controls, requiring nine per provider. Quality, instruction and assurance checks pass without expanded allowances; all 345 assurance controls remain not assessed.
+
+The local PostgreSQL attempt failed during `BootstrapHost.CreateAsync` at HostStart, before database test execution. It did not create a running database container; after the first failure, repeated harness startup was stopped and only this task's test/DCP processes were terminated. This is failed local harness evidence, not a passed provider test or a product SQL failure. No deadline or test oracle was relaxed. Full exact-head hosted provider/coverage/mutation acceptance remains pending. Generated migrations have not been applied to a production database; source review is not runtime evidence.
+
+T006 remains unchecked pending its complete bounded runtime evidence. T005 browser generation and the T008/T009 product entry/source-session/claim policies remain dependent work; no cookie, endpoint, authorization or public claim is activated by this slice. A-009 keeps known Playwright/Firefox issues documented and deferred for internal work. PR #69, issue #70, six historical findings, 48 human rows, 345 not-assessed controls and activation/production/public-release gates remain open. A-004 stays expired; A-005/A-006 stay concluded.
