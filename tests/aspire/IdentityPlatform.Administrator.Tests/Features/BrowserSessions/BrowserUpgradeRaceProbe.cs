@@ -3,6 +3,7 @@ using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
@@ -14,6 +15,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 internal sealed class BrowserUpgradeRaceProbe(bool winner, bool nativeIssuance = false, string? lockTable = null) : DbCommandInterceptor, IDbTransactionInterceptor
 {
     private const string Update = "UPDATE";
+    private const string Select = "SELECT";
+    private const string Applications = "OpenIddictApplications";
     private const string Governance = "AdministratorGovernance";
     internal bool Armed
     {
@@ -21,6 +24,10 @@ internal sealed class BrowserUpgradeRaceProbe(bool winner, bool nativeIssuance =
     }
     internal TaskCompletionSource<int> Reached { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Release { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    internal bool AdmissionReadObserved
+    {
+        get; private set;
+    }
     internal int Commits
     {
         get; private set;
@@ -36,6 +43,18 @@ internal sealed class BrowserUpgradeRaceProbe(bool winner, bool nativeIssuance =
         if (Armed && !winner && command.CommandText.TrimStart().StartsWith(Update, StringComparison.OrdinalIgnoreCase) && command.CommandText.Contains(lockTable ?? Governance, StringComparison.Ordinal))
         {
             Reached.TrySetResult(NativeLockObservation.Session(command.Connection!));
+        }
+        return ValueTask.FromResult(result);
+    }
+
+    /// <summary>Observes SQL Server's earlier native application read, which can block before assertion admission reaches its profile UPDATE.</summary>
+    public override ValueTask<InterceptionResult<DbDataReader>> ReaderExecutingAsync(DbCommand command, CommandEventData data,
+        InterceptionResult<DbDataReader> result, CancellationToken cancellationToken = default)
+    {
+        if (Armed && !winner && nativeIssuance && command.Connection is SqlConnection && command.CommandText.TrimStart().StartsWith(Select, StringComparison.OrdinalIgnoreCase) &&
+            command.CommandText.Contains(Applications, StringComparison.Ordinal))
+        {
+            AdmissionReadObserved |= Reached.TrySetResult(NativeLockObservation.Session(command.Connection));
         }
         return ValueTask.FromResult(result);
     }

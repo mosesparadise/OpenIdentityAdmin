@@ -5,10 +5,11 @@ using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 
-/// <summary>Requires actual profile-lock contention between the audited upgrade and native PAR admission/issuance in both commit orders.</summary>
+/// <summary>Requires actual registration-read or profile-lock contention between the audited upgrade and native PAR admission/issuance in both commit orders.</summary>
 [Collection("administrator-bootstrap")]
 public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
 {
+    private const string SqlServer = "SqlServer";
     private const string ProfileLock = "AdministratorProtocolProfile";
     private const string ProviderTrait = "Provider";
     private static readonly string[] Providers = ["PostgreSql", "SqlServer"];
@@ -16,7 +17,7 @@ public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
 
     /// <summary>Upgrade-first denies old-profile admission; issuance-first leaves its returned old PAR durably revoked, while new B3 issuance remains usable.</summary>
     [Theory, MemberData(nameof(Cases))]
-    public async Task Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(string provider, bool upgradeFirst)
+    public async Task Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(string provider, bool upgradeFirst)
     {
         var issuance = new BrowserUpgradeRaceProbe(!upgradeFirst, true, ProfileLock);
         var upgrade = new BrowserUpgradeRaceProbe(upgradeFirst, false, ProfileLock);
@@ -36,6 +37,7 @@ public sealed class BrowserUpgradeIssuanceRaceTests(BootstrapFixture fixture)
             var peer = upgradeFirst ? issuance : upgrade;
             outcomes = await NativeBlockedRace.InvokeAsync(upgradeFirst ? change : issue, winner.Reached.Task,
                 upgradeFirst ? issue : change, peer.Reached.Task, winner.Release, observer.WaitAsync);
+            Assert.Equal(upgradeFirst && provider == SqlServer, issuance.AdmissionReadObserved);
             Assert.Equal(1, upgrade.Commits);
             Assert.Equal(upgradeFirst ? 0 : 1, issuance.Commits);
         }

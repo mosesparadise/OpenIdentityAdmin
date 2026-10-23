@@ -601,8 +601,8 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: BeforeCommit)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Cancellation)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"PostgreSql\", mode: Revocation)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
@@ -1311,8 +1311,8 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: BeforeCommit)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Cancellation)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeFailureTests.Given_RealUpgradeWrites_When_AuditOrCommitFails_Then_OutcomeIsReconciledWithoutAutomaticRetry(provider: \"SqlServer\", mode: Revocation)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeRaceTests.Given_SameUpgradeOnTwoRoots_When_ThePeerWaitsOnActualOwnership_Then_OnlyOneRevisionAndAuditCommit(provider: \"SqlServer\")"
   ],
   "metadata": {
@@ -28004,12 +28004,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)": {
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: False)": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "BrowserUpgradeIssuanceRaceTests",
-        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -28024,12 +28024,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)": {
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"PostgreSql\", upgradeFirst: True)": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "BrowserUpgradeIssuanceRaceTests",
-        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -28044,12 +28044,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)": {
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: False)": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "BrowserUpgradeIssuanceRaceTests",
-        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -28064,12 +28064,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)": {
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserUpgradeIssuanceRaceTests.Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable(provider: \"SqlServer\", upgradeFirst: True)": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "BrowserUpgradeIssuanceRaceTests",
-        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualProfileOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
+        "methodName": "Given_NativeParAndExplicitUpgrade_When_ActualRegistrationOwnershipContends_Then_CommitOrderCannotLeaveAnOldPendingRequestUsable",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
