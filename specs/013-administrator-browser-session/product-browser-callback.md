@@ -1,6 +1,6 @@
 # T011 product callback and canonical browser ticket
 
-Status: source implemented on 24 October 2026; exact-source hosted provider acceptance is pending. Base main is `6cc9670cd3c54c70dad21521bd3edb590cb5f1a5`, after accepted T010 PR #83 and delivery PR #84. T011 stays unchecked until required source/evidence acceptance. Production Programs remain dormant.
+Status: accepted for internal development on 24 October 2026 through PR #85, squash `490779b80282ea436d3ec3587f072fae973db682`. The source checkpoints below retain development failures and supporting evidence; final acceptance is recorded at the end. Production Programs remain dormant.
 
 ## Product ownership
 
@@ -55,3 +55,42 @@ The shorter-source fixture re-signs exactly one source-expiry claim after succes
 Independent architecture/API review passes the production bridge. Final scoped security source review passes after the principal mutation correction and decisive public issued/expiry regression refinement; executed provider evidence remains pending. Independent test review corrections include actual issuer-error coverage, local rollback snapshots that exclude separately consumed native rows, stronger ticket/audit/cookie oracles and explicit race ordering. Final scoped test source review passes. Final evidence dispositions will be recorded after execution.
 
 All six historical findings, 48 human rows, 345 not-assessed controls, production/public-release gates, A-009/T028 browser restoration, PR #69/issue #70 and the viewer advisory remain open. No expired diagnostic approval is revived.
+
+## Accepted T011 — 24 October 2026
+
+[PR #85](https://github.com/mosesparadise/OpenIdentityAdmin/pull/85) was normally squash-merged after all 69 exact-head checks and independent architecture/API, security, test, mutation and coverage reviews passed. Exact head, base, mergeability and review state were checked before merge; no restriction was bypassed. Remote main and the actual squash tree match the reviewed/tested source.
+
+| Boundary | Verified identity |
+| --- | --- |
+| Reviewed source | `14593d965e089b7c0b87ebb57f02fa6838e79e64` |
+| Base | `6cc9670cd3c54c70dad21521bd3edb590cb5f1a5` |
+| Tested merge | `768ffe78f9b4e57114d18616b62a208290d21bb6` |
+| Source, tested merge and squash tree | `cea595d0c172242dc458e3fc27bb371f7360d5f3` |
+| Actual squash | `490779b80282ea436d3ec3587f072fae973db682` |
+| Workflow / attempt | [40125924536](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40125924536) / 1 |
+| Coverage / acceptance jobs | `120972197915` / `120972334943` |
+
+Independent raw artifact review verifies six TRX reports and 1,926 passing executions, with zero failures, skips or aborts: BrowserSessions 202/provider, Host 1,427, Core 25, Architecture 5 and AppHost 65. Exact test names, definitions, entries, methods and execution identifiers match. All prior 182 BrowserSessions cases per provider and 1,410 Host cases are preserved; the 40 added provider cases and 17 added Host cases pass. All 1,605 prior Administrator identities and portable metadata remain unchanged, with 40 additions producing 1,645. Both providers' unchanged 110-case protocol-admission lanes also pass. Actual checkout logs for both callback lanes, unit and coverage bind the tested merge above.
+
+All 52 required coverage inputs match the final run/head and their API IDs, sizes and SHA-256 values match the hosted download/merge-input log. The unchanged nonempty-input guard passes. Independent recomputation of raw merged Cobertura passes all 15 unchanged 90% line/80% branch floors. Admin.Bff measures 2,504/2,670 lines (93.78%) and 625/634 quantified branches (98.58%). All eight actual mutation ZIPs match their API SHA-256; independently inspected sanitized receipts verify 48 kills, 48 passing baseline controls and 48 passing restored controls, with exact manifests and recomputed original/mutant source hashes. No source-quality allowance, coverage floor, deadline or required provider case was relaxed.
+
+Review limits remain explicit: the six raw TRX reports, merged coverage XML and eight sanitized mutation receipt bundles were inspected. Individual input XML files and raw mutant TRX reports were not independently unpacked. Coverage branch rates follow quantified condition fractions; unquantified branch markers are not additional measured branches. In-process real-provider controls do not establish trusted TLS, browser engines, theme/accessibility or full B3 acceptance. The two earlier source runs remain rejected development evidence; the final corrected source passed every required check on attempt 1 without reruns or skipped required cases.
+
+| Retained final artifact | ID | SHA-256 |
+| --- | --- | --- |
+| foundation-unit | `12573656598` | `bf6249cf737daddf46334be41cc3bd69ec97285d53bbda384936454b28337a6b` |
+| foundation-administrator-PostgreSql-browsersessions | `12573422329` | `f52074fc4127ccd451dadfc15e391c4db85f30e299e7734f4cc0f67f655696f1` |
+| foundation-administrator-SqlServer-browsersessions | `12573138662` | `1314211a12b337b97f207953098ce3118ebe92dc18274ce14a24a372356f471b` |
+| administrator-mutations-PostgreSql | `12573722532` | `2a44e84c9a2c9bf3afbee12df850bbebb56712d839a82013e89c20c61b041b1d` |
+| administrator-mutations-SqlServer | `12573623200` | `090170344120e87880ca2d3ee2d79af65132655fb366344df032a7a83cbd74cc` |
+| administrator-protocol-mutations-PostgreSql | `12572837332` | `c2610699f6fa9149a4a131b267621c19f1158e059d411c7ed271809be27ef2a3` |
+| administrator-protocol-mutations-SqlServer | `12573162458` | `da65fc6502c19c9007d06fadb0b0407b5a26aaea187282ca73b27883755b2a53` |
+| critical-mutations-PostgreSql | `12573712248` | `5cb350ad681fed70e340f39e00381aa8e61fd6ccde3e713460b38c568aa621e9` |
+| critical-mutations-SqlServer | `12573477782` | `7f0906e7aa867fd0526ba0812c03e852bdd7895a0efd65364c72fc6361e08a8f` |
+| governance-mutations-PostgreSql | `12573757010` | `9ec6c3f474f3134d8c7663b9db7757073bec965e9ddfd0483d60946a7a7eada4` |
+| governance-mutations-SqlServer | `12573717358` | `95aa912c15ae75ae26b13b55e3b2c1b37dc5dec82d1f660497cb946d4de66115` |
+| foundation-coverage | `12572968752` | `1e04bbf0285f040fc289dc03d894de458c3a77b52950b434753824f6a213dbd2` |
+
+T011 is complete for internal development. The next bounded T012 slice carries remaining product journeys through actual callback/ticket outcomes: a second deliberate sign-in with genuine existing B1/issuer cookies, account/source substitution, pilot/recovery isolation, expired PAR/native state and one supported committed authority invalidation. Reuse the accepted native mechanisms and staged fixture helpers rather than repeating the full B2 race matrix. T012 remains open for trusted-TLS Chromium/WebKit and deferred Firefox evidence; A-009 is not a blanket browser/TLS waiver. T013 then supplies the asynchronous current-generation session-status adapter, no-renewal reads and safe entry/error views.
+
+Production composition/full B3, all six historical findings, 48 human rows, 345 not-assessed controls, public-release gates, A-009/T028 browser restoration, PR #69/issue #70 and the viewer advisory remain open. No expired diagnostic approval is revived.
