@@ -15,6 +15,8 @@ public sealed class BrowserProtocolTests(BootstrapFixture fixture)
     private const string ProviderTrait = "Provider";
     private const string IntentField = "admin_login_intent";
     private const string CompletionField = "admin_login_completion";
+    private const int CodePreparationSeconds = 2;
+    private const int FinalCodeLifetimeSeconds = 1;
     private static readonly string[] ProviderNames = ["PostgreSql", "SqlServer"];
     private static readonly bool[] ExchangeVariants = [false, true];
     /// <summary>A genuine new ceremony supplies exact ID-only source claims; the old B2 request remains unbound under the same browser registration.</summary>
@@ -83,8 +85,14 @@ public sealed class BrowserProtocolTests(BootstrapFixture fixture)
     {
         await using var browser = await NativeBrowserParFixture.CreateAsync(fixture, provider, fullProtocol: true);
         var row = await browser.RowAsync();
-        browser.Journey.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(row.ExpiresAt - 1);
+        browser.Journey.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(row.ExpiresAt - (exchange ? CodePreparationSeconds : FinalCodeLifetimeSeconds));
         var reference = exchange ? await BrowserProtocolFlow.CodeAsync(browser) : NativeAccountFlow.ReadReference(await browser.PushAsync());
+        Assert.Equal(row.ExpiresAt - FinalCodeLifetimeSeconds, browser.Journey.Clock.Now.ToUnixTimeSeconds());
+        if (exchange)
+        {
+            var code = await NativeAccountFlow.ValidateAsync(browser.Scenario, reference, OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode, browser.Services);
+            Assert.Equal(DateTimeOffset.FromUnixTimeSeconds(row.ExpiresAt), code.GetExpirationDate());
+        }
         var before = await NativeAccountPersistence.CountAsync(browser.Scenario);
         browser.Journey.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(row.ExpiresAt);
         var response = exchange ? await NativeAccountFlow.ExchangeAsync(browser.Scenario, reference, browser.Services) :
@@ -95,7 +103,7 @@ public sealed class BrowserProtocolTests(BootstrapFixture fixture)
         }
         else
         {
-            NativeAccountDenialTests.RequireJson(response, OpenIddictConstants.Errors.InvalidToken);
+            NativeIssuerReplayTests.RequireParReplay(response);
         }
         Assert.Equal(before, await NativeAccountPersistence.CountAsync(browser.Scenario));
     }
