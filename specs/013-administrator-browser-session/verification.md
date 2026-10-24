@@ -1,5 +1,7 @@
 # B3 planning verification and acceptance map
 
+**Selected batch delivered (24 October):** [T005/T007/T008 acceptance](selected-batch-delivery.md) records PR #78 squash `e6447e3` and PR #79 squash `42c9eda`, each with all 69 exact-head jobs and independent source/evidence review. T005, T007 and T008 are complete for internal development. T009 is next; full B3, remaining prerequisites, product activation and all external gates stay open. The dated source checkpoints below are historical.
+
 **T005 delivered (24 October):** [Accepted coordination](browser-coordination.md#accepted-t005--24-october-2026) records PR #78 squash `e6447e3`, all 69 checks, 121 BrowserSessions cases per provider, both upgrade histories, 48 mutation kills and all coverage floors. T007/T008 continue in PR #79; their hosted acceptance remains pending.
 
 **T008 source checkpoint (24 October):** [Issuer browser password/MFA](issuer-browser-journey.md) adds dedicated dormant pages, original-deadline admission and strict cross-page completion. Native discovery preserves all 1,483 prior cases and adds 44 provider controls (1,527 total; BrowserSessions 143/provider). Architecture/API/security source review passes; hosted runtime acceptance remains pending.

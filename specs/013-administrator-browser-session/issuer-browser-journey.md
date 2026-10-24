@@ -1,5 +1,7 @@
 # T008 issuer browser password and MFA journey
 
+**Accepted internal delivery (24 October):** [PR #79 acceptance](selected-batch-delivery.md) records squash `42c9eda2f83866b3289b99d22b809fad6332cc8c`, all 69 exact-head jobs, both-provider BrowserSessions 143/143, Host 1,368/1,368, all mutation/coverage gates and independent review. This supersedes the pending checkpoints below; complete product integration and activation remain open.
+
 The selected T005/T007/T008 batch adds dormant, dedicated issuer entry and MFA pages. FR-001/002/011/013 and B3-AUTH-01/02 map to the `BrowserIssuer*Tests` and `IssuerBrowserProofTests` controls. Production composition continues to exclude these pages; activation and the full BFF/native callback story remain separate tasks.
 
 ## Request and authority ownership

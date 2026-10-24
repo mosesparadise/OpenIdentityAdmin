@@ -1,5 +1,7 @@
 # T007 browser policy and native antiforgery controls
 
+**Accepted internal delivery (24 October):** [PR #79 acceptance](selected-batch-delivery.md) records squash `42c9eda2f83866b3289b99d22b809fad6332cc8c`, all 69 exact-head jobs, both-provider BrowserSessions 143/143, Host 1,368/1,368, all mutation/coverage gates and independent review. This supersedes the pending checkpoints below; complete product integration and activation remain open.
+
 The authorized T005/T007/T008 batch adds the remaining dormant T007 policy layer while preserving the 66 delivered signed identity/state/projection controls. FR-003–008/011/013 and B3-AUTH-03/04, B3-WEB-01–04 are mapped to the existing identity tests and the new `BrowserWebPolicyTests`, `BrowserCookiePolicyTests`, `BrowserAntiforgeryTests` and `BrowserTicketAcceptanceTests`.
 
 Canonical HTTPS identities supply fixed root-relative issuer entry, BFF resume and logout-return destinations. Existing native support for same-origin and canonical non-root identity URIs remains; incoming Host/forwarded headers never supply the trusted origin. Mutation metadata requires HTTPS POST, exact single configured Origin, reviewed URL-encoded media, no query and no Authorization header. Decoded form shape requires exact ordinal single nonempty bounded fields and no files.
