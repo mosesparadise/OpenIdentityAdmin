@@ -646,7 +646,50 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_AttachedBrowserCompletion_When_AuthorizationRestoresNativeRequest_Then_DormantGuardPreventsIssuance(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletedFreshLogin_When_NativeParAndNewAssertionReplayRun_Then_ExactlyOneNativeRequestAttaches(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletedLoginAtExpiry_When_NativeParRuns_Then_NoAttachmentOrTokenCommits(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletionWatermarkAheadOfProtocol_When_ClockRollsBackBeyondTolerance_Then_AttachmentFailsClosed(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletionWatermarkAheadOfProtocol_When_ClockRollsBackBeyondTolerance_Then_AttachmentFailsClosed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_ActorExpiryDuringSave_When_ReplacementOrLogoutStages_Then_FinalActorGuardRollsBackEveryEffect(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: Corrupt)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: OtherDigest)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: Revoked)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: Contexts)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: LiveIntent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: LiveLogout)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: RetainedIntent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: RetainedLogout)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_CleanupCommitAcknowledgementLoss_When_StateIsReadAgain_Then_DeletionsRemainDurableAndAuditsRemainPresent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_EstablishedTicket_When_OperationAndIdleExpire_Then_CleanupWaitsForOriginalAbsoluteDependency(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredChildren_When_CleanupRunsOrClockRollsBack_Then_BoundedChildFirstDeletionIsAtomic(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"PostgreSql\", cleanupFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"PostgreSql\", cleanupFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_LateReservation_When_IntentExpiresBeforeNativeDependency_Then_CleanupRetainsMarkersThroughTheLaterBound(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Actor)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Browser)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Cancelled)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Client)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Denied)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Envelope)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Expiry)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Generation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Intent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Malformed)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Pending)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Reservation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Rollback)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_AuditPermissionDenied_When_BrowserTransitionsWrite_Then_TicketsGenerationsAndIntentsRollBackTogether(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CallerMutationDuringSave_When_TicketIsEstablished_Then_OnlyTheAuthenticatedSnapshotIsCommitted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CancellationAfterNativeSave_When_EstablishmentIsPending_Then_AllNewOwnedEffectsRollBack(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CommitAcknowledgementLoss_When_EstablishmentCompletes_Then_DurableSpentStateDeniesRepetition(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_FinalSaveDelay_When_OriginalIntentExpires_Then_ValidPreparedTicketCannotExtendTheIntent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: False, logout: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: False, logout: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: True, logout: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: True, logout: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_DuplicateConcurrentRequests_When_ReservationAndEstablishmentRace_Then_ExactlyOneOfEachCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationSchemaTests.Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1399,7 +1442,50 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_AttachedBrowserCompletion_When_AuthorizationRestoresNativeRequest_Then_DormantGuardPreventsIssuance(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletedFreshLogin_When_NativeParAndNewAssertionReplayRun_Then_ExactlyOneNativeRequestAttaches(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletedLoginAtExpiry_When_NativeParRuns_Then_NoAttachmentOrTokenCommits(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletionWatermarkAheadOfProtocol_When_ClockRollsBackBeyondTolerance_Then_AttachmentFailsClosed(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserParTests.Given_CompletionWatermarkAheadOfProtocol_When_ClockRollsBackBeyondTolerance_Then_AttachmentFailsClosed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_ActorExpiryDuringSave_When_ReplacementOrLogoutStages_Then_FinalActorGuardRollsBackEveryEffect(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: Corrupt)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: OtherDigest)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: Revoked)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: Contexts)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: LiveIntent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: LiveLogout)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: RetainedIntent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: RetainedLogout)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_CleanupCommitAcknowledgementLoss_When_StateIsReadAgain_Then_DeletionsRemainDurableAndAuditsRemainPresent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_EstablishedTicket_When_OperationAndIdleExpire_Then_CleanupWaitsForOriginalAbsoluteDependency(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredChildren_When_CleanupRunsOrClockRollsBack_Then_BoundedChildFirstDeletionIsAtomic(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"SqlServer\", cleanupFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"SqlServer\", cleanupFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_LateReservation_When_IntentExpiresBeforeNativeDependency_Then_CleanupRetainsMarkersThroughTheLaterBound(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Actor)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Browser)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Cancelled)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Client)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Denied)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Envelope)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Expiry)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Generation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Intent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Malformed)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Pending)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Reservation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Rollback)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_AuditPermissionDenied_When_BrowserTransitionsWrite_Then_TicketsGenerationsAndIntentsRollBackTogether(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CallerMutationDuringSave_When_TicketIsEstablished_Then_OnlyTheAuthenticatedSnapshotIsCommitted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CancellationAfterNativeSave_When_EstablishmentIsPending_Then_AllNewOwnedEffectsRollBack(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CommitAcknowledgementLoss_When_EstablishmentCompletes_Then_DurableSpentStateDeniesRepetition(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_FinalSaveDelay_When_OriginalIntentExpires_Then_ValidPreparedTicketCannotExtendTheIntent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: False, logout: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: False, logout: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: True, logout: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: True, logout: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_DuplicateConcurrentRequests_When_ReservationAndEstablishmentRace_Then_ExactlyOneOfEachCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationSchemaTests.Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -29879,6 +29965,1704 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "NativeBrowserParTests",
         "methodName": "Given_CompletionWatermarkAheadOfProtocol_When_ClockRollsBackBeyondTolerance_Then_AttachmentFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_ActorExpiryDuringSave_When_ReplacementOrLogoutStages_Then_FinalActorGuardRollsBackEveryEffect(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_ActorExpiryDuringSave_When_ReplacementOrLogoutStages_Then_FinalActorGuardRollsBackEveryEffect",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_ActorExpiryDuringSave_When_ReplacementOrLogoutStages_Then_FinalActorGuardRollsBackEveryEffect(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_ActorExpiryDuringSave_When_ReplacementOrLogoutStages_Then_FinalActorGuardRollsBackEveryEffect",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: Corrupt)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: OtherDigest)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"PostgreSql\", fault: Revoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: Corrupt)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: OtherDigest)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationActorTests.Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor(provider: \"SqlServer\", fault: Revoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationActorTests",
+        "methodName": "Given_UntrustedCurrentTicket_When_ActorAttributionIsRequested_Then_DenialPreservesStateAndAnonymousReplacementClaimsNoActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserActorFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: Contexts)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: LiveIntent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: LiveLogout)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: RetainedIntent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"PostgreSql\", capacity: RetainedLogout)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: Contexts)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: LiveIntent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: LiveLogout)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: RetainedIntent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCapacityTests.Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted(provider: \"SqlServer\", capacity: RetainedLogout)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCapacityTests",
+        "methodName": "Given_FiniteCapacity_When_LastSlotIsContendedOrRemoteStoreIsFull_Then_NoLiveStateIsEvicted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationCapacity"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_CleanupCommitAcknowledgementLoss_When_StateIsReadAgain_Then_DeletionsRemainDurableAndAuditsRemainPresent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_CleanupCommitAcknowledgementLoss_When_StateIsReadAgain_Then_DeletionsRemainDurableAndAuditsRemainPresent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_CleanupCommitAcknowledgementLoss_When_StateIsReadAgain_Then_DeletionsRemainDurableAndAuditsRemainPresent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_CleanupCommitAcknowledgementLoss_When_StateIsReadAgain_Then_DeletionsRemainDurableAndAuditsRemainPresent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_EstablishedTicket_When_OperationAndIdleExpire_Then_CleanupWaitsForOriginalAbsoluteDependency(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_EstablishedTicket_When_OperationAndIdleExpire_Then_CleanupWaitsForOriginalAbsoluteDependency",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_EstablishedTicket_When_OperationAndIdleExpire_Then_CleanupWaitsForOriginalAbsoluteDependency(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_EstablishedTicket_When_OperationAndIdleExpire_Then_CleanupWaitsForOriginalAbsoluteDependency",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredChildren_When_CleanupRunsOrClockRollsBack_Then_BoundedChildFirstDeletionIsAtomic(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_ExpiredChildren_When_CleanupRunsOrClockRollsBack_Then_BoundedChildFirstDeletionIsAtomic",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredChildren_When_CleanupRunsOrClockRollsBack_Then_BoundedChildFirstDeletionIsAtomic(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_ExpiredChildren_When_CleanupRunsOrClockRollsBack_Then_BoundedChildFirstDeletionIsAtomic",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"PostgreSql\", cleanupFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"PostgreSql\", cleanupFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"SqlServer\", cleanupFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority(provider: \"SqlServer\", cleanupFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_ExpiredContextAndConcurrentReplacement_When_EachWriterOrderWins_Then_CleanupCannotResurrectOrDeleteNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_LateReservation_When_IntentExpiresBeforeNativeDependency_Then_CleanupRetainsMarkersThroughTheLaterBound(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_LateReservation_When_IntentExpiresBeforeNativeDependency_Then_CleanupRetainsMarkersThroughTheLaterBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationCleanupTests.Given_LateReservation_When_IntentExpiresBeforeNativeDependency_Then_CleanupRetainsMarkersThroughTheLaterBound(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationCleanupTests",
+        "methodName": "Given_LateReservation_When_IntentExpiresBeforeNativeDependency_Then_CleanupRetainsMarkersThroughTheLaterBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Actor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Browser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Cancelled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Client)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Denied)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Envelope)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Expiry)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Generation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Intent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Malformed)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Pending)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Reservation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"PostgreSql\", fault: Rollback)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Actor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Browser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Cancelled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Client)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Denied)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Envelope)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Expiry)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Generation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Intent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Malformed)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Pending)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Reservation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationDenialTests.Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated(provider: \"SqlServer\", fault: Rollback)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationDenialTests",
+        "methodName": "Given_ReservedGeneration_When_CallbackBindingOrLifetimeIsInvalid_Then_NoTicketOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.CoordinationFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_AuditPermissionDenied_When_BrowserTransitionsWrite_Then_TicketsGenerationsAndIntentsRollBackTogether(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_AuditPermissionDenied_When_BrowserTransitionsWrite_Then_TicketsGenerationsAndIntentsRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_AuditPermissionDenied_When_BrowserTransitionsWrite_Then_TicketsGenerationsAndIntentsRollBackTogether(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_AuditPermissionDenied_When_BrowserTransitionsWrite_Then_TicketsGenerationsAndIntentsRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CallerMutationDuringSave_When_TicketIsEstablished_Then_OnlyTheAuthenticatedSnapshotIsCommitted(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_CallerMutationDuringSave_When_TicketIsEstablished_Then_OnlyTheAuthenticatedSnapshotIsCommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CallerMutationDuringSave_When_TicketIsEstablished_Then_OnlyTheAuthenticatedSnapshotIsCommitted(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_CallerMutationDuringSave_When_TicketIsEstablished_Then_OnlyTheAuthenticatedSnapshotIsCommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CancellationAfterNativeSave_When_EstablishmentIsPending_Then_AllNewOwnedEffectsRollBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_CancellationAfterNativeSave_When_EstablishmentIsPending_Then_AllNewOwnedEffectsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CancellationAfterNativeSave_When_EstablishmentIsPending_Then_AllNewOwnedEffectsRollBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_CancellationAfterNativeSave_When_EstablishmentIsPending_Then_AllNewOwnedEffectsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CommitAcknowledgementLoss_When_EstablishmentCompletes_Then_DurableSpentStateDeniesRepetition(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_CommitAcknowledgementLoss_When_EstablishmentCompletes_Then_DurableSpentStateDeniesRepetition",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_CommitAcknowledgementLoss_When_EstablishmentCompletes_Then_DurableSpentStateDeniesRepetition(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_CommitAcknowledgementLoss_When_EstablishmentCompletes_Then_DurableSpentStateDeniesRepetition",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_FinalSaveDelay_When_OriginalIntentExpires_Then_ValidPreparedTicketCannotExtendTheIntent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_FinalSaveDelay_When_OriginalIntentExpires_Then_ValidPreparedTicketCannotExtendTheIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationFailureTests.Given_FinalSaveDelay_When_OriginalIntentExpires_Then_ValidPreparedTicketCannotExtendTheIntent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationFailureTests",
+        "methodName": "Given_FinalSaveDelay_When_OriginalIntentExpires_Then_ValidPreparedTicketCannotExtendTheIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: False, logout: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: False, logout: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: True, logout: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"PostgreSql\", callbackFirst: True, logout: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: False, logout: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: False, logout: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: True, logout: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected(provider: \"SqlServer\", callbackFirst: True, logout: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_ConcurrentCallbackAndInvalidation_When_BothLockOrdersExecute_Then_TheWinningGenerationCannotBeResurrected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_DuplicateConcurrentRequests_When_ReservationAndEstablishmentRace_Then_ExactlyOneOfEachCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_DuplicateConcurrentRequests_When_ReservationAndEstablishmentRace_Then_ExactlyOneOfEachCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationRaceTests.Given_DuplicateConcurrentRequests_When_ReservationAndEstablishmentRace_Then_ExactlyOneOfEachCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationRaceTests",
+        "methodName": "Given_DuplicateConcurrentRequests_When_ReservationAndEstablishmentRace_Then_ExactlyOneOfEachCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationSchemaTests.Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationSchemaTests",
+        "methodName": "Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationSchemaTests.Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationSchemaTests",
+        "methodName": "Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationTests",
+        "methodName": "Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationTests",
+        "methodName": "Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationTests",
+        "methodName": "Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationTests",
+        "methodName": "Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationTests",
+        "methodName": "Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCoordinationTests",
+        "methodName": "Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
 /// <summary>Observes real client-state coordination without replacing a provider command, lock, transaction or native manager.</summary>
-internal sealed class NativeClientCallbackRace : DbCommandInterceptor
+internal sealed class NativeClientCallbackRace(Type? coordinationType = null) : DbCommandInterceptor
 {
     private const int CoordinationRows = 1;
     internal TaskCompletionSource<int>? BeforeLock
@@ -55,8 +55,8 @@ internal sealed class NativeClientCallbackRace : DbCommandInterceptor
     }
 
     /// <summary>Identifies the current provider's mapped coordination table inside a real EF transaction.</summary>
-    private static bool IsCoordination(DbCommand command, CommandEventData data) => data.Context?.Database.CurrentTransaction is not null &&
-        data.Context.Model.FindEntityType(typeof(AdministratorClientStateBudget))?.GetTableName() is { } table &&
+    private bool IsCoordination(DbCommand command, CommandEventData data) => data.Context?.Database.CurrentTransaction is not null &&
+        data.Context.Model.FindEntityType(coordinationType ?? typeof(AdministratorClientStateBudget))?.GetTableName() is { } table &&
         command.CommandText.Contains(table, StringComparison.Ordinal);
 
     /// <summary>Requires a provider-observed blocked peer before release; every exceptional path releases and joins both native callbacks.</summary>

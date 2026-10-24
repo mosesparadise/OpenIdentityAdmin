@@ -1,5 +1,7 @@
 # B3 planning verification and acceptance map
 
+**Current three-item batch (24 October):** The user explicitly selected T005, T007 and T008 with required prerequisites. [T005 coordination evidence](browser-coordination.md) records current source, preserved inventories, local checks and the pre-test Aspire startup failure. All three tasks remain open pending their required implementation and exact-source acceptance; T006 is already delivered.
+
 **22 October implementation amendment:** [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md) supersedes the older Firefox-before-B3 sequencing statements in this planning record. T028 stays deferred/open; it does not block code. T003 native identity/state feasibility and T007 pure validation/projection may proceed independently of the remaining native transaction/end-session work. Concrete security prerequisites for dependent routes and external acceptance remain required.
 
 21 October 2026, Europe/London. This packet completes specification/planning only. All B3 runtime scenarios below are **not_run**; their labels are planned scenario IDs, not discovered case counts. Feature 011 T028 and feature 013 T002–T024 remain open.

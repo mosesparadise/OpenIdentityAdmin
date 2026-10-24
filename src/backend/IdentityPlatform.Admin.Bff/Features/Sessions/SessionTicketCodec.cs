@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text.Json;
+using IdentityPlatform.Infrastructure.Features.Sessions.Browser;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
@@ -7,12 +8,16 @@ using Microsoft.AspNetCore.DataProtection;
 namespace IdentityPlatform.Admin.Bff.Features.Sessions;
 
 /// <summary>Protects native tickets together with every authentication-relevant row field and revalidates both representations.</summary>
-internal sealed class SessionTicketCodec(IDataProtectionProvider provider)
+internal sealed class SessionTicketCodec(IDataProtectionProvider provider) : IBrowserTicketAuthenticator
 {
     private const string Purpose = "IdentityPlatform.Admin.Bff.SessionTicket.v1";
     private const string InvalidTicket = "Invalid session ticket material.";
     private const int EnvelopeVersion = 1;
     private readonly IDataProtector protector = provider.CreateProtector(Purpose);
+
+    /// <summary>Authenticates the owned row and its unchanged B1 lifetime without granting browser or native callback authority.</summary>
+    public bool IsAuthentic(AdminSessionTicket row, DateTimeOffset now) =>
+        Unprotect(row) is not null && SessionTicketPolicy.IsLive(row, now);
 
     /// <summary>Serializes a private native copy, overriding only store-owned validity fields before authenticating its envelope.</summary>
     internal byte[] Protect(AdminSessionTicket row, AuthenticationTicket ticket)

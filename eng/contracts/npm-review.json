@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lockSha256": "84dfe8d1c9e872c04818d7b188f757b5f287d9ea1956da794d4439b6a86a395c",
+  "lockSha256": "733e65cf4953b6a0adf653e7f5c8fd346269dbc5a73073dbe84aeab844b9c6a8",
   "allowedExpressions": [
     "MIT",
     "Apache-2.0",

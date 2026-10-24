@@ -29,8 +29,6 @@ internal static class IssuerContinuationUpgradeWitness
     private const int MaximumLength = 10;
     private static readonly string[] PostgresPlatform = ["20261017224010_AdministratorProtocol", "20261023223630_AdministratorIssuerContinuation"];
     private static readonly string[] SqlPlatform = ["20261017224016_AdministratorProtocol", "20261023223639_AdministratorIssuerContinuation"];
-    private static readonly string[] PostgresSessions = ["20261017224013_AdministratorClientStateBudget"];
-    private static readonly string[] SqlSessions = ["20261017224019_AdministratorClientStateBudget"];
 
     /// <summary>Recognizes only exact independently queried ownership, never an index/check name that resembles the new column.</summary>
     internal static bool IsInteraction(string row)
@@ -85,8 +83,8 @@ internal static class IssuerContinuationUpgradeWitness
         {
             (Postgres, DatabaseStore.Platform) => PostgresPlatform,
             (SqlServer, DatabaseStore.Platform) => SqlPlatform,
-            (Postgres, DatabaseStore.Sessions) => PostgresSessions,
-            (SqlServer, DatabaseStore.Sessions) => SqlSessions,
+            (Postgres, DatabaseStore.Sessions) => BrowserCoordinationUpgradeWitness.PostgresHistory,
+            (SqlServer, DatabaseStore.Sessions) => BrowserCoordinationUpgradeWitness.SqlHistory,
             _ => throw new ArgumentOutOfRangeException(nameof(provider))
         };
         Assert.Equal(expected.Select(id => JsonSerializer.Serialize(new[] { id, ProductVersion })).Order(StringComparer.Ordinal), additions.Order(StringComparer.Ordinal));

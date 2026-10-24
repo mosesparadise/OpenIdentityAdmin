@@ -13,9 +13,9 @@ internal static class AdministratorUpgradeWitness
     private const int ContinuationIndex = 3;
     private static readonly string[] InitialBudget = ["1", "0"];
     private static readonly (string Schema, string Table)[] AddedTables = [("platform", "AdministratorProtocolProfile"),
-        ("platform", "AdministratorClientAssertionUse"), ("bff", "AdministratorClientStateBudget"), ("platform", "AdministratorIssuerContinuation")];
+        ("platform", "AdministratorClientAssertionUse"), ("bff", "AdministratorClientStateBudget"), ("platform", "AdministratorIssuerContinuation"), .. BrowserCoordinationUpgradeWitness.Tables];
     private static readonly string[] AddedQueries = ["SELECT * FROM \"platform\".\"AdministratorProtocolProfile\"",
-        "SELECT * FROM \"platform\".\"AdministratorClientAssertionUse\"", "SELECT * FROM \"bff\".\"AdministratorClientStateBudget\"", IssuerContinuationUpgradeWitness.ContinuationQuery];
+        "SELECT * FROM \"platform\".\"AdministratorClientAssertionUse\"", "SELECT * FROM \"bff\".\"AdministratorClientStateBudget\"", IssuerContinuationUpgradeWitness.ContinuationQuery, .. BrowserCoordinationUpgradeWitness.Queries];
 
     /// <summary>Checks all old objects and data, exact new history rows and inert initialization rather than refreshing the frozen producer.</summary>
     internal static void Require(IRelationalDatabaseProvider provider, Dictionary<string, string[]> before, Dictionary<string, string[]> after)
@@ -44,6 +44,7 @@ internal static class AdministratorUpgradeWitness
                 RequireCatalog(rows, after[query], query, provider.Id);
             }
         }
+        BrowserCoordinationUpgradeWitness.RequireSeeds(after);
         Assert.Empty(after[AddedQueries[0]]);
         Assert.Empty(after[AddedQueries[1]]);
         Assert.Empty(after[AddedQueries[ContinuationIndex]]);

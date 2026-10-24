@@ -46,6 +46,247 @@ namespace IdentityPlatform.Migrations.SqlServer.Sessions
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserContext", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("TicketDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.ToTable("BrowserContext", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_BrowserContext_State", "[Generation] > 0 AND [Revision] > 0 AND [ObservedAt] > 0 AND [ExpiresAt] > 0 AND [RetainUntil] >= [ExpiresAt]");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserLoginIntent", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("BrowserDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NativeStateDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TicketDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("NativeStateDigest")
+                        .IsUnique()
+                        .HasFilter("[NativeStateDigest] IS NOT NULL");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.HasIndex("BrowserDigest", "Generation");
+
+                    b.HasIndex("ExpiresAt", "State");
+
+                    b.ToTable("BrowserLoginIntent", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_BrowserLoginIntent_Lifetime", "[Generation] > 0 AND [Revision] > 0 AND [CreatedAt] > 0 AND [ObservedAt] >= [CreatedAt] AND [ExpiresAt] > [CreatedAt] AND [ExpiresAt] - [CreatedAt] <= 3000000000 AND [RetainUntil] >= [ExpiresAt]");
+
+                            t.HasCheckConstraint("CK_BrowserLoginIntent_State", "[State] IN (1, 2, 3, 4, 5)");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserLogoutContinuation", b =>
+                {
+                    b.Property<string>("Digest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("BrowserDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SourceSession")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("Digest");
+
+                    b.HasIndex("RetainUntil");
+
+                    b.HasIndex("BrowserDigest", "Generation");
+
+                    b.HasIndex("ExpiresAt", "State");
+
+                    b.ToTable("BrowserLogoutContinuation", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_BrowserLogoutContinuation_Lifetime", "[Generation] > 0 AND [Revision] > 0 AND [CreatedAt] > 0 AND [ObservedAt] >= [CreatedAt] AND [ExpiresAt] > [CreatedAt] AND [ExpiresAt] - [CreatedAt] <= 3000000000 AND [RetainUntil] >= [ExpiresAt]");
+
+                            t.HasCheckConstraint("CK_BrowserLogoutContinuation_State", "[State] IN (1, 2, 3, 4)");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserSessionAudit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("Generation")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("OccurredAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Operation")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SourceSession")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("Subject")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CorrelationId", "Generation");
+
+                    b.ToTable("BrowserSessionAudit", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_BrowserSessionAudit_State", "[Generation] > 0 AND [OccurredAt] > 0 AND [Operation] IN (1, 2, 3, 4, 5, 6, 7) AND (([Subject] IS NULL AND [SourceSession] IS NULL) OR ([Subject] IS NOT NULL AND [SourceSession] IS NOT NULL))");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserSessionBudget", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Revision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BrowserSessionBudget", "bff", t =>
+                        {
+                            t.HasCheckConstraint("CK_BrowserSessionBudget_State", "[Id] = 1 AND [Revision] >= 0");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Revision = 0L
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Persistence.AdminSessionAudit", b =>
                 {
                     b.Property<Guid>("Id")
@@ -361,6 +602,24 @@ namespace IdentityPlatform.Migrations.SqlServer.Sessions
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
                     b.ToTable("OpenIddictTokens", "bff");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserLoginIntent", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserContext", null)
+                        .WithMany()
+                        .HasForeignKey("BrowserDigest")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserLogoutContinuation", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Sessions.Browser.BrowserContext", null)
+                        .WithMany()
+                        .HasForeignKey("BrowserDigest")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>

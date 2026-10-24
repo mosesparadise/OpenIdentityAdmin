@@ -346,6 +346,44 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserCoordinationUpgradeWitnessTests.Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "BrowserCoordinationUpgradeWitnessTests",
+        "methodName": "Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserCoordinationUpgradeWitnessTests.Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "BrowserCoordinationUpgradeWitnessTests",
+        "methodName": "Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Void",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -357,7 +395,8 @@
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"PostgreSql\", store: Platform)",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"PostgreSql\", store: Sessions)",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeClientState_When_CreationAndQuotaBoundariesAreExercised_Then_OnlyVerifiedBoundedStateCommits(name: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.UpgradeWitnessTests.Given_ApprovedAdditiveUpgrade_When_ColumnProvenanceOrOldRowsAreForged_Then_IndependentWitnessRejectsEverySubstitution(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.UpgradeWitnessTests.Given_ApprovedAdditiveUpgrade_When_ColumnProvenanceOrOldRowsAreForged_Then_IndependentWitnessRejectsEverySubstitution(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserCoordinationUpgradeWitnessTests.Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -368,6 +407,7 @@
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"SqlServer\", store: Platform)",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeManagers_When_OwnedTransactionsFinish_Then_CommitRollbackAndCancellationPreserveState(name: \"SqlServer\", store: Sessions)",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeOwnershipTests.Given_NativeClientState_When_CreationAndQuotaBoundariesAreExercised_Then_OnlyVerifiedBoundedStateCommits(name: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.UpgradeWitnessTests.Given_ApprovedAdditiveUpgrade_When_ColumnProvenanceOrOldRowsAreForged_Then_IndependentWitnessRejectsEverySubstitution(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.UpgradeWitnessTests.Given_ApprovedAdditiveUpgrade_When_ColumnProvenanceOrOldRowsAreForged_Then_IndependentWitnessRejectsEverySubstitution(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserCoordinationUpgradeWitnessTests.Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects(provider: \"SqlServer\")"
   ]
 }
