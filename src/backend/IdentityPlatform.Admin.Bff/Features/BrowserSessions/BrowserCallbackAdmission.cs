@@ -1,4 +1,3 @@
-using IdentityPlatform.Admin.Bff.Features.Sessions;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.Sessions.Browser;

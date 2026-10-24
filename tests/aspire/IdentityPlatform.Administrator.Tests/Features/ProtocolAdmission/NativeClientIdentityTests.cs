@@ -23,7 +23,8 @@ public sealed class NativeClientIdentityTests(BootstrapFixture fixture)
         await using var second = new NativeClientHttp(database, issuer, profile, secondKeys);
         await AttemptAsync(first, second, issuer, fault: null, total: 1);
         var total = 1;
-        foreach (var fault in Enum.GetValues<NativeIdentityResponse.Fault>())
+        // Ordinary B2 identities have no B3 source-expiry claim; its separate callback case owns that rewrite.
+        foreach (var fault in Enum.GetValues<NativeIdentityResponse.Fault>().Where(fault => fault != NativeIdentityResponse.Fault.BrowserExpiry))
         {
             await AttemptAsync(first, second, issuer, fault, ++total);
         }

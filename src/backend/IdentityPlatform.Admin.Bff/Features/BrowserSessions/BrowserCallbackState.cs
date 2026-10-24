@@ -15,12 +15,12 @@ internal static class BrowserCallbackState
         Match(state, BrowserSessionIntent.ClaimType, intent, ClaimValueTypes.String) &&
         Match(state, BrowserLoginReservation.BrowserClaim, browser, ClaimValueTypes.String) &&
         Match(state, BrowserLoginReservation.ReservationClaim, reservation, ClaimValueTypes.String) &&
-        Match(state, BrowserLoginReservation.GenerationClaim, generation.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64);
+        Match(state, BrowserLoginReservation.GenerationClaim, generation.ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer32, ClaimValueTypes.Integer64);
 
     /// <summary>Denies aliases, duplicated fields and coerced values without taking protocol cryptography ownership.</summary>
-    private static bool Match(ClaimsPrincipal state, string name, string value, string type)
+    private static bool Match(ClaimsPrincipal state, string name, string value, params string[] types)
     {
         var claims = state.Claims.Where(claim => string.Equals(claim.Type, name, StringComparison.OrdinalIgnoreCase)).ToArray();
-        return claims is [var claim] && claim.Type == name && claim.Value == value && claim.ValueType == type && claim.GetDestinations().IsEmpty;
+        return claims is [var claim] && claim.Type == name && claim.Value == value && types.Contains(claim.ValueType, StringComparer.Ordinal) && claim.GetDestinations().IsEmpty;
     }
 }
