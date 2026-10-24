@@ -1,6 +1,6 @@
 # B3 planning verification and acceptance map
 
-**T009 implementation (24 October 2026):** [Native browser protocol](native-browser-protocol.md) connects completed ceremony/PAR/code provenance to ID-only source-expiry/intent claims and protected native client expectations. Source and focused Host checks are implemented; exact-head hosted provider/full acceptance remains pending. T009, complete B3, activation and all external gates remain open.
+**T009 delivered (24 October 2026):** [Native browser protocol acceptance](native-browser-protocol.md#accepted-t009--24-october-2026) records PR #81 squash `75b143104f65cdfdc5413ba55635dbe13e5ee64a`, all 69 passing jobs, 158 BrowserSessions cases/provider, 1,381 Host cases, 48 mutation kills and all 52 coverage inputs/15 unchanged floors with independent source/evidence review. T009 is complete for internal development. Next is T010 protected BFF start/resume, then T011 canonical B1 callback; full B3, production activation and all historical/human/release gates remain open.
 
 **Selected batch delivered (24 October):** [T005/T007/T008 acceptance](selected-batch-delivery.md) records PR #78 squash `e6447e3` and PR #79 squash `42c9eda`, each with all 69 exact-head jobs and independent source/evidence review. T005, T007 and T008 are complete for internal development. T009 is next; full B3, remaining prerequisites, product activation and all external gates stay open. The dated source checkpoints below are historical.
 
