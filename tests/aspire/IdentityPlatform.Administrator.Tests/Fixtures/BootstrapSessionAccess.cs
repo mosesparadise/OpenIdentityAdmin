@@ -8,6 +8,11 @@ namespace IdentityPlatform.Administrator.Tests.Fixtures;
 /// <summary>Changes only one disposable Sessions table's runtime read permission, retaining provider-specific denial evidence.</summary>
 internal sealed class BootstrapSessionAccess(DatabaseProvider provider, string administrator, string runtime)
 {
+    private const string PostgresAuditAllow = "GRANT INSERT ON bff.\"BrowserSessionAudit\" TO sessions_runtime";
+    private const string PostgresAuditDeny = "REVOKE INSERT ON bff.\"BrowserSessionAudit\" FROM sessions_runtime";
+    private const string SqlAuditAllow = "REVOKE INSERT ON OBJECT::[bff].[BrowserSessionAudit] FROM [sessions_runtime]";
+    private const string SqlAuditDeny = "DENY INSERT ON OBJECT::[bff].[BrowserSessionAudit] TO [sessions_runtime]";
+
     private const int CommandSeconds = 5;
     private const int SqlPermissionDenied = 229;
     private const string PgPermissionDenied = "42501";
@@ -21,6 +26,12 @@ internal sealed class BootstrapSessionAccess(DatabaseProvider provider, string a
     /// <summary>Restores PostgreSQL's direct table grant or removes SQL Server's object denial to recover its existing schema grant.</summary>
     internal Task SetReadAsync(bool allow, CancellationToken token) => ExecuteAsync(administrator,
         provider == DatabaseProvider.PostgreSql ? allow ? PgAllow : PgDeny : allow ? SqlAllow : SqlDeny, token);
+
+    /// <summary>Changes only the new actor-audit INSERT permission in this disposable database, preserving existing runtime roles.</summary>
+    internal Task SetBrowserAuditAsync(bool allow, CancellationToken token) => ExecuteAsync(administrator,
+        provider == DatabaseProvider.PostgreSql
+            ? allow ? PostgresAuditAllow : PostgresAuditDeny
+            : allow ? SqlAuditAllow : SqlAuditDeny, token);
 
     /// <summary>Uses a fresh actual runtime connection for an independent positive or exact permission-denial witness.</summary>
     internal Task ReadAsync(CancellationToken token) => ExecuteAsync(runtime, provider == DatabaseProvider.PostgreSql ? PgRead : SqlRead, token);
