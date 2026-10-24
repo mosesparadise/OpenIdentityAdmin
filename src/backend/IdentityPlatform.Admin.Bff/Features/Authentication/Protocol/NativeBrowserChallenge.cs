@@ -13,18 +13,20 @@ internal sealed class NativeBrowserChallenge
     private readonly OpenIddictClientEvents.ProcessChallengeContext original;
     private readonly BrowserLoginBinding binding;
     private readonly DateTimeOffset deadline;
+    private readonly BrowserLoginReservation? reservation;
 
     /// <summary>Retains immutable selectors and the original intent deadline without logging or publishing them into native state.</summary>
-    private NativeBrowserChallenge(OpenIddictClientEvents.ProcessChallengeContext context, BrowserLoginBinding binding, DateTimeOffset deadline)
+    private NativeBrowserChallenge(OpenIddictClientEvents.ProcessChallengeContext context, BrowserLoginBinding binding, DateTimeOffset deadline, BrowserLoginReservation? reservation)
     {
         original = context;
         this.binding = binding;
         this.deadline = deadline;
+        this.reservation = reservation;
     }
 
     /// <summary>Accepts only explicit browser profile composition; callers must first reserve their durable intent in T010.</summary>
     internal static void Attach(OpenIddictClientEvents.ProcessChallengeContext context, NativeClientProfile profile,
-        BrowserLoginBinding binding, DateTimeOffset originalDeadline)
+        BrowserLoginBinding binding, DateTimeOffset originalDeadline, BrowserLoginReservation? reservation = null)
     {
         var now = context.Options.TimeProvider!.GetUtcNow();
         if (!profile.Registration.IsBrowserSession || Find(context) is not null || originalDeadline <= now ||
@@ -35,7 +37,7 @@ internal sealed class NativeBrowserChallenge
         }
         context.Parameters.Add(BrowserLoginBinding.IntentParameter, binding.Intent);
         context.Parameters.Add(BrowserLoginBinding.CompletionParameter, binding.Completion);
-        context.Transaction.SetProperty(Key, new NativeBrowserChallenge(context, binding, originalDeadline));
+        context.Transaction.SetProperty(Key, new NativeBrowserChallenge(context, binding, originalDeadline, reservation));
     }
 
     /// <summary>Resolves only the original in-memory attempt, never an untrusted custom parameter or authentication property.</summary>
@@ -48,6 +50,7 @@ internal sealed class NativeBrowserChallenge
 
     /// <summary>Checks immutable values and strict original lifetime before state persistence and around native PAR transport.</summary>
     internal bool Matches(OpenIddictClientEvents.ProcessChallengeContext context) => ReferenceEquals(original, context) &&
+        (reservation is null || reservation.Current(context)) &&
         deadline > context.Options.TimeProvider!.GetUtcNow() &&
         context.Parameters.Where(pair => IsBindingParameter(pair.Key)).Count() == BindingFields &&
         context.Parameters.TryGetValue(BrowserLoginBinding.IntentParameter, out var intent) && Scalar(intent) == binding.Intent &&
@@ -62,6 +65,7 @@ internal sealed class NativeBrowserChallenge
             throw ProtocolStorageOwner.Unavailable();
         }
         state.SetClaim(BrowserSessionIntent.ClaimType, binding.IntentDigest);
+        reservation?.Project(state);
         state.SetExpirationDate(expires < deadline ? expires : deadline);
     }
 
@@ -69,10 +73,12 @@ internal sealed class NativeBrowserChallenge
     internal bool StateMatches(OpenIddictClientEvents.ProcessChallengeContext context) => Matches(context) &&
         context.StateTokenPrincipal is { } state && BrowserSessionIntent.Read(state) == binding.IntentDigest &&
         BrowserLoginBinding.Read(state, out _) == BrowserLoginBindingState.Absent &&
+        (reservation is null ? BrowserLoginReservation.Absent(state) : reservation.Matches(state)) &&
         state.GetExpirationDate() is { } expires && expires <= deadline;
 
     /// <summary>Ordinary challenges cannot smuggle browser expectations or selectors into protected native state without a captured attempt.</summary>
     internal static bool UnboundState(OpenIddictClientEvents.ProcessChallengeContext context) => context.StateTokenPrincipal is { } state &&
+        BrowserLoginReservation.Absent(state) &&
         BrowserLoginBinding.Read(state, out _) == BrowserLoginBindingState.Absent &&
         !state.Claims.Any(claim => string.Equals(claim.Type, BrowserSessionIntent.ClaimType, StringComparison.OrdinalIgnoreCase));
 

@@ -9,6 +9,8 @@ namespace IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 internal static class ProtocolHttpBoundary
 {
     private const string FailureCacheControl = "no-store";
+    private const string ReferrerPolicy = "Referrer-Policy";
+    private const string NoReferrer = "no-referrer";
 
     /// <summary>Aborts transport at the original deadline but never detaches work that still references its HTTP context.</summary>
     internal static Task RunAsync(HttpContext context, IServiceScopeFactory factory, TimeProvider clock,
@@ -120,6 +122,7 @@ internal static class ProtocolHttpBoundary
         response.StatusCode = StatusCodes.Status503ServiceUnavailable;
         response.ReasonPhrase = null;
         response.Headers.CacheControl = FailureCacheControl;
+        response.Headers[ReferrerPolicy] = NoReferrer;
         await body.StartAsync(token);
         await body.Stream.FlushAsync(token);
         await body.CompleteAsync();

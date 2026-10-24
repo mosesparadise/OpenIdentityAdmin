@@ -726,7 +726,31 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_CompletedNewSession_When_OldFreshCookieAuthorizes_Then_NoCodeIsCreated(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"PostgreSql\", exchange: False)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"PostgreSql\", exchange: True)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"PostgreSql\", variant: 4)"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"PostgreSql\", variant: 4)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"PostgreSql\", operation: \"start\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"PostgreSql\", operation: \"resume\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"PostgreSql\", operation: \"replacement\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_LocalDisposalFailure_When_StartHasCommitted_Then_NoSuccessMaterialIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalGenerationProofExpiresDuringDisposal_When_ReplacementCommits_Then_NewLifetimeDoesNotAdmitPublication(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalIntentExpiresDuringNativeDisposal_When_ResumeCompletes_Then_StagedNativeResponseIsDiscarded(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ReservationCommitAcknowledgementLoss_When_ResumeRuns_Then_SpentStatePublishesNothing(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_MissingProductCapture_When_ResumeRuns_Then_NoUnboundNativeStateOrParIsCreated(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"PostgreSql\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"PostgreSql\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ValidIntentWithWrongCompletion_When_NativeParRejects_Then_SpentReservationPublishesNoRedirectOrCookie(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginNativeTests.Given_GenuineFreshCeremony_When_ProductResumeRuns_Then_ExactlyOneBoundNativeChallengeIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginRaceTests.Given_TwoIndependentHosts_When_ValidResumeContends_Then_OnlyOneNativeChallengeIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_AuthenticCurrentTicket_When_ProtectedReplacementStarts_Then_RevocationAndActorAuditCommitTogether(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_RevokedTicketCookie_When_ProtectedLoginStarts_Then_AnonymousGenerationCanReplaceIt(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_ForeignAuthenticTicket_When_NewBrowserStarts_Then_RequestDeniesWithoutChangingEitherBrowser(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ExplicitBrowserHost_When_EntryAndProtectedStartRun_Then_OnlyThePostCreatesOneIntent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"origin\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"csrf\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"extra\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_PendingIntent_When_ResumeReachesOriginalExpiry_Then_NoChallengeOrStateIsCreated(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_TwoBrowserContexts_When_PendingCookieIsSubstituted_Then_ResumeDeniesWithoutReservation(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ReplacedBrowserGeneration_When_OriginalCookiesAndCompletionReturn_Then_NoNativeReservationIsCreated(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1559,7 +1583,31 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_CompletedNewSession_When_OldFreshCookieAuthorizes_Then_NoCodeIsCreated(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"SqlServer\", exchange: False)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"SqlServer\", exchange: True)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"SqlServer\", variant: 4)"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"SqlServer\", variant: 4)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"SqlServer\", operation: \"start\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"SqlServer\", operation: \"resume\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"SqlServer\", operation: \"replacement\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_LocalDisposalFailure_When_StartHasCommitted_Then_NoSuccessMaterialIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalGenerationProofExpiresDuringDisposal_When_ReplacementCommits_Then_NewLifetimeDoesNotAdmitPublication(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalIntentExpiresDuringNativeDisposal_When_ResumeCompletes_Then_StagedNativeResponseIsDiscarded(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ReservationCommitAcknowledgementLoss_When_ResumeRuns_Then_SpentStatePublishesNothing(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_MissingProductCapture_When_ResumeRuns_Then_NoUnboundNativeStateOrParIsCreated(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"SqlServer\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"SqlServer\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ValidIntentWithWrongCompletion_When_NativeParRejects_Then_SpentReservationPublishesNoRedirectOrCookie(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginNativeTests.Given_GenuineFreshCeremony_When_ProductResumeRuns_Then_ExactlyOneBoundNativeChallengeIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginRaceTests.Given_TwoIndependentHosts_When_ValidResumeContends_Then_OnlyOneNativeChallengeIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_AuthenticCurrentTicket_When_ProtectedReplacementStarts_Then_RevocationAndActorAuditCommitTogether(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_RevokedTicketCookie_When_ProtectedLoginStarts_Then_AnonymousGenerationCanReplaceIt(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_ForeignAuthenticTicket_When_NewBrowserStarts_Then_RequestDeniesWithoutChangingEitherBrowser(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ExplicitBrowserHost_When_EntryAndProtectedStartRun_Then_OnlyThePostCreatesOneIntent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"origin\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"csrf\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"extra\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_PendingIntent_When_ResumeReachesOriginalExpiry_Then_NoChallengeOrStateIsCreated(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_TwoBrowserContexts_When_PendingCookieIsSubstituted_Then_ResumeDeniesWithoutReservation(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ReplacedBrowserGeneration_When_OriginalCookiesAndCompletionReturn_Then_NoNativeReservationIsCreated(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -33189,6 +33237,936 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"PostgreSql\", operation: \"start\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginAuditTests",
+        "methodName": "Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"PostgreSql\", operation: \"resume\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginAuditTests",
+        "methodName": "Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"PostgreSql\", operation: \"replacement\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginAuditTests",
+        "methodName": "Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"SqlServer\", operation: \"start\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginAuditTests",
+        "methodName": "Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"SqlServer\", operation: \"resume\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginAuditTests",
+        "methodName": "Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginAuditTests.Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent(provider: \"SqlServer\", operation: \"replacement\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginAuditTests",
+        "methodName": "Given_AuditInsertDenied_When_ProductLoginMutates_Then_AllLocalEffectsRollBackAndNoNativeRequestIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_LocalDisposalFailure_When_StartHasCommitted_Then_NoSuccessMaterialIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginDisposalTests",
+        "methodName": "Given_LocalDisposalFailure_When_StartHasCommitted_Then_NoSuccessMaterialIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_LocalDisposalFailure_When_StartHasCommitted_Then_NoSuccessMaterialIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginDisposalTests",
+        "methodName": "Given_LocalDisposalFailure_When_StartHasCommitted_Then_NoSuccessMaterialIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalGenerationProofExpiresDuringDisposal_When_ReplacementCommits_Then_NewLifetimeDoesNotAdmitPublication(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginDisposalTests",
+        "methodName": "Given_OriginalGenerationProofExpiresDuringDisposal_When_ReplacementCommits_Then_NewLifetimeDoesNotAdmitPublication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalGenerationProofExpiresDuringDisposal_When_ReplacementCommits_Then_NewLifetimeDoesNotAdmitPublication(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginDisposalTests",
+        "methodName": "Given_OriginalGenerationProofExpiresDuringDisposal_When_ReplacementCommits_Then_NewLifetimeDoesNotAdmitPublication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalIntentExpiresDuringNativeDisposal_When_ResumeCompletes_Then_StagedNativeResponseIsDiscarded(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginDisposalTests",
+        "methodName": "Given_OriginalIntentExpiresDuringNativeDisposal_When_ResumeCompletes_Then_StagedNativeResponseIsDiscarded",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginDisposalTests.Given_OriginalIntentExpiresDuringNativeDisposal_When_ResumeCompletes_Then_StagedNativeResponseIsDiscarded(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginDisposalTests",
+        "methodName": "Given_OriginalIntentExpiresDuringNativeDisposal_When_ResumeCompletes_Then_StagedNativeResponseIsDiscarded",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ReservationCommitAcknowledgementLoss_When_ResumeRuns_Then_SpentStatePublishesNothing(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_ReservationCommitAcknowledgementLoss_When_ResumeRuns_Then_SpentStatePublishesNothing",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ReservationCommitAcknowledgementLoss_When_ResumeRuns_Then_SpentStatePublishesNothing(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_ReservationCommitAcknowledgementLoss_When_ResumeRuns_Then_SpentStatePublishesNothing",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_MissingProductCapture_When_ResumeRuns_Then_NoUnboundNativeStateOrParIsCreated(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_MissingProductCapture_When_ResumeRuns_Then_NoUnboundNativeStateOrParIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_MissingProductCapture_When_ResumeRuns_Then_NoUnboundNativeStateOrParIsCreated(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_MissingProductCapture_When_ResumeRuns_Then_NoUnboundNativeStateOrParIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"PostgreSql\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"PostgreSql\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"SqlServer\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes(provider: \"SqlServer\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_NativeStateCompletionFailure_When_ResumeRuns_Then_NoCookieRedirectOrAutomaticRetryEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ValidIntentWithWrongCompletion_When_NativeParRejects_Then_SpentReservationPublishesNoRedirectOrCookie(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_ValidIntentWithWrongCompletion_When_NativeParRejects_Then_SpentReservationPublishesNoRedirectOrCookie",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginFailureTests.Given_ValidIntentWithWrongCompletion_When_NativeParRejects_Then_SpentReservationPublishesNoRedirectOrCookie(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginFailureTests",
+        "methodName": "Given_ValidIntentWithWrongCompletion_When_NativeParRejects_Then_SpentReservationPublishesNoRedirectOrCookie",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginNativeTests.Given_GenuineFreshCeremony_When_ProductResumeRuns_Then_ExactlyOneBoundNativeChallengeIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginNativeTests",
+        "methodName": "Given_GenuineFreshCeremony_When_ProductResumeRuns_Then_ExactlyOneBoundNativeChallengeIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginNativeTests.Given_GenuineFreshCeremony_When_ProductResumeRuns_Then_ExactlyOneBoundNativeChallengeIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginNativeTests",
+        "methodName": "Given_GenuineFreshCeremony_When_ProductResumeRuns_Then_ExactlyOneBoundNativeChallengeIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginRaceTests.Given_TwoIndependentHosts_When_ValidResumeContends_Then_OnlyOneNativeChallengeIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginRaceTests",
+        "methodName": "Given_TwoIndependentHosts_When_ValidResumeContends_Then_OnlyOneNativeChallengeIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginRaceTests.Given_TwoIndependentHosts_When_ValidResumeContends_Then_OnlyOneNativeChallengeIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginRaceTests",
+        "methodName": "Given_TwoIndependentHosts_When_ValidResumeContends_Then_OnlyOneNativeChallengeIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_AuthenticCurrentTicket_When_ProtectedReplacementStarts_Then_RevocationAndActorAuditCommitTogether(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginReplacementTests",
+        "methodName": "Given_AuthenticCurrentTicket_When_ProtectedReplacementStarts_Then_RevocationAndActorAuditCommitTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_AuthenticCurrentTicket_When_ProtectedReplacementStarts_Then_RevocationAndActorAuditCommitTogether(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginReplacementTests",
+        "methodName": "Given_AuthenticCurrentTicket_When_ProtectedReplacementStarts_Then_RevocationAndActorAuditCommitTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_RevokedTicketCookie_When_ProtectedLoginStarts_Then_AnonymousGenerationCanReplaceIt(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginReplacementTests",
+        "methodName": "Given_RevokedTicketCookie_When_ProtectedLoginStarts_Then_AnonymousGenerationCanReplaceIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_RevokedTicketCookie_When_ProtectedLoginStarts_Then_AnonymousGenerationCanReplaceIt(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginReplacementTests",
+        "methodName": "Given_RevokedTicketCookie_When_ProtectedLoginStarts_Then_AnonymousGenerationCanReplaceIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_ForeignAuthenticTicket_When_NewBrowserStarts_Then_RequestDeniesWithoutChangingEitherBrowser(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginReplacementTests",
+        "methodName": "Given_ForeignAuthenticTicket_When_NewBrowserStarts_Then_RequestDeniesWithoutChangingEitherBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginReplacementTests.Given_ForeignAuthenticTicket_When_NewBrowserStarts_Then_RequestDeniesWithoutChangingEitherBrowser(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginReplacementTests",
+        "methodName": "Given_ForeignAuthenticTicket_When_NewBrowserStarts_Then_RequestDeniesWithoutChangingEitherBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ExplicitBrowserHost_When_EntryAndProtectedStartRun_Then_OnlyThePostCreatesOneIntent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ExplicitBrowserHost_When_EntryAndProtectedStartRun_Then_OnlyThePostCreatesOneIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ExplicitBrowserHost_When_EntryAndProtectedStartRun_Then_OnlyThePostCreatesOneIntent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ExplicitBrowserHost_When_EntryAndProtectedStartRun_Then_OnlyThePostCreatesOneIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"origin\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"csrf\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"extra\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"origin\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"csrf\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"extra\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ProtectedEntry_When_StartFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_PendingIntent_When_ResumeReachesOriginalExpiry_Then_NoChallengeOrStateIsCreated(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_PendingIntent_When_ResumeReachesOriginalExpiry_Then_NoChallengeOrStateIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_PendingIntent_When_ResumeReachesOriginalExpiry_Then_NoChallengeOrStateIsCreated(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_PendingIntent_When_ResumeReachesOriginalExpiry_Then_NoChallengeOrStateIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_TwoBrowserContexts_When_PendingCookieIsSubstituted_Then_ResumeDeniesWithoutReservation(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_TwoBrowserContexts_When_PendingCookieIsSubstituted_Then_ResumeDeniesWithoutReservation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_TwoBrowserContexts_When_PendingCookieIsSubstituted_Then_ResumeDeniesWithoutReservation(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_TwoBrowserContexts_When_PendingCookieIsSubstituted_Then_ResumeDeniesWithoutReservation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ReplacedBrowserGeneration_When_OriginalCookiesAndCompletionReturn_Then_NoNativeReservationIsCreated(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ReplacedBrowserGeneration_When_OriginalCookiesAndCompletionReturn_Then_NoNativeReservationIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLoginTests.Given_ReplacedBrowserGeneration_When_OriginalCookiesAndCompletionReturn_Then_NoNativeReservationIsCreated(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLoginTests",
+        "methodName": "Given_ReplacedBrowserGeneration_When_OriginalCookiesAndCompletionReturn_Then_NoNativeReservationIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
         ]
       },
       "traits": [
