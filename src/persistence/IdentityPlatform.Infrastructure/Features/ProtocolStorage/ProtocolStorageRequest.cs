@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 
 /// <summary>Retains one original request budget across sequential fresh native scopes without owning shared cancellation resources.</summary>
-internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationToken token)
+internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationToken token, Action? publicationGuard = null)
 {
     private readonly long started = clock.GetTimestamp();
     private readonly object sync = new();
@@ -170,6 +170,11 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
     internal void RequirePublication(ProtocolResponseOutcome outcome)
     {
         RequireCurrent();
+        try
+        {
+            publicationGuard?.Invoke();
+        }
+        catch { Fail(); throw; }
         lock (sync)
         {
             if (outcome == ProtocolResponseOutcome.VerifiedNativeError && errorOutput is not null && response is not null &&
