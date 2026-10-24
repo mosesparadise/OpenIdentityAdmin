@@ -33,6 +33,11 @@ public sealed class BrowserCoordinationActorTests(BootstrapFixture fixture)
         var ticket = scenario.Ticket();
         Assert.True(await scenario.EstablishAsync(browser, intent, 1, reservation, ticket));
         await AlterAsync(scenario, fault);
+        if (fault == BrowserActorFault.Corrupt)
+        {
+            Assert.False(await scenario.RunAsync(async (database, codec) => codec.IsAuthentic(
+                await database.Set<AdminSessionTicket>().AsNoTracking().SingleAsync(BrowserCoordinationFixture.Token), scenario.Clock.GetUtcNow())));
+        }
         var actor = fault == BrowserActorFault.OtherDigest ? BrowserCoordinationFixture.Digest() : ticket.Digest;
         var before = await scenario.SnapshotAsync();
         Assert.Null(await scenario.StartAsync(browser, BrowserCoordinationFixture.Digest(), 1, actor));
@@ -90,7 +95,10 @@ public sealed class BrowserCoordinationActorTests(BootstrapFixture fixture)
                 var row = await database.Set<AdminSessionTicket>().SingleAsync(BrowserCoordinationFixture.Token);
                 if (fault == BrowserActorFault.Corrupt)
                 {
-                    row.ProtectedTicket[0] ^= 1;
+                    var damaged = row.ProtectedTicket.ToArray();
+                    damaged[0] ^= 1;
+                    row.ProtectedTicket = damaged;
+                    database.Entry(row).Property(item => item.ProtectedTicket).IsModified = true;
                 }
                 else
                 {

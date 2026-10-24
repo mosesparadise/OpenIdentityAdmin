@@ -1,5 +1,5 @@
-using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using System.Text.Json;
+using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Sessions.Browser;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
