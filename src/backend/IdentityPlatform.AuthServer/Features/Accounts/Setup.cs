@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Accounts.Browser;
 using IdentityPlatform.AuthServer.Features.Accounts.Enrollment;
 using IdentityPlatform.AuthServer.Features.Accounts.Login;
 using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
@@ -17,7 +18,7 @@ namespace IdentityPlatform.AuthServer.Features.Accounts;
 internal static class Setup
 {
     /// <summary>Registers common protections and only the requested authentication schemes and page families.</summary>
-    internal static IServiceCollection AddAccounts(this IServiceCollection services, bool pilot, bool administrator)
+    internal static IServiceCollection AddAccounts(this IServiceCollection services, bool pilot, bool administrator, BrowserAccountProfile? browser = null)
     {
         services.AddIdentityCore<PlatformUser>().AddSignInManager();
         services.Configure<IdentityOptions>(AccountOptions.Identity);
@@ -29,7 +30,7 @@ internal static class Setup
         services.AddRazorPages(options =>
         {
             options.RootDirectory = AccountPolicy.PageRoot;
-            options.Conventions.Add(new AccountPageConvention(pilot, administrator));
+            options.Conventions.Add(new AccountPageConvention(pilot, administrator, browser is not null));
         });
         if (pilot)
         {
@@ -44,6 +45,10 @@ internal static class Setup
             services.AddScoped<IAdministratorJourney, AdministratorJourney>();
             services.AddScoped<IAdministratorSecurityJourney, AdministratorSecurityJourney>();
             services.AddEnrollment().AddMfa().AddRecovery().AddAccountSecurity();
+            if (browser is not null)
+            {
+                services.AddBrowserAccounts(browser);
+            }
         }
         return services.AddAccountProtection();
     }

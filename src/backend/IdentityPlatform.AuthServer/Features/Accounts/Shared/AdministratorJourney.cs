@@ -50,7 +50,7 @@ internal sealed class AdministratorJourney(JourneyPassword passwords, JourneyCom
             return null;
         }
         var purpose = enrollment ? AdministratorPolicy.Enrollment : AdministratorPolicy.Login;
-        var grant = await completion.CompleteAsync(publicId, AdministratorBrowser.Correlation(context, publicId), purpose,
+        var grant = await completion.CompleteStandaloneAsync(publicId, AdministratorBrowser.Correlation(context, publicId), purpose,
             code, context.RequestAborted);
         if (grant is null)
         {

@@ -1,0 +1,20 @@
+@page "/account/administrator/browser/login"
+@model IdentityPlatform.AuthServer.Features.Accounts.Browser.LoginModel
+@{ ViewData["Title"] = "Administrator application sign in"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Administrator application</p>
+  <h1 id="heading">Sign in</h1>
+  <p>Enter your password and then your authenticator code for this sign-in.</p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+  }
+  @if (Model.Intent is not null)
+  {
+    <form asp-antiforgery="true" method="post" action="/account/administrator/browser/login">
+      <input type="hidden" name="Intent" value="@Model.Intent" />
+      <partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" />
+    </form>
+  }
+  <p class="footnote">If this sign-in has expired, return to your application and start again.</p>
+</section>

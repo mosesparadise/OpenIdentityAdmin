@@ -18,8 +18,16 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
     internal Task<Grant?> CompleteAsync(string publicId, string correlation, string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null) =>
         Grant.CompleteAsync(this, publicId, correlation, purpose, code, token, session);
 
+    /// <summary>Restricts standalone HTTP completion to interactions with no browser continuation in either direction.</summary>
+    internal Task<Grant?> CompleteStandaloneAsync(string publicId, string correlation, string purpose, string code, CancellationToken token) =>
+        Grant.CompleteAsync(this, publicId, correlation, purpose, code, token, boundary: JourneyCompletionBoundary.Standalone);
+
+    /// <summary>Requires an exact issuer-browser continuation before any OTP consumption, independently of the existing issuer cookie.</summary>
+    internal Task<Grant?> CompleteBrowserAsync(string publicId, string correlation, string code, IssuerContinuationRequest request, CancellationToken token) =>
+        Grant.CompleteAsync(this, publicId, correlation, AdministratorPolicy.Login, code, token, boundary: JourneyCompletionBoundary.Browser(request));
+
     /// <summary>Completes the transaction and disposal before the private result can be converted into signing authority.</summary>
-    private async Task<Completion?> CompleteCoreAsync(string publicId, string correlation, string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null)
+    private async Task<Completion?> CompleteCoreAsync(string publicId, string correlation, string purpose, string code, JourneySessionCandidate? session, JourneyCompletionBoundary? boundary, CancellationToken token)
     {
         var candidate = await locator.InteractionAsync(publicId, token);
         if (candidate is not { } target || purpose is not (AdministratorPolicy.Enrollment or AdministratorPolicy.Login or AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration))
@@ -42,6 +50,11 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
                 (purpose == AdministratorPolicy.Replacement && (!JourneyAuthorization.IsStaged(account, interaction.Row) ||
                     !JourneyAuthorization.IsFresh(interaction.Row, clock.Now))) ||
                 !await admission.HasSessionCapacityAsync(transaction, account.User.Id, authority?.PublicId))
+            {
+                return null;
+            }
+            var continuation = await continuations.ReadAsync(transaction, interaction.Row);
+            if (boundary is not null && !boundary.Matches(continuation))
             {
                 return null;
             }
@@ -196,9 +209,9 @@ internal sealed class JourneyCompletion(PlatformDbContext database, NativeOperat
 
         /// <summary>Constructs signing authority only by executing the actual native completion and disposed commit path.</summary>
         internal static async Task<Grant?> CompleteAsync(JourneyCompletion owner, string publicId, string correlation,
-            string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null)
+            string purpose, string code, CancellationToken token, JourneySessionCandidate? session = null, JourneyCompletionBoundary? boundary = null)
         {
-            var result = await owner.CompleteCoreAsync(publicId, correlation, purpose, code, token, session);
+            var result = await owner.CompleteCoreAsync(publicId, correlation, purpose, code, session, boundary, token);
             return result is null ? null : new Grant(result.SessionId, result.UserId, result.ExpiresAt, result.RecoveryCodes, result.BrowserCompletion);
         }
 

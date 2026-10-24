@@ -10,12 +10,26 @@ namespace IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 internal sealed class IssuerContinuationService(PlatformDbContext database, NativeOperation operation, CeremonyClock clock)
 {
     /// <summary>Commits one original intent and anonymous audit; duplicates, browser contention and either capacity ceiling deny unchanged.</summary>
-    internal async Task<bool> StartAsync(IssuerContinuationRequest request, CancellationToken token)
+    internal Task<bool> StartAsync(IssuerContinuationRequest request, CancellationToken token) => StartCoreAsync(request, null, token);
+
+    /// <summary>Reconciles only the same pristine pending admission for an explicit password submission, preserving its authenticated entry deadline.</summary>
+    internal Task<bool> AdmitForBrowserAsync(IssuerContinuationRequest request, long entryDeadline, CancellationToken token) =>
+        StartCoreAsync(request, entryDeadline, token);
+
+    /// <summary>Owns initial admission or an unchanged pending read; later states never become a password retry.</summary>
+    private async Task<bool> StartCoreAsync(IssuerContinuationRequest request, long? entryDeadline, CancellationToken token)
     {
         await using var transaction = await CeremonyTransaction.OpenContinuationAsync(database, operation, token);
         var rows = database.Set<IssuerContinuation>();
         var now = clock.Now;
-        if (now <= 0 || await rows.AnyAsync(row => row.IntentDigest == request.IntentDigest, transaction.Token) ||
+        var existing = await rows.SingleOrDefaultAsync(row => row.IntentDigest == request.IntentDigest, transaction.Token);
+        if (existing is not null)
+        {
+            return entryDeadline is { } original && existing.ExpiresAt == original && existing.BrowserDigest == request.BrowserDigest &&
+                IssuerContinuationPolicy.IsStart(existing) && IssuerContinuationPolicy.IsCurrent(existing, now);
+        }
+        var expires = entryDeadline ?? checked(now + IssuerContinuationPolicy.LifetimeSeconds);
+        if (now <= 0 || expires <= now || expires - now > IssuerContinuationPolicy.LifetimeSeconds ||
             await rows.CountAsync(transaction.Token) >= IssuerContinuationPolicy.RetainedLimit ||
             await rows.CountAsync(row => row.State != IssuerContinuationPolicy.Attached && row.ExpiresAt > now, transaction.Token) >= IssuerContinuationPolicy.LiveLimit ||
             await rows.AnyAsync(row => row.BrowserDigest == request.BrowserDigest && row.State != IssuerContinuationPolicy.Attached && row.ExpiresAt > now, transaction.Token))
@@ -29,8 +43,8 @@ internal sealed class IssuerContinuationService(PlatformDbContext database, Nati
             ClientId = AdministratorProtocolIdentity.ClientId,
             CreatedAt = now,
             ObservedAt = now,
-            ExpiresAt = checked(now + IssuerContinuationPolicy.LifetimeSeconds),
-            RetainUntil = checked(now + IssuerContinuationPolicy.LifetimeSeconds + IssuerContinuationPolicy.ClockToleranceSeconds),
+            ExpiresAt = expires,
+            RetainUntil = checked(expires + IssuerContinuationPolicy.ClockToleranceSeconds),
             Revision = 1,
             CorrelationId = Guid.NewGuid()
         };

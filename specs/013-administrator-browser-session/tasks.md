@@ -1,5 +1,7 @@
 # Tasks: Administrator browser sessions (B3)
 
+**T008 source checkpoint (24 October):** [Issuer browser password/MFA](issuer-browser-journey.md) adds dedicated dormant pages, original-deadline admission and strict cross-page completion. Native discovery preserves all 1,483 prior cases and adds 44 provider controls (1,527 total; BrowserSessions 143/provider). Architecture/API/security source review passes; hosted runtime acceptance remains pending.
+
 **T007 source checkpoint (24 October):** [Browser policy and native antiforgery](browser-web-policy.md) adds 54 controls; all 1,360 local Host cases pass. Independent source reviews pass; exact-head hosted acceptance and route integration remain pending. T008 continues within the selected batch.
 
 **Current three-item batch (24 October):** The user explicitly selected T005, T007 and T008 with required prerequisites. [T005 coordination evidence](browser-coordination.md) records current source, preserved inventories, local checks and the pre-test Aspire startup failure. All three tasks remain open pending their required implementation and exact-source acceptance; T006 is already delivered.
