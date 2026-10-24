@@ -40,7 +40,8 @@ internal sealed class NativeClientChallenge(NativeClientProfile profile) : IOpen
             !context.Scopes.SetEquals([OpenIddictConstants.Scopes.OpenId, AdministratorProtocolIdentity.Scope]) ||
             context.Audiences.Count != 0 || context.Resources.Count != 0 || context.LoginHint is not null || context.IdentityTokenHint is not null ||
             string.IsNullOrEmpty(context.Nonce) || string.IsNullOrEmpty(context.RequestForgeryProtection) || string.IsNullOrEmpty(context.CodeVerifier) ||
-            context.CodeChallenge != Hash(context.CodeVerifier) || !ParametersAllowed(context))
+            context.CodeChallenge != Hash(context.CodeVerifier) || !ParametersAllowed(context) ||
+            NativeBrowserChallenge.Find(context) is { } browser && (!profile.Registration.IsBrowserSession || !browser.Matches(context)))
         {
             throw ProtocolStorageOwner.Unavailable();
         }
@@ -61,7 +62,8 @@ internal sealed class NativeClientChallenge(NativeClientProfile profile) : IOpen
             principal.GetClaim(OpenIddictConstants.Claims.Private.CodeVerifier) != context.CodeVerifier ||
             principal.GetClaim(OpenIddictConstants.Claims.RequestForgeryProtection) != context.RequestForgeryProtection ||
             principal.GetClaim(OpenIddictConstants.Claims.Private.EndpointType) != RedirectionEndpoint ||
-            !principal.GetScopes().ToHashSet(StringComparer.Ordinal).SetEquals(context.Scopes))
+            !principal.GetScopes().ToHashSet(StringComparer.Ordinal).SetEquals(context.Scopes) ||
+            !(NativeBrowserChallenge.Find(context) is { } browser ? browser.StateMatches(context) : NativeBrowserChallenge.UnboundState(context)))
         {
             throw ProtocolStorageOwner.Unavailable();
         }
@@ -72,6 +74,10 @@ internal sealed class NativeClientChallenge(NativeClientProfile profile) : IOpen
     {
         foreach (var (key, value) in context.Parameters)
         {
+            if (NativeBrowserChallenge.IsBindingParameter(key) && NativeBrowserChallenge.Find(context) is { } browser && browser.Matches(context))
+            {
+                continue;
+            }
             if (key == OpenIddictConstants.Parameters.Prompt && (string?)value == OpenIddictConstants.PromptValues.None)
             {
                 continue;

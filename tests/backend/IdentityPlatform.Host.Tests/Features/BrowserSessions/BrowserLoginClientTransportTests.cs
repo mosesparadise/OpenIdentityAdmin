@@ -58,7 +58,7 @@ public sealed class BrowserLoginClientTransportTests(NativeClientCredentialFixtu
     }
 
     /// <summary>Supplies a complete otherwise valid challenge so pair rejection cannot be credited to an unrelated missing binding.</summary>
-    private static OpenIddictClientEvents.ProcessChallengeContext Context(IServiceProvider services)
+    internal static OpenIddictClientEvents.ProcessChallengeContext Context(IServiceProvider services)
     {
         var options = services.GetRequiredService<IOptionsMonitor<OpenIddictClientOptions>>().CurrentValue;
         var profile = services.GetRequiredService<NativeClientProfile>();

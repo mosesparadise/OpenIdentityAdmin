@@ -25,6 +25,7 @@ internal sealed class AdministratorAccountAuthority(ProtocolStorageScope scope, 
     private ClaimsPrincipal? projected;
     private string? publicClaims;
     private long revision;
+    private BrowserIssuanceAuthority? browser;
     internal AdministratorRegistrationBinding? Registration
     {
         get; private set;
@@ -60,7 +61,17 @@ internal sealed class AdministratorAccountAuthority(ProtocolStorageScope scope, 
                 result.Outcome == ProtocolAdmissionOutcome.AccessDenied ? OpenIddictConstants.Errors.AccessDenied : OpenIddictConstants.Errors.LoginRequired);
             return;
         }
+        if (scope.Services.GetService<BrowserProtocol>() is not null)
+        {
+            browser = new(scope, context, decision);
+            if (!await browser.OpenAsync(policy, claims, token))
+            {
+                context.Reject(OpenIddictConstants.Errors.InvalidGrant);
+                return;
+            }
+        }
         projected = AdministratorPrincipal.Project(context.Principal, claims, revision, decision.MaximumAge);
+        browser?.Project(projected);
         publicClaims = PublicBinding(projected);
         context.Principal = projected;
     }
@@ -92,12 +103,12 @@ internal sealed class AdministratorAccountAuthority(ProtocolStorageScope scope, 
         }
         if (context.EndpointType == OpenIddictServerEndpointType.Authorization)
         {
-            Bound(context.AuthorizationCodePrincipal, claims.CodeExpiresAt);
+            Bound(context.AuthorizationCodePrincipal, browser?.Bound(claims.CodeExpiresAt) ?? claims.CodeExpiresAt);
         }
         else
         {
-            Bound(context.AccessTokenPrincipal, claims.TokenExpiresAt);
-            Bound(context.IdentityTokenPrincipal, claims.TokenExpiresAt);
+            Bound(context.AccessTokenPrincipal, browser?.Bound(claims.TokenExpiresAt) ?? claims.TokenExpiresAt);
+            Bound(context.IdentityTokenPrincipal, browser?.Bound(claims.TokenExpiresAt) ?? claims.TokenExpiresAt);
         }
     }
 
@@ -112,8 +123,13 @@ internal sealed class AdministratorAccountAuthority(ProtocolStorageScope scope, 
         {
             return false;
         }
+        if (browser is not null)
+        {
+            await browser.RefreshAsync(token);
+        }
         var current = await admission.DescribeAsync(Clock, token);
         if (current is null || !AdministratorPrincipal.Matches(projected, current, revision) ||
+            (browser is not null && !browser.IsCurrent(current)) ||
             (context.EndpointType == OpenIddictServerEndpointType.Token &&
                 (assertion is null || !assertion.IsCurrent(scope, context, registration, token) ||
                     projected.GetAuthorizationId() != decision.Original.GetAuthorizationId() || !AdministratorPrincipal.Matches(decision.Original, current, revision))))
@@ -124,9 +140,9 @@ internal sealed class AdministratorAccountAuthority(ProtocolStorageScope scope, 
             AdministratorDecisionPolicy.HasFixedBindings(projected) && publicClaims == PublicBinding(projected) &&
             (context.EndpointType != OpenIddictServerEndpointType.Token || AdministratorDecisionPolicy.IsCode(decision.Original)) &&
             (context.EndpointType == OpenIddictServerEndpointType.Authorization
-                ? AllowsExpiration(context.AuthorizationCodePrincipal, Math.Min(claims.CodeExpiresAt, current.CodeExpiresAt))
-                : AllowsExpiration(context.AccessTokenPrincipal, Math.Min(claims.TokenExpiresAt, current.TokenExpiresAt)) &&
-                    AllowsExpiration(context.IdentityTokenPrincipal, Math.Min(claims.TokenExpiresAt, current.TokenExpiresAt)));
+                ? AllowsExpiration(context.AuthorizationCodePrincipal, browser?.Bound(Math.Min(claims.CodeExpiresAt, current.CodeExpiresAt)) ?? Math.Min(claims.CodeExpiresAt, current.CodeExpiresAt))
+                : AllowsExpiration(context.AccessTokenPrincipal, browser?.Bound(Math.Min(claims.TokenExpiresAt, current.TokenExpiresAt)) ?? Math.Min(claims.TokenExpiresAt, current.TokenExpiresAt)) &&
+                    AllowsExpiration(context.IdentityTokenPrincipal, browser?.Bound(Math.Min(claims.TokenExpiresAt, current.TokenExpiresAt)) ?? Math.Min(claims.TokenExpiresAt, current.TokenExpiresAt)));
     }
 
     /// <summary>Clamps only a finite library-prepared expiration; missing preparation cannot be manufactured by this adapter.</summary>

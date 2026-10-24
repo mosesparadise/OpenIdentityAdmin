@@ -15,6 +15,8 @@ internal static class NativeIdentityResponse
     {
         Unchanged, Nonce, Issuer, Audience, Type, Expiry
     }
+    private const string BrowserIntent = "admin_login_intent";
+    private const string ChangedBrowserIntent = "0000000000000000000000000000000000000000000000000000000000000000";
     private const string ChangedNonce = "synthetic-wrong-response-nonce";
     private const string ChangedIssuer = "https://untrusted.example.test/";
     private const string ChangedAudience = "synthetic-other-recipient";
@@ -25,7 +27,7 @@ internal static class NativeIdentityResponse
     private const string CompactSeparator = ".";
 
     /// <summary>Requires a real successful response; exact structural comparisons and public-key checks distinguish the selected fault from incidental corruption.</summary>
-    internal static byte[] Rewrite(byte[] body, X509Certificate2 certificate, Fault fault, DateTimeOffset now)
+    internal static byte[] Rewrite(byte[] body, X509Certificate2 certificate, Fault fault, DateTimeOffset now, bool browserIntent = false)
     {
         var original = JsonNode.Parse(body)!.AsObject();
         var response = original.DeepClone().AsObject();
@@ -37,7 +39,7 @@ internal static class NativeIdentityResponse
         var payload = JsonNode.Parse(Base64UrlEncoder.Decode(parts[PayloadPart]))!.AsObject();
         Assert.True(header[JwtHeaderParameterNames.Alg]!.GetValue<string>() == SecurityAlgorithms.RsaSha256);
         var changed = payload.DeepClone().AsObject();
-        var claim = Change(changed, fault, now);
+        var claim = browserIntent ? ChangeBrowserIntent(changed) : Change(changed, fault, now);
         RequireChange(payload, changed, claim);
         var type = fault == Fault.Type ? ChangedType : header[JwtHeaderParameterNames.Typ]!.GetValue<string>();
         var key = new X509SecurityKey(certificate) { KeyId = header[JwtHeaderParameterNames.Kid]!.GetValue<string>() };
@@ -50,6 +52,15 @@ internal static class NativeIdentityResponse
         response[OpenIddictConstants.Parameters.IdToken] = signed;
         RequireOuter(original, response);
         return Encoding.UTF8.GetBytes(response.ToJsonString());
+    }
+
+    /// <summary>Re-signs exactly one canonical but incorrect B3 digest while retaining every native nonce, audience, timestamp and signature constraint.</summary>
+    private static string ChangeBrowserIntent(JsonObject payload)
+    {
+        Assert.True(payload.ContainsKey(BrowserIntent));
+        Assert.NotEqual(ChangedBrowserIntent, payload[BrowserIntent]!.GetValue<string>());
+        payload[BrowserIntent] = ChangedBrowserIntent;
+        return BrowserIntent;
     }
 
     /// <summary>Changes exactly one selected payload field; expiry equality remains later than issuance.</summary>

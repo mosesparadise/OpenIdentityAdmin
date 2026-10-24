@@ -2,11 +2,14 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
+using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
+using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Persistence;
+using IdentityPlatform.Migrator.Features.AdministratorProtocol;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,24 +28,56 @@ internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scen
     private const string IntentParameter = "admin_login_intent";
     private const string CompletionParameter = "admin_login_completion";
     private const string ProtocolClientActor = "protocol-client";
+    private const string CookieSeparator = "; ";
     private const string AcceptedOutcome = "accepted";
     private const int PasswordAdvanceSeconds = 1;
     internal AdministratorProtocolScenario Scenario => scenario;
     internal JourneyScenario Journey => scenario.Account.Journey;
     internal IServiceProvider Services => browser.Services;
+    internal string FreshCookie { get; private set; } = string.Empty;
+    internal BrowserLoginBinding Binding
+    {
+        /// <summary>Returns immutable canonical selectors for explicit native challenge tests; it grants no ceremony authority.</summary>
+        get
+        {
+            var fields = new OpenIddictRequest();
+            fields.SetParameter(IntentParameter, attempt.Intent);
+            fields.SetParameter(CompletionParameter, completion);
+            Assert.Equal(BrowserLoginBindingState.Present, BrowserLoginBinding.Read(fields, out var binding));
+            return binding!;
+        }
+    }
 
     /// <summary>Keeps the real assertion signer, upgrades through the audited command, and registers the dormant adapter only in the peer root.</summary>
-    internal static async Task<NativeBrowserParFixture> CreateAsync(BootstrapFixture fixture, string provider, int completionAdvanceSeconds = PasswordAdvanceSeconds, Action<IServiceCollection>? configure = null)
+    internal static async Task<NativeBrowserParFixture> CreateAsync(BootstrapFixture fixture, string provider, int completionAdvanceSeconds = PasswordAdvanceSeconds, Action<IServiceCollection>? configure = null,
+        bool fullProtocol = false, AdministratorRegistrationPolicy? policy = null)
     {
-        var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider);
+        var scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider, policy);
         FactorServices? browser = null;
         try
         {
-            Assert.True(await BrowserUpgradeFixture.UpgradeAsync(scenario, BrowserUpgradeFixture.Input(scenario)));
-            browser = scenario.CreatePeer(provider, services => { services.AddBrowserCompletionPar(); configure?.Invoke(services); }, scenario.Material.Policy.ForBrowserSessions());
+            policy ??= scenario.Material.Policy;
+            Assert.True(await BrowserUpgradeFixture.UpgradeAsync(scenario, new AdministratorRegistrationInput(Guid.NewGuid(), BrowserUpgradeFixture.Operator, policy, 1)));
+            browser = scenario.CreatePeer(provider, services =>
+            {
+                if (fullProtocol)
+                {
+                    services.AddBrowserSessionProtocol();
+                }
+                else
+                {
+                    services.AddBrowserCompletionPar();
+                }
+                configure?.Invoke(services);
+            }, policy.ForBrowserSessions());
             var attempt = IssuerContinuationProviderFixture.Create();
-            var completion = await CompleteAsync(scenario, attempt, completionAdvanceSeconds);
-            return new(scenario, browser, attempt, completion);
+            var grant = await CompleteAsync(scenario, attempt, completionAdvanceSeconds);
+            var result = new NativeBrowserParFixture(scenario, browser, attempt, grant.BrowserCompletion!);
+            if (fullProtocol)
+            {
+                await result.IssueCookieAsync(grant);
+            }
+            return result;
         }
         catch
         {
@@ -59,7 +94,7 @@ internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scen
     }
 
     /// <summary>Uses the existing enrollment only as the old session; a fresh password and unused native OTP must create the new completion.</summary>
-    private static async Task<string> CompleteAsync(AdministratorProtocolScenario scenario,
+    private static async Task<JourneyCompletion.Grant> CompleteAsync(AdministratorProtocolScenario scenario,
         IssuerContinuationProviderFixture.Attempt attempt, int advanceSeconds)
     {
         var journey = scenario.Account.Journey;
@@ -74,15 +109,33 @@ internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scen
         FactorOracle.RequireWindow(journey.Seed, code, started, valid: true);
         Assert.NotNull(grant);
         await IssuerContinuationProviderFixture.RequireGrantAsync(journey, attempt, password.Interaction, scenario.Account.Grant, grant);
-        return grant.BrowserCompletion!;
+        return grant;
+    }
+
+    /// <summary>Issues only the genuine newly completed grant through its one-shot native permit; the old scenario cookie is retained for denial controls.</summary>
+    private async Task IssueCookieAsync(JourneyCompletion.Grant grant)
+    {
+        await using var scope = Journey.CreateScope();
+        var http = new DefaultHttpContext { RequestServices = scope.ServiceProvider, RequestAborted = TestContext.Current.CancellationToken };
+        http.Request.Scheme = Uri.UriSchemeHttps;
+        http.Request.Host = new HostString(scenario.Issuer.Host, scenario.Issuer.Port);
+        await scope.ServiceProvider.GetRequiredService<AdministratorTicketPermit>().IssueAsync(http, grant);
+        var cookies = http.Response.Headers.SetCookie.Where(value => value is not null &&
+            value.StartsWith(AccountSchemes.AdministratorCookie, StringComparison.Ordinal)).Select(value => value!.Split(';')[0]).ToArray();
+        Assert.NotEmpty(cookies);
+        FreshCookie = string.Join(CookieSeparator, cookies);
     }
 
     /// <summary>Creates a new independently signed assertion on every demand, including completion replay.</summary>
-    internal Task<NativeAccountResult> PushAsync(IServiceProvider? services = null, string? assertion = null, Action<HttpContext>? configureHttp = null)
+    internal Task<NativeAccountResult> PushAsync(IServiceProvider? services = null, string? assertion = null, Action<HttpContext>? configureHttp = null, string? maximumAge = null)
     {
         var fields = NativeAccountFlow.PushFields(scenario, assertion);
         fields.Add(IntentParameter, attempt.Intent);
         fields.Add(CompletionParameter, completion);
+        if (maximumAge is not null)
+        {
+            fields.Add(OpenIddictConstants.Parameters.MaxAge, maximumAge);
+        }
         return NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, fields, services: services ?? Services, configureHttp: configureHttp);
     }
 
