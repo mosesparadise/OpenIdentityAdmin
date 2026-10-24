@@ -1,5 +1,11 @@
 # Tasks: Administrator browser sessions (B3)
 
+**T005 delivered (24 October):** [Accepted coordination](browser-coordination.md#accepted-t005--24-october-2026) records PR #78 squash `e6447e3`, all 69 checks, 121 BrowserSessions cases per provider, both upgrade histories, 48 mutation kills and all coverage floors. T007/T008 continue in PR #79; their hosted acceptance remains pending.
+
+**T008 source checkpoint (24 October):** [Issuer browser password/MFA](issuer-browser-journey.md) adds dedicated dormant pages, original-deadline admission and strict cross-page completion. Native discovery preserves all 1,483 prior cases and adds 44 provider controls (1,527 total; BrowserSessions 143/provider). Architecture/API/security source review passes; hosted runtime acceptance remains pending.
+
+**T007 source checkpoint (24 October):** [Browser policy and native antiforgery](browser-web-policy.md) adds 54 controls; all 1,360 local Host cases pass. Independent source reviews pass; exact-head hosted acceptance and route integration remain pending. T008 continues within the selected batch.
+
 **Current three-item batch (24 October):** The user explicitly selected T005, T007 and T008 with required prerequisites. [T005 coordination evidence](browser-coordination.md) records current source, preserved inventories, local checks and the pre-test Aspire startup failure. All three tasks remain open pending their required implementation and exact-source acceptance; T006 is already delivered.
 
 **22 October implementation amendment:** [A-009](../../docs/amendments/A-009-roadmap-browser-deferral.md) supersedes the older Firefox-before-B3 sequencing statements in this planning record. T028 stays deferred/open; it does not block code. T003 native identity/state feasibility and T007 pure validation/projection may proceed independently of the remaining native transaction/end-session work. Concrete security prerequisites for dependent routes and external acceptance remain required.
@@ -29,7 +35,7 @@ Task IDs belong to feature 013. The reviewed planning packet supplies feature 01
 
 ## Foundational ownership
 
-- [ ] T005 Add bounded browser coordination, intent and logout correlation persistence under `src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/`, with additive migrations in both existing provider assemblies. Implement atomic generation/intent/ticket/audit composition, portable quota ownership and cleanup; preserve B1 CAS and provider extension contracts. FR-005/008/009/011/012; B3-STATE-01–04, B3-OPS-01–03.
+- [x] T005 Add bounded browser coordination, intent and logout correlation persistence under `src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/`, with additive migrations in both existing provider assemblies. Implement atomic generation/intent/ticket/audit composition, portable quota ownership and cleanup; preserve B1 CAS and provider extension contracts. FR-005/008/009/011/012; B3-STATE-01–04, B3-OPS-01–03.
 - [x] T006 Add issuer continuation/completion persistence under `src/persistence/IdentityPlatform.Infrastructure/Features/Identity/`, with both-provider additive migrations and native/account lock-order evidence. Bind real account completion, browser, fixed client and intent; attach completion once to native request without extending deadlines. FR-001–003/011–013; B3-AUTH-01–04, B3-STATE-03/04.
 - [ ] T007 [P] Add pure policy, claim/cookie/provenance/composition contract controls under `tests/backend/IdentityPlatform.Host.Tests/Features/BrowserSessions/` and existing session tests; test boundary equality, duplicate/malformed claims, generation comparisons, accidental native-principal copying and fail-closed options. Tests precede dependent route integration. FR-003–008/011/013; B3-AUTH-03/04, B3-WEB-01–04.
 

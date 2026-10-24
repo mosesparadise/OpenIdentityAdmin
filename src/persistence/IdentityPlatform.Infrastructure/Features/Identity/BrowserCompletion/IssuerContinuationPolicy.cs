@@ -43,7 +43,7 @@ internal static class IssuerContinuationPolicy
     internal static bool IsStart(IssuerContinuation row) => row.State == Pending && row.Revision == 1 &&
         IsDigest(row.IntentDigest) && IsDigest(row.BrowserDigest) && row.IntentDigest != row.BrowserDigest &&
         row.ClientId == AdministratorProtocolIdentity.ClientId && row.CorrelationId != Guid.Empty &&
-        row.ExpiresAt - row.CreatedAt == LifetimeSeconds && row.RetainUntil - row.ExpiresAt == ClockToleranceSeconds &&
+        row.ExpiresAt > row.CreatedAt && row.ExpiresAt - row.CreatedAt <= LifetimeSeconds && row.RetainUntil - row.ExpiresAt == ClockToleranceSeconds &&
         row.InteractionId is null && row.InteractionBrowserDigest is null && row.BrowserBudgetId is null && row.UserId is null &&
         row.SessionId is null && row.SessionExpiresAt is null && row.CompletionDigest is null && row.RequestId is null;
     /// <summary>Rejects noncanonical stored digest representations at the anonymous persistence boundary.</summary>

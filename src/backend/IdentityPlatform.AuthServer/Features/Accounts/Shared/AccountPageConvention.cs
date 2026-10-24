@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;
 
 /// <summary>Fails closed for disabled or unknown compiled pages instead of exposing every Razor page through MapRazorPages.</summary>
-internal sealed class AccountPageConvention(bool pilot, bool administrator) : IPageRouteModelConvention
+internal sealed class AccountPageConvention(bool pilot, bool administrator, bool browser = false) : IPageRouteModelConvention
 {
     private static readonly Dictionary<string, string> PilotPages = new(StringComparer.Ordinal)
     {
@@ -25,6 +25,12 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator) : IP
         ["/Security/Regenerate"] = "account/administrator/security/recovery-codes/verify",
         ["/Security/Index"] = "account/administrator/security",
         ["/Security/Logout"] = "account/administrator/logout"
+    };
+
+    private static readonly Dictionary<string, string> BrowserPages = new(StringComparer.Ordinal)
+    {
+        ["/Browser/Login"] = "account/administrator/browser/login",
+        ["/Browser/Mfa"] = "account/administrator/browser/mfa"
     };
 
     /// <summary>Retains only an enabled page's exact intended route; aliases and unknown pages receive no selectors.</summary>
@@ -51,6 +57,10 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator) : IP
         if (pilot && PilotPages.TryGetValue(page, out var pilotRoute))
         {
             return pilotRoute;
+        }
+        if (administrator && browser && BrowserPages.TryGetValue(page, out var browserRoute))
+        {
+            return browserRoute;
         }
         return administrator && AdministratorPages.TryGetValue(page, out var adminRoute) ? adminRoute : null;
     }

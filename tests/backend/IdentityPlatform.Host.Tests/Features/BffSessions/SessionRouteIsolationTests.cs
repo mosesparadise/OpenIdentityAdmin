@@ -34,6 +34,8 @@ public sealed class SessionRouteIsolationTests
         ProductionEndpointInventory.RequireNoDriverReference(typeof(SessionTicketStore).Assembly);
         Assert.Null(app.Services.GetService<SessionTicketStore>());
         Assert.Null(app.Services.GetService<SessionProtection>());
+        Assert.Null(app.Services.GetService<IdentityPlatform.Admin.Bff.Features.BrowserSessions.BrowserSessionDestinations>());
+        Assert.Null(app.Services.GetService<Microsoft.AspNetCore.Antiforgery.IAntiforgeryAdditionalDataProvider>());
     }
     /// <summary>Resolves the checked-in BFF configuration independently of the test runner's working directory.</summary>
     private static string RepositoryRoot()

@@ -20,7 +20,8 @@ public sealed class CompositionTests
         "/account/administrator/security/replacement", "/account/administrator/security/replacement/verify",
         "/account/administrator/security/replacement/confirm", "/account/administrator/security/recovery-codes",
         "/account/administrator/security/recovery-codes/verify", "/account/administrator/logout"];
-    private static readonly string[] UnavailableRoutes = ["/docs/scalar", "/docs/swagger", "/api/v1/users"];
+    private static readonly string[] UnavailableRoutes = ["/docs/scalar", "/docs/swagger", "/api/v1/users",
+        "/account/administrator/browser/login", "/account/administrator/browser/mfa"];
     private static readonly string[] ProtocolRoutes = ["/.well-known/openid-configuration", "/connect/authorize", "/connect/token"];
 
     /// <summary>Exercises all switch combinations against compiled Razor routing and native authentication defaults.</summary>

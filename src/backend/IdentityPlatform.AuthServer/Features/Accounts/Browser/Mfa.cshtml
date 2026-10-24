@@ -1,0 +1,20 @@
+@page "/account/administrator/browser/mfa"
+@model IdentityPlatform.AuthServer.Features.Accounts.Browser.MfaModel
+@{ ViewData["Title"] = "Verify this administrator sign-in"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Administrator application</p>
+  <h1 id="heading">Verify your authenticator</h1>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+  }
+  @if (Model.Intent is not null && Model.Interaction is not null)
+  {
+    <form asp-antiforgery="true" method="post" action="/account/administrator/browser/mfa">
+      <input type="hidden" name="Intent" value="@Model.Intent" />
+      <input type="hidden" name="Interaction" value="@Model.Interaction" />
+      <partial name="/Features/Accounts/Shared/_AdministratorCode.cshtml" />
+    </form>
+  }
+  <p class="footnote">If this sign-in cannot continue, return to your application and start again.</p>
+</section>

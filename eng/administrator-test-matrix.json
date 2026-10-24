@@ -689,7 +689,29 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationSchemaTests.Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Browser)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Correlation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Observed)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Retention)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Revision)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_AnotherProtectedIntent_When_MfaInteractionIsSubstituted_Then_OriginalCodeAndStateRemainAvailable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_MalformedEntryLocator_When_ActualGetIsRequested_Then_NoDurableAdmissionOccurs(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Duplicate)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Extra)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Intent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: MissingCsrf)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Origin)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: OtherBrowser)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Query)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_LateFirstPasswordPost_When_OriginalEntryExpires_Then_MfaCannotUseANewFiveMinuteWindow(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_PendingOriginalEntry_When_AdmissionIsExplicitlyReconciled_Then_OnlyExactUnchangedRequestCanResume(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_AuditWriteFailure_When_ActualBrowserPagesExecute_Then_NoPartialAdmissionOrSessionIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_CommittedMfaAcknowledgementLoss_When_ResponseFails_Then_DurableCompletionCannotBeRepublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_AdmittedBrowserPassword_When_OtpIsWrongThenCorrect_Then_OriginalDeadlineAndIntentArePreserved(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_StandaloneInteraction_When_SubmittedToBrowserMfa_Then_OriginalStandaloneAuthorityRemainsUnspent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_BrowserBoundInteraction_When_SubmittedToStandaloneMfa_Then_NoOtpOrStateIsConsumed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_FreshIssuerCookie_When_BrowserSignInRetriesPassword_Then_NewPasswordAndMfaBindOneOriginalIntent(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1485,7 +1507,29 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationSchemaTests.Given_MigratedBrowserSchema_When_InvalidRowsOrMissingSeedAreUsed_Then_NativeConstraintsAndOwnershipDeny(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_AuthenticatedLocalLogout_When_RemoteReturnArrives_Then_LocalRevocationPersistsAndRemoteOutcomeStaysUnverified(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_CommittedTicket_When_AnonymousReplacementStarts_Then_OldAuthorityIsRevokedWithoutActorImpersonation(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCoordinationTests.Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Browser)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Correlation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Observed)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Retention)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Revision)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_AnotherProtectedIntent_When_MfaInteractionIsSubstituted_Then_OriginalCodeAndStateRemainAvailable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_MalformedEntryLocator_When_ActualGetIsRequested_Then_NoDurableAdmissionOccurs(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Duplicate)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Extra)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Intent)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: MissingCsrf)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Origin)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: OtherBrowser)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Query)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_LateFirstPasswordPost_When_OriginalEntryExpires_Then_MfaCannotUseANewFiveMinuteWindow(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_PendingOriginalEntry_When_AdmissionIsExplicitlyReconciled_Then_OnlyExactUnchangedRequestCanResume(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_AuditWriteFailure_When_ActualBrowserPagesExecute_Then_NoPartialAdmissionOrSessionIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_CommittedMfaAcknowledgementLoss_When_ResponseFails_Then_DurableCompletionCannotBeRepublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_AdmittedBrowserPassword_When_OtpIsWrongThenCorrect_Then_OriginalDeadlineAndIntentArePreserved(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_StandaloneInteraction_When_SubmittedToBrowserMfa_Then_OriginalStandaloneAuthorityRemainsUnspent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_BrowserBoundInteraction_When_SubmittedToStandaloneMfa_Then_NoOtpOrStateIsConsumed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_FreshIssuerCookie_When_BrowserSignInRetriesPassword_Then_NewPasswordAndMfaBindOneOriginalIntent(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -31663,6 +31707,866 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "BrowserCoordinationTests",
         "methodName": "Given_ReservedIntent_When_EstablishedOnce_Then_TicketGenerationAndActorAuditCommitTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Browser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Correlation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Observed)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Retention)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"PostgreSql\", fault: Revision)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Browser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Correlation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Observed)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Retention)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerAdmissionTests.Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged(provider: \"SqlServer\", fault: Revision)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerAdmissionTests",
+        "methodName": "Given_ChangedPendingAdmission_When_ExplicitPasswordRetryReconciles_Then_NoAuthorityOrAuditIsChanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAdmissionFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_AnotherProtectedIntent_When_MfaInteractionIsSubstituted_Then_OriginalCodeAndStateRemainAvailable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_AnotherProtectedIntent_When_MfaInteractionIsSubstituted_Then_OriginalCodeAndStateRemainAvailable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_AnotherProtectedIntent_When_MfaInteractionIsSubstituted_Then_OriginalCodeAndStateRemainAvailable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_AnotherProtectedIntent_When_MfaInteractionIsSubstituted_Then_OriginalCodeAndStateRemainAvailable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_MalformedEntryLocator_When_ActualGetIsRequested_Then_NoDurableAdmissionOccurs(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_MalformedEntryLocator_When_ActualGetIsRequested_Then_NoDurableAdmissionOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_MalformedEntryLocator_When_ActualGetIsRequested_Then_NoDurableAdmissionOccurs(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_MalformedEntryLocator_When_ActualGetIsRequested_Then_NoDurableAdmissionOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Duplicate)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Extra)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Intent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: MissingCsrf)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Origin)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: OtherBrowser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"PostgreSql\", fault: Query)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Duplicate)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Extra)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Intent)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: MissingCsrf)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Origin)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: OtherBrowser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerDenialTests.Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged(provider: \"SqlServer\", fault: Query)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerDenialTests",
+        "methodName": "Given_UnboundBrowserPasswordRequest_When_PostedToActualPage_Then_AllDurableAuthorityRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserPasswordFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_LateFirstPasswordPost_When_OriginalEntryExpires_Then_MfaCannotUseANewFiveMinuteWindow(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerExpiryTests",
+        "methodName": "Given_LateFirstPasswordPost_When_OriginalEntryExpires_Then_MfaCannotUseANewFiveMinuteWindow",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_LateFirstPasswordPost_When_OriginalEntryExpires_Then_MfaCannotUseANewFiveMinuteWindow(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerExpiryTests",
+        "methodName": "Given_LateFirstPasswordPost_When_OriginalEntryExpires_Then_MfaCannotUseANewFiveMinuteWindow",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_PendingOriginalEntry_When_AdmissionIsExplicitlyReconciled_Then_OnlyExactUnchangedRequestCanResume(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerExpiryTests",
+        "methodName": "Given_PendingOriginalEntry_When_AdmissionIsExplicitlyReconciled_Then_OnlyExactUnchangedRequestCanResume",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerExpiryTests.Given_PendingOriginalEntry_When_AdmissionIsExplicitlyReconciled_Then_OnlyExactUnchangedRequestCanResume(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerExpiryTests",
+        "methodName": "Given_PendingOriginalEntry_When_AdmissionIsExplicitlyReconciled_Then_OnlyExactUnchangedRequestCanResume",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_AuditWriteFailure_When_ActualBrowserPagesExecute_Then_NoPartialAdmissionOrSessionIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerFailureTests",
+        "methodName": "Given_AuditWriteFailure_When_ActualBrowserPagesExecute_Then_NoPartialAdmissionOrSessionIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_AuditWriteFailure_When_ActualBrowserPagesExecute_Then_NoPartialAdmissionOrSessionIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerFailureTests",
+        "methodName": "Given_AuditWriteFailure_When_ActualBrowserPagesExecute_Then_NoPartialAdmissionOrSessionIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_CommittedMfaAcknowledgementLoss_When_ResponseFails_Then_DurableCompletionCannotBeRepublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerFailureTests",
+        "methodName": "Given_CommittedMfaAcknowledgementLoss_When_ResponseFails_Then_DurableCompletionCannotBeRepublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerFailureTests.Given_CommittedMfaAcknowledgementLoss_When_ResponseFails_Then_DurableCompletionCannotBeRepublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerFailureTests",
+        "methodName": "Given_CommittedMfaAcknowledgementLoss_When_ResponseFails_Then_DurableCompletionCannotBeRepublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_AdmittedBrowserPassword_When_OtpIsWrongThenCorrect_Then_OriginalDeadlineAndIntentArePreserved(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerIsolationTests",
+        "methodName": "Given_AdmittedBrowserPassword_When_OtpIsWrongThenCorrect_Then_OriginalDeadlineAndIntentArePreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_AdmittedBrowserPassword_When_OtpIsWrongThenCorrect_Then_OriginalDeadlineAndIntentArePreserved(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerIsolationTests",
+        "methodName": "Given_AdmittedBrowserPassword_When_OtpIsWrongThenCorrect_Then_OriginalDeadlineAndIntentArePreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_StandaloneInteraction_When_SubmittedToBrowserMfa_Then_OriginalStandaloneAuthorityRemainsUnspent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerIsolationTests",
+        "methodName": "Given_StandaloneInteraction_When_SubmittedToBrowserMfa_Then_OriginalStandaloneAuthorityRemainsUnspent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerIsolationTests.Given_StandaloneInteraction_When_SubmittedToBrowserMfa_Then_OriginalStandaloneAuthorityRemainsUnspent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerIsolationTests",
+        "methodName": "Given_StandaloneInteraction_When_SubmittedToBrowserMfa_Then_OriginalStandaloneAuthorityRemainsUnspent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_BrowserBoundInteraction_When_SubmittedToStandaloneMfa_Then_NoOtpOrStateIsConsumed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerJourneyTests",
+        "methodName": "Given_BrowserBoundInteraction_When_SubmittedToStandaloneMfa_Then_NoOtpOrStateIsConsumed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_BrowserBoundInteraction_When_SubmittedToStandaloneMfa_Then_NoOtpOrStateIsConsumed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerJourneyTests",
+        "methodName": "Given_BrowserBoundInteraction_When_SubmittedToStandaloneMfa_Then_NoOtpOrStateIsConsumed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_FreshIssuerCookie_When_BrowserSignInRetriesPassword_Then_NewPasswordAndMfaBindOneOriginalIntent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerJourneyTests",
+        "methodName": "Given_FreshIssuerCookie_When_BrowserSignInRetriesPassword_Then_NewPasswordAndMfaBindOneOriginalIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIssuerJourneyTests.Given_FreshIssuerCookie_When_BrowserSignInRetriesPassword_Then_NewPasswordAndMfaBindOneOriginalIntent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIssuerJourneyTests",
+        "methodName": "Given_FreshIssuerCookie_When_BrowserSignInRetriesPassword_Then_NewPasswordAndMfaBindOneOriginalIntent",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
