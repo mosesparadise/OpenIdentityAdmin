@@ -24,6 +24,7 @@ public sealed class BrowserProtocolFailureTests(BootstrapFixture fixture)
         var authorization = fault is BrowserProtocolFault.Fault.ProjectedOrigin or BrowserProtocolFault.Fault.CodeOrigin;
         var artifact = authorization ? NativeAccountFlow.ReadReference(await browser.PushAsync()) : await BrowserProtocolFlow.CodeAsync(browser);
         var before = await NativeAccountPersistence.CountAsync(browser.Scenario);
+        var binding = await browser.AttachmentSnapshotAsync();
         probe.Selected = fault;
         try
         {
@@ -32,6 +33,7 @@ public sealed class BrowserProtocolFailureTests(BootstrapFixture fixture)
             RequireSuppressed(response);
             Assert.Equal(1, probe.Reached);
             Assert.Equal(before, await NativeAccountPersistence.CountAsync(browser.Scenario));
+            Assert.Equal(binding, await browser.AttachmentSnapshotAsync());
         }
         finally { probe.Clear(); }
     }
@@ -61,6 +63,7 @@ public sealed class BrowserProtocolFailureTests(BootstrapFixture fixture)
     /// <summary>Requires the exact final commit-denial shape without accepting arbitrary assertion or database failures as a pass.</summary>
     private static void RequireSuppressed(NativeAccountResult response)
     {
+        NativeBrowserParFixture.RequireUnavailable(response);
         Assert.False(response.HasCookie);
         Assert.False(response.Claimed);
         Assert.Equal(StatusCodes.Status503ServiceUnavailable, response.Status);

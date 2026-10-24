@@ -725,7 +725,8 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_CompletedCeremony_When_NativeCodeIsExchanged_Then_IdOnlyClaimsMatchOriginalSource(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_CompletedNewSession_When_OldFreshCookieAuthorizes_Then_NoCodeIsCreated(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"PostgreSql\", exchange: False)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"PostgreSql\", exchange: True)"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"PostgreSql\", variant: 4)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1557,7 +1558,8 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_CompletedCeremony_When_NativeCodeIsExchanged_Then_IdOnlyClaimsMatchOriginalSource(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_CompletedNewSession_When_OldFreshCookieAuthorizes_Then_NoCodeIsCreated(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"SqlServer\", exchange: False)",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"SqlServer\", exchange: True)"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolTests.Given_OriginalIntentDeadline_When_AuthorizationOrExchangeReachesEquality_Then_NoCredentialIsIssued(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"SqlServer\", variant: 4)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -33147,6 +33149,46 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"PostgreSql\", variant: 4)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserProtocolFailureTests",
+        "methodName": "Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProtocolFailureTests.Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack(provider: \"SqlServer\", variant: 4)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserProtocolFailureTests",
+        "methodName": "Given_ValidBrowserAuthority_When_PreparedBindingIsMutated_Then_FinalIssuanceRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
         ]
       },
       "traits": [

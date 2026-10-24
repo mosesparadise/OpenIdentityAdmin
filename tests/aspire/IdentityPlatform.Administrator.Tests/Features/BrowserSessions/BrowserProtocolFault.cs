@@ -1,4 +1,5 @@
 using System.Data.Common;
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -41,20 +42,37 @@ internal sealed class BrowserProtocolFault : DbCommandInterceptor
     {
         services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(this));
         services.AddOpenIddict().AddServer().AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler
-            .SetOrder(OpenIddictServerHandlers.GenerateAccessToken.Descriptor.Order - BeforeGeneration).UseInlineHandler(context =>
+            .SetOrder(OpenIddictServerHandlers.GenerateAccessToken.Descriptor.Order - BeforeGeneration).UseInlineHandler(async context =>
             {
                 if (Selected is { } fault && context.EndpointType is OpenIddictServerEndpointType.Authorization or OpenIddictServerEndpointType.Token)
                 {
                     active = context;
                     database = ProtocolStorageAmbient.Current!.Scope.Owner.Database;
-                    if (fault != Fault.FinalFreshness)
+                    if (fault == Fault.StoredProvenance)
+                    {
+                        await ChangeStoredAsync(context.CancellationToken);
+                        Reached++;
+                    }
+                    else if (fault != Fault.FinalFreshness)
                     {
                         Change(context, fault);
                         Reached++;
                     }
                 }
-                return ValueTask.CompletedTask;
             }));
+    }
+
+    /// <summary>Changes a previously captured durable correlation under the actual issuance owner after initial admission and before final reread.</summary>
+    private static ValueTask ChangeStoredAsync(CancellationToken token)
+    {
+        var scope = ProtocolStorageAmbient.Current!.Scope;
+        return scope.Owner.RunAsync(async cancellation =>
+        {
+            var database = (PlatformDbContext)scope.Owner.Database;
+            var row = await database.Set<IssuerContinuation>().SingleAsync(cancellation);
+            row.CorrelationId = Guid.NewGuid();
+            await database.SaveChangesAsync(cancellation);
+        }, token, write: true);
     }
 
     /// <summary>Advances only after the exact final attached-row SELECT executes, independently of request start or earlier admission.</summary>
@@ -105,6 +123,6 @@ internal sealed class BrowserProtocolFault : DbCommandInterceptor
 
     internal enum Fault
     {
-        ProjectedOrigin, CodeOrigin, IdentityIntent, AccessLeak, FinalFreshness
+        ProjectedOrigin, CodeOrigin, IdentityIntent, AccessLeak, StoredProvenance, FinalFreshness
     }
 }
