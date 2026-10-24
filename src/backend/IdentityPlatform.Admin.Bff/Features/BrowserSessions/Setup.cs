@@ -6,7 +6,7 @@ using OpenIddict.Client;
 
 namespace IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 
-/// <summary>Offers explicit dormant product login composition while leaving production Programs and callback establishment unchanged.</summary>
+/// <summary>Offers explicit dormant product login and callback composition while leaving production Programs unchanged.</summary>
 internal static class Setup
 {
     private const int CaptureOffset = 250;
@@ -35,8 +35,15 @@ internal static class Setup
         });
         services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler
             .UseSingletonHandler<BrowserLoginChallenge>().SetOrder(OpenIddictClientHandlers.AttachResponseMode.Descriptor.Order + CaptureOffset));
+        services.AddOpenIddict().AddClient().UseAspNetCore().EnableRedirectionEndpointPassthrough();
+        services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessAuthenticationContext>(handler => handler
+            .UseSingletonHandler<BrowserCallbackAdmissionHandler>().SetOrder(OpenIddictClientHandlers.SendTokenRequest.Descriptor.Order - CaptureOffset));
+        services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessAuthenticationContext>(handler => handler
+            .UseSingletonHandler<BrowserCallbackIdentityHandler>().SetOrder(OpenIddictClientHandlers.PopulateMergedPrincipal.Descriptor.Order - IdentityOffset));
         return services;
     }
+
+    private const int IdentityOffset = 125;
 
     /// <summary>Terminates exact login paths in explicitly composed hosts; automatic minimal-host authentication needs its later reviewed activation adapter.</summary>
     internal static IApplicationBuilder UseBrowserLogin(this IApplicationBuilder app)
@@ -48,8 +55,10 @@ internal static class Setup
         RequireProfile(app.ApplicationServices);
         var factory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
         var clock = app.ApplicationServices.GetRequiredService<TimeProvider>();
+        var callback = app.ApplicationServices.GetRequiredService<NativeClientProfile>().Callback.AbsolutePath;
         app.Use((http, next) => http.Request.Path == BrowserLoginBoundary.Login || http.Request.Path == BrowserSessionDestinations.ResumePath
-            ? BrowserLoginBoundary.RunAsync(http, factory, clock) : next(http));
+            ? BrowserLoginBoundary.RunAsync(http, factory, clock) : http.Request.Path == callback
+                ? BrowserCallbackBoundary.RunAsync(http, factory, clock) : next(http));
         return app;
     }
     /// <summary>Rejects divergent fixed identities, ordinary registrations and callbacks that could intercept product start/resume.</summary>

@@ -13,8 +13,10 @@ internal static class NativeIdentityResponse
 {
     internal enum Fault
     {
-        Unchanged, Nonce, Issuer, Audience, Type, Expiry
+        Unchanged, Nonce, Issuer, Audience, Type, Expiry, BrowserExpiry
     }
+    private const string BrowserSourceExpiry = "admin_session_expires_at";
+    internal const int ShortSourceSeconds = 30;
     private const string BrowserIntent = "admin_login_intent";
     private const string ChangedBrowserIntent = "0000000000000000000000000000000000000000000000000000000000000000";
     private const string ChangedNonce = "synthetic-wrong-response-nonce";
@@ -72,6 +74,7 @@ internal static class NativeIdentityResponse
             Fault.Issuer => OpenIddictConstants.Claims.Issuer,
             Fault.Audience => OpenIddictConstants.Claims.Audience,
             Fault.Expiry => OpenIddictConstants.Claims.ExpiresAt,
+            Fault.BrowserExpiry => BrowserSourceExpiry,
             _ => null
         };
         if (claim is null)
@@ -79,7 +82,13 @@ internal static class NativeIdentityResponse
             return null;
         }
         Assert.True(payload.ContainsKey(claim));
-        if (fault == Fault.Expiry)
+        if (fault == Fault.BrowserExpiry)
+        {
+            var shortened = now.ToUnixTimeSeconds() + ShortSourceSeconds;
+            Assert.True(shortened < payload[claim]!.GetValue<long>());
+            payload[claim] = shortened;
+        }
+        else if (fault == Fault.Expiry)
         {
             Assert.True(now.ToUnixTimeSeconds() > payload[OpenIddictConstants.Claims.IssuedAt]!.GetValue<long>());
             Assert.True(now.ToUnixTimeSeconds() < payload[claim]!.GetValue<long>());
