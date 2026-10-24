@@ -1,14 +1,17 @@
 using System.Data.Common;
+using System.Globalization;
+using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using OpenIddict.Abstractions;
 using OpenIddict.Client;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 
 /// <summary>Observes actual establishment commit or exact context disposal without replacing any provider operation.</summary>
-internal sealed class BrowserCallbackCompletionProbe(string fault, Action expire)
+internal sealed class BrowserCallbackCompletionProbe(string fault, Action<DateTimeOffset?> expire)
 {
     private const string Commit = "commit";
     private const string LocalDisposal = "local-disposal";
@@ -23,6 +26,10 @@ internal sealed class BrowserCallbackCompletionProbe(string fault, Action expire
     {
         get; private set;
     }
+    internal DateTimeOffset? SourceDeadline
+    {
+        get; private set;
+    }
 
     /// <summary>Constructs cleanup before each database and targets only final local ticket state or completed native callback roots.</summary>
     internal void Configure(IServiceCollection services)
@@ -34,8 +41,13 @@ internal sealed class BrowserCallbackCompletionProbe(string fault, Action expire
             options.AddInterceptors(provider.GetRequiredService<BrowserCallbackCommitProbe>());
         });
         services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessAuthenticationContext>(handler => handler
-            .SetOrder(OpenIddictClientHandlers.PopulateMergedPrincipal.Descriptor.Order + ObservationOffset).UseInlineHandler(_ =>
+            .SetOrder(OpenIddictClientHandlers.PopulateMergedPrincipal.Descriptor.Order + ObservationOffset).UseInlineHandler(context =>
             {
+                if (fault == SourceExpiry)
+                {
+                    SourceDeadline = DateTimeOffset.FromUnixTimeSeconds(long.Parse(
+                        context.BackchannelIdentityTokenPrincipal!.GetClaim(BrowserSessionClaims.SourceExpiry)!, CultureInfo.InvariantCulture));
+                }
                 if (fault is NativeDisposal or Expiry or SourceExpiry)
                 {
                     var scope = ProtocolStorageAmbient.Current!.Scope;
@@ -70,7 +82,7 @@ internal sealed class BrowserCallbackCompletionProbe(string fault, Action expire
         Calls++;
         if (fault is Expiry or SourceExpiry)
         {
-            expire();
+            expire(SourceDeadline);
         }
         else
         {

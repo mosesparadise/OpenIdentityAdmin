@@ -29,25 +29,26 @@ public sealed class BrowserCallbackFailureTests(BootstrapFixture fixture)
         var callback = await scenario.CallbackAsync();
         var cookies = scenario.Cookies.GetCookieHeader(callback);
         var pending = await scenario.ReadAsync(db => db.Set<BrowserLoginIntent>().AsNoTracking().SingleAsync(TestContext.Current.CancellationToken));
-        var deadline = fault == SourceExpiry ? DateTimeOffset.FromUnixTimeSeconds(scenario.Issuer.Account.Journey.Clock.Now.ToUnixTimeSeconds() + NativeIdentityResponse.ShortSourceSeconds)
-            : new DateTimeOffset(pending.ExpiresAt, TimeSpan.Zero);
-        var probe = new BrowserCallbackCompletionProbe(fault, () => scenario.Issuer.Account.Journey.Clock.Now = deadline);
+        var probe = new BrowserCallbackCompletionProbe(fault, sourceDeadline => scenario.Issuer.Account.Journey.Clock.Now =
+            fault == SourceExpiry ? sourceDeadline ?? throw new InvalidOperationException() : new DateTimeOffset(pending.ExpiresAt, TimeSpan.Zero));
         await using var peer = await scenario.PeerAsync(probe.Configure);
         if (fault == SourceExpiry)
         {
             peer.Bridge.IdentityFault = NativeIdentityResponse.Fault.BrowserExpiry;
         }
         using var response = await BrowserCallbackTests.ReplayAsync(peer, callback, cookies);
-        BrowserLoginTests.RequireDenied(response, HttpStatusCode.ServiceUnavailable);
         Assert.Equal(1, probe.Calls);
         Assert.Equal(1, peer.Bridge.TokenSends);
         if (fault == SourceExpiry)
         {
             Assert.Equal(1, peer.Bridge.IdentityRewrites);
+            var deadline = Assert.IsType<DateTimeOffset>(probe.SourceDeadline);
             Assert.True(deadline.UtcTicks < pending.ExpiresAt);
+            Assert.Equal(deadline, scenario.Issuer.Account.Journey.Clock.Now);
             var row = await scenario.ReadAsync(db => db.Set<AdminSessionTicket>().AsNoTracking().SingleAsync(TestContext.Current.CancellationToken));
             Assert.Equal(deadline.UtcTicks, row.AbsoluteExpiresAt);
         }
+        BrowserLoginTests.RequireDenied(response, HttpStatusCode.ServiceUnavailable);
         Assert.Equal(1, await scenario.ReadAsync(db => db.Set<AdminSessionTicket>().CountAsync(TestContext.Current.CancellationToken)));
         Assert.Equal(1, await scenario.ReadAsync(db => db.Set<BrowserSessionAudit>().CountAsync(row => row.Operation == BrowserMutation.Establish, TestContext.Current.CancellationToken)));
         var before = await scenario.SnapshotAsync();
