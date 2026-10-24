@@ -46,6 +46,9 @@ internal sealed class NativeClientProfile
         Registration = registration;
     }
 
+    /// <summary>Explicitly opts into the exact browser registration contract without changing any canonical issuer or callback identity.</summary>
+    internal NativeClientProfile ForBrowserSessions() => new(Issuer, ClientUri, Registration.ForBrowserSessions() ?? throw new ClientCredentialFailure());
+
     /// <summary>Requires exact canonical HTTPS identities, an exact same-origin callback and an explicit public key identifier.</summary>
     internal static NativeClientProfile Create(string issuer, string clientUri, string callback, string keyId, NativeClientCredentials credentials)
     {

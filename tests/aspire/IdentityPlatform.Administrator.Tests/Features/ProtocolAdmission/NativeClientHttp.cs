@@ -24,10 +24,10 @@ internal sealed class NativeClientHttp : IAsyncDisposable
 
     /// <summary>Creates one independent native client instance; supplied protected credentials remain caller-owned until disposal completes.</summary>
     internal NativeClientHttp(BootstrapSessions database, AdministratorProtocolScenario issuer, NativeClientProfile profile, NativeClientCredentials credentials,
-        Action<IServiceCollection>? configure = null, bool network = false)
+        Action<IServiceCollection>? configure = null, bool network = false, IServiceProvider? protocolServices = null)
     {
         this.profile = profile;
-        Bridge = new(issuer);
+        Bridge = new(issuer, protocolServices);
         var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders());
         database.AddPersistence(services);
         services.AddSingleton(UrlEncoder.Default).AddSingleton<TimeProvider>(issuer.Account.Journey.Clock);

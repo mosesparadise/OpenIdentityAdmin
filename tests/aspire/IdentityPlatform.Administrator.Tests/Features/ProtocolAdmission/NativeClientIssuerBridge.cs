@@ -7,10 +7,14 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
 /// <summary>Replaces only network I/O, preserving native serialization and issuer handling without claiming TLS interoperability.</summary>
-internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario issuer) : DelegatingHandler
+internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario issuer, IServiceProvider? protocolServices = null) : DelegatingHandler
 {
     private const int ExpiryAdvanceSeconds = 1;
     internal NativeIdentityResponse.Fault? IdentityFault
+    {
+        get; set;
+    }
+    internal bool RewriteBrowserIntent
     {
         get; set;
     }
@@ -62,7 +66,7 @@ internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario iss
             Assert.Equal(HttpMethod.Get, request.Method);
         }
         Count(path);
-        var result = await NativeAccountHttp.InvokeAsync(issuer, path, fields, cancellation: token);
+        var result = await NativeAccountHttp.InvokeAsync(issuer, path, fields, cancellation: token, services: protocolServices);
         Assert.True(result.Failure is null, result.Failure?.GetType().FullName + Environment.NewLine + result.Failure?.StackTrace);
         var response = new HttpResponseMessage((HttpStatusCode)result.Status) { Content = new ByteArrayContent(RewriteIdentity(path, result)) };
         Assert.True(MediaTypeHeaderValue.TryParse(result.ContentType, out var contentType));
@@ -73,17 +77,18 @@ internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario iss
     /// <summary>Intervenes only after successful real token issuance, with an explicit one-second fixture advance for strict expiry equality.</summary>
     private byte[] RewriteIdentity(string path, NativeAccountResult result)
     {
-        if (path != AdministratorProtocolScenario.TokenPath || IdentityFault is not { } fault)
+        if (path != AdministratorProtocolScenario.TokenPath || IdentityFault is null && !RewriteBrowserIntent)
         {
             return result.Body;
         }
         Assert.Equal((int)HttpStatusCode.OK, result.Status);
+        var fault = IdentityFault ?? NativeIdentityResponse.Fault.Unchanged;
         var clock = issuer.Account.Journey.Clock;
         if (fault == NativeIdentityResponse.Fault.Expiry)
         {
             clock.Now = DateTimeOffset.FromUnixTimeSeconds(clock.Now.ToUnixTimeSeconds() + ExpiryAdvanceSeconds);
         }
-        var body = NativeIdentityResponse.Rewrite(result.Body, issuer.Services.GetRequiredService<IssuerCredentials>().Signing, fault, clock.Now);
+        var body = NativeIdentityResponse.Rewrite(result.Body, issuer.Services.GetRequiredService<IssuerCredentials>().Signing, fault, clock.Now, RewriteBrowserIntent);
         IdentityRewrites++;
         return body;
     }

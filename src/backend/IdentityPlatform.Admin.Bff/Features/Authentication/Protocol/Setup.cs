@@ -85,6 +85,8 @@ internal static class Setup
     /// <summary>Places profile guards after native parsing and before protected output or optional transport.</summary>
     private static void Handlers(OpenIddictClientBuilder client)
     {
+        client.AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler.UseSingletonHandler<NativeBrowserState>()
+            .SetOrder(OpenIddictClientHandlers.PrepareLoginStateTokenPrincipal.Descriptor.Order + PolicyOrderOffset));
         client.AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler.UseSingletonHandler<NativeClientChallenge>()
             .SetOrder(OpenIddictClientHandlers.AttachResponseMode.Descriptor.Order + PolicyOrderOffset));
         client.AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler.UseSingletonHandler<NativeClientParBoundary>()
@@ -105,7 +107,11 @@ internal static class Setup
             .SetOrder(OpenIddictClientHandlers.Protection.ValidateExpirationDate.Descriptor.Order + PolicyOrderOffset));
         client.AddEventHandler<OpenIddictClientEvents.ProcessAuthenticationContext>(handler => handler.UseSingletonHandler<NativeClientAuthenticationCompletion>()
             .SetOrder(OpenIddictClientHandlers.PopulateMergedPrincipal.Descriptor.Order - PolicyOrderOffset));
+        client.AddEventHandler<OpenIddictClientEvents.ProcessAuthenticationContext>(handler => handler.UseSingletonHandler<NativeBrowserIdentity>()
+            .SetOrder(OpenIddictClientHandlers.PopulateMergedPrincipal.Descriptor.Order - BrowserIdentityOrderOffset));
     }
+
+    private const int BrowserIdentityOrderOffset = 250;
 
     /// <summary>Creates the sole registration with no shared secret, alternative grant, scope or authentication method.</summary>
     private static OpenIddictClientRegistration Registration(NativeClientProfile profile, NativeClientCredentials credentials)
