@@ -37,6 +37,7 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     internal NativeClientProfile Profile { get; private set; } = null!;
     internal BrowserLoginHost Host { get; private set; } = null!;
     internal CookieContainer Cookies { get; } = new();
+    internal CookieContainer IssuerCookies { get; } = new();
     internal HttpClient Browser { get; private set; } = null!;
 
     /// <summary>Upgrades the fixed issuer registration through the real command and composes separate browser/native roots.</summary>
@@ -69,7 +70,7 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     internal async Task<string> CompleteAsync(string intent)
     {
         await using var host = await BrowserIssuerHost.CreateAsync(Issuer.Account.Journey, provider);
-        using var browser = host.Browser();
+        using var browser = host.Browser(IssuerCookies);
         var entry = await BrowserIssuerHttp.EntryAsync(browser, intent);
         using var password = await BrowserIssuerHttp.PasswordAsync(browser, Issuer.Account.Journey, entry);
         var factor = await BrowserIssuerHttp.FactorAsync(browser, password);
@@ -112,6 +113,25 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     internal Task<HttpResponseMessage> ResumeAsync(string completion, HttpClient? browser = null) => (browser ?? Browser)
         .GetAsync(QueryHelpers.AddQueryString(ResumePath, BrowserIssuerHttp.Completion, completion), TestContext.Current.CancellationToken);
 
+    /// <summary>Runs the genuine fresh issuer cookie through native authorization after product start, ceremony and resume.</summary>
+    internal async Task<Uri> CallbackAsync(bool fresh = true)
+    {
+        var intent = await StartAsync(await EntryAsync());
+        var completion = await CompleteAsync(intent);
+        using var resume = await ResumeAsync(completion);
+        Assert.Equal(HttpStatusCode.Redirect, resume.StatusCode);
+        var destination = resume.Headers.Location!;
+        Assert.True(destination.GetLeftPart(UriPartial.Path) == new Uri(Profile.Issuer, AdministratorProtocolScenario.AuthorizePath).AbsoluteUri);
+        var fields = QueryHelpers.ParseQuery(destination.Query).ToDictionary(pair => pair.Key, pair => Assert.Single(pair.Value)!);
+        var authorized = await NativeAccountHttp.InvokeAsync(Issuer, AdministratorProtocolScenario.AuthorizePath, fields,
+            services: protocol.Services, configureHttp: http => http.Request.Headers.Cookie = fresh ? IssuerCookies.GetCookieHeader(Profile.Issuer) : Issuer.Cookie);
+        NativeAccountFlow.RequireSuccess(authorized, (int)HttpStatusCode.Redirect);
+        var callback = new Uri(authorized.Location);
+        Assert.True(callback.GetLeftPart(UriPartial.Path) == Profile.Callback.AbsoluteUri);
+        Assert.Equal(!fresh, QueryHelpers.ParseQuery(callback.Query).ContainsKey(OpenIddict.Abstractions.OpenIddictConstants.Parameters.Error));
+        return callback;
+    }
+
     /// <summary>Reads a detached durable result through real Sessions-only credentials.</summary>
     internal async Task<T> ReadAsync<T>(Func<AdminSessionDbContext, Task<T>> action)
     {
@@ -142,7 +162,7 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     }
 
     /// <summary>Retains a nonsecret hash of every local login/native/audit effect for exact denial and rollback comparisons.</summary>
-    internal Task<string> SnapshotAsync() => ReadAsync(async database => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
+    internal Task<string> SnapshotAsync(bool native = true) => ReadAsync(async database => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
     {
         Contexts = await database.Set<BrowserContext>().AsNoTracking().OrderBy(row => row.Digest).ToArrayAsync(TestContext.Current.CancellationToken),
         Intents = await database.Set<BrowserLoginIntent>().AsNoTracking().OrderBy(row => row.Digest).ToArrayAsync(TestContext.Current.CancellationToken),
@@ -151,7 +171,7 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
         Tickets = await database.Set<AdminSessionTicket>().AsNoTracking().OrderBy(row => row.Digest)
             .Select(row => new { Row = row, Payload = row.ProtectedTicket, row.RevokedAt }).ToArrayAsync(TestContext.Current.CancellationToken),
         TicketAudits = await database.Set<AdminSessionAudit>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(TestContext.Current.CancellationToken),
-        Tokens = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(TestContext.Current.CancellationToken)
+        Tokens = native ? await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(TestContext.Current.CancellationToken) : []
     }))));
 
     /// <summary>Disposes browser/host consumers before protocol roots, isolated databases and key material, including partial construction.</summary>

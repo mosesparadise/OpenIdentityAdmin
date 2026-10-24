@@ -66,6 +66,7 @@ internal sealed class NativeClientCallback
     internal void RequireToken(OpenIddictClientEvents.ProcessAuthenticationContext current)
     {
         Require(current);
+        IdentityPlatform.Admin.Bff.Features.BrowserSessions.BrowserCallbackReceipt.DemandTransport(current);
         NativeClientMetadata.Require(current.Configuration, profile);
         (NativeClientAssertion.Find(current.Transaction) ?? throw ProtocolStorageOwner.Unavailable())
             .RequireOutput(current.ClientAssertion, current.ClientAssertionPrincipal);

@@ -12,6 +12,10 @@ internal sealed class BootstrapSessionAccess(DatabaseProvider provider, string a
     private const string PostgresAuditDeny = "REVOKE INSERT ON bff.\"BrowserSessionAudit\" FROM sessions_runtime";
     private const string SqlAuditAllow = "REVOKE INSERT ON OBJECT::[bff].[BrowserSessionAudit] FROM [sessions_runtime]";
     private const string SqlAuditDeny = "DENY INSERT ON OBJECT::[bff].[BrowserSessionAudit] TO [sessions_runtime]";
+    private const string PostgresTicketAuditAllow = "GRANT INSERT ON bff.\"AdminSessionAudit\" TO sessions_runtime";
+    private const string PostgresTicketAuditDeny = "REVOKE INSERT ON bff.\"AdminSessionAudit\" FROM sessions_runtime";
+    private const string SqlTicketAuditAllow = "REVOKE INSERT ON OBJECT::[bff].[AdminSessionAudit] FROM [sessions_runtime]";
+    private const string SqlTicketAuditDeny = "DENY INSERT ON OBJECT::[bff].[AdminSessionAudit] TO [sessions_runtime]";
 
     private const int CommandSeconds = 5;
     private const int SqlPermissionDenied = 229;
@@ -32,6 +36,11 @@ internal sealed class BootstrapSessionAccess(DatabaseProvider provider, string a
         provider == DatabaseProvider.PostgreSql
             ? allow ? PostgresAuditAllow : PostgresAuditDeny
             : allow ? SqlAuditAllow : SqlAuditDeny, token);
+
+    /// <summary>Denies only canonical B1 audit insertion in this disposable fixture, keeping native state consumption available.</summary>
+    internal Task SetTicketAuditAsync(bool allow, CancellationToken token) => ExecuteAsync(administrator,
+        provider == DatabaseProvider.PostgreSql ? allow ? PostgresTicketAuditAllow : PostgresTicketAuditDeny
+            : allow ? SqlTicketAuditAllow : SqlTicketAuditDeny, token);
 
     /// <summary>Uses a fresh actual runtime connection for an independent positive or exact permission-denial witness.</summary>
     internal Task ReadAsync(CancellationToken token) => ExecuteAsync(runtime, provider == DatabaseProvider.PostgreSql ? PgRead : SqlRead, token);
