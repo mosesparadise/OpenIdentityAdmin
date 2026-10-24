@@ -44,6 +44,7 @@ public sealed class BrowserIssuerJourneyTests(BootstrapFixture fixture)
         Assert.Equal(original.CreatedAt, admitted.CreatedAt);
         Assert.Equal(original.ExpiresAt, admitted.ExpiresAt);
         Assert.Equal(original.CorrelationId, admitted.CorrelationId);
+        await RequirePasswordReplayDenialAsync(browser, scenario, entry);
         form[AdministratorJourney.CodeField] = await IssuerContinuationProviderFixture.UnusedCodeAsync(scenario);
         using var completed = await BrowserIssuerHttp.PostAsync(browser, BrowserIssuerHttp.Mfa, form);
         await RequireCompletionAsync(scenario, intent, completed, prior.SessionId);
@@ -75,6 +76,20 @@ public sealed class BrowserIssuerJourneyTests(BootstrapFixture fixture)
         Assert.True(before == await IssuerContinuationProviderFixture.SnapshotAsync(scenario));
         using var completed = await BrowserIssuerHttp.PostAsync(browser, BrowserIssuerHttp.Mfa, form);
         await RequireCompletionAsync(scenario, intent, completed, prior.SessionId);
+    }
+
+    /// <summary>A bound pending MFA cannot become another password attempt; denial preserves its durable state and publishes no new issuer authority.</summary>
+    private static async Task RequirePasswordReplayDenialAsync(HttpClient browser, JourneyScenario scenario, Dictionary<string, string> entry)
+    {
+        const string SetCookie = "Set-Cookie";
+        const string Assignment = "=";
+        var before = await IssuerContinuationProviderFixture.SnapshotAsync(scenario);
+        using var replay = await BrowserIssuerHttp.PasswordAsync(browser, scenario, entry);
+        Assert.Equal(HttpStatusCode.BadRequest, replay.StatusCode);
+        Assert.Null(replay.Headers.Location);
+        Assert.False(replay.Headers.TryGetValues(SetCookie, out var cookies) &&
+            cookies.Any(value => value.StartsWith(AdministratorJourney.SessionCookie + Assignment, StringComparison.Ordinal)));
+        Assert.True(before == await IssuerContinuationProviderFixture.SnapshotAsync(scenario));
     }
 
     /// <summary>Proves the pre-existing native cookie actually authorizes its protected page before testing that browser login requires new proofs.</summary>

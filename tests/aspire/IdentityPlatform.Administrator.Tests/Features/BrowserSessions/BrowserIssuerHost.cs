@@ -2,6 +2,7 @@ using System.Net;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Accounts.Browser;
+using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
@@ -44,6 +45,7 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         builder.Services.AddSingleton<TimeProvider>(scenario.Clock);
         builder.Services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies();
         builder.Services.AddAccounts(pilot: false, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, Client));
+        ExcludeBackgroundCleanup(builder.Services);
         WebApplication? app = null;
         try
         {
@@ -67,6 +69,14 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
             credentials.Dispose();
             throw;
         }
+    }
+
+    /// <summary>Isolates request transaction/snapshot faults from the separately tested production cleanup worker without removing unrelated hosted services.</summary>
+    private static void ExcludeBackgroundCleanup(IServiceCollection services)
+    {
+        var worker = Assert.Single(services, descriptor => descriptor.ServiceType == typeof(IHostedService) &&
+            descriptor.ImplementationType == typeof(AdministratorCleanupService));
+        Assert.True(services.Remove(worker));
     }
 
     /// <summary>Obtains an existing issuer cookie only from a real committed enrollment grant and the production one-shot native permit.</summary>

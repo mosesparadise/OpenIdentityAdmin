@@ -3,6 +3,7 @@ using System.Net;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
@@ -38,10 +39,10 @@ public sealed class BrowserIssuerFailureTests(BootstrapFixture fixture)
     {
         await using var scenario = await JourneyScenario.CreateAsync(fixture, provider);
         _ = await scenario.EnrollAsync();
-        var loss = new BrowserIssuerCommitLoss();
+        var intent = IssuerContinuationProviderFixture.Selector();
+        var loss = new BrowserIssuerCommitLoss(IssuerContinuationProviderFixture.Digest(intent));
         await using var host = await BrowserIssuerHost.CreateAsync(scenario, provider, loss);
         using var browser = host.Browser();
-        var intent = IssuerContinuationProviderFixture.Selector();
         var entry = await BrowserIssuerHttp.EntryAsync(browser, intent);
         using var password = await BrowserIssuerHttp.PasswordAsync(browser, scenario, entry);
         var form = await BrowserIssuerHttp.FactorAsync(browser, password);
@@ -80,7 +81,7 @@ public sealed class BrowserIssuerFailureTests(BootstrapFixture fixture)
 }
 
 /// <summary>Observes actual provider permission errors without capturing command text, parameters or connection details.</summary>
-internal sealed class BrowserIssuerPermissionFailure : DbCommandInterceptor
+internal sealed class BrowserIssuerPermissionFailure : SaveChangesInterceptor
 {
     private const string PostgreSqlPermission = "42501";
     private const int SqlServerPermission = 229;
@@ -89,10 +90,14 @@ internal sealed class BrowserIssuerPermissionFailure : DbCommandInterceptor
         get; private set;
     }
 
-    /// <summary>Counts only the exact permission-denied category after a native command actually fails.</summary>
-    public override Task CommandFailedAsync(DbCommand command, CommandErrorEventData eventData, CancellationToken cancellationToken = default)
+    /// <summary>Observes save failure including provider errors surfaced while consuming a command result, requiring the exact native permission-denied cause.</summary>
+    public override Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = default)
     {
-        if (eventData.Exception is Npgsql.PostgresException { SqlState: PostgreSqlPermission } or Microsoft.Data.SqlClient.SqlException { Number: SqlServerPermission })
+        if (eventData.Exception is DbUpdateException
+            {
+                InnerException: Npgsql.PostgresException { SqlState: PostgreSqlPermission } or
+            Microsoft.Data.SqlClient.SqlException { Number: SqlServerPermission }
+            })
         {
             Failures++;
         }
@@ -101,7 +106,7 @@ internal sealed class BrowserIssuerPermissionFailure : DbCommandInterceptor
 }
 
 /// <summary>Injects loss after one actual armed commit, preserving durable state and preventing an unrelated exception from satisfying the witness.</summary>
-internal sealed class BrowserIssuerCommitLoss : DbTransactionInterceptor
+internal sealed class BrowserIssuerCommitLoss(string expectedIntentDigest) : DbTransactionInterceptor
 {
     private const string Lost = "Synthetic issuer browser commit acknowledgement loss.";
     internal bool Armed
@@ -116,7 +121,8 @@ internal sealed class BrowserIssuerCommitLoss : DbTransactionInterceptor
     /// <summary>Waits for the native successful commit event before reporting a fixed safe failure to the HTTP owner.</summary>
     public override Task TransactionCommittedAsync(DbTransaction transaction, TransactionEndEventData eventData, CancellationToken cancellationToken = default)
     {
-        if (Armed)
+        if (Armed && eventData.Context is { } database && database.ChangeTracker.Entries<IssuerContinuation>().Any(entry =>
+            entry.Entity.IntentDigest == expectedIntentDigest && entry.Entity.State == IssuerContinuationPolicy.Completed))
         {
             Armed = false;
             Commits++;
