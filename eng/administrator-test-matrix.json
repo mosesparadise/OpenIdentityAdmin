@@ -788,7 +788,41 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"PostgreSql\", fault: \"expired\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"PostgreSql\", fault: \"missing-generation\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"PostgreSql\", fault: \"revoked\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"PostgreSql\", fault: \"tampered\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"PostgreSql\", fault: \"tampered\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"PostgreSql\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"PostgreSql\", fault: \"foreign\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"PostgreSql\", fault: \"malformed\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_ValidLogoutRecoveryProof_When_ForeignLiveTicketIsPresented_Then_NoRecoveryCookiesOrDurableEffectsArePublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"PostgreSql\", ticketAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"PostgreSql\", ticketAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"PostgreSql\", disposal: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"PostgreSql\", disposal: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_OriginalProofExpiresDuringDisposal_When_LogoutCommits_Then_NoRenewedProofOrSuccessIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"csrf\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"extra\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"origin\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"PostgreSql\", replace: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"PostgreSql\", replace: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_GenuineSessionAcrossReloadedRoots_When_ProtectionIsMissingThenRetained_Then_OnlyRetainedKeysPermitProtectedLogout(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"PostgreSql\", callbackFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"PostgreSql\", callbackFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"correlation\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"duplicate-audit\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"missing-audit\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"operation\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"pending\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"reserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"ticket\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_ValidReconciliationForm_When_NewLoginReplacesTheTombstone_Then_StaleConfirmationCannotMutateNewIntent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"PostgreSql\", expiry: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"PostgreSql\", expiry: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"PostgreSql\", recoveryFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"PostgreSql\", recoveryFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1683,7 +1717,41 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"SqlServer\", fault: \"expired\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"SqlServer\", fault: \"missing-generation\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"SqlServer\", fault: \"revoked\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"SqlServer\", fault: \"tampered\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserSessionStatusTests.Given_InvalidProductAuthority_When_StatusIsRead_Then_OnlyUnauthenticatedStatusIsReturned(provider: \"SqlServer\", fault: \"tampered\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"SqlServer\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"SqlServer\", fault: \"foreign\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"SqlServer\", fault: \"malformed\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_ValidLogoutRecoveryProof_When_ForeignLiveTicketIsPresented_Then_NoRecoveryCookiesOrDurableEffectsArePublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"SqlServer\", ticketAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"SqlServer\", ticketAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"SqlServer\", disposal: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"SqlServer\", disposal: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_OriginalProofExpiresDuringDisposal_When_LogoutCommits_Then_NoRenewedProofOrSuccessIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"csrf\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"extra\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"origin\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"SqlServer\", replace: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"SqlServer\", replace: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_GenuineSessionAcrossReloadedRoots_When_ProtectionIsMissingThenRetained_Then_OnlyRetainedKeysPermitProtectedLogout(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"SqlServer\", callbackFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"SqlServer\", callbackFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"correlation\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"duplicate-audit\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"missing-audit\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"operation\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"pending\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"reserved\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"ticket\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_ValidReconciliationForm_When_NewLoginReplacesTheTombstone_Then_StaleConfirmationCannotMutateNewIntent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"SqlServer\", expiry: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"SqlServer\", expiry: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"SqlServer\", recoveryFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"SqlServer\", recoveryFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -35736,6 +35804,1354 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"PostgreSql\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"PostgreSql\", fault: \"foreign\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"PostgreSql\", fault: \"malformed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"SqlServer\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"SqlServer\", fault: \"foreign\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation(provider: \"SqlServer\", fault: \"malformed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_GenuinePendingBrowser_When_SessionCookieIsAmbiguousOrForeign_Then_LogoutFormDeniesWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_ValidLogoutRecoveryProof_When_ForeignLiveTicketIsPresented_Then_NoRecoveryCookiesOrDurableEffectsArePublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_ValidLogoutRecoveryProof_When_ForeignLiveTicketIsPresented_Then_NoRecoveryCookiesOrDurableEffectsArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutCookieTests.Given_ValidLogoutRecoveryProof_When_ForeignLiveTicketIsPresented_Then_NoRecoveryCookiesOrDurableEffectsArePublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutCookieTests",
+        "methodName": "Given_ValidLogoutRecoveryProof_When_ForeignLiveTicketIsPresented_Then_NoRecoveryCookiesOrDurableEffectsArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"PostgreSql\", ticketAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"PostgreSql\", ticketAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"SqlServer\", ticketAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl(provider: \"SqlServer\", ticketAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_AuditInsertDenied_When_AuthenticatedLogoutRuns_Then_OriginalTicketRemainsUsableUntilRestoredPositiveControl",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"PostgreSql\", disposal: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"PostgreSql\", disposal: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"SqlServer\", disposal: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation(provider: \"SqlServer\", disposal: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_CommittedLogout_When_AcknowledgementOrScopeCleanupFails_Then_FiniteUnconfirmedResponseAllowsBoundedReconciliation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_OriginalProofExpiresDuringDisposal_When_LogoutCommits_Then_NoRenewedProofOrSuccessIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_OriginalProofExpiresDuringDisposal_When_LogoutCommits_Then_NoRenewedProofOrSuccessIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFailureTests.Given_OriginalProofExpiresDuringDisposal_When_LogoutCommits_Then_NoRenewedProofOrSuccessIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFailureTests",
+        "methodName": "Given_OriginalProofExpiresDuringDisposal_When_LogoutCommits_Then_NoRenewedProofOrSuccessIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"csrf\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"extra\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"PostgreSql\", fault: \"origin\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"csrf\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"extra\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutFramingTests.Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged(provider: \"SqlServer\", fault: \"origin\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutFramingTests",
+        "methodName": "Given_ProtectedPendingGeneration_When_LogoutFormIsHostile_Then_StateAndCookiesRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"PostgreSql\", replace: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutLifecycleTests",
+        "methodName": "Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"PostgreSql\", replace: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutLifecycleTests",
+        "methodName": "Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"SqlServer\", replace: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutLifecycleTests",
+        "methodName": "Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication(provider: \"SqlServer\", replace: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutLifecycleTests",
+        "methodName": "Given_DiscardedCallbackDelivery_When_OriginalBrowserCancelsOrReplaces_Then_LateGenuineCookiesCannotRestoreAuthentication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_GenuineSessionAcrossReloadedRoots_When_ProtectionIsMissingThenRetained_Then_OnlyRetainedKeysPermitProtectedLogout(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutLifecycleTests",
+        "methodName": "Given_GenuineSessionAcrossReloadedRoots_When_ProtectionIsMissingThenRetained_Then_OnlyRetainedKeysPermitProtectedLogout",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutLifecycleTests.Given_GenuineSessionAcrossReloadedRoots_When_ProtectionIsMissingThenRetained_Then_OnlyRetainedKeysPermitProtectedLogout(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutLifecycleTests",
+        "methodName": "Given_GenuineSessionAcrossReloadedRoots_When_ProtectionIsMissingThenRetained_Then_OnlyRetainedKeysPermitProtectedLogout",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"PostgreSql\", callbackFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRaceTests",
+        "methodName": "Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"PostgreSql\", callbackFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRaceTests",
+        "methodName": "Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"SqlServer\", callbackFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRaceTests",
+        "methodName": "Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRaceTests.Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession(provider: \"SqlServer\", callbackFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRaceTests",
+        "methodName": "Given_CallbackAndProtectedLogout_When_BrowserLockContends_Then_LogoutLeavesNoUsableOlderSession",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"correlation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"duplicate-audit\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"missing-audit\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"operation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"pending\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"reserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"PostgreSql\", fault: \"ticket\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"correlation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"duplicate-audit\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"missing-audit\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"operation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"pending\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"reserved\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange(provider: \"SqlServer\", fault: \"ticket\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_LostLogoutResponse_When_CurrentTombstoneCannotProveItsExactOrigin_Then_OriginalProofDeniesWithoutAnyDurableChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_ValidReconciliationForm_When_NewLoginReplacesTheTombstone_Then_StaleConfirmationCannotMutateNewIntent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_ValidReconciliationForm_When_NewLoginReplacesTheTombstone_Then_StaleConfirmationCannotMutateNewIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutReconciliationTests.Given_ValidReconciliationForm_When_NewLoginReplacesTheTombstone_Then_StaleConfirmationCannotMutateNewIntent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutReconciliationTests",
+        "methodName": "Given_ValidReconciliationForm_When_NewLoginReplacesTheTombstone_Then_StaleConfirmationCannotMutateNewIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"PostgreSql\", expiry: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryFailureTests",
+        "methodName": "Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"PostgreSql\", expiry: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryFailureTests",
+        "methodName": "Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"SqlServer\", expiry: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryFailureTests",
+        "methodName": "Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryFailureTests.Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged(provider: \"SqlServer\", expiry: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryFailureTests",
+        "methodName": "Given_ValidReconciliation_When_ScopeDisposalFailsOrCrossesOriginalExpiry_Then_NoCookiesOrSuccessEscapeAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"PostgreSql\", recoveryFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryRaceTests",
+        "methodName": "Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"PostgreSql\", recoveryFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryRaceTests",
+        "methodName": "Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"SqlServer\", recoveryFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryRaceTests",
+        "methodName": "Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"SqlServer\", recoveryFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutRecoveryRaceTests",
+        "methodName": "Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutTests",
+        "methodName": "Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutTests",
+        "methodName": "Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutTests",
+        "methodName": "Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutTests",
+        "methodName": "Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
           "System.String"
         ]
       },

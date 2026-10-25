@@ -14,8 +14,17 @@ internal sealed class BrowserRequestBinding
     }
 
     /// <summary>Keeps the exact browser digest and generation in native protected additional data, distinct from authentication authority.</summary>
-    private BrowserRequestBinding(string digest, long generation) =>
-        AdditionalData = string.Join(Separator, Purpose, digest, generation.ToString(CultureInfo.InvariantCulture));
+    private BrowserRequestBinding(string digest, long generation, string purpose = Purpose) =>
+        AdditionalData = string.Join(Separator, purpose, digest, generation.ToString(CultureInfo.InvariantCulture));
+
+    private const string ReconciliationPurpose = "browser-logout-reconciliation-v1";
+
+    /// <summary>Binds only a verified immediate logout successor to its original generation in a separate native antiforgery purpose.</summary>
+    internal static BrowserRequestBinding? FromLogoutReconciliation(BrowserGenerationProof proof, BrowserLogoutResult result, DateTimeOffset now) =>
+        BrowserSessionPolicy.IsDigest(proof.Digest) && proof.Generation > 0 && proof.Generation < long.MaxValue &&
+        result.Generation == proof.Generation + 1 && !result.RemoteReserved &&
+        BrowserSessionPolicy.Current(result.ObservedAt, result.ObservedAt, result.ExpiresAt, now.UtcTicks)
+            ? new(proof.Digest, proof.Generation, ReconciliationPurpose) : null;
 
     /// <summary>Allows zero only after a confirmed absent row for a newly issued browser proof; missing later generations never normalize to zero.</summary>
     internal static BrowserRequestBinding? FromRead(string browserDigest, long expectedGeneration, BrowserContext? row, DateTimeOffset now)

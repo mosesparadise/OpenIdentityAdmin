@@ -51,8 +51,8 @@ internal static class BrowserLoginBoundary
                 await ProtocolHttpBoundary.RunAsync(http, factory, request, ChallengeAsync);
             }
         }
-        catch (AntiforgeryValidationException) { await FailAsync(http, StatusCodes.Status400BadRequest); }
-        catch { await FailAsync(http, StatusCodes.Status503ServiceUnavailable); }
+        catch (AntiforgeryValidationException) { http.RequestServices = originalServices; await FailAsync(http, StatusCodes.Status400BadRequest); }
+        catch { http.RequestServices = originalServices; await FailAsync(http, StatusCodes.Status503ServiceUnavailable); }
         finally
         {
             http.Features.Set<BrowserLoginReservation>(null);
@@ -69,6 +69,10 @@ internal static class BrowserLoginBoundary
         if (http.Request.Path == BrowserSessionError.Path)
         {
             return (await BrowserSessionError.ResultAsync(http), null);
+        }
+        if (http.Request.Path == BrowserLogoutPage.Path)
+        {
+            return (await scope.ServiceProvider.GetRequiredService<BrowserLogoutHandler>().RunAsync(http), null);
         }
         var service = scope.ServiceProvider.GetRequiredService<BrowserLoginService>();
         if (http.Request.Path == BrowserSessionDestinations.ResumePath)
@@ -117,7 +121,8 @@ internal static class BrowserLoginBoundary
         http.Response.Headers.Clear();
         SafeHeaders(http);
         http.Response.StatusCode = status;
-        return Task.CompletedTask;
+        return http.Request.Path == BrowserLogoutPage.Path && status == StatusCodes.Status503ServiceUnavailable
+            ? BrowserLogoutPage.Unconfirmed(http).ExecuteAsync(http) : Task.CompletedTask;
     }
 
     /// <summary>Prevents caching and referrer disclosure for all login pages, mutations and protocol returns.</summary>

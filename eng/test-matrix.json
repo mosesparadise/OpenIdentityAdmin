@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 1440,
+      "Host": 1457,
       "Architecture": 5,
       "AppHost": 65
     },
@@ -37,14 +37,14 @@
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 775
+      "Administrator": 809
     },
     "SqlServer": {
       "Persistence": 10,
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 880
+      "Administrator": 914
     }
   },
   "browser": {
@@ -111,8 +111,8 @@
       "SqlServer": 110
     },
     "BrowserSessions": {
-      "PostgreSql": 220,
-      "SqlServer": 220
+      "PostgreSql": 254,
+      "SqlServer": 254
     }
   },
   "administrator_browser_stories": {
@@ -227,6 +227,15 @@
         "BrowserLoginRaceTests",
         "BrowserLoginReplacementTests",
         "BrowserLoginTests",
+        "BrowserLogoutCookieTests",
+        "BrowserLogoutFailureTests",
+        "BrowserLogoutFramingTests",
+        "BrowserLogoutLifecycleTests",
+        "BrowserLogoutRaceTests",
+        "BrowserLogoutReconciliationTests",
+        "BrowserLogoutRecoveryFailureTests",
+        "BrowserLogoutRecoveryRaceTests",
+        "BrowserLogoutTests",
         "BrowserProductJourneyTests",
         "BrowserProductPilotTests",
         "BrowserProductRecoveryTests",
@@ -236,8 +245,8 @@
         "BrowserSessionStatusTests"
       ],
       "counts": {
-        "PostgreSql": 62,
-        "SqlServer": 62
+        "PostgreSql": 96,
+        "SqlServer": 96
       }
     }
   }
