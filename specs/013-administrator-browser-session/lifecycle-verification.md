@@ -1,5 +1,7 @@
 # T015 browser session lifecycle verification
 
+**Historical implementation candidate; superseded by [accepted internal delivery](#accepted-internal-delivery--25-october-2026) below.**
+
 Base: PR #90 squash `2a7f2d617e2faf7de443c356565826272c5f8b0f`. Implementation candidate on `092-b3-lifecycle-verification`, continuing the [accepted local logout](local-logout.md#accepted-internal-delivery--25-october-2026). T015 remains unchecked until exact-source hosted verification and independent raw-evidence review pass. Production Programs, persistence models, migrations and product behavior are unchanged.
 
 ## Scope and decisive controls
@@ -44,3 +46,53 @@ The pinned `actions/setup-dotnet` at `a98b56852c35b8e3190ac28c8c2271da59106c68` 
 The bounded correction changes only SDK `rollForward` to `disable`, retaining version `10.0.401`, `allowPrerelease=false`, the MTP runner and all eleven existing `global-json-file` setup sites. Independent architecture/host reviews inspected the pinned action's actual source: `disable` leaves the exact SDK version intact and the installer uses `--version 10.0.401`. Local SDK resolution returns `10.0.401`; a bounded TLS-verified HEAD of that version's official archive returned 200. This does not prove a future complete download. The action still attempts a floating LTS runtime first; failure there is warning-only, while SDK failure remains fatal. No SDK version, package, runtime-policy override, endpoint, test, deadline, floor or exclusion is substituted.
 
 Independent raw review of the rejected run verifies ten native TRX reports with 2,072 passes (1,552 unit + 260 BrowserSessions per provider), all prior identities preserved and zero skips. The new six-case Lifecycle groups took 71.944221 seconds on PostgreSQL and 88.336917 seconds on SQL Server. All 56 actual coverage input XML files were inspected, but cannot supply the absent aggregate floor verdict. Raw contracts pass 43 core + seven Chromium + seven WebKit and 37 Node cases. All eight actual mutation receipt ZIPs verify 48 kills, 48 baseline and 48 restored passes, unchanged oracle files and matching hashes; raw mutant TRX is not retained. These successful bounded results do not accept the failed whole run. A fresh complete corrected-head workflow and independent raw coverage review remain required.
+
+## Accepted internal delivery — 25 October 2026
+
+[PR #91](https://github.com/mosesparadise/OpenIdentityAdmin/pull/91) was normally squash-merged as `ae5c1187b44bb6df137479154ae004c5e043284d` after all 73 exact-head jobs and independent architecture, security, test, host and raw-evidence reviews passed. Exact head/base/check/review state and mergeability were reverified; no restriction was bypassed. The fetched squash tree matches both source and tested merge.
+
+| Boundary | Verified identity |
+| --- | --- |
+| Reviewed source | `c14245e7f92e0757ad5f906acc3066165a907fdc` |
+| Base | `2a7f2d617e2faf7de443c356565826272c5f8b0f` |
+| Tested merge | `6acac777af0cce67d69faf92e32b26572008dee6` |
+| Source, tested merge and squash tree | `0566c15ad40db809a8a38dd1b1ed32b491ccf557` |
+| Actual squash | `ae5c1187b44bb6df137479154ae004c5e043284d` |
+| Workflow / attempt | [40224436758](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40224436758) / 1 |
+| Coverage / acceptance jobs | `121267229940` / `121267457936` |
+
+Independent inspection of seven actual unit/provider ZIPs verifies ten raw TRX reports with **2,072 passing executions**: 1,552 unit (Host 1,457, Core 25, Architecture 5, AppHost 65), plus 260 BrowserSessions cases per provider (158 Foundations + 96 Product + six Lifecycle). Results, definitions, classes/methods, executions, entries and list bindings reconcile exactly, with zero failures, errors, aborts or skips. Every prior unit identity/multiplicity is preserved. The full Administrator catalogue preserves all 1,749 prior identities and complete portable metadata plus twelve, total 1,761. The six actual native filters form exact disjoint exhaustive groups; discovery JSON was inspected locally, while hosted ZIPs retain reports/coverage and checkout logs bind the tested merge. The corrected Lifecycle groups took 65.589248 seconds on PostgreSQL and 88.110702 seconds on SQL Server, below unchanged bounds.
+
+Independent raw contract review passes 43 core, seven Chromium and seven WebKit cases plus 37 exact Node identities/counters. Both actual production exports, the dormant browser-session document and six export-control receipts match committed contracts. Original export syscall traces/intermediate control documents are not retained, and viewer screenshots were not independently visually re-reviewed.
+
+All **56 required coverage XML inputs** were directly inspected with actual ZIP sizes/SHA-256 values bound to this final head/run. Independent recomputation of raw merged line hits and quantified branch counts passes all **15 unchanged 90% line / 80% branch floors**. Admin.Bff measures 2,698/2,866 lines (94.1382%) and 582/592 branches (98.3108%). No input, floor or exclusion was removed. All eight actual mutation ZIPs independently verify API bytes/hashes, source/tested-merge/provider bindings, unchanged manifests/verifier and all 24 oracle files, original and reconstructed mutant hashes, **48 kills, 48 baseline passes and 48 restored passes**, zero skips. These ZIPs retain sanitized receipts rather than raw mutant TRX; no raw mutant-report review is claimed.
+
+The coverage job itself invoked the installer with `--version 10.0.401`, reported the SDK already installed, then validated all 56 inputs, merged them and passed all module floors and final acceptance. No hosted `dotnet --version` command is invented. The optional preliminary LTS runtime download still returned HTTP 409 as a warning; deterministic SDK selection resolves the observed blocking installation choice without claiming that remote download failure is fixed. The initial failed run remains rejected and preserved above. Local SDK resolution and corrected build pass with zero warnings/errors; source/test logic and all deadlines remain unchanged by the one-field SDK correction.
+
+| Retained corrected artifact | ID | SHA-256 |
+| --- | --- | --- |
+| administrator-mutations-PostgreSql | `12611336125` | `0d27a5c5cbddcd5836f97e23b0d069fba1b6f8ba5b1e52b40cd9151120f001bd` |
+| administrator-mutations-SqlServer | `12610688220` | `d1c7eac5328f86e806e3774628fbb5ca80016b99d2ce16b6a4180330af4622b8` |
+| administrator-protocol-mutations-PostgreSql | `12611310471` | `c9a245009ef6c0ee13dd217178509eed085d01e274341d2dc7db3e51c4a32c97` |
+| administrator-protocol-mutations-SqlServer | `12610408367` | `1aaff583577c5d291477e899b836090b5dfd58d0908deab4441d792ed6cc8c9e` |
+| critical-mutations-PostgreSql | `12611480124` | `21515b194d77014201f40b81b7c50ee05612d8fdd6a16c0db32fcaa9e27008c1` |
+| critical-mutations-SqlServer | `12611471497` | `fb9de8e5accf35fc5122f63623a23c4e2a2f967e7d97819a226708c1e9f2bc67` |
+| foundation-administrator-PostgreSql-browsersessions-foundations | `12610473713` | `36cbf6ea23ffd07dc5533d436d092191c4493e954bbedf730590c80328cae0b2` |
+| foundation-administrator-PostgreSql-browsersessions-lifecycle | `12610457827` | `2299edd435033efe6985ed8df65503e3be135096f24c239fcb61ac4e1c64c15f` |
+| foundation-administrator-PostgreSql-browsersessions-product | `12611106398` | `bc911ad436cf915180804f75eba614aff9d1cfe90c7d81194516c46658430807` |
+| foundation-administrator-SqlServer-browsersessions-foundations | `12609914319` | `85c483621958aecc97a7bba19354bf03eb380cb457b6a05cbf3eac4d5cf3b0a4` |
+| foundation-administrator-SqlServer-browsersessions-lifecycle | `12611240486` | `e4a2cb2227b86cf15c2176a9f3c28cb267db296250eeee9ff8a521c72f4f40a0` |
+| foundation-administrator-SqlServer-browsersessions-product | `12611425934` | `6b8df83a5e0ab71dd465377120c3947f4f4e1177f13859b2810a6df5d0606f7b` |
+| foundation-contracts-chromium | `12611041588` | `e35c70e3bc3f8e8ab29bff27841faf3505b6b17bbc37d12cd4f92c0d7202ec05` |
+| foundation-contracts-core | `12611011644` | `0fdd0a6e00d2fd57730ef31e98b2abcc8e636ed05065c2e15749b9549ecabb4c` |
+| foundation-contracts-webkit | `12611380961` | `c16a10a7d9762ab6cf541dd311de6a9470cb9ad267dfa982aea6be651685b490` |
+| foundation-coverage | `12611461867` | `74e5e8c8f2a4555dd16630e17eb33f5673b98f2dbfbda8af1448d5fda8748250` |
+| foundation-unit | `12611335467` | `3af6847d32e391281f04a2c5b002e32699522bc38ea16c8ddef6c829f85fe098` |
+| governance-mutations-PostgreSql | `12611375668` | `89cf8b1916130b1c64d7a127c506079e1abf692d703ab3b551c48dc819dedbd9` |
+| governance-mutations-SqlServer | `12610667950` | `3a2aa23188849d07bf4a463e3c1809d51d103c67d534e9720be0163d7d113bb2` |
+
+**T015 is complete for internal development.** T017's protected local logout was already delivered in PR #89. These accepted controls use genuine product authority in actual exited processes, selective exact-row restoration and both real cleanup owners; they do not claim database backup restoration, transport-disconnect testing, Kestrel/TLS/browser acceptance or production scheduling.
+
+Next is **T018 protected issuer end-session composition and exact current source-session confirmation**, followed by T019 BFF continuation/return. Reuse the accepted native feasibility (PR #72), fixed B3 registration contract (PR #73) and audited upgrade (PR #74); do not repeat those delivered prerequisites. T003/T004 remain partial for later integrations. T012/T016/T020 actual browser/TLS and T021–T024 overall B3 acceptance remain open. No refresh, current API authority, React or product activation is complete.
+
+A-009/T028 restoration, PR #69/issue #70, all six historical findings, 48 human rows, 345 not-assessed controls and activation/public-release gates remain open. No expired diagnostic approval is revived.
