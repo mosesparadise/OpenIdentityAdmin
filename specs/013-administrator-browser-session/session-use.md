@@ -1,5 +1,7 @@
 # T012–T014 product journeys, session status and browser contract
 
+Status: T013/T014 and the server/provider portion of T012 accepted internally through PR #87 squash `c1d699bb0f23c1cf1b7011fc471117303e266392`. T012 browser/TLS acceptance and production activation remain open. Source checkpoints below retain development evidence and failures; final acceptance is recorded at the end.
+
 25 October 2026, Europe/London. The user authorized the next three items after accepted T011: T012, T013 and T014, with their necessary tests and dependencies. Base is `685efc7e3197180c87a406f00eaf09f0f6f76e4d`. This source checkpoint is not hosted acceptance or production activation.
 
 ## Implemented boundary
@@ -47,3 +49,49 @@ The two former BrowserSessions coverage inputs are replaced by four mandatory di
 T012 remains open for actual trusted-TLS Chromium/WebKit product journeys and deferred Firefox. The provider HTTP tests do not establish browser-engine/theme/accessibility acceptance. A-009 covers only its named deferrals, not a blanket browser/TLS waiver. T013/T014 source delivery requires the full exact-head workflow, independent source/evidence review, unchanged coverage floors and mutation verification before normal squash.
 
 All six historical findings, 48 human rows, 345 not-assessed controls, production/public-release gates, PR #69/issue #70, A-009/T028 restoration and the viewer advisory remain open. T015 onward, logout, refresh, current API authorization and React remain separate roadmap work. No expired diagnostic approval is revived.
+
+## Accepted internal delivery — 25 October 2026
+
+[PR #87](https://github.com/mosesparadise/OpenIdentityAdmin/pull/87) was normally squash-merged as `c1d699bb0f23c1cf1b7011fc471117303e266392` after all 71 exact-head checks and independent architecture/API, test, security, mutation and coverage reviews passed. Exact head, base, mergeability and review state were checked; no restriction was bypassed. Remote main and the actual squash tree match the reviewed and tested source.
+
+| Boundary | Verified identity |
+| --- | --- |
+| Reviewed source | `6d44e7438ab04bd6de18cbceb5464b53539ecfb9` |
+| Base | `685efc7e3197180c87a406f00eaf09f0f6f76e4d` |
+| Tested merge | `e660090b945e542b52e27dd7623b13056b3e893d` |
+| Source, tested merge and squash tree | `308ab39969d45ab717d4550822c5adeadd1d5e95` |
+| Actual squash | `c1d699bb0f23c1cf1b7011fc471117303e266392` |
+| Workflow / attempt | [40211611241](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40211611241) / 1 |
+| Coverage / acceptance jobs | `121228732006` / `121228869336` |
+
+Independent raw inspection of six corrected ZIP artifacts verifies nine TRX reports with **2,018 passing native executions** plus **37 passing Node cases**, with zero failures, skips, errors or aborts. Native totals are BrowserSessions 440, unit 1,535 (Host 1,440, Core 25, Architecture 5, AppHost 65), and Contracts core 43. Every raw result reconciles to its definition, class/method, execution, entry and list identity. Both providers' 158 Foundations and 62 Product cases form exact disjoint unions of 220; all 202 previously accepted BrowserSessions cases per provider remain, with 18 additions. Host retains all 1,427 prior cases plus 13; Node retains all 34 prior cases plus three. All 1,645 base Administrator identities and complete portable metadata remain, with 36 additions producing 1,681. Actual checkout logs bind the four provider groups, unit and contract execution to the tested merge.
+
+All five generated JSON contracts match final source. Native production export receipts remain repeatable and empty, with zero socket effects; three socket allocations per export are recorded separately. Hosted deterministic generation, TypeScript compilation, baseline comparison and exact contract identities pass. This does not enable production documentation or infer a network effect from allocation alone.
+
+All **54 mandatory coverage inputs** match the final run/head and the hosted download/merge manifest's artifact IDs, sizes and SHA-256 values. The nonempty-input guard and 54 unique matching merge paths pass. Independent raw merged-Cobertura recomputation passes all **15 unchanged 90% line / 80% branch floors**. Admin.Bff measures **2,618/2,790 lines (93.8351%)** and **584/594 quantified branches (98.3165%)**. Merged XML SHA-256 is `fa7e4c80c3d887f99f88626f05f5cee3396ee3289ab11ce407e4c26956b1a7a4`. All eight actual mutation ZIPs independently verify their API hashes/sizes, exact source and suite/provider identities, unchanged manifests/verifier, reconstructed original/mutant source hashes, **48 kills, 48 passing baseline controls and 48 passing restored controls**, zero skips.
+
+Review boundaries remain explicit: the nine native TRX reports, Node XML, contract exports/receipts, merged coverage XML and eight sanitized mutation receipt bundles were inspected. Individual coverage-input XML files and raw mutant TRX files were not independently unpacked; input nonemptiness is hosted evidence, and mutation ZIPs contain sanitized receipts only. Unquantified branch markers are not additional measured branches. The earlier SQL deadline failure remains unexplained and rejected; successful partitioned execution is accepted for this source without making a historical causal claim. No deadline, module floor, test assertion or browser deferral changed.
+
+| Retained final artifact | ID | SHA-256 |
+| --- | --- | --- |
+| administrator-mutations-PostgreSql | `12606251868` | `6ecebf745a3efa75c0361980d01363bc0520fbbfc0a8df1c12ecac4ee0ae291e` |
+| administrator-mutations-SqlServer | `12605663175` | `4700f19d8b699fe0c0cac3d06fc2cc0ec042ccbdade8e0a5d315df5e202f323c` |
+| administrator-protocol-mutations-PostgreSql | `12605618684` | `3d4523d65956ff2d028df292d5e8d1ea9ca77993e894c98441f775a8d268910e` |
+| administrator-protocol-mutations-SqlServer | `12605767432` | `202e9841b220eed652f9ec9415d6898eca19496fee51c32b5449b36378db71d5` |
+| critical-mutations-PostgreSql | `12606226827` | `8e30b66fb56227487d0b000985a8cf54370dcab456cba609c46b747120a5f722` |
+| critical-mutations-SqlServer | `12606441054` | `3a4e3207b8361f7a7fee901ad317c27b32833b78d87fc00ece7eab8bced728bd` |
+| foundation-administrator-PostgreSql-browsersessions-foundations | `12606440378` | `9edb7479d6b576e0fd1a180500b6b838415e760b220a170457bb863c9ececaf3` |
+| foundation-administrator-PostgreSql-browsersessions-product | `12605324783` | `d7f652667a9dd9bdcecf9aefd81972979e7cff9c61134606c3cc0b34728c7310` |
+| foundation-administrator-SqlServer-browsersessions-foundations | `12606007060` | `4da9e63bef3fed0f86735d50d4604e29e13d0954121bbb615b545e42425e6cbb` |
+| foundation-administrator-SqlServer-browsersessions-product | `12605543169` | `a692adaa02c3dd695207dd4e8fecc91fcf36f739ce51a2577fd5203f98afea13` |
+| foundation-contracts-core | `12605514331` | `0fbcbf4155596059a60c859b1417a0e80ba3f33c2c2def03fc798c39206b87ab` |
+| foundation-coverage | `12605948605` | `2b6caaa83208b323d74394ca42492371b6186a0840d01db4de523bc724f7d844` |
+| foundation-unit | `12605558396` | `286a2cc6539c9507308f0afeb87bb5bcf2d91963c0c4030b7c244e93f5e218dc` |
+| governance-mutations-PostgreSql | `12605822435` | `e4aef27d3bfd6c1a81d551b908349e53da59550cdbd54d2ee0aa92891a387886` |
+| governance-mutations-SqlServer | `12606332081` | `05345e8cbd16fd90f8b14aa443891edd4fca17ae863a3efd9af964b4a5d9031f` |
+
+**T013 and T014 are complete for internal development.** T012's server/provider product-journey controls are accepted, but T012 remains unchecked for actual trusted-TLS Chromium/WebKit product journeys and deferred Firefox evidence. In-process HTTP over real stores does not establish browser engines, theme or accessibility acceptance. A-009 is not a blanket TLS/browser waiver. Production composition and full B3 remain pending.
+
+Next is T015's remaining lifecycle/failure verification; its callback-versus-logout cases require T017's protected local logout implementation. Reuse the accepted callback/replacement and rollback controls rather than repeating them. T016 browser evidence and T018/T019 native issuer-assisted logout remain open. No M02-C refresh, M02-D current API authority, React or product activation is complete.
+
+All six historical findings, 48 human rows, 345 not-assessed controls, production/public-release gates, A-009/T028 browser restoration, PR #69/issue #70 and the viewer advisory remain open. No expired diagnostic approval is revived.
