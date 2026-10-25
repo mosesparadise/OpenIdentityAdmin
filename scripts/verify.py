@@ -24,7 +24,7 @@ parser.add_argument("--partition", choices=["all", "standard", "foundation", "is
 parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission", "BrowserSessions"])
 parser.add_argument("--browser-story", choices=["Accounts", "Security"])
 parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
-parser.add_argument("--browser-session-group", choices=["Foundations", "Product"])
+parser.add_argument("--browser-session-group", choices=["Foundations", "Product", "Lifecycle"])
 args = parser.parse_args()
 if HISTORY_MODE_VARIABLE in os.environ:
     parser.error("Ordinary acceptance cannot run with a history diagnostic mode")

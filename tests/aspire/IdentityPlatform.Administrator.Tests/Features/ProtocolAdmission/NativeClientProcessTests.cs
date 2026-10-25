@@ -44,7 +44,7 @@ public sealed class NativeClientProcessTests(BootstrapFixture fixture)
     }
 
     /// <summary>Builds an otherwise accepted frame whose absent key files stop composition before any persistence registration or access.</summary>
-    private static NativeClientProcessInput MissingKeys(string provider)
+    internal static NativeClientProcessInput MissingKeys(string provider)
     {
         _ = DatabaseProviderParser.Parse(provider);
         var directory = Path.Combine(Path.GetTempPath(), MissingKeyDirectory + Guid.NewGuid().ToString(IdentifierFormat));

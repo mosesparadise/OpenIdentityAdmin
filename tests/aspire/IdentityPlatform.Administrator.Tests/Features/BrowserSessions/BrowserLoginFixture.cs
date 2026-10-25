@@ -76,6 +76,28 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     /// <summary>Imports separately disposable native certificate objects from the retained synthetic files.</summary>
     internal NativeClientCredentials ReloadCredentials() => NativeClientInteroperabilityTests.Load(material);
 
+    /// <summary>Builds a bounded private child request from only this disposable runtime store and retained synthetic files.</summary>
+    internal NativeClientProcessInput ProcessInput(BrowserProcessOperation operation, string cookies, string? formToken = null,
+        Dictionary<string, string?>? retained = null) => new()
+        {
+            Provider = provider,
+            RuntimeConnection = Database.RuntimeConnection,
+            Credentials = material.Settings(),
+            Issuer = Profile.Issuer.AbsoluteUri,
+            Client = Profile.ClientUri.AbsoluteUri,
+            Callback = Profile.Callback.AbsoluteUri,
+            KeyId = Profile.Registration.Key.KeyId,
+            UtcMilliseconds = Issuer.Account.Journey.Clock.GetUtcNow().ToUnixTimeMilliseconds(),
+            Cookie = cookies,
+            Browser = new()
+            {
+                Operation = operation,
+                UtcTicks = Issuer.Account.Journey.Clock.GetUtcNow().UtcTicks,
+                Protection = retained ?? tickets.Settings(),
+                FormToken = formToken
+            }
+        };
+
     /// <summary>Completes the exact BFF intent through real password and unused MFA forms, returning only its one-use completion selector.</summary>
     internal async Task<string> CompleteAsync(string intent)
     {

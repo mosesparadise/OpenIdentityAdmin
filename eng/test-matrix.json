@@ -37,14 +37,14 @@
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 809
+      "Administrator": 815
     },
     "SqlServer": {
       "Persistence": 10,
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 914
+      "Administrator": 920
     }
   },
   "browser": {
@@ -111,8 +111,8 @@
       "SqlServer": 110
     },
     "BrowserSessions": {
-      "PostgreSql": 254,
-      "SqlServer": 254
+      "PostgreSql": 260,
+      "SqlServer": 260
     }
   },
   "administrator_browser_stories": {
@@ -247,6 +247,19 @@
       "counts": {
         "PostgreSql": 96,
         "SqlServer": 96
+      }
+    },
+    "Lifecycle": {
+      "classes": [
+        "BrowserCleanupAdmissionTests",
+        "BrowserOrphanCleanupTests",
+        "BrowserProcessFramingTests",
+        "BrowserProcessTests",
+        "BrowserRestoreTests"
+      ],
+      "counts": {
+        "PostgreSql": 6,
+        "SqlServer": 6
       }
     }
   }

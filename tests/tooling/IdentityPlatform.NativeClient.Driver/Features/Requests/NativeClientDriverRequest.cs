@@ -1,6 +1,7 @@
 using System.Text.Encodings.Web;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
+using IdentityPlatform.NativeClient.Driver.Features.BrowserSessions;
 using IdentityPlatform.NativeClient.Driver.Features.Protocol;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,10 @@ internal static class NativeClientDriverRequest
     /// <summary>Returns a private result only after all request callbacks, native scopes, root services and imported keys finish disposal.</summary>
     internal static async Task<NativeClientProcessReply> RunAsync(NativeClientProcessInput input, CancellationToken token)
     {
+        if (input.Browser is { } browser)
+        {
+            return await BrowserDriverRequest.RunAsync(input, browser, token);
+        }
         var clock = new NativeClientDriverClock(DateTimeOffset.FromUnixTimeMilliseconds(input.UtcMilliseconds));
         var configuration = new ConfigurationBuilder().AddInMemoryCollection(input.Credentials).Build();
         using var configurationOwner = configuration as IDisposable;

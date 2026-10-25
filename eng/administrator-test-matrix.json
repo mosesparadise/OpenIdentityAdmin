@@ -822,7 +822,13 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"PostgreSql\", recoveryFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"PostgreSql\", recoveryFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"PostgreSql\", cleanupFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"PostgreSql\", cleanupFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserOrphanCleanupTests.Given_UndeliveredGenuineCallback_When_TicketThenCoordinationBoundsExpire_Then_BothOwnersReclaimOnlyEligibleRowsAndPreserveEvidence(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessFramingTests.Given_ClosedBrowserProcessOperations_When_PrivateFieldsAreMixedOrInvalid_Then_InputIsRejectedBeforeNativeServices(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessTests.Given_GenuineProductSession_When_ExitedProcessesReopenKeysAndPerformLogout_Then_OnlyRetainedKeysCanMutateAndOldCookiesStayDenied(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRestoreTests.Given_LoggedOutGenuineBrowser_When_ExactRowsAreRestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndEveryBoundaryRemainsRevoked(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1751,7 +1757,13 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"SqlServer\", recoveryFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutRecoveryRaceTests.Given_ReconciliationAndExplicitLogin_When_BrowserWriterLockContends_Then_NewIntentSurvivesBothCommitOrders(provider: \"SqlServer\", recoveryFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_GenuineProductSession_When_ProtectedLogoutCommits_Then_OldCookiesDenyAndAuditRetainsActualActor(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutTests.Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"SqlServer\", cleanupFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"SqlServer\", cleanupFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserOrphanCleanupTests.Given_UndeliveredGenuineCallback_When_TicketThenCoordinationBoundsExpire_Then_BothOwnersReclaimOnlyEligibleRowsAndPreserveEvidence(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessFramingTests.Given_ClosedBrowserProcessOperations_When_PrivateFieldsAreMixedOrInvalid_Then_InputIsRejectedBeforeNativeServices(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessTests.Given_GenuineProductSession_When_ExitedProcessesReopenKeysAndPerformLogout_Then_OnlyRetainedKeysCanMutateAndOldCookiesStayDenied(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRestoreTests.Given_LoggedOutGenuineBrowser_When_ExactRowsAreRestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndEveryBoundaryRemainsRevoked(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -37149,6 +37161,238 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
         "typeName": "BrowserLogoutTests",
         "methodName": "Given_LostLogoutResponse_When_OriginalBrowserExplicitlyReconciles_Then_ImmutableTombstoneAndAllDurableStateAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"PostgreSql\", cleanupFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCleanupAdmissionTests",
+        "methodName": "Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"PostgreSql\", cleanupFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCleanupAdmissionTests",
+        "methodName": "Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"SqlServer\", cleanupFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCleanupAdmissionTests",
+        "methodName": "Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserCleanupAdmissionTests.Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows(provider: \"SqlServer\", cleanupFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserCleanupAdmissionTests",
+        "methodName": "Given_FullRetainedCapacity_When_ProtectedStartAndCleanupContend_Then_OnlyFreedCapacityAdmitsWithoutChangingRetainedRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserOrphanCleanupTests.Given_UndeliveredGenuineCallback_When_TicketThenCoordinationBoundsExpire_Then_BothOwnersReclaimOnlyEligibleRowsAndPreserveEvidence(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserOrphanCleanupTests",
+        "methodName": "Given_UndeliveredGenuineCallback_When_TicketThenCoordinationBoundsExpire_Then_BothOwnersReclaimOnlyEligibleRowsAndPreserveEvidence",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserOrphanCleanupTests.Given_UndeliveredGenuineCallback_When_TicketThenCoordinationBoundsExpire_Then_BothOwnersReclaimOnlyEligibleRowsAndPreserveEvidence(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserOrphanCleanupTests",
+        "methodName": "Given_UndeliveredGenuineCallback_When_TicketThenCoordinationBoundsExpire_Then_BothOwnersReclaimOnlyEligibleRowsAndPreserveEvidence",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessFramingTests.Given_ClosedBrowserProcessOperations_When_PrivateFieldsAreMixedOrInvalid_Then_InputIsRejectedBeforeNativeServices(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserProcessFramingTests",
+        "methodName": "Given_ClosedBrowserProcessOperations_When_PrivateFieldsAreMixedOrInvalid_Then_InputIsRejectedBeforeNativeServices",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessFramingTests.Given_ClosedBrowserProcessOperations_When_PrivateFieldsAreMixedOrInvalid_Then_InputIsRejectedBeforeNativeServices(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserProcessFramingTests",
+        "methodName": "Given_ClosedBrowserProcessOperations_When_PrivateFieldsAreMixedOrInvalid_Then_InputIsRejectedBeforeNativeServices",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessTests.Given_GenuineProductSession_When_ExitedProcessesReopenKeysAndPerformLogout_Then_OnlyRetainedKeysCanMutateAndOldCookiesStayDenied(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserProcessTests",
+        "methodName": "Given_GenuineProductSession_When_ExitedProcessesReopenKeysAndPerformLogout_Then_OnlyRetainedKeysCanMutateAndOldCookiesStayDenied",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserProcessTests.Given_GenuineProductSession_When_ExitedProcessesReopenKeysAndPerformLogout_Then_OnlyRetainedKeysCanMutateAndOldCookiesStayDenied(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserProcessTests",
+        "methodName": "Given_GenuineProductSession_When_ExitedProcessesReopenKeysAndPerformLogout_Then_OnlyRetainedKeysCanMutateAndOldCookiesStayDenied",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRestoreTests.Given_LoggedOutGenuineBrowser_When_ExactRowsAreRestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndEveryBoundaryRemainsRevoked(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRestoreTests",
+        "methodName": "Given_LoggedOutGenuineBrowser_When_ExactRowsAreRestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndEveryBoundaryRemainsRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRestoreTests.Given_LoggedOutGenuineBrowser_When_ExactRowsAreRestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndEveryBoundaryRemainsRevoked(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRestoreTests",
+        "methodName": "Given_LoggedOutGenuineBrowser_When_ExactRowsAreRestoredThenInvalidated_Then_ResurrectionIsDemonstratedAndEveryBoundaryRemainsRevoked",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
