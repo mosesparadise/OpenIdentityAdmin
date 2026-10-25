@@ -1,0 +1,116 @@
+{
+  "components": {
+    "schemas": {
+      "BrowserSessionStatus": {
+        "properties": {
+          "authenticated": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "subject": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "required": [
+          "authenticated"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "BrowserSession": {
+        "in": "cookie",
+        "name": "__Host-identity-admin-session",
+        "type": "apiKey"
+      }
+    }
+  },
+  "info": {
+    "description": "Contract foundation. No production management operations are implemented.",
+    "title": "IdentityPlatform Admin BFF browser API",
+    "version": "1"
+  },
+  "openapi": "3.1.1",
+  "paths": {
+    "/bff/session": {
+      "get": {
+        "operationId": "ReadBrowserSession",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BrowserSessionStatus"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "Cache-Control": {
+                "description": "Local authentication responses must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "Cache-Control": {
+                "description": "Local authentication responses must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "description": "Local authentication responses must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {},
+          {
+            "BrowserSession": []
+          }
+        ],
+        "summary": "Read local browser session status without renewal",
+        "tags": [
+          "IdentityPlatform.Api.Contracts.Tests"
+        ],
+        "x-browser-session-status": true
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "IdentityPlatform.Api.Contracts.Tests"
+    }
+  ]
+}

@@ -69,8 +69,8 @@ def main():
         run(['python3', 'scripts/check_contract_supply_chain.py'])
         run(['npm', 'run', 'check', '--prefix', str(PACKAGE)])
         files = sorted(str(p) for folder in ('generated', 'tests/generated') for p in (PACKAGE / folder).glob('*.json'))
-        if len(files) != 4:
-            raise ValueError('Expected two actual and two fixture documents')
+        if len(files) != 5:
+            raise ValueError('Expected two production, one dormant browser and two fixture documents')
         run(['node', str(PACKAGE / 'tooling/validate.mjs'), *files])
         run(['node', str(PACKAGE / 'tooling/baseline.mjs')])
         node_report = output / 'node.xml'

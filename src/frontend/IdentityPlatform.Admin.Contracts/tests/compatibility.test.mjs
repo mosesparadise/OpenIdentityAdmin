@@ -100,3 +100,21 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
     assert.throws(() => compatibility(unsupported, unsupported, 'bff'), ContractViolation);
   }
 });
+
+const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
+const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
+test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
+  assert.equal(inventory(browserStatus, 'bff').size, 1);
+  assert.throws(() => inventory(browserStatus, 'api'));
+});
+test('Given browser status When authentication or cache semantics drift Then validation rejects the contract', () => {
+  for (const mutate of [op => { op.security = []; }, op => { delete op['x-browser-session-status']; },
+    op => { op.responses['200'].headers['Cache-Control'].schema.const = 'public'; },
+    op => { delete op.responses['503']; }, op => { op['x-downstream-api-version'] = 1; }]) {
+    assert.throws(() => inventory(statusChanged(mutate), 'bff'));
+  }
+});
+test('Given browser status When a native route or extra verb is substituted Then no broad exception admits it', () => {
+  assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/login/resume'] = doc.paths['/bff/session']; delete doc.paths['/bff/session']; }), 'bff'));
+  assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/session'].post = structuredClone(op); }), 'bff'));
+});

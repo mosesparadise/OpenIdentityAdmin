@@ -114,7 +114,11 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
         .GetAsync(QueryHelpers.AddQueryString(ResumePath, BrowserIssuerHttp.Completion, completion), TestContext.Current.CancellationToken);
 
     /// <summary>Runs the genuine fresh issuer cookie through native authorization after product start, ceremony and resume.</summary>
-    internal async Task<Uri> CallbackAsync(bool fresh = true)
+    internal async Task<Uri> CallbackAsync(bool fresh = true) =>
+        await AuthorizeAsync(await ChallengeAsync(), fresh ? IssuerCookies.GetCookieHeader(Profile.Issuer) : Issuer.Cookie, error: !fresh);
+
+    /// <summary>Stops at the real PAR redirect so expiry and authority substitution can occur before native authorization.</summary>
+    internal async Task<Uri> ChallengeAsync()
     {
         var intent = await StartAsync(await EntryAsync());
         var completion = await CompleteAsync(intent);
@@ -122,15 +126,25 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
         Assert.Equal(HttpStatusCode.Redirect, resume.StatusCode);
         var destination = resume.Headers.Location!;
         Assert.True(destination.GetLeftPart(UriPartial.Path) == new Uri(Profile.Issuer, AdministratorProtocolScenario.AuthorizePath).AbsoluteUri);
-        var fields = QueryHelpers.ParseQuery(destination.Query).ToDictionary(pair => pair.Key, pair => Assert.Single(pair.Value)!);
-        var authorized = await NativeAccountHttp.InvokeAsync(Issuer, AdministratorProtocolScenario.AuthorizePath, fields,
-            services: protocol.Services, configureHttp: http => http.Request.Headers.Cookie = fresh ? IssuerCookies.GetCookieHeader(Profile.Issuer) : Issuer.Cookie);
+        return destination;
+    }
+
+    /// <summary>Submits an explicit genuine issuer cookie to the actual native PAR endpoint and verifies its exact fixed callback.</summary>
+    internal async Task<Uri> AuthorizeAsync(Uri destination, string cookie, bool error = false)
+    {
+        var authorized = await AuthorizationAsync(destination, cookie);
         NativeAccountFlow.RequireSuccess(authorized, (int)HttpStatusCode.Redirect);
         var callback = new Uri(authorized.Location);
         Assert.True(callback.GetLeftPart(UriPartial.Path) == Profile.Callback.AbsoluteUri);
-        Assert.Equal(!fresh, QueryHelpers.ParseQuery(callback.Query).ContainsKey(OpenIddict.Abstractions.OpenIddictConstants.Parameters.Error));
+        Assert.Equal(error, QueryHelpers.ParseQuery(callback.Query).ContainsKey(OpenIddict.Abstractions.OpenIddictConstants.Parameters.Error));
         return callback;
     }
+
+    /// <summary>Retains native local error outcomes for expired PAR without inventing a callback redirect.</summary>
+    internal Task<NativeAccountResult> AuthorizationAsync(Uri destination, string cookie) =>
+        NativeAccountHttp.InvokeAsync(Issuer, AdministratorProtocolScenario.AuthorizePath,
+            QueryHelpers.ParseQuery(destination.Query).ToDictionary(pair => pair.Key, pair => Assert.Single(pair.Value)!),
+            services: protocol.Services, configureHttp: http => http.Request.Headers.Cookie = cookie);
 
     /// <summary>Reads a detached durable result through real Sessions-only credentials.</summary>
     internal async Task<T> ReadAsync<T>(Func<AdminSessionDbContext, Task<T>> action)
