@@ -34,6 +34,7 @@ internal static class Setup
             var includesVersion = options.Document.ShouldInclude;
             options.Document.ShouldInclude = description => includesVersion(description) && description.GroupName == options.Description.GroupName;
             options.Document.AddDocumentTransformer<MetadataTransformer>();
+            options.Document.AddDocumentTransformer<BrowserSessions.BrowserSessionContractTransformer>();
         });
         return builder;
     }

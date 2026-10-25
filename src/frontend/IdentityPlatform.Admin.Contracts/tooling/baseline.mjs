@@ -7,6 +7,8 @@ import { validate } from './validate.mjs';
 const root = fileURLToPath(new URL('../../../../', import.meta.url));
 const foundationBase = '0c1de1e8b5dbee5f53d0efff7814fdc03dfd6e93';
 const files = ['generated/v1.json', 'generated/bff-v1.json', 'tests/generated/v1.fixture.json', 'tests/generated/bff-v1.fixture.json'];
+const browserFile = 'generated/bff-v1.browser.json';
+const browserIntroductionBase = '685efc7e3197180c87a406f00eaf09f0f6f76e4d';
 const prefix = 'src/frontend/IdentityPlatform.Admin.Contracts/';
 function git(args) {
   const result = spawnSync('git', args, { cwd: root, encoding: 'utf8', timeout: 10000 });
@@ -37,7 +39,14 @@ export async function compareBaseline(base) {
       compatibility(previous, current, surface, allowEmpty);
     }
   }
-  return { base, contracts: files.length, initialBaseline: !established };
+  const browser = JSON.parse(fs.readFileSync(root + prefix + browserFile));
+  await validate(browser, 'bff');
+  if (paths.has(prefix + browserFile)) {
+    compatibility(JSON.parse(git(['show', `${base}:${prefix}${browserFile}`])), browser, 'bff');
+  } else if (base !== browserIntroductionBase && base !== foundationBase) {
+    throw new Error('Dormant browser baseline is missing');
+  }
+  return { base, contracts: files.length + 1, initialBaseline: !established };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

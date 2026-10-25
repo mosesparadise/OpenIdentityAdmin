@@ -10,6 +10,7 @@ const check = process.argv.includes('--check');
 const inputs = [
   ['actual/v1.json', 'generated/v1.json'],
   ['actual/bff-v1.json', 'generated/bff-v1.json'],
+  ['bff-v1.browser.json', 'generated/bff-v1.browser.json'],
   ['v1.fixture.json', 'tests/generated/v1.fixture.json'],
   ['bff-v1.fixture.json', 'tests/generated/bff-v1.fixture.json']
 ];

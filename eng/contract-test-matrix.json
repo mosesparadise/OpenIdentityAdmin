@@ -1,7 +1,7 @@
 {
-  "core": 42,
+  "core": 43,
   "browser": 7,
-  "node": 34,
+  "node": 37,
   "browsers": [
     "chromium",
     "firefox",
@@ -41,6 +41,9 @@
     "native schema validator rejects malformed response",
     "diff evidence rejects malformed output and unsuccessful processes",
     "baseline inventory rejects omission except the exact initial commit",
-    "unsupported referenced or path-level preconditions fail closed even unchanged"
+    "unsupported referenced or path-level preconditions fail closed even unchanged",
+    "Given dormant browser status When inventoried Then only the explicit public local read is admitted",
+    "Given browser status When authentication or cache semantics drift Then validation rejects the contract",
+    "Given browser status When a native route or extra verb is substituted Then no broad exception admits it"
   ]
 }

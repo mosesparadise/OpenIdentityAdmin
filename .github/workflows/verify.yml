@@ -163,8 +163,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
           - { profile: PostgreSql, partition: administrator, story: ProtocolAdmission, label: administrator-PostgreSql-protocoladmission }
           - { profile: SqlServer, partition: administrator, story: ProtocolAdmission, label: administrator-SqlServer-protocoladmission }
-          - { profile: PostgreSql, partition: administrator, story: BrowserSessions, label: administrator-PostgreSql-browsersessions }
-          - { profile: SqlServer, partition: administrator, story: BrowserSessions, label: administrator-SqlServer-browsersessions }
+          - { profile: PostgreSql, partition: administrator, story: BrowserSessions, browser_session_group: Foundations, label: administrator-PostgreSql-browsersessions-foundations }
+          - { profile: PostgreSql, partition: administrator, story: BrowserSessions, browser_session_group: Product, label: administrator-PostgreSql-browsersessions-product }
+          - { profile: SqlServer, partition: administrator, story: BrowserSessions, browser_session_group: Foundations, label: administrator-SqlServer-browsersessions-foundations }
+          - { profile: SqlServer, partition: administrator, story: BrowserSessions, browser_session_group: Product, label: administrator-SqlServer-browsersessions-product }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }
@@ -194,6 +196,7 @@ jobs:
       - run: python3 scripts/test_persistence_selection.py
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
+      - run: python3 scripts/test_browser_session_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
@@ -213,7 +216,7 @@ jobs:
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -255,6 +258,7 @@ jobs:
       - run: python3 scripts/test_persistence_selection.py
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
+      - run: python3 scripts/test_browser_session_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py

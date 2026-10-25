@@ -31,6 +31,9 @@ public sealed class BrowserLoginCompositionTests(NativeClientCredentialFixture f
     [InlineData("/bff/login")]
     [InlineData("/bff/login/resume")]
     [InlineData("/BFF/Login/")]
+    [InlineData("/bff/session")]
+    [InlineData("/BFF/Session/")]
+    [InlineData("/bff/login/error")]
     public void Given_IncompatibleNativeProfile_When_BrowserMiddlewareIsComposed_Then_StartupFailsSafely(string fault)
     {
         using var keys = NativeClientProfileTests.Load(fixture);
@@ -47,4 +50,14 @@ public sealed class BrowserLoginCompositionTests(NativeClientCredentialFixture f
         var error = Assert.Throws<InvalidOperationException>(() => new ApplicationBuilder(root).UseBrowserLogin());
         Assert.Equal(IdentityPlatform.Admin.Bff.Features.BrowserSessions.Setup.InvalidComposition, error.Message);
     }
+    /// <summary>Encoded path aliases already fail native profile canonicalization before product route composition.</summary>
+    [Fact]
+    public void Given_EncodedProductPath_When_NativeProfileIsCreated_Then_CanonicalizationRejectsTheAlias()
+    {
+        const string EncodedCallback = "https://client.example/bff/login/%65rror";
+        using var keys = NativeClientProfileTests.Load(fixture);
+        Assert.Throws<IdentityPlatform.Admin.Bff.Features.Authentication.Credentials.ClientCredentialFailure>(() =>
+            NativeClientProfile.Create(NativeClientProfileTests.Issuer, NativeClientProfileTests.Client, EncodedCallback, NativeClientProfileTests.KeyId, keys));
+    }
+
 }

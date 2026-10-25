@@ -6,6 +6,8 @@ using IdentityPlatform.AuthServer.Features.Accounts.Maintenance;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
+using IdentityPlatform.AuthServer.Features.Pilot;
+using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
@@ -29,23 +31,17 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
     internal Uri Issuer => issuer;
 
     /// <summary>Explicitly enables only the reviewed browser account adapters; production calls retain their disabled default.</summary>
-    internal static async Task<BrowserIssuerHost> CreateAsync(JourneyScenario scenario, string provider, params IInterceptor[] faults)
+    internal static Task<BrowserIssuerHost> CreateAsync(JourneyScenario scenario, string provider, params IInterceptor[] faults) =>
+        CreateCoreAsync(scenario, provider, false, faults);
+
+    /// <summary>Enables a same-key pilot only inside this isolated account fixture for genuine scheme-isolation controls.</summary>
+    internal static Task<BrowserIssuerHost> CreatePilotAsync(JourneyScenario scenario, string provider) =>
+        CreateCoreAsync(scenario, provider, true, []);
+
+    /// <summary>Composes one explicit account host and preserves cleanup ownership under failed startup.</summary>
+    private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults)
     {
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        {
-            ApplicationName = typeof(IssuerCredentials).Assembly.GetName().Name,
-            EnvironmentName = Environments.Production
-        });
-        builder.WebHost.UseTestServer();
-        builder.Logging.ClearProviders();
-        builder.Configuration.AddInMemoryCollection(scenario.IssuerSettings);
-        builder.Services.AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Lease.RuntimeConnection);
-        builder.Services.AddDbContext<PlatformDbContext>(options => options.AddInterceptors(faults));
-        var credentials = builder.Services.AddIssuerProtection(builder.Configuration)!;
-        builder.Services.AddSingleton<TimeProvider>(scenario.Clock);
-        builder.Services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies();
-        builder.Services.AddAccounts(pilot: false, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, Client));
-        ExcludeBackgroundCleanup(builder.Services);
+        var builder = CreateBuilder(scenario, provider, pilot, faults, out var credentials);
         WebApplication? app = null;
         try
         {
@@ -53,11 +49,15 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
             app.Services.VerifyIssuerProtection();
             app.UseRouting();
             app.UseRequestTimeouts();
-            app.UseAccountProtection(pilot: false);
+            app.UseAccountProtection(pilot);
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapAccounts();
             await app.StartAsync(TestContext.Current.CancellationToken);
+            if (pilot)
+            {
+                Assert.Equal(0, await app.InitializePilotAsync());
+            }
             return new(app, credentials, credentials.Issuer);
         }
         catch
@@ -69,6 +69,32 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
             credentials.Dispose();
             throw;
         }
+    }
+
+    /// <summary>Shares real provider, key and account setup while limiting the optional pilot to explicit disposable tests.</summary>
+    private static WebApplicationBuilder CreateBuilder(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults, out IssuerCredentials credentials)
+    {
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        {
+            ApplicationName = typeof(IssuerCredentials).Assembly.GetName().Name,
+            EnvironmentName = Environments.Production
+        });
+        builder.WebHost.UseTestServer();
+        builder.Logging.ClearProviders();
+        builder.Configuration.AddInMemoryCollection(scenario.IssuerSettings);
+        builder.Services.AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Lease.RuntimeConnection);
+        builder.Services.AddDbContext<PlatformDbContext>(options => options.AddInterceptors(faults));
+        credentials = builder.Services.AddIssuerProtection(builder.Configuration)!;
+        if (pilot)
+        {
+            BrowserPilotCookie.Configure(builder, scenario);
+            builder.Services.AddPilotServices().AddProtocol(credentials);
+        }
+        builder.Services.AddSingleton<TimeProvider>(scenario.Clock);
+        builder.Services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies();
+        builder.Services.AddAccounts(pilot, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, Client));
+        ExcludeBackgroundCleanup(builder.Services);
+        return builder;
     }
 
     /// <summary>Isolates request transaction/snapshot faults from the separately tested production cleanup worker without removing unrelated hosted services.</summary>

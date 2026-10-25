@@ -26,7 +26,8 @@ export function inventory(document, surface, allowEmpty = false) {
   const ids = new Set();
   for (const [route, item] of Object.entries(document.paths ?? {})) {
     if (item.parameters?.some(p => p.in === 'header' || '$ref' in p)) throw new ContractViolation('Path-level header semantics require explicit compatibility support');
-    if (!route.startsWith(prefix)) throw new ContractViolation('Route outside management surface');
+    const status = surface === 'bff' && route === '/bff/session';
+    if (!status && !route.startsWith(prefix)) throw new ContractViolation('Route outside management surface');
     for (const [method, op] of Object.entries(item)) {
       if (!methods.has(method)) continue;
       for (const parameter of op.parameters ?? []) {
@@ -39,6 +40,11 @@ export function inventory(document, surface, allowEmpty = false) {
       }
       if (!op.operationId || ids.has(op.operationId)) throw new ContractViolation('Missing or duplicate operation ID');
       ids.add(op.operationId);
+      if (status) {
+        requireBrowserStatus(op, method);
+        operations.set(`${method} ${route}`, op);
+        continue;
+      }
       const scheme = surface === 'bff' ? 'BrowserSession' : 'AdminBearer';
       if (!isDeepStrictEqual(op.security, [{ [scheme]: [] }])) throw new ContractViolation('Missing or weakened authentication requirement');
       if (typeof op['x-required-permission'] !== 'string' || !op['x-required-permission']) throw new ContractViolation('Missing permission');
@@ -69,7 +75,7 @@ export function securityCompatibility(previous, current, surface, allowEmpty = f
   for (const [key, old] of before) {
     const next = after.get(key);
     if (!next) throw new ContractViolation('Removed operation');
-    for (const property of ['operationId', 'security', 'x-required-permission', 'x-downstream-api-version']) {
+    for (const property of ['operationId', 'security', 'x-required-permission', 'x-downstream-api-version', 'x-browser-session-status']) {
       if (!isDeepStrictEqual(old[property], next[property])) throw new ContractViolation(`Changed ${property}`);
     }
     // Header semantics need explicit review even where generic schema diff calls a relaxation additive.
@@ -80,4 +86,17 @@ export function securityCompatibility(previous, current, surface, allowEmpty = f
     }
   }
   return after.size;
+}
+
+// This one public local read is not a management API or downstream permission decision.
+function requireBrowserStatus(op, method) {
+  if (method !== 'get' || op.operationId !== 'ReadBrowserSession' || op['x-browser-session-status'] !== true ||
+      !isDeepStrictEqual(op.security, [{}, { BrowserSession: [] }]) || op.requestBody || op.parameters?.length ||
+      op['x-required-permission'] !== undefined || op['x-downstream-api-version'] !== undefined) {
+    throw new ContractViolation('Invalid local browser status boundary');
+  }
+  if (Object.keys(op.responses ?? {}).sort().join() !== '200,400,503') throw new ContractViolation('Missing status failure outcomes');
+  for (const response of Object.values(op.responses)) {
+    if (response.headers?.['Cache-Control']?.schema?.const !== 'no-store') throw new ContractViolation('Status response can be cached');
+  }
 }

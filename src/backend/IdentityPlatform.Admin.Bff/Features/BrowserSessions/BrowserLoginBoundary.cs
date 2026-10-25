@@ -66,6 +66,10 @@ internal static class BrowserLoginBoundary
     {
         await using var scope = factory.CreateAsyncScope();
         http.RequestServices = scope.ServiceProvider;
+        if (http.Request.Path == BrowserSessionError.Path)
+        {
+            return (await BrowserSessionError.ResultAsync(http), null);
+        }
         var service = scope.ServiceProvider.GetRequiredService<BrowserLoginService>();
         if (http.Request.Path == BrowserSessionDestinations.ResumePath)
         {
