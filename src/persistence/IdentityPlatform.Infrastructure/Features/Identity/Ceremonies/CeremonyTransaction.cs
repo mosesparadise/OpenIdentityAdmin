@@ -3,6 +3,7 @@ using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
+using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -163,6 +164,23 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
         CeremonyAudit.Add(database, action, accepted, userId, now);
         await database.SaveChangesAsync(Token);
         RequireContinuationTime(clock);
+        await transaction.CommitAsync(Token);
+        completed = true;
+    }
+
+    /// <summary>Rechecks the original source lifetime after persistence and immediately before committing exact-session logout.</summary>
+    internal async Task CommitLogoutAsync(string userId, long now, JourneySessionProof authority, CeremonyClock clock, JourneyLogoutDeadline? confirmation = null)
+    {
+        RequireCurrent();
+        if (mode != CeremonyMode.Authentication || !Plan.Users.Contains(userId, StringComparer.Ordinal))
+        {
+            throw new FactorUnavailableException();
+        }
+        CeremonyAudit.Add(database, CeremonyEvent.Logout, true, userId, now);
+        await database.SaveChangesAsync(Token);
+        RequireCurrent();
+        authority.RequireTime(clock.Now);
+        confirmation?.RequireCurrent(clock.Now);
         await transaction.CommitAsync(Token);
         completed = true;
     }

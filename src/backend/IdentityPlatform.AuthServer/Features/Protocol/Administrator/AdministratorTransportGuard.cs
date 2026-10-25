@@ -18,6 +18,16 @@ internal static class AdministratorTransportGuard
     /// <summary>Runs after shared body/form/time/rate limits and native endpoint inference, including native-owned PAR.</summary>
     internal static async ValueTask ValidateAsync(OpenIddictServerEvents.ProcessRequestContext context, ProtocolHostRequest host)
     {
+        if (context.EndpointType == OpenIddictServerEndpointType.EndSession)
+        {
+            var http = context.Transaction.GetHttpRequest()!.HttpContext;
+            if (http.RequestServices.GetService<IssuerLogoutEnabled>() is null || context.Options.Issuer is not { } issuer ||
+                !await IssuerLogoutInput.AllowsAsync(http, issuer, context.CancellationToken))
+            {
+                context.Reject(OpenIddictConstants.Errors.InvalidRequest);
+            }
+            return;
+        }
         if (host.IsPilot || context.EndpointType is not (OpenIddictServerEndpointType.Authorization or OpenIddictServerEndpointType.Token or
             OpenIddictServerEndpointType.PushedAuthorization))
         {
