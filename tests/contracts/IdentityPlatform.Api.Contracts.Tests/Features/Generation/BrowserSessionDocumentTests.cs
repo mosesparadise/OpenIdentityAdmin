@@ -41,7 +41,7 @@ public sealed class BrowserSessionDocumentTests
     private const string StatusPath = "/bff/session";
     private const string ExportFile = "bff-v1.browser.json";
 
-    /// <summary>Native generation is repeatable and contains only the real local-status contract, never callback/resume or unimplemented logout.</summary>
+    /// <summary>Native generation is repeatable and contains only the real local-status contract, never callback/resume or HTML logout forms.</summary>
     [Fact]
     public async Task Given_DormantProductStatus_When_NativeContractIsGenerated_Then_OnlyMinimalVersionedMetadataIsExported()
     {

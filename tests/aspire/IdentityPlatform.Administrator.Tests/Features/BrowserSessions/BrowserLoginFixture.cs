@@ -66,6 +66,16 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     internal Task<BrowserLoginHost> PeerAsync(Action<IServiceCollection>? configure = null) =>
         BrowserLoginHost.CreateAsync(Database, Issuer, protocol.Services, Profile, keys, protection, configure);
 
+    /// <summary>Imports a new protection owner from the actual retained synthetic ring and wrapping files; no live provider is shared.</summary>
+    internal SessionProtection ReloadProtection() => tickets.Protection();
+
+    /// <summary>Builds a new native root with independently imported credential objects and caller-owned protection, without claiming process restart.</summary>
+    internal Task<BrowserLoginHost> ReloadAsync(SessionProtection retained, NativeClientCredentials imported) =>
+        BrowserLoginHost.CreateAsync(Database, Issuer, protocol.Services, Profile, imported, retained);
+
+    /// <summary>Imports separately disposable native certificate objects from the retained synthetic files.</summary>
+    internal NativeClientCredentials ReloadCredentials() => NativeClientInteroperabilityTests.Load(material);
+
     /// <summary>Completes the exact BFF intent through real password and unused MFA forms, returning only its one-use completion selector.</summary>
     internal async Task<string> CompleteAsync(string intent)
     {

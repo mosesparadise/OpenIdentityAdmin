@@ -20,7 +20,7 @@ internal static class Setup
         services.AddSingleton(protection.Provider);
         services.TryAddSingleton<TimeProvider>(TimeProvider.System);
         services.AddSingleton(new SessionTicketCodec(protection.Provider));
-        services.AddScoped<BrowserLoginProof>().AddScoped<BrowserLoginService>().AddScoped<BrowserSessionReader>();
+        services.AddScoped<BrowserLoginProof>().AddScoped<BrowserLoginService>().AddScoped<BrowserSessionReader>().AddScoped<BrowserLogoutHandler>();
         services.AddSingleton<IAntiforgeryAdditionalDataProvider, BrowserAntiforgeryData>();
         services.AddAntiforgery(options =>
         {
@@ -56,7 +56,7 @@ internal static class Setup
         var factory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
         var clock = app.ApplicationServices.GetRequiredService<TimeProvider>();
         var callback = app.ApplicationServices.GetRequiredService<NativeClientProfile>().Callback.AbsolutePath;
-        app.Use((http, next) => http.Request.Path == BrowserLoginBoundary.Login || http.Request.Path == BrowserSessionDestinations.ResumePath || http.Request.Path == BrowserSessionError.Path
+        app.Use((http, next) => http.Request.Path == BrowserLoginBoundary.Login || http.Request.Path == BrowserLogoutPage.Path || http.Request.Path == BrowserSessionDestinations.ResumePath || http.Request.Path == BrowserSessionError.Path
             ? BrowserLoginBoundary.RunAsync(http, factory, clock) : http.Request.Path == BrowserSessionBoundary.Path
                 ? BrowserSessionBoundary.RunAsync(http, factory, clock) : http.Request.Path == callback
                 ? BrowserCallbackBoundary.RunAsync(http, factory, clock) : next(http));
@@ -71,6 +71,7 @@ internal static class Setup
         if (!profile.Registration.IsBrowserSession || profile.Issuer.AbsoluteUri != destinations.Issuer.AbsoluteUri ||
             profile.ClientUri.AbsoluteUri != destinations.Client.AbsoluteUri ||
             string.Equals(callback, BrowserLoginBoundary.Login, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(callback, BrowserLogoutPage.Path, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(callback, BrowserSessionDestinations.ResumePath, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(callback, BrowserSessionBoundary.Path, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(callback, BrowserSessionError.Path, StringComparison.OrdinalIgnoreCase))

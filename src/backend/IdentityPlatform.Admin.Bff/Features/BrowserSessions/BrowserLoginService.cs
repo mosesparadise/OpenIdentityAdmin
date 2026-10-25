@@ -53,7 +53,7 @@ internal sealed class BrowserLoginService(AdminSessionDbContext database, TimePr
         {
             return Results.BadRequest();
         }
-        var actor = await ActorAsync(browser, handle, http.RequestAborted);
+        var actor = await new BrowserSessionActor(database, clock, codec).ReadAsync(browser, handle, http.RequestAborted);
         if (!actor.Allowed)
         {
             return Results.BadRequest();
@@ -103,27 +103,6 @@ internal sealed class BrowserLoginService(AdminSessionDbContext database, TimePr
         }
         http.Features.Set(new BrowserLoginPublication(pending.Created, pending.Expires, http.Features.Get<BrowserLoginPublication>()));
         return await BrowserLoginReservation.ReserveAsync(http, pending, completion, new BrowserLoginCompletion(database, clock, codec));
-    }
-
-    /// <summary>Accepts an audit actor only from a live authentic B1 envelope and the exact current browser/ticket association.</summary>
-    private async Task<(bool Allowed, string? Digest)> ActorAsync(BrowserGenerationProof browser, string? handle, CancellationToken token)
-    {
-        if (handle is null)
-        {
-            return (true, null);
-        }
-        if (!SessionHandle.TryDigest(handle, out var digest))
-        {
-            return (false, null);
-        }
-        var ticket = await database.Set<AdminSessionTicket>().AsNoTracking().SingleOrDefaultAsync(row => row.Digest == digest, token);
-        if (ticket is null || !codec.IsAuthentic(ticket, clock.GetUtcNow()))
-        {
-            return (true, null);
-        }
-        var context = await database.Set<BrowserContext>().AsNoTracking().SingleOrDefaultAsync(row => row.Digest == browser.Digest, token);
-        return BrowserTicketAcceptance.Accept(handle, browser.Digest, browser.Generation, context, ticket, codec, clock.GetUtcNow())
-            ? (true, digest) : (false, null);
     }
 
     /// <summary>Stages a cookie only after successful local state work; the outer boundary still owns final deadline/disposal admission.</summary>

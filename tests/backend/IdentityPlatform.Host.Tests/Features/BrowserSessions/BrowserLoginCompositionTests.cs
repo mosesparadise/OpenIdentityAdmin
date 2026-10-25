@@ -34,6 +34,8 @@ public sealed class BrowserLoginCompositionTests(NativeClientCredentialFixture f
     [InlineData("/bff/session")]
     [InlineData("/BFF/Session/")]
     [InlineData("/bff/login/error")]
+    [InlineData("/bff/logout")]
+    [InlineData("/BFF/Logout/")]
     public void Given_IncompatibleNativeProfile_When_BrowserMiddlewareIsComposed_Then_StartupFailsSafely(string fault)
     {
         using var keys = NativeClientProfileTests.Load(fixture);

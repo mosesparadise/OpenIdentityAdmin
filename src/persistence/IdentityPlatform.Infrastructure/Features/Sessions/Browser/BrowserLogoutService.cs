@@ -41,7 +41,7 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
         }
         owner.Guard(browser.ObservedAt, browser.ObservedAt, browser.ExpiresAt);
         owner.Audit(browser, BrowserMutation.Logout, actor);
-        return await owner.CommitAsync() ? new BrowserLogoutResult(browser.Generation, remote) : null;
+        return await owner.CommitAsync() ? new BrowserLogoutResult(browser.Generation, remote, browser.ObservedAt, browser.ExpiresAt) : null;
     }
 
     /// <summary>Transitions only the original one-use correlation; a browser return never authenticates or claims issuer revocation.</summary>
@@ -113,8 +113,10 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
 }
 
 /// <summary>Separates committed local invalidation from optional remote capacity, without claiming any issuer outcome.</summary>
-internal sealed class BrowserLogoutResult(long generation, bool remoteReserved)
+internal sealed class BrowserLogoutResult(long generation, bool remoteReserved, long observedAt, long expiresAt)
 {
     internal long Generation { get; } = generation;
     internal bool RemoteReserved { get; } = remoteReserved;
+    internal long ObservedAt { get; } = observedAt;
+    internal long ExpiresAt { get; } = expiresAt;
 }
