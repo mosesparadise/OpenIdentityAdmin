@@ -1,6 +1,6 @@
 # T018 protected native issuer end-session
 
-**Implementation candidate — 25 October 2026.** Base `411245d48ffb93efe4c9de62edd6077b61d18f15`; branch `095-b3-issuer-logout`. T018 remains unchecked until exact-source hosted verification and independent evidence review pass. This continues accepted T015/T017 and reuses the native end-session validation and audited fixed-registration upgrades delivered in PRs #72–74. Those prerequisites are not implemented again.
+**Historical implementation candidate — 25 October 2026; superseded by [accepted delivery](#accepted-internal-delivery--25-october-2026) below.** Base `411245d48ffb93efe4c9de62edd6077b61d18f15`; branch `095-b3-issuer-logout`. T018 remains unchecked until exact-source hosted verification and independent evidence review pass. This continues accepted T015/T017 and reuses the native end-session validation and audited fixed-registration upgrades delivered in PRs #72–74. Those prerequisites are not implemented again.
 
 ## Scope and implementation
 
@@ -25,7 +25,7 @@ The exact B3 manifest is observed again before revocation. This read-only observ
 
 Session selectors, cookies, confirmation tokens and redirect state remain in memory. Assertions on private collections/responses use scalar or Boolean comparisons, so failures cannot dump selector dictionaries or response objects. Synthetic native secret/output faults use fixed markers; no production credentials are involved.
 
-## Selection and local evidence
+## Historical selection and local evidence
 
 SDK 10.0.401; OpenIddict 7.7.1. Host and Administrator builds pass with zero warnings/errors. Focused Host controls pass **24/24, zero skips**, 1.236 seconds (`/tmp/b3-issuer-host-final/IssuerLogoutPolicy.trx`). Native discovery preserves all 1,761 prior Administrator identities and complete portable metadata, adding 36 cases, for **1,797**. Both actual provider traits and all six actual filtered discoveries are checked. BrowserSessions is **278/provider**: unchanged Foundations 158 and Product 96, Lifecycle 24. Ordinary Administrator counts are PostgreSQL **833** and SQL Server **938**. Host is **1,481** and unit total **1,576**. These are discovery counts, not provider pass claims.
 
@@ -33,7 +33,7 @@ The first focused Host attempt retained 21/23 passes and two failures: raw autho
 
 Source quality and assurance checks pass without allowance growth. All 226 Python regressions pass after updating their independently asserted expected counts to the new reviewed inventory. Complete discovery and independent source review are recorded with the candidate. Architecture, security and test reviewers required original deadline enforcement, immutable separately validated URI, actual body bounds, complete Provider traits, strict postcommit output assertions and private failure diagnostics; these corrections are included. Source review is not runtime acceptance. Required workflow selection remains 73 jobs, 56 coverage inputs and 15 unchanged module floors; no timeout, legacy allowance, coverage exclusion or prior test was removed.
 
-## Remaining work and gates
+## Candidate-stage remaining work and gates
 
 Exact-source hosted tests, coverage/raw-report and independent evidence review are pending. T018 stays unchecked. T019 must implement the BFF continuation/return and accurate local/remote status; this issuer route alone does not supply it. No refresh capability, global logout, grant revocation or production activation is introduced. Actual trusted TLS, browser/theme/accessibility and broader logout acceptance remain T020 and the existing deferred acceptance tasks. The TestServer HTTP fixtures are not socket/TLS/browser-engine evidence.
 
@@ -58,3 +58,84 @@ The correction encloses the actual native ASP.NET sign-out API: retain the exact
 The two rejected runs retain their reports and source bindings. Corrected token restoration still requires new exact-source provider/full-workflow evidence; no failed or partial run closes T018.
 
 The token-corrected candidate preserves all 1,797 prior identities/metadata and adds the two native cancellation cases, totaling **1,799**. All six actual native group discoveries match. BrowserSessions is now **279/provider** (158 Foundations + 96 Product + 25 Lifecycle); ordinary Administrator is **834 PostgreSQL / 939 SQL Server**. Host/unit counts remain 1,481/1,576. The cancellation substitution is an end-to-end integrity control and may be rejected by the existing dispatcher before the adapter's final check; it is not an isolated mutation proof of that new comparison. Independent architecture, security and test source reviews accept this bounded correction, with runtime acceptance still pending.
+
+
+## Accepted internal delivery — 25 October 2026
+
+[PR #93](https://github.com/mosesparadise/OpenIdentityAdmin/pull/93) was normally squash-merged as `12c2d2e6e866a407b46c8c1af7525aeb95a123e1` after independent architecture, security, test and raw-evidence review and all 73 required exact-head checks passed. There were no GitHub review submissions or inline review comments and no requested reviewers; the independent source/evidence dispositions above are agent reviews, not human approvals. GitHub reported a clean mergeable head; no restriction was bypassed. T018 is complete for internal development. The earlier pending wording records historical checkpoints.
+
+| Binding | Verified value |
+| --- | --- |
+| Source | `8351389f8a1ea80d82835707ac2c0cd86f2b184e` |
+| Base | `411245d48ffb93efe4c9de62edd6077b61d18f15` |
+| Tested merge | `bd3856d832af5f3d7c4d3028a89883bafbbb4baf` |
+| Source/tested-merge/squash tree | `1547b32ee75e594978e949d62cab801124c1cd5d` |
+| Workflow | [40232412700](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40232412700), attempt 1, 73 success / 0 failure / 0 skipped / 0 cancelled |
+| Coverage / final acceptance jobs | `121291250322` / `121291353047` |
+| Independent local receipt SHA-256 | `61987c573fc0ca9130d9f831b5d880eeb5e2da2b36ec7f1ba7ea8d36facf3b5f` |
+
+The fetched squash tree equals the source and actual tested merge tree. Native discovery preserves all 1,761 base Administrator identities and metadata plus 38 new cases (1,799 total). Actual six provider/group discoveries reconcile to Foundations 158, Product 96 and Lifecycle 25 per provider. Both raw Lifecycle reports pass 25/25 including genuine positive native return and all four native fault variants. Unit reports pass 1,576 including 1,481 Host; scoped unit plus BrowserSessions is 2,134 passing executions across ten reports. All prior 1,552 unit identities/multiplicities are preserved plus 24.
+
+Independent review directly inspected all 63 retained ordinary TRX reports: **4,300 executed/passed, zero failed**, preserving all 4,238 prior report name/class/method multiplicities plus 62 (24 Host and 19 Lifecycle per provider). This counts executions, not unique source test identities. The selection reconciles 4,073 native-profile executions + 172 browser executions + 57 contract TRX executions minus two exact A-009 WebKit certificate deferrals. The actual two WebKit deferral receipts declare `deferred_not_run`, `cause_established:false`, `acceptance:false`; each corresponding 29-case raw selection equals the 30-case Chromium selection minus only that named case. Neither deferred case is credited as passed. Contract reports pass 43 core, seven Chromium and seven WebKit; 37 Node cases pass separately. Firefox stays deferred.
+
+All 56 required raw coverage XML inputs were directly inspected from 57 foundation ZIPs. Recomputed floors pass for all 15 modules with unchanged 90% line / 80% branch policy, no allowance or exclusion growth. The table below records exact counts; modules with no branch sites retain the established no-branch policy.
+
+| Module | Covered / valid lines | Covered / valid branches |
+| --- | --- | --- |
+| `IdentityPlatform.Core` | 91 / 92 | 7 / 8 |
+| `IdentityPlatform.Infrastructure` | 6529 / 6996 | 605 / 624 |
+| `IdentityPlatform.ServiceDefaults` | 61 / 61 | 18 / 18 |
+| `IdentityPlatform.Migrator` | 608 / 616 | 72 / 72 |
+| `IdentityPlatform.AuthServer` | 4721 / 4985 | 674 / 682 |
+| `IdentityPlatform.Admin.Api` | 71 / 71 | 10 / 10 |
+| `IdentityPlatform.Admin.Bff` | 2698 / 2866 | 598 / 608 |
+| `IdentityPlatform.Worker` | 26 / 26 | 0 / 0 |
+| `IdentityPlatform.AppHost` | 152 / 153 | 14 / 14 |
+| `IdentityPlatform.Database.Abstractions` | 111 / 112 | 4 / 4 |
+| `IdentityPlatform.Database.PostgreSql` | 96 / 96 | 2 / 2 |
+| `IdentityPlatform.Database.SqlServer` | 93 / 93 | 6 / 6 |
+| `IdentityPlatform.Database.Hosting` | 42 / 44 | 4 / 4 |
+| `IdentityPlatform.Database.PostgreSql.Hosting` | 13 / 13 | 0 / 0 |
+| `IdentityPlatform.Database.SqlServer.Hosting` | 13 / 13 | 0 / 0 |
+
+All eight actual mutation ZIPs were inspected: 48 decisive kills, 48 passing baseline controls and 48 passing restored controls, with source/restored/mutant hashes and 24 oracle bindings checked. These ZIPs retain sanitized receipts, not raw mutant TRX; direct raw-mutant-report review is not claimed. Actual production exports, dormant session contract and six exporter control receipts match committed documents. Syscall traces/intermediate control documents were not retained; screenshots were not visually re-reviewed. Native selection metadata comes from actual local discovery; hosted ZIPs retain raw TRX/coverage, and checkout logs bind the exact tested merge.
+
+### Retained hosted artifact bindings
+
+Every artifact below belongs to run `40232412700` and source `8351389f8a1ea80d82835707ac2c0cd86f2b184e`. IDs locate the hosted ZIPs; hashes bind the actual downloaded bytes. Local audit receipts are workspace evidence, not a permanent repository archive.
+
+| Artifact | ID | ZIP SHA-256 |
+| --- | --- | --- |
+| `administrator-mutations-PostgreSql` | `12613788883` | `43aa08ff2bc54550b1dcd18936087a7d7366e096d32ca7509a04b2b95ce2dceb` |
+| `administrator-mutations-SqlServer` | `12614175778` | `fac3fce3a7155b569046b1987f9d86d1ecc546bebf563fffdfc7c01bf760dbae` |
+| `administrator-protocol-mutations-PostgreSql` | `12613479194` | `d9029505152bca521224513e9af71a6e812ad86234683dcdf846c53b06ef9a08` |
+| `administrator-protocol-mutations-SqlServer` | `12613669073` | `5f9d72c116775dcbcbc097ddb09e622abce6030f9fd89e20c90528e5dbcc2635` |
+| `critical-mutations-PostgreSql` | `12613173274` | `7a88b10ae8bf1854df5144a0d9d5f5c8db34f5611e38ce01554a4bade6831a42` |
+| `critical-mutations-SqlServer` | `12613093539` | `54b1db07ff150e04dab87a618561d96dcdcfa3030b7cdef209ee65a754965da2` |
+| `foundation-administrator-PostgreSql-browsersessions-foundations` | `12614140044` | `2f9902a041302632d66b51b81974a14bed6a8287c71c33ce993307030ba51a4f` |
+| `foundation-administrator-PostgreSql-browsersessions-lifecycle` | `12613383976` | `16001a58a3746127c4e039575ced0ad58dde8baba80fa6ac889439353834b234` |
+| `foundation-administrator-PostgreSql-browsersessions-product` | `12613554099` | `106718c09698e5286d7ce735033cb88b1e98a3e3a394c6a9f5fef18a1e206e27` |
+| `foundation-administrator-SqlServer-browsersessions-foundations` | `12613479934` | `09a5ce6cea1aa54bf6d110d11aa673dc9d2dbbedbdddc2676621085ba90bea21` |
+| `foundation-administrator-SqlServer-browsersessions-lifecycle` | `12613463098` | `2bdf60b7f03c06cd16063d4dee39e3ea7218b9116acddaea416aed1bf54f4825` |
+| `foundation-administrator-SqlServer-browsersessions-product` | `12614036146` | `39579bd21bb8cc4abe70fa91c53c7a2659466e4e27b58dd392bbe16e414d9aea` |
+| `foundation-contracts-chromium` | `12613624669` | `4dc2d8915963b7212d07d18563932826eeff8303ff4ad83afaf6a4644c7e2fb0` |
+| `foundation-contracts-core` | `12613243514` | `0c829fa121c5c51469b7a26d093978e0e6ffc889e810ebde107a219fc542d482` |
+| `foundation-contracts-webkit` | `12613963095` | `4dbf26d2379381c3b55a4ca68e562c991d44d4646492112f3711ba459a7ed19d` |
+| `foundation-coverage` | `12613398987` | `e47b86769a305c272e781a91e584f777a0b2e9dd2d5d5d73c8ca2854549a0037` |
+| `foundation-unit` | `12612899695` | `11a1b1f585e78f7843c5c6dc8491fc5e26cfeee1f6790e5461e2450c7f95bb3c` |
+| `governance-mutations-PostgreSql` | `12612918614` | `302a1414d3aa6cc5c9b19c122904688905c64eb63e9ef2491cc088ec9760b0c9` |
+| `governance-mutations-SqlServer` | `12613529667` | `38dac176b0a30a42804f4c4eb94e2f5f461a7ae9c7326dd0ca6f155db66985a3` |
+
+### Rejected evidence and remaining limits
+
+The first run `40230383276` concluded cancelled with 42 successful, four failed and 27 cancelled jobs. Both Lifecycle reports retain eight passed / sixteen failed. The second run `40231202195` concluded cancelled with 65 successful, three failed and five cancelled jobs; both Lifecycle reports retain sixteen passed / eight failed. Neither run supplies acceptance or aggregate coverage evidence. The mode-selection and shared native cancellation-token corrections above have preserved positive and negative controls in the accepted source. The earlier local Aspire startup failure remains distinct and was not repeated.
+
+The genuine native HTTP provider fixture is in-process TestServer, not socket/TLS/browser-engine evidence. Competing submissions prove duplicate-submission outcome, not a witnessed database lock order. Registration observation does not serialize concurrent external profile disablement. Cancellation substitution is end-to-end integrity evidence, not isolated mutation proof of the adapter comparison. These limits remain unchanged.
+
+T003/T004 remaining integration, T012/T016/T020 browser/TLS evidence, T019–T024, A-009/T028 restoration, PR #69/issue #70, all six historical findings, 48 human rows, 345 not-assessed controls and activation/public-release gates remain open. No refresh, global logout, grant revocation or production composition is enabled, and no expired diagnostic approval is revived.
+
+### Next bounded implementation: T019
+
+Reuse the delivered durable local logout and `BrowserLogoutContinuation`/`RemoteAsync` state machine, existing logout-cookie purpose and fixed return destination; no new provider migration is needed. Add the protected explicit local-only/issuer-assisted choice, purpose-separated browser proof and exact fixed issuer link. Only after known local commit and scope disposal may a separate owned operation advance the reserved remote continuation. Remote quota exhaustion or failure must preserve confirmed local success. T017 acknowledgement reconciliation remains local-only and must not reconstruct a remote reservation.
+
+The return boundary must require exact HTTPS GET framing, one canonical state, authentic protected logout cookie and current persisted browser/generation/original-time binding. A one-use return records only unverified issuer status; it must never authenticate, renew or infer remote commit from query/redirect. Add both-provider positive journeys and forged/cross-browser/stale/replayed/concurrent returns, quota, audit/commit/cleanup failure and lost-navigation controls. Keep composition dormant and leave actual browser/TLS acceptance to the remaining tasks. This is a reviewed next-step design, not completed T019 implementation.
