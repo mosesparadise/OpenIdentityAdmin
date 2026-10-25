@@ -1,5 +1,6 @@
 using System.Runtime.ExceptionServices;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
+using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -15,6 +16,8 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
     private ProtocolResponseCapture? response;
     private ProtocolResponseOutput? errorOutput;
     private ProtocolStorageCheckpoint? errorCheckpoint;
+    private JourneyLogout.Receipt? logout;
+    private ProtocolResponseOutput? logoutOutput;
     private int active;
     private int faulted;
     internal TimeProvider Clock => clock;
@@ -166,6 +169,23 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         }
     }
 
+    /// <summary>Admits only a real completed issuer logout and its frozen output, with no unrelated native write phase.</summary>
+    internal void AdmitIssuerLogout(ProtocolResponseOutput output, JourneyLogout.Receipt receipt)
+    {
+        receipt.RequireCurrent(this);
+        lock (sync)
+        {
+            if (logout is not null || errorOutput is not null || response is null || phases.Count != 0)
+            {
+                Fail();
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            output.RequireFrozenCapture(this, response);
+            logout = receipt;
+            logoutOutput = output;
+        }
+    }
+
     /// <summary>Separates read-only responses, committed writes and native errors without treating rollback as success.</summary>
     internal void RequirePublication(ProtocolResponseOutcome outcome)
     {
@@ -177,6 +197,13 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         catch { Fail(); throw; }
         lock (sync)
         {
+            if (outcome == ProtocolResponseOutcome.VerifiedIssuerLogout && logout is not null && logoutOutput is not null &&
+                response is not null && phases.Count == 0 && errorOutput is null)
+            {
+                logout.RequireCurrent(this);
+                logoutOutput.RequireFrozenCapture(this, response);
+                return;
+            }
             if (outcome == ProtocolResponseOutcome.VerifiedNativeError && errorOutput is not null && response is not null &&
                 errorCheckpoint?.Matches(this, phases) == true)
             {

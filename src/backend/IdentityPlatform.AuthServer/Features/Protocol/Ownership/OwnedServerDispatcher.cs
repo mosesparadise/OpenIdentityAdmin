@@ -38,6 +38,18 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
     /// <summary>Routes only explicitly enabled fixed-client issuance into a fresh child; all other native paths preserve their dispatcher.</summary>
     private ValueTask DispatchNativeAsync<TContext>(TContext context) where TContext : OpenIddictServerEvents.BaseContext
     {
+        if (services.GetService<IssuerLogoutEnabled>() is not null)
+        {
+            if (context is OpenIddictServerEvents.ValidateEndSessionRequestContext endSession)
+            {
+                return IssuerLogoutFlow.ValidateAsync(endSession, () => native.DispatchAsync(endSession));
+            }
+            if (context is OpenIddictServerEvents.ProcessSignOutContext signOut)
+            {
+                return (IssuerLogoutFlow.Find(context.Transaction) ?? throw ProtocolStorageOwner.Unavailable())
+                    .SignOutAsync(signOut, () => native.DispatchAsync(signOut));
+            }
+        }
         if (context is OpenIddictServerEvents.ProcessRequestContext request && services.GetService<AdministratorAccountIssuanceEnabled>() is not null)
         {
             services.GetService<ProtocolHostRequest>()?.Track(request);

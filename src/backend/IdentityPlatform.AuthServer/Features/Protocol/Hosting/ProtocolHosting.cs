@@ -67,6 +67,10 @@ internal static class ProtocolHosting
     {
         var outer = request.Outer ?? throw ProtocolStorageOwner.Unavailable();
         request.RequireInferred(outer);
+        if (endpoint == OpenIddictServerEndpointType.EndSession && IssuerLogoutFlow.Find(outer.Transaction) is { } logout)
+        {
+            return logout.Claim(outer);
+        }
         if (NativeErrorCoordinator.Claim(http, outer))
         {
             return ProtocolResponseOutcome.VerifiedNativeError;

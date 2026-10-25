@@ -10,9 +10,19 @@ internal static class AdministratorRegistration
     /// <summary>Requires an active write epoch and uncached native managers; the caller retains profile ownership through its final commit.</summary>
     internal static async ValueTask<AdministratorRegistrationBinding?> ReadLockedAsync(ProtocolStorageScope scope,
         AdministratorRegistrationPolicy expected, CancellationToken token)
+        => await ReadAsync(scope, expected, write: true, token);
+
+    /// <summary>Observes exact registration for a nonissuing logout request; this does not serialize concurrent profile disablement.</summary>
+    internal static ValueTask<AdministratorRegistrationBinding?> ObserveLogoutAsync(ProtocolStorageScope scope,
+        AdministratorRegistrationPolicy expected, CancellationToken token) => expected.IsBrowserSession
+        ? ReadAsync(scope, expected, write: false, token) : ValueTask.FromResult<AdministratorRegistrationBinding?>(null);
+
+    /// <summary>Shares the exact manifest reader while keeping issuance's required write ownership explicit.</summary>
+    private static async ValueTask<AdministratorRegistrationBinding?> ReadAsync(ProtocolStorageScope scope,
+        AdministratorRegistrationPolicy expected, bool write, CancellationToken token)
     {
         var owner = scope.Owner;
-        var phase = owner.Capture(write: true);
+        var phase = owner.Capture(write);
         var profile = await owner.RunAsync(current => new ValueTask<AdministratorProtocolProfile?>(owner.Database
             .Set<AdministratorProtocolProfile>().AsNoTracking().SingleOrDefaultAsync(row => row.Id == AdministratorProtocolProfile.SingletonId, current)), token);
         if (profile is not { Enabled: true, Revision: > 0 } || profile.RedirectUri != expected.RedirectUri || profile.PublicKeyFingerprint != expected.Key.Fingerprint)

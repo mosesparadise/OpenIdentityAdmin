@@ -8,6 +8,10 @@ using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Issuer.DataProtection;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol;
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
@@ -38,10 +42,23 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
     internal static Task<BrowserIssuerHost> CreatePilotAsync(JourneyScenario scenario, string provider) =>
         CreateCoreAsync(scenario, provider, true, []);
 
+    /// <summary>Enables the actual owned native end-session pipeline over an already audited B3 registration.</summary>
+    internal static Task<BrowserIssuerHost> CreateLogoutAsync(JourneyScenario scenario, string provider,
+        AdministratorRegistrationPolicy policy, Action<IServiceCollection>? configure = null, params IInterceptor[] faults) =>
+        CreateCoreAsync(scenario, provider, false, faults, policy, configure);
+
     /// <summary>Composes one explicit account host and preserves cleanup ownership under failed startup.</summary>
-    private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults)
+    private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,
+        AdministratorRegistrationPolicy? logout = null, Action<IServiceCollection>? configure = null)
     {
         var builder = CreateBuilder(scenario, provider, pilot, faults, out var credentials);
+        if (logout is not null)
+        {
+            builder.Services.AddProtocolStorageOwnership().AddProtocol(credentials, new ProtocolProfiles(false, logout));
+            builder.Services.AddBrowserSessionProtocol().AddIssuerLogout();
+            builder.Services.AddOptions<OpenIddict.Server.OpenIddictServerOptions>().Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
+        }
+        configure?.Invoke(builder.Services);
         WebApplication? app = null;
         try
         {
@@ -50,6 +67,10 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
             app.UseRouting();
             app.UseRequestTimeouts();
             app.UseAccountProtection(pilot);
+            if (logout is not null)
+            {
+                app.UseProtocolHosting();
+            }
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapAccounts();

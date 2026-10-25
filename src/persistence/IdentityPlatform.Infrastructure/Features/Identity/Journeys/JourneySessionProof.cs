@@ -23,6 +23,7 @@ internal sealed class JourneySessionProof
     private readonly AdministratorSession session;
     private readonly string fingerprint;
     internal string PublicId => session.PublicId;
+    internal JourneySessionDeadline Deadline => new(createdAt, expiresAt, lastActivityAt);
 
     /// <summary>Captures only freshly loaded, natively checked stored session authority.</summary>
     private JourneySessionProof(PlatformDbContext database, CeremonyTransaction owner, AdministratorSession session)
@@ -75,9 +76,16 @@ internal sealed class JourneySessionProof
     }
 
     /// <summary>Preserves the initiating session's absolute and idle limits even after intentional credential invalidation.</summary>
-    internal void RequireTime(long now)
+    internal void RequireTime(long now) => Deadline.RequireCurrent(now);
+}
+
+/// <summary>Retains only original time bounds for post-disposal publication, without account or database objects.</summary>
+internal readonly record struct JourneySessionDeadline(long CreatedAt, long ExpiresAt, long LastActivityAt)
+{
+    /// <summary>Denies clock rollback and equality at either original absolute or idle limit.</summary>
+    internal void RequireCurrent(long now)
     {
-        if (now < createdAt || now >= expiresAt || now - lastActivityAt >= AdministratorPolicy.IdleSeconds)
+        if (now < CreatedAt || now >= ExpiresAt || now - LastActivityAt >= AdministratorPolicy.IdleSeconds)
         {
             throw new FactorUnavailableException();
         }

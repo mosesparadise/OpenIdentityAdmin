@@ -7,5 +7,6 @@ internal enum ProtocolResponseOutcome
     ReadOnly,
     Committed,
     NativeError,
-    VerifiedNativeError
+    VerifiedNativeError,
+    VerifiedIssuerLogout
 }
