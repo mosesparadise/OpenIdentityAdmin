@@ -1,3 +1,5 @@
+using IdentityPlatform.NativeClient.Driver.Features.BrowserSessions;
+
 namespace IdentityPlatform.NativeClient.Driver.Features.Protocol;
 
 /// <summary>Limits the test-only process to a local TLS issuer, one fixed native client profile and separately protected synthetic credentials.</summary>
@@ -21,7 +23,7 @@ internal static class NativeClientDriverInput
         Text(input.KeyId);
         Text(input.Issuer);
         var issuer = new Uri(input.Issuer, UriKind.Absolute);
-        if (issuer.Scheme != Uri.UriSchemeHttps || !issuer.IsLoopback || issuer.UserInfo.Length != 0 || issuer.Query.Length != 0 ||
+        if (issuer.Scheme != Uri.UriSchemeHttps || (input.Browser is null ? !issuer.IsLoopback : input.Issuer != BrowserDriverInput.Issuer) || issuer.UserInfo.Length != 0 || issuer.Query.Length != 0 ||
             issuer.Fragment.Length != 0 || input.Client != Client || input.Callback != Callback ||
             input.Credentials is null || !input.Credentials.Keys.ToHashSet(StringComparer.Ordinal).SetEquals(CredentialNames))
         {
@@ -32,6 +34,11 @@ internal static class NativeClientDriverInput
             Text(value);
         }
         _ = DateTimeOffset.FromUnixTimeMilliseconds(input.UtcMilliseconds);
+        if (input.Browser is { } browser)
+        {
+            BrowserDriverInput.Require(input, browser);
+            return;
+        }
         if (input.RequestUri is null)
         {
             if (input.Cookie is not null)
@@ -50,7 +57,7 @@ internal static class NativeClientDriverInput
     }
 
     /// <summary>Rejects oversized, missing or control-bearing input without including its value in an exception.</summary>
-    private static void Text(string? value)
+    internal static void Text(string? value)
     {
         if (string.IsNullOrEmpty(value) || value.Length > TextLimit || value.Any(char.IsControl))
         {

@@ -3,7 +3,7 @@ import re
 from test_selection import administrator_invocations, require_administrator_story
 
 PROVIDERS = ('PostgreSql', 'SqlServer')
-GROUPS = ('Foundations', 'Product')
+GROUPS = ('Foundations', 'Product', 'Lifecycle')
 NAMESPACE = 'IdentityPlatform.Administrator.Tests.Features.BrowserSessions'
 
 
@@ -49,10 +49,10 @@ def browser_session_filter(matrix, provider, group):
 
 
 def require_browser_session_selections(all_tests, selections, provider, matrix, inventory):
-    """Validate the full native catalogue and both actual group filters before either executes."""
+    """Validate the full native catalogue and every actual group filter before any executes."""
     browser_session_invocations(matrix, provider)
     if set(selections) != set(GROUPS):
-        raise ValueError('Both browser-session group selections are required')
+        raise ValueError('All browser-session group selections are required')
     names = {current: inventory[current] for current in PROVIDERS}
     expected = {uid: test for uid, test in all_tests.items() if test[1] == provider and test[3] == NAMESPACE}
     require_administrator_story(all_tests, expected, provider, 'BrowserSessions', matrix, names)
@@ -64,7 +64,7 @@ def require_browser_session_selections(all_tests, selections, provider, matrix, 
         return metadata['typeName']
     for current in PROVIDERS:
         story = [test for test in all_tests.values() if test[1] == current and test[3] == NAMESPACE]
-        if {kind(test) for test in story} != classes['Foundations'] | classes['Product']:
+        if {kind(test) for test in story} != set().union(*classes.values()):
             raise ValueError('Browser-session classes are missing or unreviewed')
         for group, count in browser_session_invocations(matrix, current):
             if sum(kind(test) in classes[group] for test in story) != count:

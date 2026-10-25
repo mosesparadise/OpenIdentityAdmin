@@ -165,8 +165,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: ProtocolAdmission, label: administrator-SqlServer-protocoladmission }
           - { profile: PostgreSql, partition: administrator, story: BrowserSessions, browser_session_group: Foundations, label: administrator-PostgreSql-browsersessions-foundations }
           - { profile: PostgreSql, partition: administrator, story: BrowserSessions, browser_session_group: Product, label: administrator-PostgreSql-browsersessions-product }
+          - { profile: PostgreSql, partition: administrator, story: BrowserSessions, browser_session_group: Lifecycle, label: administrator-PostgreSql-browsersessions-lifecycle }
           - { profile: SqlServer, partition: administrator, story: BrowserSessions, browser_session_group: Foundations, label: administrator-SqlServer-browsersessions-foundations }
           - { profile: SqlServer, partition: administrator, story: BrowserSessions, browser_session_group: Product, label: administrator-SqlServer-browsersessions-product }
+          - { profile: SqlServer, partition: administrator, story: BrowserSessions, browser_session_group: Lifecycle, label: administrator-SqlServer-browsersessions-lifecycle }
           - { profile: PostgreSql, partition: lifecycle, story: Restart, label: PostgreSql-lifecycle-restart }
           - { profile: SqlServer, partition: lifecycle, story: Restart, label: SqlServer-lifecycle-restart }
           - { profile: PostgreSql, partition: lifecycle, story: Distribution, label: PostgreSql-lifecycle-distribution }

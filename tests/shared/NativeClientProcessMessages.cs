@@ -37,6 +37,10 @@ internal sealed class NativeClientProcessInput
     {
         get; init;
     }
+    public BrowserProcessRequest? Browser
+    {
+        get; init;
+    }
     public string? RequestUri
     {
         get; init;
@@ -81,7 +85,42 @@ internal sealed class NativeClientProcessReply
     {
         get; init;
     }
+    public string? BrowserBody
+    {
+        get; init;
+    }
+    public int OutboundRequests
+    {
+        get; init;
+    }
     public required string Rejection
+    {
+        get; init;
+    }
+}
+
+/// <summary>Restricts a synthetic child to three local product operations rather than accepting arbitrary paths or commands.</summary>
+internal enum BrowserProcessOperation
+{
+    Status = 1, LogoutForm = 2, LogoutSubmit = 3
+}
+
+/// <summary>Supplies only explicit synthetic BFF protection and a submit-only native antiforgery field over the private pipe.</summary>
+internal sealed class BrowserProcessRequest
+{
+    public BrowserProcessOperation Operation
+    {
+        get; init;
+    }
+    public long UtcTicks
+    {
+        get; init;
+    }
+    public required Dictionary<string, string?> Protection
+    {
+        get; init;
+    }
+    public string? FormToken
     {
         get; init;
     }
