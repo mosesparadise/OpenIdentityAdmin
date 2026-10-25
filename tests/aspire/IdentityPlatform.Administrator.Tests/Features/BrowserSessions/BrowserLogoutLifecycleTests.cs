@@ -1,6 +1,5 @@
 using System.Net;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Infrastructure.Features.Sessions.Browser;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.EntityFrameworkCore;
 
