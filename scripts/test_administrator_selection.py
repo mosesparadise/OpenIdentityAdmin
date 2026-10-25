@@ -108,8 +108,9 @@ class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
             for invalid in ({}, {provider + 'ProtocolAdmission': self.catalogue[provider + 'ProtocolAdmission']}):
                 with self.assertRaises(ValueError):
                     require_administrator_story(self.catalogue, invalid, provider, 'BrowserSessions', self.matrix, self.inventory)
-            cell = '{ profile: ' + provider + ', partition: administrator, story: BrowserSessions, label: administrator-' + provider + '-browsersessions }'
-            self.assertEqual(1, workflow.count(cell))
+            for group in ('Foundations', 'Product'):
+                cell = '{ profile: ' + provider + ', partition: administrator, story: BrowserSessions, browser_session_group: ' + group + ', label: administrator-' + provider + '-browsersessions-' + group.lower() + ' }'
+                self.assertEqual(1, workflow.count(cell))
             del self.matrix['administrator_stories']['BrowserSessions']
             self.matrix['administrator_stories']['Factors'][provider] += 1
             with self.assertRaises(ValueError):

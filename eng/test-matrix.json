@@ -163,5 +163,82 @@
       "PostgreSql": 10,
       "SqlServer": 10
     }
+  },
+  "browser_session_groups": {
+    "Foundations": {
+      "classes": [
+        "BrowserCoordinationActorTests",
+        "BrowserCoordinationCapacityTests",
+        "BrowserCoordinationCleanupTests",
+        "BrowserCoordinationDenialTests",
+        "BrowserCoordinationFailureTests",
+        "BrowserCoordinationRaceTests",
+        "BrowserCoordinationSchemaTests",
+        "BrowserCoordinationTests",
+        "BrowserIssuerAdmissionTests",
+        "BrowserIssuerDenialTests",
+        "BrowserIssuerExpiryTests",
+        "BrowserIssuerFailureTests",
+        "BrowserIssuerIsolationTests",
+        "BrowserIssuerJourneyTests",
+        "BrowserProtocolClientTests",
+        "BrowserProtocolFailureTests",
+        "BrowserProtocolTests",
+        "BrowserRegistrationUpgradeTests",
+        "BrowserUpgradeBoundaryTests",
+        "BrowserUpgradeCommandTests",
+        "BrowserUpgradeFailureTests",
+        "BrowserUpgradeIssuanceRaceTests",
+        "BrowserUpgradeRaceTests",
+        "IssuerContinuationAtomicityTests",
+        "IssuerContinuationBoundaryTests",
+        "IssuerContinuationCapacityTests",
+        "IssuerContinuationClockTests",
+        "IssuerContinuationJourneyTests",
+        "IssuerContinuationRaceTests",
+        "IssuerContinuationSchemaTests",
+        "NativeBrowserBindingTests",
+        "NativeBrowserParAuditTests",
+        "NativeBrowserParCapacityTests",
+        "NativeBrowserParLossTests",
+        "NativeBrowserParRaceTests",
+        "NativeBrowserParTests",
+        "NativeEndSessionTests"
+      ],
+      "counts": {
+        "PostgreSql": 158,
+        "SqlServer": 158
+      }
+    },
+    "Product": {
+      "classes": [
+        "BrowserCallbackAdmissionTests",
+        "BrowserCallbackAuditTests",
+        "BrowserCallbackErrorTests",
+        "BrowserCallbackFailureTests",
+        "BrowserCallbackMutationTests",
+        "BrowserCallbackRaceTests",
+        "BrowserCallbackReplacementTests",
+        "BrowserCallbackTests",
+        "BrowserLoginAuditTests",
+        "BrowserLoginDisposalTests",
+        "BrowserLoginFailureTests",
+        "BrowserLoginNativeTests",
+        "BrowserLoginRaceTests",
+        "BrowserLoginReplacementTests",
+        "BrowserLoginTests",
+        "BrowserProductJourneyTests",
+        "BrowserProductPilotTests",
+        "BrowserProductRecoveryTests",
+        "BrowserProductSubstitutionTests",
+        "BrowserSessionBindingTests",
+        "BrowserSessionFailureTests",
+        "BrowserSessionStatusTests"
+      ],
+      "counts": {
+        "PostgreSql": 62,
+        "SqlServer": 62
+      }
+    }
   }
 }
