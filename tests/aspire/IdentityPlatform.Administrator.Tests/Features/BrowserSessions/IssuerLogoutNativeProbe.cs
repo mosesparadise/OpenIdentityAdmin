@@ -36,12 +36,26 @@ internal sealed class IssuerLogoutNativeProbe(IssuerLogoutNativeFault mode)
                     return ValueTask.CompletedTask;
                 }));
         }
-        if (mode == IssuerLogoutNativeFault.LateOutput)
+        ConfigureSignOut(server);
+    }
+
+    /// <summary>Rejects foreign native cancellation as well as late output substitution without disabling real child cancellation.</summary>
+    private void ConfigureSignOut(OpenIddictServerBuilder server)
+    {
+        if (mode is IssuerLogoutNativeFault.LateOutput or IssuerLogoutNativeFault.Cancellation)
         {
             server.AddEventHandler<OpenIddictServerEvents.ProcessSignOutContext>(handler => handler.SetOrder(int.MinValue).UseInlineHandler(context =>
             {
-                var http = context.Transaction.GetHttpRequest()!.HttpContext;
-                http.Response.OnStarting(() => { Observed++; http.Response.Headers.Location = Foreign; return Task.CompletedTask; });
+                if (mode == IssuerLogoutNativeFault.Cancellation)
+                {
+                    Observed++;
+                    context.CancellationToken = CancellationToken.None;
+                }
+                else
+                {
+                    var http = context.Transaction.GetHttpRequest()!.HttpContext;
+                    http.Response.OnStarting(() => { Observed++; http.Response.Headers.Location = Foreign; return Task.CompletedTask; });
+                }
                 return ValueTask.CompletedTask;
             }));
         }

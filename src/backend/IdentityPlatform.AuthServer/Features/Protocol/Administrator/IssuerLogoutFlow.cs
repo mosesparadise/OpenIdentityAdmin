@@ -133,7 +133,7 @@ internal sealed class IssuerLogoutFlow
             ?? throw ProtocolStorageOwner.Unavailable();
         receipt.RequireCurrent(request);
         await http.SignOutAsync(AccountSchemes.Administrator);
-        await http.SignOutAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+        await SignOutNativeAsync();
         RequireCurrent(handling!);
         receipt.RequireCurrent(request);
         if (signOut is not { IsRequestHandled: true, IsRequestSkipped: false, IsRejected: false } || formatted is null)
@@ -141,6 +141,22 @@ internal sealed class IssuerLogoutFlow
             throw ProtocolStorageOwner.Unavailable();
         }
         formatted.RequireCompleted();
+    }
+
+    /// <summary>Restores the suspended parent's exact transaction token after ASP.NET initializes native sign-out with the active child's token.</summary>
+    private async Task SignOutNativeAsync()
+    {
+        var original = validation.CancellationToken;
+        var child = http.RequestAborted;
+        try
+        {
+            await http.SignOutAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            if (validation.CancellationToken != child)
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
+        }
+        finally { validation.CancellationToken = original; }
     }
 
     /// <summary>Observes the actual native sign-out once, only inside the committed ceremony's original handling scope.</summary>

@@ -7,9 +7,9 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 public sealed class IssuerLogoutNativeTests(BootstrapFixture fixture)
 {
     private const string ProviderTrait = "Provider";
-    private static readonly IssuerLogoutNativeFault[] Variants = [IssuerLogoutNativeFault.ValidatedDestination, IssuerLogoutNativeFault.ResponseField, IssuerLogoutNativeFault.LateOutput];
+    private static readonly IssuerLogoutNativeFault[] Variants = [IssuerLogoutNativeFault.ValidatedDestination, IssuerLogoutNativeFault.ResponseField, IssuerLogoutNativeFault.LateOutput, IssuerLogoutNativeFault.Cancellation];
 
-    /// <summary>Targets independent native validated destination, response field and late output boundaries.</summary>
+    /// <summary>Targets independent native destination, response field, cancellation and late output boundaries.</summary>
     public static IEnumerable<TheoryDataRow<string, IssuerLogoutNativeFault>> Cases => from provider in IssuerContinuationProviderFixture.Providers
                                                                                        from variant in Variants
                                                                                        select new TheoryDataRow<string, IssuerLogoutNativeFault>(provider, variant).WithTrait(ProviderTrait, provider);
@@ -35,5 +35,5 @@ public sealed class IssuerLogoutNativeTests(BootstrapFixture fixture)
 /// <summary>Names distinct native response trust boundaries without depending on arbitrary numeric test modes.</summary>
 public enum IssuerLogoutNativeFault
 {
-    ValidatedDestination, ResponseField, LateOutput
+    ValidatedDestination, ResponseField, LateOutput, Cancellation
 }

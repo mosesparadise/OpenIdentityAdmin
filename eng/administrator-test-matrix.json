@@ -846,7 +846,8 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"PostgreSql\", mode: ValidatedDestination)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ConfirmationForFreshSource_When_AnotherActualIssuerSessionSubmits_Then_NeitherSourceIsRevoked(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_GenuineBrowserSession_When_NativeLogoutIsConfirmed_Then_OnlyItsSourceAndOneAuditCommit(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ValidConfirmation_When_RequestOrAntiforgeryChanges_Then_DenialPreservesThePositiveControl(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ValidConfirmation_When_RequestOrAntiforgeryChanges_Then_DenialPreservesThePositiveControl(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"PostgreSql\", mode: Cancellation)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1799,7 +1800,8 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"SqlServer\", mode: ValidatedDestination)",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ConfirmationForFreshSource_When_AnotherActualIssuerSessionSubmits_Then_NeitherSourceIsRevoked(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_GenuineBrowserSession_When_NativeLogoutIsConfirmed_Then_OnlyItsSourceAndOneAuditCommit(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ValidConfirmation_When_RequestOrAntiforgeryChanges_Then_DenialPreservesThePositiveControl(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ValidConfirmation_When_RequestOrAntiforgeryChanges_Then_DenialPreservesThePositiveControl(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"SqlServer\", mode: Cancellation)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -38137,6 +38139,46 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"PostgreSql\", mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "IssuerLogoutNativeTests",
+        "methodName": "Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"SqlServer\", mode: Cancellation)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "IssuerLogoutNativeTests",
+        "methodName": "Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeFault"
         ]
       },
       "traits": [

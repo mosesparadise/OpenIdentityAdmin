@@ -32,13 +32,13 @@ class BrowserSessionSelectionTests(unittest.TestCase):
         require_browser_session_selections(self.catalogue, self.groups[provider], provider, self.matrix, self.inventory)
 
     def test_Given_DefaultAndExplicitGroups_When_Selected_Then_BothProvidersRetainEveryIdentityExactlyOnce(self):
-        self.assertEqual(1797, len(self.catalogue))
+        self.assertEqual(1799, len(self.catalogue))
         for provider in ('PostgreSql', 'SqlServer'):
             self.verify(provider)
-            self.assertEqual([('Foundations', 158), ('Product', 96), ('Lifecycle', 24)], browser_session_invocations(self.matrix, provider))
-            for group, count in (('Foundations', 158), ('Product', 96), ('Lifecycle', 24)):
+            self.assertEqual([('Foundations', 158), ('Product', 96), ('Lifecycle', 25)], browser_session_invocations(self.matrix, provider))
+            for group, count in (('Foundations', 158), ('Product', 96), ('Lifecycle', 25)):
                 self.assertEqual([(group, count)], browser_session_invocations(self.matrix, provider, group))
-            self.assertEqual(278, sum(map(len, self.groups[provider].values())))
+            self.assertEqual(279, sum(map(len, self.groups[provider].values())))
             groups = list(self.groups[provider].values())
             for index, group in enumerate(groups):
                 for other in groups[index + 1:]:
@@ -48,8 +48,8 @@ class BrowserSessionSelectionTests(unittest.TestCase):
         self.assertEqual(10, len(self.matrix['browser_session_groups']['Lifecycle']['classes']))
 
     def test_Given_UngroupedInvocation_When_Expanded_Then_AllGroupsAreExecutedAndNoStoryDisappears(self):
-        for provider, total in (('PostgreSql', 833), ('SqlServer', 938)):
-            expected = [('BrowserSessions', 'Foundations', 158), ('BrowserSessions', 'Product', 96), ('BrowserSessions', 'Lifecycle', 24)]
+        for provider, total in (('PostgreSql', 834), ('SqlServer', 939)):
+            expected = [('BrowserSessions', 'Foundations', 158), ('BrowserSessions', 'Product', 96), ('BrowserSessions', 'Lifecycle', 25)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, 'BrowserSessions'))
             all_stories = administrator_execution_invocations(self.matrix, provider)
             self.assertEqual(expected, [item for item in all_stories if item[0] == 'BrowserSessions'])
