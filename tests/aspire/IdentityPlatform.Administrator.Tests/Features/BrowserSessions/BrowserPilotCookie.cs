@@ -23,6 +23,7 @@ internal static class BrowserPilotCookie
     private const string RedirectSetting = "Pilot:RedirectUri";
     private const string Redirect = "https://pilot.example.test/callback";
     private const string Login = "/account/login";
+    private const string Complete = "/account/complete";
     private const string Query = "?interaction=";
     private const string Interaction = "Interaction";
     private const string SyntheticReference = "urn:synthetic-pilot-reference";
@@ -55,6 +56,9 @@ internal static class BrowserPilotCookie
             [BrowserIssuerHttp.Password] = scenario.Issuer.Account.Password
         });
         Assert.Equal(HttpStatusCode.Redirect, result.StatusCode);
+        Assert.Equal(Complete + Query + interaction, result.Headers.Location?.OriginalString);
+        using var complete = await browser.GetAsync(result.Headers.Location, TestContext.Current.CancellationToken);
+        Assert.Equal(HttpStatusCode.OK, complete.StatusCode);
         Assert.NotNull(cookies.GetCookies(host.Issuer)[PilotProfile.SessionCookie]);
         Assert.Null(cookies.GetCookies(host.Issuer)[AdministratorJourney.SessionCookie]);
         await RequireSessionAsync(host);

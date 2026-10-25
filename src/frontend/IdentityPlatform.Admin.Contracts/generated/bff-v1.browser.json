@@ -97,7 +97,7 @@
         ],
         "summary": "Read local browser session status without renewal",
         "tags": [
-          "IdentityPlatform.Api.Contracts.Tests"
+          "Browser session"
         ],
         "x-browser-session-status": true
       }
@@ -110,7 +110,7 @@
   ],
   "tags": [
     {
-      "name": "IdentityPlatform.Api.Contracts.Tests"
+      "name": "Browser session"
     }
   ]
 }

@@ -13,6 +13,7 @@ internal static class BrowserSessionContract
     internal const string Operation = "ReadBrowserSession";
     internal const string Scheme = "BrowserSession";
     private const string Summary = "Read local browser session status without renewal";
+    private const string Tag = "Browser session";
 
     /// <summary>Supplies native endpoint metadata using the actual DTO and handler while leaving login HTML and protocol responses outside OpenAPI.</summary>
     internal static void MapBrowserSessionStatus(this WebApplication app)
@@ -23,7 +24,7 @@ internal static class BrowserSessionContract
         var versions = app.NewApiVersionSet().HasApiVersion(new ApiVersion(Contracts.SupportedMajor)).Build();
         app.MapGet(BrowserSessionBoundary.Path, (HttpContext http, [FromServices] IServiceScopeFactory factory, [FromServices] TimeProvider clock) =>
                 BrowserSessionBoundary.RunAsync(http, factory, clock))
-            .WithName(Operation).WithSummary(Summary).WithGroupName(Contracts.DocumentName).WithApiVersionSet(versions).IsApiVersionNeutral()
+            .WithName(Operation).WithSummary(Summary).WithTags(Tag).WithGroupName(Contracts.DocumentName).WithApiVersionSet(versions).IsApiVersionNeutral()
             .Produces<BrowserSessionStatus>().Produces(StatusCodes.Status400BadRequest).Produces(StatusCodes.Status503ServiceUnavailable);
     }
 }
