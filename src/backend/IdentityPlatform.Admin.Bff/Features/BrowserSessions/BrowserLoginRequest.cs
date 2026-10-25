@@ -61,7 +61,7 @@ internal static class BrowserLoginRequest
         BrowserLoginSelector.Digest(value[0]) is not null ? value[0] : null;
 
     /// <summary>Caps actual streamed bytes before native URL decoding, rejects pre-parsed bypasses and freezes the exact single-field form for antiforgery.</summary>
-    internal static async Task<bool> FormAsync(HttpContext context, BrowserSessionDestinations destinations)
+    internal static async Task<bool> FormAsync(HttpContext context, BrowserSessionDestinations destinations, params string[] optionalFields)
     {
         var request = context.Request;
         if (!BrowserRequestPolicy.Mutation(request, destinations) || context.Features.Get<IFormFeature>() is not null)
@@ -83,11 +83,11 @@ internal static class BrowserLoginRequest
         {
             return false;
         }
-        return await ParseAsync(context, buffer.AsMemory(0, used));
+        return await ParseAsync(context, buffer.AsMemory(0, used), optionalFields);
     }
 
     /// <summary>Uses the native form reader with independent bounded decoded cardinality and strict UTF-8 input.</summary>
-    private static async Task<bool> ParseAsync(HttpContext context, ReadOnlyMemory<byte> bytes)
+    private static async Task<bool> ParseAsync(HttpContext context, ReadOnlyMemory<byte> bytes, string[] optionalFields)
     {
         try
         {
@@ -96,10 +96,10 @@ internal static class BrowserLoginRequest
             {
                 KeyLengthLimit = BrowserRequestPolicy.ValueLength,
                 ValueLengthLimit = BrowserRequestPolicy.ValueLength,
-                ValueCountLimit = 1
+                ValueCountLimit = 1 + optionalFields.Length
             };
             var form = new FormCollection(await reader.ReadFormAsync(context.RequestAborted));
-            if (!BrowserRequestPolicy.Form(form))
+            if (!BrowserRequestPolicy.Form(form) && !BrowserRequestPolicy.Form(form, optionalFields))
             {
                 return false;
             }

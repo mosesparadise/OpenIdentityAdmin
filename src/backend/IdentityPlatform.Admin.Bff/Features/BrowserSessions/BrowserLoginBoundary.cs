@@ -43,7 +43,14 @@ internal static class BrowserLoginBoundary
             publication?.Require(clock);
             if (reservation is null)
             {
-                await result!.ExecuteAsync(http);
+                if (http.Features.Get<BrowserLogoutRequest>() is { } logout)
+                {
+                    await BrowserLogoutRemote.BeginAsync(http, factory, clock, request, logout);
+                }
+                else
+                {
+                    await result!.ExecuteAsync(http);
+                }
             }
             else
             {
@@ -56,6 +63,8 @@ internal static class BrowserLoginBoundary
         finally
         {
             http.Features.Set<BrowserLoginReservation>(null);
+            http.Features.Set<BrowserLogoutRequest>(null);
+            http.Features.Set<BrowserLogoutCookie>(null);
             http.RequestServices = originalServices;
             http.RequestAborted = originalCancellation;
         }

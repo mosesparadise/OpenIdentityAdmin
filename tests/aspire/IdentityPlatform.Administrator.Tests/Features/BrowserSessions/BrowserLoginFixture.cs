@@ -211,6 +211,7 @@ internal sealed class BrowserLoginFixture : IAsyncDisposable
     internal Task<string> SnapshotAsync(bool native = true) => ReadAsync(async database => Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
     {
         Contexts = await database.Set<BrowserContext>().AsNoTracking().OrderBy(row => row.Digest).ToArrayAsync(TestContext.Current.CancellationToken),
+        Logouts = await database.Set<BrowserLogoutContinuation>().AsNoTracking().OrderBy(row => row.Digest).ToArrayAsync(TestContext.Current.CancellationToken),
         Intents = await database.Set<BrowserLoginIntent>().AsNoTracking().OrderBy(row => row.Digest).ToArrayAsync(TestContext.Current.CancellationToken),
         Audits = await database.Set<BrowserSessionAudit>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(TestContext.Current.CancellationToken),
         Budget = await database.Set<BrowserSessionBudget>().AsNoTracking().ToArrayAsync(TestContext.Current.CancellationToken),

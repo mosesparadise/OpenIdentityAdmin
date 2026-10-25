@@ -33,6 +33,7 @@ internal sealed class IssuerLogoutFixture : IAsyncDisposable
     internal BrowserLoginFixture Login { get; private set; } = null!;
     internal BrowserIssuerHost Host { get; private set; } = null!;
     internal HttpClient Browser { get; private set; } = null!;
+    internal string PreCallbackGeneration { get; private set; } = string.Empty;
     internal string Source { get; private set; } = string.Empty;
     private string subject = string.Empty;
     private string native = string.Empty;
@@ -46,7 +47,9 @@ internal sealed class IssuerLogoutFixture : IAsyncDisposable
         try
         {
             owner.Login = await BrowserLoginFixture.CreateAsync(fixture, provider);
-            using var callback = await owner.Login.Browser.GetAsync(await owner.Login.CallbackAsync(), TestContext.Current.CancellationToken);
+            var callbackUri = await owner.Login.CallbackAsync();
+            owner.PreCallbackGeneration = owner.Login.Cookies.GetCookies(owner.Login.Profile.ClientUri)[IdentityPlatform.Admin.Bff.Features.BrowserSessions.BrowserSessionCookies.Generation]!.Value;
+            using var callback = await owner.Login.Browser.GetAsync(callbackUri, TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.SeeOther, callback.StatusCode);
             owner.Source = await owner.Login.ReadAsync(db => db.Set<AdminSessionTicket>().Select(row => row.SourceSession).SingleAsync(TestContext.Current.CancellationToken));
             owner.subject = await owner.Login.ReadAsync(db => db.Set<AdminSessionTicket>().Select(row => row.Subject).SingleAsync(TestContext.Current.CancellationToken));

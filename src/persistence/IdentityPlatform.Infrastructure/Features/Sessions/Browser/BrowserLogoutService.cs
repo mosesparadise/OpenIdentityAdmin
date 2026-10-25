@@ -35,21 +35,27 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
         }
         await rows.CancelAsync(browser.Digest, owner.Token);
         Advance(browser, owner.Now);
-        if (remote)
+        var continuation = remote ? Correlation(browser, correlationDigest!, actor!) : null;
+        if (continuation is not null)
         {
-            database.Add(Correlation(browser, correlationDigest!, actor!));
+            database.Add(continuation);
         }
         owner.Guard(browser.ObservedAt, browser.ObservedAt, browser.ExpiresAt);
         owner.Audit(browser, BrowserMutation.Logout, actor);
-        return await owner.CommitAsync() ? new BrowserLogoutResult(browser.Generation, remote, browser.ObservedAt, browser.ExpiresAt) : null;
+        return await owner.CommitAsync() ? new BrowserLogoutResult(browser.Generation, remote, browser.ObservedAt, browser.ExpiresAt, continuation is null ? null : BrowserLogoutReservation.Capture(continuation)) : null;
     }
 
     /// <summary>Transitions only the original one-use correlation; a browser return never authenticates or claims issuer revocation.</summary>
-    internal async Task<bool> RemoteAsync(string browserDigest, string correlationDigest, long generation, bool returned, CancellationToken token)
+    internal async Task<bool> RemoteAsync(string browserDigest, string correlationDigest, long generation, bool returned, CancellationToken token) =>
+        await TransitionAsync(browserDigest, correlationDigest, generation, returned, token) is not null;
+
+    /// <summary>Returns only a detached snapshot after the exact original correlation transition commits and its transaction disposes.</summary>
+    internal async Task<BrowserLogoutReservation?> TransitionAsync(string browserDigest, string correlationDigest, long generation, bool returned,
+        CancellationToken token, long? created = null, long? expires = null)
     {
         if (!BrowserSessionPolicy.IsDigest(browserDigest) || !BrowserSessionPolicy.IsDigest(correlationDigest) || generation <= 0)
         {
-            return false;
+            return null;
         }
         await using var owner = await BrowserSessionTransaction.OpenAsync(database, clock, token);
         var browser = await rows.BrowserAsync(browserDigest, owner.Token);
@@ -57,9 +63,10 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
         var expected = returned ? BrowserLogoutState.RemotePending : BrowserLogoutState.LocalCommitted;
         if (browser is null || !BrowserSessionPolicy.Matches(browser, generation, owner.Now) || row is null || row.State != expected ||
             row.BrowserDigest != browserDigest || row.Generation != generation || row.CorrelationId != browser.CorrelationId ||
+            created is { } original && row.CreatedAt != original || expires is { } deadline && row.ExpiresAt != deadline ||
             !BrowserSessionPolicy.Current(row.CreatedAt, row.ObservedAt, row.ExpiresAt, owner.Now))
         {
-            return false;
+            return null;
         }
         row.State = returned ? BrowserLogoutState.ReturnedUnverified : BrowserLogoutState.RemotePending;
         row.Revision = checked(row.Revision + 1);
@@ -68,7 +75,7 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
         browser.Revision = checked(browser.Revision + 1);
         owner.Guard(row.CreatedAt, row.ObservedAt, row.ExpiresAt);
         owner.Audit(browser, returned ? BrowserMutation.Return : BrowserMutation.RemotePending);
-        return await owner.CommitAsync();
+        return await owner.CommitAsync() ? BrowserLogoutReservation.Capture(row) : null;
     }
 
     /// <summary>Denies at either ceiling without evicting retained markers or turning quota pressure into an unaudited partial logout.</summary>
@@ -113,10 +120,11 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
 }
 
 /// <summary>Separates committed local invalidation from optional remote capacity, without claiming any issuer outcome.</summary>
-internal sealed class BrowserLogoutResult(long generation, bool remoteReserved, long observedAt, long expiresAt)
+internal sealed class BrowserLogoutResult(long generation, bool remoteReserved, long observedAt, long expiresAt, BrowserLogoutReservation? remote = null)
 {
     internal long Generation { get; } = generation;
     internal bool RemoteReserved { get; } = remoteReserved;
+    internal BrowserLogoutReservation? Remote { get; } = remote;
     internal long ObservedAt { get; } = observedAt;
     internal long ExpiresAt { get; } = expiresAt;
 }
