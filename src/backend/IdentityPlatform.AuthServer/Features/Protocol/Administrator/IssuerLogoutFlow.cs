@@ -90,7 +90,7 @@ internal sealed class IssuerLogoutFlow
     /// <summary>Uses exact current named-cookie authority and observes the fixed manifest without claiming profile-disable serialization.</summary>
     private async Task HandleAsync(ProtocolStorageScope scope, CancellationToken token)
     {
-        scope.Services.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.Owned);
+        scope.Services.GetRequiredService<ProtocolStorageSelection>().Require(ProtocolStorageMode.Owned);
         var policy = scope.Services.GetRequiredService<AdministratorRegistrationPolicy>();
         var registration = await AdministratorRegistration.ObserveLogoutAsync(scope, policy, token);
         var candidate = await AdministratorSecurityBrowser.CandidateAsync(http);

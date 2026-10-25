@@ -1,6 +1,6 @@
 using System.Runtime.ExceptionServices;
-using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
+using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Infrastructure.Features.ProtocolStorage;

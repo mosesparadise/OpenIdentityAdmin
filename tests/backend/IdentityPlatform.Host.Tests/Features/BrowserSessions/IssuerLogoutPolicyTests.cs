@@ -1,7 +1,7 @@
 using IdentityPlatform.AuthServer.Features.Accounts.Browser;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
-using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
+using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Primitives;
 using OpenIddict.Abstractions;

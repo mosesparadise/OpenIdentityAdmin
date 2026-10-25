@@ -1,6 +1,6 @@
 using System.Globalization;
-using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using System.Security.Cryptography;
+using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using Microsoft.AspNetCore.DataProtection;

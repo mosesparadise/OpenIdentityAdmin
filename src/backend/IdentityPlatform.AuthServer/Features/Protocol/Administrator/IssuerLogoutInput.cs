@@ -2,10 +2,10 @@ using System.Collections.Frozen;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
-using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Administrator;
