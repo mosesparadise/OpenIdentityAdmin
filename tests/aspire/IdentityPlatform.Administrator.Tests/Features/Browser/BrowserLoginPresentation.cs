@@ -1,4 +1,5 @@
 using IdentityPlatform.Issuer.Tests.Features.Browser;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
@@ -89,13 +90,19 @@ internal static class BrowserLoginPresentation
     }
 
     /// <summary>Restores the already-verified summary after visual scans, then reaches the restart link through forward tab order.</summary>
-    internal static async Task RestartAsync(IPage page)
+    internal static async Task RestartAsync(IPage page, Uri destination)
     {
         await page.Locator(Error).FocusAsync();
         await page.Keyboard.PressAsync(Tab);
         await FocusAsync(page, Restart);
-        await page.Keyboard.PressAsync(Enter);
+        var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(Enter),
+            response => response.Request.IsNavigationRequest && response.Request.Frame == page.MainFrame &&
+                response.Request.Method == HttpMethods.Get && response.Url == destination.AbsoluteUri);
+        Assert.Equal(StatusCodes.Status200OK, response.Status);
+        await page.WaitForURLAsync(destination.AbsoluteUri);
+        Assert.Equal(1, await page.Locator(RestartForm).CountAsync());
     }
+    private const string RestartForm = "form[action='/account/administrator/login'] #username";
     private const string Recovery = "#recovery-code";
     private const string RecoverySubmit = "form[action='/account/administrator/recovery/verify'] button";
     private const string Restart = "a[href='/account/administrator/login']";

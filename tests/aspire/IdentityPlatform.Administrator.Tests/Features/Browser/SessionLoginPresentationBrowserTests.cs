@@ -80,7 +80,7 @@ public sealed class SessionLoginPresentationBrowserTests(BootstrapFixture fixtur
             await BrowserLoginPresentation.ErrorAsync(page);
             await BrowserLoginPresentation.PageAsync(page, dark);
             Assert.Equal(0, await page.Locator(RecoveryForm).CountAsync());
-            await BrowserLoginPresentation.RestartAsync(page);
+            await BrowserLoginPresentation.RestartAsync(page, new Uri(environment.Profile.Issuer, AdministratorJourney.Login));
             Assert.True(page.Url == new Uri(environment.Profile.Issuer, AdministratorJourney.Login).AbsoluteUri);
             await BrowserLoginEffects.NoTicketAsync(environment);
             Assert.Equal(0, environment.ParRequests);

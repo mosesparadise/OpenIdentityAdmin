@@ -20,20 +20,23 @@ internal static class BrowserSecrecyControls
     /// <summary>Uses a separate browser and a fixed test-owned TLS document, with no authentication, credentials or persistent output.</summary>
     internal static async Task RunAsync(BrowserHttpsFixture fixture)
     {
+        BrowserTrafficRequests.RequireControls();
         await using var session = await BrowserSession.CreateAsync();
-        await using var traffic = new BrowserPrivateTraffic(session.Context);
-        var page = await session.Context.NewPageAsync();
-        var target = fixture.StageAttacker(fixture.Profile.Issuer, Document);
-        await page.GotoAsync(target.AbsoluteUri + Query + Uri.EscapeDataString(Network));
-        var observed = await page.EvaluateAsync<string>(Seed, new
+        await BrowserTrafficLifetime.RunAsync(session.Context, async traffic =>
         {
-            console = Console,
-            @object = ConsoleObject,
-            storage = Storage,
-            dom = Dom
+            var page = await session.Context.NewPageAsync();
+            var target = fixture.StageAttacker(fixture.Profile.Issuer, Document);
+            await page.GotoAsync(target.AbsoluteUri + Query + Uri.EscapeDataString(Network));
+            var observed = await page.EvaluateAsync<string>(Seed, new
+            {
+                console = Console,
+                @object = ConsoleObject,
+                storage = Storage,
+                dom = Dom
+            });
+            Assert.True(BrowserSecretOracle.Contains(observed, [Storage]) && BrowserSecretOracle.Contains(observed, [Dom]));
+            Assert.Throws<Xunit.Sdk.FalseException>(() => BrowserSecretOracle.RequireAbsent([observed], [Storage]));
+            await traffic.RequireProbesAsync(NetworkProbes);
         });
-        Assert.True(BrowserSecretOracle.Contains(observed, [Storage]) && BrowserSecretOracle.Contains(observed, [Dom]));
-        Assert.Throws<Xunit.Sdk.FalseException>(() => BrowserSecretOracle.RequireAbsent([observed], [Storage]));
-        await traffic.RequireProbesAsync(NetworkProbes);
     }
 }

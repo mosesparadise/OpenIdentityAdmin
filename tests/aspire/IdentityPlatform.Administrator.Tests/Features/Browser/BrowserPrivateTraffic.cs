@@ -10,28 +10,27 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
 {
     private const int MaximumItem = 2097152;
     private const int MaximumTotal = 16777216;
-    private const int MaximumRequests = 256;
     private const int JoinSeconds = 30;
+    private const string ObserverReport = "traffic-observers pending={0} reads-failed={1} console-pending={2}";
     private readonly IBrowserContext context;
     private readonly ConcurrentBag<Task> pending = [];
     private readonly ConcurrentQueue<string> values = [];
     private readonly ConcurrentQueue<string> diagnostics = [];
     private readonly ConcurrentBag<IPage> pages = [];
-    private readonly object synchronization = new();
-    private TaskCompletionSource idle = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly BrowserTrafficRequests ledger = new();
     internal BrowserFlowSecrets Flow { get; } = new();
     private int total;
     private int requests;
     private int responses;
-    private int active;
+    private int consoleReads;
     private int failed;
     private int detached;
+    private int drainFailed;
 
     /// <summary>Attaches before login to include requests from every actual browser page, without routing or mocking traffic.</summary>
     internal BrowserPrivateTraffic(IBrowserContext context)
     {
         this.context = context;
-        idle.SetResult();
         context.Request += Request;
         context.Response += Response;
         context.RequestFinished += Finished;
@@ -46,21 +45,16 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     /// <summary>Queues owned asynchronous header reads and bounds the actual request count.</summary>
     private void Request(object? sender, IRequest request)
     {
-        lock (synchronization)
-        {
-            if (active++ == 0)
-            {
-                idle = new(TaskCreationOptions.RunContinuationsAsynchronously);
-            }
-        }
-        if (Interlocked.Increment(ref requests) > MaximumRequests)
+        if (!ledger.Start(request))
         {
             Interlocked.Increment(ref failed);
+            return;
         }
+        Interlocked.Increment(ref requests);
         pending.Add(ReadRequestAsync(request));
     }
 
-    /// <summary>Privately inspects actual URL, body and headers without retaining the request after completion.</summary>
+    /// <summary>Privately inspects actual URL, body and headers; identity retention belongs to the bounded ledger.</summary>
     private async Task ReadRequestAsync(IRequest request)
     {
         try
@@ -75,11 +69,13 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             }
         }
         catch (Exception) { Interlocked.Increment(ref failed); }
+        finally { ledger.HeadersRead(request); }
     }
 
     /// <summary>Queues an owned body/header observation for each actual browser response.</summary>
     private void Response(object? sender, IResponse response)
     {
+        ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Headers, response.Status);
         Interlocked.Increment(ref responses);
         pending.Add(ReadResponseAsync(response));
     }
@@ -103,7 +99,9 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             {
                 return;
             }
+            ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Completion);
             await response.FinishedAsync();
+            ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Body);
             var body = await response.BodyAsync();
             if (body.Length > MaximumItem)
             {
@@ -113,19 +111,11 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             Add(Encoding.UTF8.GetString(body));
         }
         catch (Exception) { Interlocked.Increment(ref failed); }
+        finally { ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Complete); }
     }
 
     /// <summary>Counts completed requests independently of response observer execution.</summary>
-    private void Finished(object? sender, IRequest request)
-    {
-        lock (synchronization)
-        {
-            if (--active == 0)
-            {
-                idle.TrySetResult();
-            }
-        }
-    }
+    private void Finished(object? sender, IRequest request) => ledger.End(request);
 
     /// <summary>Fails closed on an incomplete positive-journey request without retaining its diagnostic text.</summary>
     private void Failed(object? sender, IRequest request)
@@ -150,7 +140,8 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     internal async Task RequireAsync(string[] secrets)
     {
         await JoinAsync();
-        Assert.Equal(0, Volatile.Read(ref active));
+        Assert.Equal(0, ledger.ActiveCount());
+        Assert.Equal(0, ledger.InvalidCount());
         Assert.Equal(0, Volatile.Read(ref failed));
         Assert.True(requests > 0 && responses > 0 && !values.IsEmpty);
         BrowserSecretOracle.RequireAbsent(values, secrets);
@@ -162,6 +153,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     {
         await JoinAsync();
         Assert.Equal(0, Volatile.Read(ref failed));
+        Assert.Equal(0, ledger.InvalidCount());
         Assert.True(canaries.All(canary => values.Any(value => BrowserSecretOracle.Contains(value, [canary]))));
     }
 
@@ -175,24 +167,37 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     /// <summary>Waits for actual request completion and a stable drained observer set before concluding the journey.</summary>
     private async Task JoinAsync()
     {
-        while (true)
+        try
         {
-            Task completion;
-            lock (synchronization)
+            while (true)
             {
-                completion = idle.Task;
-            }
-            await completion.WaitAsync(TimeSpan.FromSeconds(JoinSeconds), TestContext.Current.CancellationToken);
-            var tasks = pending.ToArray();
-            await Task.WhenAll(tasks).WaitAsync(TimeSpan.FromSeconds(JoinSeconds), TestContext.Current.CancellationToken);
-            lock (synchronization)
-            {
-                if (active == 0 && tasks.Length == pending.Count)
+                await ledger.IdleAsync().WaitAsync(TimeSpan.FromSeconds(JoinSeconds), TestContext.Current.CancellationToken);
+                var tasks = pending.ToArray();
+                await Task.WhenAll(tasks).WaitAsync(TimeSpan.FromSeconds(JoinSeconds), TestContext.Current.CancellationToken);
+                if (ledger.ActiveCount() == 0 && tasks.Length == pending.Count)
                 {
                     return;
                 }
             }
         }
+        catch
+        {
+            Interlocked.Exchange(ref drainFailed, 1);
+            Report();
+            throw;
+        }
+    }
+
+    /// <summary>Retains finite drain progress without exposing any observed address, header, body or exception text.</summary>
+    private void Report()
+    {
+        try
+        {
+            ledger.Report();
+            TestContext.Current.TestOutputHelper?.WriteLine(ObserverReport,
+                pending.Count(task => !task.IsCompleted), Volatile.Read(ref failed), Volatile.Read(ref consoleReads));
+        }
+        catch (Exception) { /* Preserve the original failure. */ }
     }
 
     /// <summary>Cancels actual browser work on failed draining, then joins observers before detaching or releasing their owner.</summary>
@@ -200,18 +205,43 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     {
         try
         {
-            await JoinAsync();
-        }
-        catch
-        {
+            if (Volatile.Read(ref drainFailed) != 0)
+            {
+                await StopAsync();
+                return;
+            }
             try
             {
-                await context.CloseAsync();
+                await JoinAsync();
             }
-            finally { await Task.WhenAll(pending.ToArray()); }
-            throw;
+            catch
+            {
+                await StopAsync();
+                throw;
+            }
         }
         finally { Detach(); }
+    }
+
+    /// <summary>Closes original browser work after failed draining and joins a stable set of all remaining observer tasks.</summary>
+    private async Task StopAsync()
+    {
+        try
+        {
+            await context.CloseAsync();
+        }
+        finally
+        {
+            while (true)
+            {
+                var tasks = pending.ToArray();
+                await Task.WhenAll(tasks);
+                if (tasks.Length == pending.Count)
+                {
+                    break;
+                }
+            }
+        }
     }
 
     /// <summary>Includes actual console and page errors from every page without persisting their text.</summary>
@@ -232,6 +262,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     /// <summary>Serializes actual console object arguments privately and joins all handle reads before browser disposal.</summary>
     private async Task ConsoleArgumentsAsync(IConsoleMessage message)
     {
+        Interlocked.Increment(ref consoleReads);
         try
         {
             if (message.Args.Count > MaximumArguments)
@@ -246,6 +277,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             }
         }
         catch (Exception) { Interlocked.Increment(ref failed); }
+        finally { Interlocked.Decrement(ref consoleReads); }
     }
 
     /// <summary>Keeps diagnostic observations separately so protocol transport values are forbidden here even when valid in HTTP.</summary>

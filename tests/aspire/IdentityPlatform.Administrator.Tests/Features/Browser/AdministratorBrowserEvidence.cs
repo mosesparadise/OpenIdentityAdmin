@@ -14,11 +14,12 @@ internal static class AdministratorBrowserEvidence
         "SessionLogoutRemoteBrowserTests.cs", "BrowserLogoutJourney.cs", "BrowserLostReturn.cs", "SessionLogoutCrossSiteBrowserTests.cs",
         "SessionLogoutPresentationBrowserTests.cs", "BrowserLogoutPresentation.cs", "SessionLoginBrowserTests.cs",
         "SessionLoginExpiryBrowserTests.cs", "BrowserNavigationPause.cs", "BrowserLoginEffects.cs", "BrowserLoginDeadline.cs",
-        "SessionLoginCorrelationBrowserTests.cs", "SessionLoginAuthorityBrowserTests.cs", "SessionLoginIsolationBrowserTests.cs", "BrowserLostCallback.cs", "BrowserOtherAccount.cs", "SessionStatusBrowserTests.cs", "BrowserNativeSecrets.cs", "BrowserPrivateTraffic.cs", "BrowserFlowSecrets.cs", "BrowserSecretOracle.cs", "BrowserSecrecyControls.cs", "SessionSecrecyBrowserTests.cs", "SessionLoginPresentationBrowserTests.cs", "BrowserLoginPresentation.cs", "SessionOriginBrowserTests.cs", "SessionHistoryBrowserTests.cs", "SessionCredentialBrowserTests.cs"];
+        "SessionLoginCorrelationBrowserTests.cs", "SessionLoginAuthorityBrowserTests.cs", "SessionLoginIsolationBrowserTests.cs", "BrowserLostCallback.cs", "BrowserOtherAccount.cs", "SessionStatusBrowserTests.cs", "BrowserNativeSecrets.cs", "BrowserPrivateTraffic.cs", "BrowserTrafficRequests.cs", "BrowserTrafficLifetime.cs", "BrowserFlowSecrets.cs", "BrowserSecretOracle.cs", "BrowserSecrecyControls.cs", "SessionSecrecyBrowserTests.cs", "SessionLoginPresentationBrowserTests.cs", "BrowserLoginPresentation.cs", "SessionOriginBrowserTests.cs", "SessionHistoryBrowserTests.cs", "SessionCredentialBrowserTests.cs"];
     private const string Unknown = "unclassified";
+    private const string Timeout = "Timeout";
     private static readonly CompositeFormat Failure = CompositeFormat.Parse("Administrator browser failure ({0}); source lines {1}; sensitive diagnostics suppressed.");
     private static readonly string[] Categories = ["ERR_CACHE_MISS", "NS_ERROR_DOCUMENT_NOT_CACHED",
-        "Execution context was destroyed", "page is navigating", "Timeout", "NS_BINDING_ABORTED"];
+        "Execution context was destroyed", "page is navigating", Timeout, "NS_BINDING_ABORTED"];
 
     /// <summary>Runs a secret-bearing journey and limits failures to fixed classifications and repository source line numbers.</summary>
     internal static async Task RunAsync(Func<Task> action)
@@ -30,7 +31,8 @@ internal static class AdministratorBrowserEvidence
         catch (Exception exception) when (exception is PlaywrightException or TimeoutException ||
             exception is AggregateException aggregate && aggregate.Flatten().InnerExceptions.Any(error => error is PlaywrightException or TimeoutException))
         {
-            var category = Categories.FirstOrDefault(value => exception.Message.Contains(value, StringComparison.Ordinal)) ?? Unknown;
+            var category = exception is TimeoutException ? Timeout :
+                Categories.FirstOrDefault(value => exception.Message.Contains(value, StringComparison.Ordinal)) ?? Unknown;
             var lines = new StackTrace(exception, true).GetFrames()
                 .Where(frame => SourceFiles.Contains(Path.GetFileName(frame.GetFileName()), StringComparer.Ordinal)).Select(frame => frame.GetFileLineNumber());
             throw new Xunit.Sdk.XunitException(string.Format(CultureInfo.InvariantCulture, Failure, category, string.Join(',', lines)));

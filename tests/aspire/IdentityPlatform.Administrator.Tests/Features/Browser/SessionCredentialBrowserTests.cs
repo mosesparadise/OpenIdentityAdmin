@@ -1,6 +1,7 @@
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Features.Browser;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
@@ -39,12 +40,33 @@ public sealed class SessionCredentialBrowserTests(BootstrapFixture fixture)
             await BrowserHttpsJourney.RequireStatusAsync(environment, other, false);
             var credentials = capture.Require();
             await foreign.Context.SetExtraHTTPHeadersAsync(new Dictionary<string, string> { [Authorization] = Bearer + credentials[^AccessFromEnd] });
-            await BrowserHttpsJourney.RequireStatusAsync(environment, other, false);
+            await RequireBearerDenialAsync(environment, other);
             Assert.Equal(1, environment.Status.Bearer);
+            await foreign.Context.SetExtraHTTPHeadersAsync(new Dictionary<string, string>());
+            await BrowserHttpsJourney.RequireStatusAsync(environment, other, false);
             Assert.Equal(before, await BrowserHttpsState.SnapshotAsync(environment));
             await BrowserHttpsJourney.RequireStatusAsync(environment, page, true);
             Assert.Equal(1, environment.TokenRequests);
         });
+
+    /// <summary>Requires the existing framing rejection to disclose no identity, issue no cookie and preserve the fixed noncacheable endpoint.</summary>
+    private static async Task RequireBearerDenialAsync(BrowserHttpsFixture fixture, IPage page)
+    {
+        var destination = new Uri(fixture.Profile.ClientUri, StatusPath);
+        var response = await page.GotoAsync(destination.AbsoluteUri);
+        Assert.NotNull(response);
+        Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
+        Assert.True(string.IsNullOrEmpty(await response.TextAsync()));
+        Assert.True(response.Url == destination.AbsoluteUri);
+        Assert.False(response.Headers.ContainsKey(SetCookie));
+        Assert.False(response.Headers.ContainsKey(Location));
+        Assert.True(response.Headers.TryGetValue(Cache, out var value) && value.Contains(NoStore, StringComparison.Ordinal));
+    }
+    private const string StatusPath = "/bff/session";
+    private const string SetCookie = "set-cookie";
+    private const string Location = "location";
+    private const string Cache = "cache-control";
+    private const string NoStore = "no-store";
 
     /// <summary>Retains the exact browser-issued cookie privately without creating or weakening its host/security attributes.</summary>
     private static Cookie Copy(BrowserContextCookiesResult cookie) => new()
