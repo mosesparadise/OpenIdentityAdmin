@@ -6,7 +6,11 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 internal static class LocalDemoLifecycle
 {
     private const string ListContainers = "ps";
-    private const string AllQuiet = "-aq";
+    private const string AllArgument = "-a";
+    private const string NamesProjection = "{{.Names}}";
+    private const string ContainerPrefix = "oid-demo-";
+    private const string NameSeparator = "-";
+    private static readonly string[] RequiredLiveRoles = ["database", "auth", "admin-bff", "initializer"];
     private const string FilterArgument = "--filter";
     private const string RunFilter = "label=openidentityadmin.local-demo.run=";
     private const string InspectArgument = "inspect";
@@ -23,7 +27,10 @@ internal static class LocalDemoLifecycle
     internal static async Task<string[]> CaptureVolumesAsync(string run, CancellationToken token)
     {
         var containers = await ContainersAsync(run, token);
-        Assert.NotEmpty(containers);
+        foreach (var role in RequiredLiveRoles)
+        {
+            Assert.Contains(ContainerPrefix + run + NameSeparator + role, containers);
+        }
         var volumes = new HashSet<string>(StringComparer.Ordinal);
         foreach (var container in containers)
         {
@@ -54,7 +61,7 @@ internal static class LocalDemoLifecycle
 
     /// <summary>Uses the generated ownership label to avoid selecting unrelated Docker resources.</summary>
     private static async Task<string[]> ContainersAsync(string run, CancellationToken token) => Lines(
-        await LocalDemoRuntime.ExecuteAsync([ListContainers, AllQuiet, FilterArgument, RunFilter + run], string.Empty, token));
+        await LocalDemoRuntime.ExecuteAsync([ListContainers, AllArgument, FormatArgument, NamesProjection, FilterArgument, RunFilter + run], string.Empty, token));
 
     /// <summary>Normalizes native CLI line endings without interpreting values as shell expressions.</summary>
     private static string[] Lines(string output) => output.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
