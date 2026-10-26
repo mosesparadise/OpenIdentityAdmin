@@ -2,7 +2,7 @@
 
 A greenfield administration platform built with OpenIddict and ASP.NET Core Identity. The approved product includes client/resource and user/role management, security, auditing and operational health through a React/TypeScript Admin BFF and a Razor Pages authentication service.
 
-**Current state: Development-only login pilot implemented; full product acceptance remains incomplete.** This branch contains native persistence, provider migrations, safe configuration/health, optional durable issuer protection, Aspire orchestration, test/coverage infrastructure and approved engineering instructions. The default profile exposes operational health only. An explicitly enabled Development-only pilot supports a themed Razor login and an OpenIddict S256 authorization-code flow; its full acceptance remains in progress. The usable Admin BFF, management APIs, React client and Scalar/Swagger remain planned. This is not a deployable or certified identity product.
+**Current state: administrator accounts and B3 browser sessions are internally accepted; full product acceptance remains incomplete.** The repository includes extensible relational EF Core providers, PostgreSQL/SQL Server migrations, protected enrollment/MFA/recovery, native administrator protocol flows, server-held BFF sessions and local/issuer-assisted logout. Default startup exposes operational health only. The [Windows Docker Desktop local demo candidate](specs/014-local-b3-demo/quickstart.md) adds explicit Development-only activation with disposable state; see its [verification status](specs/014-local-b3-demo/verification.md). Server-held refresh, usable management APIs and the React administration client remain pending. This is not a deployable or certified identity product.
 
 ## Approved design
 
@@ -39,7 +39,7 @@ dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=
 dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=SqlServer
 ```
 
-For Windows, run the pilot inside Linux/WSL2; follow the [WSL2 and trust instructions](docs/operations/first-party-pilot.md#windows-with-wsl2). The Linux credential adapter does not support a native Windows pilot.
+For the new B3 demo from Windows, use [PowerShell and Docker Desktop Linux containers](specs/014-local-b3-demo/quickstart.md); no WSL terminal is required. The older pilot's [WSL2 instructions](docs/operations/first-party-pilot.md#windows-with-wsl2) still apply to that separate profile. The strict Linux credential adapter is retained inside containers.
 
 The dashboard uses `https://localhost:17100`. Use its generated authenticated login link printed locally. Each application receives a dynamically allocated HTTPS endpoint. The default profile exposes `/alive` and `/health`; the separate Development-only login pilot requires explicit configuration from its [quickstart](specs/004-first-party-login/quickstart.md). On Linux, follow the dev-certificate tool's `SSL_CERT_DIR` guidance while preserving the system trust directory; see the [quickstart](specs/001-platform-foundation/quickstart.md).
 

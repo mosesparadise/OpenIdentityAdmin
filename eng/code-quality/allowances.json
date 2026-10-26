@@ -52,76 +52,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions",
-        "Fingerprint": "47602475104FD759A793F39C119941F45D782C81A3867D6C3C491F7FE2BACFAF"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.AddPlatformServiceDefaults<TBuilder>(thisTBuilder)",
-        "Fingerprint": "916B1970F99FFEBE12B51667AA36D08130CF3826A7FACF7BA18BE7B292CB4BBB"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.AddPlatformServiceDefaults<TBuilder>(thisTBuilder)",
-        "Fingerprint": "916B1970F99FFEBE12B51667AA36D08130CF3826A7FACF7BA18BE7B292CB4BBB"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.AddPlatformServiceDefaults<TBuilder>(thisTBuilder)",
-        "Fingerprint": "916B1970F99FFEBE12B51667AA36D08130CF3826A7FACF7BA18BE7B292CB4BBB"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.MapPlatformHealthEndpoints(thisWebApplication)",
-        "Fingerprint": "894DE49B40972E70977CF2014A30C42F1FFFDB3B2237D8BADA98EF8AD8282B4D"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.MapPlatformHealthEndpoints(thisWebApplication)",
-        "Fingerprint": "894DE49B40972E70977CF2014A30C42F1FFFDB3B2237D8BADA98EF8AD8282B4D"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
-        "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.MapPlatformHealthEndpoints(thisWebApplication)",
-        "Fingerprint": "894DE49B40972E70977CF2014A30C42F1FFFDB3B2237D8BADA98EF8AD8282B4D"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "src/aspire/IdentityPlatform.ServiceDefaults/Extensions.cs",
         "Symbol": "IdentityPlatform.ServiceDefaults.Extensions.Respond(HealthCheckService,HttpContext,string)",
@@ -316,16 +246,6 @@
         "Path": "src/backend/IdentityPlatform.AuthServer/Composition/StartupContext.cs",
         "Symbol": "IdentityPlatform.AuthServer.Composition.StartupContext.HostArguments",
         "Fingerprint": "BE37C424BDBE2BFE149F0EEA7E5B74622D399831D16C2813B1CCBD5AFB0FB542"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.AuthServer/Composition/StartupContext.cs",
-        "Symbol": "IdentityPlatform.AuthServer.Composition.StartupContext.Dispose()",
-        "Fingerprint": "E67882E2CDE6CFE86D1F1B1BD315750090F63A4B605EAC5EEAE19EA966F3B904"
       },
       "Task": "T014",
       "Owner": "Implementation lead"

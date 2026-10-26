@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
+using IdentityPlatform.Infrastructure.Features.Protection;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 
 namespace IdentityPlatform.AuthServer.Composition;
@@ -26,6 +27,23 @@ internal sealed class StartupContext(string[] arguments) : IDisposable
         get; set;
     }
 
+    internal bool LocalDemoEnabled
+    {
+        get; set;
+    }
+    internal LocalDemoMaterial? DemoMaterial
+    {
+        get; set;
+    }
+
     // Program owns this context outside the application lifetime. DI must not own it.
-    public void Dispose() => Credentials?.Dispose();
+    /// <summary>Releases issuer consumers before cleaning this startup owner's disposable private files.</summary>
+    public void Dispose()
+    {
+        try
+        {
+            Credentials?.Dispose();
+        }
+        finally { DemoMaterial?.Dispose(); }
+    }
 }

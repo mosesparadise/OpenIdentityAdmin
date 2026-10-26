@@ -3,10 +3,11 @@ using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.Core.Features.Configuration;
 
-using var startup = new StartupContext(args);
 try
 {
+    using var startup = new StartupContext(args);
     await using var app = WebApplication.CreateBuilder(startup.HostArguments)
         .AddConfigurations()
         .ConfigureServices(startup)
@@ -36,6 +37,11 @@ catch (AdministratorConfigurationException exception)
     return 2;
 }
 catch (AdministratorProtocolConfigurationException exception)
+{
+    Console.Error.WriteLine(exception.Message);
+    return 2;
+}
+catch (LocalDemoConfigurationException exception)
 {
     Console.Error.WriteLine(exception.Message);
     return 2;

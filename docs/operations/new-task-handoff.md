@@ -1,5 +1,7 @@
 # OpenIdentityAdmin new-task handoff
 
+**Local demo continuation (26 October 2026):** the user selected a Windows-only Docker Desktop demo with disposable state before M02-C. [Feature 014](../../specs/014-local-b3-demo/spec.md) now has a runtime/container/PowerShell implementation candidate and focused passing checks; [verification](../../specs/014-local-b3-demo/verification.md) tracks pending full hosted and Windows evidence. Continue that bounded delivery without repeating accepted B3 work. M02-C follows it. No historical, human, production or public-release gate closes.
+
 ## Current delivery — 26 October 2026
 
 The selected **T012, T016 and T023**, including T003/T004 prerequisites, are internally accepted under A-009. [PR #102](https://github.com/mosesparadise/OpenIdentityAdmin/pull/102) delivers audit provenance (`d18f63f`); [PR #103](https://github.com/mosesparadise/OpenIdentityAdmin/pull/103) delivers the browser matrix and integrated acceptance, squash `724dfcbe45862aa1dfc3623f2a21deb5e06eab8b`. [Exact evidence](../../specs/013-administrator-browser-session/browser-login-protection.md#accepted-internal-delivery--26-october-2026) binds all 91 checks, 75 raw reports/4,573 passes with zero skips, 72 coverage inputs/15 unchanged floors, 64 mutation controls and independent reviews. Source, tested merge and squash share tree `f6bacb302978c1a26af07b8d0db5dc370e818691`. T024 is completed by the normal squash of these coherent delivery records; no runtime source changes in that follow-up.

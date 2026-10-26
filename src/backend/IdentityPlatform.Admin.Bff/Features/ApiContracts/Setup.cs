@@ -14,12 +14,19 @@ internal static class Setup
     /// <summary>Register explicit URL-segment versioning and validated native OpenAPI metadata without exposing documentation routes.</summary>
     internal static WebApplicationBuilder AddApiContracts(this WebApplicationBuilder builder)
     {
-        builder.Services.AddOptions<OpenApiMetadataOptions>()
+        builder.Services.AddApiContracts(builder.Configuration);
+        return builder;
+    }
+
+    /// <summary>Shares validated apicontracts registration between explicit generic hosting and contract fixtures.</summary>
+    internal static IServiceCollection AddApiContracts(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions<OpenApiMetadataOptions>()
             .BindConfiguration(OpenApiMetadataOptions.SectionName, options => options.ErrorOnUnknownConfiguration = true)
             .Validate(options => options.IsValid(), InvalidMetadata)
             .ValidateOnStart();
-        builder.Services.AddProblemDetails();
-        builder.Services.AddApiVersioning(options =>
+        services.AddProblemDetails();
+        services.AddApiVersioning(options =>
         {
             options.ApiVersionReader = new UrlSegmentApiVersionReader();
             options.AssumeDefaultVersionWhenUnspecified = false;
@@ -36,7 +43,7 @@ internal static class Setup
             options.Document.AddDocumentTransformer<MetadataTransformer>();
             options.Document.AddDocumentTransformer<BrowserSessions.BrowserSessionContractTransformer>();
         });
-        return builder;
+        return services;
     }
 
     /// <summary>Map only the supported management major, keeping identity protocol routes outside API versioning.</summary>

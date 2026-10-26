@@ -1,0 +1,17 @@
+**
+!src/**
+!Directory.Build.props
+!Directory.Packages.props
+!global.json
+!NuGet.Config
+!.editorconfig
+!scripts/local-demo/Dockerfile
+!scripts/local-demo/register.sh
+**/bin/**
+**/obj/**
+**/*.pfx
+**/*.p12
+**/*.pem
+**/*.key
+**/.env*
+**/appsettings.*.local.json

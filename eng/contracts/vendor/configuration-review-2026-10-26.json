@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-26T19:21:11.962209+00:00",
+  "repositoryHead": "268d10d2537d3784ca7746ae094559757f3f4167",
+  "scope": "Bounded independent configuration review of shared documentation registration for default and disposable local-demo BFF hosting; no viewer activation or vendor clearance.",
+  "failureStage": "PR105 run40383435486 Contracts core job121786459934 passed43 native tests and actual entrypoint exports, then rejected changed Documentation/Setup.cs bytes before advisory querying.",
+  "configurationChange": {
+    "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Setup.cs",
+    "previousSha256": "468dd496873c70add826b65348079ed4ee21ce541b7143a76e39da8e31f781f1",
+    "reviewedSha256": "a9c2f7f310c14efc2c2b0ee46dd7df90dd4611d4b3404b65c195d7aa0125d0ae",
+    "disposition": "Identical strict option binding, validation and ValidateOnStart registration extracted into an IServiceCollection overload. Existing WebApplicationBuilder entry delegates to it. Renderer mapping body, assets, CSP and credential/sanitizer configuration remain unchanged."
+  },
+  "productionMapping": {
+    "search": "rg -n MapDocumentation\\( src/backend",
+    "result": "Only definitions in Admin.Api and Admin.Bff; no invocation in default or local-demo host pipelines. Local-demo B3 routes do not activate documentation."
+  },
+  "otherConfigurationHashesUnchanged": true,
+  "priorAssessments": [
+    "vendor/configuration-review-2026-10-12.json",
+    "vendor/configuration-review-2026-10-22.json",
+    "vendor/configuration-review-2026-10-23.json"
+  ],
+  "requestSha256": "2f06a0763ca4349b6f91041e82d6017a5fb76ff4c8b66773ba1bc2226d0a77e1",
+  "responseSha256": "b1079839a3bca9a0c781e73b141469af1fae88fd2a69064f6ef544ec3b1ee793",
+  "limits": [
+    "Source review only; no fresh vendor advisory clearance or runtime acceptance claimed.",
+    "Existing advisory payloads/dispositions and strict unknown/changed-entry checks are retained.",
+    "Unresolved bundled inventory, Zod/qs findings, source-map mismatch, license/notice obligations and all viewer activation/public-release gates remain open."
+  ]
+}

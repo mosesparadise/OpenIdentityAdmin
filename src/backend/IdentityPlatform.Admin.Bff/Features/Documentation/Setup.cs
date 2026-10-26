@@ -13,10 +13,17 @@ internal static class Setup
     /// <summary>Validate presentation settings without mapping documentation or adding an activation switch.</summary>
     internal static WebApplicationBuilder AddDocumentation(this WebApplicationBuilder builder)
     {
-        builder.Services.AddOptions<DocumentationOptions>()
+        builder.Services.AddDocumentation(builder.Configuration);
+        return builder;
+    }
+
+    /// <summary>Shares validated documentation registration between explicit generic hosting and contract fixtures.</summary>
+    internal static IServiceCollection AddDocumentation(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions<DocumentationOptions>()
             .BindConfiguration(DocumentationOptions.SectionName, options => options.ErrorOnUnknownConfiguration = true)
             .Validate(options => options.IsValid(), InvalidOptions).ValidateOnStart();
-        return builder;
+        return services;
     }
 
     /// <summary>Map pinned read-only renderers for controlled fixtures; the production pipeline deliberately never calls this method.</summary>

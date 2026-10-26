@@ -3,6 +3,7 @@
     <PackageReference Include="xunit.v3.mtp-v2" />
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
     <PackageReference Include="Aspire.Hosting.Testing" />
+    <PackageReference Include="Microsoft.Playwright" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
@@ -28,4 +29,5 @@
     <Using Include="IdentityPlatform.Testing.TestPersistenceRegistration" Alias="PersistenceRegistration" />
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
+  <ItemGroup><Compile Include="../IdentityPlatform.Administrator.Tests/Fixtures/FactorOracle.cs" Link="Fixtures/FactorOracle.cs" /></ItemGroup>
 </Project>
