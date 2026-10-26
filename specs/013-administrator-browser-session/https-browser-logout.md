@@ -1,0 +1,45 @@
+# T020 real HTTPS browser logout — initial implementation slice
+
+**Implementation candidate — 26 October 2026.** Base `dcb3cb36b8a013781a3608d5c51d559623edee73`; branch `099-b3-https-browser-logout`. Continues delivered T019 without repeating persistence, registration or logout implementation. T020 remains unchecked: this slice establishes three real-browser journeys, not the full adverse-flow/theme/accessibility matrix. Hosted provider/browser acceptance is pending.
+
+## Boundary and design
+
+FR-001–010/012–015; B3-AUTH-01, B3-END-01–03 and SC-001/002/004/005. The test-only `BrowserHttpsFixture` reserves two managed loopback sockets before constructing immutable issuer/client/callback identities, credentials, account profiles and the exact fixed registration. Kestrel receives each already-bound socket once through the supported `SocketTransportOptions.CreateBoundListenSocket` factory; there is no release/rebind port race or raw descriptor ownership. The existing development certificate and normal TLS validation apply to both browser navigation and native BFF backchannel requests.
+
+The BFF uses its explicit generic-host `UseBrowserLogin` composition with Sessions-only runtime credentials. No `NativeClientIssuerBridge`, fabricated authentication, replaced native HTTP handler, ignored certificate failure or production Program change is introduced. The issuer reuses native account services, real Razor pages, ownership middleware and `MapSharedProtocol` authorization/token decisions; discovery/JWKS/PAR/end-session remain native-handler-owned. Existing TestServer factories retain their original mode.
+
+Fixture setup performs genuine enrollment and the delivered audited B3 registration upgrade. It never imports the setup scenario's cookie into the positive browser. Each sign-in uses actual password/MFA forms, browser-generated origin/antiforgery, fresh native PAR/code/callback and the real committed local ticket. Independent real-store reads inspect local revocation, browser generation, continuation state and exact issuer source revocation/audit. Browser return remains unverified issuer status.
+
+The BFF listener stops and joins requests while the issuer remains available; the issuer then stops/joins before dependent keys and database leases are released. Review found that the shared issuer startup catch bypassed its new HTTPS join path and could skip credential disposal after cleanup failure. Initialization now guards credential ownership throughout configuration and reuses the same host-owner disposal path after construction, preserving original and cleanup exceptions. The narrow architecture correction passed source review.
+
+## Actual scenario inventory
+
+`Features.Browser.SessionLogoutBrowserTests` has three provider theories, each carrying `Category=Browser`, `BrowserStory=BrowserSessions` and an exact Provider trait:
+
+| Scenario | Independent observations |
+| --- | --- |
+| `Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate` | Actual local form/commit; prior authentic cookies denied in another real browser; issuer source remains live and its cookie is retained; another explicit sign-in still traverses password/MFA and creates a different source; exact two PAR/two token requests and zero issuer end-session requests. |
+| `Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified` | Local revocation and `RemotePending` before navigation; issuer GET inert; actual protected confirmation POST revokes only the intended source with audit; fixed state-only return records `ReturnedUnverified`, deletes correlation/issuer cookies and cannot authenticate; replay without deleted proof denies. Exact one PAR/token and one end-session GET/POST. |
+| `Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive` | Genuine assisted local commit and issuer GET, then navigation away; local status remains unauthenticated, continuation remains pending and issuer source remains live. Exact one PAR/token and one end-session GET, zero POST. |
+
+Cookie assertions inspect actual Secure/HttpOnly/path/SameSite flags, session nonpersistence, issuer retention/deletion and logout-correlation presence/deletion. In-memory storage checks keep the captured local handle/generation proof out of script-readable state. No raw callback URL, cookie, token, HTML, screenshot, HAR or trace is retained as browser failure diagnostics; the existing finite-category/source-line wrapper covers the new journeys. These bounded checks do not claim complete SC-002 network/storage inspection.
+
+Review strengthened actual end-session request counters, cookie effects and audit correlation/generation checks. An initial added assertion incorrectly expected subject/source on remote transition audits. Source inspection confirmed `BrowserLogoutService.TransitionAsync` intentionally records those audits without actor fields; the corrected oracle requires null remote actor fields, exact correlation/generation and the original subject/source on the durable continuation and authenticated local logout audit. Production audit behavior is unchanged.
+
+## Discovery, local verification and required CI
+
+Actual native discovery contains **1,857** Administrator identities, preserving every prior **1,851** name and portable type/trait record and adding six. Browser inventory is **16/provider**: Accounts 8, Security 5, BrowserSessions 3. All ordinary provider counts, 305 BrowserSessions server cases/provider, 1,601 unit cases, mutation selectors and 15 coverage floors remain unchanged.
+
+The new explicit browser story requires PostgreSQL/SQL Server × Chromium/WebKit: four additional jobs and twelve browser executions. Required actual coverage inputs increase from 56 to **60**; no existing input is removed. Selection remains exhaustive and fail-closed for missing, duplicated, unknown, substituted or miscategorized identities and missing/empty coverage. Existing child/browser/job deadlines are unchanged. A-009's two exact WebKit certificate cases and Firefox deferral are unchanged; neither is counted as a pass.
+
+Local SDK remains 10.0.401. Initial compile feedback corrected an incorrect test enum member, formatting and analyzer-incompatible assertions; no suppression or baseline growth was used. The final Administrator build passes with zero warnings/errors (21.93 seconds). Actual formatter execution and explicit-base code-quality checks pass without allowance growth; instruction/assurance integrity and diff checks pass. All six actual provider/browser-story discovery filters reconcile: 8 Accounts, 5 Security and 3 BrowserSessions per provider. All **226 Python tooling regressions** pass (9.451 seconds), including new-story selection and all 60 coverage obligations.
+
+A temporary standalone control compiled the actual `BrowserHttpsEndpoint` source and started two real Kestrel listeners with the retained sockets. Both actual HTTPS requests passed normal certificate validation using the exported public development certificate. A gated in-flight request prevented shutdown completion until released; stop then joined successfully. This is a local socket/TLS/ownership control, not a provider/browser acceptance result, and is not added to native test counts. No local SQL/Aspire retry or diagnostic image acquisition ran.
+
+Required exact-source hosted execution, raw reports, coverage, mutation and independent evidence reconciliation remain pending. Source security review found no authentication shortcut or TLS bypass; architecture and test reviews required the concrete corrections recorded above. Source review is not runtime acceptance.
+
+## Remaining work and limits
+
+Both identities use `localhost` on different ports. They are different origins but the same cookie host/site; browsers share host-only cookies across ports. This topology proves actual TLS/native/browser transport and explicit origin behavior, not separate-host isolation or cross-site SameSite behavior. Those claims need correctly trusted distinct hostnames and dedicated tests.
+
+T020 remains open for its remaining cross-site/framing/mismatch/expired-correlation/absent-session/failure/lost-return matrix and theme/accessibility work. T012/T016 remaining browser evidence, T003/T004 full integration/inventory, T021 dedicated B3 mutations, T022–T024 coherent B3 acceptance and A-009/T028 restoration stay open. All six historical findings, 48 human rows, 345 not-assessed controls, PR #69/issue #70 and production/public-release gates remain open. M02-C/D/E refresh/API/React acceptance is absent. No expired diagnostic authority is revived and no production composition is enabled.

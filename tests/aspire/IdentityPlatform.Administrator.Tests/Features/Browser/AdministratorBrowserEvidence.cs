@@ -9,7 +9,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 internal static class AdministratorBrowserEvidence
 {
     private static readonly string[] SourceFiles = ["EnrollmentBrowserTests.cs", "SecurityBrowserTests.cs", "SecurityBrowserJourney.cs",
-        "ClipboardBrowserTests.cs", "AdministratorClipboard.cs"];
+        "ClipboardBrowserTests.cs", "AdministratorClipboard.cs", "SessionLogoutBrowserTests.cs", "BrowserHttpsJourney.cs"];
     private const string Unknown = "unclassified";
     private static readonly CompositeFormat Failure = CompositeFormat.Parse("Administrator browser failure ({0}); source lines {1}; sensitive diagnostics suppressed.");
     private static readonly string[] Categories = ["ERR_CACHE_MISS", "NS_ERROR_DOCUMENT_NOT_CACHED",

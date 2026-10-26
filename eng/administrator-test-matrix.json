@@ -873,7 +873,10 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutPairingTests.Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1853,7 +1856,10 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutPairingTests.Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -39274,6 +39280,168 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "SessionLogoutBrowserTests",
+        "methodName": "Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserSessions"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "SessionLogoutBrowserTests",
+        "methodName": "Given_RealHttpsSession_When_IssuerConfirmationCompletes_Then_BothCommitsAreObservedAndReturnRemainsUnverified",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserSessions"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "SessionLogoutBrowserTests",
+        "methodName": "Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserSessions"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "SessionLogoutBrowserTests",
+        "methodName": "Given_RealHttpsSession_When_IssuerConfirmationIsAbandoned_Then_LocalRevocationPersistsAndIssuerRemainsLive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserSessions"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "SessionLogoutBrowserTests",
+        "methodName": "Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserSessions"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutBrowserTests.Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "SessionLogoutBrowserTests",
+        "methodName": "Given_RealHttpsSession_When_LocalLogoutAndFreshSignIn_Then_OldCookiesDenyAndIssuerAuthorityIsSeparate",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserSessions"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
