@@ -2282,16 +2282,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/SecurityAuditIntent.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent",
-        "Fingerprint": "F054E2DCB9F8BF51B535ED32FB6C9BFB898E0F49A69A4F2A5136DAE97A18B200"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ001",
         "Path": "tests/architecture/IdentityPlatform.Architecture.Tests/Features/DependencyRulesTests.cs",
         "Symbol": "IdentityPlatform.Architecture.Tests.Features.DependencyRulesTests.Runtime_hosts_cannot_depend_on_migrations_or_apply_schema_changes()",
@@ -2522,16 +2512,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ008",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests",
-        "Fingerprint": "06E244B13336FC2EB20B415CA7BEED2339756716743543D252BE33B4ABAD1816"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ002",
         "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
         "Symbol": "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Cases(IEnumerable<string>)",
@@ -2736,16 +2716,6 @@
         "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
         "Symbol": "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.RunAsync(BootstrapDatabase,string,byte[])",
         "Fingerprint": "5486C963554F3032DF87A42C7632719487303D6941298470C336D294B01C7538"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
-        "Symbol": "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.SnapshotAsync(BootstrapDatabase,bool)",
-        "Fingerprint": "A468EC0DF631F5D804690D8B13619E9D77E0A749B7F0CD93A5B4ECA1542041FF"
       },
       "Task": "T015",
       "Owner": "Implementation lead"
@@ -17141,5 +17111,18 @@
       "Owner": "Implementation lead"
     }
   ],
-  "Exceptions": []
+  "Exceptions": [
+    {
+      "Finding": {
+        "Rule": "CQ008",
+        "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
+        "Symbol": "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests",
+        "Fingerprint": "A9576A63490DB84121681C00BFF8D2D74486DE40A9227220A3ABFC5B069C6B20"
+      },
+      "Task": "T015",
+      "Owner": "Implementation lead",
+      "Reason": "Architecture-reviewed 26 October 2026: existing four-part bootstrap test class changes only historical audit projection; no new partial split or test identity. Feature 009 engineering T015 owns consolidation; broad consolidation is separate from the additive migration correction.",
+      "Expires": "2026-11-02"
+    }
+  ]
 }

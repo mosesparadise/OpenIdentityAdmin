@@ -42,6 +42,8 @@ public sealed class BrowserProtocolClientTests(BootstrapFixture fixture)
         {
             NativeClientInteroperabilityTests.RequireAccepted(accepted);
             BrowserProtocolFlow.RequireIdentity(accepted.Authentication!.Principal!, row);
+            Assert.DoesNotContain(accepted.Authentication.Principal!.Claims, claim =>
+                claim.Value == browser.Correlation.ToString() || claim.Value == browser.Correlation.ToString(AuditFormat));
             Assert.Equal(0, accepted.BodyLength);
         }
         await NativeClientInteroperabilityTests.RequireStatesAsync(first, total: 1, redeemed: 1);
@@ -58,6 +60,7 @@ public sealed class BrowserProtocolClientTests(BootstrapFixture fixture)
                                                                        select new TheoryDataRow<string, bool>(provider, mismatch).WithTrait(ProviderTrait, provider);
     private const int CaptureOffset = 250;
     private const int BeforeParOffset = 750;
+    private const string AuditFormat = "N";
 
     /// <summary>A late custom-field change after durable state creation cannot send a different intent to the issuer.</summary>
     [Theory, MemberData(nameof(BrowserProtocolTests.Providers), MemberType = typeof(BrowserProtocolTests))]
@@ -96,7 +99,7 @@ public sealed class BrowserProtocolClientTests(BootstrapFixture fixture)
         services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler
             .SetOrder(OpenIddictClientHandlers.AttachResponseMode.Descriptor.Order + CaptureOffset).UseInlineHandler(context =>
             {
-                NativeBrowserChallenge.Attach(context, profile, browser.Binding, DateTimeOffset.FromUnixTimeSeconds(deadline));
+                NativeBrowserChallenge.Attach(context, profile, browser.Binding, DateTimeOffset.FromUnixTimeSeconds(deadline), browser.Correlation);
                 return ValueTask.CompletedTask;
             }));
 

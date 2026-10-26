@@ -60,5 +60,7 @@ public sealed class IssuerLogoutDeadlineTests(BootstrapFixture fixture)
         Assert.True(committed.Revoked);
         Assert.Equal(original.Revision + 1, committed.Revision);
         Assert.Equal(1, await scenario.Database.Set<SecurityAuditIntent>().CountAsync(row => row.Event == AuditEvent, TestContext.Current.CancellationToken));
+        Assert.Null((await scenario.Database.Set<SecurityAuditIntent>().AsNoTracking().SingleAsync(row => row.Event == AuditEvent,
+            TestContext.Current.CancellationToken)).RelatedCorrelationId);
     }
 }

@@ -14,6 +14,23 @@ internal static class IssuerContinuationAudit
     private const string Client = "protocol-client";
     private const string Target = "administrator-browser-login";
     private const string Accepted = "accepted";
+    private const string Linked = "administrator-browser-audit-link";
+
+    /// <summary>Links authenticated fixed-client provenance to this completed source history in the native attachment transaction.</summary>
+    internal static void Link(PlatformDbContext database, IssuerContinuation row, Guid correlation)
+    {
+        database.Add(new SecurityAuditIntent
+        {
+            Event = Linked,
+            ActorType = Client,
+            ActorId = row.ClientId,
+            TargetType = Target,
+            Outcome = Accepted,
+            CorrelationId = correlation,
+            RelatedCorrelationId = row.CorrelationId,
+            OccurredAt = row.ObservedAt
+        });
+    }
 
     /// <summary>Stages a sanitized start or native attachment audit in the caller's original transaction.</summary>
     internal static void Add(PlatformDbContext database, IssuerContinuation row, bool attached)

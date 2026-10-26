@@ -13,7 +13,7 @@ internal sealed class NativeClientSendPar(OpenIddictClientHandlers.SendPushedAut
         var continuation = NativeClientContinuation.Find(context);
         continuation.Require(context);
         return NativeClientBackchannel.RunAsync(context.PushedAuthorizationRequest!, context.Registration, context.Configuration,
-            context.PushedAuthorizationEndpoint!, () => continuation.Require(context), () => native.HandleAsync(context));
+            context.PushedAuthorizationEndpoint!, () => continuation.Require(context), () => native.HandleAsync(context), NativeBrowserChallenge.Find(context)?.Correlation);
     }
 }
 

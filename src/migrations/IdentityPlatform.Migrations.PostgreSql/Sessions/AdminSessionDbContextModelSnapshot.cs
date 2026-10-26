@@ -243,6 +243,9 @@ namespace IdentityPlatform.Migrations.PostgreSql.Sessions
                     b.Property<int>("Operation")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("RelatedCorrelationId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SourceSession")
                         .HasMaxLength(400)
                         .HasColumnType("character varying(400)")

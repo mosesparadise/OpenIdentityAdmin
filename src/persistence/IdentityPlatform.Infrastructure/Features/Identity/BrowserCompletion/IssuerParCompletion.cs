@@ -19,10 +19,12 @@ internal sealed class IssuerParCompletion
     private readonly string completionDigest;
     private readonly string provenance;
     private readonly long revision;
+    private readonly Guid correlation;
+    private readonly Func<bool> currentCorrelation;
     private bool attached;
 
     /// <summary>Captures the original transaction epoch and untracked row; capacity cleanup cannot accidentally save its clock observation.</summary>
-    private IssuerParCompletion(ProtocolStorageScope scope, IssuerContinuation row, BrowserLoginBinding binding, string digest)
+    private IssuerParCompletion(ProtocolStorageScope scope, IssuerContinuation row, BrowserLoginBinding binding, string digest, Guid correlation, Func<bool> currentCorrelation)
     {
         this.scope = scope;
         this.row = row;
@@ -30,14 +32,17 @@ internal sealed class IssuerParCompletion
         completionDigest = digest;
         provenance = Provenance(row);
         revision = row.Revision;
+        this.correlation = correlation;
+        this.currentCorrelation = currentCorrelation;
         phase = scope.Owner.Capture(write: true);
     }
 
     /// <summary>Acquires admission only after the caller's existing profile lock; no nested transaction or account authority is created.</summary>
-    internal static async ValueTask<IssuerParCompletion> OpenAsync(ProtocolStorageScope scope, BrowserLoginBinding binding, CancellationToken token)
+    internal static async ValueTask<IssuerParCompletion> OpenAsync(ProtocolStorageScope scope, BrowserLoginBinding binding,
+        Guid correlation, Func<bool> currentCorrelation, CancellationToken token)
     {
         var owner = scope.Owner;
-        if (owner.Database is not PlatformDbContext database || owner.Transaction is null)
+        if (correlation == Guid.Empty || !currentCorrelation() || owner.Database is not PlatformDbContext database || owner.Transaction is null)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
@@ -54,7 +59,7 @@ internal sealed class IssuerParCompletion
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        return new(scope, row, binding, digest);
+        return new(scope, row, binding, digest, correlation, currentCorrelation);
     }
 
     /// <summary>Adds only private representation to the actual prepared native request and preserves its shorter original deadline.</summary>
@@ -92,6 +97,7 @@ internal sealed class IssuerParCompletion
             row.RequestId = id;
             row.Revision = checked(row.Revision + 1);
             IssuerContinuationAudit.Add(database, row, attached: true);
+            IssuerContinuationAudit.Link(database, row, correlation);
             await database.SaveChangesAsync(cancellation);
         }, token, write: true);
         attached = true;
@@ -138,7 +144,7 @@ internal sealed class IssuerParCompletion
     private void Require(CancellationToken token)
     {
         scope.Owner.Check(phase, token);
-        if (!ReferenceEquals(ProtocolStorageAmbient.Current?.Scope, scope))
+        if (!currentCorrelation() || !ReferenceEquals(ProtocolStorageAmbient.Current?.Scope, scope))
         {
             throw ProtocolStorageOwner.Unavailable();
         }

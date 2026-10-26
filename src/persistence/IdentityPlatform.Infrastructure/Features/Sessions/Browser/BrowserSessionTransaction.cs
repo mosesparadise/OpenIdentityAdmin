@@ -82,7 +82,7 @@ internal sealed class BrowserSessionTransaction : IAsyncDisposable
     internal void Guard(long created, long observed, long expires) => bounds.Add(new(created, observed, expires));
 
     /// <summary>Records either explicitly anonymous provenance or a previously authenticated snapshot supplied by the owning operation.</summary>
-    internal void Audit(BrowserContext browser, BrowserMutation operation, AdminSessionTicket? actor = null)
+    internal void Audit(BrowserContext browser, BrowserMutation operation, AdminSessionTicket? actor = null, Guid? relatedCorrelation = null)
     {
         if (actor is not null)
         {
@@ -92,6 +92,7 @@ internal sealed class BrowserSessionTransaction : IAsyncDisposable
         {
             Id = Guid.NewGuid(),
             CorrelationId = browser.CorrelationId,
+            RelatedCorrelationId = relatedCorrelation,
             Generation = browser.Generation,
             OccurredAt = Now,
             Operation = operation,

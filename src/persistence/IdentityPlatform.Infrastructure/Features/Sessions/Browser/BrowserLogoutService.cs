@@ -34,6 +34,7 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
             await owner.Tickets.RevokeAsync(ticket, owner.Token);
         }
         await rows.CancelAsync(browser.Digest, owner.Token);
+        var sourceCorrelation = actor is null ? (Guid?)null : browser.CorrelationId;
         Advance(browser, owner.Now);
         var continuation = remote ? Correlation(browser, correlationDigest!, actor!) : null;
         if (continuation is not null)
@@ -41,7 +42,7 @@ internal sealed class BrowserLogoutService(AdminSessionDbContext database, TimeP
             database.Add(continuation);
         }
         owner.Guard(browser.ObservedAt, browser.ObservedAt, browser.ExpiresAt);
-        owner.Audit(browser, BrowserMutation.Logout, actor);
+        owner.Audit(browser, BrowserMutation.Logout, actor, sourceCorrelation);
         return await owner.CommitAsync() ? new BrowserLogoutResult(browser.Generation, remote, browser.ObservedAt, browser.ExpiresAt, continuation is null ? null : BrowserLogoutReservation.Capture(continuation)) : null;
     }
 

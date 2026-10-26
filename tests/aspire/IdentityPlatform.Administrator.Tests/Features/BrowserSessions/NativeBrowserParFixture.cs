@@ -22,13 +22,16 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scenario, FactorServices browser,
     IssuerContinuationProviderFixture.Attempt attempt, string completion) : IAsyncDisposable
 {
+    internal Guid Correlation { get; } = Guid.NewGuid();
     internal const string AttachEvent = "administrator-browser-attach";
+    internal const string LinkEvent = "administrator-browser-audit-link";
     internal const string Attached = "attached";
     private const string OwnershipUnavailable = "Native protocol storage ownership is unavailable.";
     private const string IntentParameter = "admin_login_intent";
     private const string CompletionParameter = "admin_login_completion";
     private const string ProtocolClientActor = "protocol-client";
     private const string CookieSeparator = "; ";
+    private const string AuditTarget = "administrator-browser-login";
     private const string AcceptedOutcome = "accepted";
     private const int PasswordAdvanceSeconds = 1;
     internal AdministratorProtocolScenario Scenario => scenario;
@@ -127,16 +130,21 @@ internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scen
     }
 
     /// <summary>Creates a new independently signed assertion on every demand, including completion replay.</summary>
-    internal Task<NativeAccountResult> PushAsync(IServiceProvider? services = null, string? assertion = null, Action<HttpContext>? configureHttp = null, string? maximumAge = null)
+    internal Task<NativeAccountResult> PushAsync(IServiceProvider? services = null, string? assertion = null, Action<HttpContext>? configureHttp = null,
+        string? maximumAge = null, string? completionOverride = null)
     {
         var fields = NativeAccountFlow.PushFields(scenario, assertion);
         fields.Add(IntentParameter, attempt.Intent);
-        fields.Add(CompletionParameter, completion);
+        fields.Add(CompletionParameter, completionOverride ?? completion);
         if (maximumAge is not null)
         {
             fields.Add(OpenIddictConstants.Parameters.MaxAge, maximumAge);
         }
-        return NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, fields, services: services ?? Services, configureHttp: configureHttp);
+        return NativeAccountHttp.InvokeAsync(scenario, AdministratorProtocolScenario.ParPath, fields, services: services ?? Services, configureHttp: http =>
+        {
+            http.Request.Headers[BrowserAuditCorrelation.Header] = Correlation.ToString(BrowserAuditCorrelation.Format);
+            configureHttp?.Invoke(http);
+        });
     }
 
     /// <summary>Reads the committed continuation through a fresh detached database scope.</summary>
@@ -148,7 +156,8 @@ internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scen
         var row = await RowAsync();
         await using var scope = Journey.CreateScope();
         var audits = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<SecurityAuditIntent>().AsNoTracking()
-            .Where(value => value.Event == AttachEvent && value.CorrelationId == row.CorrelationId)
+            .Where(value => value.Event == AttachEvent && value.CorrelationId == row.CorrelationId ||
+                value.Event == LinkEvent && value.RelatedCorrelationId == row.CorrelationId)
             .OrderBy(value => value.Id).ToArrayAsync(TestContext.Current.CancellationToken);
         return Convert.ToHexString(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(new
         {
@@ -192,7 +201,22 @@ internal sealed class NativeBrowserParFixture(AdministratorProtocolScenario scen
         var audit = await database.Set<SecurityAuditIntent>().AsNoTracking().SingleAsync(value => value.Event == AttachEvent && value.CorrelationId == row.CorrelationId, token);
         Assert.Equal(observation, audit.OccurredAt);
         Assert.True(audit.ActorId == row.ClientId && audit.ActorType == ProtocolClientActor && audit.Outcome == AcceptedOutcome);
+        await RequireLinkAsync();
         return reference;
+    }
+
+    /// <summary>Reads the sole typed link independently of native output and requires the actual fixed-client and continuation provenance.</summary>
+    internal async Task RequireLinkAsync()
+    {
+        var row = await RowAsync();
+        await using var scope = Journey.CreateScope();
+        var link = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<SecurityAuditIntent>().AsNoTracking()
+            .SingleAsync(value => value.Event == LinkEvent && value.RelatedCorrelationId == row.CorrelationId, TestContext.Current.CancellationToken);
+        Assert.Equal(Correlation, link.CorrelationId);
+        Assert.Equal(row.ObservedAt, link.OccurredAt);
+        Assert.True(link.ActorId == row.ClientId && link.ActorType == ProtocolClientActor && link.Outcome == AcceptedOutcome);
+        Assert.Null(link.TargetId);
+        Assert.Equal(AuditTarget, link.TargetType);
     }
 
     /// <summary>Requires the current finite ownership failure and fully suppressed output, never an arbitrary exception or deadline cancellation.</summary>

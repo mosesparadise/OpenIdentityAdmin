@@ -244,6 +244,9 @@ namespace IdentityPlatform.Migrations.SqlServer.Sessions
                     b.Property<int>("Operation")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("RelatedCorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("SourceSession")
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)")

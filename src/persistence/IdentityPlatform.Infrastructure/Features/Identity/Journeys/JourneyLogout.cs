@@ -1,3 +1,4 @@
+using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -46,9 +47,16 @@ internal sealed class JourneyLogout(PlatformDbContext database, NativeOperation 
         confirmation?.RequireCurrent(now);
         session.Revoked = true;
         session.Revision = checked(session.Revision + 1);
-        await transaction.CommitLogoutAsync(account.User.Id, now, authority, clock, confirmation);
+        var correlation = await SourceCorrelationAsync(candidate, transaction.Token);
+        await transaction.CommitLogoutAsync(account.User.Id, now, authority, clock, confirmation, correlation);
         return authority;
     }
+
+    /// <summary>Reads only the authenticated exact source's attached browser history under the existing account serialization boundary.</summary>
+    private Task<Guid?> SourceCorrelationAsync(JourneySessionCandidate candidate, CancellationToken token) =>
+        database.Set<IssuerContinuation>().AsNoTracking().Where(row => row.UserId == candidate.UserId &&
+            row.SessionId == candidate.SessionId && row.State == IssuerContinuationPolicy.Attached)
+            .Select(row => (Guid?)row.CorrelationId).SingleOrDefaultAsync(token);
 
     /// <summary>Attests only this request's completed logout; construction is confined to the real revocation path.</summary>
     internal sealed class Receipt

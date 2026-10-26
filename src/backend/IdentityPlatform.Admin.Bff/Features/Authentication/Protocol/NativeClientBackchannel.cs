@@ -25,18 +25,20 @@ internal sealed class NativeClientBackchannel
     private readonly Action requireCurrent;
     private readonly string fields;
     private readonly ProtocolStorageRequest operation;
+    private readonly Guid? correlation;
     private bool active = true;
     private int sends;
 
     /// <summary>Freezes only the exact already admitted native request, destination and associated registration/configuration identities.</summary>
     private NativeClientBackchannel(OpenIddictRequest request, OpenIddictClientRegistration registration,
-        OpenIddictConfiguration configuration, Uri destination, Action requireCurrent)
+        OpenIddictConfiguration configuration, Uri destination, Action requireCurrent, Guid? correlation)
     {
         this.request = request;
         this.registration = registration;
         this.configuration = configuration;
         this.destination = destination;
         this.requireCurrent = requireCurrent;
+        this.correlation = correlation;
         fields = Fields(request);
         operation = ProtocolStorageAmbient.Current?.Request ?? throw ProtocolStorageOwner.Unavailable();
         operation.RequireCurrent();
@@ -44,14 +46,14 @@ internal sealed class NativeClientBackchannel
 
     /// <summary>Owns the full native service invocation; completion cannot succeed without exactly one observed send.</summary>
     internal static async ValueTask RunAsync(OpenIddictRequest request, OpenIddictClientRegistration registration,
-        OpenIddictConfiguration configuration, Uri destination, Action requireCurrent, Func<ValueTask> native)
+        OpenIddictConfiguration configuration, Uri destination, Action requireCurrent, Func<ValueTask> native, Guid? correlation = null)
     {
         if (Current.Value is not null)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
         requireCurrent();
-        var permit = new NativeClientBackchannel(request, registration, configuration, destination, requireCurrent);
+        var permit = new NativeClientBackchannel(request, registration, configuration, destination, requireCurrent, correlation);
         Current.Value = permit;
         try
         {
@@ -78,6 +80,7 @@ internal sealed class NativeClientBackchannel
         var client = context.Transaction.GetHttpClient() ?? throw ProtocolStorageOwner.Unavailable();
         RequireHeaders(client.DefaultRequestHeaders);
         RequireHttp(http, permit.destination);
+        NativeClientAuditHeader.Attach(http.Headers, client.DefaultRequestHeaders, permit.correlation);
         var content = http.Content!;
         var bytes = await content.ReadAsByteArrayAsync(context.CancellationToken);
         if (bytes.Length is 0 or > MaximumBody)
@@ -94,6 +97,7 @@ internal sealed class NativeClientBackchannel
         permit.Require(context);
         RequireHttp(http, permit.destination);
         RequireHeaders(client.DefaultRequestHeaders);
+        NativeClientAuditHeader.Require(http.Headers, client.DefaultRequestHeaders, permit.correlation);
         if (!ReferenceEquals(http, context.Transaction.GetHttpRequestMessage()) || !ReferenceEquals(content, http.Content) ||
             !ReferenceEquals(client, context.Transaction.GetHttpClient()))
         {

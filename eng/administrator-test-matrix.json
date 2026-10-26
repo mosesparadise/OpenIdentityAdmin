@@ -894,7 +894,16 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditCommitTests.Given_RealNativeAttachment_When_CommitAcknowledgementIsLost_Then_OneLinkRemainsWithoutReplay(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_AnonymousPendingLogin_When_LocalLogoutCommits_Then_NoAuthenticatedSourceRelationIsInvented(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_ExpiredIntentAndLiveSource_When_LogoutThenContinuationCleanupRun_Then_AuditAncestrySurvives(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditPairingTests.Given_TwoGenuineCompletions_When_OneIntentUsesTheOtherProof_Then_NoAuditLinkCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CanonicalAuditMetadata_When_CeremonyOrClientAuthenticationIsAbsent_Then_NoLinkOrNativeTokenCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"PostgreSql\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"PostgreSql\", fault: \"malformed\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"PostgreSql\", fault: \"missing\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_FrozenAuditCorrelation_When_HeaderChangesAfterNativePersistence_Then_AttachmentRollsBack(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1895,7 +1904,16 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditCommitTests.Given_RealNativeAttachment_When_CommitAcknowledgementIsLost_Then_OneLinkRemainsWithoutReplay(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_AnonymousPendingLogin_When_LocalLogoutCommits_Then_NoAuthenticatedSourceRelationIsInvented(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_ExpiredIntentAndLiveSource_When_LogoutThenContinuationCleanupRun_Then_AuditAncestrySurvives(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditPairingTests.Given_TwoGenuineCompletions_When_OneIntentUsesTheOtherProof_Then_NoAuditLinkCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CanonicalAuditMetadata_When_CeremonyOrClientAuthenticationIsAbsent_Then_NoLinkOrNativeTokenCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"SqlServer\", fault: \"duplicate\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"SqlServer\", fault: \"malformed\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"SqlServer\", fault: \"missing\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_FrozenAuditCorrelation_When_HeaderChangesAfterNativePersistence_Then_AttachmentRollsBack(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -40390,6 +40408,354 @@
           "key": "CriticalDecision",
           "value": "browser-issuer-source"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditCommitTests.Given_RealNativeAttachment_When_CommitAcknowledgementIsLost_Then_OneLinkRemainsWithoutReplay(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditCommitTests",
+        "methodName": "Given_RealNativeAttachment_When_CommitAcknowledgementIsLost_Then_OneLinkRemainsWithoutReplay",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditCommitTests.Given_RealNativeAttachment_When_CommitAcknowledgementIsLost_Then_OneLinkRemainsWithoutReplay(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditCommitTests",
+        "methodName": "Given_RealNativeAttachment_When_CommitAcknowledgementIsLost_Then_OneLinkRemainsWithoutReplay",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_AnonymousPendingLogin_When_LocalLogoutCommits_Then_NoAuthenticatedSourceRelationIsInvented(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditLifecycleTests",
+        "methodName": "Given_AnonymousPendingLogin_When_LocalLogoutCommits_Then_NoAuthenticatedSourceRelationIsInvented",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_AnonymousPendingLogin_When_LocalLogoutCommits_Then_NoAuthenticatedSourceRelationIsInvented(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditLifecycleTests",
+        "methodName": "Given_AnonymousPendingLogin_When_LocalLogoutCommits_Then_NoAuthenticatedSourceRelationIsInvented",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_ExpiredIntentAndLiveSource_When_LogoutThenContinuationCleanupRun_Then_AuditAncestrySurvives(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditLifecycleTests",
+        "methodName": "Given_ExpiredIntentAndLiveSource_When_LogoutThenContinuationCleanupRun_Then_AuditAncestrySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditLifecycleTests.Given_ExpiredIntentAndLiveSource_When_LogoutThenContinuationCleanupRun_Then_AuditAncestrySurvives(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditLifecycleTests",
+        "methodName": "Given_ExpiredIntentAndLiveSource_When_LogoutThenContinuationCleanupRun_Then_AuditAncestrySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditPairingTests.Given_TwoGenuineCompletions_When_OneIntentUsesTheOtherProof_Then_NoAuditLinkCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditPairingTests",
+        "methodName": "Given_TwoGenuineCompletions_When_OneIntentUsesTheOtherProof_Then_NoAuditLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserAuditPairingTests.Given_TwoGenuineCompletions_When_OneIntentUsesTheOtherProof_Then_NoAuditLinkCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserAuditPairingTests",
+        "methodName": "Given_TwoGenuineCompletions_When_OneIntentUsesTheOtherProof_Then_NoAuditLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CanonicalAuditMetadata_When_CeremonyOrClientAuthenticationIsAbsent_Then_NoLinkOrNativeTokenCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CanonicalAuditMetadata_When_CeremonyOrClientAuthenticationIsAbsent_Then_NoLinkOrNativeTokenCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CanonicalAuditMetadata_When_CeremonyOrClientAuthenticationIsAbsent_Then_NoLinkOrNativeTokenCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CanonicalAuditMetadata_When_CeremonyOrClientAuthenticationIsAbsent_Then_NoLinkOrNativeTokenCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"PostgreSql\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"PostgreSql\", fault: \"malformed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"PostgreSql\", fault: \"missing\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"SqlServer\", fault: \"duplicate\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"SqlServer\", fault: \"malformed\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits(provider: \"SqlServer\", fault: \"missing\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_CompletedLogin_When_AuditHeaderIsInvalid_Then_NoAttachmentOrLinkCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_FrozenAuditCorrelation_When_HeaderChangesAfterNativePersistence_Then_AttachmentRollsBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_FrozenAuditCorrelation_When_HeaderChangesAfterNativePersistence_Then_AttachmentRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.NativeBrowserAuditTests.Given_FrozenAuditCorrelation_When_HeaderChangesAfterNativePersistence_Then_AttachmentRollsBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "NativeBrowserAuditTests",
+        "methodName": "Given_FrozenAuditCorrelation_When_HeaderChangesAfterNativePersistence_Then_AttachmentRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"

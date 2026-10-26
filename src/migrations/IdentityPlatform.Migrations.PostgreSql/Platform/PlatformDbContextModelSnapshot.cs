@@ -818,6 +818,9 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
 
+                    b.Property<Guid?>("RelatedCorrelationId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("TargetId")
                         .HasMaxLength(450)
                         .HasColumnType("character varying(450)");

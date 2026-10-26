@@ -103,6 +103,10 @@ internal sealed class BrowserRemoteLogoutFixture(IssuerLogoutFixture issuer) : I
         Assert.True(audits.All(item => item.CorrelationId == row.CorrelationId));
         var local = audits.Single(item => item.Operation == BrowserMutation.Logout);
         Assert.True(local.Subject == ticket.Subject && local.SourceSession == ticket.SourceSession);
+        var established = await db.Set<BrowserSessionAudit>().AsNoTracking().SingleAsync(item => item.Operation == BrowserMutation.Establish,
+            TestContext.Current.CancellationToken);
+        Assert.Equal(established.CorrelationId, local.RelatedCorrelationId);
+        Assert.NotEqual(local.CorrelationId, local.RelatedCorrelationId);
         Assert.Equal(state == BrowserLogoutState.LocalCommitted ? 0 : 1, audits.Count(item => item.Operation == BrowserMutation.RemotePending));
         Assert.Equal(state == BrowserLogoutState.ReturnedUnverified ? 1 : 0, audits.Count(item => item.Operation == BrowserMutation.Return));
         var revoked = await db.Set<AdminSessionAudit>().AsNoTracking().SingleAsync(item => item.Operation == SessionMutation.Revoke, TestContext.Current.CancellationToken);

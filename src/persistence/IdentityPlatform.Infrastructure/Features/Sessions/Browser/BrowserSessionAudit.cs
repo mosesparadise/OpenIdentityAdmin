@@ -15,6 +15,10 @@ internal sealed class BrowserSessionAudit
     {
         get; set;
     }
+    public Guid? RelatedCorrelationId
+    {
+        get; set;
+    }
     public long OccurredAt
     {
         get; set;

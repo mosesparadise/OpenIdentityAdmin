@@ -115,6 +115,7 @@ internal sealed class IssuerLogoutFixture : IAsyncDisposable
         Assert.NotEqual(Guid.Empty, audit.CorrelationId);
         Assert.True(audit.OccurredAt > 0 && audit.OccurredAt <= Login.Issuer.Account.Journey.Clock.GetUtcNow().ToUnixTimeSeconds());
         Assert.Equal(native, await NativeSnapshotAsync());
+        await BrowserAuditHistory.RequireIssuerLogoutAsync(this);
     }
 
     /// <summary>Hashes actual native token/authorization state so remote logout cannot silently revoke unrelated grants or mint credentials.</summary>

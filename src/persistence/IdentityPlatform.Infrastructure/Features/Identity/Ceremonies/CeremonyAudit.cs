@@ -24,7 +24,7 @@ internal static class CeremonyAudit
     private const string Logout = "administrator-logout";
 
     /// <summary>Stages a sanitized audit in the same context; callers cannot pass a secret-bearing event or message.</summary>
-    internal static void Add(PlatformDbContext database, CeremonyEvent action, bool accepted, string userId, long now)
+    internal static void Add(PlatformDbContext database, CeremonyEvent action, bool accepted, string userId, long now, Guid? relatedCorrelation = null)
     {
         database.Add(new SecurityAuditIntent
         {
@@ -44,6 +44,7 @@ internal static class CeremonyAudit
             TargetType = Target,
             TargetId = userId,
             Outcome = accepted ? Accepted : Denied,
+            RelatedCorrelationId = relatedCorrelation,
             OccurredAt = now
         });
     }
