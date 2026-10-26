@@ -1,6 +1,6 @@
 # B3 native form policy — rejected browser run and bounded reproduction
 
-**26 October 2026.** The rejected run below remains retained. The user subsequently approved [A-010](../../docs/amendments/A-010-b3-native-form-policy.md); its scoped implementation and regression tests are now in [PR #97](https://github.com/mosesparadise/OpenIdentityAdmin/pull/97), pending corrected-source acceptance. T019 remains delivered and T020 incomplete.
+**26 October 2026 — correction delivered.** The user-approved A-010 correction and initial HTTPS journeys were accepted in [PR #97](https://github.com/mosesparadise/OpenIdentityAdmin/pull/97), squash `b3ad00a6d61e19ccbcbfecc3326d3f6083aaa002`. [Accepted exact-source evidence](https-browser-logout.md#accepted-internal-delivery--26-october-2026) records run `40257327073`, all 77 successful jobs, 4,402 raw passes and all twelve new browser journeys. Both rejected runs below remain retained and rejected; current success does not establish their unmeasured historical causes. T020 remains incomplete.
 
 ## Exact rejected source and hosted result
 
