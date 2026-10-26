@@ -3,6 +3,8 @@ import copy
 import json
 from pathlib import Path
 import unittest
+import subprocess
+import sys
 from apphost_selection import apphost_catalogue, apphost_filter, apphost_invocations, require_apphost_selections
 from control_runner import run
 
@@ -103,6 +105,37 @@ class AppHostSelectionTests(unittest.TestCase):
         for provider, group in [('unit', 'Foundation'), ('SqlServer', 'Other')]:
             with self.assertRaises(ValueError): apphost_filter(provider, group)
 
+    def test_Given_IndependentAppHostJobs_When_Selected_Then_DefaultAndEveryGroupPreserveFullDiscovery(self):
+        from test_selection import select_projects
+        workflow = (ROOT / '.github/workflows/verify.yml').read_text()
+        for provider in ('PostgreSql', 'SqlServer'):
+            self.assertEqual({'Persistence': 12}, select_projects(self.matrix, provider, partition='foundation'))
+            self.assertEqual({'AppHost': 18}, select_projects(self.matrix, provider, partition='apphost'))
+            self.assertEqual([('Foundation', 8), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
+            for group, count in (('Foundation', 8), ('BffSessions', 10)):
+                self.assertEqual([(group, count)], apphost_invocations(self.matrix, provider, group))
+                require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
+                cell = '{ profile: ' + provider + ', partition: apphost, apphost_group: ' + group + ', label: ' + provider + '-apphost-' + group.lower() + ' }'
+                self.assertIn(cell, workflow)
+            with self.assertRaises(ValueError): apphost_invocations(self.matrix, provider, 'Unknown')
+        source = (ROOT / 'scripts/verify.py').read_text()
+        self.assertIn('for group, _ in apphost_invocations(matrix, args.profile)}', source)
+        self.assertIn('require_apphost_selections(all_tests, groups, args.profile, matrix)', source)
+        self.assertIn('timeout=180 if args.profile == "unit" else 660', source)
+
+    def test_Given_IncompatibleAppHostSelection_When_Parsed_Then_NoTestExecutionStarts(self):
+        cases = (['unit', '--partition', 'apphost'], ['SqlServer', '--partition', 'foundation'],
+                 ['SqlServer', '--partition', 'apphost', '--browser', 'chromium'],
+                 ['SqlServer', '--partition', 'apphost', '--story', 'Bootstrap'],
+                 ['SqlServer', '--partition', 'apphost', '--issuer-group', 'Flows'],
+                 ['SqlServer', '--partition', 'apphost', '--browser-story', 'BrowserLogin'],
+                 ['SqlServer', '--partition', 'apphost', '--browser-session-group', 'Product'])
+        for arguments in cases:
+            result = subprocess.run([sys.executable, str(ROOT / 'scripts/verify.py'), *arguments, '--apphost-group', 'Foundation'],
+                                    text=True, capture_output=True, timeout=10)
+            self.assertEqual(2, result.returncode)
+            self.assertIn('AppHost group requires', result.stderr)
+
 
 if __name__ == '__main__':
-    run(6)
+    run(8)

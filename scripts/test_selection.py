@@ -5,13 +5,15 @@ import xml.etree.ElementTree as ET
 
 def select_projects(matrix, profile, browser=None, partition='all'):
     """Select reviewed project partitions while rejecting incompatible unit or browser requests."""
-    if partition not in ('all', 'standard', 'foundation', 'issuer', 'lifecycle', 'administrator'):
+    if partition not in ('all', 'standard', 'foundation', 'apphost', 'issuer', 'lifecycle', 'administrator'):
         raise ValueError('Unknown test partition')
-    if partition != 'all' and (profile == 'unit' or (browser and partition in ('foundation', 'issuer', 'lifecycle'))):
+    if partition != 'all' and (profile == 'unit' or (browser and partition in ('foundation', 'apphost', 'issuer', 'lifecycle'))):
         raise ValueError('Partition is incompatible with this profile or browser')
     projects = matrix['browser'] if browser else matrix['profiles'][profile]
     if partition == 'foundation':
-        return {name: projects[name] for name in ('Persistence', 'AppHost')}
+        return {'Persistence': projects['Persistence']}
+    if partition == 'apphost':
+        return {'AppHost': projects['AppHost']}
     if partition == 'issuer':
         return {'Issuer': projects['Issuer']}
     if partition == 'standard':
@@ -50,7 +52,7 @@ def catalogue(raw, lifecycle=False, project=None):
         result[uid] = (name, providers[0], browser, test['type']['namespace']) if project != 'Issuer' else (name, providers[0], browser)
         if project == 'Administrator':
             stories = [trait['value'] for trait in traits if trait['key'] == 'BrowserStory']
-            if (browser and (len(stories) != 1 or stories[0] not in ('Accounts', 'Security', 'BrowserSessions'))) or (not browser and stories):
+            if (browser and (len(stories) != 1 or stories[0] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection'))) or (not browser and stories):
                 raise ValueError('Administrator browser story trait is missing, ambiguous or inappropriate')
             result[uid] = (*result[uid], stories[0] if browser else None)
         names.add(name)
@@ -166,7 +168,7 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
     ordinary = {'IdentityPlatform.Administrator.Tests.Features.' + story for story in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions')}
     browser_namespace = 'IdentityPlatform.Administrator.Tests.Features.Browser'
     if any(len(test) != 5 or (test[3] != browser_namespace if test[2] else test[3] not in ordinary) or
-           (test[4] not in ('Accounts', 'Security', 'BrowserSessions') if test[2] else test[4] is not None) for test in all_tests.values()):
+           (test[4] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection') if test[2] else test[4] is not None) for test in all_tests.values()):
         raise ValueError('Administrator catalogue contains an unexpected namespace or category')
     if type(browser_count) is not int or browser_count < 0 or any(
             sum(test[1] == p and test[2] for test in all_tests.values()) != browser_count for p in counts):
@@ -231,7 +233,7 @@ def require_administrator_browser(all_tests, selected, provider, matrix, invento
 def administrator_browser_invocations(matrix, story=None):
     """Keep all reviewed browser stories exhaustive and independently bounded by the unchanged invocation deadline."""
     stories = matrix.get('administrator_browser_stories', {})
-    if set(stories) != {'Accounts', 'Security', 'BrowserSessions'} or any(type(count) is not int or count <= 0 for count in stories.values()):
+    if set(stories) != {'Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection'} or any(type(count) is not int or count <= 0 for count in stories.values()):
         raise ValueError('Administrator browser stories must be explicitly reviewed')
     if sum(stories.values()) != matrix['browser']['Administrator'] or (story is not None and story not in stories):
         raise ValueError('Administrator browser stories do not exhaust their reviewed inventory')

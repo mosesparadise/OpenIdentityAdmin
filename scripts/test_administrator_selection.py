@@ -162,8 +162,8 @@ class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
 class AdministratorBrowserSelectionTests(AdministratorStoryTests):
     def setUp(self):
         super().setUp()
-        self.matrix['browser'] = {'Administrator': 3}
-        self.matrix['administrator_browser_stories'] = {'Accounts': 1, 'Security': 1, 'BrowserSessions': 1}
+        self.matrix['browser'] = {'Administrator': 5}
+        self.matrix['administrator_browser_stories'] = {'Accounts': 1, 'Security': 1, 'BrowserSessions': 1, 'BrowserLogin': 1, 'BrowserProtection': 1}
         for provider in ('PostgreSql', 'SqlServer'):
             name = provider + 'Browser'
             self.catalogue[name] = (name, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'Accounts')
@@ -174,6 +174,10 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
             sessions = provider + 'SessionsBrowser'
             self.catalogue[sessions] = (sessions, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'BrowserSessions')
             self.inventory[provider].append(sessions)
+            for story in ('BrowserLogin', 'BrowserProtection'):
+                case = provider + story
+                self.catalogue[case] = (case, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', story)
+                self.inventory[provider].append(case)
         self.selected = {'PostgreSqlBrowser': self.catalogue['PostgreSqlBrowser']}
 
     def verify(self):
@@ -182,7 +186,7 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual({'Administrator': 3}, select_projects(self.matrix, 'PostgreSql', 'webkit', 'administrator'))
+        self.assertEqual({'Administrator': 5}, select_projects(self.matrix, 'PostgreSql', 'webkit', 'administrator'))
 
     def test_browser_inventory_selection_and_category_fail_closed(self):
         for change in ('missing', 'substitute', 'ordinary', 'provider', 'count', 'bool', 'category', 'namespace', 'story'):
@@ -198,6 +202,19 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
                 elif change == 'namespace': self.catalogue['SqlServerBrowser'] = ('SqlServerBrowser', 'SqlServer', True, 'IdentityPlatform.Administrator.Tests.Features.Accounts', 'Accounts')
                 elif change == 'story': del self.matrix['administrator_stories']['Accounts']
                 with self.assertRaises(ValueError): self.verify()
+
+    def test_Given_ExpandedBrowserStories_When_Selected_Then_AllFiveStayDisjointAndBothNewStoriesAreMandatory(self):
+        from test_selection import administrator_browser_invocations, require_administrator_browser
+        expected = [('Accounts', 1), ('Security', 1), ('BrowserSessions', 1), ('BrowserLogin', 1), ('BrowserProtection', 1)]
+        self.assertEqual(expected, administrator_browser_invocations(self.matrix))
+        for provider in ('PostgreSql', 'SqlServer'):
+            for story, _ in expected:
+                selected = {key: value for key, value in self.catalogue.items() if value[1] == provider and value[2] and value[4] == story}
+                require_administrator_browser(self.catalogue, selected, provider, self.matrix, self.inventory, story)
+        for story in ('BrowserLogin', 'BrowserProtection'):
+            self.setUp()
+            del self.matrix['administrator_browser_stories'][story]
+            with self.assertRaises(ValueError): administrator_browser_invocations(self.matrix)
 
 
 class AdministratorMetadataTests(unittest.TestCase):
