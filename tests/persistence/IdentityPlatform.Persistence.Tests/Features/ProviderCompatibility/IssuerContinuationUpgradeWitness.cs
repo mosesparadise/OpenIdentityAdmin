@@ -27,8 +27,8 @@ internal static class IssuerContinuationUpgradeWitness
     private const int NullableIndex = 8;
     private const int Type = 9;
     private const int MaximumLength = 10;
-    private static readonly string[] PostgresPlatform = ["20261017224010_AdministratorProtocol", "20261023223630_AdministratorIssuerContinuation"];
-    private static readonly string[] SqlPlatform = ["20261017224016_AdministratorProtocol", "20261023223639_AdministratorIssuerContinuation"];
+    private static readonly string[] PostgresPlatform = ["20261017224010_AdministratorProtocol", "20261023223630_AdministratorIssuerContinuation", "20261026113929_BrowserAuditCorrelation"];
+    private static readonly string[] SqlPlatform = ["20261017224016_AdministratorProtocol", "20261023223639_AdministratorIssuerContinuation", "20261026114108_BrowserAuditCorrelation"];
 
     /// <summary>Recognizes only exact independently queried ownership, never an index/check name that resembles the new column.</summary>
     internal static bool IsInteraction(string row)
@@ -59,7 +59,7 @@ internal static class IssuerContinuationUpgradeWitness
         Assert.Equal((previous + 1).ToString(CultureInfo.InvariantCulture), values[Ordinal]);
     }
 
-    /// <summary>Removes exactly one appended null marker only from old interaction rows, retaining every original field and duplicate row.</summary>
+    /// <summary>Removes exactly one approved appended null marker, retaining every original field and duplicate row.</summary>
     internal static void RequireRows(string[] before, string[] after, int originalColumns)
     {
         var restored = after.Select(row =>

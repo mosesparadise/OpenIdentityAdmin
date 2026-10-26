@@ -14,22 +14,27 @@ internal sealed class NativeBrowserChallenge
     private readonly BrowserLoginBinding binding;
     private readonly DateTimeOffset deadline;
     private readonly BrowserLoginReservation? reservation;
+    internal Guid Correlation
+    {
+        get;
+    }
 
     /// <summary>Retains immutable selectors and the original intent deadline without logging or publishing them into native state.</summary>
-    private NativeBrowserChallenge(OpenIddictClientEvents.ProcessChallengeContext context, BrowserLoginBinding binding, DateTimeOffset deadline, BrowserLoginReservation? reservation)
+    private NativeBrowserChallenge(OpenIddictClientEvents.ProcessChallengeContext context, BrowserLoginBinding binding, DateTimeOffset deadline, Guid correlation, BrowserLoginReservation? reservation)
     {
         original = context;
         this.binding = binding;
         this.deadline = deadline;
         this.reservation = reservation;
+        Correlation = correlation;
     }
 
     /// <summary>Accepts only explicit browser profile composition; callers must first reserve their durable intent in T010.</summary>
     internal static void Attach(OpenIddictClientEvents.ProcessChallengeContext context, NativeClientProfile profile,
-        BrowserLoginBinding binding, DateTimeOffset originalDeadline, BrowserLoginReservation? reservation = null)
+        BrowserLoginBinding binding, DateTimeOffset originalDeadline, Guid correlation, BrowserLoginReservation? reservation = null)
     {
         var now = context.Options.TimeProvider!.GetUtcNow();
-        if (!profile.Registration.IsBrowserSession || Find(context) is not null || originalDeadline <= now ||
+        if (correlation == Guid.Empty || !profile.Registration.IsBrowserSession || Find(context) is not null || originalDeadline <= now ||
             originalDeadline - now > TimeSpan.FromSeconds(AdministratorStateCapacity.LifetimeSeconds) ||
             context.Parameters.Keys.Any(IsBindingParameter))
         {
@@ -37,7 +42,7 @@ internal sealed class NativeBrowserChallenge
         }
         context.Parameters.Add(BrowserLoginBinding.IntentParameter, binding.Intent);
         context.Parameters.Add(BrowserLoginBinding.CompletionParameter, binding.Completion);
-        context.Transaction.SetProperty(Key, new NativeBrowserChallenge(context, binding, originalDeadline, reservation));
+        context.Transaction.SetProperty(Key, new NativeBrowserChallenge(context, binding, originalDeadline, correlation, reservation));
     }
 
     /// <summary>Resolves only the original in-memory attempt, never an untrusted custom parameter or authentication property.</summary>

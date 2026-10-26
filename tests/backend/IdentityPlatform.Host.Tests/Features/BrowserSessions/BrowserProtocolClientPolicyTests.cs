@@ -35,7 +35,7 @@ public sealed class BrowserProtocolClientPolicyTests(NativeClientCredentialFixtu
         context.Principal!.SetClaim(BrowserSessionIntent.ClaimType, (string?)null);
         var profile = services.GetRequiredService<NativeClientProfile>().ForBrowserSessions();
         var deadline = context.Options.TimeProvider!.GetUtcNow().AddSeconds(RemainingSeconds);
-        NativeBrowserChallenge.Attach(context, profile, Binding(), deadline);
+        NativeBrowserChallenge.Attach(context, profile, Binding(), deadline, Guid.NewGuid());
         NativeClientChallenge.Require(context, profile);
         await new OpenIddictClientHandlers.PrepareLoginStateTokenPrincipal().HandleAsync(context);
         await new NativeBrowserState().HandleAsync(context);
@@ -64,7 +64,7 @@ public sealed class BrowserProtocolClientPolicyTests(NativeClientCredentialFixtu
         {
             profile = profile.ForBrowserSessions();
         }
-        Assert.Throws<InvalidOperationException>(() => NativeBrowserChallenge.Attach(context, profile, Binding(), context.Options.TimeProvider!.GetUtcNow().AddSeconds(seconds)));
+        Assert.Throws<InvalidOperationException>(() => NativeBrowserChallenge.Attach(context, profile, Binding(), context.Options.TimeProvider!.GetUtcNow().AddSeconds(seconds), Guid.NewGuid()));
     }
 
     /// <summary>A caller-supplied private expectation cannot become an ordinary B2 protected-state field.</summary>

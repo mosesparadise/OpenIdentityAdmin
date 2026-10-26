@@ -14,19 +14,28 @@ internal sealed class BrowserCompletionPar(AdministratorRegistrationPolicy polic
         OpenIddictServerEvents.ProcessSignInContext context, CancellationToken token)
     {
         var http = context.Transaction.GetHttpRequest() ?? throw ProtocolStorageOwner.Unavailable();
+        var present = http.Headers.ContainsKey(BrowserAuditCorrelation.Header);
+        var correlation = BrowserAuditCorrelation.Read(http.Headers[BrowserAuditCorrelation.Header]);
         var form = await http.ReadFormAsync(token);
+        if (present != http.Headers.ContainsKey(BrowserAuditCorrelation.Header) ||
+            correlation != BrowserAuditCorrelation.Read(http.Headers[BrowserAuditCorrelation.Header]))
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
         var raw = BrowserLoginBinding.Read(form, out var input);
         var native = BrowserLoginBinding.Read(context.Request, out var binding);
-        if (raw == BrowserLoginBindingState.Absent && native == BrowserLoginBindingState.Absent)
+        if (raw == BrowserLoginBindingState.Absent && native == BrowserLoginBindingState.Absent &&
+            !present)
         {
             return null;
         }
-        if (!policy.IsBrowserSession || raw != BrowserLoginBindingState.Present || native != BrowserLoginBindingState.Present ||
+        if (correlation is null || !policy.IsBrowserSession || raw != BrowserLoginBindingState.Present || native != BrowserLoginBindingState.Present ||
             input!.Intent != binding!.Intent || input.Completion != binding.Completion)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        return await IssuerParCompletion.OpenAsync(scope, binding, token);
+        return await IssuerParCompletion.OpenAsync(scope, binding, correlation.Value,
+            () => BrowserAuditCorrelation.Read(http.Headers[BrowserAuditCorrelation.Header]) == correlation, token);
     }
 }
 

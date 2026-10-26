@@ -28,6 +28,7 @@ public sealed class MigrationCompatibilityTests
     {
         AdministratorUpgradeWitnessControls.Verify();
         IssuerContinuationUpgradeWitnessControls.Verify(name);
+        BrowserAuditUpgradeWitnessControls.Verify(name);
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromMinutes(DeadlineMinutes));
         await using var postgres = new PostgreSqlBuilder(PostgresImage).Build();

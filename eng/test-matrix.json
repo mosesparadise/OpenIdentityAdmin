@@ -28,23 +28,23 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 1519,
+      "Host": 1532,
       "Architecture": 5,
       "AppHost": 65
     },
     "PostgreSql": {
-      "Persistence": 10,
+      "Persistence": 12,
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 868
+      "Administrator": 877
     },
     "SqlServer": {
-      "Persistence": 10,
+      "Persistence": 12,
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 973
+      "Administrator": 982
     }
   },
   "browser": {
@@ -111,8 +111,8 @@
       "SqlServer": 110
     },
     "BrowserSessions": {
-      "PostgreSql": 313,
-      "SqlServer": 313
+      "PostgreSql": 322,
+      "SqlServer": 322
     }
   },
   "administrator_browser_stories": {
@@ -168,6 +168,8 @@
   "browser_session_groups": {
     "Foundations": {
       "classes": [
+        "BrowserAuditCommitTests",
+        "BrowserAuditPairingTests",
         "BrowserCoordinationActorTests",
         "BrowserCoordinationCapacityTests",
         "BrowserCoordinationCleanupTests",
@@ -199,6 +201,7 @@
         "IssuerContinuationJourneyTests",
         "IssuerContinuationRaceTests",
         "IssuerContinuationSchemaTests",
+        "NativeBrowserAuditTests",
         "NativeBrowserBindingTests",
         "NativeBrowserParAuditTests",
         "NativeBrowserParCapacityTests",
@@ -208,8 +211,8 @@
         "NativeEndSessionTests"
       ],
       "counts": {
-        "PostgreSql": 160,
-        "SqlServer": 160
+        "PostgreSql": 167,
+        "SqlServer": 167
       }
     },
     "Product": {
@@ -254,6 +257,7 @@
     },
     "Lifecycle": {
       "classes": [
+        "BrowserAuditLifecycleTests",
         "BrowserCleanupAdmissionTests",
         "BrowserLogoutMutationTests",
         "BrowserOrphanCleanupTests",
@@ -275,8 +279,8 @@
         "IssuerLogoutTests"
       ],
       "counts": {
-        "PostgreSql": 55,
-        "SqlServer": 55
+        "PostgreSql": 57,
+        "SqlServer": 57
       }
     }
   }

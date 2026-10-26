@@ -2282,16 +2282,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ003",
-        "Path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/SecurityAuditIntent.cs",
-        "Symbol": "IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent",
-        "Fingerprint": "F054E2DCB9F8BF51B535ED32FB6C9BFB898E0F49A69A4F2A5136DAE97A18B200"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ001",
         "Path": "tests/architecture/IdentityPlatform.Architecture.Tests/Features/DependencyRulesTests.cs",
         "Symbol": "IdentityPlatform.Architecture.Tests.Features.DependencyRulesTests.Runtime_hosts_cannot_depend_on_migrations_or_apply_schema_changes()",

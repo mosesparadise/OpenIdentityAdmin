@@ -9,8 +9,8 @@ internal static class BrowserCoordinationUpgradeWitness
         ("bff", "BrowserLogoutContinuation"), ("bff", "BrowserSessionAudit"), ("bff", "BrowserSessionBudget")];
     internal static readonly string[] Queries = ["SELECT * FROM \"bff\".\"BrowserContext\"", "SELECT * FROM \"bff\".\"BrowserLoginIntent\"",
         "SELECT * FROM \"bff\".\"BrowserLogoutContinuation\"", "SELECT * FROM \"bff\".\"BrowserSessionAudit\"", "SELECT * FROM \"bff\".\"BrowserSessionBudget\""];
-    internal static readonly string[] PostgresHistory = ["20261017224013_AdministratorClientStateBudget", "20261024000243_BrowserSessionCoordination"];
-    internal static readonly string[] SqlHistory = ["20261017224019_AdministratorClientStateBudget", "20261024000342_BrowserSessionCoordination"];
+    internal static readonly string[] PostgresHistory = ["20261017224013_AdministratorClientStateBudget", "20261024000243_BrowserSessionCoordination", "20261026113952_BrowserAuditCorrelation"];
+    internal static readonly string[] SqlHistory = ["20261017224019_AdministratorClientStateBudget", "20261024000342_BrowserSessionCoordination", "20261026114131_BrowserAuditCorrelation"];
     private static readonly string[] Budget = ["1", "0"];
 
     /// <summary>Rejects any migrated browser authority, unexpected audit, missing table or nonzero quota seed.</summary>

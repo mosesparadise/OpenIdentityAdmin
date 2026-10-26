@@ -169,14 +169,15 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     }
 
     /// <summary>Rechecks the original source lifetime after persistence and immediately before committing exact-session logout.</summary>
-    internal async Task CommitLogoutAsync(string userId, long now, JourneySessionProof authority, CeremonyClock clock, JourneyLogoutDeadline? confirmation = null)
+    internal async Task CommitLogoutAsync(string userId, long now, JourneySessionProof authority, CeremonyClock clock,
+        JourneyLogoutDeadline? confirmation = null, Guid? relatedCorrelation = null)
     {
         RequireCurrent();
         if (mode != CeremonyMode.Authentication || !Plan.Users.Contains(userId, StringComparer.Ordinal))
         {
             throw new FactorUnavailableException();
         }
-        CeremonyAudit.Add(database, CeremonyEvent.Logout, true, userId, now);
+        CeremonyAudit.Add(database, CeremonyEvent.Logout, true, userId, now, relatedCorrelation);
         await database.SaveChangesAsync(Token);
         RequireCurrent();
         authority.RequireTime(clock.Now);

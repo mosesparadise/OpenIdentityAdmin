@@ -9,23 +9,27 @@ internal sealed class BrowserLoginCompletion(AdminSessionDbContext database, Tim
     private readonly BrowserSessionRows rows = new(database, authenticator);
 
     /// <summary>Spends pending intent before native HTTP; a reserved or uncertain result never authorizes another challenge.</summary>
-    internal async Task<bool> ReserveAsync(string browserDigest, string intentDigest, long generation, string reservationDigest, CancellationToken token)
+    internal async Task<bool> ReserveAsync(string browserDigest, string intentDigest, long generation, string reservationDigest, CancellationToken token) =>
+        await ReserveCorrelationAsync(browserDigest, intentDigest, generation, reservationDigest, token) is not null;
+
+    /// <summary>Returns the actual operation correlation only after acknowledged reservation commit and successful owner disposal.</summary>
+    internal async Task<Guid?> ReserveCorrelationAsync(string browserDigest, string intentDigest, long generation, string reservationDigest, CancellationToken token)
     {
         if (!Valid(browserDigest, intentDigest, generation) || !BrowserSessionPolicy.IsDigest(reservationDigest) ||
             reservationDigest == browserDigest || reservationDigest == intentDigest)
         {
-            return false;
+            return null;
         }
         await using var owner = await BrowserSessionTransaction.OpenAsync(database, clock, token);
         var browser = await rows.BrowserAsync(browserDigest, owner.Token);
         if (browser is null || !BrowserSessionPolicy.Matches(browser, generation, owner.Now))
         {
-            return false;
+            return null;
         }
         var intent = await rows.IntentAsync(intentDigest, browser, BrowserIntentState.Pending, owner);
         if (intent is null || await database.Set<BrowserLoginIntent>().AnyAsync(row => row.NativeStateDigest == reservationDigest, owner.Token))
         {
-            return false;
+            return null;
         }
         intent.NativeStateDigest = reservationDigest;
         intent.State = BrowserIntentState.Reserved;
@@ -34,7 +38,7 @@ internal sealed class BrowserLoginCompletion(AdminSessionDbContext database, Tim
         browser.RetainUntil = Math.Max(browser.RetainUntil, intent.RetainUntil);
         Observe(browser, owner.Now);
         owner.Audit(browser, BrowserMutation.Reserve);
-        return await owner.CommitAsync();
+        return await owner.CommitAsync() ? browser.CorrelationId : null;
     }
 
     /// <summary>Requires the callback owner's exact protected reservation and prepared ticket; persistence does not replace native validation/consumption.</summary>

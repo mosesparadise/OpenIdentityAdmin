@@ -35,6 +35,11 @@ internal static class AdministratorUpgradeWitness
                 IssuerContinuationUpgradeWitness.RequireRows(rows, after[query],
                     before[DatabaseSnapshot.Columns].Count(IssuerContinuationUpgradeWitness.IsInteraction));
             }
+            else if (query == BrowserAuditUpgradeWitness.Query)
+            {
+                IssuerContinuationUpgradeWitness.RequireRows(rows, after[query],
+                    before[DatabaseSnapshot.Columns].Count(BrowserAuditUpgradeWitness.IsAudit));
+            }
             else if (query.StartsWith(TableQueryPrefix, StringComparison.Ordinal))
             {
                 Assert.Equal(DatabaseSnapshot.Fingerprint(rows), DatabaseSnapshot.Fingerprint(after[query]));
@@ -64,6 +69,7 @@ internal static class AdministratorUpgradeWitness
             var column = Assert.Single(additions, IssuerContinuationUpgradeWitness.IsInteraction);
             IssuerContinuationUpgradeWitness.RequireColumn(provider!, column, before);
             Assert.True(additions.Remove(column));
+            BrowserAuditUpgradeWitness.RemoveColumn(additions, before, provider!);
         }
         foreach (var row in additions)
         {

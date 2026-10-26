@@ -44,18 +44,19 @@ internal static class IssuerContinuationUpgradeWitnessControls
         var old = (string?[])column.Clone();
         old[NameIndex] = OldName;
         old[OrdinalIndex] = OldOrdinal;
-        string[] before = [JsonSerializer.Serialize(old)];
+        string[] before = [JsonSerializer.Serialize(old), BrowserAuditUpgradeWitnessControls.Original];
+        var audit = BrowserAuditUpgradeWitnessControls.Added(provider);
         var current = JsonSerializer.Serialize(column);
-        AdministratorUpgradeWitness.RequireCatalog(before, [before[0], current], DatabaseSnapshot.Columns, provider);
-        Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before, [before[0], current], OtherQuery, provider));
-        Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before, [before[0], current, current], DatabaseSnapshot.Columns, provider));
-        Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before, before, DatabaseSnapshot.Columns, provider));
+        AdministratorUpgradeWitness.RequireCatalog(before, [.. before, current, audit], DatabaseSnapshot.Columns, provider);
+        Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before, [.. before, current, audit], OtherQuery, provider));
+        Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before, [.. before, current, current, audit], DatabaseSnapshot.Columns, provider));
+        Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before, [.. before, audit], DatabaseSnapshot.Columns, provider));
         foreach (var (index, value) in InvalidColumns)
         {
             var forged = (string?[])column.Clone();
             forged[index] = value;
             Assert.ThrowsAny<XunitException>(() => AdministratorUpgradeWitness.RequireCatalog(before,
-                [before[0], JsonSerializer.Serialize(forged)], DatabaseSnapshot.Columns, provider));
+                [.. before, JsonSerializer.Serialize(forged), audit], DatabaseSnapshot.Columns, provider));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -66,12 +67,33 @@ internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario iss
             Assert.Equal(HttpMethod.Get, request.Method);
         }
         Count(path);
-        var result = await NativeAccountHttp.InvokeAsync(issuer, path, fields, cancellation: token, services: protocolServices);
+        RequireAuditHeader(request, path, fields);
+        var result = await NativeAccountHttp.InvokeAsync(issuer, path, fields, cancellation: token, services: protocolServices,
+            configureHttp: http =>
+            {
+                foreach (var header in request.Headers)
+                {
+                    http.Request.Headers[header.Key] = header.Value.ToArray();
+                }
+            });
         Assert.True(result.Failure is null, result.Failure?.GetType().FullName + Environment.NewLine + result.Failure?.StackTrace);
         var response = new HttpResponseMessage((HttpStatusCode)result.Status) { Content = new ByteArrayContent(RewriteIdentity(path, result)) };
         Assert.True(MediaTypeHeaderValue.TryParse(result.ContentType, out var contentType));
         response.Content.Headers.ContentType = contentType;
         return response;
+    }
+
+    /// <summary>Observes the actual final native request: only a bound PAR may carry audit provenance, never token or ordinary B2 traffic.</summary>
+    private static void RequireAuditHeader(HttpRequestMessage request, string path, Dictionary<string, string> fields)
+    {
+        var present = request.Headers.TryGetValues(BrowserAuditCorrelation.Header, out var values);
+        var bound = path == AdministratorProtocolScenario.ParPath && fields.ContainsKey(BrowserLoginBinding.IntentParameter);
+        Assert.Equal(bound, present);
+        if (present)
+        {
+            Assert.NotNull(BrowserAuditCorrelation.Read(values!.ToArray()));
+        }
+        Assert.False(fields.ContainsKey(BrowserAuditCorrelation.Header));
     }
 
     /// <summary>Intervenes only after successful real token issuance, with an explicit one-second fixture advance for strict expiry equality.</summary>

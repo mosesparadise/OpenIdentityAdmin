@@ -878,6 +878,9 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
+                    b.Property<Guid?>("RelatedCorrelationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TargetId")
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");

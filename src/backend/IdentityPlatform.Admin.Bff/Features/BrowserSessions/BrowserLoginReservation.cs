@@ -20,16 +20,18 @@ internal sealed class BrowserLoginReservation
     private readonly BrowserPendingProof pending;
     private readonly BrowserLoginBinding binding;
     private readonly string reservation;
+    private readonly Guid correlation;
     private OpenIddictClientEvents.ProcessChallengeContext? challenge;
     private int claimed;
 
     /// <summary>Construction follows the acknowledged reservation commit and transaction disposal only.</summary>
-    private BrowserLoginReservation(HttpContext request, BrowserPendingProof pending, BrowserLoginBinding binding, string reservation)
+    private BrowserLoginReservation(HttpContext request, BrowserPendingProof pending, BrowserLoginBinding binding, string reservation, Guid correlation)
     {
         this.request = request;
         this.pending = pending;
         this.binding = binding;
         this.reservation = reservation;
+        this.correlation = correlation;
     }
 
     /// <summary>Spends the original pending generation once; unknown commit or denial returns no capability and never retries.</summary>
@@ -44,8 +46,8 @@ internal sealed class BrowserLoginReservation
             return null;
         }
         var reservation = BrowserLoginSelector.Digest(BrowserLoginSelector.CreateSelector())!;
-        return await coordinator.ReserveAsync(pending.BrowserDigest, pending.Digest, pending.Generation, reservation, request.RequestAborted)
-            ? new(request, pending, binding!, reservation) : null;
+        var correlation = await coordinator.ReserveCorrelationAsync(pending.BrowserDigest, pending.Digest, pending.Generation, reservation, request.RequestAborted);
+        return correlation is { } committed ? new(request, pending, binding!, reservation, committed) : null;
     }
 
     /// <summary>Consumes the private HTTP capability before the existing native challenge guard and state preparation.</summary>
@@ -60,7 +62,7 @@ internal sealed class BrowserLoginReservation
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        NativeBrowserChallenge.Attach(context, profile, binding, new DateTimeOffset(pending.Expires, TimeSpan.Zero), this);
+        NativeBrowserChallenge.Attach(context, profile, binding, new DateTimeOffset(pending.Expires, TimeSpan.Zero), correlation, this);
     }
 
     /// <summary>Rechecks original receipt identity and deadline without treating retained selectors as reusable authority.</summary>

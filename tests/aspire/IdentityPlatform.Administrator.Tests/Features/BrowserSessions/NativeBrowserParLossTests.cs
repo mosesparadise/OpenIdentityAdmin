@@ -44,6 +44,7 @@ public sealed class NativeBrowserParLossTests(BootstrapFixture fixture)
         Assert.Equal((counts.Tokens + 1, counts.Authorizations), await NativeAccountPersistence.CountAsync(flow.Scenario));
         Assert.Equal(assertions + 1, await flow.AssertionsAsync());
         await RequireAuditAsync(flow);
+        await flow.RequireLinkAsync();
         var committed = await flow.AttachmentSnapshotAsync();
         NativeBrowserParFixture.RequireUnavailable(await flow.PushAsync());
         Assert.True(committed == await flow.AttachmentSnapshotAsync());
