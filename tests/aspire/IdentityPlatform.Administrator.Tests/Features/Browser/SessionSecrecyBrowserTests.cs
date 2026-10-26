@@ -22,6 +22,8 @@ public sealed class SessionSecrecyBrowserTests(BootstrapFixture fixture)
             Assert.True(environment.Profile.Issuer.Host == environment.Profile.ClientUri.Host);
             Assert.True(environment.Profile.Issuer.GetLeftPart(UriPartial.Authority) != environment.Profile.ClientUri.GetLeftPart(UriPartial.Authority));
             await BrowserSecrecyControls.RunAsync(environment);
+            using var witness = environment.ObserveResponses();
+            capture.ResponseWitness = witness;
             await using var session = await BrowserSession.CreateAsync();
             await BrowserTrafficLifetime.RunAsync(session.Context, async traffic =>
             {
@@ -29,14 +31,14 @@ public sealed class SessionSecrecyBrowserTests(BootstrapFixture fixture)
                 await BrowserHttpsJourney.SignInAsync(environment, page);
                 var secrets = capture.Require();
                 var cookies = await BrowserHttpsJourney.CookiesAsync(environment, page);
-                var storageSecrets = secrets.Concat(cookies.Select(cookie => cookie.Value)).Concat(await traffic.FlowAsync()).ToArray();
+                var storageSecrets = secrets.Concat(cookies.Select(cookie => cookie.Value)).Concat(await traffic.FlowAsync(witness)).ToArray();
                 await page.GotoAsync(new Uri(environment.Profile.ClientUri, BrowserHttpsJourney.Login).AbsoluteUri);
                 await BrowserSecretOracle.StorageAsync(page, storageSecrets);
                 await page.GotoAsync(new Uri(environment.Profile.Issuer, AdministratorJourney.Security).AbsoluteUri);
                 var issuerCookies = await session.Context.CookiesAsync();
                 storageSecrets = storageSecrets.Concat(issuerCookies.Where(cookie => cookie.HttpOnly).Select(cookie => cookie.Value)).ToArray();
                 await BrowserSecretOracle.StorageAsync(page, storageSecrets);
-                await traffic.RequireAsync(secrets);
+                await traffic.RequireAsync(secrets, witness);
                 Assert.Equal(1, environment.ParRequests);
                 Assert.Equal(1, environment.TokenRequests);
             });

@@ -39,6 +39,24 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     internal BrowserNavigationPause IssuerNavigation => issuerEndpoint.Navigation;
     internal BrowserStatusObservation Status => clientEndpoint.Status;
 
+    /// <summary>Attaches one passive witness to both real hosts for a single joined browser observation window.</summary>
+    internal BrowserResponseWitness ObserveResponses()
+    {
+        Assert.Null(issuerEndpoint.ResponseWitness);
+        Assert.Null(clientEndpoint.ResponseWitness);
+        var witness = new BrowserResponseWitness(() =>
+        {
+            issuerEndpoint.ResponseWitness = null;
+            clientEndpoint.ResponseWitness = null;
+        });
+        issuerEndpoint.ResponseWitness = witness;
+        clientEndpoint.ResponseWitness = witness;
+        return witness;
+    }
+
+    /// <summary>Stages an isolated response-only canary at the actual issuer TLS origin, returning to its already-staged document.</summary>
+    internal Uri StageResponseProbe(string cookie, Uri target) => issuerEndpoint.StageResponseProbe(cookie, target);
+
     /// <summary>Optionally uses the development certificate's loopback IP SAN to separate issuer and BFF cookie hosts and sites.</summary>
     private BrowserHttpsFixture(bool distinctSites)
     {

@@ -25,6 +25,26 @@ internal sealed class BrowserFlowSecrets
     private int strictMembers;
     private readonly ConcurrentDictionary<string, byte> values = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, byte> kinds = new(StringComparer.Ordinal);
+    private readonly ConcurrentDictionary<string, byte> requestKinds = new(StringComparer.Ordinal);
+    private readonly ConcurrentDictionary<string, byte> witnessedKinds = new(StringComparer.Ordinal);
+
+    /// <summary>Strictly parses the complete actual outgoing Cookie header before admitting any transient values, retaining caller provenance.</summary>
+    internal void RequestHeader(string name, string value, bool witnessed = false)
+    {
+        if (!name.Equals(RequestCookie, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+        var cookies = CookieHeaderValue.ParseStrictList([value]);
+        if (cookies.Count == 0)
+        {
+            throw new FormatException();
+        }
+        foreach (var cookie in cookies)
+        {
+            Include(cookie.Name.Value, cookie.Value.Value, witnessed ? witnessedKinds : requestKinds);
+        }
+    }
 
     /// <summary>Extracts only actual native callback/completion query fields without imposing a blanket ban on their legitimate transport.</summary>
     internal void Request(string address)
@@ -72,18 +92,26 @@ internal sealed class BrowserFlowSecrets
             ProbeGroup(value);
             throw;
         }
-        if (cookie.Name.Value?.StartsWith(Prefix, StringComparison.Ordinal) != true || string.IsNullOrEmpty(cookie.Value.Value))
+        Include(cookie.Name.Value, cookie.Value.Value, null);
+    }
+
+    /// <summary>Keeps only nonempty host-cookie values and records both required transient classes without exposing their contents.</summary>
+    private void Include(string? name, string? value, ConcurrentDictionary<string, byte>? source)
+    {
+        if (name?.StartsWith(Prefix, StringComparison.Ordinal) != true || string.IsNullOrEmpty(value))
         {
             return;
         }
-        values.TryAdd(cookie.Value.Value, 0);
-        if (cookie.Name.Value.StartsWith(Native, StringComparison.Ordinal))
+        values.TryAdd(value, 0);
+        if (name.StartsWith(Native, StringComparison.Ordinal))
         {
             kinds.TryAdd(Native, 0);
+            source?.TryAdd(Native, 0);
         }
-        if (cookie.Name.Value == Prelogin)
+        if (name == Prelogin)
         {
             kinds.TryAdd(Prelogin, 0);
+            source?.TryAdd(Prelogin, 0);
         }
     }
 
@@ -111,6 +139,8 @@ internal sealed class BrowserFlowSecrets
                 kinds.ContainsKey(Native), kinds.ContainsKey(Prelogin), Volatile.Read(ref entries), Volatile.Read(ref parsed),
                 Volatile.Read(ref parseFailed), Volatile.Read(ref crlf), Volatile.Read(ref separator),
                 Volatile.Read(ref strictGroups), Volatile.Read(ref strictMembers));
+            TestContext.Current.TestOutputHelper?.WriteLine(RequestReport, requestKinds.ContainsKey(Native), requestKinds.ContainsKey(Prelogin),
+                witnessedKinds.ContainsKey(Native), witnessedKinds.ContainsKey(Prelogin));
         }
         catch (Exception) { /* Preserve the capture verdict if its diagnostic sink fails. */ }
     }
@@ -123,4 +153,6 @@ internal sealed class BrowserFlowSecrets
         return values.Keys.ToArray();
     }
     private static readonly string[] Fields = [Code, State, Completion];
+    private const string RequestCookie = "cookie";
+    private const string RequestReport = "traffic-cookie-sources browser-native={0} browser-prelogin={1} witnessed-native={2} witnessed-prelogin={3}";
 }

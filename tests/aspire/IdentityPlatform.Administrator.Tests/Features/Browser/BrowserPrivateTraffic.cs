@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
+using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
@@ -20,6 +21,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     private readonly ConcurrentQueue<string> diagnostics = [];
     private readonly ConcurrentBag<IPage> pages = [];
     private readonly BrowserTrafficRequests ledger = new();
+    private readonly BrowserResponseCapture responseCapture = new();
     internal BrowserFlowSecrets Flow { get; } = new();
     private int total;
     private int requests;
@@ -68,6 +70,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             {
                 Add(header.Key);
                 Add(header.Value);
+                Flow.RequestHeader(header.Key, header.Value);
             }
         }
         catch (Exception) { ReadFailed(ReadPhase.RequestHeaders); }
@@ -88,6 +91,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
         var phase = ReadPhase.ResponseHeaders;
         try
         {
+            responseCapture.Observe(response);
             Add(response.Url);
             foreach (var header in await response.AllHeadersAsync())
             {
@@ -143,12 +147,13 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     }
 
     /// <summary>Detaches only after the completed browser journey, joins every queued observation, and scans actual server-only secrets retrospectively.</summary>
-    internal async Task RequireAsync(string[] secrets)
+    internal async Task RequireAsync(string[] secrets, BrowserResponseWitness witness)
     {
         await JoinAsync();
         RequireCapture();
         Assert.True(requests > 0 && responses > 0 && !values.IsEmpty);
         BrowserSecretOracle.RequireAbsent(values, secrets);
+        BrowserSecretOracle.RequireAbsent(responseCapture.Require(witness).Headers, secrets);
         BrowserSecretOracle.RequireAbsent(diagnostics, secrets.Concat(Flow.Require()).ToArray());
     }
 
@@ -161,12 +166,21 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     }
 
     /// <summary>Joins native response-header observations before requiring transient protocol/cookie capture.</summary>
-    internal async Task<string[]> FlowAsync()
+    internal async Task<string[]> FlowAsync(BrowserResponseWitness witness)
     {
         await JoinAsync();
-        Flow.Report();
         RequireCapture();
+        responseCapture.Supply(witness, Flow);
+        Flow.Report();
         return Flow.Require();
+    }
+
+    /// <summary>Requires an independently detected real redirect response cookie which no subsequent browser request returned.</summary>
+    internal async Task RequireResponseProbeAsync(BrowserResponseWitness witness, string canary)
+    {
+        await JoinAsync();
+        RequireCapture();
+        responseCapture.RequireProbe(witness, canary);
     }
 
     /// <summary>Rejects acquisition or accounting failures before any capture-completeness or absence assertion.</summary>

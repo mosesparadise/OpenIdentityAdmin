@@ -34,6 +34,11 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private int endSessionPosts;
     private int endSessionRedirects;
     private AttackerDocument? attacker;
+    private ResponseProbe? responseProbe;
+    internal BrowserResponseWitness? ResponseWitness
+    {
+        get; set;
+    }
     internal BrowserReturnFailure ReturnFailure { get; } = new();
     internal BrowserReturnFailure CallbackFailure { get; } = new(CallbackPath);
     private const string CallbackPath = "/callback";
@@ -107,7 +112,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
                 ObserveResponse(http);
             });
             await Navigation.VisitAsync(http, response: false);
-            if (!ReturnFailure.Abort(http, Address) && !CallbackFailure.Abort(http, Address) && !await ServeAttackerAsync(http))
+            if (!ReturnFailure.Abort(http, Address) && !CallbackFailure.Abort(http, Address) && !ServeResponseProbe(http) && !await ServeAttackerAsync(http))
             {
                 await next(http);
             }
@@ -124,10 +129,35 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     {
         Policy.Response(http);
         Status.Response(http);
+        ResponseWitness?.Observe(http);
         if (http.Request.Path == EndSessionPath && HttpMethods.IsPost(http.Request.Method) && http.Response.StatusCode == StatusCodes.Status302Found)
         {
             Interlocked.Increment(ref endSessionRedirects);
         }
+    }
+
+    /// <summary>Stages one real redirect with a deleted synthetic cookie before the existing one-shot TLS document.</summary>
+    internal Uri StageResponseProbe(string cookie, Uri target)
+    {
+        Assert.True(target.GetLeftPart(UriPartial.Authority) == Address.GetLeftPart(UriPartial.Authority));
+        Assert.True(Interlocked.CompareExchange(ref responseProbe, new(cookie, target), null) is null);
+        return new Uri(Address, ResponseProbePath);
+    }
+
+    /// <summary>Serves only the isolated test-owned canary; its expired cookie must not be returned by the browser.</summary>
+    private bool ServeResponseProbe(HttpContext http)
+    {
+        if (http.Request.Path != ResponseProbePath || !HttpMethods.IsGet(http.Request.Method))
+        {
+            return false;
+        }
+        var probe = Interlocked.Exchange(ref responseProbe, null);
+        Assert.NotNull(probe);
+        http.Response.Headers.SetCookie = ProbeCookiePrefix + probe.Cookie + ProbeCookieSuffix;
+        http.Response.Headers.Location = probe.Target.AbsoluteUri;
+        http.Response.Headers.CacheControl = NoStore;
+        http.Response.StatusCode = StatusCodes.Status302Found;
+        return true;
     }
 
     /// <summary>Stages one test-owned sender document with only the fixed peer authority permitted; product routes and policies remain untouched.</summary>
@@ -177,5 +207,9 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
 
     /// <summary>Retains synthetic form content in memory only until its single response is served.</summary>
     private sealed record AttackerDocument(string Form, string Target, bool Fetch);
+    private sealed record ResponseProbe(string Cookie, Uri Target);
+    private const string ResponseProbePath = "/__test/response-cookie";
+    private const string ProbeCookiePrefix = "__Host-response-probe=";
+    private const string ProbeCookieSuffix = "; Max-Age=0; Path=/; Secure; HttpOnly; SameSite=Lax";
     private const string ConnectPolicy = "; connect-src ";
 }

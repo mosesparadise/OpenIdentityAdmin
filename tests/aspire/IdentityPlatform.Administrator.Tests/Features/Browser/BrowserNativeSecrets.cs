@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
+using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
@@ -22,6 +23,10 @@ internal sealed class BrowserNativeSecrets
     private int par;
     private int token;
     private int issued;
+    internal BrowserResponseWitness? ResponseWitness
+    {
+        get; set;
+    }
 
     /// <summary>Adds a fresh passive delegating handler without replacing the native primary handler, retries, TLS or handler lifetime.</summary>
     internal void Configure(IServiceCollection services) => services.ConfigureAll<HttpClientFactoryOptions>(options =>
@@ -90,6 +95,10 @@ internal sealed class BrowserNativeSecrets
                     await owner.RequestAsync(request, cancellationToken);
                 }
                 var response = await base.SendAsync(request, cancellationToken);
+                if (request.RequestUri is { } actual && actual.GetLeftPart(UriPartial.Authority) == issuer.GetLeftPart(UriPartial.Authority))
+                {
+                    owner.ResponseWitness?.Native(request.Method.Method, actual.AbsoluteUri, (int)response.StatusCode);
+                }
                 try
                 {
                     if (selected && request.RequestUri!.AbsolutePath == Token)
