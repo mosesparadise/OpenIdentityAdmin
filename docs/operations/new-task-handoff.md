@@ -1,5 +1,17 @@
 # OpenIdentityAdmin new-task handoff
 
+## Current delivery — 26 October 2026
+
+The selected **T012, T016 and T023**, including T003/T004 prerequisites, are internally accepted under A-009. [PR #102](https://github.com/mosesparadise/OpenIdentityAdmin/pull/102) delivers audit provenance (`d18f63f`); [PR #103](https://github.com/mosesparadise/OpenIdentityAdmin/pull/103) delivers the browser matrix and integrated acceptance, squash `724dfcbe45862aa1dfc3623f2a21deb5e06eab8b`. [Exact evidence](../../specs/013-administrator-browser-session/browser-login-protection.md#accepted-internal-delivery--26-october-2026) binds all 91 checks, 75 raw reports/4,573 passes with zero skips, 72 coverage inputs/15 unchanged floors, 64 mutation controls and independent reviews. Source, tested merge and squash share tree `f6bacb302978c1a26af07b8d0db5dc370e818691`. T024 is completed by the normal squash of these coherent delivery records; no runtime source changes in that follow-up.
+
+**Next bounded item:** prepare the reviewed M02-C specification/plan for server-held refresh, two-node serialization, rotation/replay, current eligibility and logout revocation. No M02-C packet or refresh runtime is delivered yet. Reverify remote main and read the [current verification map](../../specs/013-administrator-browser-session/verification.md) before continuing; do not repeat accepted B3 implementation or revive expired diagnostics.
+
+The accepted secrecy scope uses two same-host HTTPS origins with different ports and supplementary matched final server application headers; WebKit does not expose the native transient cookie through its observed header view. Dedicated distinct-site origin/logout controls pass, while earlier distinct-site secrecy acquisition remains unresolved/unassessed. All four rejected runs are retained. Firefox and the two exact WebKit certificate deferrals, PR #69/issue #70, all six historical findings, 48 human rows, 345 not-assessed controls, production operations and activation/public-release gates remain open. M02-D API authority and M02-E React remain separate.
+
+## Historical checkpoints
+
+The dated notices below retain their original state and are superseded by the current delivery above and its linked evidence.
+
 **Audit prerequisite delivered (26 October 2026):** [PR #102 evidence](../../specs/013-administrator-browser-session/audit-correlation.md#accepted-internal-delivery--26-october-2026) records squash `d18f63f64e38fba3c35ad7af24e379d02081f659`, 79 successful checks, 4,493 passing raw executions, both-provider historical preservation, 60 coverage inputs/15 unchanged floors and 64 mutation controls. Acceptance explicitly combines retained successful jobs with one bounded SQL/aggregate rerun. The earlier linkage-absent/pending checkpoint wording below is superseded. Continue the implemented T012/T016 browser matrix and T023 exact-source acceptance; no selected task or external gate is closed.
 
 **Browser matrix candidate (26 October 2026):** [T012/T016 browser implementation](../../specs/013-administrator-browser-session/browser-login-protection.md) adds genuine negative login, status/origin/storage/diagnostic and accessible error journeys. Native discovery preserves 1,911 cases and adds 40; required browser and AppHost group collectors are expanded with unchanged execution deadlines and floors. Hosted acceptance and T023 reconciliation remain pending; no selected task or external gate is closed.
