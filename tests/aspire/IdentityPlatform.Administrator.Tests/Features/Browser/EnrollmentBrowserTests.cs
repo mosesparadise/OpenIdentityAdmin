@@ -98,6 +98,8 @@ public sealed class EnrollmentBrowserTests(BootstrapFixture fixture)
             await page.Locator(RecoveryCodes).First.WaitForAsync();
             Assert.Equal(10, await page.Locator(RecoveryCodes).CountAsync());
             await RequireSecretIsolationAsync(page, session.Context, seed);
+            using var navigation = await EnrollmentNavigationObservation.StartAsync(page,
+                new Uri(environment.Issuer, AdministratorJourney.Security), SavedLink);
             await page.GetByRole(AriaRole.Link, new()
             {
                 Name = SavedLink

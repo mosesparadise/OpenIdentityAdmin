@@ -2,7 +2,6 @@ using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;

@@ -3,7 +3,6 @@ using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;

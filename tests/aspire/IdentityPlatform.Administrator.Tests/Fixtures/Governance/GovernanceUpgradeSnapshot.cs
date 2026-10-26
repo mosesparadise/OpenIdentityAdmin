@@ -48,7 +48,7 @@ internal static class GovernanceUpgradeSnapshot
             Factors = await database.Set<AdministratorFactor>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Recovery = await database.Set<AdministratorRecoveryCode>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Replay = await database.Set<AdministratorReplay>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
-            Audit = await database.Set<SecurityAuditIntent>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token)
+            Audit = await HistoricalSecurityAudit.ReadAsync(database, token)
         };
     }
 

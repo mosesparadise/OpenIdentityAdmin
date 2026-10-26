@@ -216,6 +216,7 @@ public sealed partial class BootstrapTests(BootstrapFixture fixture)
         return result;
     }
 
+    /// <summary>Captures current rollback state, or explicitly projects historical fields for the pre-upgrade preservation witness.</summary>
     private static async Task<string> SnapshotAsync(BootstrapDatabase lease, bool includeBootstrap = true)
     {
         await using var scope = lease.Administrator.CreateAsyncScope();
@@ -238,7 +239,8 @@ public sealed partial class BootstrapTests(BootstrapFixture fixture)
             await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope>().AsNoTracking().OrderBy(value => value.Id).ToListAsync(Token),
             await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization>().AsNoTracking().OrderBy(value => value.Id).ToListAsync(Token),
             await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(value => value.Id).ToListAsync(Token),
-            await database.Set<SecurityAuditIntent>().AsNoTracking().OrderBy(value => value.Id).ToListAsync(Token)
+            includeBootstrap ? await database.Set<SecurityAuditIntent>().AsNoTracking().OrderBy(value => value.Id).ToArrayAsync(Token) :
+                await HistoricalSecurityAudit.ReadAsync(database, Token)
         };
         if (includeBootstrap)
         {

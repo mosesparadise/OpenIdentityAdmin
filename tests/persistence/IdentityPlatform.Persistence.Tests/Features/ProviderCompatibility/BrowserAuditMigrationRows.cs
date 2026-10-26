@@ -1,3 +1,5 @@
+using System.Data;
+using System.Data.Common;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,10 @@ internal static class BrowserAuditMigrationRows
     private const string PlatformHistory = "SELECT * FROM \"platform\".\"PlatformMigrations\" ORDER BY \"MigrationId\"";
     private const string SessionsHistory = "SELECT * FROM \"bff\".\"SessionMigrations\" ORDER BY \"MigrationId\"";
     private const string ProductVersion = "10.0.12";
+    private const string ActorParameter = "legacyActor";
+    private const string TargetParameter = "legacyTarget";
+    private const string SubjectParameter = "legacySubject";
+    private const string SourceParameter = "legacySource";
 
     /// <summary>Populates only existing columns using parameters, with both absent and authenticated provenance represented.</summary>
     internal static async Task SeedAsync(DbContext platform, DbContext sessions, CancellationToken token)
@@ -30,12 +36,23 @@ internal static class BrowserAuditMigrationRows
         foreach (var authenticated in new[] { false, true })
         {
             await platform.Database.ExecuteSqlRawAsync(PlatformInsert,
-                [Guid.NewGuid(), Event, Actor, authenticated ? Subject : DBNull.Value, Target,
-                    authenticated ? Subject : DBNull.Value, Outcome, Guid.NewGuid(), Occurred], token);
+                [Guid.NewGuid(), Event, Actor, authenticated ? Subject : NullText(platform, ActorParameter), Target,
+                    authenticated ? Subject : NullText(platform, TargetParameter), Outcome, Guid.NewGuid(), Occurred], token);
             await sessions.Database.ExecuteSqlRawAsync(SessionsInsert,
-                [Guid.NewGuid(), Guid.NewGuid(), 1L, Occurred, 1, authenticated ? Subject : DBNull.Value,
-                    authenticated ? Source : DBNull.Value], token);
+                [Guid.NewGuid(), Guid.NewGuid(), 1L, Occurred, 1, authenticated ? Subject : NullText(sessions, SubjectParameter),
+                    authenticated ? Source : NullText(sessions, SourceParameter)], token);
         }
+    }
+
+    /// <summary>Supplies native nullable text parameters so EF never infers a store mapping for the DBNull CLR type.</summary>
+    private static DbParameter NullText(DbContext database, string name)
+    {
+        using var command = database.Database.GetDbConnection().CreateCommand();
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = name;
+        parameter.DbType = DbType.String;
+        parameter.Value = DBNull.Value;
+        return parameter;
     }
 
     /// <summary>Reads old widths and every value independently from each actual relational table.</summary>

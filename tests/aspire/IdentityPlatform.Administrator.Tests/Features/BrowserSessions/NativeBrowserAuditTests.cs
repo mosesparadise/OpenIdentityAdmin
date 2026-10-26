@@ -3,8 +3,8 @@ using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using Microsoft.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using OpenIddict.Server;
 using OpenIddict.Abstractions;
+using OpenIddict.Server;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 
