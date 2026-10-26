@@ -1,5 +1,7 @@
 # Administrator browser registration upgrade
 
+**Current status — 26 October 2026:** The audited internal B3 upgrade and explicit native issuer/logout composition have accepted both-provider evidence in the linked implementation records. The [B3 operations handoff](administrator-browser-sessions.md) records current runtime and restore obligations. Production remains dormant and requires a separate authorized deployment plan. The original transition warning below is historical context, not a statement that internal B3 composition is unimplemented.
+
 This explicit one-shot operation is for the internal B3 transition. It is not authorization to upgrade a production database. Current live issuer composition still selects B2 and rejects the upgraded manifest; wait for accepted B3 composition and an authorized deployment plan before applying it to an active installation. The [implementation and evidence record](../../specs/013-administrator-browser-session/registration-upgrade.md) distinguishes pending provider acceptance from source verification.
 
 Use an already built Migrator with `--Operation upgrade-administrator-browser-registration`. Supply the registered relational provider and Platform connection through the existing deployment configuration/secret mechanism. The command uses only Platform, requires its current schema, and does not provision roles or run migrations. `LocalDevelopment:ProvisionRuntimeRoles=true` is rejected. Keep databases and migration histories intact.
