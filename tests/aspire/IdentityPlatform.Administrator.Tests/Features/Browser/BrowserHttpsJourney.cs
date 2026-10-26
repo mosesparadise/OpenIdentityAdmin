@@ -23,6 +23,7 @@ internal static class BrowserHttpsJourney
     private const string LocalSuccess = "session has ended locally";
     private const string Status = "/bff/session";
     private const string Start = "Start sign-in";
+    private const string LoginHeading = "Administrator sign-in";
     private const string Username = "#username";
     private const string Password = "#password";
     private const string Submit = "#submit";
@@ -48,7 +49,12 @@ internal static class BrowserHttpsJourney
         await page.Locator(Submit).ClickAsync();
         await page.Locator(Factor).FillAsync(await IssuerContinuationProviderFixture.UnusedCodeAsync(fixture.Issuer.Account.Journey));
         await page.Locator(Submit).ClickAsync();
-        await page.WaitForURLAsync(url => url == new Uri(fixture.Profile.ClientUri, Login).AbsoluteUri);
+        await page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = LoginHeading,
+            Exact = true
+        }).WaitForAsync();
+        Assert.True(page.Url == new Uri(fixture.Profile.ClientUri, Login).AbsoluteUri);
         await RequireStatusAsync(fixture, page, true);
     }
 

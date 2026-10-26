@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Http;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
@@ -5,6 +6,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 /// <summary>Retains only scalar observations of actual Kestrel form headers and protocol navigation, never request values.</summary>
 internal sealed class BrowserHttpsPolicy(Uri address)
 {
+    private const int StatusScale = 1000;
+    private static readonly System.Text.CompositeFormat ReportFormat = System.Text.CompositeFormat.Parse("b3-https-policy issuer={0} posts={1} returns={2} forms={3} redirects={4} origin-failures={5} form-referrer-failures={6} return-referrer-failures={7} response-policy-failures={8} last-response={9}");
     private const string RootPath = "/";
     private const string ReferrerPolicy = "Referrer-Policy";
     private const string FormReferrer = "strict-origin";
@@ -12,6 +15,7 @@ internal sealed class BrowserHttpsPolicy(Uri address)
     private static readonly string[] FormPaths = ["/bff/login", "/bff/logout", "/account/administrator/browser/login", "/account/administrator/browser/mfa", "/connect/end-session"];
     private static readonly string[] ReturnPaths = ["/bff/login/resume", "/callback", "/bff/logout/return", "/connect/authorize"];
     private readonly string origin = address.GetLeftPart(UriPartial.Authority);
+    private int lastResponse;
     private int posts;
     private int returns;
     private int originFailures;
@@ -49,6 +53,15 @@ internal sealed class BrowserHttpsPolicy(Uri address)
     /// <summary>Checks final actual response policy on successful form GETs and every observed protocol redirect.</summary>
     internal void Response(HttpContext http)
     {
+        var route = Array.IndexOf(FormPaths, http.Request.Path.Value);
+        if (route < 0 && Array.IndexOf(ReturnPaths, http.Request.Path.Value) is >= 0 and var continuation)
+        {
+            route = FormPaths.Length + continuation;
+        }
+        if (route >= 0)
+        {
+            Volatile.Write(ref lastResponse, (route + 1) * StatusScale + http.Response.StatusCode);
+        }
         var form = HttpMethods.IsGet(http.Request.Method) && http.Response.StatusCode == StatusCodes.Status200OK &&
             FormPaths.Contains(http.Request.Path.Value, StringComparer.Ordinal);
         var redirect = http.Response.StatusCode is StatusCodes.Status302Found or StatusCodes.Status303SeeOther;
@@ -78,4 +91,17 @@ internal sealed class BrowserHttpsPolicy(Uri address)
         Assert.Equal(0, Volatile.Read(ref returnReferrerFailures));
         Assert.Equal(0, Volatile.Read(ref responsePolicyFailures));
     }
+
+    /// <summary>Reports only scalar observations after joined host shutdown, including a fixed route-index/status code; output failure cannot alter cleanup.</summary>
+    internal void Report(bool issuer)
+    {
+        try
+        {
+            TestContext.Current.TestOutputHelper?.WriteLine(string.Format(CultureInfo.InvariantCulture, ReportFormat,
+                issuer, posts, returns, forms, redirects, originFailures, formReferrerFailures, returnReferrerFailures,
+                responsePolicyFailures, lastResponse));
+        }
+        catch (Exception) { /* A diagnostic sink cannot replace the actual journey or cleanup result. */ }
+    }
+
 }

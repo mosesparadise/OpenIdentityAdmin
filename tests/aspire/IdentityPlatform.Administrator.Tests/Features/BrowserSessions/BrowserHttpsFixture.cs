@@ -131,6 +131,8 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             issuerEndpoint.Dispose();
         }
         catch { failed = true; }
+        clientEndpoint.Policy.Report(issuer: false);
+        issuerEndpoint.Policy.Report(issuer: true);
         Assert.False(failed, CleanupFailure);
     }
 }

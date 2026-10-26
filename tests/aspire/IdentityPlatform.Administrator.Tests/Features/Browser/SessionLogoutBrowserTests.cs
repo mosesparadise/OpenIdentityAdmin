@@ -71,7 +71,11 @@ public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
                 Name = Confirm,
                 Exact = true
             }).ClickAsync();
-            await page.WaitForURLAsync(url => Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+            await page.Locator(Main).Filter(new()
+            {
+                HasText = Unverified
+            }).WaitForAsync();
+            Assert.True(Uri.TryCreate(page.Url, UriKind.Absolute, out var uri) &&
                 uri.GetLeftPart(UriPartial.Path) == new Uri(environment.Profile.ClientUri, BrowserHttpsJourney.Return).AbsoluteUri);
             Assert.True((await page.TextContentAsync(Main))!.Contains(Unverified, StringComparison.Ordinal));
             await BrowserHttpsEffects.LocalAsync(environment, source, BrowserLogoutState.ReturnedUnverified);
