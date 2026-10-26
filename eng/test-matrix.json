@@ -49,7 +49,7 @@
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 26
+    "Administrator": 46
   },
   "lifecycle_stories": {
     "Restart": {
@@ -118,7 +118,9 @@
   "administrator_browser_stories": {
     "Accounts": 8,
     "Security": 5,
-    "BrowserSessions": 13
+    "BrowserSessions": 13,
+    "BrowserProtection": 11,
+    "BrowserLogin": 9
   },
   "issuer_http_groups": {
     "Flows": {

@@ -1,5 +1,8 @@
 # Tasks: Administrator browser sessions (B3)
 
+**Browser matrix candidate (26 October 2026):** [T012/T016 browser implementation](browser-login-protection.md) adds genuine negative login, status/origin/storage/diagnostic and accessible error journeys. Native discovery preserves 1,911 cases and adds 40; required browser and AppHost group collectors are expanded with unchanged execution deadlines and floors. Hosted acceptance and T023 reconciliation remain pending; no selected task or external gate is closed.
+
+
 **Selected continuation (26 October 2026):** user selected T012, T016 and T023 with required prerequisites. [Audit correlation](audit-correlation.md) is the current internal integration candidate; both-provider execution and browser/integrated acceptance remain pending.
 
 **T020–T022 internal delivery (26 October 2026):** [T020 browser acceptance](./logout-browser-matrix.md#accepted-internal-delivery--26-october-2026) is delivered by PR #99 squash `34aa033123cfd0a41e8d7a89b64913a0fb091151`; [T021 security controls](./security-mutations.md#accepted-internal-delivery--26-october-2026) by PR #100 squash `e228461750842987e6a9aa2be1122f9743ac94c0`. Final T021 evidence passes all 79 jobs, 4,458 raw executions, 60 coverage inputs/15 unchanged floors and 64 baseline/kill/restored controls, including all 52 retained-engine logout browser cases and the reviewed presentation set. [T022 operations handoff](../../docs/operations/administrator-browser-sessions.md) and [current verification map](./verification.md) are delivered through [PR #101](https://github.com/mosesparadise/OpenIdentityAdmin/pull/101), including exact evidence and remaining operational gaps. These three tasks are complete for internal development within A-009.

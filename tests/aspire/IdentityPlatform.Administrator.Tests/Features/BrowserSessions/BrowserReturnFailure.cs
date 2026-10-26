@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Http;
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 
 /// <summary>Aborts only the genuine fixed return transport before product middleware, retaining no HTTP context or secret diagnostics.</summary>
-internal sealed class BrowserReturnFailure
+internal sealed class BrowserReturnFailure(string path = "/bff/logout/return")
 {
-    private const string ReturnPath = "/bff/logout/return";
     private int armed;
     private int count;
     private Uri? destination;
@@ -21,7 +20,7 @@ internal sealed class BrowserReturnFailure
     /// <summary>Records each actual return GET privately and aborts its connection without executing any product handler or fabricating a response.</summary>
     internal bool Abort(HttpContext http, Uri address)
     {
-        if (Volatile.Read(ref armed) == 0 || !HttpMethods.IsGet(http.Request.Method) || http.Request.Path != ReturnPath)
+        if (Volatile.Read(ref armed) == 0 || !HttpMethods.IsGet(http.Request.Method) || http.Request.Path != path)
         {
             return false;
         }

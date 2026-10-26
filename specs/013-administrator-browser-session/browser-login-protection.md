@@ -1,0 +1,46 @@
+# B3 browser login and protection matrix
+
+Status: implementation candidate, 26 October 2026. This implements the user's selected T012/T016/T023 continuation and required T003/T004 integration work. Hosted execution and coherent acceptance remain pending. No selected task is complete from source review or discovery alone.
+
+## Actual browser boundaries
+
+All new journeys reuse the accepted retained Kestrel HTTPS issuer/BFF harness, real PostgreSQL or SQL Server, native password/TOTP, native OpenIddict transport and independent durable effects. Certificate validation remains enabled. Native endpoint gates pause one actual request or original redirect response; they neither manufacture callbacks nor replace authentication. Each gate releases and joins its original browser operation. Issuer and BFF origins use localhost and the certificate's loopback-IP SAN where actual cross-site behavior is required.
+
+| Scenario/control | Required new browser evidence |
+| --- | --- |
+| B3-AUTH-01/04; FR-001–005/013 | `SessionLoginBrowserTests`: existing valid issuer/BFF cookies still require fresh password and MFA; two independent source ceremonies, generation replacement, old ticket revocation, old-cookie denial and stale-form denial. |
+| B3-AUTH-02; FR-002/013 | `SessionLoginExpiryBrowserTests`: actual resume/PAR/callback requests at their independently read original intent, native request-token or protected-state deadline; no exchange or ticket. These controls do not independently claim all replay/lifetime-preservation obligations, which retain their accepted provider tests. |
+| B3-AUTH-02/04 | `SessionLoginCorrelationBrowserTests`: a lost genuine callback reaches another browser without native correlation; native state is consumed before denial, original replay denies and a separate fresh positive succeeds. `SessionLoginAuthorityBrowserTests`: real other-account cookie substitution and committed supported permission removal at actual native boundaries. |
+| B3-AUTH-02 | `SessionLoginIsolationBrowserTests`: genuine pilot authorization/password/cookie/RP callback and fresh B3 ceremony, plus actual recovery password/code and restricted replacement that cannot create B3 authority. The pilot control deliberately does not exchange or validate pilot tokens. |
+| B3-WEB-01; FR-006/013 | `SessionStatusBrowserTests`: exact public fields/subject/original expiry, no-store/no Set-Cookie/no redirect, unchanged durable state after repeated reads, expiry equality, actual read/disposal failure and restored positive. |
+| B3-WEB-02; FR-007/008 | `SessionOriginBrowserTests`: copied real forms posted from another site before and after login, missing native antiforgery, unchanged state, required same-origin positives; actual cross-site fetch reaches the exact peer with no authentication cookie, returns 200 without CORS permission and remains unreadable. `SessionCredentialBrowserTests`: genuine issuer cookie and actual access token cannot substitute for BFF browser authority. |
+| B3-WEB-03; FR-004/006/011 | `SessionSecrecyBrowserTests`: private capture of actual PAR/token assertions, verifier and issued access/ID tokens through a passive native HTTPS handler; joined real browser network, console text/object arguments and page-error observation. Actual transient code/state/completion/protected-cookie values are forbidden in application storage and diagnostics while legitimate protocol transport remains possible. |
+| B3-WEB-04; FR-006–008/014 | `SessionHistoryBrowserTests`: stale logout form and actual back/reload/forward cannot restore revoked authority. `SessionLoginPresentationBrowserTests`: both themes and 320/768/1280 layouts, keyboard password/MFA correction, recovery denial/restart, computed focus/palette/reflow, axe and generic error behavior. No credential-page screenshots are retained. |
+
+The secrecy detector is checked with independently specified raw/URI/JSON/HTML representations and isolated real TLS query/body, console text/object, DOM and application-storage canaries. Both actual origins are inspected for DOM/localStorage/sessionStorage/document.cookie/window.name, IndexedDB, Cache Storage and service workers. Empty credential capture, truncated observation, unsupported required storage inspection or unjoined work cannot count as absence evidence. Secret-bearing values remain in memory; diagnostics contain only fixed categories, source line numbers and finite counts/booleans.
+
+## Product prerequisite and review
+
+Shared native administrator password and code partials now connect rejected fields to the existing generic error summary and set `aria-invalid`. MFA retains its `code-help` association. This changes no authentication decision, claim, migration, CSRF, origin, CSP or cookie policy. The inspected partial consumers already expose `Error` and render the matching summary.
+
+Independent architecture review passes the native composition, real-request ownership, TLS and cleanup design. Test, security and UX reviews identified and corrected source-level gaps: resume expiry is 400; raw cookie/entity assertion dumps were removed; redirect gates require actual 302 and one-shot use; status assertions bind exact fields and subject; cross-origin evidence checks actual peer/response; capture preserves cancellation and response ownership; browser observers drain active work and inspect object diagnostics; recovery navigation uses native tab order and visible focus. Runtime evidence remains required. These source dispositions do not establish manual screen-reader, visual/product approval or first-paint acceptance.
+
+## Inventory and bounded execution
+
+Actual native discovery preserves all 1,911 prior administrator identities and portable metadata and adds 40, for 1,951 total. New stories are `BrowserLogin` (nine/provider) and `BrowserProtection` (eleven/provider); existing Accounts8, Security5 and BrowserSessions13/provider remain unchanged. All stories execute on both retained engines under A-009. No Firefox case or exact deferred WebKit certificate case is represented as passed.
+
+The T023 workflow also separates the existing AppHost Foundation8 and BffSessions10 groups into four required provider/group jobs. This addresses the observed outer-job budget conflict in audit PR #102: its SQL job completed all three native invocations and raw coverage but reached the unchanged 20-minute outer limit while the collector returned. Each selected AppHost job still discovers both groups and verifies their full disjoint union before execution. Default AppHost, standard and all selections remain complete; foundation now owns Persistence. All 20-minute job and 660-second native-invocation limits remain unchanged. No test, identity or coverage floor is removed.
+
+The four AppHost collectors and eight new browser collectors increase required inputs from 60 to 72. All 15 module floors and all 64 mutation controls remain required. Missing, empty, substituted or duplicated groups/inputs fail seeded controls. Local Administrator builds, discovery and selector checks are preparation, not hosted acceptance.
+
+## Integration reconciliation and remaining gates
+
+The dated [native integration](native-integration.md) remaining list is now implemented through accepted [private intent binding](native-intent-binding.md), [issuer completion](issuer-completion.md), [shared transactions](native-transactions.md), [registration upgrade](registration-upgrade.md), [callback](product-browser-callback.md), [session use](session-use.md) and [local](local-logout.md)/[issuer](issuer-logout.md)/[remote](logout-continuation.md) logout slices. Cross-store audit linkage is tracked separately in [audit correlation](audit-correlation.md). This matrix and the expanded collector inventory supply the remaining browser/integration evidence obligations; final T003/T004/T012/T016/T023 disposition waits for exact-source execution and independent reconciliation.
+
+Production cleanup scheduling, fleet/restore procedures, central audit export/retention, A-009 restoration, PR #69/issue #70, all six historical findings, 48 human rows, 345 not-assessed controls and activation/public-release gates remain open. Retained historical failed runs remain evidence of their original checkpoint; green later execution alone does not establish an earlier failure's cause.
+
+## Local preparation evidence
+
+The Administrator project builds with zero warnings/errors. Actual full discovery contains 1,951 cases; separate native filtered discoveries verify BrowserLogin9 and BrowserProtection11 on each provider against the complete portable inventory. All 232 Python controls pass, including every AppHost partition/group and required coverage input. Code-quality controls pass without new allowances. Architecture, test, security and scoped UX source reviews pass after the recorded corrections. Password traversal retains the existing keyboard-position checks; newly added computed-outline assertions cover summary/MFA/recovery/restart and do not establish every password control's outline or first paint.
+
+No new provider/browser journey is credited as executed locally. Required hosted source-bound reports, collector union, unchanged floors, mutation receipts and final independent evidence review remain pending.

@@ -139,6 +139,10 @@ jobs:
           - { profile: unit, partition: all, label: unit }
           - { profile: PostgreSql, partition: foundation, label: PostgreSql }
           - { profile: SqlServer, partition: foundation, label: SqlServer }
+          - { profile: PostgreSql, partition: apphost, apphost_group: Foundation, label: PostgreSql-apphost-foundation }
+          - { profile: SqlServer, partition: apphost, apphost_group: Foundation, label: SqlServer-apphost-foundation }
+          - { profile: PostgreSql, partition: apphost, apphost_group: BffSessions, label: PostgreSql-apphost-bffsessions }
+          - { profile: SqlServer, partition: apphost, apphost_group: BffSessions, label: SqlServer-apphost-bffsessions }
           - { profile: PostgreSql, partition: issuer, issuer_group: Flows, label: issuer-PostgreSql-flows }
           - { profile: SqlServer, partition: issuer, issuer_group: Flows, label: issuer-SqlServer-flows }
           - { profile: PostgreSql, partition: issuer, issuer_group: Boundaries, label: issuer-PostgreSql-boundaries }
@@ -218,7 +222,7 @@ jobs:
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

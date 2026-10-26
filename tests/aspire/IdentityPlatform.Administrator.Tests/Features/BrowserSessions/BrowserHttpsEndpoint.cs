@@ -35,6 +35,10 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private int endSessionRedirects;
     private AttackerDocument? attacker;
     internal BrowserReturnFailure ReturnFailure { get; } = new();
+    internal BrowserReturnFailure CallbackFailure { get; } = new(CallbackPath);
+    private const string CallbackPath = "/callback";
+    internal BrowserNavigationPause Navigation { get; } = new();
+    internal BrowserStatusObservation Status { get; } = new();
     internal Uri Address
     {
         get;
@@ -96,12 +100,14 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
                 }
             }
             Policy.Request(http.Request);
-            http.Response.OnStarting(() =>
+            Status.Visit(http.Request);
+            http.Response.OnStarting(async () =>
             {
+                await Navigation.VisitAsync(http, response: true);
                 ObserveResponse(http);
-                return Task.CompletedTask;
             });
-            if (!ReturnFailure.Abort(http, Address) && !await ServeAttackerAsync(http))
+            await Navigation.VisitAsync(http, response: false);
+            if (!ReturnFailure.Abort(http, Address) && !CallbackFailure.Abort(http, Address) && !await ServeAttackerAsync(http))
             {
                 await next(http);
             }
@@ -117,6 +123,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private void ObserveResponse(HttpContext http)
     {
         Policy.Response(http);
+        Status.Response(http);
         if (http.Request.Path == EndSessionPath && HttpMethods.IsPost(http.Request.Method) && http.Response.StatusCode == StatusCodes.Status302Found)
         {
             Interlocked.Increment(ref endSessionRedirects);
@@ -124,9 +131,9 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     }
 
     /// <summary>Stages one test-owned sender document with only the fixed peer authority permitted; product routes and policies remain untouched.</summary>
-    internal Uri StageAttacker(string form, Uri target)
+    internal Uri StageAttacker(string form, Uri target, bool fetch = false)
     {
-        var document = new AttackerDocument(form, target.GetLeftPart(UriPartial.Authority));
+        var document = new AttackerDocument(form, target.GetLeftPart(UriPartial.Authority), fetch);
         Assert.True(Interlocked.CompareExchange(ref attacker, document, null) is null);
         return new Uri(Address, AttackerPath);
     }
@@ -143,7 +150,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
         http.Response.ContentType = Html;
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers[ReferrerPolicy] = StrictOrigin;
-        http.Response.Headers.ContentSecurityPolicy = AttackerPolicy + document.Target;
+        http.Response.Headers.ContentSecurityPolicy = AttackerPolicy + document.Target + (document.Fetch ? ConnectPolicy + document.Target : string.Empty);
         await http.Response.WriteAsync(AttackerPrefix + document.Form + AttackerSuffix, http.RequestAborted);
         return true;
     }
@@ -169,5 +176,6 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     public void Dispose() => socket.Dispose();
 
     /// <summary>Retains synthetic form content in memory only until its single response is served.</summary>
-    private sealed record AttackerDocument(string Form, string Target);
+    private sealed record AttackerDocument(string Form, string Target, bool Fetch);
+    private const string ConnectPolicy = "; connect-src ";
 }

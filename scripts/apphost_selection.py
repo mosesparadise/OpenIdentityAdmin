@@ -10,10 +10,10 @@ NAMESPACES = {
 }
 
 
-def apphost_invocations(matrix, provider):
+def apphost_invocations(matrix, provider, selected=None):
     """Require both positive groups to exhaust each unchanged AppHost provider total."""
     groups = matrix['apphost_native_groups']
-    if provider not in PROVIDERS or set(groups) != set(NAMESPACES):
+    if provider not in PROVIDERS or set(groups) != set(NAMESPACES) or (selected is not None and selected not in NAMESPACES):
         raise ValueError('Unknown native AppHost provider or groups')
     for counts in groups.values():
         if set(counts) != set(PROVIDERS) or any(type(n) is not int or n <= 0 for n in counts.values()):
@@ -21,7 +21,7 @@ def apphost_invocations(matrix, provider):
     for name in PROVIDERS:
         if sum(counts[name] for counts in groups.values()) != matrix['profiles'][name]['AppHost']:
             raise ValueError('Native AppHost groups do not exhaust the provider total')
-    return [(group, groups[group][provider]) for group in NAMESPACES]
+    return [(group, groups[group][provider]) for group in NAMESPACES if selected is None or group == selected]
 
 
 def apphost_catalogue(raw):
@@ -38,7 +38,7 @@ def apphost_catalogue(raw):
 
 
 def apphost_filter(provider, group):
-    """Select reviewed namespace ownership without offering an optional group execution path."""
+    """Select reviewed namespace ownership while full discovery still proves both groups."""
     if provider not in PROVIDERS or group not in NAMESPACES:
         raise ValueError('Unknown native AppHost filter')
     prefix = f'Provider={provider}&FullyQualifiedName~{NAMESPACES[group]}.'

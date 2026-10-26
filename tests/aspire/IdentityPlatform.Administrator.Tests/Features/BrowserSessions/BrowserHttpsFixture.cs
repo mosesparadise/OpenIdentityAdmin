@@ -34,18 +34,24 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     internal int EndSessionPosts => issuerEndpoint.EndSessionPosts;
     internal int EndSessionRedirects => issuerEndpoint.EndSessionRedirects;
     internal BrowserReturnFailure ReturnFailure => clientEndpoint.ReturnFailure;
+    internal BrowserReturnFailure CallbackFailure => clientEndpoint.CallbackFailure;
+    internal BrowserNavigationPause ClientNavigation => clientEndpoint.Navigation;
+    internal BrowserNavigationPause IssuerNavigation => issuerEndpoint.Navigation;
+    internal BrowserStatusObservation Status => clientEndpoint.Status;
 
     /// <summary>Optionally uses the development certificate's loopback IP SAN to separate issuer and BFF cookie hosts and sites.</summary>
     private BrowserHttpsFixture(bool distinctSites)
     {
         clientEndpoint = new(distinctSites);
         clientEndpoint.Policy.PeerOrigin = issuerEndpoint.Address.GetLeftPart(UriPartial.Authority);
+        clientEndpoint.Status.PeerOrigin = issuerEndpoint.Address.GetLeftPart(UriPartial.Authority);
         issuerEndpoint.Policy.PeerOrigin = clientEndpoint.Address.GetLeftPart(UriPartial.Authority);
     }
 
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
     internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
-        Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false)
+        Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false,
+        BrowserPilotClient? pilot = null)
     {
         var owner = new BrowserHttpsFixture(distinctSites);
         try
@@ -60,7 +66,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
                 BrowserUpgradeFixture.Operator, ordinary.Registration, 1)));
             owner.database = await fixture.LeaseSessionsAsync(provider);
             owner.issuerHost = await BrowserIssuerHost.CreateHttpsAsync(owner.Issuer.Account.Journey, provider,
-                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer);
+                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer, pilot);
             owner.Client = await BrowserHttpsClient.CreateAsync(owner.database, owner.Issuer.Account.Journey.Clock,
                 owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient);
             return owner;
@@ -85,11 +91,11 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     }
 
     /// <summary>Chooses only one of the two immutable test origins as sender and fixes its sole permitted cross-site peer.</summary>
-    internal Uri StageAttacker(Uri origin, string form)
+    internal Uri StageAttacker(Uri origin, string form, bool fetch = false)
     {
         Assert.True(origin == Profile.Issuer || origin == Profile.ClientUri);
-        return origin == Profile.Issuer ? issuerEndpoint.StageAttacker(form, clientEndpoint.Address) :
-            clientEndpoint.StageAttacker(form, issuerEndpoint.Address);
+        return origin == Profile.Issuer ? issuerEndpoint.StageAttacker(form, clientEndpoint.Address, fetch) :
+            clientEndpoint.StageAttacker(form, issuerEndpoint.Address, fetch);
     }
 
     /// <summary>Attempts every cleanup in dependency order, joining both network roots before releasing keys or database leases.</summary>

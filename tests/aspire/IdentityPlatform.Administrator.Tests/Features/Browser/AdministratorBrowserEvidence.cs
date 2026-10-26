@@ -12,7 +12,9 @@ internal static class AdministratorBrowserEvidence
         "ClipboardBrowserTests.cs", "AdministratorClipboard.cs", "SessionLogoutBrowserTests.cs", "BrowserHttpsJourney.cs",
         "SessionLogoutReturnBrowserTests.cs", "SessionLogoutBindingBrowserTests.cs", "SessionLogoutFailureBrowserTests.cs",
         "SessionLogoutRemoteBrowserTests.cs", "BrowserLogoutJourney.cs", "BrowserLostReturn.cs", "SessionLogoutCrossSiteBrowserTests.cs",
-        "SessionLogoutPresentationBrowserTests.cs", "BrowserLogoutPresentation.cs"];
+        "SessionLogoutPresentationBrowserTests.cs", "BrowserLogoutPresentation.cs", "SessionLoginBrowserTests.cs",
+        "SessionLoginExpiryBrowserTests.cs", "BrowserNavigationPause.cs", "BrowserLoginEffects.cs", "BrowserLoginDeadline.cs",
+        "SessionLoginCorrelationBrowserTests.cs", "SessionLoginAuthorityBrowserTests.cs", "SessionLoginIsolationBrowserTests.cs", "BrowserLostCallback.cs", "BrowserOtherAccount.cs", "SessionStatusBrowserTests.cs", "BrowserNativeSecrets.cs", "BrowserPrivateTraffic.cs", "BrowserFlowSecrets.cs", "BrowserSecretOracle.cs", "BrowserSecrecyControls.cs", "SessionSecrecyBrowserTests.cs", "SessionLoginPresentationBrowserTests.cs", "BrowserLoginPresentation.cs", "SessionOriginBrowserTests.cs", "SessionHistoryBrowserTests.cs", "SessionCredentialBrowserTests.cs"];
     private const string Unknown = "unclassified";
     private static readonly CompositeFormat Failure = CompositeFormat.Parse("Administrator browser failure ({0}); source lines {1}; sensitive diagnostics suppressed.");
     private static readonly string[] Categories = ["ERR_CACHE_MISS", "NS_ERROR_DOCUMENT_NOT_CACHED",
@@ -25,7 +27,8 @@ internal static class AdministratorBrowserEvidence
         {
             await action();
         }
-        catch (Exception exception) when (exception is PlaywrightException or TimeoutException)
+        catch (Exception exception) when (exception is PlaywrightException or TimeoutException ||
+            exception is AggregateException aggregate && aggregate.Flatten().InnerExceptions.Any(error => error is PlaywrightException or TimeoutException))
         {
             var category = Categories.FirstOrDefault(value => exception.Message.Contains(value, StringComparison.Ordinal)) ?? Unknown;
             var lines = new StackTrace(exception, true).GetFrames()

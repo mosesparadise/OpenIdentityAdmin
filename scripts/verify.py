@@ -20,14 +20,17 @@ ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("profile", choices=["unit", "PostgreSql", "SqlServer"])
 parser.add_argument("--browser", choices=["chromium", "firefox", "webkit"])
-parser.add_argument("--partition", choices=["all", "standard", "foundation", "issuer", "lifecycle", "administrator"], default="all")
+parser.add_argument("--partition", choices=["all", "standard", "foundation", "apphost", "issuer", "lifecycle", "administrator"], default="all")
 parser.add_argument("--story", choices=["Restart", "Distribution", "KeyRotation.Activation", "KeyRotation.Retirement", "Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission", "BrowserSessions"])
-parser.add_argument("--browser-story", choices=["Accounts", "Security", "BrowserSessions"])
+parser.add_argument("--browser-story", choices=["Accounts", "Security", "BrowserSessions", "BrowserLogin", "BrowserProtection"])
 parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
+parser.add_argument("--apphost-group", choices=["Foundation", "BffSessions"])
 parser.add_argument("--browser-session-group", choices=["Foundations", "Product", "Lifecycle"])
 args = parser.parse_args()
 if HISTORY_MODE_VARIABLE in os.environ:
     parser.error("Ordinary acceptance cannot run with a history diagnostic mode")
+if args.apphost_group and (args.partition != "apphost" or args.browser or args.story or args.issuer_group or args.browser_story or args.browser_session_group or args.profile == "unit"):
+    parser.error("AppHost group requires its ordinary provider partition")
 if args.issuer_group and (args.partition != "issuer" or args.browser or args.story or args.profile == "unit"):
     parser.error("Issuer group requires an ordinary issuer provider partition")
 if args.browser_session_group and (args.partition != "administrator" or args.story != "BrowserSessions" or args.browser or args.profile == "unit"):
@@ -50,7 +53,7 @@ except ValueError as error:
 invocations = []
 for project, count in projects.items():
     if project == "AppHost" and args.profile != "unit":
-        invocations.extend((project, expected, group, None, None) for group, expected in apphost_invocations(matrix, args.profile))
+        invocations.extend((project, expected, group, None, None) for group, expected in apphost_invocations(matrix, args.profile, args.apphost_group))
     elif project == "Issuer" and not args.browser:
         invocations.extend((project, expected, group, None, None) for group, expected in issuer_invocations(matrix, args.profile, args.issuer_group))
     elif project == "Issuer.Lifecycle":

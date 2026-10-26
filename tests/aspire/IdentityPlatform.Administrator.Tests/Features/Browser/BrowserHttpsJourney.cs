@@ -37,6 +37,15 @@ internal static class BrowserHttpsJourney
     /// <summary>Requires fresh forms even with an existing issuer session and follows the real native browser callback chain.</summary>
     internal static async Task SignInAsync(BrowserHttpsFixture fixture, IPage page)
     {
+        await BeginAsync(fixture, page);
+        await PasswordAsync(fixture, page);
+        await FactorAsync(fixture, page);
+        await FinishAsync(fixture, page);
+    }
+
+    /// <summary>Starts the actual protected BFF form and follows its issuer entry navigation.</summary>
+    internal static async Task BeginAsync(BrowserHttpsFixture fixture, IPage page)
+    {
         var response = await page.GotoAsync(new Uri(fixture.Profile.ClientUri, Login).AbsoluteUri);
         Assert.Equal(StatusCodes.Status200OK, response!.Status);
         await page.GetByRole(AriaRole.Button, new()
@@ -44,11 +53,26 @@ internal static class BrowserHttpsJourney
             Name = Start,
             Exact = true
         }).ClickAsync();
+    }
+
+    /// <summary>Submits the real account password and waits for native factor entry; an issuer cookie never substitutes for this ceremony.</summary>
+    internal static async Task PasswordAsync(BrowserHttpsFixture fixture, IPage page)
+    {
         await page.Locator(Username).FillAsync(fixture.Issuer.Account.Journey.Lease.Username);
         await page.Locator(Password).FillAsync(fixture.Issuer.Account.Journey.Lease.Password);
         await page.Locator(Submit).ClickAsync();
+    }
+
+    /// <summary>Submits a previously unused native TOTP without replacing issuer verification or callback networking.</summary>
+    internal static async Task FactorAsync(BrowserHttpsFixture fixture, IPage page)
+    {
         await page.Locator(Factor).FillAsync(await IssuerContinuationProviderFixture.UnusedCodeAsync(fixture.Issuer.Account.Journey));
         await page.Locator(Submit).ClickAsync();
+    }
+
+    /// <summary>Requires the actual fixed callback landing and authenticated noncacheable status.</summary>
+    internal static async Task FinishAsync(BrowserHttpsFixture fixture, IPage page)
+    {
         await page.GetByRole(AriaRole.Heading, new()
         {
             Name = LoginHeading,
