@@ -119,12 +119,23 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     }
 
     /// <summary>Checks actual server-held authority through the normal nonrenewing status endpoint without printing identity fields.</summary>
-    internal async Task RequireStatusAsync(bool authenticated)
+    internal Task RequireStatusAsync(bool authenticated) => RequireStatusAsync(page, authenticated);
+
+    /// <summary>Checks the same protected-session contract for the live browser or an isolated replay context.</summary>
+    private static async Task RequireStatusAsync(IPage page, bool authenticated)
     {
         var response = await page.GotoAsync(Client + SessionPath);
         Assert.Equal(SuccessStatus, response!.Status);
         using var body = JsonDocument.Parse(await response.TextAsync());
         Assert.Equal(authenticated, body.RootElement.GetProperty(AuthenticatedField).GetBoolean());
+    }
+
+    /// <summary>Replays stale cookies separately so the main browser retains the logout generation required for its next sign-in.</summary>
+    internal async Task RequireClientReplayDeniedAsync(Cookie[] cookies)
+    {
+        await using var replay = await browser.NewContextAsync();
+        await replay.AddCookiesAsync(cookies);
+        await RequireStatusAsync(await replay.NewPageAsync(), false);
     }
 
     /// <summary>Uses native browser Origin/antiforgery and separately confirms issuer logout after local success.</summary>

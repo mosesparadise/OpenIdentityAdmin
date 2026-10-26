@@ -10,7 +10,11 @@ public sealed class LocalDemoRuntimeTests
     private const string EnrollmentPhase = "password and TOTP enrollment";
     private const string LoginPhase = "fresh browser login";
     private const string LocalLogoutPhase = "local logout and replay denial";
-    private const string IssuerLogoutPhase = "fresh second ceremony and issuer logout";
+    private const string SecondLoginPhase = "fresh second ceremony";
+    private const string IssuerPositivePhase = "issuer cookie positive control";
+    private const string IssuerLogoutPhase = "issuer logout confirmation and return";
+    private const string IssuerDeniedPhase = "old issuer cookie denial";
+    private const string DisposalPhase = "owned graph disposal";
     private const string RestartPhase = "new disposable run invalidation";
     private const string FailurePrefix = "Local demo verification failed during ";
     private const string FailureSuffix = ". No private browser or process output is retained.";
@@ -54,18 +58,22 @@ public sealed class LocalDemoRuntimeTests
         var cookies = await browser.CookiesAsync();
         phase(LocalLogoutPhase);
         await browser.LogoutAsync(issuer: false);
-        await browser.RestoreAsync(cookies);
-        await browser.RequireStatusAsync(false);
-        phase(IssuerLogoutPhase);
+        await browser.RequireClientReplayDeniedAsync(cookies);
+        phase(SecondLoginPhase);
         await browser.SignInAsync(runtime);
         cookies = await browser.CookiesAsync();
+        phase(IssuerPositivePhase);
         await browser.RequireIssuerReplayAsync(cookies, true);
+        phase(IssuerLogoutPhase);
         await browser.LogoutAsync(issuer: true);
+        phase(IssuerDeniedPhase);
         await browser.RequireIssuerReplayAsync(cookies, false);
         phase(LoginPhase);
         await browser.SignInAsync(runtime);
         await browser.RequireStatusAsync(true);
-        return await browser.CookiesAsync();
+        var live = await browser.CookiesAsync();
+        phase(DisposalPhase);
+        return live;
     }
 
 }

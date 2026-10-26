@@ -1,7 +1,7 @@
 using IdentityPlatform.Admin.Bff.Features.ApiContracts;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
-using IdentityPlatform.Admin.Bff.Features.LocalDemo;
 using IdentityPlatform.Admin.Bff.Features.Documentation;
+using IdentityPlatform.Admin.Bff.Features.LocalDemo;
 using IdentityPlatform.Admin.Bff.Features.Storage;
 using IdentityPlatform.ServiceDefaults;
 

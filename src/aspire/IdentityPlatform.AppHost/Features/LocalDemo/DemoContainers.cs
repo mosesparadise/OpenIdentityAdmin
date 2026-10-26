@@ -1,5 +1,3 @@
-using IdentityPlatform.Core.Features.Configuration;
-
 namespace IdentityPlatform.AppHost.Features.LocalDemo;
 
 /// <summary>Uses pinned build stages, non-root Linux storage and ordinary TLS trust for the local runtime containers.</summary>

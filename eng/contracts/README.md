@@ -13,11 +13,13 @@ Before any production call to `MapDocumentation`:
 - Complete third-party notice/source/license obligations, including unpackaged toolchain notices before redistributing the tooling.
 - Complete M02/M04 authentication, authorization, same-origin proxy and real-contract acceptance. Protect HTML, JSON and all static assets before Scalar's anonymous asset metadata is reached.
 
-The production Admin.Api and Admin.Bff pipelines remain health-only. Synthetic fixture success, known-component advisory queries and exact archive hashes cannot satisfy this activation gate. The foundation's purpose is to make the boundary and remaining evidence explicit, not to approve production viewer deployment.
+Default Admin.Api and Admin.Bff startup remains health-only. The opt-in disposable B3 demo enables administrator browser routes while keeping documentation unmapped. Synthetic fixture success, known-component advisory queries and exact archive hashes cannot satisfy this activation gate. The foundation's purpose is to make the boundary and remaining evidence explicit, not to approve production viewer deployment.
 
 The [12 October presentation-configuration reassessment](vendor/configuration-review-2026-10-12.json) preserves only the prior specific source-bound advisory dispositions after reviewing encoded title/label options and extracted policy files. It does not resolve vendor inventory, notice or activation gates. Runtime regression results are recorded separately in feature 009.
 
 The [22 October advisory reassessment](vendor/configuration-review-2026-10-22.json) records three newly observed DOMPurify advisories against the exact unchanged embedded Swagger bytes and seven configuration hashes. Required sanitizer modes are absent in that bounded configuration. The refreshed candidate response is not a clean vendor inventory or proof that embedded DOMPurify is patched. Existing qs, inventory, notice and activation/release gates remain open.
+
+The [26 October configuration reassessment](vendor/configuration-review-2026-10-26.json) reviews extraction of identical documentation option registration for the generic BFF host. Default and local-demo pipelines still do not map viewers. It updates only the changed setup-file hash and preserves prior advisory evidence, dispositions and every activation/release block.
 
 ## Dormant browser-session contract
 

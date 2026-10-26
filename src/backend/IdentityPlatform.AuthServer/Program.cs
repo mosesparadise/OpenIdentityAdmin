@@ -1,9 +1,9 @@
 using IdentityPlatform.AuthServer.Composition;
-using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.Core.Features.Configuration;
 
 try
 {

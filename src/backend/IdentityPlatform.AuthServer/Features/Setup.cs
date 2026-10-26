@@ -1,15 +1,15 @@
 using IdentityPlatform.AuthServer.Composition;
-using IdentityPlatform.AuthServer.Features.Accounts.Browser;
-using IdentityPlatform.AuthServer.Features.LocalDemo;
-using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.AuthServer.Features.Accounts;
+using IdentityPlatform.AuthServer.Features.Accounts.Browser;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer;
+using IdentityPlatform.AuthServer.Features.LocalDemo;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.AuthServer.Features.Storage;
+using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.ServiceDefaults;
 

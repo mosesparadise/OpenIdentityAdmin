@@ -1,6 +1,6 @@
 using IdentityPlatform.AppHost.Features.Accounts;
-using IdentityPlatform.AppHost.Features.LocalDemo;
 using IdentityPlatform.AppHost.Features.Database;
+using IdentityPlatform.AppHost.Features.LocalDemo;
 using IdentityPlatform.AppHost.Features.Pilot;
 using IdentityPlatform.AppHost.Features.Services;
 

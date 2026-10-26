@@ -1,8 +1,6 @@
 using System.Text.Json;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Database.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace IdentityPlatform.AppHost.Features.LocalDemo;
 
