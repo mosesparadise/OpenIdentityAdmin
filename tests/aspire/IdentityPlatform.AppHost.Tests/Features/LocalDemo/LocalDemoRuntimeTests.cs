@@ -1,6 +1,6 @@
 using Microsoft.Playwright;
 
-namespace IdentityPlatform.AppHost.Tests.Features;
+namespace IdentityPlatform.AppHost.Tests.Features.LocalDemo;
 
 /// <summary>Requires the real container graph, stdin provisioning, trusted browser TLS and disposable restart on each provider.</summary>
 public sealed class LocalDemoRuntimeTests

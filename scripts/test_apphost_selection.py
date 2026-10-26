@@ -1,4 +1,4 @@
-"""Seed omissions and substitutions against the two mandatory native AppHost groups."""
+"""Seed omissions and substitutions against the three mandatory native AppHost groups."""
 import copy
 import json
 from pathlib import Path
@@ -16,12 +16,12 @@ class AppHostSelectionTests(unittest.TestCase):
     """Use independent native-shaped identities, counts and namespace expectations."""
 
     def setUp(self):
-        """Create nine foundation and ten BFF identities for each real provider."""
+        """Create eight foundation, ten BFF and one demo identity for each real provider."""
         self.matrix = json.loads((ROOT / 'eng/test-matrix.json').read_text())
         self.rows = {}
         for provider in ('PostgreSql', 'SqlServer'):
             self.rows[provider] = []
-            for group, namespace, count in [('Foundation', BASE, 9), ('BffSessions', BASE + '.BffSessions', 10)]:
+            for group, namespace, count in [('Foundation', BASE, 8), ('BffSessions', BASE + '.BffSessions', 10), ('LocalDemo', BASE + '.LocalDemo', 1)]:
                 for index in range(count):
                     self.rows[provider].append({'uid': provider + group + str(index),
                         'displayName': f'{namespace}.FixtureTests.Case{index}({provider})',
@@ -36,12 +36,13 @@ class AppHostSelectionTests(unittest.TestCase):
         """Derive independently expected namespace ownership from the fixture."""
         tests = self.catalogue(provider)
         return {'Foundation': {uid: test for uid, test in tests.items() if test[3] == BASE},
-                'BffSessions': {uid: test for uid, test in tests.items() if test[3] == BASE + '.BffSessions'}}
+                'BffSessions': {uid: test for uid, test in tests.items() if test[3] == BASE + '.BffSessions'},
+                'LocalDemo': {uid: test for uid, test in tests.items() if test[3] == BASE + '.LocalDemo'}}
 
     def test_Given_current_matrix_When_grouping_Then_all_nineteen_cases_remain_mandatory(self):
-        """Both providers retain independent nine-plus-ten expectations including shared transaction controls."""
+        """Both providers retain independent eight-plus-ten-plus-one expectations including shared transaction controls."""
         for provider in self.rows:
-            self.assertEqual([('Foundation', 9), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
+            self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 1)], apphost_invocations(self.matrix, provider))
             self.assertEqual(19, self.matrix['profiles'][provider]['AppHost'])
             require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
 
@@ -100,8 +101,9 @@ class AppHostSelectionTests(unittest.TestCase):
 
     def test_Given_provider_groups_When_filtering_Then_nested_bff_namespace_is_excluded_from_foundation(self):
         """Native filter syntax explicitly separates nested namespaces without arbitrary arguments."""
-        self.assertEqual(f'Provider=SqlServer&FullyQualifiedName~{BASE}.&FullyQualifiedName!~{BASE}.BffSessions.', apphost_filter('SqlServer', 'Foundation'))
+        self.assertEqual(f'Provider=SqlServer&FullyQualifiedName~{BASE}.&FullyQualifiedName!~{BASE}.BffSessions.&FullyQualifiedName!~{BASE}.LocalDemo.', apphost_filter('SqlServer', 'Foundation'))
         self.assertEqual(f'Provider=PostgreSql&FullyQualifiedName~{BASE}.BffSessions.', apphost_filter('PostgreSql', 'BffSessions'))
+        self.assertEqual(f'Provider=PostgreSql&FullyQualifiedName~{BASE}.LocalDemo.', apphost_filter('PostgreSql', 'LocalDemo'))
         for provider, group in [('unit', 'Foundation'), ('SqlServer', 'Other')]:
             with self.assertRaises(ValueError): apphost_filter(provider, group)
 
@@ -111,8 +113,8 @@ class AppHostSelectionTests(unittest.TestCase):
         for provider in ('PostgreSql', 'SqlServer'):
             self.assertEqual({'Persistence': 12}, select_projects(self.matrix, provider, partition='foundation'))
             self.assertEqual({'AppHost': 19}, select_projects(self.matrix, provider, partition='apphost'))
-            self.assertEqual([('Foundation', 9), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
-            for group, count in (('Foundation', 9), ('BffSessions', 10)):
+            self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 1)], apphost_invocations(self.matrix, provider))
+            for group, count in (('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 1)):
                 self.assertEqual([(group, count)], apphost_invocations(self.matrix, provider, group))
                 require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
                 cell = '{ profile: ' + provider + ', partition: apphost, apphost_group: ' + group + ', label: ' + provider + '-apphost-' + group.lower() + ' }'

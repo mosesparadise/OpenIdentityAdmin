@@ -36,3 +36,7 @@ Before implementation: development approval is recorded; security/library/provid
 ## Complexity Tracking
 
 No constitution exception requested. Independent architecture review selected one generic BFF host for enabled and disabled modes: existing owned B3 middleware, explicit health endpoints, inert unknown paths, no global authentication middleware. Existing WebApplicationBuilder service wrappers remain for contract fixtures.
+
+## Native CI partition
+
+Observed SQL Server aggregate runtime exceeded the existing 660-second invocation after adding the demo to Foundation. Schedule the new scenario in its own mandatory `LocalDemo` group for both providers. Preserve Foundation8, BffSessions10, LocalDemo1, exact complete discovery/selection, nine-minute scenario, 660-second invocation and 20-minute job budgets. Require both additional coverage inputs; no case or existing floor is removed.

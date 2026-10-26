@@ -159,12 +159,16 @@
   },
   "apphost_native_groups": {
     "Foundation": {
-      "PostgreSql": 9,
-      "SqlServer": 9
+      "PostgreSql": 8,
+      "SqlServer": 8
     },
     "BffSessions": {
       "PostgreSql": 10,
       "SqlServer": 10
+    },
+    "LocalDemo": {
+      "PostgreSql": 1,
+      "SqlServer": 1
     }
   },
   "browser_session_groups": {

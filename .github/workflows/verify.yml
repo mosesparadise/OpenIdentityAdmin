@@ -143,6 +143,8 @@ jobs:
           - { profile: SqlServer, partition: apphost, apphost_group: Foundation, label: SqlServer-apphost-foundation }
           - { profile: PostgreSql, partition: apphost, apphost_group: BffSessions, label: PostgreSql-apphost-bffsessions }
           - { profile: SqlServer, partition: apphost, apphost_group: BffSessions, label: SqlServer-apphost-bffsessions }
+          - { profile: PostgreSql, partition: apphost, apphost_group: LocalDemo, label: PostgreSql-apphost-localdemo }
+          - { profile: SqlServer, partition: apphost, apphost_group: LocalDemo, label: SqlServer-apphost-localdemo }
           - { profile: PostgreSql, partition: issuer, issuer_group: Flows, label: issuer-PostgreSql-flows }
           - { profile: SqlServer, partition: issuer, issuer_group: Flows, label: issuer-SqlServer-flows }
           - { profile: PostgreSql, partition: issuer, issuer_group: Boundaries, label: issuer-PostgreSql-boundaries }
@@ -225,7 +227,7 @@ jobs:
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Prepare real local demo browser
-        if: matrix.partition == 'apphost' && matrix.apphost_group == 'Foundation'
+        if: matrix.partition == 'apphost' && matrix.apphost_group == 'LocalDemo'
         shell: bash
         run: |
           sudo python3 scripts/prepare_browser_archive.py

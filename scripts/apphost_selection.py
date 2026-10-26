@@ -1,4 +1,4 @@
-"""Keep native AppHost execution bounded while requiring both complete provider groups."""
+"""Keep native AppHost execution bounded while requiring complete groups on both providers."""
 import json
 import re
 from test_selection import catalogue
@@ -7,11 +7,12 @@ PROVIDERS = ('PostgreSql', 'SqlServer')
 NAMESPACES = {
     'Foundation': 'IdentityPlatform.AppHost.Tests.Features',
     'BffSessions': 'IdentityPlatform.AppHost.Tests.Features.BffSessions',
+    'LocalDemo': 'IdentityPlatform.AppHost.Tests.Features.LocalDemo',
 }
 
 
 def apphost_invocations(matrix, provider, selected=None):
-    """Require both positive groups to exhaust each unchanged AppHost provider total."""
+    """Require all positive groups to exhaust each unchanged AppHost provider total."""
     groups = matrix['apphost_native_groups']
     if provider not in PROVIDERS or set(groups) != set(NAMESPACES) or (selected is not None and selected not in NAMESPACES):
         raise ValueError('Unknown native AppHost provider or groups')
@@ -38,11 +39,12 @@ def apphost_catalogue(raw):
 
 
 def apphost_filter(provider, group):
-    """Select reviewed namespace ownership while full discovery still proves both groups."""
+    """Select reviewed namespace ownership while full discovery still proves every group."""
     if provider not in PROVIDERS or group not in NAMESPACES:
         raise ValueError('Unknown native AppHost filter')
     prefix = f'Provider={provider}&FullyQualifiedName~{NAMESPACES[group]}.'
-    return prefix if group == 'BffSessions' else prefix + f'&FullyQualifiedName!~{NAMESPACES["BffSessions"]}.'
+    return prefix if group != 'Foundation' else prefix + ''.join(
+        f'&FullyQualifiedName!~{namespace}.' for name, namespace in NAMESPACES.items() if name != 'Foundation')
 
 
 def require_apphost_selections(all_tests, selections, provider, matrix):
