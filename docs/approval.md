@@ -1,5 +1,7 @@
 # Documentation approval
 
+**Pending security-policy decision (26 October 2026):** [A-010](amendments/A-010-b3-native-form-policy.md) proposes a bounded exception for B3 native form documents after PR #97 exposed a browser-policy incompatibility. It is **not approved**. Current roadmap authority remains valid for independent work, but does not record acceptance of this new origin-only referrer disclosure policy. No production correction or merge acceptance is claimed.
+
 **Current roadmap continuation (22 October 2026):** the user explicitly requested actual roadmap implementation with Playwright/Firefox blockers documented and bypassed. [A-009](amendments/A-009-roadmap-browser-deferral.md) records this new authority, superseding the pre-B3 Firefox sequencing hold while preserving concrete authentication/transaction requirements and external acceptance gates. Continue feature 013 implementation; do not restart diagnostic-only loops.
 
 **Current provider continuation (15 October 2026):** the user approved project-level relational EF Core providers, migration of both existing implementations with databases/history preserved, and reusable conformance tests. [A-008](amendments/A-008-database-provider-plugins.md) records this authority; [feature 012](../specs/012-database-provider-plugins/spec.md) governs implementation before resuming feature 011 T005. All existing external gates remain open.
