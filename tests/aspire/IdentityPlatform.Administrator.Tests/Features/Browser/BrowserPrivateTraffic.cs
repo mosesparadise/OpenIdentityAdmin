@@ -12,6 +12,8 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     private const int MaximumTotal = 16777216;
     private const int JoinSeconds = 30;
     private const string ObserverReport = "traffic-observers pending={0} reads-failed={1} console-pending={2}";
+    private const string ReadFailureReport = "traffic-read-failures request-headers={0} response-headers={1} response-cookies={2} response-completion={3} response-body={4} console={5}";
+    private readonly int[] readFailures = new int[Enum.GetValues<ReadPhase>().Length];
     private readonly IBrowserContext context;
     private readonly ConcurrentBag<Task> pending = [];
     private readonly ConcurrentQueue<string> values = [];
@@ -68,7 +70,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
                 Add(header.Value);
             }
         }
-        catch (Exception) { Interlocked.Increment(ref failed); }
+        catch (Exception) { ReadFailed(ReadPhase.RequestHeaders); }
         finally { ledger.HeadersRead(request); }
     }
 
@@ -83,6 +85,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     /// <summary>Joins response completion before reading bytes; native redirects and bodyless statuses still have all headers inspected.</summary>
     private async Task ReadResponseAsync(IResponse response)
     {
+        var phase = ReadPhase.ResponseHeaders;
         try
         {
             Add(response.Url);
@@ -91,6 +94,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
                 Add(header.Key);
                 Add(header.Value);
             }
+            phase = ReadPhase.ResponseCookies;
             foreach (var header in await response.HeadersArrayAsync())
             {
                 Flow.Header(header.Name, header.Value);
@@ -100,8 +104,10 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
                 return;
             }
             ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Completion);
+            phase = ReadPhase.ResponseCompletion;
             await response.FinishedAsync();
             ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Body);
+            phase = ReadPhase.ResponseBody;
             var body = await response.BodyAsync();
             if (body.Length > MaximumItem)
             {
@@ -110,7 +116,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             }
             Add(Encoding.UTF8.GetString(body));
         }
-        catch (Exception) { Interlocked.Increment(ref failed); }
+        catch (Exception) { ReadFailed(phase); }
         finally { ledger.Response(response.Request, BrowserTrafficRequests.ResponseStage.Complete); }
     }
 
@@ -140,9 +146,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     internal async Task RequireAsync(string[] secrets)
     {
         await JoinAsync();
-        Assert.Equal(0, ledger.ActiveCount());
-        Assert.Equal(0, ledger.InvalidCount());
-        Assert.Equal(0, Volatile.Read(ref failed));
+        RequireCapture();
         Assert.True(requests > 0 && responses > 0 && !values.IsEmpty);
         BrowserSecretOracle.RequireAbsent(values, secrets);
         BrowserSecretOracle.RequireAbsent(diagnostics, secrets.Concat(Flow.Require()).ToArray());
@@ -152,8 +156,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     internal async Task RequireProbesAsync(string[] canaries)
     {
         await JoinAsync();
-        Assert.Equal(0, Volatile.Read(ref failed));
-        Assert.Equal(0, ledger.InvalidCount());
+        RequireCapture();
         Assert.True(canaries.All(canary => values.Any(value => BrowserSecretOracle.Contains(value, [canary]))));
     }
 
@@ -161,7 +164,28 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
     internal async Task<string[]> FlowAsync()
     {
         await JoinAsync();
+        Flow.Report();
+        RequireCapture();
         return Flow.Require();
+    }
+
+    /// <summary>Rejects acquisition or accounting failures before any capture-completeness or absence assertion.</summary>
+    private void RequireCapture()
+    {
+        if (ledger.InvalidCount() != 0 || Volatile.Read(ref failed) != 0)
+        {
+            Report();
+        }
+        Assert.Equal(0, ledger.ActiveCount());
+        Assert.Equal(0, ledger.InvalidCount());
+        Assert.Equal(0, Volatile.Read(ref failed));
+    }
+
+    /// <summary>Counts a failed acquisition phase without retaining exception text or transport contents.</summary>
+    private void ReadFailed(ReadPhase phase)
+    {
+        Interlocked.Increment(ref readFailures[(int)phase]);
+        Interlocked.Increment(ref failed);
     }
 
     /// <summary>Waits for actual request completion and a stable drained observer set before concluding the journey.</summary>
@@ -194,6 +218,10 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
         try
         {
             ledger.Report();
+            Flow.Report();
+            TestContext.Current.TestOutputHelper?.WriteLine(ReadFailureReport, readFailures[(int)ReadPhase.RequestHeaders],
+                readFailures[(int)ReadPhase.ResponseHeaders], readFailures[(int)ReadPhase.ResponseCookies],
+                readFailures[(int)ReadPhase.ResponseCompletion], readFailures[(int)ReadPhase.ResponseBody], readFailures[(int)ReadPhase.Console]);
             TestContext.Current.TestOutputHelper?.WriteLine(ObserverReport,
                 pending.Count(task => !task.IsCompleted), Volatile.Read(ref failed), Volatile.Read(ref consoleReads));
         }
@@ -276,7 +304,7 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
                 Diagnostic(value.GetRawText());
             }
         }
-        catch (Exception) { Interlocked.Increment(ref failed); }
+        catch (Exception) { ReadFailed(ReadPhase.Console); }
         finally { Interlocked.Decrement(ref consoleReads); }
     }
 
@@ -309,6 +337,10 @@ internal sealed class BrowserPrivateTraffic : IAsyncDisposable
             page.Console -= Console;
             page.PageError -= Error;
         }
+    }
+    private enum ReadPhase
+    {
+        RequestHeaders, ResponseHeaders, ResponseCookies, ResponseCompletion, ResponseBody, Console
     }
     private const int RedirectStart = 300;
     private const int RedirectEnd = 400;
