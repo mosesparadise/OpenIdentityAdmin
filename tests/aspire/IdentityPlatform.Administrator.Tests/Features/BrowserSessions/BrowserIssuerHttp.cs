@@ -20,6 +20,7 @@ internal static class BrowserIssuerHttp
     {
         using var page = await browser.GetAsync(QueryHelpers.AddQueryString(Login, Intent, intent), TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
+        await BrowserFormHeaders.AccountAsync(page);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         return new(StringComparer.Ordinal)
         {
@@ -40,10 +41,12 @@ internal static class BrowserIssuerHttp
     internal static async Task<Dictionary<string, string>> FactorAsync(HttpClient browser, HttpResponseMessage password)
     {
         Assert.Equal(HttpStatusCode.Redirect, password.StatusCode);
+        BrowserFormHeaders.Referrer(password);
         var location = password.Headers.Location;
         Assert.True(location is { IsAbsoluteUri: false } && location.OriginalString.StartsWith(Mfa, StringComparison.Ordinal));
         using var page = await browser.GetAsync(location, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
+        await BrowserFormHeaders.AccountAsync(page, mfa: true);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         return new(StringComparer.Ordinal)
         {

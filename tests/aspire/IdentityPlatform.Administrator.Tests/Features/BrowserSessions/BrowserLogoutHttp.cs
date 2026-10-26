@@ -6,6 +6,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 /// <summary>Exercises only the actual fixed logout form and native antiforgery POST over a caller-owned browser.</summary>
 internal static class BrowserLogoutHttp
 {
+    private const string FormPolicy = "strict-origin";
     private const string LocalOutcome = "session has ended locally";
     private const string RemoteOutcome = "Issuer sign-out was not requested.";
     private const string ScriptElement = "<script";
@@ -21,10 +22,10 @@ internal static class BrowserLogoutHttp
     private const string Csp = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
 
     /// <summary>Requires the exact local HTML security headers independently of the implementation's constants.</summary>
-    internal static void RequirePageHeaders(HttpResponseMessage response)
+    internal static void RequirePageHeaders(HttpResponseMessage response, bool form = false)
     {
         Assert.Equal(Html, response.Content.Headers.ContentType?.MediaType);
-        Assert.Equal(NoReferrer, Assert.Single(response.Headers.GetValues(ReferrerPolicy)));
+        Assert.Equal(form ? FormPolicy : NoReferrer, Assert.Single(response.Headers.GetValues(ReferrerPolicy)));
         Assert.Equal(Csp, Assert.Single(response.Headers.GetValues(ContentSecurityPolicy)));
         Assert.True(response.Headers.CacheControl?.NoStore == true);
     }
@@ -34,7 +35,7 @@ internal static class BrowserLogoutHttp
     {
         using var response = await browser.GetAsync(Path, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        RequirePageHeaders(response);
+        RequirePageHeaders(response, form: true);
         return AdministratorJourney.Input(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken), AdministratorJourney.Antiforgery);
     }
 

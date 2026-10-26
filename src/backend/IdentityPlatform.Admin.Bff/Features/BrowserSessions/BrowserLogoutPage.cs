@@ -21,13 +21,14 @@ internal static class BrowserLogoutPage
     private const string ReturnUnavailableContent = "<p>Issuer sign-out result could not be checked. No session was created.</p><a href=\"/bff/login\">Sign in again</a>";
     private const string NoStore = "no-store";
     private const string NoReferrer = "no-referrer";
+    private const string FormReferrer = "strict-origin";
     private const string ReferrerPolicy = "Referrer-Policy";
     private const string ContentSecurityPolicy = "Content-Security-Policy";
     private static readonly System.Text.CompositeFormat FormFormat = System.Text.CompositeFormat.Parse(FormContent);
 
     /// <summary>Uses only a native protected token in a fixed action; rendering does not cancel pending work or authenticate the browser.</summary>
     internal static IResult Form(HttpContext http, string token) => Page(http,
-        string.Format(System.Globalization.CultureInfo.InvariantCulture, FormFormat, BrowserRequestPolicy.AntiforgeryField, HtmlEncoder.Default.Encode(token)), StatusCodes.Status200OK);
+        string.Format(System.Globalization.CultureInfo.InvariantCulture, FormFormat, BrowserRequestPolicy.AntiforgeryField, HtmlEncoder.Default.Encode(token)), StatusCodes.Status200OK, FormReferrer);
 
     /// <summary>Reports only durable local invalidation after all owned cleanup and deadline checks have succeeded.</summary>
     internal static IResult Committed(HttpContext http) => Page(http, CommittedContent, StatusCodes.Status200OK);
@@ -48,11 +49,11 @@ internal static class BrowserLogoutPage
     /// <summary>Offers an explicit bounded check after uncertain completion; no automatic request, retry or rollback claim is made.</summary>
     internal static IResult Unconfirmed(HttpContext http) => Page(http, UnconfirmedContent, StatusCodes.Status503ServiceUnavailable);
 
-    /// <summary>Applies the same fixed noncacheable and nonembeddable HTML policy to every rendered outcome.</summary>
-    private static IResult Page(HttpContext http, string content, int status)
+    /// <summary>Retains noncacheable, nonembeddable output and permits origin-only referrers solely for the actionable form.</summary>
+    private static IResult Page(HttpContext http, string content, int status, string referrer = NoReferrer)
     {
         http.Response.Headers.CacheControl = NoStore;
-        http.Response.Headers[ReferrerPolicy] = NoReferrer;
+        http.Response.Headers[ReferrerPolicy] = referrer;
         http.Response.Headers[ContentSecurityPolicy] = Policy;
         return Results.Content(Header + content + Footer, Html, statusCode: status);
     }

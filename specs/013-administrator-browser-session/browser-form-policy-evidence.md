@@ -1,6 +1,6 @@
 # B3 native form policy — rejected browser run and bounded reproduction
 
-**26 October 2026.** T019 remains delivered. T020's initial real HTTPS browser implementation is preserved in [draft PR #97](https://github.com/mosesparadise/OpenIdentityAdmin/pull/97); none of its new journeys is accepted. [A-010](../../docs/amendments/A-010-b3-native-form-policy.md) proposes a scoped policy correction and remains unapproved.
+**26 October 2026.** The rejected run below remains retained. The user subsequently approved [A-010](../../docs/amendments/A-010-b3-native-form-policy.md); its scoped implementation and regression tests are now in [PR #97](https://github.com/mosesparadise/OpenIdentityAdmin/pull/97), pending corrected-source acceptance. T019 remains delivered and T020 incomplete.
 
 ## Exact rejected source and hosted result
 
@@ -48,6 +48,6 @@ The second control uses two loopback origins. The initial document sets `strict-
 
 ## Disposition and continuation
 
-The contract requires both exact Origin and `no-referrer`; the native-form control demonstrates their incompatibility. Preserve exact-origin/antiforgery validation. A-010 proposes `strict-origin` only for actual B3 form documents, and only a trusted fixed BFF origin in the two issuer forms' CSP. Redirects, non-form results and inert errors retain `no-referrer`. No production correction has been made or acceptance claimed. The current HTTPS harness uses `localhost` on different ports: different origins, but the same host/site. It does not prove separate-host cookie isolation or cross-site SameSite behavior.
+The contract requires both exact Origin and `no-referrer`; the native-form control demonstrates their incompatibility. Preserve exact-origin/antiforgery validation. A-010 proposes `strict-origin` only for actual B3 form documents, and only a trusted fixed BFF origin in the two issuer forms' CSP. Redirects, non-form results and inert errors retain `no-referrer`. At that rejected-source checkpoint no product correction had been made or acceptance claimed. The current HTTPS harness uses `localhost` on different ports: different origins, but the same host/site. It does not prove separate-host cookie isolation or cross-site SameSite behavior.
 
-The next bounded step is the explicit A-010 decision, followed by its scoped implementation and permanent request/header/redirect regressions, then exact-head provider/browser/full acceptance and normal squash. PR97 remains draft/unmerged. T020's remaining negative-flow/theme/accessibility matrix, T012/T016 browser evidence and T021–T024 full B3 work remain open, along with all historical/human/release gates.
+The subsequent A-010 approval authorizes the scoped implementation, permanent request/header/redirect regressions, exact-head provider/browser/full acceptance and normal squash after checks and review. PR97 remains draft/unmerged. T020's remaining negative-flow/theme/accessibility matrix, T012/T016 browser evidence and T021–T024 full B3 work remain open, along with all historical/human/release gates.

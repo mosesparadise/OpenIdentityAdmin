@@ -28,13 +28,21 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     {
         get;
     }
+    internal BrowserHttpsPolicy Policy
+    {
+        get;
+    }
     internal int ParRequests => Volatile.Read(ref par);
     internal int TokenRequests => Volatile.Read(ref token);
     internal int EndSessionGets => Volatile.Read(ref endSessionGets);
     internal int EndSessionPosts => Volatile.Read(ref endSessionPosts);
 
     /// <summary>Fixes the public identity before any credential, registration or account profile is constructed, without releasing the port.</summary>
-    internal BrowserHttpsEndpoint() => Address = new UriBuilder(Uri.UriSchemeHttps, HostName, ((IPEndPoint)socket.LocalEndPoint!).Port).Uri;
+    internal BrowserHttpsEndpoint()
+    {
+        Address = new UriBuilder(Uri.UriSchemeHttps, HostName, ((IPEndPoint)socket.LocalEndPoint!).Port).Uri;
+        Policy = new(Address);
+    }
 
     /// <summary>Transfers this exact managed socket to Kestrel once, retaining ordinary development-certificate TLS validation.</summary>
     internal void Configure(IWebHostBuilder builder)
@@ -75,6 +83,12 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
                     Interlocked.Increment(ref endSessionPosts);
                 }
             }
+            Policy.Request(http.Request);
+            http.Response.OnStarting(() =>
+            {
+                Policy.Response(http);
+                return Task.CompletedTask;
+            });
             await next(http);
         }
         finally

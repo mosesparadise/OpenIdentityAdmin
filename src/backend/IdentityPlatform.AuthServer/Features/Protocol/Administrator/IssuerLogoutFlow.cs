@@ -106,7 +106,8 @@ internal sealed class IssuerLogoutFlow
         if (HttpMethods.IsGet(http.Request.Method))
         {
             await IssuerLogoutPage.ConfirmAsync(http, validation.Request, confirmation.Create(validation.Request, session),
-                antiforgery.GetAndStoreTokens(http).RequestToken ?? throw ProtocolStorageOwner.Unavailable());
+                antiforgery.GetAndStoreTokens(http).RequestToken ?? throw ProtocolStorageOwner.Unavailable(),
+                policy.Application().PostLogoutRedirectUris.Single());
             return;
         }
         var form = await http.Request.ReadFormAsync(token);

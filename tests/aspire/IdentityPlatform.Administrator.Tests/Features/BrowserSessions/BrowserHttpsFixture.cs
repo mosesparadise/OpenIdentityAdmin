@@ -10,6 +10,9 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 /// <summary>Owns two actual HTTPS hosts, isolated provider stores and retained synthetic keys for genuine browser journeys.</summary>
 internal sealed class BrowserHttpsFixture : IAsyncDisposable
 {
+    private const int FormsPerLogin = 2;
+    private const int RedirectsPerLogin = 3;
+    private const int ReturnsPerLogin = 2;
     private const string CallbackPath = "/callback";
     private const string KeyId = "browser-https-assertion";
     private const string CleanupFailure = "Browser HTTPS fixture cleanup failed.";
@@ -51,6 +54,15 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             return owner;
         }
         catch { await owner.DisposeAsync(); throw; }
+    }
+
+    /// <summary>Reconciles actual native transport observations without exposing sensitive request headers or URLs.</summary>
+    internal void RequirePolicies(int logins, int logouts, int confirmations, int issuerVisits = 0, int returnReloads = 0)
+    {
+        clientEndpoint.Policy.Require(logins + logouts, logins * ReturnsPerLogin + confirmations + returnReloads,
+            logins * FormsPerLogin + logouts, logins * RedirectsPerLogin);
+        issuerEndpoint.Policy.Require(logins * FormsPerLogin + confirmations, logins,
+            logins * FormsPerLogin + issuerVisits, logins * RedirectsPerLogin + confirmations);
     }
 
     /// <summary>Attempts every cleanup in dependency order, joining both network roots before releasing keys or database leases.</summary>

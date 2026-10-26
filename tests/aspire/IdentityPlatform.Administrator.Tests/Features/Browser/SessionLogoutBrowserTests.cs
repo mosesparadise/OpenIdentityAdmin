@@ -52,6 +52,7 @@ public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
             Assert.Equal(SecondExchange, environment.TokenRequests);
             Assert.Equal(0, environment.EndSessionGets);
             Assert.Equal(0, environment.EndSessionPosts);
+            environment.RequirePolicies(logins: SecondExchange, logouts: 1, confirmations: 0);
         });
 
     /// <summary>Native issuer GET is inert; protected confirmation revokes the exact source, while the one-use BFF return remains unverified.</summary>
@@ -83,6 +84,7 @@ public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
             await BrowserHttpsJourney.RequireStatusAsync(environment, page, false);
             Assert.Equal(1, environment.ParRequests);
             Assert.Equal(1, environment.TokenRequests);
+            environment.RequirePolicies(logins: 1, logouts: 1, confirmations: 1, issuerVisits: 1, returnReloads: 1);
         });
 
     /// <summary>Abandoning the real native confirmation cannot restore local authority or claim issuer revocation.</summary>
@@ -103,6 +105,7 @@ public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
             await BrowserHttpsEffects.IssuerAsync(environment, source, revoked: false);
             Assert.Equal(1, environment.ParRequests);
             Assert.Equal(1, environment.TokenRequests);
+            environment.RequirePolicies(logins: 1, logouts: 1, confirmations: 0, issuerVisits: 1);
         });
 
     /// <summary>Follows only the actual BFF-produced issuer link after proving local commit and verifies the loaded native GET did not revoke.</summary>
