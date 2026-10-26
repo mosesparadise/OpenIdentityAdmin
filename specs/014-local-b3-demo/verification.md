@@ -1,6 +1,37 @@
-# Local demo candidate verification
+# Local demo verification
 
 Starting main was remotely verified as `eb739386f6117047edb70bce62cd7e73ba311d94`; local branch `108-local-b3-demo` preserves that accepted B3 delivery. No prior implementation or diagnostic approval was repeated.
+
+## Accepted implementation — 26 October 2026
+
+[PR #105](https://github.com/mosesparadise/OpenIdentityAdmin/pull/105) is squash-merged as `6e711d5dea45d66742213fd3e9d35e43912b459c`. Source `8b18ed04496794a4f3b41a49009534f73c108e74`, tested merge `0e0c0bdd0681ee2cb2929bd27b2fe94f04a7392e` and squash have identical tree `88197286cda778d6c406b3ea32c34fa125c6a07b`; base was `eb739386f6117047edb70bce62cd7e73ba311d94`.
+
+[Run 40390054252](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40390054252), attempt 1, passes **all 93 jobs**. Main review reconciles finite native summaries from 74 ordinary jobs: **77 report groups, 4,606 successes, zero failures/skips**. Every initial job checkout matches the tested merge; the two foundation jobs additionally build the deliberately frozen `38eb41e` provider-compatibility producer in an isolated worktree. These are execution counts, not a claim of 4,606 distinct test identities. Strict CI native discovery/selection/report verifiers remain mandatory. AppHost discovery contains 105 cases (67 Harness plus 19 per provider); Foundation8, BffSessions10 and LocalDemo1 are disjoint and mandatory. All accepted pre-feature cases remain required; only the two new demo identities moved namespace during candidate partitioning.
+
+| Required demo | Job | Result |
+| --- | --- | --- |
+| PostgreSQL | [121808466300](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40390054252/job/121808466300) | 1 pass, zero skips; 2m17.484s |
+| SQL Server | [121808466068](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40390054252/job/121808466068) | 1 pass, zero skips; 3m11.007s |
+
+These cases use the real normal-host Linux container graph, native stdin bootstrap, genuine Chromium enrollment and fresh password/MFA ceremonies, local and confirmed issuer logout, isolated stale-cookie replay, actual loopback endpoint inspection, owned database inclusion and native removal of captured containers/anonymous volumes. A cookie observed live immediately before teardown is rejected after a new run. Scenario, invocation and job deadlines remain unchanged.
+
+Independent evidence review confirms all **74 mandatory coverage inputs and 15 unchanged module floors**, plus **64 baseline passes, mutation kills and restored passes**. Coverage job `121818282525` and final acceptance `121818539111` check out the same tested merge. Architecture, security, test and Aspire reviews resolved the source findings recorded below. The ordinary summary reconciliation is the main review; the separate evidence reviewer reconciled mutation logs, coverage and terminal gates.
+
+The final API inventory contains 87 retained artifacts, including the 85 required report artifacts (74 inputs, merged coverage and ten mutation reports). Selected API metadata:
+
+| Artifact | ID | GitHub-reported SHA256 |
+| --- | --- | --- |
+| PostgreSQL demo | 12683046354 | `3a701100fb4f2f4f403b4e1ddca2acf4907510af099f67f4007e0c2ca79ff55f` |
+| SQL Server demo | 12684130118 | `71f919f55327329a658516af59906a3a96837cffd5d29f641c4a202248c14c91` |
+| Merged coverage | 12685525856 | `7953d86cd0375710fa7ecff4c08d24298eba2aa16ba07914a4a904b597878bd6` |
+
+Evidence uses exact-source CI verifiers, finite successful logs and retained artifact API metadata. The executor's enforced network policy rejects File Service artifact transfer with CONNECT 403. **Raw ZIP bytes were not independently downloaded/hashed or XML reparsed.** API digests above are not local byte-verification claims. Workspace receipts under `/tmp/pr105-delivery-evidence/` are supplementary and not portable repository artifacts: `job-log-review.json` SHA256 `c0dca767f09eef1885e16deeed3d761ec651dd6cfa18804a59f5cd7d74def19d`; independent `final-receipt.json` SHA256 `85c1f5f271c482e154a3162d80bfec1e6da354ffbe6d5802946d9b47eff5b40f`; `mutation-review.json` SHA256 `fdfea8da5552a490ee58ed1203c3201a02a181cb11c5b0f3ee67d8f89a466c38`.
+
+**Windows acceptance remains open:** Linux CI and PowerShell 7.5.3 on Linux do not establish SC-001 on Windows Docker Desktop. [T014](tasks.md) retains the complete documented both-provider Windows walkthrough, including TLS, interruption/disposal and fresh-run behavior. T001–T013 implementation/Linux verification are delivered; full platform acceptance is not claimed. No production, public-release, human, six historical findings or A-009 restoration gate closes. Next roadmap work is reviewed M02-C server-held refresh planning.
+
+## Historical candidate evidence
+
+The dated candidate statements below preserve their then-current scope and failures. Their pending hosted/draft wording is superseded by the exact-source delivery above; the Windows limitation is still current.
 
 ## Executed local evidence
 

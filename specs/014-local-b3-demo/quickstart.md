@@ -1,6 +1,6 @@
 # Disposable B3 demo from Windows
 
-**Candidate implementation: required hosted acceptance and actual Windows Docker Desktop execution are not yet recorded.** See [verification](verification.md). Default startup remains health-only; this profile exposes the accepted administrator browser flows.
+**Implementation delivered in PR #105: required Linux container CI passes on both providers. Actual Windows Docker Desktop execution remains unverified (SC-001/T014).** See [verification](verification.md). Default startup remains health-only; this profile exposes the accepted administrator browser flows.
 
 ## Prerequisites
 
@@ -43,7 +43,7 @@ The dashboard's localhost links are health/resource links. Use the canonical URL
 
 ## Stop, restart and troubleshoot
 
-Stop the first terminal with Ctrl+C. The wrapper attempts removal only for containers labelled with its unique run ID, including their attached anonymous volumes. It never prunes unrelated Docker resources. Data and accounts are not reused by subsequent runs. Complete volume-removal behavior after native DCP cleanup remains a runtime verification obligation.
+Stop the first terminal with Ctrl+C. The wrapper attempts removal only for containers labelled with its unique run ID, including their attached anonymous volumes. It never prunes unrelated Docker resources. Data and accounts are not reused by subsequent runs. Both-provider Linux CI verifies native DCP removal of owned containers and attached anonymous database volumes. Windows Docker Desktop disposal remains part of the separate walkthrough.
 
 Private application certificates and encrypted key rings live in app-owned Linux tmpfs. Restarting an individual issuer/BFF container loses that protection state while databases may still exist: **restart the whole disposable graph, initialize and enroll again**. There is no single-container continuity or automatic repair guarantee. Application certificates expire after one day; use a fresh complete run for later sessions.
 

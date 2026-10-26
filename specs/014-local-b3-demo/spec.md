@@ -2,7 +2,7 @@
 
 **Feature Branch**: `108-local-b3-demo`
 **Created**: 2026-10-26
-**Status**: Authorized development; implementation and acceptance pending
+**Status**: Implementation delivered in PR #105; Linux CI accepted; Windows SC-001 walkthrough remains open
 **Input**: User requested the next recommended item after local run assessment, selected Windows only with Docker Desktop, and disposable data per run.
 
 ## Clarifications
