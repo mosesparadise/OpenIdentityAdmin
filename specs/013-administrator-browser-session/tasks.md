@@ -1,5 +1,7 @@
 # Tasks: Administrator browser sessions (B3)
 
+**Audit prerequisite delivered (26 October 2026):** [PR #102 evidence](audit-correlation.md#accepted-internal-delivery--26-october-2026) records squash `d18f63f64e38fba3c35ad7af24e379d02081f659`, 79 successful checks, 4,493 passing raw executions, both-provider historical preservation, 60 coverage inputs/15 unchanged floors and 64 mutation controls. Acceptance explicitly combines retained successful jobs with one bounded SQL/aggregate rerun. The earlier linkage-absent/pending checkpoint wording below is superseded. Continue the implemented T012/T016 browser matrix and T023 exact-source acceptance; no selected task or external gate is closed.
+
 **Browser matrix candidate (26 October 2026):** [T012/T016 browser implementation](browser-login-protection.md) adds genuine negative login, status/origin/storage/diagnostic and accessible error journeys. Native discovery preserves 1,911 cases and adds 40; required browser and AppHost group collectors are expanded with unchanged execution deadlines and floors. Hosted acceptance and T023 reconciliation remain pending; no selected task or external gate is closed.
 
 
