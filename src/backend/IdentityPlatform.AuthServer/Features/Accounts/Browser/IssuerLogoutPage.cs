@@ -1,6 +1,7 @@
 using System.Text.Encodings.Web;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.DesignTokens;
 using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.AuthServer.Features.Accounts.Browser;
@@ -15,6 +16,9 @@ internal static class IssuerLogoutPage
     private const string FormPrefix = "<form method=\"post\" action=\"";
     private const string TagEnd = "\">";
     private const string FormSuffix = "<button type=\"submit\">Sign out this issuer session</button></form>";
+    private const string CancelPath = "/bff/login";
+    private const string CancelStart = "<a href=\"";
+    private const string CancelEnd = "\">Return without issuer sign-out</a>";
     private const string FieldPrefix = "<input type=\"hidden\" name=\"";
     private const string FieldValue = "\" value=\"";
     private const string NoStore = "no-store";
@@ -22,10 +26,6 @@ internal static class IssuerLogoutPage
     private const string NoReferrer = "no-referrer";
     private const string FormReferrer = "strict-origin";
     private const string NoSniff = "nosniff";
-    private const string Header = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>";
-    private const string TitleEnd = "</title></head><body><h1>";
-    private const string HeadingEnd = "</h1>";
-    private const string Footer = "</body></html>";
 
     private const string ContentType = "text/html; charset=utf-8";
     private const string Policy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
@@ -36,7 +36,8 @@ internal static class IssuerLogoutPage
         Field(OpenIddictConstants.Parameters.ClientId, request.ClientId!) + Field(OpenIddictConstants.Parameters.PostLogoutRedirectUri, request.PostLogoutRedirectUri!) +
         Field(IssuerLogoutInput.HintName, IssuerLogoutInput.Hint(request)!) + Field(OpenIddictConstants.Parameters.State, request.State!) +
         Field(IssuerLogoutInput.Confirmation, confirmation) + Field(AdministratorBrowser.Antiforgery, antiforgery) +
-        FormSuffix, StatusCodes.Status200OK, configuredReturn);
+        FormSuffix + CancelStart + HtmlEncoder.Default.Encode(new Uri(configuredReturn, CancelPath).AbsoluteUri) + CancelEnd,
+        StatusCodes.Status200OK, configuredReturn);
 
     /// <summary>Never interprets missing or mismatched authority as a successful remote revocation.</summary>
     internal static Task IncompleteAsync(HttpContext http) => WriteAsync(http, IncompleteTitle,
@@ -53,9 +54,8 @@ internal static class IssuerLogoutPage
         http.Response.ContentType = ContentType;
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers[ReferrerPolicy] = configuredReturn is null ? NoReferrer : FormReferrer;
-        http.Response.Headers.ContentSecurityPolicy = configuredReturn is null ? Policy : Policy + SourceSeparator + configuredReturn.GetLeftPart(UriPartial.Authority);
+        http.Response.Headers.ContentSecurityPolicy = (configuredReturn is null ? Policy : Policy + SourceSeparator + configuredReturn.GetLeftPart(UriPartial.Authority)) + BrowserDocument.AssetPolicy;
         http.Response.Headers.XContentTypeOptions = NoSniff;
-        return http.Response.WriteAsync(Header + title +
-            TitleEnd + title + HeadingEnd + content + Footer, http.RequestAborted);
+        return http.Response.WriteAsync(BrowserDocument.Render(title, content), http.RequestAborted);
     }
 }

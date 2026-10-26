@@ -1,4 +1,5 @@
 using System.Text.Encodings.Web;
+using IdentityPlatform.DesignTokens;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using Microsoft.AspNetCore.Antiforgery;
@@ -13,7 +14,9 @@ internal static class BrowserLoginBoundary
     internal const string Login = "/bff/login";
     internal const string Unavailable = "Browser login is unavailable.";
     private const string ReferrerPolicy = "Referrer-Policy";
-    private const string FormPage = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Administrator sign-in</title></head><body><main><h1>Administrator sign-in</h1><p>Sign in with your password and verification code.</p><form method=\"post\" action=\"{0}\"><input type=\"hidden\" name=\"{1}\" value=\"{2}\"><button type=\"submit\">Start sign-in</button></form></main></body></html>";
+    private const string FormPage = "<p>Sign in with your password and verification code.</p><form method=\"post\" action=\"{0}\"><input type=\"hidden\" name=\"{1}\" value=\"{2}\"><button type=\"submit\">Start sign-in</button></form>";
+    private const string Title = "Administrator sign-in";
+    private const string FormPolicy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' ";
     private static readonly System.Text.CompositeFormat PageFormat = System.Text.CompositeFormat.Parse(FormPage);
     private const string Html = "text/html; charset=utf-8";
     private const string NoStore = "no-store";
@@ -102,7 +105,8 @@ internal static class BrowserLoginBoundary
         var token = HtmlEncoder.Default.Encode(tokens.RequestToken ?? throw new InvalidOperationException(Unavailable));
         var content = string.Format(System.Globalization.CultureInfo.InvariantCulture, PageFormat, Login, BrowserRequestPolicy.AntiforgeryField, token);
         http.Response.Headers[ReferrerPolicy] = FormReferrer;
-        return (Results.Content(content, Html), null);
+        http.Response.Headers.ContentSecurityPolicy = FormPolicy + scope.ServiceProvider.GetRequiredService<BrowserSessionDestinations>().Issuer.GetLeftPart(UriPartial.Authority) + BrowserDocument.AssetPolicy;
+        return (Results.Content(BrowserDocument.Render(Title, content), Html), null);
     }
 
     /// <summary>Resolves the actual named native handler only inside its substituted owned scope, retaining library request and challenge dispatch.</summary>

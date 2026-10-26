@@ -93,7 +93,7 @@ public sealed class BrowserStatusFramingTests
         Assert.Equal(StatusCodes.Status200OK, http.Response.StatusCode);
         var html = System.Text.Encoding.UTF8.GetString(output.ToArray());
         Assert.Contains("href=\"/bff/login\"", html, StringComparison.Ordinal);
-        Assert.DoesNotContain("<script", html, StringComparison.Ordinal);
+        IdentityPlatform.Testing.BrowserPresentationAssertions.ThemeOnly(html);
         Assert.DoesNotContain("<input", html, StringComparison.Ordinal);
         Assert.Equal("no-store", http.Response.Headers.CacheControl);
         Assert.Equal(0, http.Response.Headers.Location.Count);

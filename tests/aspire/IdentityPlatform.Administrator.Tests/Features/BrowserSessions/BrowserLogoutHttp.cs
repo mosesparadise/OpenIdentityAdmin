@@ -9,7 +9,6 @@ internal static class BrowserLogoutHttp
     private const string FormPolicy = "strict-origin";
     private const string LocalOutcome = "session has ended locally";
     private const string RemoteOutcome = "Issuer sign-out was not requested.";
-    private const string ScriptElement = "<script";
     private const string AnonymousStatus = "{\"authenticated\":false}";
     private const string SetCookie = "Set-Cookie";
     internal const string Path = "/bff/logout";
@@ -26,7 +25,7 @@ internal static class BrowserLogoutHttp
     {
         Assert.Equal(Html, response.Content.Headers.ContentType?.MediaType);
         Assert.Equal(form ? FormPolicy : NoReferrer, Assert.Single(response.Headers.GetValues(ReferrerPolicy)));
-        Assert.Equal(Csp, Assert.Single(response.Headers.GetValues(ContentSecurityPolicy)));
+        Assert.Equal(Csp + BrowserFormHeaders.PresentationPolicy, Assert.Single(response.Headers.GetValues(ContentSecurityPolicy)));
         Assert.True(response.Headers.CacheControl?.NoStore == true);
     }
 
@@ -51,7 +50,7 @@ internal static class BrowserLogoutHttp
         var html = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         Assert.Contains(LocalOutcome, html, StringComparison.Ordinal);
         Assert.Contains(RemoteOutcome, html, StringComparison.Ordinal);
-        Assert.DoesNotContain(ScriptElement, html, StringComparison.Ordinal);
+        IdentityPlatform.Testing.BrowserPresentationAssertions.ThemeOnly(html);
         Assert.Null(response.Headers.Location);
         Assert.True(response.Headers.CacheControl?.NoStore == true);
     }

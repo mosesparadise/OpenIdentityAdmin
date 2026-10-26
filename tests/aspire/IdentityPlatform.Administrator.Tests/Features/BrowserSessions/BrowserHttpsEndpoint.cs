@@ -15,6 +15,14 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private const string ParPath = "/connect/par";
     private const string TokenPath = "/connect/token";
     private const string HostName = "localhost";
+    private const string AttackerPath = "/__test/cross-site-form";
+    private const string AttackerPolicy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action ";
+    private const string AttackerPrefix = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Synthetic cross-site form</title></head><body>";
+    private const string AttackerSuffix = "</body></html>";
+    private const string Html = "text/html; charset=utf-8";
+    private const string ReferrerPolicy = "Referrer-Policy";
+    private const string StrictOrigin = "strict-origin";
+    private const string NoStore = "no-store";
     private const int CleanupSeconds = 30;
     private readonly Socket socket = SocketTransportOptions.CreateDefaultBoundListenSocket(new IPEndPoint(IPAddress.Loopback, 0));
     private readonly ConcurrentDictionary<long, TaskCompletionSource> pending = new();
@@ -24,6 +32,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private int token;
     private int endSessionGets;
     private int endSessionPosts;
+    private AttackerDocument? attacker;
     internal Uri Address
     {
         get;
@@ -38,9 +47,9 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     internal int EndSessionPosts => Volatile.Read(ref endSessionPosts);
 
     /// <summary>Fixes the public identity before any credential, registration or account profile is constructed, without releasing the port.</summary>
-    internal BrowserHttpsEndpoint()
+    internal BrowserHttpsEndpoint(bool ipAddress = false)
     {
-        Address = new UriBuilder(Uri.UriSchemeHttps, HostName, ((IPEndPoint)socket.LocalEndPoint!).Port).Uri;
+        Address = new UriBuilder(Uri.UriSchemeHttps, ipAddress ? IPAddress.Loopback.ToString() : HostName, ((IPEndPoint)socket.LocalEndPoint!).Port).Uri;
         Policy = new(Address);
     }
 
@@ -89,13 +98,41 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
                 Policy.Response(http);
                 return Task.CompletedTask;
             });
-            await next(http);
+            if (!await ServeAttackerAsync(http))
+            {
+                await next(http);
+            }
         }
         finally
         {
             Assert.True(pending.TryRemove(id, out _));
             completion.TrySetResult();
         }
+    }
+
+    /// <summary>Stages one test-owned sender document with only the fixed peer authority permitted; product routes and policies remain untouched.</summary>
+    internal Uri StageAttacker(string form, Uri target)
+    {
+        var document = new AttackerDocument(form, target.GetLeftPart(UriPartial.Authority));
+        Assert.True(Interlocked.CompareExchange(ref attacker, document, null) is null);
+        return new Uri(Address, AttackerPath);
+    }
+
+    /// <summary>Serves the one-shot sender before account middleware, retaining actual TLS, browser-origin calculation and SameSite enforcement.</summary>
+    private async Task<bool> ServeAttackerAsync(HttpContext http)
+    {
+        if (http.Request.Path != AttackerPath || !HttpMethods.IsGet(http.Request.Method))
+        {
+            return false;
+        }
+        var document = Interlocked.Exchange(ref attacker, null);
+        Assert.NotNull(document);
+        http.Response.ContentType = Html;
+        http.Response.Headers.CacheControl = NoStore;
+        http.Response.Headers[ReferrerPolicy] = StrictOrigin;
+        http.Response.Headers.ContentSecurityPolicy = AttackerPolicy + document.Target;
+        await http.Response.WriteAsync(AttackerPrefix + document.Form + AttackerSuffix, http.RequestAborted);
+        return true;
     }
 
     /// <summary>Stops admission before joining in-flight work; dependencies remain alive through server completion even after stop cancellation.</summary>
@@ -117,4 +154,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
 
     /// <summary>Releases an unclaimed socket after startup failure or the same already-stopped managed socket after host disposal.</summary>
     public void Dispose() => socket.Dispose();
+
+    /// <summary>Retains synthetic form content in memory only until its single response is served.</summary>
+    private sealed record AttackerDocument(string Form, string Target);
 }
