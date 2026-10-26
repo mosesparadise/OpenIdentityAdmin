@@ -1,5 +1,7 @@
 # T020 logout browser matrix
 
+**Accepted internal delivery:** PR [#99](https://github.com/mosesparadise/OpenIdentityAdmin/pull/99) is squash-merged as `34aa033123cfd0a41e8d7a89b64913a0fb091151`. The accepted record below supersedes the dated candidate statements, while both rejected runs remain retained. T020 is complete within A-009's explicit internal scope; Firefox/restoration and all human/production/public-release gates remain open.
+
 ## Candidate scope — 26 October 2026
 
 The user selected roadmap tasks **T020–T022**, including dependencies and tests. This increment completes the remaining T020 source matrix using the accepted PR #97 HTTPS harness. Acceptance is pending: no newly drafted browser case is claimed to have passed. T021 dedicated security mutations and T022 operations handoff follow. Full B3, production and public-release gates remain open.
@@ -71,3 +73,34 @@ The presentation assertion combined document reflow, minimum target size and gen
 The cross-site confirmation failure retained actual issuer POST 302 and BFF return 200 with no unexpected Origin/cookie/referrer/policy violation, but the browser response waiter timed out. That does not prove a browser-engine defect. The next helper uses an ordinary native click, visible unique unverified return text at the privately checked fixed BFF origin/path, and an exact increment in final Kestrel-observed POST 302 responses at the fixed issuer endpoint. Independent issuer revocation, local transition/audits, cookie and replay assertions and exact total POST counts remain. No timeout is caught, retry introduced or deadline increased.
 
 Independent architecture/test source review supports these bounded observation corrections. The CSS correction remains unchanged. The second run's 64 Chromium captures remain separate from its absent WebKit captures; no complete visual or T020 acceptance is claimed. Corrected-source build, quality, full hosted acceptance and visual review are still required.
+
+The first rejected run's final independent receipt records 67 TRX, 4,442 executed, 4,430 passed and 12 failed, with zero skips; all 4,402 previously accepted identities remain. Its receipt SHA-256 is `e98955cc605432d296ad24ad8a4e96369baef73f92dca4236c1784b9d9bc44d1`. The second rejected run records 67 TRX, 4,442 executed, 4,436 passed and six failed, zero skips; its receipt SHA-256 is `3211a119defcd00da6ccdde64c7aad7d352cc8b432c4595d40134d041eccefd7`. Both preserve all 48 baseline/kill/restored mutation controls and all 60 raw coverage inputs; skipped aggregate coverage establishes no floor acceptance.
+
+Third candidate `b7e380bfdd9a83ddb167eb2aef40309267fc12df` passes local build (zero warnings/errors), formatting, syntax-aware quality and six native story selections. Independent architecture, security and test source re-review passes at this exact head; UX source review supports the direct text-rectangle oracle. Full hosted and fresh visual acceptance remain separate.
+
+## Accepted internal delivery — 26 October 2026
+
+| Binding | Verified value |
+| --- | --- |
+| Reviewed source | `b7e380bfdd9a83ddb167eb2aef40309267fc12df` |
+| Original main | `9c208a11a24b7a6aa1f529879ec8f5fb6be48d04` |
+| Tested merge | `b5fd7618add8e0633f87e5ce83217133f74fd79e` |
+| Source/tested merge/squash tree | `311984a5fd847ca58c7639fb92b8c0fc5d133e48` |
+| Full run | [40303752200](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40303752200), attempt 1 |
+| Normal squash | `34aa033123cfd0a41e8d7a89b64913a0fb091151`, PR #99 |
+| Independent final receipt SHA-256 | `f1bc3c5e867858db8839460f27f8f49cbf12d493c8afbe307882c69cc315d663` |
+
+All **77 jobs pass**. Independent raw review verifies 67 TRX, **4,442 passed, zero failures/skips**, retaining all 4,402 prior accepted identities and adding 40 executions. All 52 BrowserSessions browser cases pass: 13 per PostgreSQL/SQL Server × Chromium/WebKit cell. The 104 finite policy records, 216 layout observations at 320/768/1280 and twelve exact final issuer POST-302 increments reconcile. Scoped unit/server controls pass 2,224 cases, including 1,614 unit cases; the native Administrator inventory remains 1,877.
+
+All **60 actual coverage inputs** were parsed/hashed; the aggregate passes all **15 unchanged module floors**. Aggregate artifact `12643485334` ZIP SHA-256 is `dd18c34e1fc13c7f4e6e2bdf073a9ed834ef2852a1a02f7d84f9132c6025f31a`. All 48 existing mutation controls pass baseline/specific kill/restored phases; review is of sanitized receipts, not independently uploaded raw mutant XML. Contracts pass 43 core, 37 Node and seven cases per engine. No timeout, floor, exclusion or legacy allowance changes.
+
+Independent architecture, security and test source reviews pass at the exact source. Independent hosted/raw evidence review passes. UX review verifies all 128 screenshot hashes, views all 64 unique images and reconciles provider counterparts as byte-identical. All eight prior WebKit clipping instances are visibly resolved; no new clipping, overlap or apparent contrast blocker is found. Cosmetic desktop heading wrapping and tight but readable WebKit button padding are retained. This is fixed-document visual acceptance, not manual screen-reader/product acceptance, first-paint or focus-state screenshot proof.
+
+| Screenshot artifact | ZIP SHA-256 |
+| --- | --- |
+| `12642541095` — foundation-administrator-PostgreSql-webkit-browsersessions | `2e262ac3947151476512a28a39fe7011f454f8ce257fcc6f0cea98a942eb9954` |
+| `12643165435` — foundation-administrator-SqlServer-webkit-browsersessions | `c78896075ae4568ec3dd87546292d75ff319559e9346dbbc0e1f6130744ec3c9` |
+| `12642037677` — foundation-administrator-PostgreSql-chromium-browsersessions | `5867427eabe3965c8a252875a0096f9b720715dda885eae572dd5cf6f8cc398b` |
+| `12642077433` — foundation-administrator-SqlServer-chromium-browsersessions | `ba804fa188d74aec85f075912de2db2a7085b8d624449ace5f55f7013bf773c0` |
+
+Remote main, exact head, all checks, empty review/thread state and mergeability were reverified before the normal squash. The resulting main tree equals the tested source tree. T020 closes only the amended internal task; T012/T016, remaining integration and coherent full B3 acceptance remain open. All rejected evidence, A-009 restoration, six historical findings, 48 human rows, 345 not-assessed controls and production/public-release gates remain open.
