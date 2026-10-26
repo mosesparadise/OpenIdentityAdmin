@@ -37,14 +37,14 @@
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 860
+      "Administrator": 868
     },
     "SqlServer": {
       "Persistence": 10,
       "AppHost": 18,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 965
+      "Administrator": 973
     }
   },
   "browser": {
@@ -111,8 +111,8 @@
       "SqlServer": 110
     },
     "BrowserSessions": {
-      "PostgreSql": 305,
-      "SqlServer": 305
+      "PostgreSql": 313,
+      "SqlServer": 313
     }
   },
   "administrator_browser_stories": {
@@ -176,6 +176,7 @@
         "BrowserCoordinationRaceTests",
         "BrowserCoordinationSchemaTests",
         "BrowserCoordinationTests",
+        "BrowserIdentityMutationTests",
         "BrowserIssuerAdmissionTests",
         "BrowserIssuerDenialTests",
         "BrowserIssuerExpiryTests",
@@ -207,12 +208,13 @@
         "NativeEndSessionTests"
       ],
       "counts": {
-        "PostgreSql": 158,
-        "SqlServer": 158
+        "PostgreSql": 160,
+        "SqlServer": 160
       }
     },
     "Product": {
       "classes": [
+        "BrowserBindingMutationTests",
         "BrowserCallbackAdmissionTests",
         "BrowserCallbackAuditTests",
         "BrowserCallbackErrorTests",
@@ -246,13 +248,14 @@
         "BrowserSessionStatusTests"
       ],
       "counts": {
-        "PostgreSql": 96,
-        "SqlServer": 96
+        "PostgreSql": 98,
+        "SqlServer": 98
       }
     },
     "Lifecycle": {
       "classes": [
         "BrowserCleanupAdmissionTests",
+        "BrowserLogoutMutationTests",
         "BrowserOrphanCleanupTests",
         "BrowserProcessFramingTests",
         "BrowserProcessTests",
@@ -267,12 +270,13 @@
         "IssuerLogoutBoundaryTests",
         "IssuerLogoutDeadlineTests",
         "IssuerLogoutFailureTests",
+        "IssuerLogoutMutationTests",
         "IssuerLogoutNativeTests",
         "IssuerLogoutTests"
       ],
       "counts": {
-        "PostgreSql": 51,
-        "SqlServer": 51
+        "PostgreSql": 55,
+        "SqlServer": 55
       }
     }
   }

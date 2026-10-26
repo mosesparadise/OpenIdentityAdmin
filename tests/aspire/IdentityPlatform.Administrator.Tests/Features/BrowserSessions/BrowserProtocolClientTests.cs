@@ -92,7 +92,7 @@ public sealed class BrowserProtocolClientTests(BootstrapFixture fixture)
     }
 
     /// <summary>Supplies the internal captured demand after native profile negotiation and before the unchanged challenge guard.</summary>
-    private static void Capture(IServiceCollection services, NativeClientProfile profile, NativeBrowserParFixture browser, long deadline) =>
+    internal static void Capture(IServiceCollection services, NativeClientProfile profile, NativeBrowserParFixture browser, long deadline) =>
         services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler
             .SetOrder(OpenIddictClientHandlers.AttachResponseMode.Descriptor.Order + CaptureOffset).UseInlineHandler(context =>
             {
@@ -101,7 +101,7 @@ public sealed class BrowserProtocolClientTests(BootstrapFixture fixture)
             }));
 
     /// <summary>Uses the genuine completed cookie and exact native challenge query without altering any credential or return binding.</summary>
-    private static async Task<Uri> AuthorizeAsync(NativeBrowserParFixture browser, string location)
+    internal static async Task<Uri> AuthorizeAsync(NativeBrowserParFixture browser, string location)
     {
         var request = new Uri(location);
         Assert.Equal(new Uri(browser.Scenario.Issuer, AdministratorProtocolScenario.AuthorizePath).AbsoluteUri, request.GetLeftPart(UriPartial.Path));

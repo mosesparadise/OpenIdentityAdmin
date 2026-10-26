@@ -81,7 +81,7 @@ class NativeImagePreparationTests(unittest.TestCase):
         """Keep preparation mandatory, before history probes too, and outside unit/contracts."""
         workflow = (ROOT / '.github/workflows/verify.yml').read_text()
         jobs = dict(re.findall(r'(?ms)^  ([a-z][a-z-]*):\n(.*?)(?=^  [a-z][a-z-]*:\n|\Z)', workflow))
-        expected = {'verify': 20, 'browser': 20, 'mutations': 30, 'administrator-mutations': 30, 'governance-mutations': 30, 'administrator-protocol-mutations': 30}
+        expected = {'verify': 20, 'browser': 20, 'mutations': 30, 'administrator-mutations': 30, 'governance-mutations': 30, 'administrator-protocol-mutations': 30, 'browser-session-mutations': 30}
         selected = {name for name, body in jobs.items() if 'scripts/prepare_native_image.py' in body}
         self.assertEqual(set(expected), selected)
         for job, minutes in expected.items():

@@ -24,7 +24,7 @@ public sealed class NativeClientIdentityTests(BootstrapFixture fixture)
         await AttemptAsync(first, second, issuer, fault: null, total: 1);
         var total = 1;
         // Ordinary B2 identities have no B3 source-expiry claim; its separate callback case owns that rewrite.
-        foreach (var fault in Enum.GetValues<NativeIdentityResponse.Fault>().Where(fault => fault != NativeIdentityResponse.Fault.BrowserExpiry))
+        foreach (var fault in Enum.GetValues<NativeIdentityResponse.Fault>().Where(fault => fault is not (NativeIdentityResponse.Fault.BrowserExpiry or NativeIdentityResponse.Fault.BrowserExpiryEquality)))
         {
             await AttemptAsync(first, second, issuer, fault, ++total);
         }
