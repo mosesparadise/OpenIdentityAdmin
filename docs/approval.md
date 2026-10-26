@@ -1,6 +1,6 @@
 # Documentation approval
 
-**Pending security-policy decision (26 October 2026):** [A-010](amendments/A-010-b3-native-form-policy.md) proposes a bounded exception for B3 native form documents after PR #97 exposed a browser-policy incompatibility. It is **not approved**. Current roadmap authority remains valid for independent work, but does not record acceptance of this new origin-only referrer disclosure policy. No production correction or merge acceptance is claimed.
+**Approved B3 form-policy correction (26 October 2026):** the user replied **“Approved”** to the recommendation to implement [A-010](amendments/A-010-b3-native-form-policy.md), complete required verification and independent review, and squash PR #97 only when checks pass. This authorizes the scoped form-document referrer/CSP changes while preserving exact Origin, native antiforgery and every authentication/transaction guard. Production/public-release authority and all historical/human gates remain unchanged.
 
 **Current roadmap continuation (22 October 2026):** the user explicitly requested actual roadmap implementation with Playwright/Firefox blockers documented and bypassed. [A-009](amendments/A-009-roadmap-browser-deferral.md) records this new authority, superseding the pre-B3 Firefox sequencing hold while preserving concrete authentication/transaction requirements and external acceptance gates. Continue feature 013 implementation; do not restart diagnostic-only loops.
 

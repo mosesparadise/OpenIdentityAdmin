@@ -1,6 +1,6 @@
 # A-010 — B3 native form document policy
 
-**Proposed, not approved — 26 October 2026.** No production code or approved contract changes are included in this proposal. The requesting user has authorized roadmap implementation and ordinary failure correction; this document requests a specific exception to the explicit `no-referrer` security requirement. The implementing maintainer owns implementation and evidence after approval.
+**Approved — 26 October 2026.** The requesting user replied **“Approved”** to the recommendation to approve A-010, implement these scoped form-policy corrections, complete required verification and independent review, and squash PR #97 only after its checks pass. The implementing maintainer owns implementation and evidence. No production activation or external release is authorized.
 
 ## Problem and evidence
 
@@ -13,7 +13,7 @@ Independent local Chromium native-form reproduction demonstrates two browser beh
 
 These local controls use synthetic HTTP loopback origins, not the hosted HTTPS/provider journey. Hosted coverage establishes rejection in the first form guard but cannot distinguish its individual operands. The controls establish a browser-policy incompatibility; they do not prove there are no additional product failures. CSP is a separately reproduced prospective obstacle after the current first guard, not the cause of the recorded first timeout.
 
-## Proposed bounded change
+## Approved bounded change
 
 Amend feature 013's [browser contract](../../specs/013-administrator-browser-session/contracts/browser-session.md), including its sensitive-page statements, with this exception:
 
@@ -39,7 +39,7 @@ The change deliberately permits an origin-only `Referer` from these form documen
 
 Keep rejecting missing, null, multiple and foreign origins. Do not introduce a Referer fallback, synthesize browser headers, bypass TLS or replace the native form ceremony with scripted authentication. Preserve antiforgery, password/MFA, intent, generation, cookie, authority, transaction and audit checks. Do not forward credential-bearing form bodies cross-origin through 307/308 redirects. Continue explicit `no-referrer` on protocol 3xx responses and sensitive returns.
 
-## Required verification and delivery after approval
+## Required verification and delivery
 
 1. Add permanent meaningful response-policy controls for actual form documents, actionable validation rerenders, redirects, non-form results and inert failures. Preserve negative null/missing/foreign/multiple-origin and CSRF tests.
 2. In real native browser journeys, observe request headers in memory and assert exact configured `Origin`, origin-only form `Referer`, no selector/credential disclosure and absent `Referer` on intended protocol redirect hops. Retain only finite classifications or booleans; do not log raw headers, URLs, HTML, cookies, factors or tokens.
@@ -51,4 +51,4 @@ The exception is restricted to feature 013's listed form documents. It adds no p
 
 ## Approval record
 
-Pending. Suggested explicit decision: **“I approve A-010's scoped B3 form referrer/CSP policy changes and their required verification.”** No approval is inferred from publication, passing documentation checks or the existing general roadmap instruction.
+Approved by the requesting user on 26 October 2026: **“Approved”**, in direct response to the A-010 recommendation described above. This records the specific decision; passing documentation checks or publication alone would not grant approval.
