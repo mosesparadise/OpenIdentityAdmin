@@ -1,4 +1,5 @@
 using IdentityPlatform.AppHost.Features.Accounts;
+using IdentityPlatform.AppHost.Features.LocalDemo;
 using IdentityPlatform.AppHost.Features.Database;
 using IdentityPlatform.AppHost.Features.Pilot;
 using IdentityPlatform.AppHost.Features.Services;
@@ -10,7 +11,12 @@ internal static class Setup
     /// <summary>Builds database and service resources, then explicitly composes independent account and pilot activation.</summary>
     internal static IDistributedApplicationBuilder AddFeatures(this IDistributedApplicationBuilder builder)
     {
+        var demo = builder.IsLocalDemo();
         var database = builder.AddDatabase();
+        if (demo)
+        {
+            return builder.AddLocalDemo(database);
+        }
         var services = builder.AddServices(database);
         var protection = new IssuerProtection(builder, services.Auth);
         builder.AddAccounts(services.Auth, protection);

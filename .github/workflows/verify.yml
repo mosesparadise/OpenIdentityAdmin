@@ -207,6 +207,9 @@ jobs:
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
+      - name: Verify PowerShell demo transport and cancellation
+        if: matrix.profile == 'unit'
+        run: python3 scripts/test_local_demo_helpers.py
       - name: Build frozen provider compatibility producer
         if: matrix.partition == 'foundation'
         run: python3 scripts/prepare_provider_baseline.py
@@ -221,6 +224,16 @@ jobs:
           dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - name: Prepare real local demo browser
+        if: matrix.partition == 'apphost' && matrix.apphost_group == 'Foundation'
+        shell: bash
+        run: |
+          sudo python3 scripts/prepare_browser_archive.py
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps chromium
+          sudo apt-get install -y libnss3-tools
+          mkdir -p "$HOME/.pki/nssdb"
+          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
+          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
         run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }}
       - name: Retain synthetic test and coverage evidence

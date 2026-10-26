@@ -16,12 +16,12 @@ class AppHostSelectionTests(unittest.TestCase):
     """Use independent native-shaped identities, counts and namespace expectations."""
 
     def setUp(self):
-        """Create eight foundation and ten BFF identities for each real provider."""
+        """Create nine foundation and ten BFF identities for each real provider."""
         self.matrix = json.loads((ROOT / 'eng/test-matrix.json').read_text())
         self.rows = {}
         for provider in ('PostgreSql', 'SqlServer'):
             self.rows[provider] = []
-            for group, namespace, count in [('Foundation', BASE, 8), ('BffSessions', BASE + '.BffSessions', 10)]:
+            for group, namespace, count in [('Foundation', BASE, 9), ('BffSessions', BASE + '.BffSessions', 10)]:
                 for index in range(count):
                     self.rows[provider].append({'uid': provider + group + str(index),
                         'displayName': f'{namespace}.FixtureTests.Case{index}({provider})',
@@ -38,11 +38,11 @@ class AppHostSelectionTests(unittest.TestCase):
         return {'Foundation': {uid: test for uid, test in tests.items() if test[3] == BASE},
                 'BffSessions': {uid: test for uid, test in tests.items() if test[3] == BASE + '.BffSessions'}}
 
-    def test_Given_current_matrix_When_grouping_Then_all_eighteen_cases_remain_mandatory(self):
-        """Both providers retain independent eight-plus-ten expectations including shared transaction controls."""
+    def test_Given_current_matrix_When_grouping_Then_all_nineteen_cases_remain_mandatory(self):
+        """Both providers retain independent nine-plus-ten expectations including shared transaction controls."""
         for provider in self.rows:
-            self.assertEqual([('Foundation', 8), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
-            self.assertEqual(18, self.matrix['profiles'][provider]['AppHost'])
+            self.assertEqual([('Foundation', 9), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
+            self.assertEqual(19, self.matrix['profiles'][provider]['AppHost'])
             require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
 
     def test_Given_manifest_drift_When_grouping_Then_missing_groups_and_invalid_counts_fail(self):
@@ -110,9 +110,9 @@ class AppHostSelectionTests(unittest.TestCase):
         workflow = (ROOT / '.github/workflows/verify.yml').read_text()
         for provider in ('PostgreSql', 'SqlServer'):
             self.assertEqual({'Persistence': 12}, select_projects(self.matrix, provider, partition='foundation'))
-            self.assertEqual({'AppHost': 18}, select_projects(self.matrix, provider, partition='apphost'))
-            self.assertEqual([('Foundation', 8), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
-            for group, count in (('Foundation', 8), ('BffSessions', 10)):
+            self.assertEqual({'AppHost': 19}, select_projects(self.matrix, provider, partition='apphost'))
+            self.assertEqual([('Foundation', 9), ('BffSessions', 10)], apphost_invocations(self.matrix, provider))
+            for group, count in (('Foundation', 9), ('BffSessions', 10)):
                 self.assertEqual([(group, count)], apphost_invocations(self.matrix, provider, group))
                 require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
                 cell = '{ profile: ' + provider + ', partition: apphost, apphost_group: ' + group + ', label: ' + provider + '-apphost-' + group.lower() + ' }'

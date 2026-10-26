@@ -1,4 +1,7 @@
 using IdentityPlatform.AuthServer.Composition;
+using IdentityPlatform.AuthServer.Features.Accounts.Browser;
+using IdentityPlatform.AuthServer.Features.LocalDemo;
+using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.AuthServer.Features.Accounts;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Issuer;
@@ -17,6 +20,7 @@ internal static class Setup
     /// <summary>Validates independent feature switches and composes shared account services exactly once.</summary>
     internal static WebApplicationBuilder AddFeatures(this WebApplicationBuilder builder, StartupContext startup)
     {
+        builder.PrepareLocalDemo(startup);
         try
         {
             builder.AddStorage();
@@ -29,6 +33,15 @@ internal static class Setup
         startup.AdministratorEnabled = AdministratorConfiguration.IsEnabled(builder.Configuration, startup.Credentials);
         startup.PilotEnabled = PilotConfiguration.IsEnabled(builder.Configuration, builder.Environment, startup.Credentials);
         startup.AdministratorProtocol = AdministratorProtocolConfiguration.Read(builder.Configuration, startup.AdministratorEnabled, startup.Credentials);
+        if (startup.LocalDemoEnabled)
+        {
+            if (startup.PilotEnabled || !startup.AdministratorEnabled || startup.AdministratorProtocol is null)
+            {
+                throw new LocalDemoConfigurationException();
+            }
+            startup.AdministratorProtocol = startup.AdministratorProtocol.ForBrowserSessions() ?? throw new LocalDemoConfigurationException();
+            builder.Services.AddBrowserSessionProtocol().AddIssuerLogout();
+        }
         if (startup.InitializePilot && !startup.PilotEnabled)
         {
             throw new PilotConfigurationException();
@@ -39,7 +52,8 @@ internal static class Setup
         }
         if (startup.PilotEnabled || startup.AdministratorEnabled)
         {
-            builder.Services.AddAccounts(startup.PilotEnabled, startup.AdministratorEnabled);
+            builder.Services.AddAccounts(startup.PilotEnabled, startup.AdministratorEnabled,
+                startup.LocalDemoEnabled ? new BrowserAccountProfile(LocalDemoProfile.Issuer, LocalDemoProfile.Client) : null);
         }
         if (startup.PilotEnabled || startup.AdministratorProtocol is not null)
         {

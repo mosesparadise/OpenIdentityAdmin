@@ -28,20 +28,20 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 1532,
+      "Host": 1561,
       "Architecture": 5,
-      "AppHost": 65
+      "AppHost": 67
     },
     "PostgreSql": {
       "Persistence": 12,
-      "AppHost": 18,
+      "AppHost": 19,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 877
     },
     "SqlServer": {
       "Persistence": 12,
-      "AppHost": 18,
+      "AppHost": 19,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 982
@@ -159,8 +159,8 @@
   },
   "apphost_native_groups": {
     "Foundation": {
-      "PostgreSql": 8,
-      "SqlServer": 8
+      "PostgreSql": 9,
+      "SqlServer": 9
     },
     "BffSessions": {
       "PostgreSql": 10,
