@@ -886,7 +886,15 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutRemoteBrowserTests.Given_ConfirmedIssuerLogout_When_ReturnNavigationIsLost_Then_BothRevocationsPersistWithoutInventedBffAcknowledgement(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutRemoteBrowserTests.Given_KnownLocalLogout_When_IssuerSaveFails_Then_LocalRemainsRevokedAndRestoredExplicitConfirmationCommits(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutReturnBrowserTests.Given_GenuineLogoutCorrelation_When_BrowserOrStateIsSubstituted_Then_DenialPreservesOriginalOneUseReturn(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutReturnBrowserTests.Given_OriginalLogoutExpiry_When_ReturnArrivesAtEquality_Then_LocalRevocationPersistsAndCorrelationIsNotConsumed(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutReturnBrowserTests.Given_OriginalLogoutExpiry_When_ReturnArrivesAtEquality_Then_LocalRevocationPersistsAndCorrelationIsNotConsumed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1879,7 +1887,15 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutRemoteBrowserTests.Given_ConfirmedIssuerLogout_When_ReturnNavigationIsLost_Then_BothRevocationsPersistWithoutInventedBffAcknowledgement(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutRemoteBrowserTests.Given_KnownLocalLogout_When_IssuerSaveFails_Then_LocalRemainsRevokedAndRestoredExplicitConfirmationCommits(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutReturnBrowserTests.Given_GenuineLogoutCorrelation_When_BrowserOrStateIsSubstituted_Then_DenialPreservesOriginalOneUseReturn(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutReturnBrowserTests.Given_OriginalLogoutExpiry_When_ReturnArrivesAtEquality_Then_LocalRevocationPersistsAndCorrelationIsNotConsumed(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionLogoutReturnBrowserTests.Given_OriginalLogoutExpiry_When_ReturnArrivesAtEquality_Then_LocalRevocationPersistsAndCorrelationIsNotConsumed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -40005,6 +40021,374 @@
         {
           "key": "Category",
           "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserBindingMutationTests",
+        "methodName": "Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-generation-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserBindingMutationTests",
+        "methodName": "Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-generation-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserBindingMutationTests",
+        "methodName": "Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-antiforgery-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserBindingMutationTests",
+        "methodName": "Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-antiforgery-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIdentityMutationTests",
+        "methodName": "Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-intent-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIdentityMutationTests",
+        "methodName": "Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-intent-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIdentityMutationTests",
+        "methodName": "Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-source-deadline"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserIdentityMutationTests",
+        "methodName": "Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-source-deadline"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutMutationTests",
+        "methodName": "Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-local-revocation"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutMutationTests",
+        "methodName": "Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-local-revocation"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutMutationTests",
+        "methodName": "Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-return-once"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutMutationTests",
+        "methodName": "Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-return-once"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutMutationTests",
+        "methodName": "Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-logout-publication"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserLogoutMutationTests",
+        "methodName": "Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-logout-publication"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "IssuerLogoutMutationTests",
+        "methodName": "Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-issuer-source"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "IssuerLogoutMutationTests",
+        "methodName": "Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "browser-issuer-source"
         },
         {
           "key": "Provider",

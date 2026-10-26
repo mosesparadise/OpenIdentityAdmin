@@ -84,7 +84,7 @@ internal sealed class NativeClientIssuerBridge(AdministratorProtocolScenario iss
         Assert.Equal((int)HttpStatusCode.OK, result.Status);
         var fault = IdentityFault ?? NativeIdentityResponse.Fault.Unchanged;
         var clock = issuer.Account.Journey.Clock;
-        if (fault == NativeIdentityResponse.Fault.Expiry)
+        if (fault is NativeIdentityResponse.Fault.Expiry or NativeIdentityResponse.Fault.BrowserExpiryEquality)
         {
             clock.Now = DateTimeOffset.FromUnixTimeSeconds(clock.Now.ToUnixTimeSeconds() + ExpiryAdvanceSeconds);
         }

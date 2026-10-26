@@ -13,7 +13,7 @@ internal static class NativeIdentityResponse
 {
     internal enum Fault
     {
-        Unchanged, Nonce, Issuer, Audience, Type, Expiry, BrowserExpiry
+        Unchanged, Nonce, Issuer, Audience, Type, Expiry, BrowserExpiry, BrowserExpiryEquality
     }
     private const string BrowserSourceExpiry = "admin_session_expires_at";
     internal const int ShortSourceSeconds = 30;
@@ -74,7 +74,7 @@ internal static class NativeIdentityResponse
             Fault.Issuer => OpenIddictConstants.Claims.Issuer,
             Fault.Audience => OpenIddictConstants.Claims.Audience,
             Fault.Expiry => OpenIddictConstants.Claims.ExpiresAt,
-            Fault.BrowserExpiry => BrowserSourceExpiry,
+            Fault.BrowserExpiry or Fault.BrowserExpiryEquality => BrowserSourceExpiry,
             _ => null
         };
         if (claim is null)
@@ -82,7 +82,11 @@ internal static class NativeIdentityResponse
             return null;
         }
         Assert.True(payload.ContainsKey(claim));
-        if (fault == Fault.BrowserExpiry)
+        if (fault == Fault.BrowserExpiryEquality)
+        {
+            SourceEquality(payload, now);
+        }
+        else if (fault == Fault.BrowserExpiry)
         {
             var shortened = now.ToUnixTimeSeconds() + ShortSourceSeconds;
             Assert.True(shortened < payload[claim]!.GetValue<long>());
@@ -99,6 +103,16 @@ internal static class NativeIdentityResponse
             payload[claim] = fault == Fault.Nonce ? ChangedNonce : fault == Fault.Issuer ? ChangedIssuer : ChangedAudience;
         }
         return claim;
+    }
+
+    /// <summary>Changes only source expiry to equality after real issuance while ordinary token lifetime and fresh authentication stay valid.</summary>
+    private static void SourceEquality(JsonObject payload, DateTimeOffset now)
+    {
+        var seconds = now.ToUnixTimeSeconds();
+        Assert.True(payload[OpenIddictConstants.Claims.AuthenticationTime]!.GetValue<long>() < seconds);
+        Assert.True(payload[OpenIddictConstants.Claims.ExpiresAt]!.GetValue<long>() > seconds);
+        Assert.True(payload[BrowserSourceExpiry]!.GetValue<long>() > seconds);
+        payload[BrowserSourceExpiry] = seconds;
     }
 
     /// <summary>Preserves original additional JOSE fields; signing credentials reproduce the reserved algorithm/key headers.</summary>

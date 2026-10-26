@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "browser-intent-binding",
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs",
+      "before": " || intent != expectedIntent",
+      "after": "",
+      "marker": "browser-intent-binding-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding"
+    },
+    {
+      "id": "browser-source-deadline",
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs",
+      "before": "end > now && ",
+      "after": "",
+      "marker": "browser-source-deadline-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource"
+    },
+    {
+      "id": "browser-generation-binding",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs",
+      "before": "row.Generation == generation && ",
+      "after": "",
+      "marker": "browser-generation-binding-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding"
+    },
+    {
+      "id": "browser-antiforgery-binding",
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs",
+      "before": "string.Equals(binding.AdditionalData, additionalData, StringComparison.Ordinal)",
+      "after": "binding.AdditionalData.Length > 0",
+      "marker": "browser-antiforgery-binding-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent"
+    },
+    {
+      "id": "browser-local-revocation",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs",
+      "before": "await owner.Tickets.RevokeAsync(ticket, owner.Token);",
+      "after": "// Seeded defect: omit exact local ticket revocation.",
+      "marker": "browser-local-revocation-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated"
+    },
+    {
+      "id": "browser-issuer-source",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs",
+      "before": " || candidate.SessionId != IssuerLogoutInput.Hint(validation.Request)",
+      "after": "",
+      "marker": "browser-issuer-source-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes"
+    },
+    {
+      "id": "browser-return-once",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs",
+      "before": " || row.State != expected",
+      "after": "",
+      "marker": "browser-return-once-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits"
+    },
+    {
+      "id": "browser-logout-publication",
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs",
+      "before": "http.Features.Get<BrowserLoginPublication>()?.Require(clock);",
+      "after": "// Seeded defect: omit original browser publication bound.",
+      "marker": "browser-logout-publication-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished"
+    }
+  ]
+}

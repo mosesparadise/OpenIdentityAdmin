@@ -669,6 +669,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(8, len(manifest(ROOT, "administrator")))
         self.assertEqual(6, len(manifest(ROOT, "governance")))
         self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
+        self.assertEqual(8, len(manifest(ROOT, "browser-session")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 
@@ -724,6 +725,33 @@ class MutationEvidenceTests(unittest.TestCase):
             with self.subTest(target=target), patch.object(Path, 'read_text', read):
                 with self.assertRaises(ValueError):
                     manifest(ROOT, 'administrator-protocol')
+
+
+    def test_Given_BrowserMutations_When_TargetsEscapeTheSixReviewedFiles_Then_VerificationRejectsThem(self):
+        """Keep B3 mutants bounded to six exact files without broadening existing suite boundaries."""
+        reviewed = json.loads((ROOT / 'eng/browser-session-mutations.json').read_text())
+        reader = Path.read_text
+        for target in (
+            'src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLoginBoundary.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionTransaction.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionOwnership.cs',
+            'tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/NativeProtocolMutationTests.cs',
+        ):
+            value = json.loads(json.dumps(reviewed))
+            value['mutations'][0]['path'] = target
+            # Make the replacement otherwise valid, so only the source boundary can reject it.
+            source = reader(ROOT / target)
+            anchor = next(line for line in source.splitlines() if line.strip() and source.count(line) == 1)
+            value['mutations'][0]['before'] = anchor
+            value['mutations'][0]['after'] = anchor + ' // seeded boundary probe'
+            def read(path, *arguments, **keywords):
+                """Replace only the reviewed manifest, leaving source validation real."""
+                if path == ROOT / 'eng/browser-session-mutations.json':
+                    return json.dumps(value)
+                return reader(path, *arguments, **keywords)
+            with self.subTest(target=target), patch.object(Path, 'read_text', read):
+                with self.assertRaisesRegex(ValueError, "outside the permitted source boundary"):
+                    manifest(ROOT, 'browser-session')
 
 
     def test_Given_AdministratorMutantDiscovery_When_MetadataDiffers_Then_IdentityCatalogueCannotAcceptIt(self):

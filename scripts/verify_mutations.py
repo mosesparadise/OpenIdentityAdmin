@@ -182,6 +182,7 @@ def manifest(root, suite='issuer'):
         'issuer': (7, 'eng/critical-mutations.json', 'src/backend/IdentityPlatform.AuthServer/Features'),
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
+        'browser-session': (8, 'eng/browser-session-mutations.json', None),
         'governance': (6, 'eng/governance-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance')
     }
     if suite not in suites:
@@ -199,8 +200,19 @@ def manifest(root, suite='issuer'):
             'src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs',
             'src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs'
         }
-        permitted = path in {(root / value).resolve() for value in protocol_paths} if suite == 'administrator-protocol' else (
-            path.is_relative_to((root / boundary).resolve()) or witness_lock)
+        browser_paths = {
+            'src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs',
+            'src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs',
+            'src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs',
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs',
+        }
+        if suite in ('administrator-protocol', 'browser-session'):
+            allowed = protocol_paths if suite == 'administrator-protocol' else browser_paths
+            permitted = path in {(root / value).resolve() for value in allowed}
+        else:
+            permitted = path.is_relative_to((root / boundary).resolve()) or witness_lock
         if not permitted or path.suffix != '.cs':
             raise MutationError('Mutation target is outside the permitted source boundary')
         if not item['before'] or item['before'] == item['after'] or path.read_text().count(item['before']) != 1:
@@ -355,11 +367,11 @@ def main():
     global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=['PostgreSql', 'SqlServer'])
-    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol'], default='issuer')
+    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
-    if args.suite in ('administrator', 'governance', 'administrator-protocol'):
+    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session'):
         PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))

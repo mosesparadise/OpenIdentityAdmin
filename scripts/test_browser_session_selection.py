@@ -32,24 +32,24 @@ class BrowserSessionSelectionTests(unittest.TestCase):
         require_browser_session_selections(self.catalogue, self.groups[provider], provider, self.matrix, self.inventory)
 
     def test_Given_DefaultAndExplicitGroups_When_Selected_Then_BothProvidersRetainEveryIdentityExactlyOnce(self):
-        self.assertEqual(1877, len(self.catalogue))
+        self.assertEqual(1893, len(self.catalogue))
         for provider in ('PostgreSql', 'SqlServer'):
             self.verify(provider)
-            self.assertEqual([('Foundations', 158), ('Product', 96), ('Lifecycle', 51)], browser_session_invocations(self.matrix, provider))
-            for group, count in (('Foundations', 158), ('Product', 96), ('Lifecycle', 51)):
+            self.assertEqual([('Foundations', 160), ('Product', 98), ('Lifecycle', 55)], browser_session_invocations(self.matrix, provider))
+            for group, count in (('Foundations', 160), ('Product', 98), ('Lifecycle', 55)):
                 self.assertEqual([(group, count)], browser_session_invocations(self.matrix, provider, group))
-            self.assertEqual(305, sum(map(len, self.groups[provider].values())))
+            self.assertEqual(313, sum(map(len, self.groups[provider].values())))
             groups = list(self.groups[provider].values())
             for index, group in enumerate(groups):
                 for other in groups[index + 1:]:
                     self.assertFalse(group.keys() & other.keys())
-        self.assertEqual(37, len(self.matrix['browser_session_groups']['Foundations']['classes']))
-        self.assertEqual(31, len(self.matrix['browser_session_groups']['Product']['classes']))
-        self.assertEqual(17, len(self.matrix['browser_session_groups']['Lifecycle']['classes']))
+        self.assertEqual(38, len(self.matrix['browser_session_groups']['Foundations']['classes']))
+        self.assertEqual(32, len(self.matrix['browser_session_groups']['Product']['classes']))
+        self.assertEqual(19, len(self.matrix['browser_session_groups']['Lifecycle']['classes']))
 
     def test_Given_UngroupedInvocation_When_Expanded_Then_AllGroupsAreExecutedAndNoStoryDisappears(self):
-        for provider, total in (('PostgreSql', 860), ('SqlServer', 965)):
-            expected = [('BrowserSessions', 'Foundations', 158), ('BrowserSessions', 'Product', 96), ('BrowserSessions', 'Lifecycle', 51)]
+        for provider, total in (('PostgreSql', 868), ('SqlServer', 973)):
+            expected = [('BrowserSessions', 'Foundations', 160), ('BrowserSessions', 'Product', 98), ('BrowserSessions', 'Lifecycle', 55)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, 'BrowserSessions'))
             all_stories = administrator_execution_invocations(self.matrix, provider)
             self.assertEqual(expected, [item for item in all_stories if item[0] == 'BrowserSessions'])
