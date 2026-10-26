@@ -20,6 +20,7 @@ public sealed class LocalDemoCompositionTests
     private const string PasswordSuffix = "__Password";
     private const string IssuerHost = "issuer.dev.localhost";
     private const string ClientHost = "bff.dev.localhost";
+    private const string LoopbackAddress = "127.0.0.1";
     private const string RegistrationVariable = "LOCAL_DEMO_REGISTRATION";
     private const string UpgradeVariable = "LOCAL_DEMO_UPGRADE";
     private const string RevisionProperty = "expectedRevision";
@@ -118,6 +119,7 @@ public sealed class LocalDemoCompositionTests
             Assert.Equal(port, endpoint.Port);
             Assert.Equal(port, endpoint.TargetPort);
             Assert.False(endpoint.IsProxied);
+            Assert.Equal(LoopbackAddress, endpoint.TargetHost);
             Assert.Contains(resource.Annotations.OfType<ContainerNetworkAliasAnnotation>(), value => value.Alias == alias);
             Assert.DoesNotContain(resource.Annotations.OfType<ContainerMountAnnotation>(), mount => mount.Type == ContainerMountType.Volume);
         }

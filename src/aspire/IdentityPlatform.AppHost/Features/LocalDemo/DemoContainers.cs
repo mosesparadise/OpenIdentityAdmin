@@ -13,6 +13,7 @@ internal static class DemoContainers
     private const string AspnetEnvironment = "ASPNETCORE_ENVIRONMENT";
     private const string Development = "Development";
     private const string HttpsEndpoint = "https";
+    private const string LoopbackAddress = "127.0.0.1";
     private const string UrlsVariable = "ASPNETCORE_URLS";
     private const string ListenPrefix = "https://+:";
     private const string EnabledVariable = "LocalDemo__Enabled";
@@ -40,6 +41,7 @@ internal static class DemoContainers
 #pragma warning disable ASPIRECERTIFICATES001 // Pinned 13.6.1 Development-only API; re-review on Aspire upgrade (feature 014).
     internal static IResourceBuilder<ContainerResource> WithDemoHttps(this IResourceBuilder<ContainerResource> resource, string host, int port) => resource
         .WithHttpsEndpoint(port: port, targetPort: port, name: HttpsEndpoint, isProxied: false)
+        .WithEndpoint(HttpsEndpoint, endpoint => endpoint.TargetHost = LoopbackAddress)
         .WithContainerNetworkAlias(host)
         .WithEnvironment(UrlsVariable, ListenPrefix + port.ToString(System.Globalization.CultureInfo.InvariantCulture))
         .WithEnvironment(EnabledVariable, EnabledValue)

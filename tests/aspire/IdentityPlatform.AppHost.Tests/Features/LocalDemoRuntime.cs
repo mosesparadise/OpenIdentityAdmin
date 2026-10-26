@@ -12,6 +12,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
 {
     private const string PasswordPrefix = "Aa1!";
     private const string ContainerPrefix = "oid-demo-";
+    private const string NameSeparator = "-";
     private const string InitializerSuffix = "-initializer";
     private const string GuidFormat = "N";
     private const string DevelopmentArgument = "--environment=Development";
@@ -30,11 +31,22 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     private const string Docker = "docker";
     private const string ExecArgument = "exec";
     private const string StdinArgument = "-i";
+    private const string InspectArgument = "inspect";
+    private const string FormatArgument = "--format";
+    private const string PortsProjection = "{{json .NetworkSettings.Ports}}";
+    private const string HostAddressProperty = "HostIp";
+    private const string HostPortProperty = "HostPort";
+    private const string LoopbackAddress = "127.0.0.1";
+    private const string IssuerPort = "17443";
+    private const string ClientPort = "17444";
+    private const string TcpSuffix = "/tcp";
     private const string StartFailure = "Local demo initializer could not start.";
     private const int OperationSeconds = 90;
     private readonly IDistributedApplicationTestingBuilder builder;
     private readonly DistributedApplication application;
     private readonly string initializer;
+    private readonly string run;
+    private string[] volumes = [];
     internal const string Username = "synthetic-demo-admin";
     internal string Password { get; } = PasswordPrefix + Guid.NewGuid().ToString(GuidFormat);
 
@@ -43,6 +55,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     {
         this.builder = builder;
         this.application = application;
+        this.run = run;
         initializer = ContainerPrefix + run + InitializerSuffix;
     }
 
@@ -60,7 +73,10 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             await app.ResourceNotifications.WaitForResourceHealthyAsync(IssuerResource, token);
             await app.ResourceNotifications.WaitForResourceHealthyAsync(ClientResource, token);
             await app.ResourceNotifications.WaitForResourceAsync(InitializerResource, KnownResourceStates.Running, token);
-            return new(builder, app, run);
+            await RequireLoopbackAsync(run, token);
+            var runtime = new LocalDemoRuntime(builder, app, run);
+            runtime.volumes = await LocalDemoLifecycle.CaptureVolumesAsync(run, token);
+            return runtime;
         }
         catch
         {
@@ -86,12 +102,28 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             userName = Username,
             password = Password
         });
-        await ExecuteAsync([Dotnet, Migrator, OperationArgument, BootstrapOperation], input, token);
-        await ExecuteAsync([RegistrationScript], string.Empty, token);
+        await ExecuteAsync([ExecArgument, StdinArgument, initializer, Dotnet, Migrator, OperationArgument, BootstrapOperation], input, token);
+        await ExecuteAsync([ExecArgument, StdinArgument, initializer, RegistrationScript], string.Empty, token);
+    }
+
+    /// <summary>Inspects only actual published ports and rejects wildcard exposure without retaining Docker environment metadata.</summary>
+    private static async Task RequireLoopbackAsync(string run, CancellationToken token)
+    {
+        foreach (var (role, port) in new[] { (IssuerResource, IssuerPort), (ClientResource, ClientPort) })
+        {
+            var name = ContainerPrefix + run + NameSeparator + role;
+            var output = await ExecuteAsync([InspectArgument, FormatArgument, PortsProjection, name], string.Empty, token);
+            using var ports = JsonDocument.Parse(output);
+            var published = ports.RootElement.EnumerateObject().Where(value => value.Value.ValueKind != JsonValueKind.Null).ToArray();
+            Assert.Equal(port + TcpSuffix, Assert.Single(published).Name);
+            var binding = Assert.Single(published[0].Value.EnumerateArray());
+            Assert.Equal(LoopbackAddress, binding.GetProperty(HostAddressProperty).GetString());
+            Assert.Equal(port, binding.GetProperty(HostPortProperty).GetString());
+        }
     }
 
     /// <summary>Closes UTF-8 stdin before waiting; never logs bootstrap, environment, native errors or secret response bodies.</summary>
-    private async Task ExecuteAsync(string[] arguments, string input, CancellationToken token)
+    internal static async Task<string> ExecuteAsync(string[] arguments, string input, CancellationToken token)
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
         deadline.CancelAfter(TimeSpan.FromSeconds(OperationSeconds));
@@ -103,7 +135,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             RedirectStandardError = true,
             StandardInputEncoding = new UTF8Encoding(false)
         };
-        foreach (var argument in new[] { ExecArgument, StdinArgument, initializer }.Concat(arguments))
+        foreach (var argument in arguments)
         {
             start.ArgumentList.Add(argument);
         }
@@ -117,6 +149,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             await process.WaitForExitAsync(deadline.Token);
             await Task.WhenAll(output, errors);
             Assert.Equal(0, process.ExitCode);
+            return await output;
         }
         finally
         {
@@ -141,5 +174,6 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             await application.DisposeAsync();
         }
         finally { await builder.DisposeAsync(); }
+        await LocalDemoLifecycle.RequireRemovedAsync(run, volumes);
     }
 }
