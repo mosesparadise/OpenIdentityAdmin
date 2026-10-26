@@ -19,7 +19,7 @@ def browser_labels(matrix):
         raise ValueError('Unreviewed browser coverage engine set')
     expected = {(provider, engine, partition, story) for provider in ('PostgreSql', 'SqlServer')
                 for engine in engines for partition in ('standard', 'administrator')
-                for story in (('Accounts', 'Security') if partition == 'administrator' else ('',))}
+                for story in (('Accounts', 'Security', 'BrowserSessions') if partition == 'administrator' else ('',))}
     actual = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story']) for cell in cells]
     if len(actual) != len(expected) or set(actual) != expected:
         raise ValueError('Browser coverage provider/partition obligations are incomplete')

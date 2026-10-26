@@ -18,6 +18,7 @@ internal static class BrowserLoginBoundary
     private const string Html = "text/html; charset=utf-8";
     private const string NoStore = "no-store";
     private const string NoReferrer = "no-referrer";
+    private const string FormReferrer = "strict-origin";
 
     /// <summary>Runs before authentication middleware and keeps one original deadline through body parsing, local disposal and native transport.</summary>
     internal static async Task RunAsync(HttpContext http, IServiceScopeFactory factory, TimeProvider clock)
@@ -100,6 +101,7 @@ internal static class BrowserLoginBoundary
         var tokens = scope.ServiceProvider.GetRequiredService<IAntiforgery>().GetAndStoreTokens(http);
         var token = HtmlEncoder.Default.Encode(tokens.RequestToken ?? throw new InvalidOperationException(Unavailable));
         var content = string.Format(System.Globalization.CultureInfo.InvariantCulture, PageFormat, Login, BrowserRequestPolicy.AntiforgeryField, token);
+        http.Response.Headers[ReferrerPolicy] = FormReferrer;
         return (Results.Content(content, Html), null);
     }
 

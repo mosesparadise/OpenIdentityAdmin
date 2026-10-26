@@ -7,6 +7,7 @@ namespace IdentityPlatform.Host.Tests.Features.BrowserSessions;
 /// <summary>Requires actual bounded HTTP bytes and rejects ambiguous transport before native extraction can normalize input.</summary>
 public sealed class IssuerLogoutTransportTests
 {
+    private const string NullOrigin = "null";
     private const string Issuer = "https://issuer.example.test/";
     private const string Path = "/connect/end-session";
     private const string Selector = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -29,6 +30,8 @@ public sealed class IssuerLogoutTransportTests
     [InlineData(IssuerLogoutTransportFault.Preparsed)]
     [InlineData(IssuerLogoutTransportFault.Origin)]
     [InlineData(IssuerLogoutTransportFault.MissingOrigin)]
+    [InlineData(IssuerLogoutTransportFault.NullOrigin)]
+    [InlineData(IssuerLogoutTransportFault.MultipleOrigins)]
     [InlineData(IssuerLogoutTransportFault.Cookie)]
     [InlineData(IssuerLogoutTransportFault.CookieLines)]
     [InlineData(IssuerLogoutTransportFault.Insecure)]
@@ -85,6 +88,12 @@ public sealed class IssuerLogoutTransportTests
             case IssuerLogoutTransportFault.MissingOrigin:
                 http.Request.Headers.Origin = Microsoft.Extensions.Primitives.StringValues.Empty;
                 break;
+            case IssuerLogoutTransportFault.NullOrigin:
+                http.Request.Headers.Origin = NullOrigin;
+                break;
+            case IssuerLogoutTransportFault.MultipleOrigins:
+                http.Request.Headers.Origin = new Microsoft.Extensions.Primitives.StringValues([new Uri(Issuer).GetLeftPart(UriPartial.Authority), new Uri(Issuer).GetLeftPart(UriPartial.Authority)]);
+                break;
             case IssuerLogoutTransportFault.Cookie:
                 http.Request.Headers.Cookie = DuplicateCookie;
                 break;
@@ -127,5 +136,5 @@ public sealed class IssuerLogoutTransportTests
 /// <summary>Names independent framing defects for finite pure transport controls.</summary>
 public enum IssuerLogoutTransportFault
 {
-    None, ShortDeclared, LongDeclared, Overflow, TransferEncoding, Preparsed, Origin, MissingOrigin, Cookie, CookieLines, Insecure
+    None, ShortDeclared, LongDeclared, Overflow, TransferEncoding, Preparsed, Origin, MissingOrigin, Cookie, CookieLines, Insecure, NullOrigin, MultipleOrigins
 }

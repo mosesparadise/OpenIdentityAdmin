@@ -34,7 +34,7 @@ class BrowserMatrixTests(unittest.TestCase):
     def require_cells(self, actual, browsers):
         """Verify exact phase obligations independently of selector implementation constants."""
         expected = {(provider, browser, partition, story) for provider in ('PostgreSql', 'SqlServer') for browser in browsers for partition in ('standard', 'administrator')
-                    for story in (('Accounts', 'Security') if partition == 'administrator' else ('',))}
+                    for story in (('Accounts', 'Security', 'BrowserSessions') if partition == 'administrator' else ('',))}
         pairs = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story']) for cell in actual['include']]
         self.assertEqual(len(pairs), len(set(pairs)))
         self.assertEqual(expected, set(pairs))
@@ -62,7 +62,7 @@ class BrowserMatrixTests(unittest.TestCase):
             catalogue('invalid')
 
     def test_Given_RequiredCoverageCells_When_AnyReportIsMissingEmptyOrDuplicated_Then_AcceptanceFails(self):
-        """Independently enumerate all 56 current obligations and reject omission or empty evidence for each."""
+        """Independently enumerate all 60 current obligations and reject omission or empty evidence for each."""
         matrix = select()
         labels = ['administrator-PostgreSql-browsersessions-foundations', 'administrator-PostgreSql-browsersessions-product', 'administrator-PostgreSql-browsersessions-lifecycle', 'administrator-SqlServer-browsersessions-foundations', 'administrator-SqlServer-browsersessions-product', 'administrator-SqlServer-browsersessions-lifecycle', 'administrator-PostgreSql-protocoladmission', 'administrator-SqlServer-protocoladmission', 'issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'contracts-core', 'contracts-chromium', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
                       'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
@@ -74,7 +74,7 @@ class BrowserMatrixTests(unittest.TestCase):
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(56, require_inputs(root, matrix))
+            self.assertEqual(60, require_inputs(root, matrix))
             for label in labels:
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.unlink()
@@ -91,7 +91,7 @@ class BrowserMatrixTests(unittest.TestCase):
         """Verify exact phase obligations independently of selector implementation constants."""
         import copy
         matrix = select()
-        self.assertEqual(12, len(browser_labels(matrix)))
+        self.assertEqual(16, len(browser_labels(matrix)))
         for change in ('missing', 'relabel', 'duplicate', 'unknown', 'partial-engine', 'extra-field', 'deferred-engine', 'chromium-only'):
             with self.subTest(change=change):
                 invalid = copy.deepcopy(matrix)

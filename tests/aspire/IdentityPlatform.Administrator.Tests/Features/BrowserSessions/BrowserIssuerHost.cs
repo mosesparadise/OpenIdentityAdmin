@@ -27,8 +27,8 @@ using Microsoft.Extensions.Logging;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 
-/// <summary>Hosts real Razor/native accounts over a real provider with in-process HTTP transport; it is not TLS or browser-engine evidence.</summary>
-internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials credentials, Uri issuer) : IAsyncDisposable
+/// <summary>Hosts real Razor/native accounts with explicit TestServer or retained Kestrel HTTPS transport; only the latter supplies socket TLS evidence.</summary>
+internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials credentials, Uri issuer, BrowserHttpsEndpoint? endpoint = null) : IAsyncDisposable
 {
     internal const string Client = "https://administrator.example.test/";
     internal IServiceProvider Services => app.Services;
@@ -47,60 +47,97 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         AdministratorRegistrationPolicy policy, Action<IServiceCollection>? configure = null, params IInterceptor[] faults) =>
         CreateCoreAsync(scenario, provider, false, faults, policy, configure);
 
+    /// <summary>Runs the full native account/protocol pipeline over a retained real HTTPS listener and immutable BFF identity.</summary>
+    internal static Task<BrowserIssuerHost> CreateHttpsAsync(JourneyScenario scenario, string provider,
+        AdministratorRegistrationPolicy policy, Uri client, BrowserHttpsEndpoint endpoint) =>
+        CreateCoreAsync(scenario, provider, false, [], policy, endpoint: endpoint, client: client);
+
     /// <summary>Composes one explicit account host and preserves cleanup ownership under failed startup.</summary>
     private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,
-        AdministratorRegistrationPolicy? logout = null, Action<IServiceCollection>? configure = null)
+        AdministratorRegistrationPolicy? logout = null, Action<IServiceCollection>? configure = null,
+        BrowserHttpsEndpoint? endpoint = null, Uri? client = null)
     {
-        var builder = CreateBuilder(scenario, provider, pilot, faults, out var credentials);
-        if (logout is not null)
-        {
-            builder.Services.AddProtocolStorageOwnership().AddProtocol(credentials, new ProtocolProfiles(false, logout));
-            builder.Services.AddBrowserSessionProtocol().AddIssuerLogout();
-            builder.Services.AddOptions<OpenIddict.Server.OpenIddictServerOptions>().Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
-        }
-        configure?.Invoke(builder.Services);
-        WebApplication? app = null;
+        IssuerCredentials? credentials = null;
+        BrowserIssuerHost? owner = null;
         try
         {
-            app = builder.Build();
-            app.Services.VerifyIssuerProtection();
-            app.UseRouting();
-            app.UseRequestTimeouts();
-            app.UseAccountProtection(pilot);
+            var builder = CreateBuilder(scenario, provider, pilot, faults, out credentials, endpoint, client);
             if (logout is not null)
             {
-                app.UseProtocolHosting();
+                builder.Services.AddProtocolStorageOwnership().AddProtocol(credentials, new ProtocolProfiles(false, logout));
+                builder.Services.AddBrowserSessionProtocol().AddIssuerLogout();
+                builder.Services.AddOptions<OpenIddict.Server.OpenIddictServerOptions>().Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
             }
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.MapAccounts();
+            configure?.Invoke(builder.Services);
+            var app = builder.Build();
+            owner = new(app, credentials, credentials.Issuer, endpoint);
+            ConfigurePipeline(app, pilot, logout is not null, endpoint);
             await app.StartAsync(TestContext.Current.CancellationToken);
             if (pilot)
             {
                 Assert.Equal(0, await app.InitializePilotAsync());
             }
-            return new(app, credentials, credentials.Issuer);
+            return owner;
         }
-        catch
+        catch (Exception error)
         {
-            if (app is not null)
+            try
             {
-                await app.DisposeAsync();
+                if (owner is not null)
+                {
+                    await owner.DisposeAsync();
+                }
+                else
+                {
+                    credentials?.Dispose();
+                }
             }
-            credentials.Dispose();
+            catch (Exception cleanup) { throw new AggregateException(error, cleanup); }
             throw;
         }
     }
 
+    /// <summary>Preserves the native account/ownership order and adds shared protocol decisions only for the complete HTTPS host.</summary>
+    private static void ConfigurePipeline(WebApplication app, bool pilot, bool logout, BrowserHttpsEndpoint? endpoint)
+    {
+        app.Services.VerifyIssuerProtection();
+        if (endpoint is not null)
+        {
+            app.Use(endpoint.InvokeAsync);
+        }
+        app.UseRouting();
+        app.UseRequestTimeouts();
+        app.UseAccountProtection(pilot);
+        if (logout)
+        {
+            app.UseProtocolHosting();
+        }
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.MapAccounts();
+        if (endpoint is not null)
+        {
+            app.MapSharedProtocol();
+        }
+    }
+
     /// <summary>Shares real provider, key and account setup while limiting the optional pilot to explicit disposable tests.</summary>
-    private static WebApplicationBuilder CreateBuilder(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults, out IssuerCredentials credentials)
+    private static WebApplicationBuilder CreateBuilder(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,
+        out IssuerCredentials credentials, BrowserHttpsEndpoint? endpoint, Uri? client)
     {
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions
         {
             ApplicationName = typeof(IssuerCredentials).Assembly.GetName().Name,
             EnvironmentName = Environments.Production
         });
-        builder.WebHost.UseTestServer();
+        if (endpoint is null)
+        {
+            builder.WebHost.UseTestServer();
+        }
+        else
+        {
+            endpoint.Configure(builder.WebHost);
+        }
         builder.Logging.ClearProviders();
         builder.Configuration.AddInMemoryCollection(scenario.IssuerSettings);
         builder.Services.AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Lease.RuntimeConnection);
@@ -113,7 +150,7 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         }
         builder.Services.AddSingleton<TimeProvider>(scenario.Clock);
         builder.Services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies();
-        builder.Services.AddAccounts(pilot, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, Client));
+        builder.Services.AddAccounts(pilot, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, client?.AbsoluteUri ?? Client));
         ExcludeBackgroundCleanup(builder.Services);
         return builder;
     }
@@ -150,7 +187,14 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
     {
         try
         {
-            await app.DisposeAsync();
+            try
+            {
+                if (endpoint is not null)
+                {
+                    await endpoint.StopAsync(app);
+                }
+            }
+            finally { await app.DisposeAsync(); }
         }
         finally { credentials.Dispose(); }
     }

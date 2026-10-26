@@ -9,6 +9,9 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Browser;
 /// <example><code>// Follow the admitted browser login's fixed MFA locator, then submit its native protected code form.</code></example>
 public sealed class MfaModel(IServiceProvider services) : PageModel
 {
+    private const string ReferrerPolicy = "Referrer-Policy";
+    private const string FormReferrer = "strict-origin";
+
     public string? Intent
     {
         get; private set;
@@ -29,7 +32,7 @@ public sealed class MfaModel(IServiceProvider services) : PageModel
         var intent = BrowserAccountRequest.Intent(HttpContext, mfa: true);
         Intent = intent is null ? null : services.GetRequiredService<BrowserAccountProof>().Read(HttpContext, intent)?.Intent;
         Interaction = Intent is null ? null : Request.Query[AdministratorBrowser.Interaction][0];
-        return Interaction is null ? BadRequest() : Page();
+        return Interaction is null ? BadRequest() : Render();
     }
 
     /// <summary>Returns only a completion selector to the fixed configured BFF after actual MFA, audited commit and one-shot issuer cookie publication.</summary>
@@ -50,6 +53,17 @@ public sealed class MfaModel(IServiceProvider services) : PageModel
         }
         Error = AdministratorBrowser.Denied;
         Response.StatusCode = StatusCodes.Status400BadRequest;
+        return Render();
+    }
+
+    /// <summary>Applies origin-only referrers only when the Razor document actually renders its protected native form.</summary>
+    private PageResult Render()
+    {
+        if (Intent is not null && Interaction is not null)
+        {
+            Response.Headers[ReferrerPolicy] = FormReferrer;
+            AccountRequestGuard.AllowBrowserFormReturn(HttpContext, services.GetRequiredService<BrowserAccountProfile>());
+        }
         return Page();
     }
 }

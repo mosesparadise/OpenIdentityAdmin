@@ -1,5 +1,7 @@
 # Documentation approval
 
+**Approved B3 form-policy correction (26 October 2026):** the user replied **“Approved”** to the recommendation to implement [A-010](amendments/A-010-b3-native-form-policy.md), complete required verification and independent review, and squash PR #97 only when checks pass. This authorizes the scoped form-document referrer/CSP changes while preserving exact Origin, native antiforgery and every authentication/transaction guard. Production/public-release authority and all historical/human gates remain unchanged.
+
 **Current roadmap continuation (22 October 2026):** the user explicitly requested actual roadmap implementation with Playwright/Firefox blockers documented and bypassed. [A-009](amendments/A-009-roadmap-browser-deferral.md) records this new authority, superseding the pre-B3 Firefox sequencing hold while preserving concrete authentication/transaction requirements and external acceptance gates. Continue feature 013 implementation; do not restart diagnostic-only loops.
 
 **Current provider continuation (15 October 2026):** the user approved project-level relational EF Core providers, migration of both existing implementations with databases/history preserved, and reusable conformance tests. [A-008](amendments/A-008-database-provider-plugins.md) records this authority; [feature 012](../specs/012-database-provider-plugins/spec.md) governs implementation before resuming feature 011 T005. All existing external gates remain open.

@@ -16,12 +16,12 @@ class DiscoveryTraitTests(unittest.TestCase):
             'traits': traits, 'type': {'namespace': 'IdentityPlatform.Administrator.Tests.Features.' + ('Browser' if browser else 'Recovery')}}]})
 
     def test_real_discovery_accepts_each_reviewed_story_and_ordinary_untagged_cases(self):
-        for story in ('Accounts', 'Security'):
+        for story in ('Accounts', 'Security', 'BrowserSessions'):
             self.assertEqual(story, catalogue(self.raw(stories=(story,)), project='Administrator')['native-id'][4])
         self.assertIsNone(catalogue(self.raw(False, ()), project='Administrator')['native-id'][4])
 
     def test_real_discovery_rejects_missing_ambiguous_unknown_and_nonbrowser_traits(self):
-        for browser, stories in [(True, ()), (True, ('Accounts', 'Accounts')), (True, ('Accounts', 'Security')),
+        for browser, stories in [(True, ()), (True, ('Accounts', 'Accounts')), (True, ('Accounts', 'Security', 'BrowserSessions')),
                                  (True, ('Unknown',)), (False, ('Accounts',))]:
             with self.subTest(browser=browser, stories=stories), self.assertRaises(ValueError):
                 catalogue(self.raw(browser, stories), project='Administrator')
@@ -53,15 +53,15 @@ class BrowserStoryControls(AdministratorBrowserSelectionTests):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 require_administrator_story(self.catalogue, selected, 'PostgreSql', 'Factors', invalid, self.inventory)
 
-    def test_both_selections_are_disjoint_and_exhaust_default_all(self):
+    def test_Given_ThreeBrowserStories_When_Selected_Then_DisjointSelectionsExhaustDefaultAll(self):
         selections = []
-        for story in ('Accounts', 'Security'):
+        for story in ('Accounts', 'Security', 'BrowserSessions'):
             selected = {uid: row for uid, row in self.catalogue.items() if row[1] == 'PostgreSql' and row[2] and row[4] == story}
             require_administrator_browser(self.catalogue, selected, 'PostgreSql', self.matrix, self.inventory, story)
             selections.append(selected)
-        self.assertFalse(set(selections[0]) & set(selections[1]))
-        require_administrator_browser(self.catalogue, selections[0] | selections[1], 'PostgreSql', self.matrix, self.inventory)
-        self.assertEqual([('Accounts', 1), ('Security', 1)], administrator_browser_invocations(self.matrix))
+        self.assertEqual(sum(map(len, selections)), len(set().union(*selections)))
+        require_administrator_browser(self.catalogue, selections[0] | selections[1] | selections[2], 'PostgreSql', self.matrix, self.inventory)
+        self.assertEqual([('Accounts', 1), ('Security', 1), ('BrowserSessions', 1)], administrator_browser_invocations(self.matrix))
         self.assertEqual([('Security', 1)], administrator_browser_invocations(self.matrix, 'Security'))
         with self.assertRaises(ValueError):
             require_administrator_browser(self.catalogue, selections[0], 'PostgreSql', self.matrix, self.inventory, 'Security')
@@ -74,10 +74,10 @@ class BrowserStoryControls(AdministratorBrowserSelectionTests):
             elif mutation == 'extra': stories['Unknown'] = 1
             elif mutation == 'zero': stories['Security'] = 0
             elif mutation == 'bool': stories['Security'] = True
-            elif mutation == 'aggregate': matrix['browser']['Administrator'] = 3
+            elif mutation == 'aggregate': matrix['browser']['Administrator'] = 4
             elif mutation == 'balanced-drift':
                 stories['Security'] = 2
-                matrix['browser']['Administrator'] = 3
+                matrix['browser']['Administrator'] = 4
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):
                 require_administrator_browser(self.catalogue, self.selected, 'PostgreSql', matrix, self.inventory,
                     'Unknown' if mutation == 'unknown-selection' else 'Accounts')

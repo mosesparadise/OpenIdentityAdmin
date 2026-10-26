@@ -36,6 +36,7 @@ public sealed class BrowserIssuerJourneyTests(BootstrapFixture fixture)
         Assert.True(before == await IssuerContinuationProviderFixture.SnapshotAsync(scenario));
         using var wrong = await BrowserIssuerHttp.PasswordAsync(browser, scenario, entry, WrongPassword);
         Assert.Equal(HttpStatusCode.BadRequest, wrong.StatusCode);
+        await BrowserFormHeaders.AccountAsync(wrong);
         var original = await ContinuationAsync(scenario, intent);
         Assert.Null(original.InteractionId);
         using var password = await BrowserIssuerHttp.PasswordAsync(browser, scenario, entry);
@@ -113,6 +114,7 @@ public sealed class BrowserIssuerJourneyTests(BootstrapFixture fixture)
     private static async Task RequireCompletionAsync(JourneyScenario scenario, string intent, HttpResponseMessage response, string previous)
     {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        BrowserFormHeaders.Referrer(response);
         var location = response.Headers.Location;
         Assert.True(location is { IsAbsoluteUri: true } && location.GetLeftPart(UriPartial.Path) == new Uri(new Uri(BrowserIssuerHost.Client), ResumePath).AbsoluteUri);
         var query = QueryHelpers.ParseQuery(location!.Query);

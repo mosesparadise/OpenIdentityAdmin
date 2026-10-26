@@ -73,6 +73,7 @@ internal sealed class IssuerLogoutFixture : IAsyncDisposable
     {
         using var page = await GetAsync(browser: browser);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
+        BrowserFormHeaders.Logout(page, Login.Profile.ClientUri);
         Assert.True(page.Headers.CacheControl?.NoStore == true);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         return Fields.Keys.Append(Confirmation).Append(AdministratorJourney.Antiforgery)
@@ -133,6 +134,7 @@ internal sealed class IssuerLogoutFixture : IAsyncDisposable
     internal async Task RequireReturnAsync(HttpResponseMessage response)
     {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        BrowserFormHeaders.Referrer(response);
         var uri = response.Headers.Location;
         Assert.True(uri is { IsAbsoluteUri: true } && uri.GetLeftPart(UriPartial.Path) == Fields[Return] && string.IsNullOrEmpty(uri.Fragment));
         var query = QueryHelpers.ParseQuery(uri!.Query);

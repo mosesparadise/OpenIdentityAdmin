@@ -62,6 +62,7 @@ public sealed class BrowserIssuerIsolationTests(BootstrapFixture fixture)
         form[AdministratorJourney.CodeField] = FactorOracle.InvalidCode(scenario.Seed);
         using var denied = await BrowserIssuerHttp.PostAsync(browser, BrowserIssuerHttp.Mfa, form);
         Assert.Equal(HttpStatusCode.BadRequest, denied.StatusCode);
+        await BrowserFormHeaders.AccountAsync(denied, mfa: true);
         Assert.Null(cookies.GetCookies(host.Issuer)[AdministratorJourney.SessionCookie]);
         var after = await BrowserIssuerJourneyTests.ContinuationAsync(scenario, intent);
         Assert.Equal(original.ExpiresAt, after.ExpiresAt);
@@ -69,6 +70,7 @@ public sealed class BrowserIssuerIsolationTests(BootstrapFixture fixture)
         form[AdministratorJourney.CodeField] = await IssuerContinuationProviderFixture.UnusedCodeAsync(scenario);
         using var accepted = await BrowserIssuerHttp.PostAsync(browser, BrowserIssuerHttp.Mfa, form);
         Assert.Equal(HttpStatusCode.Redirect, accepted.StatusCode);
+        BrowserFormHeaders.Referrer(accepted);
         Assert.NotNull(cookies.GetCookies(host.Issuer)[AdministratorJourney.SessionCookie]);
     }
 }

@@ -91,6 +91,7 @@ public sealed class IssuerLogoutTests(BootstrapFixture fixture)
     /// <summary>Finite denial carries neither a return location nor success cookie changes.</summary>
     internal static void RequireDenied(HttpResponseMessage response)
     {
+        BrowserFormHeaders.Referrer(response);
         Assert.True(response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.ServiceUnavailable);
         Assert.Null(response.Headers.Location);
         Assert.False(response.Headers.Contains(SetCookie));

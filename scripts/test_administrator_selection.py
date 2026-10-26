@@ -162,8 +162,8 @@ class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
 class AdministratorBrowserSelectionTests(AdministratorStoryTests):
     def setUp(self):
         super().setUp()
-        self.matrix['browser'] = {'Administrator': 2}
-        self.matrix['administrator_browser_stories'] = {'Accounts': 1, 'Security': 1}
+        self.matrix['browser'] = {'Administrator': 3}
+        self.matrix['administrator_browser_stories'] = {'Accounts': 1, 'Security': 1, 'BrowserSessions': 1}
         for provider in ('PostgreSql', 'SqlServer'):
             name = provider + 'Browser'
             self.catalogue[name] = (name, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'Accounts')
@@ -171,6 +171,9 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
             security = provider + 'SecurityBrowser'
             self.catalogue[security] = (security, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'Security')
             self.inventory[provider].append(security)
+            sessions = provider + 'SessionsBrowser'
+            self.catalogue[sessions] = (sessions, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'BrowserSessions')
+            self.inventory[provider].append(sessions)
         self.selected = {'PostgreSqlBrowser': self.catalogue['PostgreSqlBrowser']}
 
     def verify(self):
@@ -179,7 +182,7 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual({'Administrator': 2}, select_projects(self.matrix, 'PostgreSql', 'webkit', 'administrator'))
+        self.assertEqual({'Administrator': 3}, select_projects(self.matrix, 'PostgreSql', 'webkit', 'administrator'))
 
     def test_browser_inventory_selection_and_category_fail_closed(self):
         for change in ('missing', 'substitute', 'ordinary', 'provider', 'count', 'bool', 'category', 'namespace', 'story'):
@@ -189,7 +192,7 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
                 elif change == 'substitute': self.inventory['SqlServer'][-1] = 'unreviewed-browser'
                 elif change == 'ordinary': self.selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
                 elif change == 'provider': self.selected = {'SqlServerBrowser': self.catalogue['SqlServerBrowser']}
-                elif change == 'count': self.matrix['browser']['Administrator'] = 3
+                elif change == 'count': self.matrix['browser']['Administrator'] = 4
                 elif change == 'bool': self.matrix['browser']['Administrator'] = True
                 elif change == 'category': self.catalogue['SqlServerBrowser'] = ('SqlServerBrowser', 'SqlServer', False, 'IdentityPlatform.Administrator.Tests.Features.Browser', None)
                 elif change == 'namespace': self.catalogue['SqlServerBrowser'] = ('SqlServerBrowser', 'SqlServer', True, 'IdentityPlatform.Administrator.Tests.Features.Accounts', 'Accounts')

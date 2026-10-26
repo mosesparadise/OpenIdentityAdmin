@@ -81,6 +81,7 @@ public sealed class BrowserIssuerDenialTests(BootstrapFixture fixture)
         {
             using var response = await browser.GetAsync(BrowserIssuerHttp.Login + query, TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            BrowserFormHeaders.Referrer(response);
             Assert.Null(response.Headers.Location);
         }
         Assert.True(before == await IssuerContinuationProviderFixture.SnapshotAsync(scenario));

@@ -8,6 +8,9 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Browser;
 /// <example><code>// GET the fixed browser login route with one opaque Intent, then submit its native protected form.</code></example>
 public sealed class LoginModel(IServiceProvider services) : PageModel
 {
+    private const string ReferrerPolicy = "Referrer-Policy";
+    private const string FormReferrer = "strict-origin";
+
     public string? Intent
     {
         get; private set;
@@ -23,7 +26,7 @@ public sealed class LoginModel(IServiceProvider services) : PageModel
     {
         var intent = BrowserAccountRequest.Intent(HttpContext, mfa: false);
         Intent = intent is null ? null : services.GetRequiredService<BrowserAccountProof>().Prepare(HttpContext, intent)?.Intent;
-        return Intent is null ? BadRequest() : Page();
+        return Intent is null ? BadRequest() : Render();
     }
 
     /// <summary>Runs explicit password admission and permits only unchanged original pending-entry retry after denial.</summary>
@@ -40,6 +43,16 @@ public sealed class LoginModel(IServiceProvider services) : PageModel
         Intent = form is null ? null : services.GetRequiredService<BrowserAccountProof>().Read(HttpContext, form[BrowserAccountProfile.Intent][0]!)?.Intent;
         Error = AdministratorBrowser.Denied;
         Response.StatusCode = StatusCodes.Status400BadRequest;
+        return Render();
+    }
+
+    /// <summary>Applies origin-only referrers only when the Razor document actually renders its protected native form.</summary>
+    private PageResult Render()
+    {
+        if (Intent is not null)
+        {
+            Response.Headers[ReferrerPolicy] = FormReferrer;
+        }
         return Page();
     }
 }

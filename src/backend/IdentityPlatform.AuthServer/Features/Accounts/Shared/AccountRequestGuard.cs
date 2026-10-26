@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using IdentityPlatform.AuthServer.Features.Accounts.Browser;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http.Features;
 
@@ -7,6 +8,7 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;
 /// <summary>Shares bounded request handling and secret-safe failures without coupling accounts to pilot handlers.</summary>
 internal static class AccountRequestGuard
 {
+    private const string SourceSeparator = " ";
     private const string TooLarge = "The sign-in request is too large.";
     private const string Invalid = "The sign-in request is invalid.";
     private const string Unavailable = "Sign-in is temporarily unavailable. Return to your application and try again.";
@@ -39,6 +41,7 @@ internal static class AccountRequestGuard
         }
         catch (BadHttpRequestException exception) when (!context.Response.HasStarted)
         {
+            SetHeaders(context);
             await WriteAsync(context, exception.StatusCode, Invalid);
         }
         catch (Exception) when (!context.Response.HasStarted)
@@ -80,6 +83,14 @@ internal static class AccountRequestGuard
         context.Response.Headers.XContentTypeOptions = NoSniff;
         context.Response.Headers[ReferrerHeader] = NoReferrer;
         context.Response.Headers.ContentSecurityPolicy = string.Format(System.Globalization.CultureInfo.InvariantCulture, Csp, nonce);
+    }
+
+    /// <summary>Preserves the rendered script nonce and every default directive while allowing only the validated B3 return origin.</summary>
+    internal static void AllowBrowserFormReturn(HttpContext context, BrowserAccountProfile profile)
+    {
+        var nonce = context.Items[AccountPolicy.NonceItem] as string ?? throw new InvalidOperationException(Unavailable);
+        context.Response.Headers.ContentSecurityPolicy = string.Format(System.Globalization.CultureInfo.InvariantCulture, Csp, nonce) +
+            SourceSeparator + profile.Resume.GetLeftPart(UriPartial.Authority);
     }
 
     /// <summary>Completes a classified response without writing request-derived values.</summary>

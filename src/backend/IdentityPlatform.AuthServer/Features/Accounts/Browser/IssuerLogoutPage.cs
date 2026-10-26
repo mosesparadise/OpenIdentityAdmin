@@ -8,6 +8,7 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Browser;
 /// <summary>Renders bounded inert confirmation and finite local outcomes without exposing OAuth credentials.</summary>
 internal static class IssuerLogoutPage
 {
+    private const string SourceSeparator = " ";
     private const string ConfirmationTitle = "Confirm issuer sign-out";
     private const string IncompleteTitle = "Issuer sign-out not confirmed";
     private const string IncompleteBody = "<p>Return to the administrator application. No issuer session was signed out by this request.</p>";
@@ -19,6 +20,7 @@ internal static class IssuerLogoutPage
     private const string NoStore = "no-store";
     private const string ReferrerPolicy = "Referrer-Policy";
     private const string NoReferrer = "no-referrer";
+    private const string FormReferrer = "strict-origin";
     private const string NoSniff = "nosniff";
     private const string Header = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>";
     private const string TitleEnd = "</title></head><body><h1>";
@@ -29,12 +31,12 @@ internal static class IssuerLogoutPage
     private const string Policy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
 
     /// <summary>Includes only the four validated protocol values, protected confirmation and native antiforgery field.</summary>
-    internal static Task ConfirmAsync(HttpContext http, OpenIddictRequest request, string confirmation, string antiforgery) => WriteAsync(http,
+    internal static Task ConfirmAsync(HttpContext http, OpenIddictRequest request, string confirmation, string antiforgery, Uri configuredReturn) => WriteAsync(http,
         ConfirmationTitle, FormPrefix + IssuerLogoutInput.Path + TagEnd +
         Field(OpenIddictConstants.Parameters.ClientId, request.ClientId!) + Field(OpenIddictConstants.Parameters.PostLogoutRedirectUri, request.PostLogoutRedirectUri!) +
         Field(IssuerLogoutInput.HintName, IssuerLogoutInput.Hint(request)!) + Field(OpenIddictConstants.Parameters.State, request.State!) +
         Field(IssuerLogoutInput.Confirmation, confirmation) + Field(AdministratorBrowser.Antiforgery, antiforgery) +
-        FormSuffix, StatusCodes.Status200OK);
+        FormSuffix, StatusCodes.Status200OK, configuredReturn);
 
     /// <summary>Never interprets missing or mismatched authority as a successful remote revocation.</summary>
     internal static Task IncompleteAsync(HttpContext http) => WriteAsync(http, IncompleteTitle,
@@ -45,13 +47,13 @@ internal static class IssuerLogoutPage
         FieldValue + HtmlEncoder.Default.Encode(value) + TagEnd;
 
     /// <summary>Applies sensitive-page protections to successful confirmation and denial alike.</summary>
-    private static Task WriteAsync(HttpContext http, string title, string content, int status)
+    private static Task WriteAsync(HttpContext http, string title, string content, int status, Uri? configuredReturn = null)
     {
         http.Response.StatusCode = status;
         http.Response.ContentType = ContentType;
         http.Response.Headers.CacheControl = NoStore;
-        http.Response.Headers[ReferrerPolicy] = NoReferrer;
-        http.Response.Headers.ContentSecurityPolicy = Policy;
+        http.Response.Headers[ReferrerPolicy] = configuredReturn is null ? NoReferrer : FormReferrer;
+        http.Response.Headers.ContentSecurityPolicy = configuredReturn is null ? Policy : Policy + SourceSeparator + configuredReturn.GetLeftPart(UriPartial.Authority);
         http.Response.Headers.XContentTypeOptions = NoSniff;
         return http.Response.WriteAsync(Header + title +
             TitleEnd + title + HeadingEnd + content + Footer, http.RequestAborted);

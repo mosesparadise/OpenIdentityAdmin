@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Globalization;
 using System.Security.Claims;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Ownership;
 using IdentityPlatform.Database;
@@ -8,6 +10,7 @@ using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OpenIddict.Abstractions;
 using OpenIddict.Client;
 using OpenIddict.EntityFrameworkCore.Models;
@@ -17,6 +20,7 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 /// <summary>Composes an isolated Sessions client for actual native encrypted-state generation without a remote exchange.</summary>
 internal static class NativeClientStateFixture
 {
+    private static readonly System.Text.CompositeFormat TimingFormat = System.Text.CompositeFormat.Parse("native-client-preparation {0} elapsed-ms={1:F0}");
     private const string Client = "identity-admin-bff";
     private const string Issuer = "https://issuer.example/";
     private const string ClientUri = "https://client.example/";
@@ -45,14 +49,47 @@ internal static class NativeClientStateFixture
             .SetOrder(OpenIddictClientHandlers.Protection.GenerateIdentityModelToken.Descriptor.Order - 1));
         client.AddEventHandler<OpenIddictClientEvents.GenerateTokenContext>(builder => builder.UseScopedHandler<NativeClientStateStoredFault>()
             .SetOrder(OpenIddictClientHandlers.Protection.AttachTokenPayload.Descriptor.Order + 1));
-        return services.BuildServiceProvider(validateScopes: true);
+        return Ready(services);
+    }
+
+    /// <summary>Finalizes real native options and ephemeral credentials during fixture setup, without generating state or renewing any request budget.</summary>
+    private static ServiceProvider Ready(IServiceCollection services)
+    {
+        var root = services.BuildServiceProvider(validateScopes: true);
+        try
+        {
+            var started = Stopwatch.GetTimestamp();
+            _ = root.GetRequiredService<IOptionsMonitor<OpenIddictClientOptions>>().CurrentValue;
+            Timing(PreparationPhase.OptionsReady, started);
+            return root;
+        }
+        catch { root.Dispose(); throw; }
+    }
+
+    /// <summary>Retains only a code-owned phase and monotonic duration; an output failure never replaces the operation result.</summary>
+    private static void Timing(PreparationPhase phase, long started)
+    {
+        try
+        {
+            TestContext.Current.TestOutputHelper?.WriteLine(string.Format(CultureInfo.InvariantCulture, TimingFormat,
+                phase, Stopwatch.GetElapsedTime(started).TotalMilliseconds));
+        }
+        catch (Exception) { /* Diagnostics cannot alter the original request or fixture outcome. */ }
+    }
+
+    /// <summary>Names preparation boundaries without accepting caller-defined text or native request values.</summary>
+    private enum PreparationPhase
+    {
+        OptionsReady, FactoryReady, ChildEntry
     }
 
     /// <summary>Invokes actual native state creation with a prepared principal; no callback/correlation interoperability is claimed.</summary>
     internal static Task<string> GenerateAsync(IServiceProvider root, CancellationToken token) =>
         new ProtocolStorageRequest(root.GetRequiredService<TimeProvider>(), token).RunAsync(root.GetRequiredService<IServiceScopeFactory>(), async (scope, cancellation) =>
         {
+            var started = Stopwatch.GetTimestamp();
             var transaction = await scope.Services.GetRequiredService<IOpenIddictClientFactory>().CreateTransactionAsync();
+            Timing(PreparationPhase.FactoryReady, started);
             transaction.Request = new();
             transaction.Registration = new()
             {
@@ -78,6 +115,7 @@ internal static class NativeClientStateFixture
                 ResponseMode = OpenIddictConstants.ResponseModes.Query
             };
             root.GetRequiredService<NativeClientStateFault>().Challenge = context;
+            Timing(PreparationPhase.ChildEntry, started);
             await scope.Services.GetRequiredService<DurableClientState>().HandleAsync(context);
             Assert.Null(NativeStateGeneration.Find(transaction));
             Assert.Null(scope.Owner.Database.Database.CurrentTransaction);

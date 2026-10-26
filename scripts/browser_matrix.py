@@ -18,7 +18,7 @@ def select():
                                   ('-' + story.lower() if story else '')}
                         for browser in ENGINES for provider in PROVIDERS
                         for partition in ('standard', 'administrator')
-                        for story in (('Accounts', 'Security') if partition == 'administrator' else ('',))]}
+                        for story in (('Accounts', 'Security', 'BrowserSessions') if partition == 'administrator' else ('',))]}
 
 
 def main():

@@ -129,33 +129,43 @@ public sealed class BootstrapHost : IAsyncDisposable
     public static async Task<BootstrapHost> CreateAsync(string providerName, CancellationToken cancellationToken)
     {
         var host = new BootstrapHost { provider = DatabaseProviderParser.Parse(providerName) };
+        using var startup = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        startup.CancelAfter(TimeSpan.FromMinutes(StartupMinutes));
         try
         {
-            using var startup = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            startup.CancelAfter(TimeSpan.FromMinutes(StartupMinutes));
             SetupDiagnostics.Write(SetupStage.HostBuilder);
             host.builder = await DistributedApplicationTestingBuilder.CreateAsync<Projects.IdentityPlatform_AppHost>(
                 [DevelopmentArgument, ProviderArgumentPrefix + providerName, DisabledPilotArgument], startup.Token);
             SetupDiagnostics.Write(SetupStage.HostBuild);
             host.application = await host.builder.BuildAsync(startup.Token);
-            SetupDiagnostics.Write(SetupStage.HostStart);
-            await host.application.StartAsync(startup.Token);
-            SetupDiagnostics.Write(SetupStage.AuthReadiness);
-            await host.application.ResourceNotifications.WaitForResourceHealthyAsync(AuthResource, startup.Token);
-            host.lifecycle = LifecycleEvidence.Capture(host.application);
-            host.administratorConnection = (await host.application.GetConnectionStringAsync(PlatformDatabase, startup.Token))!;
-            var model = host.application.Services.GetRequiredService<DistributedApplicationModel>();
-            host.runtimePassword = (await model.Resources.OfType<ParameterResource>()
-                .Single(value => value.Name == RuntimePasswordParameter).GetValueAsync(startup.Token))!;
-            SetupDiagnostics.Write(SetupStage.HostReady);
+            await ProfileStartupEvidence.ObserveAsync(host.application, () => host.StartAsync(startup.Token));
             return host;
         }
-        catch
+        catch (Exception error)
         {
+            SetupDiagnostics.Failure(error, startup.IsCancellationRequested);
             SetupDiagnostics.Write(SetupStage.HostCleanup);
             await host.DisposeAsync();
             throw new InvalidOperationException(StartupFailure);
         }
+    }
+
+    /// <summary>Retains phase boundaries and safe resource observations before startup failure cleanup without changing readiness requirements.</summary>
+    private async Task StartAsync(CancellationToken token)
+    {
+        SetupDiagnostics.Write(SetupStage.HostStart);
+        await application!.StartAsync(token);
+        SetupDiagnostics.Write(SetupStage.AuthReadiness);
+        await application.ResourceNotifications.WaitForResourceHealthyAsync(AuthResource, token);
+        SetupDiagnostics.Write(SetupStage.AuthHealthy);
+        lifecycle = LifecycleEvidence.Capture(application);
+        SetupDiagnostics.Write(SetupStage.LifecycleCaptured);
+        administratorConnection = (await application.GetConnectionStringAsync(PlatformDatabase, token))!;
+        SetupDiagnostics.Write(SetupStage.ConnectionReady);
+        var model = application.Services.GetRequiredService<DistributedApplicationModel>();
+        runtimePassword = (await model.Resources.OfType<ParameterResource>()
+            .Single(value => value.Name == RuntimePasswordParameter).GetValueAsync(token))!;
+        SetupDiagnostics.Write(SetupStage.HostReady);
     }
 
     /// <summary>Creates and migrates a disposable provider database, retaining the existing least-privilege provisioning and cleanup behavior.</summary>
