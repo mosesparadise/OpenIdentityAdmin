@@ -4,38 +4,31 @@ using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
-/// <summary>Drops only an actual native issuer redirect's ensuing BFF navigation, before the BFF can receive it.</summary>
+/// <summary>Interrupts the actual issuer redirect at the BFF transport before product return handling, with a mandatory real browser failure witness.</summary>
 internal sealed class BrowserLostReturn(BrowserHttpsFixture fixture)
 {
     private const int NavigationSeconds = 20;
-    private readonly TaskCompletionSource failed = new(TaskCreationOptions.RunContinuationsAsynchronously);
-    private int interceptions;
-    internal int Interceptions => Volatile.Read(ref interceptions);
-    internal Uri? Destination
-    {
-        get; private set;
-    }
+    private const string Location = "location";
+    private const string Report = "b3-return-loss aborted-gets={0}";
+    private readonly TaskCompletionSource<Uri> failed = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    internal int AbortedRequests => fixture.ReturnFailure.Count;
+    internal Uri? Destination => fixture.ReturnFailure.Destination;
 
-    /// <summary>Restricts interception and failure observation to the fixed native return path; it never supplies a synthetic response.</summary>
-    internal async Task InstallAsync(IPage page)
+    /// <summary>Arms the test-only HTTPS transport and observes only a failed GET to the exact product return path.</summary>
+    internal Task InstallAsync(IPage page)
     {
         page.RequestFailed += (_, request) =>
         {
-            if (Matches(request.Url))
+            if (request.Method == HttpMethods.Get && Matches(request.Url))
             {
-                failed.TrySetResult();
+                failed.TrySetResult(new Uri(request.Url));
             }
         };
-        await page.RouteAsync(Matches, async route =>
-        {
-            Assert.Equal(HttpMethods.Get, route.Request.Method);
-            Assert.Equal(1, Interlocked.Increment(ref interceptions));
-            Destination = new Uri(route.Request.Url);
-            await route.AbortAsync();
-        });
+        fixture.ReturnFailure.Arm();
+        return Task.CompletedTask;
     }
 
-    /// <summary>Waits for the actual failed return and handles only the navigation error caused by that witnessed one-shot interception.</summary>
+    /// <summary>Waits for the actual failed return and handles only the navigation error caused by that witnessed bounded transport failure.</summary>
     internal async Task ConfirmAsync(IPage page)
     {
         var response = page.WaitForResponseAsync(response => response.Request.Method == HttpMethods.Post &&
@@ -54,10 +47,15 @@ internal sealed class BrowserLostReturn(BrowserHttpsFixture fixture)
         {
             // Event delivery may follow command rejection. The exact failed return, native redirect and durable effects below remain mandatory.
         }
-        Assert.Equal(StatusCodes.Status302Found, (await response).Status);
-        await failed.Task.WaitAsync(TimeSpan.FromSeconds(NavigationSeconds), TestContext.Current.CancellationToken);
-        Assert.Equal(1, Interceptions);
-        await page.UnrouteAsync(Matches);
+        var redirect = await response;
+        Assert.Equal(StatusCodes.Status302Found, redirect.Status);
+        var observed = await failed.Task.WaitAsync(TimeSpan.FromSeconds(NavigationSeconds), TestContext.Current.CancellationToken);
+        var expected = new Uri(fixture.Profile.Issuer, redirect.Headers[Location]);
+        Assert.True(observed == expected && Destination == expected);
+        Assert.True(AbortedRequests > 0);
+        Assert.NotNull(Destination);
+        fixture.ReturnFailure.Disarm();
+        TestContext.Current.TestOutputHelper?.WriteLine(Report, AbortedRequests);
     }
 
     /// <summary>Compares the entire fixed authority/path privately; an arbitrary navigation cannot satisfy the loss witness.</summary>

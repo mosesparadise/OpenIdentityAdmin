@@ -29,7 +29,7 @@ public sealed class BrowserFormPolicyTests
     private const string Placeholder = "non-authenticating-test-placeholder";
     private const string AccountPolicy = "default-src 'none'; script-src 'nonce-fixed-synthetic-nonce'; style-src 'self'; img-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'";
     private const string LogoutPolicy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
-    private const string PresentationPolicy = "; style-src 'sha256-4HaK2EqdgpJzeoK+/uO11LS6Ub+KAOAmt9OnGAxAWuo='; script-src 'sha256-w+uuhquW+ZQV55tUvccOSS+TKS9Hbuz6bhtay55K5ho='";
+    private const string PresentationPolicy = "; style-src 'sha256-nIUXs2C1YiiVplk3G8QC7SH3kEerGX19ls/gblno1Fo='; script-src 'sha256-w+uuhquW+ZQV55tUvccOSS+TKS9Hbuz6bhtay55K5ho='";
 
     /// <summary>Host, Origin and query cannot replace the configured nondefault-port BFF origin or alter the existing script nonce/directives.</summary>
     [Fact]

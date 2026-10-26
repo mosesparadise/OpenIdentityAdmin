@@ -66,7 +66,14 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
         await attacker.GotoAsync(fixture.StageAttacker(foreignOrigin, form).AbsoluteUri);
         var response = await attacker.RunAndWaitForResponseAsync(() => attacker.Locator(button).ClickAsync(),
             response => response.Request.Method == HttpMethods.Post);
-        Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
+        if (destination.Host == fixture.Profile.Issuer.Host)
+        {
+            await BrowserLogoutJourney.RequireIssuerDeniedAsync(response);
+        }
+        else
+        {
+            Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
+        }
         Assert.True(Uri.TryCreate(attacker.Url, UriKind.Absolute, out var uri) && uri.GetLeftPart(UriPartial.Path) == destination.AbsoluteUri);
     }
 }

@@ -33,6 +33,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private int endSessionGets;
     private int endSessionPosts;
     private AttackerDocument? attacker;
+    internal BrowserReturnFailure ReturnFailure { get; } = new();
     internal Uri Address
     {
         get;
@@ -98,7 +99,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
                 Policy.Response(http);
                 return Task.CompletedTask;
             });
-            if (!await ServeAttackerAsync(http))
+            if (!ReturnFailure.Abort(http, Address) && !await ServeAttackerAsync(http))
             {
                 await next(http);
             }

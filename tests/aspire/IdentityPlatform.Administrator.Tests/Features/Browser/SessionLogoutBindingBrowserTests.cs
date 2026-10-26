@@ -43,9 +43,9 @@ public sealed class SessionLogoutBindingBrowserTests(BootstrapFixture fixture)
             {
                 Name = BrowserLogoutJourney.IssuerCookie
             });
-            await BrowserLogoutJourney.DeniedAsync(page, link);
+            await BrowserLogoutJourney.IssuerDeniedAsync(page, link);
             await page.Context.AddCookiesAsync([await CookieAsync(other)]);
-            await BrowserLogoutJourney.DeniedAsync(page, link);
+            await BrowserLogoutJourney.IssuerDeniedAsync(page, link);
             await page.Context.AddCookiesAsync([original]);
             await DenyFieldsAsync(page, link, otherSource);
             Assert.Equal(before, await BrowserHttpsState.SnapshotAsync(environment));
@@ -89,7 +89,7 @@ public sealed class SessionLogoutBindingBrowserTests(BootstrapFixture fixture)
             var fields = QueryHelpers.ParseQuery(link.Query).ToDictionary(item => item.Key, item => (string?)item.Value.ToString(), StringComparer.Ordinal);
             fields[change.Item1] = change.Item2;
             var destination = new Uri(QueryHelpers.AddQueryString(link.GetLeftPart(UriPartial.Path), fields));
-            await BrowserLogoutJourney.DeniedAsync(page, destination);
+            await BrowserLogoutJourney.IssuerDeniedAsync(page, destination);
             Assert.True(Uri.TryCreate(page.Url, UriKind.Absolute, out var actual) && actual.GetLeftPart(UriPartial.Path) == link.GetLeftPart(UriPartial.Path));
         }
     }

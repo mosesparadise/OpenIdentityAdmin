@@ -23,7 +23,7 @@ internal static class BrowserLogoutPresentation
     private const string ViewportContent = "width=device-width, initial-scale=1";
     private const string Content = "content";
     private const string Colors = "dark => { const body = getComputedStyle(document.body); return body.backgroundColor === (dark ? 'rgb(2, 6, 23)' : 'rgb(248, 250, 252)') && body.color === (dark ? 'rgb(248, 250, 252)' : 'rgb(15, 23, 42)') && body.getPropertyValue('--accent').trim() === (dark ? '#818cf8' : '#4f46e5'); }";
-    private const string Layout = "document.documentElement.scrollWidth <= innerWidth && [...document.querySelectorAll('button, select')].filter(e => !e.hidden).every(e => e.getBoundingClientRect().height >= 44)";
+    private const string Layout = "document.documentElement.scrollWidth <= innerWidth && [...document.querySelectorAll('button, select')].filter(e => !e.hidden).every(e => e.getBoundingClientRect().height >= 44 && e.scrollHeight <= e.clientHeight && e.scrollWidth <= e.clientWidth)";
     private const string Focus = "selector => { const element = document.querySelector(selector); const style = getComputedStyle(element); return document.activeElement === element && parseFloat(style.outlineWidth) >= 3 && style.outlineStyle !== 'none'; }";
     private const string Tab = "Tab";
     private const string BackTab = "Shift+Tab";

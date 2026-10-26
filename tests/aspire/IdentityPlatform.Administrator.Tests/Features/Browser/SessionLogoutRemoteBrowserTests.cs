@@ -81,7 +81,10 @@ public sealed class SessionLogoutRemoteBrowserTests(BootstrapFixture fixture)
             await BrowserHttpsEffects.IssuerAsync(environment, source, revoked: true);
             await BrowserHttpsJourney.RequireCookiesAsync(environment, page, issuer: false, remote: true);
             await BrowserHttpsJourney.RequireStatusAsync(environment, page, false);
-            environment.RequirePolicies(LostClientCounts, LostIssuerCounts);
+            environment.RequirePolicies(LostClientCounts with
+            {
+                Returns = LostClientCounts.Returns + loss.AbortedRequests
+            }, LostIssuerCounts);
             await page.GotoAsync(loss.Destination!.AbsoluteUri);
             await BrowserLogoutJourney.RequireReturnedAsync(environment, page);
             await BrowserHttpsEffects.LocalAsync(environment, source, BrowserLogoutState.ReturnedUnverified);
@@ -89,6 +92,6 @@ public sealed class SessionLogoutRemoteBrowserTests(BootstrapFixture fixture)
             await BrowserLogoutJourney.DeniedAsync(page, loss.Destination);
             Assert.Equal(1, environment.EndSessionGets);
             Assert.Equal(1, environment.EndSessionPosts);
-            environment.RequirePolicies(logins: 1, logouts: 1, confirmations: 1, issuerVisits: 1, returnReloads: 1);
+            environment.RequirePolicies(logins: 1, logouts: 1, confirmations: 1, issuerVisits: 1, returnReloads: 1 + loss.AbortedRequests);
         });
 }

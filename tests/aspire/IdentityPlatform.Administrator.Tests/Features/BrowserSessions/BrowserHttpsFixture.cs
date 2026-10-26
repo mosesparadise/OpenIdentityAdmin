@@ -32,7 +32,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     internal int TokenRequests => issuerEndpoint.TokenRequests;
     internal int EndSessionGets => issuerEndpoint.EndSessionGets;
     internal int EndSessionPosts => issuerEndpoint.EndSessionPosts;
-    internal BootstrapSessionAccess Access => database!.Access;
+    internal BrowserReturnFailure ReturnFailure => clientEndpoint.ReturnFailure;
 
     /// <summary>Optionally uses the development certificate's loopback IP SAN to separate issuer and BFF cookie hosts and sites.</summary>
     private BrowserHttpsFixture(bool distinctSites)

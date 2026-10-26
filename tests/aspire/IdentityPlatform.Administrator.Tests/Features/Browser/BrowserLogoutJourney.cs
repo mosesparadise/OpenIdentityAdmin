@@ -19,6 +19,9 @@ internal static class BrowserLogoutJourney
     private const string State = "state";
     private const string Main = "main";
     private const string LocalChoice = "button[name=Mode][value=local]";
+    private const string ReferrerHeader = "referrer-policy";
+    private const string NoReferrer = "no-referrer";
+    private const string LocationHeader = "location";
     private const string CookieHeader = "set-cookie";
 
     /// <summary>Starts with real password/MFA and proves the local commit before allowing any issuer navigation.</summary>
@@ -73,6 +76,23 @@ internal static class BrowserLogoutJourney
     {
         var response = await page.GotoAsync(destination.AbsoluteUri);
         Assert.Equal(StatusCodes.Status400BadRequest, response!.Status);
+    }
+
+    /// <summary>Retains the existing issuer boundary's finite denial outcomes, with no redirect or cookie publication; durable effects remain independently required.</summary>
+    internal static async Task RequireIssuerDeniedAsync(IResponse response)
+    {
+        Assert.True(response.Status is StatusCodes.Status400BadRequest or StatusCodes.Status503ServiceUnavailable);
+        var headers = await response.AllHeadersAsync();
+        Assert.False(headers.ContainsKey(CookieHeader) || headers.ContainsKey(LocationHeader));
+        Assert.True(headers.TryGetValue(ReferrerHeader, out var policy) && policy == NoReferrer);
+    }
+
+    /// <summary>Checks an actual issuer navigation against its existing safe-denial contract without broadening BFF return assertions.</summary>
+    internal static async Task IssuerDeniedAsync(IPage page, Uri destination)
+    {
+        var response = await page.GotoAsync(destination.AbsoluteUri);
+        Assert.NotNull(response);
+        await RequireIssuerDeniedAsync(response);
     }
 
     /// <summary>Submits the real loaded local form and requires finite uncertainty without any cookie mutation or issuer navigation.</summary>
