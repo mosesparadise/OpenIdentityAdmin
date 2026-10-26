@@ -1,21 +1,19 @@
 # B3 verification quickstart
 
-This is a planning packet. No B3 runtime case, migration, native end-session or product browser route has executed. The existing coherent B2 evidence is [delivered separately](../011-administrator-issuer-client/b2-delivery.md).
+B3 is under internal implementation, with accepted slices through protected local/issuer logout and the initial genuine HTTPS journeys. Read the [current verification map](verification.md), [task list](tasks.md) and [operations handoff](../../docs/operations/administrator-browser-sessions.md) for exact delivered versus candidate status. Earlier planning-only results remain dated in the verification history; they do not describe current execution.
 
-## Available checks for this packet
+## Resume and verify
 
-From repository root, run `python3 scripts/test_ci_scope.py`, `python3 scripts/check-ai-instructions.py`, `python3 scripts/check_assurance.py`, `python3 scripts/test_assurance.py` and `git diff --check`. Validate relative Markdown links, unique task IDs, requirement/scenario coverage and resolved SpecKit artifacts. Classify the complete changed-file set through the existing fail-closed proportional CI selector. A prose-only change may use proportional CI; unknown/mixed/executable/policy changes require the full path.
+1. Verify actual remote main, feature heads, PR/check/review state and local changes. Read AGENTS, approval, roadmap, handoff and referenced specification/evidence before editing. Preserve accepted source, rejected runs, provider plugins, databases and migration histories.
+2. Apply the approved A-009 scope: internal B3 work may proceed with Firefox and the two named WebKit certificate cases deferred. Keep them documented and open; do not generalize that deferral to new Chromium/WebKit failures or revive expired diagnostics.
+3. Resolve concrete remaining T003/T004 dependencies before dependent routes. Use pinned Spec Kit integration and the current feature artifacts; do not replace repository conventions or invent a test partition.
+4. Use real PostgreSQL/SQL Server through the existing Aspire harness, trusted HTTPS, synthetic accounts and disposable protected keys. Fresh password/MFA, native antiforgery, original state and actual commit/cleanup must remain in the path. Do not fabricate positive cookies or ignore TLS failures.
+5. Run native discovery before updating mandatory inventories. The authoritative selections live in `eng/test-matrix.json`, `eng/administrator-test-matrix.json` and `.github/workflows/verify.yml`; use `scripts/verify.py` with its actual reviewed partition/story/group arguments. Validate exact disjoint identities and traits, then run focused controls and the required current-head workflow.
+6. Review all actual raw reports, coverage inputs/floors, baseline/mutant/restored receipts and screenshots. A timeout or unrelated test failure is not a mutation kill. Axe/palette checks alone did not catch the retained WebKit button clipping, so inspect real screenshots as well.
+7. Record source/tested tree/run/review and normal squash only after acceptance. Preserve failures, unproven causation, manual assessment rows and activation/public-release boundaries. T022 documentation does not make absent cleanup scheduling, cross-store audit correlation or restore/fleet automation operational.
 
-Use the pinned SpecKit 1.1.3 Codex skill syntax: `$speckit-specify`, `$speckit-clarify`, `$speckit-plan`, `$speckit-checklist`, `$speckit-tasks`, `$speckit-analyze`. Local ignored `.specify/feature.json` selects this feature; the publication branch remains `068-administrator-browser-plan`. Do not change pinned integration files merely to match those names. No extension hooks are registered in this checkout.
+## Proportional documentation checks
 
-## Before executable B3 work
+For eligible prose changes, run `python3 scripts/test_ci_scope.py`, `python3 scripts/check-ai-instructions.py`, `python3 scripts/check_assurance.py`, `python3 scripts/test_assurance.py` and `git diff --check`, and validate relative links and requirement/task references. The fail-closed selector must classify the complete change set; executable, mixed, policy or unknown changes require full verification. The final acceptance job remains mandatory.
 
-1. Verify current remote main and feature 011 T028's actual Firefox restoration/evidence. Restore all original 55 inputs plus new obligations (at least 57 at the B2 checkpoint), unchanged floors, both providers/all engines and independently reviewed history-evidence disposition. A-007 is not a B3 waiver.
-2. Read AGENTS, approval, roadmap, handoff, B1/B2 contracts, this packet and any recorded product-choice disposition. Preserve delivered provider plugins and migration histories.
-3. Prove T003 native integration/transaction ownership and pin actual route/handler/source/test identities. No invented partition or planned count is an executable test result.
-4. Use trusted HTTPS and synthetic identities/disposable protected keys through the existing Aspire harness. Run real password/TOTP/antiforgery journeys; no fabricated administrator cookie or ignored TLS error.
-5. Discover every new case before updating mandatory selectors/coverage. Run focused controls first, then both-provider/full six-cell browser acceptance and exact-head required workflow. No separate historical SQL diagnostic approval is revived.
-6. Reconcile raw discovery/result/definition/execution identities, failures/skips, coverage floors and mutation baseline/kill/restored controls. Review actual HTTP counts for no retry and durable commit orders for races.
-7. Record source/run/tree/review/normal squash only after acceptance. Keep failed attempts, unproven causation, human assessments, production activation and release gates visible.
-
-Do not run B3 commands for nonexistent partitions or treat this checklist as permission to enable production. Later M02-C refresh, M02-D API authority and M02-E React have their own contracts and acceptance.
+Use the pinned Spec Kit 1.1.3 installed skill syntax and existing prerequisite script; no extension hooks are registered in this checkout. Do not alter pinned integration files to rename a working branch. Production enabling, deployment, refresh, API authority, React and public release require their own completed scope and authorization.

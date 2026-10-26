@@ -1,5 +1,7 @@
 # Internal BFF session ticket store
 
+**Current status — 26 October 2026:** B1 is accepted internally and consumed by the explicit B3 test composition. The [B3 operations handoff](administrator-browser-sessions.md) describes browser proof/ticket ownership, logout, keys, cleanup and restore limits. Default production composition remains dormant; this storage runbook does not activate a browser route.
+
 Feature 010 supplies an internal store for later M02-B integration. Default BFF
 composition still exposes its existing operational surface only. No login,
 callback, cookie, refresh, proxy, management API or React access is enabled.

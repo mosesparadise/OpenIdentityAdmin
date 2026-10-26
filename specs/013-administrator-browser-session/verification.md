@@ -1,4 +1,25 @@
-# B3 planning verification and acceptance map
+# B3 verification and acceptance map
+
+## Current bounded disposition — 26 October 2026
+
+The user selected T020–T022 with dependencies and required tests. The [operations handoff](../../docs/operations/administrator-browser-sessions.md) records runtime ownership, additive histories, keys, original-deadline failure semantics, cleanup, restore, least privilege and audit limits. It is source-reviewed; documentation acceptance is pending. The following table supersedes unqualified present-tense planning statements in the retained dated records below. Historical `not_run` rows remain unchanged as evidence of their original checkpoint.
+
+| Control group | Accepted internal evidence | Remaining boundary |
+| --- | --- | --- |
+| B3-AUTH-01–04 | [Issuer journey](issuer-browser-journey.md), [native protocol](native-browser-protocol.md), [callback](product-browser-callback.md), [session use](session-use.md) and initial [HTTPS journeys](https-browser-logout.md). | T003/T004 remaining integration and full T012 negative browser coverage; no production activation. |
+| B3-WEB-01/02 | Protected login, local logout, session-status/OpenAPI and native browser policy controls in [login](protected-browser-login.md), [session use](session-use.md), [local logout](local-logout.md) and accepted HTTPS evidence. | Complete T016 browser matrix; [remaining T020](logout-browser-matrix.md) corrected-source acceptance pending. |
+| B3-WEB-03/04 | Server secrecy/safe-response controls and bounded initial browser evidence. | Full browser network/storage/stale-tab coverage, corrected T020 responsive/theme screenshot evidence, manual accessibility/product observations. Source checks and axe alone do not establish visual or human acceptance. |
+| B3-STATE-01–04 | [Coordination](browser-coordination.md), [local logout](local-logout.md) and [lifecycle verification](lifecycle-verification.md) prove scoped actual concurrency, rollback/unknown commit, orphan/restore/key and capacity/retention behavior on both stores. | Production scheduling, fleet recovery and complete story integration are not inferred. |
+| B3-END-01–03 | Accepted [local](local-logout.md), [issuer](issuer-logout.md), [continuation](logout-continuation.md) and three initial HTTPS journeys. | Remaining T020 browser acceptance is pending after a retained rejected run; return never attests issuer revocation. |
+| B3-OPS-01 | Additive both-provider schema/history and least-privilege/audit atomicity controls in coordination, issuer completion and local/remote logout records. | Cross-store audit linkage remains absent; human privilege assessment remains open. |
+| B3-OPS-02 | Actual retained-key independent-process and missing-key controls in lifecycle evidence. | No production fleet rotation/retirement procedure or key-custody acceptance. |
+| B3-OPS-03 | Actual restored-row consequence/invalidation and callback-orphan cleanup/retention controls in lifecycle evidence. | No automated both-store restore invalidation, provider backup/restore drill or production cleanup scheduler. |
+| B3-OPS-04 / SC-005 | Existing exact-source full workflow, 48 mutation controls and 15 unchanged coverage floors are retained in accepted delivery records. | [T021 dedicated B3 mutations](security-mutations.md) are source-verified but await hosted baseline/kill/restored evidence. A-009 restoration, T023/T024 coherent acceptance and all human/release gates remain open. |
+
+T022 documents implemented mechanisms and concrete gaps; it does not substitute prose for missing scheduling, cross-store correlation, restore/fleet automation or human work. All six historical findings, 48 human rows and 345 not-assessed assurance controls remain open. Firefox and the two exact WebKit cases are deferred under A-009, not passed. M02-C refresh, M02-D current management authority and M02-E React remain separate.
+
+## Historical delivery and planning records
+
 
 **T013/T014 and server-side T012 delivered (25 October 2026):** [Session-use acceptance](session-use.md#accepted-internal-delivery--25-october-2026) records PR #87 squash `c1d699bb0f23c1cf1b7011fc471117303e266392`, all 71 exact-head checks, independent source/evidence reviews, 220 BrowserSessions cases/provider (158 Foundations + 62 Product), 1,440 Host cases, 48 mutation kills and all 54 coverage inputs/15 unchanged floors. T013/T014 are complete internally; T012 remains open for actual trusted-TLS/browser evidence. Next is remaining T015 lifecycle/failure verification, with T017 protected local logout required for callback/logout races. Production composition, full B3 and all historical/human/release/browser-restoration gates remain open.
 
@@ -46,7 +67,7 @@ Current network configuration was inspected read-only through the cloud runtime 
 
 The user explicitly chose **new password and MFA for each sign-in** and **both local and issuer-assisted logout**. These answers settle the two product questions. All activation/production/public-release gates remain separate.
 
-## Planned scenario traceability
+## Historical planned scenario traceability — 21 October 2026
 
 Every row requires concrete source/test identities and actual native evidence before runtime acceptance. All six browser/provider cells apply where browser behavior is involved; pure policy controls supplement rather than replace them.
 

@@ -1,5 +1,7 @@
 # Internal administrator native client operation
 
+**Current status — 26 October 2026:** B2 internal delivery is accepted in [its delivery record](../../specs/011-administrator-issuer-client/b2-delivery.md). B3 internal work proceeds under A-009; Firefox and the two named WebKit cases remain deferred/open. Use the [B3 handoff](administrator-browser-sessions.md) for current browser operations and remaining activation obligations. Production remains dormant. The following original B2 scope paragraph is retained as historical context, superseded on delivery/deferral status by this notice.
+
 This runbook covers feature 011's dormant B2 issuer/client composition. It does not activate production routes, establish a B1 browser ticket or authorize a deployment. The coherent B2 acceptance packet remains incomplete. Firefox is deferred only through internal B2 under A-007; restore it before B3 implementation, activation or release. All historical findings and human/public-release gates remain open.
 
 ## Initialization and upgrade
