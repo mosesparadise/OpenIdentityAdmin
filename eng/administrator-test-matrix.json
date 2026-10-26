@@ -847,7 +847,33 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ConfirmationForFreshSource_When_AnotherActualIssuerSessionSubmits_Then_NeitherSourceIsRevoked(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_GenuineBrowserSession_When_NativeLogoutIsConfirmed_Then_OnlyItsSourceAndOneAuditCommit(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ValidConfirmation_When_RequestOrAntiforgeryChanges_Then_DenialPreservesThePositiveControl(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"PostgreSql\", mode: Cancellation)"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"PostgreSql\", mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"PostgreSql\", returned: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"PostgreSql\", returned: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OldLogoutReturn_When_NewSignInAdvancesGeneration_Then_LaterIntentAndCookiesRemainUntouched(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OriginalCorrelationBounds_When_ReturnIsExpiredOrClockRollsBack_Then_NoMutationOrLifetimeExtension(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_PendingLogout_When_ReturnProofIsSubstituted_Then_NoMutationAndOriginalReturnStillWorks(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AnonymousPendingIntent_When_AssistedChoiceIsPosted_Then_OnlyLocalCancellationCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"PostgreSql\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"PostgreSql\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"PostgreSql\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"PostgreSql\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"acknowledgement\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"cleanup\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"cleanup-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"save\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"save-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"acknowledgement\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"cleanup\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"cleanup-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"save\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"save-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_GenuineAbandonedCorrelation_When_RetentionBoundaryPasses_Then_CleanupReclaimsItAndSavedReturnStillDenies(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_OriginalProofExpiresDuringRemoteCleanup_When_LocalLogoutIsKnown_Then_LocalTextSurvivesWithoutPositiveCookieOrLink(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutPairingTests.Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1801,7 +1827,33 @@
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ConfirmationForFreshSource_When_AnotherActualIssuerSessionSubmits_Then_NeitherSourceIsRevoked(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_GenuineBrowserSession_When_NativeLogoutIsConfirmed_Then_OnlyItsSourceAndOneAuditCommit(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutTests.Given_ValidConfirmation_When_RequestOrAntiforgeryChanges_Then_DenialPreservesThePositiveControl(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"SqlServer\", mode: Cancellation)"
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeTests.Given_CommittedIssuerLogout_When_NativeDestinationOrOutputIsSubstituted_Then_AllSuccessMaterialIsWithheld(provider: \"SqlServer\", mode: Cancellation)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"SqlServer\", returned: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"SqlServer\", returned: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OldLogoutReturn_When_NewSignInAdvancesGeneration_Then_LaterIntentAndCookiesRemainUntouched(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OriginalCorrelationBounds_When_ReturnIsExpiredOrClockRollsBack_Then_NoMutationOrLifetimeExtension(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_PendingLogout_When_ReturnProofIsSubstituted_Then_NoMutationAndOriginalReturnStillWorks(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AnonymousPendingIntent_When_AssistedChoiceIsPosted_Then_OnlyLocalCancellationCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"SqlServer\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"SqlServer\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"SqlServer\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"SqlServer\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"acknowledgement\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"cleanup\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"cleanup-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"save\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"save-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"acknowledgement\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"cleanup\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"cleanup-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"save\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"save-expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_GenuineAbandonedCorrelation_When_RetentionBoundaryPasses_Then_CleanupReclaimsItAndSavedReturnStillDenies(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_OriginalProofExpiresDuringRemoteCleanup_When_LocalLogoutIsKnown_Then_LocalTextSurvivesWithoutPositiveCookieOrLink(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutPairingTests.Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -38179,6 +38231,1046 @@
         "parameterTypeFullNames": [
           "System.String",
           "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutNativeFault"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"PostgreSql\", returned: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutAuditTests",
+        "methodName": "Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"PostgreSql\", returned: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutAuditTests",
+        "methodName": "Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"SqlServer\", returned: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutAuditTests",
+        "methodName": "Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutAuditTests.Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain(provider: \"SqlServer\", returned: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutAuditTests",
+        "methodName": "Given_RemoteAuditInsertDenied_When_ContinuationOrReturnRuns_Then_LocalSuccessAndOriginalRemoteStateRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OldLogoutReturn_When_NewSignInAdvancesGeneration_Then_LaterIntentAndCookiesRemainUntouched(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutBoundaryTests",
+        "methodName": "Given_OldLogoutReturn_When_NewSignInAdvancesGeneration_Then_LaterIntentAndCookiesRemainUntouched",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OldLogoutReturn_When_NewSignInAdvancesGeneration_Then_LaterIntentAndCookiesRemainUntouched(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutBoundaryTests",
+        "methodName": "Given_OldLogoutReturn_When_NewSignInAdvancesGeneration_Then_LaterIntentAndCookiesRemainUntouched",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OriginalCorrelationBounds_When_ReturnIsExpiredOrClockRollsBack_Then_NoMutationOrLifetimeExtension(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutBoundaryTests",
+        "methodName": "Given_OriginalCorrelationBounds_When_ReturnIsExpiredOrClockRollsBack_Then_NoMutationOrLifetimeExtension",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_OriginalCorrelationBounds_When_ReturnIsExpiredOrClockRollsBack_Then_NoMutationOrLifetimeExtension(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutBoundaryTests",
+        "methodName": "Given_OriginalCorrelationBounds_When_ReturnIsExpiredOrClockRollsBack_Then_NoMutationOrLifetimeExtension",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_PendingLogout_When_ReturnProofIsSubstituted_Then_NoMutationAndOriginalReturnStillWorks(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutBoundaryTests",
+        "methodName": "Given_PendingLogout_When_ReturnProofIsSubstituted_Then_NoMutationAndOriginalReturnStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutBoundaryTests.Given_PendingLogout_When_ReturnProofIsSubstituted_Then_NoMutationAndOriginalReturnStillWorks(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutBoundaryTests",
+        "methodName": "Given_PendingLogout_When_ReturnProofIsSubstituted_Then_NoMutationAndOriginalReturnStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AnonymousPendingIntent_When_AssistedChoiceIsPosted_Then_OnlyLocalCancellationCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_AnonymousPendingIntent_When_AssistedChoiceIsPosted_Then_OnlyLocalCancellationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AnonymousPendingIntent_When_AssistedChoiceIsPosted_Then_OnlyLocalCancellationCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_AnonymousPendingIntent_When_AssistedChoiceIsPosted_Then_OnlyLocalCancellationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"PostgreSql\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"PostgreSql\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"SqlServer\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal(provider: \"SqlServer\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_AssistedLocalCommit_When_LocalAcknowledgementOrCleanupFails_Then_ReconciliationIsStrictlyLocal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"PostgreSql\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"PostgreSql\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"SqlServer\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutCapacityTests.Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved(provider: \"SqlServer\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutCapacityTests",
+        "methodName": "Given_RemoteQuotaFull_When_AssistedLogoutRuns_Then_LocalCommitSurvivesAndEveryExistingCorrelationIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"acknowledgement\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"cleanup\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"cleanup-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"save\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: False, failure: \"save-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"acknowledgement\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"cleanup\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"cleanup-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"save\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"PostgreSql\", returned: True, failure: \"save-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"acknowledgement\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"cleanup\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"cleanup-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"save\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: False, failure: \"save-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"acknowledgement\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"cleanup\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"cleanup-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"save\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutFailureTests.Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld(provider: \"SqlServer\", returned: True, failure: \"save-expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutFailureTests",
+        "methodName": "Given_KnownLocalLogout_When_RemotePhaseFails_Then_LocalRemainsRevokedAndRemoteSuccessIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_GenuineAbandonedCorrelation_When_RetentionBoundaryPasses_Then_CleanupReclaimsItAndSavedReturnStillDenies(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutLifetimeTests",
+        "methodName": "Given_GenuineAbandonedCorrelation_When_RetentionBoundaryPasses_Then_CleanupReclaimsItAndSavedReturnStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_GenuineAbandonedCorrelation_When_RetentionBoundaryPasses_Then_CleanupReclaimsItAndSavedReturnStillDenies(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutLifetimeTests",
+        "methodName": "Given_GenuineAbandonedCorrelation_When_RetentionBoundaryPasses_Then_CleanupReclaimsItAndSavedReturnStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_OriginalProofExpiresDuringRemoteCleanup_When_LocalLogoutIsKnown_Then_LocalTextSurvivesWithoutPositiveCookieOrLink(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutLifetimeTests",
+        "methodName": "Given_OriginalProofExpiresDuringRemoteCleanup_When_LocalLogoutIsKnown_Then_LocalTextSurvivesWithoutPositiveCookieOrLink",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutLifetimeTests.Given_OriginalProofExpiresDuringRemoteCleanup_When_LocalLogoutIsKnown_Then_LocalTextSurvivesWithoutPositiveCookieOrLink(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutLifetimeTests",
+        "methodName": "Given_OriginalProofExpiresDuringRemoteCleanup_When_LocalLogoutIsKnown_Then_LocalTextSurvivesWithoutPositiveCookieOrLink",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutPairingTests.Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutPairingTests",
+        "methodName": "Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutPairingTests.Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutPairingTests",
+        "methodName": "Given_TwoAuthenticBrowserLogoutPairs_When_TheirCookiesAreCrossPaired_Then_NeitherCorrelationIsConsumedAndOriginalPairsWork",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutTests",
+        "methodName": "Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutTests",
+        "methodName": "Given_AssistedLocalCommit_When_IssuerConfirmationIsAbandonedOrCookieAbsent_Then_LocalRemainsRevokedAndRemotePending",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutTests",
+        "methodName": "Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutTests",
+        "methodName": "Given_AuthenticReturnWithoutIssuerVisit_When_DuplicateReturnsRace_Then_OneUnverifiedReturnAndNoIssuerRevocation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutTests",
+        "methodName": "Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserRemoteLogoutTests.Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.BrowserSessions",
+        "typeName": "BrowserRemoteLogoutTests",
+        "methodName": "Given_GenuineSession_When_AssistedLogoutCompletes_Then_BothCommitsAreObservedButReturnDoesNotAttestIssuer",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
         ]
       },
       "traits": [

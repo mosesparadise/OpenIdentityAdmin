@@ -1,4 +1,5 @@
 using IdentityPlatform.Admin.Bff.Features.Sessions;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.Sessions.Browser;
 using IdentityPlatform.Infrastructure.Features.Sessions.Persistence;
 using Microsoft.AspNetCore.Antiforgery;
@@ -13,8 +14,13 @@ internal sealed class BrowserLogoutHandler(AdminSessionDbContext database, TimeP
     internal async Task<IResult> RunAsync(HttpContext http)
     {
         var post = HttpMethods.IsPost(http.Request.Method);
-        if (post ? !await BrowserLoginRequest.FormAsync(http, destinations) :
+        if (post ? !await BrowserLoginRequest.FormAsync(http, destinations, BrowserLogoutRequest.Choice) :
             !BrowserLoginRequest.Get(http.Request) || http.Request.Query.Count != 0 || http.Request.ContentType is not null || !await BrowserLoginRequest.EmptyAsync(http))
+        {
+            return Results.BadRequest();
+        }
+        var choice = post ? http.Request.Form[BrowserLogoutRequest.Choice].ToString() : string.Empty;
+        if (choice is not ("" or BrowserLogoutRequest.Local or BrowserLogoutRequest.Issuer))
         {
             return Results.BadRequest();
         }
@@ -34,15 +40,27 @@ internal sealed class BrowserLogoutHandler(AdminSessionDbContext database, TimeP
             return BrowserLogoutPage.Form(http, antiforgery.GetAndStoreTokens(http).RequestToken ?? throw new InvalidOperationException(BrowserLoginBoundary.Unavailable));
         }
         await antiforgery.ValidateRequestAsync(http);
+        return await CommitAsync(http, proof, reconciliation, actor.Digest, choice);
+    }
+
+    /// <summary>Reserves optional remote work only from authenticated provenance in the same atomic local invalidation.</summary>
+    private async Task<IResult> CommitAsync(HttpContext http, BrowserGenerationProof proof, bool reconciliation, string? actor, string choice)
+    {
+        var remote = choice == BrowserLogoutRequest.Issuer && !reconciliation && actor is not null;
+        var state = remote ? BrowserLoginSelector.CreateSelector() : null;
         var result = reconciliation
             ? await new BrowserLogoutReconciliation(database, clock).ReconcileAsync(proof.Digest, proof.Generation, http.RequestAborted)
-            : await new BrowserLogoutService(database, clock, codec).LogoutAsync(proof.Digest, proof.Generation, actor.Digest, null, http.RequestAborted);
+            : await new BrowserLogoutService(database, clock, codec).LogoutAsync(proof.Digest, proof.Generation, actor, state is null ? null : BrowserLoginSelector.Digest(state), http.RequestAborted);
         if (result is null)
         {
             return Results.Conflict();
         }
         Publish(http, proof, result);
-        return BrowserLogoutPage.Committed(http);
+        if (result.Remote is { } reservation)
+        {
+            http.Features.Set(new BrowserLogoutRequest(state!, reservation));
+        }
+        return choice == BrowserLogoutRequest.Issuer ? BrowserLogoutPage.Incomplete(http) : BrowserLogoutPage.Committed(http);
     }
 
     /// <summary>Admits current positive generations normally, or the original proof of exactly one verified logout through a distinct CSRF purpose.</summary>
@@ -71,8 +89,10 @@ internal sealed class BrowserLogoutHandler(AdminSessionDbContext database, TimeP
         var proof = new BrowserGenerationProof(previous.Browser, result.Generation, result.ObservedAt, result.ExpiresAt);
         var options = BrowserSessionCookies.Bounded(clock.GetUtcNow(), new DateTimeOffset(result.ExpiresAt, TimeSpan.Zero))
             ?? throw new InvalidOperationException(BrowserLoginBoundary.Unavailable);
-        http.Response.Cookies.Append(BrowserSessionCookies.Generation, proofs.Protect(proof), options);
-        foreach (var name in new[] { BrowserSessionCookies.Session, BrowserSessionCookies.Prelogin, BrowserSessionCookies.Antiforgery })
+        var encoded = proofs.Protect(proof);
+        http.Features.Set(new BrowserLogoutCookie(encoded, result.ExpiresAt));
+        http.Response.Cookies.Append(BrowserSessionCookies.Generation, encoded, options);
+        foreach (var name in new[] { BrowserSessionCookies.Session, BrowserSessionCookies.Prelogin, BrowserSessionCookies.Antiforgery, BrowserSessionCookies.Logout })
         {
             http.Response.Cookies.Delete(name, BrowserSessionCookies.SessionOptions());
         }
