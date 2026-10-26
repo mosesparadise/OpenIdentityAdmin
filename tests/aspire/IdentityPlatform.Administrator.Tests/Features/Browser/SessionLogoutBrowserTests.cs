@@ -13,12 +13,15 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 [Trait("BrowserStory", "BrowserSessions")]
 public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
 {
+    private static readonly BrowserHttpsCounts AbandonedClientCounts = new(2, 2, 4, 3);
+    private static readonly BrowserHttpsCounts AbandonedIssuerCounts = new(2, 1, 3, 3);
     private const string Main = "main";
     private const string LinkAttribute = "href";
     private const string IssuerLink = "#issuer-sign-out";
     private const string Confirm = "Sign out this issuer session";
     private const string Unverified = "Issuer sign-out result is unverified.";
     private const string IssuerPath = "/connect/end-session";
+    private const string Cancel = "Return without issuer sign-out";
     private const int SecondExchange = 2;
 
     /// <summary>Actual local revocation denies retained authentic cookies while the issuer stays live and the next sign-in still requires fresh password/MFA.</summary>
@@ -102,6 +105,12 @@ public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
             await using var session = await BrowserSession.CreateAsync();
             var page = await session.Context.NewPageAsync();
             var source = await ConfirmPageAsync(environment, page);
+            await page.GetByRole(AriaRole.Link, new()
+            {
+                Name = Cancel,
+                Exact = true
+            }).ClickAsync();
+            Assert.True(page.Url == new Uri(environment.Profile.ClientUri, BrowserHttpsJourney.Login).AbsoluteUri);
             await BrowserHttpsJourney.RequireStatusAsync(environment, page, false);
             await BrowserHttpsEffects.LocalAsync(environment, source, BrowserLogoutState.RemotePending);
             Assert.Equal(1, environment.EndSessionGets);
@@ -109,7 +118,7 @@ public sealed class SessionLogoutBrowserTests(BootstrapFixture fixture)
             await BrowserHttpsEffects.IssuerAsync(environment, source, revoked: false);
             Assert.Equal(1, environment.ParRequests);
             Assert.Equal(1, environment.TokenRequests);
-            environment.RequirePolicies(logins: 1, logouts: 1, confirmations: 0, issuerVisits: 1);
+            environment.RequirePolicies(AbandonedClientCounts, AbandonedIssuerCounts);
         });
 
     /// <summary>Follows only the actual BFF-produced issuer link after proving local commit and verifies the loaded native GET did not revoke.</summary>

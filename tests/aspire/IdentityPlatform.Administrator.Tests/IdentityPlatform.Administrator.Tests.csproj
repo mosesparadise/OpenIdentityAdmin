@@ -26,6 +26,7 @@
     <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserAccessibility.cs" Link="Fixtures/BrowserAccessibility.cs" />
     <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserStyleEvidence.cs" Link="Fixtures/BrowserStyleEvidence.cs" />
     <Compile Include="../../shared/IssuerMaterialFixture.cs" Link="Fixtures/IssuerMaterialFixture.cs" />
+    <Compile Include="../../shared/BrowserPresentationAssertions.cs" Link="Fixtures/BrowserPresentationAssertions.cs" />
     <Compile Include="../../shared/SafeAssertions.cs" Link="Fixtures/SafeAssertions.cs" />
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/ProfileStartupEvidence.cs" Link="Fixtures/ProfileStartupEvidence.cs" />
     <Compile Include="../IdentityPlatform.AppHost.Tests/Features/LifecycleEvidence.cs" Link="Fixtures/LifecycleEvidence.cs" />

@@ -13,5 +13,7 @@
     <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/theme.js" LogicalName="IdentityPlatform.AccountAssets.theme.js" />
     <EmbeddedResource Include="Features/Accounts/Shared/login.css" LogicalName="IdentityPlatform.AccountAssets.login.css" />
     <EmbeddedResource Include="Features/Accounts/Shared/login.js" LogicalName="IdentityPlatform.AccountAssets.login.js" />
+    <Compile Include="../../frontend/IdentityPlatform.DesignTokens/BrowserDocument.cs" Link="Features/Accounts/Browser/Presentation/BrowserDocument.cs" />
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/browser-document.css" LogicalName="IdentityPlatform.BrowserDocument.browser-document.css" />
   </ItemGroup>
 </Project>

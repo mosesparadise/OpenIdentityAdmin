@@ -49,8 +49,8 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
 
     /// <summary>Runs the full native account/protocol pipeline over a retained real HTTPS listener and immutable BFF identity.</summary>
     internal static Task<BrowserIssuerHost> CreateHttpsAsync(JourneyScenario scenario, string provider,
-        AdministratorRegistrationPolicy policy, Uri client, BrowserHttpsEndpoint endpoint) =>
-        CreateCoreAsync(scenario, provider, false, [], policy, endpoint: endpoint, client: client);
+        AdministratorRegistrationPolicy policy, Uri client, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null) =>
+        CreateCoreAsync(scenario, provider, false, [], policy, configure, endpoint, client);
 
     /// <summary>Composes one explicit account host and preserves cleanup ownership under failed startup.</summary>
     private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,

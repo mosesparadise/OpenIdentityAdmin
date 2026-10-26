@@ -20,7 +20,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
 
     /// <summary>Composes only Sessions credentials and existing native/browser services; no issuer bridge or injected authentication is installed.</summary>
     internal static async Task<BrowserHttpsClient> CreateAsync(BootstrapSessions database, TimeProvider clock, NativeClientProfile profile,
-        NativeClientCredentials keys, SessionProtection protection, BrowserHttpsEndpoint endpoint)
+        NativeClientCredentials keys, SessionProtection protection, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null)
     {
         var builder = new HostBuilder().ConfigureWebHost(web =>
         {
@@ -32,6 +32,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
                 services.AddAdministratorClient(profile, keys);
                 services.AddBrowserLogin(new(profile.Issuer.AbsoluteUri, profile.ClientUri.AbsoluteUri), protection);
                 services.Configure<OpenIddictClientOptions>(options => options.TimeProvider = clock);
+                configure?.Invoke(services);
             }).Configure(app =>
             {
                 app.Use(endpoint.InvokeAsync);

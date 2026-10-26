@@ -108,7 +108,7 @@ internal static class BrowserHttpsJourney
         Assert.Equal(issuer ? 1 : 0, issuerCount);
         Assert.Equal(remote ? 1 : 0, remoteCount);
         var protectedCookies = cookies.Where(cookie => cookie.Name is IssuerCookie or BrowserSessionCookies.Logout);
-        Assert.True(protectedCookies.All(cookie => cookie.Domain == fixture.Profile.ClientUri.Host && cookie.Path == RootPath &&
+        Assert.True(protectedCookies.All(cookie => cookie.Domain == (cookie.Name == IssuerCookie ? fixture.Profile.Issuer.Host : fixture.Profile.ClientUri.Host) && cookie.Path == RootPath &&
             cookie.Secure && cookie.HttpOnly && cookie.SameSite == SameSiteAttribute.Lax));
     }
 

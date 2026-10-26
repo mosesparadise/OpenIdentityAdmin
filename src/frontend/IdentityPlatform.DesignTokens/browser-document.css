@@ -1,0 +1,15 @@
+body { margin: 0; min-height: 100svh; font-family: var(--font); background: var(--page); color: var(--text); line-height: 1.6; }
+header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 1.25rem; }
+.wordmark { font-weight: 700; }
+main { padding: 2rem 1rem; }
+.card { max-width: 32rem; margin: auto; padding: clamp(1.25rem, 4vw, 2.5rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+h1 { margin: 0; font-size: clamp(1.75rem, 5vw, 2.1rem); line-height: 1.25; }
+p { overflow-wrap: anywhere; }
+form { display: grid; gap: .75rem; }
+button, select { min-height: 44px; padding: .65rem .85rem; border: 1px solid var(--input-border); border-radius: .5rem; font: inherit; }
+button { appearance: none; display: flex; align-items: center; width: 100%; height: auto; white-space: normal; color: var(--on-accent); background: var(--accent); cursor: pointer; text-align: start; }
+select { color: var(--text); background: var(--surface); }
+a { color: var(--accent); display: inline-block; padding-block: .65rem; overflow-wrap: anywhere; }
+.skip-link { position: absolute; top: -6rem; left: 1rem; padding: .75rem; background: var(--surface); color: var(--text); z-index: 2; }
+.skip-link:focus { top: 1rem; }
+[hidden] { display: none !important; }

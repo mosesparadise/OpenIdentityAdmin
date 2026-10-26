@@ -22,7 +22,6 @@ internal sealed class BrowserRemoteLogoutFixture(IssuerLogoutFixture issuer) : I
     private const string ReturnPath = "/bff/logout/return";
     private const string LocalSuccessText = "session has ended locally";
     private const string UnconfirmedText = "Local sign-out could not be confirmed";
-    private const string ScriptElement = "<script";
     private const string IssuerLinkId = "issuer-sign-out";
     private const string LinkPattern = "id=\"issuer-sign-out\" href=\"([^\"]+)\"";
     private const string Choice = "Mode";
@@ -78,7 +77,7 @@ internal sealed class BrowserRemoteLogoutFixture(IssuerLogoutFixture issuer) : I
         var html = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         Assert.True(html.Contains(LocalSuccessText, StringComparison.Ordinal));
         Assert.False(html.Contains(UnconfirmedText, StringComparison.Ordinal));
-        Assert.False(html.Contains(ScriptElement, StringComparison.Ordinal));
+        IdentityPlatform.Testing.BrowserPresentationAssertions.ThemeOnly(html);
         Assert.Null(response.Headers.Location);
         if (!link)
         {

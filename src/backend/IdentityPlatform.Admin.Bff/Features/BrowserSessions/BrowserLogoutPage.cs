@@ -1,4 +1,5 @@
 using System.Text.Encodings.Web;
+using IdentityPlatform.DesignTokens;
 
 namespace IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 
@@ -10,8 +11,7 @@ internal static class BrowserLogoutPage
     internal const string Path = "/bff/logout";
     private const string Html = "text/html; charset=utf-8";
     private const string Policy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
-    private const string Header = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Administrator sign-out</title></head><body><main><h1>Administrator sign-out</h1>";
-    private const string Footer = "</main></body></html>";
+    private const string Title = "Administrator sign-out";
 
     private const string FormContent = "<p>End this administrator session and cancel any sign-in in progress. Choose whether to continue to issuer confirmation after local sign-out.</p><form method=\"post\" action=\"/bff/logout\"><input type=\"hidden\" name=\"{0}\" value=\"{1}\"><button type=\"submit\" name=\"Mode\" value=\"local\">Sign out locally</button><button type=\"submit\" name=\"Mode\" value=\"issuer\">Sign out locally and continue to issuer</button></form>";
     private const string CommittedContent = "<p>This administrator session has ended locally. Issuer sign-out was not requested.</p><a href=\"/bff/login\">Sign in again</a>";
@@ -54,7 +54,7 @@ internal static class BrowserLogoutPage
     {
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers[ReferrerPolicy] = referrer;
-        http.Response.Headers[ContentSecurityPolicy] = Policy;
-        return Results.Content(Header + content + Footer, Html, statusCode: status);
+        http.Response.Headers[ContentSecurityPolicy] = Policy + BrowserDocument.AssetPolicy;
+        return Results.Content(BrowserDocument.Render(Title, content), Html, statusCode: status);
     }
 }

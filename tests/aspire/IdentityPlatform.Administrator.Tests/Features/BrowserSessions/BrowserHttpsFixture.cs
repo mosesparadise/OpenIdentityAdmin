@@ -4,6 +4,7 @@ using IdentityPlatform.Admin.Bff.Features.Sessions;
 using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Migrator.Features.AdministratorProtocol;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 
@@ -19,7 +20,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     private readonly NativeClientCredentialFixture material = new();
     private readonly BffSessionFixture tickets = new();
     private readonly BrowserHttpsEndpoint issuerEndpoint = new();
-    private readonly BrowserHttpsEndpoint clientEndpoint = new();
+    private readonly BrowserHttpsEndpoint clientEndpoint;
     private NativeClientCredentials? keys;
     private SessionProtection? protection;
     private BrowserIssuerHost? issuerHost;
@@ -31,11 +32,22 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     internal int TokenRequests => issuerEndpoint.TokenRequests;
     internal int EndSessionGets => issuerEndpoint.EndSessionGets;
     internal int EndSessionPosts => issuerEndpoint.EndSessionPosts;
+    internal int EndSessionRedirects => issuerEndpoint.EndSessionRedirects;
+    internal BrowserReturnFailure ReturnFailure => clientEndpoint.ReturnFailure;
+
+    /// <summary>Optionally uses the development certificate's loopback IP SAN to separate issuer and BFF cookie hosts and sites.</summary>
+    private BrowserHttpsFixture(bool distinctSites)
+    {
+        clientEndpoint = new(distinctSites);
+        clientEndpoint.Policy.PeerOrigin = issuerEndpoint.Address.GetLeftPart(UriPartial.Authority);
+        issuerEndpoint.Policy.PeerOrigin = clientEndpoint.Address.GetLeftPart(UriPartial.Authority);
+    }
 
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
-    internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider)
+    internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
+        Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false)
     {
-        var owner = new BrowserHttpsFixture();
+        var owner = new BrowserHttpsFixture(distinctSites);
         try
         {
             owner.keys = NativeClientInteroperabilityTests.Load(owner.material);
@@ -48,9 +60,9 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
                 BrowserUpgradeFixture.Operator, ordinary.Registration, 1)));
             owner.database = await fixture.LeaseSessionsAsync(provider);
             owner.issuerHost = await BrowserIssuerHost.CreateHttpsAsync(owner.Issuer.Account.Journey, provider,
-                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint);
+                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer);
             owner.Client = await BrowserHttpsClient.CreateAsync(owner.database, owner.Issuer.Account.Journey.Clock,
-                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint);
+                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient);
             return owner;
         }
         catch { await owner.DisposeAsync(); throw; }
@@ -63,6 +75,21 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             logins * FormsPerLogin + logouts, logins * RedirectsPerLogin);
         issuerEndpoint.Policy.Require(logins * FormsPerLogin + confirmations, logins,
             logins * FormsPerLogin + issuerVisits, logins * RedirectsPerLogin + confirmations);
+    }
+
+    /// <summary>Reconciles explicit negative-flow operations while retaining every existing zero-violation policy assertion.</summary>
+    internal void RequirePolicies(BrowserHttpsCounts client, BrowserHttpsCounts issuer)
+    {
+        clientEndpoint.Policy.Require(client.Posts, client.Returns, client.Forms, client.Redirects, client.HostilePosts);
+        issuerEndpoint.Policy.Require(issuer.Posts, issuer.Returns, issuer.Forms, issuer.Redirects, issuer.HostilePosts);
+    }
+
+    /// <summary>Chooses only one of the two immutable test origins as sender and fixes its sole permitted cross-site peer.</summary>
+    internal Uri StageAttacker(Uri origin, string form)
+    {
+        Assert.True(origin == Profile.Issuer || origin == Profile.ClientUri);
+        return origin == Profile.Issuer ? issuerEndpoint.StageAttacker(form, clientEndpoint.Address) :
+            clientEndpoint.StageAttacker(form, issuerEndpoint.Address);
     }
 
     /// <summary>Attempts every cleanup in dependency order, joining both network roots before releasing keys or database leases.</summary>
@@ -136,3 +163,6 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
         Assert.False(failed, CleanupFailure);
     }
 }
+
+/// <summary>Names the exact independently expected native operations for one HTTPS host in a negative browser journey.</summary>
+internal sealed record BrowserHttpsCounts(int Posts, int Returns, int Forms, int Redirects, int HostilePosts = 0);

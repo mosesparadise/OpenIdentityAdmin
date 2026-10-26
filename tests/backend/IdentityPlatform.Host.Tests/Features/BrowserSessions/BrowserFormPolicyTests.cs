@@ -29,6 +29,7 @@ public sealed class BrowserFormPolicyTests
     private const string Placeholder = "non-authenticating-test-placeholder";
     private const string AccountPolicy = "default-src 'none'; script-src 'nonce-fixed-synthetic-nonce'; style-src 'self'; img-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'";
     private const string LogoutPolicy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'";
+    private const string PresentationPolicy = "; style-src 'sha256-nIUXs2C1YiiVplk3G8QC7SH3kEerGX19ls/gblno1Fo='; script-src 'sha256-w+uuhquW+ZQV55tUvccOSS+TKS9Hbuz6bhtay55K5ho='";
 
     /// <summary>Host, Origin and query cannot replace the configured nondefault-port BFF origin or alter the existing script nonce/directives.</summary>
     [Fact]
@@ -57,10 +58,10 @@ public sealed class BrowserFormPolicyTests
         var http = Hostile();
         _ = BrowserLogoutPage.Form(http, Placeholder);
         Assert.Equal(FormPolicy, http.Response.Headers[Referrer]);
-        Assert.Equal(LogoutPolicy, http.Response.Headers.ContentSecurityPolicy);
+        Assert.Equal(LogoutPolicy + PresentationPolicy, http.Response.Headers.ContentSecurityPolicy);
         _ = BrowserLogoutPage.Committed(http);
         Assert.Equal(InertPolicy, http.Response.Headers[Referrer]);
-        Assert.Equal(LogoutPolicy, http.Response.Headers.ContentSecurityPolicy);
+        Assert.Equal(LogoutPolicy + PresentationPolicy, http.Response.Headers.ContentSecurityPolicy);
     }
 
     /// <summary>The renderer uses its separately supplied configured return, while a subsequent inert denial restores the default policy.</summary>
@@ -74,10 +75,10 @@ public sealed class BrowserFormPolicyTests
         request.SetParameter(LogoutHint, Placeholder);
         await IssuerLogoutPage.ConfirmAsync(http, request, Placeholder, Placeholder, new Uri(Client + ReturnPath));
         Assert.Equal(FormPolicy, http.Response.Headers[Referrer]);
-        Assert.True(http.Response.Headers.ContentSecurityPolicy == LogoutPolicy + SourceSeparator + ClientOrigin);
+        Assert.True(http.Response.Headers.ContentSecurityPolicy == LogoutPolicy + SourceSeparator + ClientOrigin + PresentationPolicy);
         await IssuerLogoutPage.IncompleteAsync(http);
         Assert.Equal(InertPolicy, http.Response.Headers[Referrer]);
-        Assert.Equal(LogoutPolicy, http.Response.Headers.ContentSecurityPolicy);
+        Assert.Equal(LogoutPolicy + PresentationPolicy, http.Response.Headers.ContentSecurityPolicy);
     }
 
     /// <summary>Actual safe failure handling must remove a staged form exception before publishing inert text, without opening a database connection.</summary>

@@ -16,6 +16,7 @@ internal static class BrowserFormHeaders
     private const string Prefix = "default-src 'none'; script-src 'nonce-";
     private const string Suffix = "'; style-src 'self'; img-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'";
     private const string LogoutPolicy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' ";
+    internal const string PresentationPolicy = "; style-src 'sha256-nIUXs2C1YiiVplk3G8QC7SH3kEerGX19ls/gblno1Fo='; script-src 'sha256-w+uuhquW+ZQV55tUvccOSS+TKS9Hbuz6bhtay55K5ho='";
     private const int NonceBytes = 24;
 
     /// <summary>Distinguishes actionable HTML documents from redirects, results and inert denials.</summary>
@@ -47,7 +48,7 @@ internal static class BrowserFormHeaders
     {
         Referrer(response, form: true);
         var policy = Header(response, ContentSecurityPolicy);
-        Assert.True(policy == LogoutPolicy + client.GetLeftPart(UriPartial.Authority));
+        Assert.True(policy == LogoutPolicy + client.GetLeftPart(UriPartial.Authority) + PresentationPolicy);
     }
 
     /// <summary>Checks finite cardinality before indexing so a duplicate header cannot disclose its raw values in diagnostics.</summary>
