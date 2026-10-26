@@ -32,6 +32,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private int token;
     private int endSessionGets;
     private int endSessionPosts;
+    private int endSessionRedirects;
     private AttackerDocument? attacker;
     internal BrowserReturnFailure ReturnFailure { get; } = new();
     internal Uri Address
@@ -46,6 +47,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     internal int TokenRequests => Volatile.Read(ref token);
     internal int EndSessionGets => Volatile.Read(ref endSessionGets);
     internal int EndSessionPosts => Volatile.Read(ref endSessionPosts);
+    internal int EndSessionRedirects => Volatile.Read(ref endSessionRedirects);
 
     /// <summary>Fixes the public identity before any credential, registration or account profile is constructed, without releasing the port.</summary>
     internal BrowserHttpsEndpoint(bool ipAddress = false)
@@ -96,7 +98,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
             Policy.Request(http.Request);
             http.Response.OnStarting(() =>
             {
-                Policy.Response(http);
+                ObserveResponse(http);
                 return Task.CompletedTask;
             });
             if (!ReturnFailure.Abort(http, Address) && !await ServeAttackerAsync(http))
@@ -108,6 +110,16 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
         {
             Assert.True(pending.TryRemove(id, out _));
             completion.TrySetResult();
+        }
+    }
+
+    /// <summary>Counts final native confirmation redirects at the actual fixed issuer endpoint, independently of browser response-event classification.</summary>
+    private void ObserveResponse(HttpContext http)
+    {
+        Policy.Response(http);
+        if (http.Request.Path == EndSessionPath && HttpMethods.IsPost(http.Request.Method) && http.Response.StatusCode == StatusCodes.Status302Found)
+        {
+            Interlocked.Increment(ref endSessionRedirects);
         }
     }
 

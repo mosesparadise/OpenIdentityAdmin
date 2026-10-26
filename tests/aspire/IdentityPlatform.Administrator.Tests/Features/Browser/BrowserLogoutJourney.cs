@@ -14,6 +14,7 @@ internal static class BrowserLogoutJourney
     internal const string Confirm = "Sign out this issuer session";
     internal const string Unverified = "Issuer sign-out result is unverified.";
     internal const string Unknown = "Local sign-out could not be confirmed.";
+    private const string ConfirmReport = "b3-issuer-confirm redirects-before={0} redirects-after={1}";
     private const string Link = "#issuer-sign-out";
     private const string Href = "href";
     private const string State = "state";
@@ -53,11 +54,16 @@ internal static class BrowserLogoutJourney
     /// <summary>Requires actual issuer confirmation and its native redirect before inspecting the unverified BFF result.</summary>
     internal static async Task ConfirmAsync(BrowserHttpsFixture fixture, IPage page)
     {
-        var response = await page.RunAndWaitForResponseAsync(() => page.GetByRole(AriaRole.Button, new() { Name = Confirm, Exact = true }).ClickAsync(),
-            response => response.Request.Method == HttpMethods.Post && Uri.TryCreate(response.Url, UriKind.Absolute, out var uri) &&
-                uri.GetLeftPart(UriPartial.Path) == new Uri(fixture.Profile.Issuer, IssuerPath).AbsoluteUri);
-        Assert.Equal(StatusCodes.Status302Found, response.Status);
+        var before = fixture.EndSessionRedirects;
+        await page.GetByRole(AriaRole.Button, new()
+        {
+            Name = Confirm,
+            Exact = true
+        }).ClickAsync();
         await RequireReturnedAsync(fixture, page);
+        var after = fixture.EndSessionRedirects;
+        TestContext.Current.TestOutputHelper?.WriteLine(ConfirmReport, before, after);
+        Assert.Equal(before + 1, after);
     }
 
     /// <summary>Requires the finite visible outcome and fixed destination without printing selectors from the URL.</summary>
