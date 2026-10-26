@@ -126,8 +126,8 @@ class BrowserArchiveTests(unittest.TestCase):
         workflow = (ROOT / '.github/workflows/verify.yml').read_text()
         jobs = dict(re.findall(r'(?ms)^  ([a-z][a-z-]*):\n(.*?)(?=^  [a-z][a-z-]*:\n|\Z)', workflow))
         selected = {name for name, body in jobs.items() if 'sudo python3 scripts/prepare_browser_archive.py' in body}
-        self.assertEqual({'browser', 'contrast-experiment', 'contracts'}, selected)
-        for name, minutes in [('browser', 20), ('contrast-experiment', 20), ('contracts', 15)]:
+        self.assertEqual({'verify', 'browser', 'contrast-experiment', 'contracts'}, selected)
+        for name, minutes in [('verify', 20), ('browser', 20), ('contrast-experiment', 20), ('contracts', 15)]:
             body = jobs[name]
             self.assertIn(f'timeout-minutes: {minutes}\n', body)
             self.assertEqual(1, body.count('sudo python3 scripts/prepare_browser_archive.py'))

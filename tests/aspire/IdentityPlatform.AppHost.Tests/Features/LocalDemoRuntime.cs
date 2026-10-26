@@ -64,11 +64,14 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
         }
         catch
         {
-            if (app is not null)
+            try
             {
-                await app.DisposeAsync();
+                if (app is not null)
+                {
+                    await app.DisposeAsync();
+                }
             }
-            await builder.DisposeAsync();
+            finally { await builder.DisposeAsync(); }
             throw;
         }
     }
