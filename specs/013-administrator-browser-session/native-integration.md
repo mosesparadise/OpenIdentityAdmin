@@ -38,7 +38,9 @@ Initial focused failures exposed fixture assumptions: native identities use `Cas
 
 Full Host passes 1,192/1,192 with zero skips and all 211 Python controls pass. Independent architecture/test and security source reviews pass. Hosted verification remains pending and belongs in `verification.md` and the delivery PR after execution. This document is not evidence of both-provider or browser execution for B3.
 
-## Remaining native integration work
+## Historical remaining native integration work — 22 October
+
+The five bullets below preserve the earlier checkpoint. Their implementations now map to accepted [private intent binding](native-intent-binding.md), [issuer completion](issuer-completion.md), [shared transactions](native-transactions.md), [native end-session](native-end-session.md), [registration upgrade](registration-upgrade.md), [callback](product-browser-callback.md) and [local](local-logout.md)/[issuer](issuer-logout.md)/[remote](logout-continuation.md) logout slices. [Audit provenance](audit-correlation.md#accepted-internal-delivery--26-october-2026) supplies cross-store linkage. T003 final integration is accepted through [PR #103 browser/integrated evidence](browser-login-protection.md#accepted-internal-delivery--26-october-2026); these historical bullets are not requests to reimplement delivered adapters.
 
 1. Constrained intent/completion preservation through authenticated PAR, issuer completion attachment, private code state and B3-only ID-token issuance; actual event ordering and current-authority rechecks.
 2. Shared Sessions ownership for generation, intent consumption, ticket and audit. Existing `SessionTicketStore.CreateAsync` opens a separate scope/commit; wrapping it in another transaction does not provide B3 atomicity. Prove a shared context/transaction before product establishment.
