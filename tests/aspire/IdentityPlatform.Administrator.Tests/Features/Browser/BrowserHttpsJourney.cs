@@ -141,7 +141,14 @@ internal static class BrowserHttpsJourney
     {
         var response = await page.GotoAsync(new Uri(fixture.Profile.ClientUri, Logout).AbsoluteUri);
         Assert.Equal(StatusCodes.Status200OK, response!.Status);
-        await page.Locator(issuer ? IssuerChoice : LocalChoice).ClickAsync();
+        var submitted = await page.RunAndWaitForResponseAsync(() => page.Locator(issuer ? IssuerChoice : LocalChoice).ClickAsync(),
+            item => item.Request.IsNavigationRequest && item.Request.Frame == page.MainFrame &&
+                item.Request.Method == HttpMethods.Post && item.Url == new Uri(fixture.Profile.ClientUri, Logout).AbsoluteUri);
+        Assert.Equal(StatusCodes.Status200OK, submitted.Status);
+        await page.Locator(Main).Filter(new()
+        {
+            HasText = LocalSuccess
+        }).WaitForAsync();
         Assert.True((await page.TextContentAsync(Main))!.Contains(LocalSuccess, StringComparison.Ordinal));
         var retained = (await page.Context.CookiesAsync()).Any(cookie => cookie.Name == BrowserSessionCookies.Session);
         Assert.False(retained);

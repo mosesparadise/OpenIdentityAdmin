@@ -18,7 +18,9 @@ public sealed class SessionSecrecyBrowserTests(BootstrapFixture fixture)
         AdministratorBrowserEvidence.RunAsync(async () =>
         {
             var capture = new BrowserNativeSecrets();
-            await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, capture.Configure, distinctSites: true);
+            await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, capture.Configure);
+            Assert.True(environment.Profile.Issuer.Host == environment.Profile.ClientUri.Host);
+            Assert.True(environment.Profile.Issuer.GetLeftPart(UriPartial.Authority) != environment.Profile.ClientUri.GetLeftPart(UriPartial.Authority));
             await BrowserSecrecyControls.RunAsync(environment);
             await using var session = await BrowserSession.CreateAsync();
             await BrowserTrafficLifetime.RunAsync(session.Context, async traffic =>
