@@ -26,18 +26,54 @@
   "unionFindings": 13,
   "repositoryEdited": false,
   "newRuntimeTestsExecuted": false,
-  "fileHashes": {
-    "scalar-candidate.json": "3942689d2c6d5208ce3b3ae52a9831ba36b2f0a4056f50180178b913960da227",
-    "swagger-candidate.json": "c56c0f7c07e78898db1c719721cf3a47ccf3cb758865ae1381651ef58167d97d",
-    "openapi-core-candidate.json": "1a35fdcb5b882b4613d60dae6def7b43f903d0b65ff03dfa985ca09c0f172409",
-    "npm-review-candidate.json": "4c14aca1176f3ea443aee2cad964312df28867449fd00c9d55b964b113fcd828",
-    "embedded-resources.json": "57205dab22be4e6bebc108b3c829e1590eff9ad18866f4e0c35a3900b31d6319",
-    "npm-archive-receipts.json": "0f9ae0a0a2e9ffb3e62165aa5f9d6876e4c28ffe904d1f9910df894d00ea2769",
-    "upstream-get-receipt.json": "570dd102db7b49e17e1187c420b8a1c42aace67b4c93f9e8be6e46ee415385ab",
-    "swagger-upstream-get-receipt.json": "847fc9f1bb3730ae66293f0c8d8eda95b57738025e62192d27c423f0533e06d2",
-    "component-candidates.json": "d3e3eeed9a46a9446377ece00c3700921833fff8296261311f777d4246771fed",
-    "swagger-current-map-assessment.json": "546edc4c01e37af2fda9644eedf9814f6700258f5c145d01b3b8309eb336514a",
-    "configuration-and-npm-review.json": "f5d4704fa0efa9441dae1f977ba1446f85f372bf640b9f91f63a9e52f3eb9d52",
-    "advisory-query-receipt.json": "fd9f9e5133f022dcfcebc2055660ef276bda9184e4f4cf57d182e2f2e0cc592a"
-  }
+  "fileHashes": [
+    {
+      "file": "scalar-candidate.json",
+      "sha256": "3942689d2c6d5208ce3b3ae52a9831ba36b2f0a4056f50180178b913960da227"
+    },
+    {
+      "file": "swagger-candidate.json",
+      "sha256": "c56c0f7c07e78898db1c719721cf3a47ccf3cb758865ae1381651ef58167d97d"
+    },
+    {
+      "file": "openapi-core-candidate.json",
+      "sha256": "1a35fdcb5b882b4613d60dae6def7b43f903d0b65ff03dfa985ca09c0f172409"
+    },
+    {
+      "file": "npm-review-candidate.json",
+      "sha256": "4c14aca1176f3ea443aee2cad964312df28867449fd00c9d55b964b113fcd828"
+    },
+    {
+      "file": "embedded-resources.json",
+      "sha256": "57205dab22be4e6bebc108b3c829e1590eff9ad18866f4e0c35a3900b31d6319"
+    },
+    {
+      "file": "npm-archive-receipts.json",
+      "sha256": "0f9ae0a0a2e9ffb3e62165aa5f9d6876e4c28ffe904d1f9910df894d00ea2769"
+    },
+    {
+      "file": "upstream-get-receipt.json",
+      "sha256": "570dd102db7b49e17e1187c420b8a1c42aace67b4c93f9e8be6e46ee415385ab"
+    },
+    {
+      "file": "swagger-upstream-get-receipt.json",
+      "sha256": "847fc9f1bb3730ae66293f0c8d8eda95b57738025e62192d27c423f0533e06d2"
+    },
+    {
+      "file": "component-candidates.json",
+      "sha256": "d3e3eeed9a46a9446377ece00c3700921833fff8296261311f777d4246771fed"
+    },
+    {
+      "file": "swagger-current-map-assessment.json",
+      "sha256": "546edc4c01e37af2fda9644eedf9814f6700258f5c145d01b3b8309eb336514a"
+    },
+    {
+      "file": "configuration-and-npm-review.json",
+      "sha256": "f5d4704fa0efa9441dae1f977ba1446f85f372bf640b9f91f63a9e52f3eb9d52"
+    },
+    {
+      "file": "advisory-query-receipt.json",
+      "sha256": "fd9f9e5133f022dcfcebc2055660ef276bda9184e4f4cf57d182e2f2e0cc592a"
+    }
+  ]
 }

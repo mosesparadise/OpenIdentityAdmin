@@ -5,6 +5,28 @@ from pathlib import Path
 import tempfile
 import unittest
 from check_supply_chain import require_no_vulnerabilities, inventory_licenses
+from prepare_provider_baseline import require_frozen_packages
+
+
+class FrozenProducerEvidenceTests(unittest.TestCase):
+    """Keep upgrade candidates out of the historical producer's actual runtime package graph."""
+
+    def setUp(self):
+        self.lock = {"dependencies": {"net10.0": {
+            "Microsoft.EntityFrameworkCore.Relational": {"type": "CentralTransitive", "resolved": "10.0.12"},
+            "BuildOnly": {"type": "Transitive", "resolved": "1.0.0"}}}}
+
+    def test_exact_frozen_runtime_subset_accepts_case_insensitive_package_ids(self):
+        require_frozen_packages({"libraries": {
+            "microsoft.entityframeworkcore.relational/10.0.12": {"type": "package"},
+            "HistoricalProject/1.0.0": {"type": "project"}}}, self.lock)
+
+    def test_upgrade_unknown_and_absent_runtime_packages_are_rejected(self):
+        for name in ("Microsoft.EntityFrameworkCore.Relational/10.0.14", "Unknown/1.0.0", None):
+            with self.subTest(name=name):
+                libraries = {name: {"type": "package"}} if name else {}
+                with self.assertRaisesRegex(ValueError, "frozen lock"):
+                    require_frozen_packages({"libraries": libraries}, self.lock)
 
 
 class AdvisoryEvidenceTests(unittest.TestCase):

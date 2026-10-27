@@ -1,0 +1,62 @@
+{
+  "reviewedUtc": "2026-10-27T18:04:38.865478+00:00",
+  "scope": "Independent read-only license review of actual restored NuGet archives and current locked graph; no legal approval or release disposition",
+  "conclusion": "Two exact-version reviewed exceptions can be added with unchanged license hashes/dispositions; preserve old exceptions for historical/frozen evidence",
+  "records": [
+    {
+      "package": "Deque.AxeCore.Commons/4.14.0",
+      "priorPackage": "Deque.AxeCore.Commons/4.13.0",
+      "licenseFile": "LICENSE.txt",
+      "licenseSha256": "af175b9d96ee93c21a036152e1b905b0b95304d4ae8c2c921c7609100ba8df7e",
+      "identicalLicenseBytes": true,
+      "matchesReviewedHash": true,
+      "restoredArchiveSha512MatchesCacheSidecar": true,
+      "nugetRestoredMetadataHashMatchesEveryLock": true,
+      "restoredSource": "https://api.nuget.org/v3/index.json",
+      "projects": [
+        "tests/aspire/IdentityPlatform.Administrator.Tests",
+        "tests/aspire/IdentityPlatform.Issuer.Tests",
+        "tests/contracts/IdentityPlatform.Api.Contracts.Tests"
+      ],
+      "recommendedRecord": {
+        "file": "LICENSE.txt",
+        "sha256": "af175b9d96ee93c21a036152e1b905b0b95304d4ae8c2c921c7609100ba8df7e",
+        "disposition": "MPL-2.0, unmodified test-only accessibility engine/bindings. Preserve license/notices and applicable source availability on redistribution; do not bundle in product hosts. Distribution review remains a release obligation."
+      }
+    },
+    {
+      "package": "Microsoft.Data.SqlClient.SNI.runtime/6.0.3",
+      "priorPackage": "Microsoft.Data.SqlClient.SNI.runtime/6.0.2",
+      "licenseFile": "LICENSE.txt",
+      "licenseSha256": "9335e8bad875dd7be4eebd55d2335eb6433d1cea61aadb3817af7807bef8932a",
+      "identicalLicenseBytes": true,
+      "matchesReviewedHash": true,
+      "restoredArchiveSha512MatchesCacheSidecar": true,
+      "nugetRestoredMetadataHashMatchesEveryLock": true,
+      "restoredSource": "https://api.nuget.org/v3/index.json",
+      "projects": [
+        "eng/IdentityPlatform.ProviderCompatibility.Baseline",
+        "src/backend/IdentityPlatform.Admin.Api",
+        "src/backend/IdentityPlatform.Admin.Bff",
+        "src/backend/IdentityPlatform.AuthServer",
+        "src/backend/IdentityPlatform.Worker",
+        "src/migrations/IdentityPlatform.Migrations.SqlServer",
+        "src/migrations/IdentityPlatform.Migrator",
+        "src/persistence/IdentityPlatform.Database.SqlServer",
+        "tests/architecture/IdentityPlatform.Architecture.Tests",
+        "tests/backend/IdentityPlatform.Host.Tests",
+        "tests/contracts/IdentityPlatform.Api.Contracts.Tests",
+        "tests/persistence/IdentityPlatform.Persistence.Tests",
+        "tests/tooling/IdentityPlatform.Governance.Driver",
+        "tests/tooling/IdentityPlatform.NativeClient.Driver"
+      ],
+      "recommendedRecord": {
+        "file": "LICENSE.txt",
+        "sha256": "9335e8bad875dd7be4eebd55d2335eb6433d1cea61aadb3817af7807bef8932a",
+        "disposition": "Microsoft proprietary distributable-code terms. Development use inventoried; legal review of redistribution/end-user terms is required before public release."
+      }
+    }
+  ],
+  "otherNonPermissiveDeclarations": "Fractions/7.3.0 and Microsoft.Identity.Client.NativeInterop/0.20.6 match existing reviewed records; Microsoft.Data.SqlClient.SNI.runtime/6.0.2 remains required by baseline graph. No other nonallowed expressions found.",
+  "hashSemantics": "NuGet signed-package contentHash from restored metadata is checked against lock contentHash; raw archive SHA512 is checked independently against its cached .nupkg.sha512 sidecar. These are different hash domains and are not conflated."
+}

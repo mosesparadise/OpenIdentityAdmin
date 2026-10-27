@@ -23,6 +23,7 @@ public sealed class DemoProcessTests
     private const int FailureSeconds = 2;
     private const int LongDeadlineSeconds = 30;
     private const int TimeoutSeconds = 3;
+    private const int CleanupSeconds = 5;
     private const int PollMilliseconds = 20;
     private const int MaximumInputBytes = 4096;
     private const int OversizedInputBytes = 4097;
@@ -82,6 +83,7 @@ public sealed class DemoProcessTests
         var witness = Path.Combine(Path.GetTempPath(), WitnessPrefix + Guid.NewGuid().ToString(GuidFormat));
         using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         var process = new DemoProcess(Python, [ScriptArgument, Child], TimeSpan.FromSeconds(cancel ? LongDeadlineSeconds : TimeoutSeconds));
+        var clock = Stopwatch.StartNew();
         var execution = process.RunAsync([BlockedMode, witness], new byte[MaximumInputBytes], cancellation.Token);
         try
         {
@@ -90,31 +92,48 @@ public sealed class DemoProcessTests
             Assert.Equal(FailureSeconds, ids.Length);
             if (cancel)
             {
+                clock.Restart();
                 await cancellation.CancelAsync();
             }
             await Assert.ThrowsAsync<InvalidOperationException>(() => execution);
-            Assert.All(ids, id => Assert.True(HasExited(id), AliveFailure));
+            await RequireExitedAsync(ids, clock, TimeSpan.FromSeconds(CleanupSeconds + (cancel ? 0 : TimeoutSeconds)));
         }
         finally
         {
-            await cancellation.CancelAsync();
-            try
+            await CleanupWitnessAsync(witness, execution, cancellation);
+        }
+    }
+
+    /// <summary>Observes asynchronous OS descendant termination within the original execution/cleanup budget.</summary>
+    private static async Task RequireExitedAsync(int[] ids, Stopwatch clock, TimeSpan budget)
+    {
+        while (ids.Any(id => !HasExited(id)) && clock.Elapsed < budget)
+        {
+            await Task.Delay(PollMilliseconds, TestContext.Current.CancellationToken);
+        }
+        Assert.All(ids, id => Assert.True(HasExited(id), AliveFailure));
+    }
+
+    /// <summary>Prevents a failed oracle from leaving synthetic processes behind, only after the real assertion.</summary>
+    private static async Task CleanupWitnessAsync(string witness, Task execution, CancellationTokenSource cancellation)
+    {
+        await cancellation.CancelAsync();
+        try
+        {
+            await execution;
+        }
+        catch (InvalidOperationException) { }
+        if (File.Exists(witness))
+        {
+            foreach (var id in (await File.ReadAllTextAsync(witness, TestContext.Current.CancellationToken)).Split(',').Select(int.Parse))
             {
-                await execution;
-            }
-            catch (InvalidOperationException) { }
-            if (File.Exists(witness))
-            {
-                foreach (var id in (await File.ReadAllTextAsync(witness, TestContext.Current.CancellationToken)).Split(',').Select(int.Parse))
+                if (!HasExited(id))
                 {
-                    if (!HasExited(id))
-                    {
-                        using var orphan = Process.GetProcessById(id);
-                        orphan.Kill(entireProcessTree: true);
-                    }
+                    using var orphan = Process.GetProcessById(id);
+                    orphan.Kill(entireProcessTree: true);
                 }
-                File.Delete(witness);
             }
+            File.Delete(witness);
         }
     }
 

@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="../../Directory.Packages.props" Condition="'$(ProviderCompatibilityBaselineRoot)' == ''" />
+  <Import Project="$(ProviderCompatibilityBaselineRoot)/Directory.Packages.props" Condition="'$(ProviderCompatibilityBaselineRoot)' != ''" />
+  <!-- The frozen wrapper lock recorded this central declaration when provider adapters were introduced.
+       Keep that exact declaration here without changing the older referenced projects or their locks. -->
+  <ItemGroup Condition="'$(ProviderCompatibilityBaselineRoot)' != ''">
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.12" />
+  </ItemGroup>
+</Project>
