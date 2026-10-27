@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-27",
+  "scope": "User-authorized stable package upgrade. Exact new archives/assets independently reviewed; no viewer activation or historical closure.",
+  "independentReview": "review-summary-2026-10-27.json",
+  "configurationChange": "Only removal of stale Scalar version in a comment; all executable viewer configuration is unchanged. Both default and local demo hosts leave documentation unmapped.",
+  "historicalAssetRecords": [
+    "scalar-before-2026-10-27.json",
+    "swagger-before-2026-10-27.json"
+  ],
+  "currentCandidateAdvisoryCount": 6,
+  "retainedUnionAdvisoryCount": 13,
+  "historicalAdvisoriesRetained": 12,
+  "newFinding": {
+    "id": 1243452,
+    "ghsa": "GHSA-6pq8-jhm2-2vcw",
+    "package": "qs",
+    "candidateVersion": "6.15.2",
+    "severity": "moderate",
+    "affectedRange": ">=6.7.0 <=6.16.0",
+    "disposition": "unresolved",
+    "reason": "Comma-array stringify with non-callable own toString may throw. Exact bundled association/reachability is not established; stale Swagger map prevents clean inventory."
+  },
+  "activationBlocked": true,
+  "inventoryComplete": false,
+  "limitations": [
+    "Prior not-affected dispositions are historical and do not automatically apply to changed assets.",
+    "All current candidate findings remain unclosed; no exploitability or public-release clearance claimed.",
+    "All four unknown Swagger component versions and notice obligations remain open."
+  ]
+}

@@ -36,7 +36,7 @@ internal static class DemoContainers
             .WithEnvironment(AspnetEnvironment, Development);
 
     /// <summary>Aligns host/target ports and DNS aliases with native identities; Kestrel receives the native certificate providers directly.</summary>
-#pragma warning disable ASPIRECERTIFICATES001 // Pinned 13.6.1 Development-only API; re-review on Aspire upgrade (feature 014).
+#pragma warning disable ASPIRECERTIFICATES001 // Pinned 13.6.4 Development-only API; re-review on Aspire upgrade (feature 014).
     internal static IResourceBuilder<ContainerResource> WithDemoHttps(this IResourceBuilder<ContainerResource> resource, string host, int port) => resource
         .WithHttpsEndpoint(port: port, targetPort: port, name: HttpsEndpoint, isProxied: false)
         .WithEndpoint(HttpsEndpoint, endpoint => endpoint.TargetHost = LoopbackAddress)

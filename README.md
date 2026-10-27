@@ -2,7 +2,7 @@
 
 A greenfield administration platform built with OpenIddict and ASP.NET Core Identity. The approved product includes client/resource and user/role management, security, auditing and operational health through a React/TypeScript Admin BFF and a Razor Pages authentication service.
 
-**Current state: administrator accounts and B3 browser sessions are internally accepted; full product acceptance remains incomplete.** The repository includes extensible relational EF Core providers, PostgreSQL/SQL Server migrations, protected enrollment/MFA/recovery, native administrator protocol flows, server-held BFF sessions and local/issuer-assisted logout. Default startup exposes operational health only. The [Windows Docker Desktop local demo](specs/014-local-b3-demo/quickstart.md) provides explicit Development-only activation with disposable state. Both-provider Linux CI passes; an actual Windows walkthrough remains open. See its [verification status](specs/014-local-b3-demo/verification.md). Server-held refresh, usable management APIs and the React administration client remain pending. This is not a deployable or certified identity product.
+**Current state: administrator accounts and B3 browser sessions are internally accepted; full product acceptance remains incomplete.** The repository includes extensible relational EF Core providers, PostgreSQL/SQL Server migrations, protected enrollment/MFA/recovery, native administrator protocol flows, server-held BFF sessions and local/issuer-assisted logout. Default startup exposes operational health only. The [Windows Docker Desktop local demo](specs/014-local-b3-demo/quickstart.md) uses the AppHost `local-demo` profile and dashboard initialization with disposable state; no custom PowerShell is required. The [native-entry/package correction](specs/015-aspire-local-entry/verification.md) is under verification; actual Windows execution remains open. See its [verification status](specs/014-local-b3-demo/verification.md). Server-held refresh, usable management APIs and the React administration client remain pending. This is not a deployable or certified identity product.
 
 ## Approved design
 
@@ -27,7 +27,7 @@ Source and solution folders are grouped under `aspire`, `backend`, `core`, `migr
 
 ## Local foundation
 
-Prerequisites: the .NET SDK pinned in `global.json`, Python 3.11+, Docker-compatible containers, access to NuGet/container registries, and a locally trusted ASP.NET HTTPS development certificate. Database images are pinned by digest. SQL Server needs an appropriate x64 container host. The AppHost is explicitly Development-only and uses disposable storage; stopping it loses local data.
+Prerequisites: a stable .NET 10.x SDK accepted by `global.json`, Python 3.11+, Docker-compatible containers, access to NuGet/container registries, and a locally trusted ASP.NET HTTPS development certificate. Database images are pinned by digest. SQL Server needs an appropriate x64 container host. The AppHost is explicitly Development-only and uses disposable storage; stopping it loses local data.
 
 ```sh
 dotnet tool restore
@@ -39,7 +39,7 @@ dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=
 dotnet run --project src/aspire/IdentityPlatform.AppHost -- --Database:Provider=SqlServer
 ```
 
-For the new B3 demo from Windows, use [PowerShell and Docker Desktop Linux containers](specs/014-local-b3-demo/quickstart.md); no WSL terminal is required. The older pilot's [WSL2 instructions](docs/operations/first-party-pilot.md#windows-with-wsl2) still apply to that separate profile. The strict Linux credential adapter is retained inside containers.
+For the new B3 demo from Windows, use [the Aspire AppHost and Docker Desktop Linux containers](specs/014-local-b3-demo/quickstart.md); no WSL terminal is required. The older pilot's [WSL2 instructions](docs/operations/first-party-pilot.md#windows-with-wsl2) still apply to that separate profile. The strict Linux credential adapter is retained inside containers.
 
 The dashboard uses `https://localhost:17100`. Use its generated authenticated login link printed locally. Each application receives a dynamically allocated HTTPS endpoint. The default profile exposes `/alive` and `/health`; the separate Development-only login pilot requires explicit configuration from its [quickstart](specs/004-first-party-login/quickstart.md). On Linux, follow the dev-certificate tool's `SSL_CERT_DIR` guidance while preserving the system trust directory; see the [quickstart](specs/001-platform-foundation/quickstart.md).
 

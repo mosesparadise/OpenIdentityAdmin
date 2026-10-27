@@ -1,6 +1,8 @@
 # Tasks: Disposable local administrator demo
 
 Input: [spec](spec.md), [plan](plan.md), [research](research.md), [contract](contracts/local-demo.md).
+[Feature 015](../015-aspire-local-entry/tasks.md) supersedes the original PowerShell entry with native Aspire; historical completed tasks below retain their original scope.
+
 Tests are mandatory under repository instructions. Main owns edits; independent reviews may run in parallel.
 
 ## Foundation
@@ -28,7 +30,7 @@ Tests are mandatory under repository instructions. Main owns edits; independent 
 - [x] T012 Write executable Windows quickstart in `specs/014-local-b3-demo/quickstart.md`, update `README.md`, `docs/roadmap.md` and `docs/operations/new-task-handoff.md` with evidence and limits (FR-008).
 - [x] T013 Complete independent architecture/security/test/Aspire reviews and exact-head required CI, inventory/coverage/mutation reconciliation in `verification.md`; perform only normal reviewed squash when accepted (NFR-001).
 
-- [ ] T014 Execute the documented Windows Docker Desktop walkthrough with both providers: prerequisites/TLS, stdin initialization, genuine enrollment and fresh sign-in, both logout choices, Ctrl+C disposal and fresh-run invalidation. Record Windows/PowerShell/Docker versions and sanitized outcomes in `verification.md`; SC-001 remains open until observed. Linux CI does not satisfy this platform-specific acceptance.
+- [ ] T014 Execute the documented Windows Docker Desktop walkthrough with both providers: prerequisites/TLS, stdin initialization, genuine enrollment and fresh sign-in, both logout choices, Ctrl+C disposal and fresh-run invalidation. Record Windows/.NET/Aspire/Docker versions and sanitized outcomes in `verification.md`; SC-001 remains open until observed. Linux CI does not satisfy this platform-specific acceptance.
 
 ## Dependencies and strategy
 

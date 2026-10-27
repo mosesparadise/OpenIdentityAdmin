@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Sdk Name="Aspire.AppHost.Sdk" Version="13.6.1" />
+  <Sdk Name="Aspire.AppHost.Sdk" Version="13.6.4" />
   <PropertyGroup>
     <OutputType>Exe</OutputType><IsAspireHost>true</IsAspireHost>
     <UserSecretsId>openidentityadmin-local-apphost</UserSecretsId>
@@ -20,9 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" />
-    <!-- Pin the serviced 2.x release above Aspire's vulnerable transitive minimum. -->
+    <!-- Pin the reviewed stable release above Aspire's vulnerable transitive minimum. -->
     <PackageReference Include="MessagePack" />
     <!-- Aspire resource references do not propagate the application dependency override. -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" />
   </ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" /></ItemGroup>
 </Project>

@@ -110,5 +110,6 @@
     "sha256": "92c3d71d12456165c7f9cccc2f29210b9cb557384ad7a2ea4c7fc3ddaa391136",
     "location": "retained reviewer scratch evidence"
   },
-  "summaryBoundary": "Derived from existing evidence only; no new network research, package installation, build, test or production action."
+  "summaryBoundary": "Derived from existing evidence only; no new network research, package installation, build, test or production action.",
+  "historicalScope": "This 12 October exact-asset assessment remains historical; consult package-upgrade-2026-10-27.json for current changed assets."
 }

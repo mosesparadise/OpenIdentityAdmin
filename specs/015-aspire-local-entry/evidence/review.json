@@ -1,0 +1,658 @@
+{
+  "checkedAt": "2026-10-27T17:34:40.424347+00:00",
+  "sourceHead": "1d1ce53597d96abe063caf51a0d037f817589a8d",
+  "scope": "Read-only direct central NuGet, dotnet tools, explicit Aspire SDK, npm manifest dependencies. Registry metadata review, no restore/build/test compatibility claim; root owns current uncommitted Aspire source.",
+  "inventory": [
+    {
+      "kind": "nuget",
+      "name": "Microsoft.CodeAnalysis.CSharp",
+      "current": "5.0.0",
+      "latestStable": "5.9.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.codeanalysis.csharp/index.json",
+      "sha256": "562be44e0947b1de299ec2a8ac5d627f9c40c145b060a12277ea0a457debf930",
+      "checkedAt": "2026-10-27T17:31:51.610016+00:00",
+      "stableCount": 59
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.Playwright",
+      "current": "1.63.0",
+      "latestStable": "1.64.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.playwright/index.json",
+      "sha256": "52059b4027c0dd7e3e704262c55d614795743a8eaf17e6089ff2e431766e0b7c",
+      "checkedAt": "2026-10-27T17:31:51.656358+00:00",
+      "stableCount": 77
+    },
+    {
+      "kind": "nuget",
+      "name": "MessagePack",
+      "current": "2.5.307",
+      "latestStable": "3.1.12",
+      "url": "https://api.nuget.org/v3-flatcontainer/messagepack/index.json",
+      "sha256": "9903b702deffca2014fd3f92dfd8a669f8ddb30e95ee8c64383f9d372db7b200",
+      "checkedAt": "2026-10-27T17:31:51.582662+00:00",
+      "stableCount": 114
+    },
+    {
+      "kind": "nuget",
+      "name": "Deque.AxeCore.Playwright",
+      "current": "4.13.0",
+      "latestStable": "4.14.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/deque.axecore.playwright/index.json",
+      "sha256": "5482dbb59da85787b1b64fa400660b9102f0bc9aad3b75983693f6f2273430c7",
+      "checkedAt": "2026-10-27T17:31:51.634401+00:00",
+      "stableCount": 15
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.IdentityModel.JsonWebTokens",
+      "current": "8.23.0",
+      "latestStable": "8.23.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.identitymodel.jsonwebtokens/index.json",
+      "sha256": "f5cf77624a55014dafcb0b763ba2a69c2a27e05877abf7155ecb0a94e5504b66",
+      "checkedAt": "2026-10-27T17:31:51.554626+00:00",
+      "stableCount": 116
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenTelemetry.Exporter.InMemory",
+      "current": "1.19.1",
+      "latestStable": "1.20.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/opentelemetry.exporter.inmemory/index.json",
+      "sha256": "e02d7658c8bfbeaf9b5777a4c12808c77f718f247d3d06db4598f4bef8f5bb15",
+      "checkedAt": "2026-10-27T17:31:51.654590+00:00",
+      "stableCount": 32
+    },
+    {
+      "kind": "nuget",
+      "name": "System.Security.Cryptography.Pkcs",
+      "current": "10.0.13",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/system.security.cryptography.pkcs/index.json",
+      "sha256": "dfcc3e38e94a6e5e204bb410e769ac1114d118ef21445cd1049771ec4b7e976a",
+      "checkedAt": "2026-10-27T17:31:51.630956+00:00",
+      "stableCount": 61
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.AspNetCore.TestHost",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.testhost/index.json",
+      "sha256": "e93e2406c3c57bcb00d8f933f5243d881e46f6ae382a8ff5dc8835de5aa685f9",
+      "checkedAt": "2026-10-27T17:31:51.641664+00:00",
+      "stableCount": 204
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenIddict.EntityFrameworkCore",
+      "current": "7.7.1",
+      "latestStable": "7.7.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/openiddict.entityframeworkcore/index.json",
+      "sha256": "ea981846bf6f0d4bbf91d373544ede64cdd9bf00901bd5bbeba4139d06fe3334",
+      "checkedAt": "2026-10-27T17:31:51.642536+00:00",
+      "stableCount": 52
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenIddict.AspNetCore",
+      "current": "7.7.1",
+      "latestStable": "7.7.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/openiddict.aspnetcore/index.json",
+      "sha256": "0980b143775708cfc6c0234901a2cd40ccaa8afef26ba924ab03f58d7d6b26e1",
+      "checkedAt": "2026-10-27T17:31:51.650001+00:00",
+      "stableCount": 49
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenIddict.Server.AspNetCore",
+      "current": "7.7.1",
+      "latestStable": "7.7.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/openiddict.server.aspnetcore/index.json",
+      "sha256": "0980b143775708cfc6c0234901a2cd40ccaa8afef26ba924ab03f58d7d6b26e1",
+      "checkedAt": "2026-10-27T17:31:51.717887+00:00",
+      "stableCount": 49
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenIddict.Client.AspNetCore",
+      "current": "7.7.1",
+      "latestStable": "7.7.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/openiddict.client.aspnetcore/index.json",
+      "sha256": "db44fdda55f681edfd093e30275a2641ea0b394c3a15271e305df65206b9a7a0",
+      "checkedAt": "2026-10-27T17:31:51.792770+00:00",
+      "stableCount": 41
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenIddict.Client.SystemNetHttp",
+      "current": "7.7.1",
+      "latestStable": "7.7.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/openiddict.client.systemnethttp/index.json",
+      "sha256": "db44fdda55f681edfd093e30275a2641ea0b394c3a15271e305df65206b9a7a0",
+      "checkedAt": "2026-10-27T17:31:51.787203+00:00",
+      "stableCount": 41
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.AspNetCore.Identity.EntityFrameworkCore",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.identity.entityframeworkcore/index.json",
+      "sha256": "120aa5814c00e6eb32e5e5167c2c9dfd3c12f4206f3df2c657fb9a6183f4ece2",
+      "checkedAt": "2026-10-27T17:31:51.772113+00:00",
+      "stableCount": 212
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.EntityFrameworkCore.Relational",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.entityframeworkcore.relational/index.json",
+      "sha256": "d5575a04dfa4c1f5c260a533b069d45702a526e9f67c07ae12d676fce8f3c37b",
+      "checkedAt": "2026-10-27T17:31:51.884243+00:00",
+      "stableCount": 214
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.EntityFrameworkCore.SqlServer",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.entityframeworkcore.sqlserver/index.json",
+      "sha256": "d5575a04dfa4c1f5c260a533b069d45702a526e9f67c07ae12d676fce8f3c37b",
+      "checkedAt": "2026-10-27T17:31:51.822400+00:00",
+      "stableCount": 214
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.EntityFrameworkCore.Design",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.entityframeworkcore.design/index.json",
+      "sha256": "e0307731fac3c8c6d0e673482b37062b8a48c4886fa320deefc30ff1483b3de9",
+      "checkedAt": "2026-10-27T17:31:51.765263+00:00",
+      "stableCount": 213
+    },
+    {
+      "kind": "nuget",
+      "name": "Npgsql.EntityFrameworkCore.PostgreSQL",
+      "current": "10.0.3",
+      "latestStable": "10.0.3",
+      "url": "https://api.nuget.org/v3-flatcontainer/npgsql.entityframeworkcore.postgresql/index.json",
+      "sha256": "69ef35bc8a991d1ef342a160bc34ae0cac3c9f516d660b0be86c8255df6e0bd5",
+      "checkedAt": "2026-10-27T17:31:51.800374+00:00",
+      "stableCount": 66
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.Extensions.Hosting",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.extensions.hosting/index.json",
+      "sha256": "50891124c7b3393de2645ae0566a560304e35c47d855f02c4af1138301e336e9",
+      "checkedAt": "2026-10-27T17:31:51.809640+00:00",
+      "stableCount": 85
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.extensions.diagnostics.healthchecks.entityframeworkcore/index.json",
+      "sha256": "1851272218de8eafea13f29497f74b1d5a60063eec21aabbcd83aabeee385ef9",
+      "checkedAt": "2026-10-27T17:31:51.867320+00:00",
+      "stableCount": 181
+    },
+    {
+      "kind": "nuget",
+      "name": "Aspire.Hosting",
+      "current": "13.6.1",
+      "latestStable": "13.6.4",
+      "url": "https://api.nuget.org/v3-flatcontainer/aspire.hosting/index.json",
+      "sha256": "a50acd5c70a29db9f41fa14aa8d63ccd89e0a112f140dd9625f297c46bdec3c5",
+      "checkedAt": "2026-10-27T17:31:51.906880+00:00",
+      "stableCount": 55
+    },
+    {
+      "kind": "nuget",
+      "name": "Aspire.Hosting.AppHost",
+      "current": "13.6.1",
+      "latestStable": "13.6.4",
+      "url": "https://api.nuget.org/v3-flatcontainer/aspire.hosting.apphost/index.json",
+      "sha256": "1c3cb6597b6c88ec5af3347edfa972000f8d3045645c0dfc080f0b86c746d9c8",
+      "checkedAt": "2026-10-27T17:31:51.888205+00:00",
+      "stableCount": 54
+    },
+    {
+      "kind": "nuget",
+      "name": "Aspire.Hosting.PostgreSQL",
+      "current": "13.6.1",
+      "latestStable": "13.6.4",
+      "url": "https://api.nuget.org/v3-flatcontainer/aspire.hosting.postgresql/index.json",
+      "sha256": "1c3cb6597b6c88ec5af3347edfa972000f8d3045645c0dfc080f0b86c746d9c8",
+      "checkedAt": "2026-10-27T17:31:51.882889+00:00",
+      "stableCount": 54
+    },
+    {
+      "kind": "nuget",
+      "name": "Aspire.Hosting.SqlServer",
+      "current": "13.6.1",
+      "latestStable": "13.6.4",
+      "url": "https://api.nuget.org/v3-flatcontainer/aspire.hosting.sqlserver/index.json",
+      "sha256": "f3b31939c4a522caf137d6f1ebde01bb92be59ed943bd59f8c0c73e9b8c29d8f",
+      "checkedAt": "2026-10-27T17:31:51.919927+00:00",
+      "stableCount": 55
+    },
+    {
+      "kind": "nuget",
+      "name": "Aspire.Hosting.Testing",
+      "current": "13.6.1",
+      "latestStable": "13.6.4",
+      "url": "https://api.nuget.org/v3-flatcontainer/aspire.hosting.testing/index.json",
+      "sha256": "1c3cb6597b6c88ec5af3347edfa972000f8d3045645c0dfc080f0b86c746d9c8",
+      "checkedAt": "2026-10-27T17:31:52.197111+00:00",
+      "stableCount": 54
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.Extensions.ServiceDiscovery",
+      "current": "10.10.0",
+      "latestStable": "10.11.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.extensions.servicediscovery/index.json",
+      "sha256": "df6ac05c08f29ef162efb75b5d07782e451690af1f3b6bde79b9c4cd4ff1574f",
+      "checkedAt": "2026-10-27T17:31:51.914247+00:00",
+      "stableCount": 31
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenTelemetry.Extensions.Hosting",
+      "current": "1.19.1",
+      "latestStable": "1.20.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/opentelemetry.extensions.hosting/index.json",
+      "sha256": "42e1d1ce9bb88fbe762c0f7202c8005e0f36f284ed3156cb5f7290ddd0a63e08",
+      "checkedAt": "2026-10-27T17:31:51.973472+00:00",
+      "stableCount": 27
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenTelemetry.Instrumentation.AspNetCore",
+      "current": "1.19.0",
+      "latestStable": "1.20.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/opentelemetry.instrumentation.aspnetcore/index.json",
+      "sha256": "b87747d8f9c52ed47b06210f4e41eb5b3128c3e1d1d6de4a4f547dae3de6201c",
+      "checkedAt": "2026-10-27T17:31:52.117646+00:00",
+      "stableCount": 22
+    },
+    {
+      "kind": "nuget",
+      "name": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "current": "1.19.1",
+      "latestStable": "1.20.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/opentelemetry.exporter.opentelemetryprotocol/index.json",
+      "sha256": "c752e0126607ab5284dfccabd7df96fae680d91e87e0b255d877fbfbd614cc6d",
+      "checkedAt": "2026-10-27T17:31:52.015657+00:00",
+      "stableCount": 33
+    },
+    {
+      "kind": "nuget",
+      "name": "Testcontainers.PostgreSql",
+      "current": "4.16.0",
+      "latestStable": "4.16.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/testcontainers.postgresql/index.json",
+      "sha256": "dfdbf7b8a2fa3cbbcb3ba64b4b557afdeb0ef95024b15ce37fa49cbf392f334e",
+      "checkedAt": "2026-10-27T17:31:52.164573+00:00",
+      "stableCount": 29
+    },
+    {
+      "kind": "nuget",
+      "name": "Testcontainers.MsSql",
+      "current": "4.16.0",
+      "latestStable": "4.16.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/testcontainers.mssql/index.json",
+      "sha256": "dfdbf7b8a2fa3cbbcb3ba64b4b557afdeb0ef95024b15ce37fa49cbf392f334e",
+      "checkedAt": "2026-10-27T17:31:52.063673+00:00",
+      "stableCount": 29
+    },
+    {
+      "kind": "nuget",
+      "name": "xunit.v3.mtp-v2",
+      "current": "4.0.2",
+      "latestStable": "4.0.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/xunit.v3.mtp-v2/index.json",
+      "sha256": "94a47909a49a5e26a65407c4a3f86c28750847f453c49f62d69d01a0a637a88d",
+      "checkedAt": "2026-10-27T17:31:52.113856+00:00",
+      "stableCount": 6
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.Testing.Extensions.TrxReport",
+      "current": "2.5.1",
+      "latestStable": "2.5.2",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.testing.extensions.trxreport/index.json",
+      "sha256": "afbcad68068762fe7cd62cfe018c1766ff1b0c6c1266a4432afb9a52f53ae3e3",
+      "checkedAt": "2026-10-27T17:31:52.039880+00:00",
+      "stableCount": 48
+    },
+    {
+      "kind": "nuget",
+      "name": "Asp.Versioning.Http",
+      "current": "10.2.3",
+      "latestStable": "10.2.3",
+      "url": "https://api.nuget.org/v3-flatcontainer/asp.versioning.http/index.json",
+      "sha256": "77d399e325ca1b0ea463768f7ce25b41dce775c975faf99c21f58a03dcd5194a",
+      "checkedAt": "2026-10-27T17:31:52.131597+00:00",
+      "stableCount": 21
+    },
+    {
+      "kind": "nuget",
+      "name": "Asp.Versioning.OpenApi",
+      "current": "10.2.3",
+      "latestStable": "10.2.3",
+      "url": "https://api.nuget.org/v3-flatcontainer/asp.versioning.openapi/index.json",
+      "sha256": "c86870363d10ee7dc63ee3d0177bcfebcccb767a276a7863d36f3cd84595c21d",
+      "checkedAt": "2026-10-27T17:31:52.082214+00:00",
+      "stableCount": 6
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.OpenApi",
+      "current": "2.12.2",
+      "latestStable": "3.11.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.openapi/index.json",
+      "sha256": "0846df21d1ba3a8b154215d6e4feb78d6f19b3d2d700aca607b0baa97c4643cc",
+      "checkedAt": "2026-10-27T17:31:52.103293+00:00",
+      "stableCount": 115
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.AspNetCore.OpenApi",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.aspnetcore.openapi/index.json",
+      "sha256": "bb538ba9a9ac3a3022904f21a87123a134ad8496756dc733aab6f52dca042bca",
+      "checkedAt": "2026-10-27T17:31:52.139572+00:00",
+      "stableCount": 91
+    },
+    {
+      "kind": "nuget",
+      "name": "Microsoft.Extensions.ApiDescription.Server",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.extensions.apidescription.server/index.json",
+      "sha256": "4e4c51444ceceee7d2d863d483a5b518086965a38c6879e4e884fdfac88c99d2",
+      "checkedAt": "2026-10-27T17:31:52.244063+00:00",
+      "stableCount": 180
+    },
+    {
+      "kind": "nuget",
+      "name": "Scalar.AspNetCore",
+      "current": "2.17.14",
+      "latestStable": "2.18.3",
+      "url": "https://api.nuget.org/v3-flatcontainer/scalar.aspnetcore/index.json",
+      "sha256": "f7aa034ddf39af560effaba019315004bb6008d8912808749a87f82ea87ac63a",
+      "checkedAt": "2026-10-27T17:31:52.412856+00:00",
+      "stableCount": 333
+    },
+    {
+      "kind": "nuget",
+      "name": "Swashbuckle.AspNetCore.SwaggerUI",
+      "current": "10.3.0",
+      "latestStable": "10.3.1",
+      "url": "https://api.nuget.org/v3-flatcontainer/swashbuckle.aspnetcore.swaggerui/index.json",
+      "sha256": "3192badc08272becc41d9d18fc433358d4e451f26082f731273e5cded5fb6ee5",
+      "checkedAt": "2026-10-27T17:31:52.238648+00:00",
+      "stableCount": 96
+    },
+    {
+      "kind": "nuget",
+      "name": "dotnet-ef",
+      "current": "10.0.12",
+      "latestStable": "10.0.14",
+      "url": "https://api.nuget.org/v3-flatcontainer/dotnet-ef/index.json",
+      "sha256": "efd218ba316825577a4f26f2d25b3e219cb21039cdb31fcb0b5f3471da2a1051",
+      "checkedAt": "2026-10-27T17:31:52.243581+00:00",
+      "stableCount": 196
+    },
+    {
+      "kind": "nuget",
+      "name": "dotnet-coverage",
+      "current": "18.12.0",
+      "latestStable": "18.12.0",
+      "url": "https://api.nuget.org/v3-flatcontainer/dotnet-coverage/index.json",
+      "sha256": "749236e86e024131e06d06e4454da35d16ad6ddbeefc25e96e66cc4e918bb86a",
+      "checkedAt": "2026-10-27T17:31:52.239969+00:00",
+      "stableCount": 76
+    },
+    {
+      "kind": "nuget",
+      "name": "Aspire.AppHost.Sdk",
+      "current": "13.6.1",
+      "latestStable": "13.6.4",
+      "url": "https://api.nuget.org/v3-flatcontainer/aspire.apphost.sdk/index.json",
+      "sha256": "963492436f3d3568d87319802f24ed9d0d6ad12844e9bd98c9636d072fb8ed4a",
+      "checkedAt": "2026-10-27T17:31:52.241634+00:00",
+      "stableCount": 47
+    },
+    {
+      "kind": "npm",
+      "name": "esbuild",
+      "current": "0.28.2",
+      "latestStable": "0.28.2",
+      "url": "https://registry.npmjs.org/esbuild",
+      "sha256": "04b9a374d0710d1771d08cb1fbed62e834621a689f116c87f7f514cdd0bb21c1",
+      "checkedAt": "2026-10-27T17:31:52.345194+00:00",
+      "stableCount": 482,
+      "distTags": {
+        "latest": "0.28.2"
+      },
+      "latestMetadata": {
+        "engines": {
+          "node": ">=18"
+        },
+        "peerDependencies": null,
+        "dependencies": null,
+        "deprecated": null
+      },
+      "published": "2026-08-08T20:00:55.454Z"
+    },
+    {
+      "kind": "npm",
+      "name": "openapi-fetch",
+      "current": "0.17.0",
+      "latestStable": "0.17.0",
+      "url": "https://registry.npmjs.org/openapi-fetch",
+      "sha256": "b9d7b0aa2da493ac9d8364318ac76f162212ca64992e20c2620c2d276f15d817",
+      "checkedAt": "2026-10-27T17:31:52.387597+00:00",
+      "stableCount": 77,
+      "distTags": {
+        "latest": "0.17.0"
+      },
+      "latestMetadata": {
+        "engines": null,
+        "peerDependencies": null,
+        "dependencies": {
+          "openapi-typescript-helpers": "^0.1.0"
+        },
+        "deprecated": null
+      },
+      "published": "2026-02-11T16:02:21.454Z"
+    },
+    {
+      "kind": "npm",
+      "name": "openapi-typescript",
+      "current": "7.13.0",
+      "latestStable": "7.13.0",
+      "url": "https://registry.npmjs.org/openapi-typescript",
+      "sha256": "356a3a3f909cbbda71524e263bfcf7eff3ebd2e2ed7eeebad506084a2176524a",
+      "checkedAt": "2026-10-27T17:31:52.445224+00:00",
+      "stableCount": 128,
+      "distTags": {
+        "swagger-v2": "5.4.2",
+        "next": "7.0.0-rc.1",
+        "latest": "7.13.0"
+      },
+      "latestMetadata": {
+        "engines": null,
+        "peerDependencies": {
+          "typescript": "^5.x"
+        },
+        "dependencies": {
+          "parse-json": "^8.3.0",
+          "ansi-colors": "^4.1.3",
+          "change-case": "^5.4.4",
+          "yargs-parser": "^21.1.1",
+          "supports-color": "^10.2.2",
+          "@redocly/openapi-core": "^1.34.6"
+        },
+        "deprecated": null
+      },
+      "published": "2026-02-11T16:02:25.378Z"
+    },
+    {
+      "kind": "npm",
+      "name": "typescript",
+      "current": "5.9.3",
+      "latestStable": "7.0.2",
+      "url": "https://registry.npmjs.org/typescript",
+      "sha256": "9156fefd519abede18227ea6f19c1dfaddc46e889fb52be439ce8081c907dadd",
+      "checkedAt": "2026-10-27T17:31:52.871740+00:00",
+      "stableCount": 169,
+      "distTags": {
+        "dev": "3.9.4",
+        "tag-for-publishing-older-releases": "4.1.6",
+        "insiders": "4.6.2-insiders.20220225",
+        "rc": "7.0.1-rc",
+        "latest": "7.0.2",
+        "beta": "7.1.0-beta",
+        "next": "7.1.0-dev.20261027.1"
+      },
+      "latestMetadata": {
+        "engines": {
+          "node": ">=16.20.0"
+        },
+        "peerDependencies": null,
+        "dependencies": {
+          "@typescript/typescript-aix-ppc64": "7.0.2",
+          "@typescript/typescript-linux-arm": "7.0.2",
+          "@typescript/typescript-linux-x64": "7.0.2",
+          "@typescript/typescript-sunos-x64": "7.0.2",
+          "@typescript/typescript-win32-x64": "7.0.2",
+          "@typescript/typescript-darwin-x64": "7.0.2",
+          "@typescript/typescript-netbsd-x64": "7.0.2",
+          "@typescript/typescript-freebsd-x64": "7.0.2",
+          "@typescript/typescript-linux-arm64": "7.0.2",
+          "@typescript/typescript-linux-ppc64": "7.0.2",
+          "@typescript/typescript-linux-s390x": "7.0.2",
+          "@typescript/typescript-openbsd-x64": "7.0.2",
+          "@typescript/typescript-win32-arm64": "7.0.2",
+          "@typescript/typescript-darwin-arm64": "7.0.2",
+          "@typescript/typescript-netbsd-arm64": "7.0.2",
+          "@typescript/typescript-freebsd-arm64": "7.0.2",
+          "@typescript/typescript-linux-loong64": "7.0.2",
+          "@typescript/typescript-linux-riscv64": "7.0.2",
+          "@typescript/typescript-openbsd-arm64": "7.0.2",
+          "@typescript/typescript-linux-mips64el": "7.0.2"
+        },
+        "deprecated": null
+      },
+      "published": "2026-07-08T15:55:18.431Z"
+    },
+    {
+      "kind": "npm",
+      "name": "@redocly/openapi-core",
+      "current": "2.62.1",
+      "latestStable": "2.71.2",
+      "url": "https://registry.npmjs.org/%40redocly%2Fopenapi-core",
+      "sha256": "d790b19eb1304cd766d4246f0ff54001eebd402a28ddece0dff0510b3650b310",
+      "checkedAt": "2026-10-27T17:31:52.549676+00:00",
+      "stableCount": 284,
+      "distTags": {
+        "next": "2.0.0-next.10",
+        "v1-archive": "1.34.22",
+        "latest": "2.71.2",
+        "snapshot": "0.0.0-snapshot.1793118929"
+      },
+      "latestMetadata": {
+        "engines": {
+          "npm": ">=10",
+          "node": ">=22.12.0 || >=20.19.0 <21.0.0"
+        },
+        "peerDependencies": null,
+        "dependencies": {
+          "ajv": "npm:@redocly/ajv@^8.18.3",
+          "graphql": "^16.14.1",
+          "js-yaml": "^5.2.2",
+          "colorette": "^1.2.0",
+          "picomatch": "^4.0.4",
+          "pluralize": "^8.0.0",
+          "ajv-formats": "^3.0.1",
+          "@redocly/ajv": "^8.18.3",
+          "js-levenshtein": "^1.1.6",
+          "@redocly/config": "^0.67.0",
+          "yaml-ast-parser": "0.0.43",
+          "jsonpath-rfc9535": "1.3.0",
+          "json-schema-to-ts": "^3.1.0"
+        },
+        "deprecated": null
+      },
+      "published": "2026-10-27T11:03:04.428Z"
+    }
+  ],
+  "allNugetLatestCandidatesListed": true,
+  "conflicts": [
+    {
+      "package": "Microsoft.OpenApi",
+      "absoluteLatest": "3.11.0",
+      "latestCompatible": "2.13.0",
+      "constraints": {
+        "Microsoft.AspNetCore.OpenApi/10.0.14": "[2.12.2,3.0.0)",
+        "Asp.Versioning.OpenApi/10.2.3": "[2.7.5,3.0.0)"
+      }
+    },
+    {
+      "package": "typescript",
+      "absoluteLatest": "7.0.2",
+      "latestCompatible": "5.9.3",
+      "constraints": {
+        "openapi-typescript/7.13.0": "peer typescript ^5.x"
+      },
+      "runtimeProof": "generator-runtime-peer-proof.json: distributed generator imports typescript at runtime"
+    }
+  ],
+  "compatibleRanges": [
+    {
+      "package": "Npgsql.EntityFrameworkCore.PostgreSQL/10.0.3",
+      "EFCore": "[10.0.4,11.0.0)",
+      "candidate": "10.0.14"
+    }
+  ],
+  "majorUpgradeRisk": {
+    "MessagePack": "2.5.307 ->3.1.12; Aspire13.6.4 declares minimum2.5.307 with no upper bound, not proof of binary/protocol compatibility. Native Aspire/StreamJsonRpc graph must execute."
+  },
+  "sdk": {
+    "officialLatestSdk10": "10.0.403",
+    "officialLatestRuntime10": "10.0.14",
+    "releaseFeed": "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json",
+    "activeSelectors": [
+      "global.json sdk.version/rollForward/allowPrerelease",
+      "12 .github/workflows/verify.yml actions/setup-dotnet sites currently global-json-file",
+      "scripts/local-demo/Start-LocalDemo.ps1 exact --version equality",
+      "scripts/local-demo/Dockerfile SDK10.0.401 tag ANDdigest"
+    ],
+    "policy": "Set supported10.x baseline with latestMinor and allowPrerelease=false; CI dotnet-version10.x explicitly, avoid global-json-file simultaneously causing second installation. Log and validate actual stable major10 selected. Existing tree has no dedicated SDK-policy verifier; add guard/controls instead of claiming existing policy check. global SDK version must remain concrete, cannot be10.x. Baseline10.0.401 would still reject earlier SDKs;10.0.100 supports fullstable10.x range.",
+    "setupActionProof": "Pinned setup-dotnet code maps latestMinor to major10; dotnet-version10.x bypasses that inferred channel path. No installer runtime success claim.",
+    "Docker": "Changing tag to10.0 but retaining olddigest still exactpins SDKimage. Decide floating10.0 SDKimage or explicitly refreshed digest policy; retainASPNETruntimeimagepolicyseparately."
+  },
+  "preserve": [
+    "eng/IdentityPlatform.ProviderCompatibility.Baseline/packages.baseline.lock.json",
+    "immutable38eb41e06d40b6addbe57e3af839f912645e6dea source checkout and dependencies",
+    "historical evidence exactversion facts"
+  ],
+  "followupRequirements": [
+    "Restore direct upgrades to refresh current lock files then inspect transitive bounds/advisories/licenses",
+    "Reconcile Microsoft.Playwright1.64.1 browser install binaries/version evidence and axe4.14.0 checks",
+    "Scalar2.18.3/SwaggerUI10.3.1 upgrades change bundled frontend supply-chain evidence; regenerate/review live asset hashes/advisories/reachability rather than accept prior12advisoryreceipt blindly",
+    "MTPTrx2.5.2, OpenTelemetry1.20.1, CodeAnalysis5.9.0 require native discovery/report/coverage and analyzer baselines to pass unchanged obligations",
+    "Historicalfrozenpackages intentionally notlatest; current wrapper normal packages.lock may needrefresh separately"
+  ]
+}

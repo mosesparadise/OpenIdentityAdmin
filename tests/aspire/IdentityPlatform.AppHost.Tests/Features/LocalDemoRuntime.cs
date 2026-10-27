@@ -4,16 +4,20 @@ using System.Text.Json;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
+using IdentityPlatform.AppHost.Tests.Features.DemoInitialization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.AppHost.Tests.Features;
 
 /// <summary>Owns the actual disposable Aspire graph and invokes initialization solely through bounded Docker stdin.</summary>
 internal sealed class LocalDemoRuntime : IAsyncDisposable
 {
+    private const string InitializationFailure = "Native dashboard initialization did not complete.";
+
+    private const string InitializationCommand = "initialize-administrator";
     private const string PasswordPrefix = "Aa1!";
     private const string ContainerPrefix = "oid-demo-";
     private const string NameSeparator = "-";
-    private const string InitializerSuffix = "-initializer";
     private const string GuidFormat = "N";
     private const string DevelopmentArgument = "--environment=Development";
     private const string EnabledArgument = "--LocalDemo:Enabled=true";
@@ -22,15 +26,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     private const string IssuerResource = "auth";
     private const string ClientResource = "admin-bff";
     private const string InitializerResource = "initializer";
-    private const string OperatorReference = "local-demo-test";
-    private const string Dotnet = "dotnet";
-    private const string Migrator = "/app/IdentityPlatform.Migrator.dll";
-    private const string OperationArgument = "--Operation";
-    private const string BootstrapOperation = "initialize-administrator";
-    private const string RegistrationScript = "/app/register.sh";
     private const string Docker = "docker";
-    private const string ExecArgument = "exec";
-    private const string StdinArgument = "-i";
     private const string InspectArgument = "inspect";
     private const string FormatArgument = "--format";
     private const string PortsProjection = "{{json .NetworkSettings.Ports}}";
@@ -44,11 +40,11 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     private const int OperationSeconds = 90;
     private readonly IDistributedApplicationTestingBuilder builder;
     private readonly DistributedApplication application;
-    private readonly string initializer;
+    private readonly DemoInteraction interaction;
     private readonly string run;
     private string[] volumes = [];
     internal const string Username = "synthetic-demo-admin";
-    internal string Password { get; } = PasswordPrefix + Guid.NewGuid().ToString(GuidFormat);
+    internal string Password => interaction.Password;
 
     /// <summary>Retains graph ownership until all browser/runtime consumers have completed.</summary>
     private LocalDemoRuntime(IDistributedApplicationTestingBuilder builder, DistributedApplication application, string run)
@@ -56,7 +52,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
         this.builder = builder;
         this.application = application;
         this.run = run;
-        initializer = ContainerPrefix + run + InitializerSuffix;
+        interaction = application.Services.GetRequiredService<IInteractionService>() as DemoInteraction ?? throw new InvalidOperationException(StartFailure);
     }
 
     /// <summary>Starts the production container graph and waits for genuine schema and runtime readiness without changing its resources.</summary>
@@ -68,6 +64,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
         DistributedApplication? app = null;
         try
         {
+            builder.Services.AddSingleton<IInteractionService>(new DemoInteraction { Password = PasswordPrefix + Guid.NewGuid().ToString(GuidFormat) });
             app = await builder.BuildAsync(token);
             await app.StartAsync(token);
             await app.ResourceNotifications.WaitForResourceHealthyAsync(IssuerResource, token);
@@ -95,15 +92,16 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     /// <summary>Creates only a pending administrator and performs separate public registration and revision-one upgrade operations.</summary>
     internal async Task InitializeAsync(CancellationToken token)
     {
-        var input = JsonSerializer.Serialize(new
-        {
-            operationId = Guid.NewGuid(),
-            operatorReference = OperatorReference,
-            userName = Username,
-            password = Password
-        });
-        await ExecuteAsync([ExecArgument, StdinArgument, initializer, Dotnet, Migrator, OperationArgument, BootstrapOperation], input, token);
-        await ExecuteAsync([ExecArgument, StdinArgument, initializer, RegistrationScript], string.Empty, token);
+        var model = application.Services.GetRequiredService<DistributedApplicationModel>();
+        var resource = Assert.Single(model.Resources, value => value.Name == InitializerResource);
+        var commands = application.Services.GetRequiredService<ResourceCommandService>();
+        Assert.True(application.ResourceNotifications.TryGetCurrentState(InitializerResource, out var current));
+        Assert.Same(resource, current.Resource);
+        var result = await commands.ExecuteCommandAsync(current.ResourceId, InitializationCommand, token);
+        Assert.True(result.Success, InitializationFailure);
+        Assert.Equal(1, interaction.Prompts);
+        Assert.All(interaction.LastInputs, input => Assert.True(string.IsNullOrEmpty(input.Value)));
+        Assert.False(result.Message?.Contains(Password, StringComparison.Ordinal) == true);
     }
 
     /// <summary>Inspects only actual published ports and rejects wildcard exposure without retaining Docker environment metadata.</summary>

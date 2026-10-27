@@ -11,6 +11,7 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 [Trait("Category", "Harness")]
 public sealed class LocalDemoCompositionTests
 {
+    private const string InitializationCommand = "initialize-administrator";
     private const string PlatformConnection = "ConnectionStrings__platform";
     private const string SessionsConnection = "ConnectionStrings__adminsessions";
     private const string ProvisionRoles = "LocalDevelopment__ProvisionRuntimeRoles";
@@ -75,6 +76,10 @@ public sealed class LocalDemoCompositionTests
         Assert.Equal(RoleTotal, fingerprints.Count);
         RequireEndpoints(builder);
         RequirePublicRegistration(environments);
+        var commands = builder.Resources.SelectMany(resource => resource.Annotations.OfType<ResourceCommandAnnotation>()
+            .Where(command => command.Name == InitializationCommand).Select(command => (resource.Name, Command: command))).ToArray();
+        Assert.Equal("initializer", Assert.Single(commands).Name);
+        Assert.Empty(commands[0].Command.Arguments);
     }
 
     /// <summary>All private inputs are masked parameter objects, rather than raw environment literals.</summary>

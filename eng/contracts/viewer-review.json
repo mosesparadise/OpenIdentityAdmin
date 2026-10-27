@@ -3,16 +3,17 @@
   "configurationHashes": {
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Setup.cs": "a9c2f7f310c14efc2c2b0ee46dd7df90dd4611d4b3404b65c195d7aa0125d0ae",
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/swagger.js": "c97036cbc88ad336f5a5c72bea74f2f719e4c627f1b5c3c5a94e7732a6ccab00",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": "17514cf19496dd40ed7d046acdf6f60e85d4a8b55542b5ce9757b3e8398f9e1f",
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": "460e9a0d60fd5310fdda5c83e84604d892d08f0d258c1256d3c7b2774934f74e",
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationPolicy.cs": "d87dd51b11eafa9b3c4dc2ea317cfd28ddbbb229cc9fdc62f07bc12cabe0af14",
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationAssets.cs": "44c7c9cbfe901c6a4dd864b85a580a2fd487f0dfced61d48070ff707c01d9260",
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationOptions.cs": "b4babe3c2a25ca7c7ae1d0e33e4e60ed96201fc3e26d340a4026a246589577bc",
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/index.html": "ef86fe0bec3a4da2a7f08e1c7f01c2cb398d83e24ef2b98124fb256f73f08133"
   },
-  "requestSha256": "2f06a0763ca4349b6f91041e82d6017a5fb76ff4c8b66773ba1bc2226d0a77e1",
-  "responseSha256": "b1079839a3bca9a0c781e73b141469af1fae88fd2a69064f6ef544ec3b1ee793",
+  "requestSha256": "a1bfb2660c41d6e70af6e1a18572671e3c49d5988aad2f1dbc7d95d4e470f51d",
+  "responseSha256": "b4ceb021fbc7b25e5f0801d404328c06f6b6812368fb24323ccda9c2330bc1ee",
   "configurationAssessment": "vendor/configuration-review-2026-10-12.json",
   "supplementalConfigurationAssessment": "vendor/configuration-review-2026-10-22.json",
   "additionalConfigurationAssessment": "vendor/configuration-review-2026-10-23.json",
-  "localDemoConfigurationAssessment": "vendor/configuration-review-2026-10-26.json"
+  "localDemoConfigurationAssessment": "vendor/configuration-review-2026-10-26.json",
+  "packageUpgradeAssessment": "vendor/package-upgrade-2026-10-27.json"
 }
