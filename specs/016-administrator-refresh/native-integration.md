@@ -1,5 +1,7 @@
 # Native refresh primitive characterization
 
+**Follow-on candidate (28 October 2026):** [Native authenticated cleanup characterization](native-cleanup.md) extends the delivered primitives with complete native code/offline issuance and private selector client/server cryptography. Its22 new cases are pending hosted acceptance. It does not close T003 or establish B3, TLS or durable assertion replay integration.
+
 ## Scope and checkpoint — 28 October 2026
 
 This is the first implementation increment within **T003**, based on merged planning PR109/main `34c5df010df65ac2f2166a525d4028fcd7e86dcd`. T003 remains open. Production grants, endpoints, registration, persistence schema and package versions are unchanged. This suite characterizes installed OpenIddict7.7.2 storage and handler primitives; it does not claim a complete refresh exchange, native client transport, cryptographic interoperability or authenticated family-cleanup endpoint.
