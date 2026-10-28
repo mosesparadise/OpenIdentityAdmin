@@ -1,11 +1,11 @@
 # Tasks: Administrator session refresh
 
-Implementation packet for M02-C. The [native primitive increment](native-integration.md) is under verification within T003; no runtime task is complete. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
+Implementation packet for M02-C. The [native primitive increment](native-integration.md#accepted-internal-delivery--28-october-2026) is delivered by PR110 within T003; no runtime task is complete. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
 
 ## Phase 1 — Setup and reviewed packet
 
 - [x] T001 Record approved scope, current source/native-library research and clarification decisions in `specs/016-administrator-refresh/spec.md`, `research.md`, `plan.md`, `data-model.md` and `contracts/refresh.md`.
-- [x] T002 Complete independent architecture/security/API and test/Aspire review, requirements/security checklists, cross-artifact analysis and exact documentation checks in `specs/016-administrator-refresh/verification.md`; update `docs/roadmap.md` and `docs/operations/new-task-handoff.md`. Planning PR delivery still requires exact-head hosted checks and normal squash; its remote PR state is the delivery authority.
+- [x] T002 Complete independent architecture/security/API and test/Aspire review, requirements/security checklists, cross-artifact analysis and exact documentation checks in `specs/016-administrator-refresh/verification.md`; update `docs/roadmap.md` and `docs/operations/new-task-handoff.md`. Planning PR109 is squash-merged as `34c5df010df65ac2f2166a525d4028fcd7e86dcd`; its exact-head documentation checks passed.
 
 ## Phase 2 — Blocking native and persistence foundations
 
