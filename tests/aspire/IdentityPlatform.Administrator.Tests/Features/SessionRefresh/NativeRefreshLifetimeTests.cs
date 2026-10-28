@@ -99,6 +99,8 @@ public sealed class NativeRefreshLifetimeTests(BootstrapFixture fixture)
                 {
                     Principal = family.Predecessor
                 };
+                await new OpenIddictServerHandlers.Protection.ResolveTokenValidationParameters(
+                    scope.Services.GetRequiredService<IOpenIddictApplicationManager>()).HandleAsync(context);
                 context.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
                 await new OpenIddictServerHandlers.Protection.ValidateExpirationDate().HandleAsync(context);
                 Assert.Equal(offset > 0, context.IsRejected);

@@ -60,6 +60,14 @@ python3 scripts/verify.py PostgreSql --partition administrator --story SessionRe
 python3 scripts/verify.py SqlServer --partition administrator --story SessionRefresh
 ```
 
+## Rejected hosted attempt and correction
+
+[Run40677653626](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40677653626), source `f79fd670862852fd961313ed95645d32c3ffb6c7`, was superseded/cancelled after correcting two dependent verifier totals; no acceptance is taken from it.
+
+[Run40677785020](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40677785020), source `0255d6953b84140a4138ec457cd1d1eaa6e4c2a3`, executed16 new cases per provider:15 passed,1 failed,0 skipped on each. The expiry case threw `NullReferenceException` at its test setup before any expiry assertion because its manually constructed native context had not run `ResolveTokenValidationParameters`. The correction runs that original native initialization handler before setting zero skew and invoking expiry validation. Before/equal/after assertions are unchanged. This is a test fixture correction, not a runtime or native-library defect disposition. Static formatting also rejected two unused imports in the new fixture; both are removed. Corrected-source full execution remains required.
+
+Rejected artifacts are retained by the run: PostgreSQL12810844635 / SHA256 `6003e9d9aa7c1d58ff31934ae6410168a78ea8677d0875118e3c053b2fa24e4e`; SQL Server12811442174 / SHA256 `7dc3d265e16a9ba6d392149dae249a4301c17be4a3c5ae521a62cc07b391f5e5`. These hashes are the uploaded ZIP digests reported by the job logs, not a claim of independent local archive verification.
+
 ## Remaining T003 gate
 
 Before dependent integration, prove genuine initial offline issuance and native cryptographic refresh/revocation transport, actual native client-created scopes and request budgets, authenticated ownership-bound cleanup after total initial token-response loss, pre-exchange capacity reservation, disabled-client cleanup and exact first-party confirmation schema. Complete native early-consumption/final-issuance integration and product authorization-wide replay denial with current authority and immutable deadlines. Manager-only family revocation above proves a storage primitive, not authenticated target selection or remote confirmation.
