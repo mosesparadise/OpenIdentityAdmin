@@ -1,6 +1,6 @@
 # Tasks: Administrator session refresh
 
-Implementation packet for M02-C. The [native primitive increment](native-integration.md#accepted-internal-delivery--28-october-2026) is delivered by PR110 within T003; no runtime task is complete. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. The [native cleanup candidate](native-cleanup.md) adds22 further T003 cases with hosted acceptance pending; it closes no runtime task. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
+Implementation packet for M02-C. The [native primitive increment](native-integration.md#accepted-internal-delivery--28-october-2026) is delivered by PR110 within T003; no runtime task is complete. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. The [native cleanup increment](native-cleanup.md#accepted-internal-delivery--28-october-2026) is delivered by PR112:22 further T003 cases, the demo-navigation correction and95 successful jobs/4,697 raw passes. It closes no runtime task; integrated B3 admission/durable proof/receipt/capacity, disabled-profile cleanup, retention and actual transport/deadline obligations remain. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
 
 ## Phase 1 — Setup and reviewed packet
 
