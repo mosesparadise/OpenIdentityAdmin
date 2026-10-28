@@ -89,6 +89,14 @@ internal sealed class NativeCleanupBridge(NativeCleanupFixture issuer) : Delegat
         get; private set;
     }
     internal HashSet<string> ProofDigests { get; } = [];
+    internal Exception? LastFailure
+    {
+        get; private set;
+    }
+    internal string? LastNativeError
+    {
+        get; private set;
+    }
     internal bool EmptyResponse
     {
         get; set;
@@ -119,7 +127,7 @@ internal sealed class NativeCleanupBridge(NativeCleanupFixture issuer) : Delegat
         var proof = fields[OpenIddictConstants.Parameters.ClientAssertion];
         ProofDigests.Add(Convert.ToHexString(SHA256.HashData(Encoding.ASCII.GetBytes(proof))));
         Sends++;
-        var result = await NativeCleanupHttp.InvokeAsync(issuer, NativeCleanupProfile.Revoke, fields, token);
+        var result = await InvokeAsync(fields, token);
         return new HttpResponseMessage((HttpStatusCode)result.Status)
         {
             Content = new ByteArrayContent(EmptyResponse ? Encoding.UTF8.GetBytes(EmptyJson) : result.Body)
@@ -127,5 +135,23 @@ internal sealed class NativeCleanupBridge(NativeCleanupFixture issuer) : Delegat
                 Headers = { ContentType = new MediaTypeHeaderValue(JsonContentType) }
             }
         };
+    }
+
+    /// <summary>Retains exact server causation separately from the native client's deliberate error sanitization.</summary>
+    private async Task<NativeCleanupResponse> InvokeAsync(Dictionary<string, string> fields, CancellationToken token)
+    {
+        LastFailure = null;
+        LastNativeError = null;
+        try
+        {
+            var result = await NativeCleanupHttp.InvokeAsync(issuer, NativeCleanupProfile.Revoke, fields, token);
+            LastNativeError = result.NativeError;
+            return result;
+        }
+        catch (Exception error)
+        {
+            LastFailure = error;
+            throw;
+        }
     }
 }

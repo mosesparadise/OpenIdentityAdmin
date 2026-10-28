@@ -91,8 +91,9 @@ public sealed class NativeCleanupTests(BootstrapFixture fixture)
         var refresh = NativeCleanupFlow.Field(await NativeCleanupFlow.ExchangeAsync(issuer, code), OpenIddictConstants.Parameters.RefreshToken);
         await using var client = new NativeCleanupClient(issuer);
         issuer.Rollback = true;
-        var rolledBack = await Record.ExceptionAsync(() => client.RevokeAsync(code.Intent, NativeCleanupProfile.Random()));
-        Assert.True(NativeCleanupFaults.CausedBy(rolledBack, issuer.Faults.Rollback));
+        var rolledBack = await Assert.ThrowsAsync<OpenIddictExceptions.ProtocolException>(() => client.RevokeAsync(code.Intent, NativeCleanupProfile.Random()));
+        Assert.Equal(OpenIddictConstants.Errors.ServerError, rolledBack.Error);
+        Assert.True(NativeCleanupFaults.CausedBy(client.Bridge.LastFailure, issuer.Faults.Rollback));
         Assert.Equal(1, issuer.Faults.RollbackHits);
         Assert.True(issuer.Faults.StagedConfirmation);
         issuer.Rollback = false;

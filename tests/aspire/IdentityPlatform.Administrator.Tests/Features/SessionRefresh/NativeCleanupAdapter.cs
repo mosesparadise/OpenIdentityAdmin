@@ -50,9 +50,14 @@ internal static class NativeCleanupAdapter
     private static void Filter<TContext>(OpenIddictServerBuilder server, OpenIddictServerHandlerDescriptor descriptor)
         where TContext : OpenIddictServerEvents.BaseContext
     {
-        server.RemoveEventHandler(descriptor);
-        server.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<TContext>().Import(descriptor)
-            .AddFilter<NativeCleanupOrdinary>().Build());
+        var replacement = OpenIddictServerHandlerDescriptor.CreateBuilder<TContext>().Import(descriptor)
+            .AddFilter<NativeCleanupOrdinary>().Build();
+        server.Configure(options =>
+        {
+            var index = options.Handlers.FindIndex(value => value.ServiceDescriptor.ServiceType == descriptor.ServiceDescriptor.ServiceType);
+            Assert.True(index >= 0);
+            options.Handlers[index] = replacement;
+        });
     }
 
 }
