@@ -32,7 +32,11 @@ public sealed class NativeCleanupOwnershipTests(BootstrapFixture fixture)
         foreach (var application in new[] { true, false })
         {
             await SubstituteAsync(issuer, code.Intent, original.Authorization, foreign, application);
+            var sends = client.Bridge.Sends;
+            var proofs = client.Bridge.ProofDigests.Count;
             var failure = await Assert.ThrowsAsync<OpenIddictExceptions.ProtocolException>(() => client.RevokeAsync(code.Intent, NativeCleanupProfile.Random()));
+            Assert.Equal(sends + 1, client.Bridge.Sends);
+            Assert.Equal(proofs + 1, client.Bridge.ProofDigests.Count);
             Assert.Equal(OpenIddictConstants.Errors.ServerError, failure.Error);
             Assert.Null(client.Bridge.LastFailure);
             Assert.Equal(OpenIddictConstants.Errors.InvalidRequest, client.Bridge.LastNativeError);
