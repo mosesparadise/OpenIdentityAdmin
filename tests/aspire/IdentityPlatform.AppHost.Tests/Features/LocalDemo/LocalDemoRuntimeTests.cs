@@ -38,10 +38,11 @@ public sealed class LocalDemoRuntimeTests
             await replay.RestoreAsync(cookies);
             await replay.RequireStatusAsync(false);
         }
-        catch
+        catch (Exception error)
         {
             // Native browser exceptions may contain private form values or protocol URLs.
-            throw new InvalidOperationException(FailurePrefix + phase + FailureSuffix);
+            var diagnostic = error is LocalDemoSignInFailure observed ? observed.Message : string.Empty;
+            throw new InvalidOperationException(FailurePrefix + phase + FailureSuffix + diagnostic);
         }
     }
     /// <summary>Proves independent issuer revocation and retains a genuinely live final session for the new-run invalidation control.</summary>
