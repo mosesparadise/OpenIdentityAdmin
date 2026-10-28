@@ -1,0 +1,44 @@
+{
+  "scope": "supplemental local synthetic loopback HTTP; no authentication/TLS/provider/Windows acceptance",
+  "sdk": "10.0.403",
+  "runtime": "10.0.14",
+  "playwright": "1.63.0",
+  "browser": "system Chromium151.0.7922.173, explicitly selected /usr/bin/chromium",
+  "sources": {
+    "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalDemoNavigation.cs": "7d8d95c72ce61b4d87a4703fa7aa5100f6a5ec457b7c607ca43ddb87e6964b48",
+    "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalDemoNavigationFixture.cs": "70b90367996b0caa3f1dd1ab3007f393b16ab5254bfe82548649b38bfca39657"
+  },
+  "observations": [
+    {
+      "mode": "original",
+      "result": "action-timeout",
+      "sends": 1,
+      "elapsedMilliseconds": 15022
+    },
+    {
+      "mode": "corrected",
+      "result": "completed",
+      "sends": 1,
+      "elapsedMilliseconds": 17306
+    },
+    {
+      "mode": "disabled",
+      "result": "action-timeout",
+      "sends": 0,
+      "elapsedMilliseconds": 20002
+    },
+    {
+      "mode": "hanging",
+      "result": "navigation-timeout",
+      "sends": 1,
+      "elapsedMilliseconds": 20005
+    },
+    {
+      "mode": "delayed",
+      "result": "navigation-timeout",
+      "sends": 1,
+      "elapsedMilliseconds": 20000
+    }
+  ],
+  "permanentProviderExecutionsPending": 4
+}

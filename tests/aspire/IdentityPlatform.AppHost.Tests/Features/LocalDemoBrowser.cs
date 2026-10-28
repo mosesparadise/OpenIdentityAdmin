@@ -26,8 +26,6 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private const string IssuerLink = "#issuer-sign-out";
     private const string ConfirmIssuer = "Sign out this issuer session";
     private const string Unverified = "Issuer sign-out result is unverified.";
-    private const int DefaultTimeoutMilliseconds = 15000;
-    private const int NavigationTimeoutMilliseconds = 20000;
     private const string Issuer = "https://issuer.dev.localhost:17443";
     private const string Client = "https://bff.dev.localhost:17444";
     private const string UsernameField = "#username";
@@ -59,8 +57,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         {
             browser = await playwright.Chromium.LaunchAsync();
             var context = await browser.NewContextAsync();
-            context.SetDefaultTimeout(DefaultTimeoutMilliseconds);
-            context.SetDefaultNavigationTimeout(NavigationTimeoutMilliseconds);
+            LocalDemoNavigation.Configure(context);
             return new(playwright, browser, context, await context.NewPageAsync());
         }
         catch
@@ -93,21 +90,50 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     /// <summary>Every explicit login must render a new password and MFA form, including when an issuer cookie already exists.</summary>
     internal async Task SignInAsync(LocalDemoRuntime runtime)
     {
-        var response = await page.GotoAsync(Client + LoginPath);
-        Assert.Equal(SuccessStatus, response!.Status);
-        await page.GetByRole(AriaRole.Button, new()
+        var evidence = new LocalDemoSignInEvidence();
+        page.Response += evidence.Observe;
+        try
         {
-            Name = StartLabel,
-            Exact = true
-        }).ClickAsync();
-        await CredentialsAsync(runtime);
-        await page.Locator(CodeField).WaitForAsync();
-        var code = FactorOracle.UnusedCode(seed!, usedCodes);
-        usedCodes.Add(code);
-        await page.Locator(CodeField).FillAsync(code);
-        await page.Locator(Submit).ClickAsync();
-        await page.WaitForURLAsync(Client + LoginPath);
-        await RequireStatusAsync(true);
+            await SignInAsync(runtime, evidence);
+        }
+        finally { page.Response -= evidence.Observe; }
+    }
+
+    /// <summary>Records finite failure observations while the exact post-MFA navigation owns its already-configured twenty-second budget.</summary>
+    private async Task SignInAsync(LocalDemoRuntime runtime, LocalDemoSignInEvidence evidence)
+    {
+        string? code = null;
+        long sampled = 0;
+        try
+        {
+            evidence.Current = LocalDemoSignInEvidence.Stage.Navigation;
+            var response = await page.GotoAsync(Client + LoginPath);
+            Assert.Equal(SuccessStatus, response!.Status);
+            evidence.Current = LocalDemoSignInEvidence.Stage.Start;
+            await page.GetByRole(AriaRole.Button, new()
+            {
+                Name = StartLabel,
+                Exact = true
+            }).ClickAsync();
+            evidence.Current = LocalDemoSignInEvidence.Stage.Password;
+            await CredentialsAsync(runtime);
+            evidence.Current = LocalDemoSignInEvidence.Stage.FactorForm;
+            await page.Locator(CodeField).WaitForAsync();
+            evidence.Current = LocalDemoSignInEvidence.Stage.CodeSelection;
+            sampled = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            code = FactorOracle.UnusedCode(seed!, usedCodes);
+            usedCodes.Add(code);
+            evidence.Current = LocalDemoSignInEvidence.Stage.FactorSubmission;
+            await page.Locator(CodeField).FillAsync(code);
+            evidence.Current = LocalDemoSignInEvidence.Stage.Callback;
+            await LocalDemoNavigation.SubmitAsync(page, page.Locator(Submit), Client + LoginPath);
+            evidence.Current = LocalDemoSignInEvidence.Stage.Status;
+            await RequireStatusAsync(true);
+        }
+        catch (Exception error)
+        {
+            throw await evidence.FailureAsync(page, error, seed, code, sampled);
+        }
     }
 
     /// <summary>Submits only the actual page's password form; it cannot grant or inject an authenticated principal.</summary>
