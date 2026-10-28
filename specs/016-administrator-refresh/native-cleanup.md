@@ -46,6 +46,14 @@ python3 scripts/verify.py SqlServer --partition administrator --story SessionRef
 
 Architecture and test reviews requested stronger exact-fault causation, actual caller cancellation, ordinary real-token revocation, foreign-client/family negatives and deterministic native identity comparisons. Those controls are included. Independent architecture/security and test source rereviews pass for this bounded component prototype. Final local build, exact2,005-case discovery/metadata agreement,51 selector/browser controls, code-quality rules and assurance integrity pass. Source review also required the issuance rollback witness to distinguish successful code redirects from OAuth error redirects; the witness now checks the exact callback, no error and exactly one nonempty code. Hosted evidence remains pending.
 
+## Rejected first hosted candidate
+
+[Run40690177454](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40690177454), source `7590c0c111b21afc2f12d1639eef95b46d5d56bf`, is rejected: both SessionRefresh lanes executed27 cases with18 passes,9 failures and zero skips. Static analysis also rejected import ordering. The failed reports are preserved; no acceptance is taken from this source.
+
+Corrections add the callback URI required by native client authorization-code configuration, compare native-issued row types with their actual URI identifiers rather than RFC token-type hints, and fix imports. A genuine wrong-audience client assertion is rejected by native `ValidateAudiences` as `invalid_token`, which ordinary revocation normalization then converts to an empty HTTP200. The corrected negative observes the real error code immediately before native normalization and requires an empty response, unchanged family state and no confirmation. Other proof negatives still require `invalid_client`. No cryptographic validation or family-denial requirement is relaxed.
+
+Downloaded ZIP digests match the artifact API. PostgreSQL artifact12816249688: ZIP SHA256 `247c4a1e791608fb48dadf254dcfeea0c69c6b2c4e3099a848b774b14d6f5cce`, raw TRX SHA256 `94b825a4d6fce2384d93645a341e23733c845e535e802b6d217704e0e0c90684`. SQL Server artifact12817352142: ZIP SHA256 `e47a8d60b17de14fc04311a894aab8ba442dcfeb78028c8f68d1c46a00294793`, raw TRX SHA256 `ca3a18db8be9a2c7a1ae86d2158cdd8020c6698029e453b50818fe7a81bf9aa3`. Both raw reports confirm the18/9/0 outcome. The full corrected-source matrix must pass before delivery.
+
 ## Remaining integration gates
 
 This prototype deliberately does not satisfy the production cleanup contract. Native crypto accepts assertion replay, so a separately typed durable consumption receipt is mandatory before selector handling, including downstream failure and cross-endpoint replay. Current B3 registration and assertion-ledger readers reject disabled profiles; explicit deny-only cleanup eligibility remains unimplemented. The native-permission test above is not evidence of production disabled-profile cleanup.

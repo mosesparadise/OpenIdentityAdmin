@@ -34,6 +34,7 @@ internal sealed class NativeCleanupClient : IAsyncDisposable
                 ClientId = NativeCleanupProfile.Client,
                 RegistrationId = NativeCleanupProfile.Client,
                 Issuer = new Uri(NativeCleanupProfile.Issuer),
+                RedirectUri = new Uri(NativeCleanupProfile.Callback),
                 Configuration = new OpenIddictConfiguration
                 {
                     Issuer = new Uri(NativeCleanupProfile.Issuer),

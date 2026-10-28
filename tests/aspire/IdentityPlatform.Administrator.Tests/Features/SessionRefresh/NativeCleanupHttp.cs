@@ -12,6 +12,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.SessionRefresh;
 /// <summary>Executes real native ASP.NET form extraction, cryptography and issuance in an isolated component host, not a TLS listener.</summary>
 internal static class NativeCleanupHttp
 {
+    internal static readonly object ErrorKey = new();
     private const string FormType = "application/x-www-form-urlencoded";
     private const string TestAuthentication = "characterization-human-seam";
 
@@ -29,7 +30,8 @@ internal static class NativeCleanupHttp
             {
                 await SignInAsync(http, path);
             }
-            return new NativeCleanupResponse(http.Response.StatusCode, output.ToArray(), http.Response.Headers.Location.ToString());
+            return new NativeCleanupResponse(http.Response.StatusCode, output.ToArray(), http.Response.Headers.Location.ToString(),
+                http.Items[ErrorKey] as string);
         }, cancellation);
 
     /// <summary>Supplies actual URL/form bytes while preserving the original owned services and cancellation token.</summary>
@@ -77,9 +79,10 @@ internal static class NativeCleanupHttp
 }
 
 /// <summary>Keeps synthetic protocol bytes in memory and prevents a generated credential-bearing ToString.</summary>
-internal sealed class NativeCleanupResponse(int status, byte[] body, string location)
+internal sealed class NativeCleanupResponse(int status, byte[] body, string location, string? nativeError)
 {
     internal int Status => status;
     internal byte[] Body => body;
     internal string Location => location;
+    internal string? NativeError => nativeError;
 }

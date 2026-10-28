@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -34,6 +35,13 @@ internal static class NativeCleanupAdapter
         server.AddEventHandler<OpenIddictServerEvents.HandleRevocationRequestContext>(handler => handler
             .SetOrder(OpenIddictServerHandlers.Revocation.RevokeToken.Descriptor.Order + NativeCleanupProfile.OrderOffset)
             .UseScopedHandler<NativeCleanupRevocation>());
+        server.AddEventHandler<OpenIddictServerEvents.ApplyRevocationResponseContext>(handler => handler
+            .SetOrder(OpenIddictServerHandlers.Revocation.NormalizeErrorResponse.Descriptor.Order - NativeCleanupProfile.OrderOffset)
+            .UseInlineHandler(context =>
+            {
+                context.Transaction.GetHttpRequest()!.HttpContext.Items[NativeCleanupHttp.ErrorKey] = context.Error;
+                return ValueTask.CompletedTask;
+            }));
         server.AddEventHandler<OpenIddictServerEvents.ApplyRevocationResponseContext>(handler => handler
             .SetOrder(OpenIddictServerHandlers.Revocation.NormalizeErrorResponse.Descriptor.Order + NativeCleanupProfile.OrderOffset)
             .UseInlineHandler(NativeCleanupRevocation.ConfirmAsync));

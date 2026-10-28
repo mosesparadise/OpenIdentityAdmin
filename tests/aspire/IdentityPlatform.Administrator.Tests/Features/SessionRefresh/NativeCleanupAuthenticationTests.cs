@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 using IdentityPlatform.Administrator.Tests.Fixtures;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
@@ -27,14 +27,16 @@ public sealed class NativeCleanupAuthenticationTests(BootstrapFixture fixture)
         var missing = NativeCleanupFlow.Proof(issuer);
         missing.Remove(OpenIddictConstants.Parameters.ClientAssertion);
         missing.Remove(OpenIddictConstants.Parameters.ClientAssertionType);
-        foreach (var proof in new[]
+        foreach (var (proof, expected) in new[]
         {
-            missing, NativeCleanupFlow.Proof(issuer, new RsaSecurityKey(wrong)),
-            NativeCleanupFlow.Proof(issuer, audience: ForeignAudience), NativeCleanupFlow.Proof(issuer, ageSeconds: ExpiredProofAgeSeconds)
+            (missing, OpenIddictConstants.Errors.InvalidClient),
+            (NativeCleanupFlow.Proof(issuer, new RsaSecurityKey(wrong)), OpenIddictConstants.Errors.InvalidClient),
+            (NativeCleanupFlow.Proof(issuer, audience: ForeignAudience), OpenIddictConstants.Errors.InvalidToken),
+            (NativeCleanupFlow.Proof(issuer, ageSeconds: ExpiredProofAgeSeconds), OpenIddictConstants.Errors.InvalidClient)
         })
         {
             var response = await RevokeAsync(issuer, code.Intent, NativeCleanupProfile.Random(), proof);
-            RequireError(response, OpenIddictConstants.Errors.InvalidClient);
+            RequireProofDenied(response, expected);
             Assert.Equal(OpenIddictConstants.Statuses.Valid, (await NativeCleanupFlow.StateAsync(issuer, code.Intent))!.Status);
         }
         await using var client = new NativeCleanupClient(issuer);
@@ -117,6 +119,20 @@ public sealed class NativeCleanupAuthenticationTests(BootstrapFixture fixture)
         using var json = JsonDocument.Parse(response.Body);
         Assert.Equal(expected, json.RootElement.GetProperty(OpenIddictConstants.Parameters.Error).GetString());
         Assert.False(json.RootElement.TryGetProperty(NativeCleanupProfile.Confirmation, out _));
+    }
+
+    /// <summary>Distinguishes native proof rejection from RFC7009 normalization; an empty HTTP200 is never cleanup confirmation.</summary>
+    private static void RequireProofDenied(NativeCleanupResponse response, string expected)
+    {
+        Assert.Equal(expected, response.NativeError);
+        if (expected == OpenIddictConstants.Errors.InvalidToken)
+        {
+            Assert.Equal(StatusCodes.Status200OK, response.Status);
+            using var json = JsonDocument.Parse(response.Body);
+            Assert.Empty(json.RootElement.EnumerateObject());
+            return;
+        }
+        RequireError(response, expected);
     }
 
     /// <summary>Changes native persisted application permissions in a fresh committed owner, without pretending to disable a B3 profile.</summary>

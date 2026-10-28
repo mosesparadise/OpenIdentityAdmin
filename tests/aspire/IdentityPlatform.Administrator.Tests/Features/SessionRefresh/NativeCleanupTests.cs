@@ -19,7 +19,7 @@ public sealed class NativeCleanupTests(BootstrapFixture fixture)
         var before = await NativeCleanupFlow.StateAsync(issuer, code.Intent);
         Assert.NotNull(before);
         Assert.Equal(OpenIddictConstants.Statuses.Valid, before.Status);
-        Assert.Contains(before.Tokens, row => row.Type == OpenIddictConstants.TokenTypeHints.RefreshToken && row.Status == OpenIddictConstants.Statuses.Valid);
+        Assert.Contains(before.Tokens, row => row.Type == OpenIddictConstants.TokenTypeIdentifiers.RefreshToken && row.Status == OpenIddictConstants.Statuses.Valid);
         await using var client = new NativeCleanupClient(issuer);
         var nonce = NativeCleanupProfile.Random();
         Assert.True(NativeCleanupFlow.Confirmed(await client.RevokeAsync(code.Intent, nonce), nonce));
@@ -50,7 +50,7 @@ public sealed class NativeCleanupTests(BootstrapFixture fixture)
         var state = await NativeCleanupFlow.StateAsync(issuer, code.Intent);
         Assert.NotNull(state);
         Assert.Equal(OpenIddictConstants.Statuses.Revoked, state.Status);
-        Assert.DoesNotContain(state.Tokens, row => row.Type == OpenIddictConstants.TokenTypeHints.RefreshToken);
+        Assert.DoesNotContain(state.Tokens, row => row.Type == OpenIddictConstants.TokenTypeIdentifiers.RefreshToken);
     }
 
     /// <summary>A staged native response cannot escape an issuance rollback; a repeated intent cannot bind a second authorization.</summary>
@@ -143,8 +143,8 @@ public sealed class NativeCleanupTests(BootstrapFixture fixture)
         var state = await NativeCleanupFlow.StateAsync(issuer, code.Intent);
         Assert.NotNull(state);
         Assert.Equal(OpenIddictConstants.Statuses.Valid, state.Status);
-        Assert.Equal(OpenIddictConstants.Statuses.Revoked, Assert.Single(state.Tokens, row => row.Type == OpenIddictConstants.TokenTypeHints.RefreshToken).Status);
-        Assert.Equal(OpenIddictConstants.Statuses.Valid, Assert.Single(state.Tokens, row => row.Type == OpenIddictConstants.TokenTypeHints.AccessToken).Status);
+        Assert.Equal(OpenIddictConstants.Statuses.Revoked, Assert.Single(state.Tokens, row => row.Type == OpenIddictConstants.TokenTypeIdentifiers.RefreshToken).Status);
+        Assert.Equal(OpenIddictConstants.Statuses.Valid, Assert.Single(state.Tokens, row => row.Type == OpenIddictConstants.TokenTypeIdentifiers.AccessToken).Status);
         Assert.Equal(OpenIddictConstants.Statuses.Valid, Assert.Single(state.Tokens, row => row.Type == NativeCleanupProfile.SelectorType).Status);
         Assert.Equal(1, client.Bridge.Sends);
     }
