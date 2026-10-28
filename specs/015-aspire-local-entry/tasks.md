@@ -15,11 +15,13 @@
 
 ## US3 — Integrated disposal and delivery
 
-- [ ] T005 Preserve both LocalDemo runtime identities while invoking the real native command; verify real bootstrap/enrollment/login/logout, both providers and disposal in `tests/aspire/IdentityPlatform.AppHost.Tests/Features/` (FR-003–005).
-- [ ] T006 Reconcile required CI, discovery/coverage/mutation and independent reviews; update feature014 Windows obligation, roadmap/handoff and normal squash delivery (all FRs).
+- [x] T005 Preserve both LocalDemo runtime identities while invoking the real native command; verify real bootstrap/enrollment/login/logout, both providers and disposal in `tests/aspire/IdentityPlatform.AppHost.Tests/Features/` (FR-003–005).
+- [x] T006 Reconcile required CI, discovery/coverage/mutation and independent reviews; update feature014 Windows obligation, roadmap/handoff and normal squash delivery (all FRs).
 
-- [ ] T007 Update SDK selection to stable10.x, current stable NuGet/npm/tool dependencies, locks and vendor evidence; document the OpenApi, TypeScript and Playwright compatibility constraints and selected compatible releases, preserve frozen producer history and run required source/contract/browser/provider checks.
+- [x] T007 Update SDK selection to stable10.x, current stable NuGet/npm/tool dependencies, locks and vendor evidence; document the OpenApi, TypeScript and Playwright compatibility constraints and selected compatible releases, preserve frozen producer history and run required source/contract/browser/provider checks.
 
 ## Dependencies
 
 T001 precedes code. T002 and T003 converge before T004/T005; T006 requires all. Independent source reviews can run in parallel; main owns all edits. Windows walkthrough remains separate and unclaimed.
+
+[Accepted internal delivery](delivery.md): PR #107 squash `b9fdfc7`, all required automation and independent reviews complete. Actual Windows Docker Desktop walkthrough remains feature 014 T014; no human or release gate is closed.

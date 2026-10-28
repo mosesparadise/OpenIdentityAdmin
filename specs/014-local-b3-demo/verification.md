@@ -1,5 +1,7 @@
 # Local demo verification
 
+**Native Aspire entry delivered — 28 October 2026:** [Feature 015 delivery](../015-aspire-local-entry/delivery.md) supersedes the historical PowerShell helpers with the AppHost profile and dashboard initialization. Both current provider flows and disposal pass; Windows SC-001/T014 remains open. The original implementation evidence below is retained.
+
 Starting main was remotely verified as `eb739386f6117047edb70bce62cd7e73ba311d94`; local branch `108-local-b3-demo` preserves that accepted B3 delivery. No prior implementation or diagnostic approval was repeated.
 
 ## Accepted implementation — 26 October 2026

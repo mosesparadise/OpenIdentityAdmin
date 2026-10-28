@@ -1,5 +1,7 @@
 # Native Aspire and dependency verification
 
+**Accepted internal delivery — 28 October 2026:** [PR #107 delivery](delivery.md) records the reviewed squash, all 93 successful jobs, 4,639 native passes, unchanged coverage/mutation gates and the user-confirmed Playwright exception. The candidate/pending statements below retain their historical scope; the delivery record supersedes them. Windows execution and all external gates remain open.
+
 Starting remote main: `1d1ce53597d96abe063caf51a0d037f817589a8d`. Branch `110-aspire-local-entry`; original workspace/branches/evidence preserved. User authorized native Aspire entry, stable10.x SDKs and current packages.
 
 ## Current evidence

@@ -1,6 +1,6 @@
 # Disposable B3 demo through Aspire
 
-The accepted container implementation from PR #105 is retained. [Feature 015](../015-aspire-local-entry/spec.md) replaces the PowerShell helpers with native Aspire launch and dashboard initialization; [current verification](../015-aspire-local-entry/verification.md) is pending. Actual Windows Docker Desktop execution remains unverified (SC-001/T014).
+The accepted container implementation from PR #105 is retained. [Feature 015](../015-aspire-local-entry/spec.md) replaces the PowerShell helpers with native Aspire launch and dashboard initialization; [accepted delivery](../015-aspire-local-entry/delivery.md) records PR #107 and all required automation. Actual Windows Docker Desktop execution remains unverified (SC-001/T014).
 
 ## Prerequisites
 
@@ -43,7 +43,7 @@ Use these canonical URLs for account/BFF journeys so origins match the native re
 
 ## Stop, restart and troubleshoot
 
-Stop the AppHost through your IDE or Ctrl+C. Native Aspire/DCP disposes its run-owned containers and anonymous volumes. No cleanup script or global Docker prune is used. Subsequent runs do not reuse accounts or data. Prior both-provider Linux CI verifies native disposal; the new command path and Windows walkthrough require their own evidence. Forced host termination is not a cleanup guarantee.
+Stop the AppHost through your IDE or Ctrl+C. Native Aspire/DCP disposes its run-owned containers and anonymous volumes. No cleanup script or global Docker prune is used. Subsequent runs do not reuse accounts or data. Current both-provider Linux CI verifies the native dashboard command and disposal; the Windows walkthrough remains open. Forced host termination is not a cleanup guarantee.
 
 Private certificates and encrypted key rings live in application-owned Linux tmpfs. Restarting an individual issuer/BFF container loses those keys while its database may still exist: **restart the whole graph, initialize and enroll again**. No individual-container continuity or automatic repair is promised. Application certificates expire after one day; start a fresh complete run for later sessions.
 

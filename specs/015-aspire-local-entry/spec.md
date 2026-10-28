@@ -2,7 +2,7 @@
 
 **Branch**: `110-aspire-local-entry`
 **Created**: 2026-10-27
-**Status**: User-authorized correction; implementation complete; integrated verification pending
+**Status**: Internally delivered in [PR #107](delivery.md); integrated Linux verification complete; actual Windows walkthrough remains open
 
 ## User scenarios
 
