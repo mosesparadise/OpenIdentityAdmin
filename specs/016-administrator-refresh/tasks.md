@@ -1,6 +1,6 @@
 # Tasks: Administrator session refresh
 
-Planning packet for M02-C. Runtime tasks are not executed. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
+Implementation packet for M02-C. The [native primitive increment](native-integration.md) is under verification within T003; no runtime task is complete. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
 
 ## Phase 1 — Setup and reviewed packet
 

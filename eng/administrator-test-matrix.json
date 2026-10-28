@@ -923,7 +923,23 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionSecrecyBrowserTests.Given_GenuineNativeBrowserLogin_When_ActualCredentialsAreComparedWithBothOrigins_Then_NoServerOnlySecretIsExposed(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_StatusReloadsAndOriginalExpiryArrives_Then_NoRenewalOrNewLoginOccurs(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_ReadOrDisposalFails_Then_UnavailablePublishesNoIdentityAndRestoredReadSucceeds(provider: \"PostgreSql\", read: True)",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_ReadOrDisposalFails_Then_UnavailablePublishesNoIdentityAndRestoredReadSucceeds(provider: \"PostgreSql\", read: False)"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_ReadOrDisposalFails_Then_UnavailablePublishesNoIdentityAndRestoredReadSucceeds(provider: \"PostgreSql\", read: False)",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_PostUpdateRevocationFailure_When_NativeValidationCatchesIt_Then_OwnerRejectsCommitAndRestoredControlSucceeds(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_StaleNativeRefreshRow_When_AnotherOwnerRedeems_Then_IgnoredNativeFailureStillCannotCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_InitialRefreshPrincipal_When_ShorterLifetimeIsAttached_Then_NativePreparationUsesTheShorterBound(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_OriginalRefreshDeadline_When_SlidingPolicyChanges_Then_OnlyFixedExpiryPreservesTheOriginalCap(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_RefreshExpiry_When_BeforeAtAndAfterAreValidated_Then_NativeEqualityIsNotProductStrictExpiry(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_ValidatedPrincipal_When_OfflineScopeChanges_Then_NativeRefreshSelectionFollowsThatScope(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_BoundRefreshPrincipal_When_RevokingClientChanges_Then_NativePartyValidationDeniesTheForeignClient(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_InvalidTokenError_When_NativeResponseIsNormalized_Then_EmptyResponseProvesNoFamilyDenial(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_PrevalidatedTokenTypes_When_NativeRevocationTypeRuns_Then_CodeCannotBeUsedAsCleanupTarget(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_TwoLinkedRefreshEntries_When_NativeRevocationCommits_Then_OnlyTheTargetIsRevoked(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_DurableEarlyRedemption_When_LaterEpochRollsBack_Then_PredecessorDoesNotBecomeValidAgain(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_FamilyRevocation_When_RollbackThenCommitAreObserved_Then_OnlyCommittedDenialRejectsSuccessor(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedEntryWithoutDate_When_ZeroAndNullLeewayAreCompared_Then_OnlyNullAlwaysRejects(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedRefresh_When_NullLeewayValidationCommits_Then_LinkedTokensButNotAuthorizationAreRevoked(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ReplayRevocation_When_OwnerRollsBack_Then_CommittedFamilyRemainsUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ValidSuccessor_When_OnlyItsAuthorizationIsRevoked_Then_NativeAuthorizationValidationDeniesThatFamily(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -1953,7 +1969,23 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionSecrecyBrowserTests.Given_GenuineNativeBrowserLogin_When_ActualCredentialsAreComparedWithBothOrigins_Then_NoServerOnlySecretIsExposed(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_StatusReloadsAndOriginalExpiryArrives_Then_NoRenewalOrNewLoginOccurs(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_ReadOrDisposalFails_Then_UnavailablePublishesNoIdentityAndRestoredReadSucceeds(provider: \"SqlServer\", read: True)",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_ReadOrDisposalFails_Then_UnavailablePublishesNoIdentityAndRestoredReadSucceeds(provider: \"SqlServer\", read: False)"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.SessionStatusBrowserTests.Given_RealAuthenticatedBrowser_When_ReadOrDisposalFails_Then_UnavailablePublishesNoIdentityAndRestoredReadSucceeds(provider: \"SqlServer\", read: False)",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_PostUpdateRevocationFailure_When_NativeValidationCatchesIt_Then_OwnerRejectsCommitAndRestoredControlSucceeds(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_StaleNativeRefreshRow_When_AnotherOwnerRedeems_Then_IgnoredNativeFailureStillCannotCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_InitialRefreshPrincipal_When_ShorterLifetimeIsAttached_Then_NativePreparationUsesTheShorterBound(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_OriginalRefreshDeadline_When_SlidingPolicyChanges_Then_OnlyFixedExpiryPreservesTheOriginalCap(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_RefreshExpiry_When_BeforeAtAndAfterAreValidated_Then_NativeEqualityIsNotProductStrictExpiry(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_ValidatedPrincipal_When_OfflineScopeChanges_Then_NativeRefreshSelectionFollowsThatScope(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_BoundRefreshPrincipal_When_RevokingClientChanges_Then_NativePartyValidationDeniesTheForeignClient(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_InvalidTokenError_When_NativeResponseIsNormalized_Then_EmptyResponseProvesNoFamilyDenial(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_PrevalidatedTokenTypes_When_NativeRevocationTypeRuns_Then_CodeCannotBeUsedAsCleanupTarget(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_TwoLinkedRefreshEntries_When_NativeRevocationCommits_Then_OnlyTheTargetIsRevoked(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_DurableEarlyRedemption_When_LaterEpochRollsBack_Then_PredecessorDoesNotBecomeValidAgain(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_FamilyRevocation_When_RollbackThenCommitAreObserved_Then_OnlyCommittedDenialRejectsSuccessor(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedEntryWithoutDate_When_ZeroAndNullLeewayAreCompared_Then_OnlyNullAlwaysRejects(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedRefresh_When_NullLeewayValidationCommits_Then_LinkedTokensButNotAuthorizationAreRevoked(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ReplayRevocation_When_OwnerRollsBack_Then_CommittedFamilyRemainsUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ValidSuccessor_When_OnlyItsAuthorizationIsRevoked_Then_NativeAuthorizationValidationDeniesThatFamily(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -41894,6 +41926,614 @@
           "key": "Category",
           "value": "Browser"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_PostUpdateRevocationFailure_When_NativeValidationCatchesIt_Then_OwnerRejectsCommitAndRestoredControlSucceeds(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshConcurrencyTests",
+        "methodName": "Given_PostUpdateRevocationFailure_When_NativeValidationCatchesIt_Then_OwnerRejectsCommitAndRestoredControlSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_PostUpdateRevocationFailure_When_NativeValidationCatchesIt_Then_OwnerRejectsCommitAndRestoredControlSucceeds(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshConcurrencyTests",
+        "methodName": "Given_PostUpdateRevocationFailure_When_NativeValidationCatchesIt_Then_OwnerRejectsCommitAndRestoredControlSucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_StaleNativeRefreshRow_When_AnotherOwnerRedeems_Then_IgnoredNativeFailureStillCannotCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshConcurrencyTests",
+        "methodName": "Given_StaleNativeRefreshRow_When_AnotherOwnerRedeems_Then_IgnoredNativeFailureStillCannotCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshConcurrencyTests.Given_StaleNativeRefreshRow_When_AnotherOwnerRedeems_Then_IgnoredNativeFailureStillCannotCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshConcurrencyTests",
+        "methodName": "Given_StaleNativeRefreshRow_When_AnotherOwnerRedeems_Then_IgnoredNativeFailureStillCannotCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_InitialRefreshPrincipal_When_ShorterLifetimeIsAttached_Then_NativePreparationUsesTheShorterBound(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_InitialRefreshPrincipal_When_ShorterLifetimeIsAttached_Then_NativePreparationUsesTheShorterBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_InitialRefreshPrincipal_When_ShorterLifetimeIsAttached_Then_NativePreparationUsesTheShorterBound(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_InitialRefreshPrincipal_When_ShorterLifetimeIsAttached_Then_NativePreparationUsesTheShorterBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_OriginalRefreshDeadline_When_SlidingPolicyChanges_Then_OnlyFixedExpiryPreservesTheOriginalCap(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_OriginalRefreshDeadline_When_SlidingPolicyChanges_Then_OnlyFixedExpiryPreservesTheOriginalCap",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_OriginalRefreshDeadline_When_SlidingPolicyChanges_Then_OnlyFixedExpiryPreservesTheOriginalCap(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_OriginalRefreshDeadline_When_SlidingPolicyChanges_Then_OnlyFixedExpiryPreservesTheOriginalCap",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_RefreshExpiry_When_BeforeAtAndAfterAreValidated_Then_NativeEqualityIsNotProductStrictExpiry(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_RefreshExpiry_When_BeforeAtAndAfterAreValidated_Then_NativeEqualityIsNotProductStrictExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_RefreshExpiry_When_BeforeAtAndAfterAreValidated_Then_NativeEqualityIsNotProductStrictExpiry(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_RefreshExpiry_When_BeforeAtAndAfterAreValidated_Then_NativeEqualityIsNotProductStrictExpiry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_ValidatedPrincipal_When_OfflineScopeChanges_Then_NativeRefreshSelectionFollowsThatScope(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_ValidatedPrincipal_When_OfflineScopeChanges_Then_NativeRefreshSelectionFollowsThatScope",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshLifetimeTests.Given_ValidatedPrincipal_When_OfflineScopeChanges_Then_NativeRefreshSelectionFollowsThatScope(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshLifetimeTests",
+        "methodName": "Given_ValidatedPrincipal_When_OfflineScopeChanges_Then_NativeRefreshSelectionFollowsThatScope",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_BoundRefreshPrincipal_When_RevokingClientChanges_Then_NativePartyValidationDeniesTheForeignClient(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_BoundRefreshPrincipal_When_RevokingClientChanges_Then_NativePartyValidationDeniesTheForeignClient",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_BoundRefreshPrincipal_When_RevokingClientChanges_Then_NativePartyValidationDeniesTheForeignClient(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_BoundRefreshPrincipal_When_RevokingClientChanges_Then_NativePartyValidationDeniesTheForeignClient",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_InvalidTokenError_When_NativeResponseIsNormalized_Then_EmptyResponseProvesNoFamilyDenial(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_InvalidTokenError_When_NativeResponseIsNormalized_Then_EmptyResponseProvesNoFamilyDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_InvalidTokenError_When_NativeResponseIsNormalized_Then_EmptyResponseProvesNoFamilyDenial(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_InvalidTokenError_When_NativeResponseIsNormalized_Then_EmptyResponseProvesNoFamilyDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_PrevalidatedTokenTypes_When_NativeRevocationTypeRuns_Then_CodeCannotBeUsedAsCleanupTarget(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_PrevalidatedTokenTypes_When_NativeRevocationTypeRuns_Then_CodeCannotBeUsedAsCleanupTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_PrevalidatedTokenTypes_When_NativeRevocationTypeRuns_Then_CodeCannotBeUsedAsCleanupTarget(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_PrevalidatedTokenTypes_When_NativeRevocationTypeRuns_Then_CodeCannotBeUsedAsCleanupTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_TwoLinkedRefreshEntries_When_NativeRevocationCommits_Then_OnlyTheTargetIsRevoked(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_TwoLinkedRefreshEntries_When_NativeRevocationCommits_Then_OnlyTheTargetIsRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshRevocationTests.Given_TwoLinkedRefreshEntries_When_NativeRevocationCommits_Then_OnlyTheTargetIsRevoked(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshRevocationTests",
+        "methodName": "Given_TwoLinkedRefreshEntries_When_NativeRevocationCommits_Then_OnlyTheTargetIsRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_DurableEarlyRedemption_When_LaterEpochRollsBack_Then_PredecessorDoesNotBecomeValidAgain(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_DurableEarlyRedemption_When_LaterEpochRollsBack_Then_PredecessorDoesNotBecomeValidAgain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_DurableEarlyRedemption_When_LaterEpochRollsBack_Then_PredecessorDoesNotBecomeValidAgain(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_DurableEarlyRedemption_When_LaterEpochRollsBack_Then_PredecessorDoesNotBecomeValidAgain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_FamilyRevocation_When_RollbackThenCommitAreObserved_Then_OnlyCommittedDenialRejectsSuccessor(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_FamilyRevocation_When_RollbackThenCommitAreObserved_Then_OnlyCommittedDenialRejectsSuccessor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_FamilyRevocation_When_RollbackThenCommitAreObserved_Then_OnlyCommittedDenialRejectsSuccessor(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_FamilyRevocation_When_RollbackThenCommitAreObserved_Then_OnlyCommittedDenialRejectsSuccessor",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedEntryWithoutDate_When_ZeroAndNullLeewayAreCompared_Then_OnlyNullAlwaysRejects(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_RedeemedEntryWithoutDate_When_ZeroAndNullLeewayAreCompared_Then_OnlyNullAlwaysRejects",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedEntryWithoutDate_When_ZeroAndNullLeewayAreCompared_Then_OnlyNullAlwaysRejects(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_RedeemedEntryWithoutDate_When_ZeroAndNullLeewayAreCompared_Then_OnlyNullAlwaysRejects",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedRefresh_When_NullLeewayValidationCommits_Then_LinkedTokensButNotAuthorizationAreRevoked(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_RedeemedRefresh_When_NullLeewayValidationCommits_Then_LinkedTokensButNotAuthorizationAreRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_RedeemedRefresh_When_NullLeewayValidationCommits_Then_LinkedTokensButNotAuthorizationAreRevoked(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_RedeemedRefresh_When_NullLeewayValidationCommits_Then_LinkedTokensButNotAuthorizationAreRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ReplayRevocation_When_OwnerRollsBack_Then_CommittedFamilyRemainsUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_ReplayRevocation_When_OwnerRollsBack_Then_CommittedFamilyRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ReplayRevocation_When_OwnerRollsBack_Then_CommittedFamilyRemainsUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_ReplayRevocation_When_OwnerRollsBack_Then_CommittedFamilyRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ValidSuccessor_When_OnlyItsAuthorizationIsRevoked_Then_NativeAuthorizationValidationDeniesThatFamily(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_ValidSuccessor_When_OnlyItsAuthorizationIsRevoked_Then_NativeAuthorizationValidationDeniesThatFamily",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeRefreshStorageTests.Given_ValidSuccessor_When_OnlyItsAuthorizationIsRevoked_Then_NativeAuthorizationValidationDeniesThatFamily(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.SessionRefresh",
+        "typeName": "NativeRefreshStorageTests",
+        "methodName": "Given_ValidSuccessor_When_OnlyItsAuthorizationIsRevoked_Then_NativeAuthorizationValidationDeniesThatFamily",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"
