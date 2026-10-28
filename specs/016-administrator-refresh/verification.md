@@ -1,8 +1,10 @@
 # Refresh verification and review record
 
-## Native primitive candidate — 28 October 2026
+## Native primitive delivery — 28 October 2026
 
-[Native integration evidence](native-integration.md) records the first T003 increment, preserved discovery inventory, precise selected-handler seams, required both-provider lanes, source review and remaining integration gates. Hosted execution is pending; T003 remains open. Planning PR109 is merged at `34c5df010df65ac2f2166a525d4028fcd7e86dcd`. The historical planning observations below retain their original scope.
+[Accepted native evidence](native-integration.md#accepted-internal-delivery--28-october-2026) records PR110 squash `5cccabe559f24822d2827f86a7b3ae221a1e723e`, all95 exact-head checks and independent review. All89 artifact hashes were independently verified;79 native reports contain4,671 passes, including16 new cases per provider. All76 coverage inputs,15 unchanged floors and64 mutation controls pass. Source/tested merge/squash share tree `d5c8a7b7d4c56a818e91099a0b671c72700df057`.
+
+This completes only the bounded handler/storage primitive increment. T003 remains open for genuine crypto/client transport and authenticated initial-response-loss cleanup; dependent implementation and activation are not claimed. Planning PR109 is merged at `34c5df010df65ac2f2166a525d4028fcd7e86dcd`. The historical planning observations below retain their original scope.
 
 ## Planning checkpoint — 28 October 2026
 
