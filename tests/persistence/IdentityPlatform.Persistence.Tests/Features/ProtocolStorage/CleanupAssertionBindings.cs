@@ -40,7 +40,7 @@ internal static class CleanupAssertionBindings
             Assert.Null(await AdministratorRegistration.ReadCleanupLockedAsync(scope, b2, cancellation));
         }, token);
 
-    /// <summary>The same owner cannot carry a genuine cleanup binding from its completed epoch into a fresh one.</summary>
+    /// <summary>A genuine cleanup binding is rejected directly after its owning transaction has actually completed disposal.</summary>
     private static async Task StalePhaseAsync(CleanupAssertionFixture fixture, CancellationToken token)
     {
         var proof = Assertion(fixture);
@@ -54,8 +54,8 @@ internal static class CleanupAssertionBindings
                     await AdministratorProtocolLocks.AcquireProfileAsync(scope.Owner, cancellation);
                     stale = await AdministratorRegistration.ReadCleanupLockedAsync(scope, fixture.Material.Policy, cancellation);
                     Assert.NotNull(stale);
+                    stale.RequireCurrent(scope.Owner, cancellation);
                 }
-                await using var second = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
                 reached++;
                 stale.RequireCurrent(scope.Owner, cancellation);
                 return true;

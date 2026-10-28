@@ -1,4 +1,3 @@
-using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.AdministratorProtocol;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
