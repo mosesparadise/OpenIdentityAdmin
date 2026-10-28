@@ -48,4 +48,4 @@ body { margin: 0; background: var(--page); color: var(--text); font-family: var(
   #swagger-ui pre { max-width: 100%; overflow-x: auto; }
 }
 
-[tabindex="0"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+[tabindex="0"]:focus-visible, a.endpoint:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

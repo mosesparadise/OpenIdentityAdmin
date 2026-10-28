@@ -35,7 +35,12 @@ internal static class BrowserOtherAccount
         await page.Locator(Submit).ClickAsync();
         await page.Locator(Code).FillAsync(await account.UnusedCodeAsync(user, FactorScenario.Seed));
         await page.Locator(Submit).ClickAsync();
-        Assert.True(page.Url == new Uri(fixture.Profile.Issuer, AdministratorJourney.Security).AbsoluteUri);
+        var security = new Uri(fixture.Profile.Issuer, AdministratorJourney.Security).AbsoluteUri;
+        await page.WaitForURLAsync(security, new()
+        {
+            WaitUntil = WaitUntilState.Load
+        });
+        Assert.True(page.Url == security);
         var proof = await page.ReloadAsync();
         Assert.Equal(StatusCodes.Status200OK, proof!.Status);
         Assert.True(user != account.ActorId);

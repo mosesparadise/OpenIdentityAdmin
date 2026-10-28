@@ -133,6 +133,6 @@ internal static class Setup
             .WithEnvironment(ProviderVariable, database.Provider).WithEnvironment(PlatformConnection, database.PlatformRuntime)
             .WithEnvironment(ProvisionRoles, FalseValue)
             .WithEnvironment(RegistrationVariable, registration).WithEnvironment(UpgradeVariable, upgrade)
-            .WaitForCompletion(migrator);
+            .WaitForCompletion(migrator).WithDashboardInitialization(run);
     }
 }

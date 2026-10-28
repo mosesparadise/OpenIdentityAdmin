@@ -54,7 +54,7 @@ def main() -> None:
     parser.add_argument("--self-test", action="store_true", help="also prove clean/unsafe/misformatted controls")
     args = parser.parse_args()
     if shutil.which("dotnet") is None:
-        raise RuntimeError("The SDK pinned in global.json must be available on PATH")
+        raise RuntimeError("A stable .NET 10 SDK accepted by global.json must be available on PATH")
     run("dotnet", "build", "IdentityPlatform.slnx", "--no-restore", "--nologo",
         "--disable-build-servers", "-m:1")
     run("dotnet", "format", "whitespace", "IdentityPlatform.slnx", "--no-restore", "--verify-no-changes")

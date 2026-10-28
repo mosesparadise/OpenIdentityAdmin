@@ -25,6 +25,16 @@
       "file": "LICENSE.txt",
       "sha256": "af175b9d96ee93c21a036152e1b905b0b95304d4ae8c2c921c7609100ba8df7e",
       "disposition": "MPL-2.0, unmodified test-only accessibility engine/bindings. Preserve license/notices and applicable source availability on redistribution; do not bundle in product hosts. Distribution review remains a release obligation."
+    },
+    "Deque.AxeCore.Commons/4.14.0": {
+      "file": "LICENSE.txt",
+      "sha256": "af175b9d96ee93c21a036152e1b905b0b95304d4ae8c2c921c7609100ba8df7e",
+      "disposition": "MPL-2.0, unmodified test-only accessibility engine/bindings. Preserve license/notices and applicable source availability on redistribution; do not bundle in product hosts. Distribution review remains a release obligation."
+    },
+    "Microsoft.Data.SqlClient.SNI.runtime/6.0.3": {
+      "file": "LICENSE.txt",
+      "sha256": "9335e8bad875dd7be4eebd55d2335eb6433d1cea61aadb3817af7807bef8932a",
+      "disposition": "Microsoft proprietary distributable-code terms. Development use inventoried; legal review of redistribution/end-user terms is required before public release."
     }
   }
 }

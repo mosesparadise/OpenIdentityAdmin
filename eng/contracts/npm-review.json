@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lockSha256": "733e65cf4953b6a0adf653e7f5c8fd346269dbc5a73073dbe84aeab844b9c6a8",
+  "lockSha256": "95038c659079e667b3921968cfc442f0ef8de54b9dd6194fae0863180d187eac",
   "allowedExpressions": [
     "MIT",
     "Apache-2.0",
@@ -12,9 +12,9 @@
   "scope": "Private development-only contract tooling; preserve notices and satisfy license conditions before redistribution. No product or legal certification claim.",
   "unpackagedLicenseNotices": [
     "@esbuild/linux-x64/0.28.2",
-    "@redocly/openapi-core/2.62.1",
-    "@redocly/openapi-core/1.34.20",
+    "@redocly/openapi-core/2.71.2",
     "change-case/5.4.4",
+    "@redocly/openapi-core/1.34.20",
     "uri-js-replace/1.0.1"
   ],
   "limitations": [

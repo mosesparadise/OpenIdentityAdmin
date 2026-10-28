@@ -1,5 +1,6 @@
 using System.Text.Json;
 using IdentityPlatform.Database;
+using Xunit.Sdk;
 
 namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 
@@ -8,7 +9,11 @@ public sealed class BrowserCoordinationUpgradeWitnessTests
 {
     private const string Postgres = "PostgreSql";
     private const string SqlServer = "SqlServer";
-    private const string ProductVersion = "10.0.12";
+    // Newly applied rows use the reviewed EF runtime; captured historical rows retain their original versions.
+    private const string ProductVersion = "10.0.14";
+    private const string IncorrectNewVersion = "10.0.12";
+    private const string ExistingMigration = "existing-migration";
+    private const string AddedMigration = "approved-migration";
     private const string ForeignSchema = "platform";
     private const string ContextTable = "BrowserContext";
     private const string UnexpectedRow = "unexpected browser authority";
@@ -26,6 +31,9 @@ public sealed class BrowserCoordinationUpgradeWitnessTests
         var history = (provider == Postgres ? BrowserCoordinationUpgradeWitness.PostgresHistory : BrowserCoordinationUpgradeWitness.SqlHistory)
             .Select(id => JsonSerializer.Serialize(new[] { id, ProductVersion })).ToArray();
         IssuerContinuationUpgradeWitness.RequireHistory(registration, DatabaseStore.Sessions, history);
+        var wrongVersion = history.Select(row => row.Replace(ProductVersion, IncorrectNewVersion, StringComparison.Ordinal)).ToArray();
+        Assert.ThrowsAny<XunitException>(() => IssuerContinuationUpgradeWitness.RequireHistory(registration, DatabaseStore.Sessions, wrongVersion));
+        RequireAuditHistory();
         Assert.NotNull(Record.Exception(() => IssuerContinuationUpgradeWitness.RequireHistory(registration, DatabaseStore.Sessions, history[..^1])));
         Assert.NotNull(Record.Exception(() => IssuerContinuationUpgradeWitness.RequireHistory(registration, DatabaseStore.Sessions, [.. history, history[0]])));
         Assert.NotNull(Record.Exception(() => AdministratorUpgradeWitness.RequireCatalog([], [JsonSerializer.Serialize(new[] { ForeignSchema, ContextTable })])));
@@ -37,5 +45,17 @@ public sealed class BrowserCoordinationUpgradeWitnessTests
         snapshot[BrowserCoordinationUpgradeWitness.Queries[0]] = [];
         snapshot[BrowserCoordinationUpgradeWitness.Queries[^1]] = [JsonSerializer.Serialize(ChangedBudget)];
         Assert.NotNull(Record.Exception(() => BrowserCoordinationUpgradeWitness.RequireSeeds(snapshot)));
+    }
+
+    /// <summary>The live audit-history oracle rejects rewriting old versions or accepting stale versions for new rows.</summary>
+    private static void RequireAuditHistory()
+    {
+        var oldRow = JsonSerializer.Serialize(new[] { ExistingMigration, IncorrectNewVersion });
+        var newRow = JsonSerializer.Serialize(new[] { AddedMigration, ProductVersion });
+        BrowserAuditMigrationRows.RequireHistory([oldRow], [oldRow, newRow], AddedMigration);
+        var rewrittenOld = JsonSerializer.Serialize(new[] { ExistingMigration, ProductVersion });
+        var staleNew = JsonSerializer.Serialize(new[] { AddedMigration, IncorrectNewVersion });
+        Assert.ThrowsAny<XunitException>(() => BrowserAuditMigrationRows.RequireHistory([oldRow], [rewrittenOld, newRow], AddedMigration));
+        Assert.ThrowsAny<XunitException>(() => BrowserAuditMigrationRows.RequireHistory([oldRow], [oldRow, staleNew], AddedMigration));
     }
 }

@@ -1,0 +1,11 @@
+{
+  "artifactSha256": "3861ec4cc8e7b9fa9f250280da9350436e418137788282c753b9a2ac5fb7bd2f",
+  "mapSha256": "5c0d0705c0079e3c1b24ae88062dfc25968f4f9754de8fa14cbb548af8996954",
+  "publishedMapByteIdenticalToKnownMismatchedPrior": true,
+  "priorMappedName": "stringify",
+  "generatedLine": 2,
+  "generatedColumnUtf16": 297467,
+  "actualCurrentExcerpt": "ext-decoration text-rendering underline-position underline-thickness unicode-bidi unicode-range",
+  "sourceMapCoordinateAssociationVerified": false,
+  "limits": "Candidate map-to-lock components only; no complete inventory claim"
+}

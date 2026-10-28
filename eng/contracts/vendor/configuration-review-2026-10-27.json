@@ -1,0 +1,18 @@
+{
+  "reviewedDate": "2026-10-27",
+  "scope": "Independent bounded source/API/UX review of Scalar1.76.0 native endpoint links after package upgrade; no external advisory closure or release approval.",
+  "evidence": "Shipped standalone JS and source map use anchor href; Chromium job122384879249 DOM/ARIA reports endpoint fragment href and native link role. The old role-button/Space expectation no longer describes this component.",
+  "changes": [
+    "Remove obsolete no-href endpoint button shim; retain Zod jitless CSP configuration and document language.",
+    "Add endpoint anchors to existing 2px focus-visible styling.",
+    "Require exactly three native links with nonempty same-document fragments; verify Tab, visible focus, Enter and correct heading in viewport. Existing read-only, credential, network, CSP, theme and axe checks remain."
+  ],
+  "configurationHashes": {
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": "24ed8102d492d7844141207f68c2564972da9a443e3a61327d37ad2644938795",
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/theme.css": "e35b6eee1de81df70384586d0bd90dec1610eb11694dc4cf5360cb6d69be16e5"
+  },
+  "runtimeVerification": "Pending corrected native Chromium/WebKit runs. Installed system Chromium may be used only for explicitly distinguished diagnostics.",
+  "retainedAdvisoryFindings": 13,
+  "activationBlocked": true,
+  "inventoryComplete": false
+}

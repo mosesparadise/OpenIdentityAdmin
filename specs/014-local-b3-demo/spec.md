@@ -7,7 +7,7 @@
 
 ## Clarifications
 
-- Windows PowerShell and Docker Desktop running Linux containers; no WSL terminal.
+- Native Aspire AppHost launch and dashboard initialization with Docker Desktop Linux containers; no custom PowerShell or WSL terminal (27 October correction, feature 015).
 - Accounts, databases and protection keys are disposable together. Individual container restart is not a persistence guarantee.
 - Existing B3 fresh password plus MFA on every explicit sign-in, local and issuer-assisted logout remain mandatory.
 
@@ -68,4 +68,4 @@ Run identity, canonical issuer/BFF addresses, distinct ephemeral protection role
 
 ## Assumptions and limits
 
-Docker Desktop Linux containers, the pinned .NET SDK, PowerShell and image/package access are prerequisites. Windows execution must be reported separately from Linux CI. No production activation, M02-C refresh, M02-D API authority, React management, historical finding or human/public-release gate is closed by this feature.
+Docker Desktop Linux containers, a stable .NET 10.x SDK and image/package access are prerequisites. Windows execution must be reported separately from Linux CI. No production activation, M02-C refresh, M02-D API authority, React management, historical finding or human/public-release gate is closed by this feature.

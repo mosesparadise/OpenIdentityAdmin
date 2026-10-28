@@ -18,7 +18,8 @@ internal static class IssuerContinuationUpgradeWitness
     private const string SqlServer = "SqlServer";
     private const string PostgresType = "character varying";
     private const string SqlType = "nvarchar";
-    private const string ProductVersion = "10.0.12";
+    // Newly applied rows use the reviewed EF runtime; captured historical rows retain their original versions.
+    private const string ProductVersion = "10.0.14";
     private const int OriginalSchema = 3;
     private const int OriginalTable = 4;
     private const int ColumnName = 5;

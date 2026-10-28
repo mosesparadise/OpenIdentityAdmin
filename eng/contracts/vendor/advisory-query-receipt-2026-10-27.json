@@ -1,0 +1,311 @@
+[
+  {
+    "scope": "current",
+    "queriedUtc": "2026-10-27T17:41:01.711483+00:00",
+    "status": 200,
+    "requestSha256": "32f9bc0ed2636a8cec22cc8206fecdb7fbee4caa433389456d2f4acb3c4cc05b",
+    "responseSha256": "c9b6573b775c03e0da02847d10020f2d433635bc371bed3a5409e57f578db2ba",
+    "advisories": [
+      {
+        "package": "dompurify",
+        "id": 1242880,
+        "url": "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+        "title": "DOMPurify SAFE_FOR_TEMPLATES bypass: split template expressions survive in attached shadow root content on DOM output modes",
+        "severity": "critical",
+        "vulnerable_versions": ">=3.4.4 <=3.4.16",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1242881,
+        "url": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+        "title": "DOMPurify IN_PLACE: hook that removes a parent or sibling leaves the detached subtree's event handlers armed (incomplete fix for GHSA-p98j-92pf-mc4p)",
+        "severity": "high",
+        "vulnerable_versions": "<=3.4.16",
+        "cwe": [
+          "CWE-79",
+          "CWE-693"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1242882,
+        "url": "https://github.com/advisories/GHSA-c6gr-qvv4-5v3f",
+        "title": "DOMPurify: SMIL attributeName=href guard is skipped when PARSER_MEDIA_TYPE is application/xhtml+xml",
+        "severity": "low",
+        "vulnerable_versions": "<=3.4.16",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "qs",
+        "id": 1158506,
+        "url": "https://github.com/advisories/GHSA-x5fp-wj9c-mxmx",
+        "title": "qs array-limit bypass via bracket-key comma parsing",
+        "severity": "moderate",
+        "vulnerable_versions": ">=6.14.2 <=6.15.3",
+        "cwe": [
+          "CWE-770"
+        ],
+        "cvss": {
+          "score": 3.7,
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      },
+      {
+        "package": "qs",
+        "id": 1158507,
+        "url": "https://github.com/advisories/GHSA-4mjr-xmp4-gh2g",
+        "title": "qs: Denial of Service via Attacker Controlled isBuffer",
+        "severity": "moderate",
+        "vulnerable_versions": ">=2.2.5 <6.16.0",
+        "cwe": [
+          "CWE-248",
+          "CWE-703"
+        ],
+        "cvss": {
+          "score": 5.3,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      },
+      {
+        "package": "qs",
+        "id": 1243452,
+        "url": "https://github.com/advisories/GHSA-6pq8-jhm2-2vcw",
+        "title": "qs : qs.stringify with arrayFormat 'comma' throws an uncaught TypeError on array elements carrying a non-callable own toString (DoS)",
+        "severity": "moderate",
+        "vulnerable_versions": ">=6.7.0 <=6.16.0",
+        "cwe": [
+          "CWE-248",
+          "CWE-704"
+        ],
+        "cvss": {
+          "score": 5.3,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      }
+    ]
+  },
+  {
+    "scope": "union",
+    "queriedUtc": "2026-10-27T17:41:01.864156+00:00",
+    "status": 200,
+    "requestSha256": "a1bfb2660c41d6e70af6e1a18572671e3c49d5988aad2f1dbc7d95d4e470f51d",
+    "responseSha256": "b4ceb021fbc7b25e5f0801d404328c06f6b6812368fb24323ccda9c2330bc1ee",
+    "advisories": [
+      {
+        "package": "@ai-sdk/provider-utils",
+        "id": 1193659,
+        "url": "https://github.com/advisories/GHSA-866g-f22w-33x8",
+        "title": "@ai-sdk/provider-utils has an Uncontrolled Resource Consumption issue",
+        "severity": "low",
+        "vulnerable_versions": ">=4.0.0-beta.10 <4.0.33",
+        "cwe": [
+          "CWE-400"
+        ],
+        "cvss": {
+          "score": 4.3,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:L"
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1240621,
+        "url": "https://github.com/advisories/GHSA-p98j-92pf-mc4p",
+        "title": "DOMPurify: IN_PLACE: node-removing afterSanitize hook leaves detached subtree event handlers armed, causing DOM XSS",
+        "severity": "low",
+        "vulnerable_versions": ">=3.4.13 <=3.4.15",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1241204,
+        "url": "https://github.com/advisories/GHSA-6688-9rhm-gjv2",
+        "title": "DOMPurify: IN_PLACE returns a force-removed rawtext root whose text carries attacker markup \u2014 pure HTML reparse executes",
+        "severity": "low",
+        "vulnerable_versions": "<=3.4.15",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1242880,
+        "url": "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+        "title": "DOMPurify SAFE_FOR_TEMPLATES bypass: split template expressions survive in attached shadow root content on DOM output modes",
+        "severity": "critical",
+        "vulnerable_versions": ">=3.4.4 <=3.4.16",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1242881,
+        "url": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+        "title": "DOMPurify IN_PLACE: hook that removes a parent or sibling leaves the detached subtree's event handlers armed (incomplete fix for GHSA-p98j-92pf-mc4p)",
+        "severity": "high",
+        "vulnerable_versions": "<=3.4.16",
+        "cwe": [
+          "CWE-79",
+          "CWE-693"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "dompurify",
+        "id": 1242882,
+        "url": "https://github.com/advisories/GHSA-c6gr-qvv4-5v3f",
+        "title": "DOMPurify: SMIL attributeName=href guard is skipped when PARSER_MEDIA_TYPE is application/xhtml+xml",
+        "severity": "low",
+        "vulnerable_versions": "<=3.4.16",
+        "cwe": [
+          "CWE-79"
+        ],
+        "cvss": {
+          "score": 0,
+          "vectorString": null
+        }
+      },
+      {
+        "package": "nanoid",
+        "id": 1138810,
+        "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+        "title": "nanoid: non-secure generators can loop indefinitely with negative size",
+        "severity": "high",
+        "vulnerable_versions": ">=4.0.0 <5.1.16",
+        "cwe": [
+          "CWE-835"
+        ],
+        "cvss": {
+          "score": 5.9,
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      },
+      {
+        "package": "nanoid",
+        "id": 1153188,
+        "url": "https://github.com/advisories/GHSA-xwg4-73v4-xw9w",
+        "title": "nanoid: Integer Overflow or Wraparound",
+        "severity": "high",
+        "vulnerable_versions": ">=4.0.0 <5.1.11",
+        "cwe": [
+          "CWE-190"
+        ],
+        "cvss": {
+          "score": 7.4,
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+        }
+      },
+      {
+        "package": "qs",
+        "id": 1158506,
+        "url": "https://github.com/advisories/GHSA-x5fp-wj9c-mxmx",
+        "title": "qs array-limit bypass via bracket-key comma parsing",
+        "severity": "moderate",
+        "vulnerable_versions": ">=6.14.2 <=6.15.3",
+        "cwe": [
+          "CWE-770"
+        ],
+        "cvss": {
+          "score": 3.7,
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      },
+      {
+        "package": "qs",
+        "id": 1158507,
+        "url": "https://github.com/advisories/GHSA-4mjr-xmp4-gh2g",
+        "title": "qs: Denial of Service via Attacker Controlled isBuffer",
+        "severity": "moderate",
+        "vulnerable_versions": ">=2.2.5 <6.16.0",
+        "cwe": [
+          "CWE-248",
+          "CWE-703"
+        ],
+        "cvss": {
+          "score": 5.3,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      },
+      {
+        "package": "qs",
+        "id": 1243452,
+        "url": "https://github.com/advisories/GHSA-6pq8-jhm2-2vcw",
+        "title": "qs : qs.stringify with arrayFormat 'comma' throws an uncaught TypeError on array elements carrying a non-callable own toString (DoS)",
+        "severity": "moderate",
+        "vulnerable_versions": ">=6.7.0 <=6.16.0",
+        "cwe": [
+          "CWE-248",
+          "CWE-704"
+        ],
+        "cvss": {
+          "score": 5.3,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      },
+      {
+        "package": "unhead",
+        "id": 1116373,
+        "url": "https://github.com/advisories/GHSA-95h2-gj7x-gx9w",
+        "title": "Unhead has a hasDangerousProtocol() bypass via leading-zero padded HTML entities in useHeadSafe()",
+        "severity": "moderate",
+        "vulnerable_versions": "<2.1.13",
+        "cwe": [
+          "CWE-184"
+        ],
+        "cvss": {
+          "score": 6.1,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+        }
+      },
+      {
+        "package": "zod",
+        "id": 1243066,
+        "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+        "title": "Zod can exhaust memory while validating oversized constrained collections",
+        "severity": "high",
+        "vulnerable_versions": "<4.6.6",
+        "cwe": [
+          "CWE-770"
+        ],
+        "cvss": {
+          "score": 7.5,
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      }
+    ]
+  }
+]

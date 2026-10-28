@@ -5,6 +5,7 @@ using Microsoft.Playwright;
 
 namespace IdentityPlatform.Api.Contracts.Tests.Features.Documentation;
 
+/// <summary>Verifies both local read-only documentation viewers and the real browser consumer boundary.</summary>
 [Trait("Category", "Browser")]
 public sealed class ViewerTests
 {
@@ -107,95 +108,63 @@ public sealed class ViewerTests
 
     }
 
+    private const string BrowserTitle = "IdentityPlatform Admin BFF browser API";
+    private const string ApiTitle = "IdentityPlatform Admin API";
+    private const string ScalarViewer = "scalar";
+    private const string BodySelector = "body";
+    private const string BrowserExamplePath = "/bff/api/v1/examples";
+    private const string ApiExamplePath = "/api/v1/examples";
+    private const string ProblemModel = "ProblemDetails";
+    private const string ExampleModel = "Example";
+    private const string NoViolations = "[]";
+    private const string ReadCsp = "JSON.stringify(window.contractCsp)";
+    private const string InitialStage = "initial";
+    private const string RenderedStage = "rendered";
+    private const string NarrowStage = "narrow";
+    private const int NarrowWidth = 320;
+    private const int WideWidth = 1280;
+    private const int ViewportHeight = 900;
+    private static readonly string[] OperationSummaries = ["List synthetic examples", "Get a synthetic example", "Update a synthetic example"];
+    private const string WaitForPaint = "() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))";
+    private const string ReadOverflow = "JSON.stringify({viewport:innerWidth, root:document.documentElement.scrollWidth, body:document.body.scrollWidth, elements:[...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1 || e.scrollWidth > e.clientWidth + 1).slice(0,20).map(e => ({tag:e.tagName, class:String(e.className), width:e.getBoundingClientRect().width, right:e.getBoundingClientRect().right, scroll:e.scrollWidth, client:e.clientWidth, overflow:getComputedStyle(e).overflowX}))})";
+    private const string NoOverflow = "document.documentElement.scrollWidth <= innerWidth + 1";
+
+    /// <summary>Requires the same contracts, native keyboard behavior, CSP and accessible layouts at both viewport widths.</summary>
     private static async Task VerifyRenderedDocumentAsync(IPage page, string viewer, bool dark, bool browserSurface)
     {
-        var title = browserSurface ? "IdentityPlatform Admin BFF browser API" : "IdentityPlatform Admin API";
+        var title = browserSurface ? BrowserTitle : ApiTitle;
         await Assertions.Expect(page.GetByText(title, new()
         {
             Exact = false
         }).First).ToBeVisibleAsync();
-        foreach (var summary in new[] { "List synthetic examples", "Get a synthetic example", "Update a synthetic example" })
+        foreach (var summary in OperationSummaries)
         {
             await Assertions.Expect(page.GetByText(summary, new()
             {
                 Exact = true
             }).First).ToBeVisibleAsync();
         }
-        await CaptureAsync(page, viewer, dark, browserSurface, "initial");
-        if (viewer == "scalar")
+        await CaptureAsync(page, viewer, dark, browserSurface, InitialStage);
+        if (viewer == ScalarViewer)
         {
-            var endpoints = page.Locator("ul.endpoints a.endpoint");
-            await Assertions.Expect(endpoints.First).ToHaveAttributeAsync("role", "button");
-            foreach (var (index, key, heading) in new[] { (1, "Space", "Get a synthetic example"), (2, "Enter", "Update a synthetic example") })
-            {
-                await endpoints.First.FocusAsync();
-                for (var tab = 0; tab < index; tab++)
-                {
-                    await page.Keyboard.PressAsync("Tab");
-                }
-                await Assertions.Expect(endpoints.Nth(index)).ToBeFocusedAsync();
-                Assert.Equal("2px", await endpoints.Nth(index).EvaluateAsync<string>("node => getComputedStyle(node).outlineWidth"));
-                await page.Keyboard.PressAsync(key);
-                await Assertions.Expect(page.GetByRole(AriaRole.Heading, new()
-                {
-                    Name = heading,
-                    Exact = true
-                })).ToBeInViewportAsync();
-            }
-            await page.Locator(".t-doc__sidebar").GetByText("Models", new()
-            {
-                Exact = true
-            }).ClickAsync();
-            var models = page.GetByRole(AriaRole.Region, new()
-            {
-                Name = "Models",
-                Exact = true
-            });
-            await models.ScrollIntoViewIfNeededAsync();
-            var more = models.GetByRole(AriaRole.Button, new()
-            {
-                Name = "Show more",
-                Exact = true
-            });
-            if (await more.IsVisibleAsync())
-            {
-                await more.ClickAsync();
-            }
-            await page.Locator(".t-doc__sidebar").GetByText("ProblemDetails", new()
-            {
-                Exact = true
-            }).ClickAsync();
-            var problem = page.GetByRole(AriaRole.Region, new()
-            {
-                Name = "ProblemDetails",
-                Exact = true
-            });
-            await problem.ScrollIntoViewIfNeededAsync();
-            var expand = problem.Locator("button[aria-expanded=false]").First;
-            if (await expand.IsVisibleAsync())
-            {
-                await expand.ClickAsync();
-            }
-            await Assertions.Expect(problem.GetByText("status", new()
-            {
-                Exact = true
-            }).First).ToBeVisibleAsync();
+            await ScalarNavigation.RequireAsync(page);
+            await ScalarModels.RequireAsync(page);
         }
-        var body = await page.Locator("body").InnerTextAsync();
-        Assert.Contains(browserSurface ? "/bff/api/v1/examples" : "/api/v1/examples", body, StringComparison.Ordinal);
-        Assert.Contains("ProblemDetails", body, StringComparison.Ordinal);
-        Assert.Contains("Example", body, StringComparison.Ordinal);
-        await CaptureAsync(page, viewer, dark, browserSurface, "rendered");
-        Assert.Equal("[]", await page.EvaluateAsync<string>("JSON.stringify(window.contractCsp)"));
+        var body = await page.Locator(BodySelector).InnerTextAsync();
+        Assert.Contains(browserSurface ? BrowserExamplePath : ApiExamplePath, body, StringComparison.Ordinal);
+        Assert.Contains(ProblemModel, body, StringComparison.Ordinal);
+        Assert.Contains(ExampleModel, body, StringComparison.Ordinal);
+        await CaptureAsync(page, viewer, dark, browserSurface, RenderedStage);
+        Assert.Equal(NoViolations, await page.EvaluateAsync<string>(ReadCsp));
         await AssertAccessibleAsync(page);
-        await page.SetViewportSizeAsync(320, 900);
+        await page.SetViewportSizeAsync(NarrowWidth, ViewportHeight);
         // Resize returns before every engine has painted its responsive layout.
-        await page.EvaluateAsync("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))");
-        await CaptureAsync(page, viewer, dark, browserSurface, "narrow");
-        var overflow = await page.EvaluateAsync<string>("JSON.stringify({viewport:innerWidth, root:document.documentElement.scrollWidth, body:document.body.scrollWidth, elements:[...document.querySelectorAll('body *')].filter(e => e.getBoundingClientRect().right > innerWidth + 1 || e.scrollWidth > e.clientWidth + 1).slice(0,20).map(e => ({tag:e.tagName, class:String(e.className), width:e.getBoundingClientRect().width, right:e.getBoundingClientRect().right, scroll:e.scrollWidth, client:e.clientWidth, overflow:getComputedStyle(e).overflowX}))})");
-        Assert.True(await page.EvaluateAsync<bool>("document.documentElement.scrollWidth <= innerWidth + 1"), overflow);
+        await page.EvaluateAsync(WaitForPaint);
+        await CaptureAsync(page, viewer, dark, browserSurface, NarrowStage);
+        var overflow = await page.EvaluateAsync<string>(ReadOverflow);
+        Assert.True(await page.EvaluateAsync<bool>(NoOverflow), overflow);
         await AssertAccessibleAsync(page);
-        await page.SetViewportSizeAsync(1280, 900);
+        await page.SetViewportSizeAsync(WideWidth, ViewportHeight);
 
     }
 

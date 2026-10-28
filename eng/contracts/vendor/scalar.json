@@ -1,1177 +1,1173 @@
 {
   "schemaVersion": 1,
-  "scope": "Reviewed supply-chain provenance; not vulnerability clearance or complete SBOM/legal approval",
+  "scope": "Exact NuGet/npm embedded asset provenance with incomplete candidate component inventory; no vulnerability clearance, production activation, complete SBOM or legal approval. Previous asset dispositions remain historical and cannot automatically transfer.",
   "nuget": {
     "name": "Scalar.AspNetCore",
-    "version": "2.17.14",
-    "archiveSha256": "00eb4acf750ebe0f725552ce66866653fcd69b5f44bbb0c4c4fbeea023796922",
-    "sourceCommit": "df377038e7c1c6cd4f615ec6438ecf2571520226"
+    "version": "2.18.3",
+    "archiveSha256": "57b25adb25faaed5789031ba5e940173538879b4012408d014bdddd5b15f403c",
+    "sourceCommit": "74361961e3156ef7211395f01c20db733f87ad45"
   },
   "npm": {
     "name": "@scalar/api-reference",
-    "version": "1.73.0",
-    "tarball": "https://registry.npmjs.org/@scalar/api-reference/-/api-reference-1.73.0.tgz",
-    "integrity": "sha512-auA0GpamkJ0dqxSssVuFRu98B/0x7PY0C0lueJduLPvt3IUlqg6wbhoutoPbrZFox7FRDC1YYYyk6jclgAXXFg==",
+    "version": "1.76.0",
+    "tarball": "https://registry.npmjs.org/@scalar/api-reference/-/api-reference-1.76.0.tgz",
+    "integrity": "sha512-pjqwnzmA9YK3ZX+IZSICMsywm4qI6HLSngR2py9H6TvFApHHuJjkTAd+gFJfnqJDzJuro8k7ji6JCtJ2U+Byng==",
     "integrityVerified": true,
-    "archiveSha256": "b088524c0664c3e43d62cc534c34903148095daadb6ecb31a652264bcd9d25cf"
+    "archiveSha256": "f1821c173d387d3dd4722215b946ad9aec3610f177616f0a312e4eb159b9c378"
   },
   "asset": {
     "path": "package/dist/browser/standalone.js",
-    "bytes": 4418213,
-    "sha256": "26b06691fc0e2e35c631f1455371d9cd4cf17e3565d2a93d623d0017951e48ac",
+    "bytes": 4858049,
+    "sha256": "dcb027152bf20bf2f6dcd66e8f9fb073c1a9e274cf0b94b939a7d99ab8947060",
     "embeddedByteIdentityVerified": true,
-    "sourceMapSha256": "8acc49810b282fa538d3aafd03f72436ac83d03bc58dc56733ebf70b05b28f18",
-    "sourceCount": 2693
+    "sourceMapSha256": "915ac9fd38a5e8d7fcb5eee06f9b6f880af8891235777bfe2332a72804818a77",
+    "sourceCount": 2845
   },
   "upstreamLock": {
-    "url": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/pnpm-lock.yaml",
-    "sha256": "27d5263fb0b2d0526f570d86dc105005aea78f7753bbb052803b6802566f37a0"
+    "url": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/pnpm-lock.yaml",
+    "sha256": "325decad663d8e05e79a587a94fe9c661e17e239183012c20fd33327f02606bd"
   },
   "notices": [
     {
       "path": "notices/scalar-MIT-LICENSE.txt",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/LICENSE",
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/LICENSE",
       "sha256": "380cd0a6ad700e1f821f2a509f0dd9ff835041cee2d43daf5dedc1adb2bcc620",
       "scope": "Scalar project license; does not replace third-party component notices"
     }
   ],
+  "limitations": [
+    "Complete bundled inventory, all source-map associations and complete third-party notice/license obligations remain unproven.",
+    "No production/demo viewer mapping, public-release authorization or human security clearance.",
+    "Current candidate advisory query is partial; all12historical findings remain retained and newqsadvisory remainsunresolved."
+  ],
   "externalComponents": [
     {
       "name": "@ai-sdk/provider",
-      "version": "3.0.2",
-      "basis": "published source-map pnpm version path",
+      "version": "4.0.28",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@ai-sdk/provider-utils",
-      "version": "4.0.5",
-      "basis": "published source-map pnpm version path",
+      "version": "5.0.61",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@ai-sdk/vue",
-      "version": "3.0.33",
-      "basis": "published source-map pnpm version path",
+      "version": "4.0.142",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/autocomplete",
-      "version": "6.18.3",
-      "basis": "published source-map pnpm version path",
+      "version": "6.20.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/commands",
-      "version": "6.7.1",
-      "basis": "published source-map pnpm version path",
+      "version": "6.11.1",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lang-css",
       "version": "6.3.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lang-html",
-      "version": "6.4.9",
-      "basis": "published source-map pnpm version path",
+      "version": "6.4.12",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lang-javascript",
       "version": "6.2.5",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lang-json",
-      "version": "6.0.1",
-      "basis": "published source-map pnpm version path",
+      "version": "6.0.2",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lang-xml",
       "version": "6.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lang-yaml",
-      "version": "6.1.2",
-      "basis": "published source-map pnpm version path",
+      "version": "6.1.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/language",
-      "version": "6.10.7",
-      "basis": "published source-map pnpm version path",
+      "version": "6.13.1",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/lint",
-      "version": "6.8.4",
-      "basis": "published source-map pnpm version path",
+      "version": "6.9.7",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/state",
-      "version": "6.5.0",
-      "basis": "published source-map pnpm version path",
+      "version": "6.7.6",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@codemirror/view",
-      "version": "6.35.3",
-      "basis": "published source-map pnpm version path",
+      "version": "6.43.14",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@floating-ui/core",
-      "version": "1.7.3",
-      "basis": "published source-map pnpm version path",
+      "version": "1.8.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@floating-ui/dom",
-      "version": "1.7.4",
-      "basis": "published source-map pnpm version path",
+      "version": "1.8.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@floating-ui/utils",
-      "version": "0.2.10",
-      "basis": "published source-map pnpm version path",
+      "version": "0.2.12",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@floating-ui/vue",
-      "version": "1.1.9",
-      "basis": "published source-map pnpm version path",
+      "version": "2.0.1",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@headlessui/vue",
       "version": "1.7.23",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/common",
-      "version": "1.2.3",
-      "basis": "published source-map pnpm version path",
+      "version": "1.5.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/css",
-      "version": "1.1.8",
-      "basis": "published source-map pnpm version path",
+      "version": "1.3.9",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/highlight",
-      "version": "1.2.1",
-      "basis": "published source-map pnpm version path",
+      "version": "1.2.5",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/html",
-      "version": "1.3.10",
-      "basis": "published source-map pnpm version path",
+      "version": "1.3.13",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/javascript",
-      "version": "1.4.17",
-      "basis": "published source-map pnpm version path",
+      "version": "1.5.6",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/json",
-      "version": "1.0.2",
-      "basis": "published source-map pnpm version path",
+      "version": "1.0.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/lr",
-      "version": "1.4.2",
-      "basis": "published source-map pnpm version path",
+      "version": "1.4.11",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/xml",
-      "version": "1.0.5",
-      "basis": "published source-map pnpm version path",
+      "version": "1.0.6",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@lezer/yaml",
-      "version": "1.0.3",
-      "basis": "published source-map pnpm version path",
+      "version": "1.0.4",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@marijn/find-cluster-break",
       "version": "1.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@replit/codemirror-css-color-picker",
       "version": "6.3.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@scalar/typebox",
       "version": "0.1.3",
-      "basis": "published source-map pnpm version path",
-      "presentInPinnedSourceLock": true
-    },
-    {
-      "name": "@standard-schema/spec",
-      "version": "1.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@ungap/structured-clone",
       "version": "1.2.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@unhead/vue",
-      "version": "2.1.12",
-      "basis": "published source-map pnpm version path",
+      "version": "3.4.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vue/reactivity",
-      "version": "3.5.40",
-      "basis": "published source-map pnpm version path",
+      "version": "3.5.44",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vue/runtime-core",
-      "version": "3.5.40",
-      "basis": "published source-map pnpm version path",
+      "version": "3.5.44",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vue/runtime-dom",
-      "version": "3.5.40",
-      "basis": "published source-map pnpm version path",
+      "version": "3.5.44",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vue/shared",
-      "version": "3.5.40",
-      "basis": "published source-map pnpm version path",
+      "version": "3.5.44",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vueuse/core",
-      "version": "13.9.0",
-      "basis": "published source-map pnpm version path",
+      "version": "15.0.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vueuse/integrations",
-      "version": "13.9.0",
-      "basis": "published source-map pnpm version path",
+      "version": "15.0.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "@vueuse/shared",
-      "version": "13.9.0",
-      "basis": "published source-map pnpm version path",
+      "version": "15.0.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "ai",
-      "version": "6.0.33",
-      "basis": "published source-map pnpm version path",
+      "version": "7.0.142",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "bail",
       "version": "2.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "ccount",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "clsx",
       "version": "2.1.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "comma-separated-tokens",
       "version": "2.0.3",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "crelt",
       "version": "1.0.6",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "cva",
       "version": "1.0.0-beta.4",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "decode-named-character-reference",
       "version": "1.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "devlop",
       "version": "1.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "entities",
       "version": "6.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "escape-string-regexp",
       "version": "5.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "eventsource-parser",
-      "version": "3.0.6",
-      "basis": "published source-map pnpm version path",
+      "version": "3.1.1",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "extend",
       "version": "3.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "focus-trap",
-      "version": "7.8.0",
-      "basis": "published source-map pnpm version path",
+      "version": "8.2.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "fuse.js",
       "version": "7.5.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "guess-json-indent",
       "version": "3.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-embedded",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-from-html",
       "version": "2.0.3",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-from-parse5",
       "version": "8.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-has-property",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-is-body-ok-link",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-is-element",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-parse-selector",
       "version": "4.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-phrasing",
       "version": "3.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-sanitize",
       "version": "5.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-to-mdast",
       "version": "10.1.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-to-text",
       "version": "4.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hast-util-whitespace",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hastscript",
       "version": "8.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "hookable",
-      "version": "6.0.1",
-      "basis": "published source-map pnpm version path",
+      "version": "6.1.2",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "is-plain-obj",
       "version": "4.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "js-base64",
-      "version": "3.9.2",
-      "basis": "published source-map pnpm version path",
+      "version": "3.9.4",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "jsonc-parser",
       "version": "3.3.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "longest-streak",
       "version": "3.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "markdown-table",
       "version": "3.0.3",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-find-and-replace",
       "version": "3.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-from-markdown",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-gfm",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-gfm-autolink-literal",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-gfm-footnote",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-gfm-strikethrough",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-gfm-table",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-gfm-task-list-item",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-phrasing",
       "version": "4.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-to-markdown",
       "version": "2.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "mdast-util-to-string",
       "version": "4.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "microdiff",
       "version": "1.5.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark",
       "version": "4.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-core-commonmark",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-extension-gfm",
       "version": "3.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-extension-gfm-autolink-literal",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-extension-gfm-footnote",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-extension-gfm-strikethrough",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-extension-gfm-table",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-extension-gfm-task-list-item",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-factory-destination",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-factory-label",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-factory-space",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-factory-title",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-factory-whitespace",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-character",
       "version": "2.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-chunked",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-classify-character",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-combine-extensions",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-decode-numeric-character-reference",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-decode-string",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-html-tag-name",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-normalize-identifier",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-resolve-all",
       "version": "2.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "micromark-util-subtokenize",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "nanoid",
-      "version": "5.1.6",
-      "basis": "published source-map pnpm version path",
+      "version": "5.1.16",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "neverpanic",
       "version": "0.0.8",
-      "basis": "published source-map pnpm version path",
-      "presentInPinnedSourceLock": true
-    },
-    {
-      "name": "parse-ms",
-      "version": "4.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "parse5",
       "version": "7.3.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "pathe",
       "version": "2.0.3",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "pretty-ms",
-      "version": "9.3.0",
-      "basis": "published source-map pnpm version path",
+      "version": "10.0.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "property-information",
-      "version": "7.1.0",
-      "basis": "published source-map pnpm version path",
+      "version": "7.2.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "rehype-minify-whitespace",
       "version": "6.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "rehype-parse",
       "version": "9.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "rehype-remark",
       "version": "10.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "rehype-sanitize",
       "version": "6.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "remark-gfm",
       "version": "4.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "remark-parse",
       "version": "11.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "remark-stringify",
       "version": "11.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "set-cookie-parser",
-      "version": "3.1.0",
-      "basis": "published source-map pnpm version path",
+      "version": "3.1.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "space-separated-tokens",
       "version": "2.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "string-byte-length",
       "version": "3.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "string-byte-slice",
       "version": "3.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "style-mod",
       "version": "4.1.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "swrv",
-      "version": "1.1.0",
-      "basis": "published source-map pnpm version path",
+      "version": "1.3.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "tabbable",
-      "version": "6.4.0",
-      "basis": "published source-map pnpm version path",
+      "version": "6.5.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "tailwind-merge",
-      "version": "3.5.0",
-      "basis": "published source-map pnpm version path",
+      "version": "3.7.0",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "trim-trailing-lines",
       "version": "2.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "trough",
       "version": "2.2.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "truncate-json",
       "version": "3.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unhead",
-      "version": "2.1.12",
-      "basis": "published source-map pnpm version path",
+      "version": "3.4.3",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unified",
       "version": "11.0.5",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unist-util-find-after",
       "version": "5.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unist-util-is",
       "version": "6.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unist-util-position",
       "version": "5.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unist-util-stringify-position",
       "version": "4.0.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unist-util-visit",
       "version": "5.1.0",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "unist-util-visit-parents",
       "version": "6.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "vfile",
       "version": "6.0.3",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "vfile-location",
       "version": "5.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "vfile-message",
       "version": "4.0.2",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "vue",
-      "version": "3.5.40",
-      "basis": "published source-map pnpm version path",
-      "presentInPinnedSourceLock": true
-    },
-    {
-      "name": "vue-demi",
-      "version": "0.14.10",
-      "basis": "published source-map pnpm version path",
+      "version": "3.5.44",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "vue-sonner",
-      "version": "1.3.2",
-      "basis": "published source-map pnpm version path",
+      "version": "2.0.9",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "w3c-keyname",
       "version": "2.2.8",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "web-namespaces",
       "version": "2.0.1",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "yaml",
-      "version": "2.9.0",
-      "basis": "published source-map pnpm version path",
+      "version": "2.9.1",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "zod",
-      "version": "4.4.3",
-      "basis": "published source-map pnpm version path",
+      "version": "4.6.7",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     },
     {
       "name": "zwitch",
       "version": "2.0.4",
-      "basis": "published source-map pnpm version path",
+      "basis": "Published source-map pnpm version path; bounded candidate inventory, not complete SBOM",
       "presentInPinnedSourceLock": true
     }
   ],
   "workspaceComponents": [
     {
       "name": "@scalar/agent-chat",
-      "version": "0.12.41",
+      "version": "0.12.46",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/agent-chat/package.json",
-      "sourceSha256": "35fb2e97bbfdfde05d9d2a01abecf49afeef62f5d2a86b86c6538b6df0ba7d97",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/agent-chat/package.json",
+      "sourceSha256": "83efeff64035bafd38d19d301ee69304c37cbd1deda8dc196e49fa3524892749",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/api-client",
-      "version": "3.21.5",
+      "version": "3.23.3",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/api-client/package.json",
-      "sourceSha256": "9c3ca9563b29b5c1926cf17d8a83f822467b58c8bcb78f3c887dc53b42450a63",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/api-client/package.json",
+      "sourceSha256": "658ff9bbaf157348d6071b372a95ae41a32f885f832bb92b270cecd653c20627",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/api-reference",
-      "version": "1.73.0",
+      "version": "1.76.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/api-reference/package.json",
-      "sourceSha256": "924dc57abe8476de00e7b0ef2630cdcb7ef4cb4bafd0d2b6c3a585a835ac43a2",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/api-reference/package.json",
+      "sourceSha256": "b6278ee87741923ee1863b353c696adb073e5161186769979c40e49462a24b1d",
+      "basis": "source-map workspace path and exact source-commit manifest"
+    },
+    {
+      "name": "@scalar/asyncapi-to-markdown",
+      "version": "0.2.2",
+      "declaredLicense": "MIT",
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/asyncapi-to-markdown/package.json",
+      "sourceSha256": "cd204900b6e5ab87bcc0010d4c228561f4132583361425ed0516410a641323a5",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/asyncapi-upgrader",
-      "version": "0.1.15",
+      "version": "0.1.18",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/asyncapi-upgrader/package.json",
-      "sourceSha256": "0298262f54c39b41ec04fc112a09b8bed0dbeb87f9ba5f127be37d5107b6f6ce",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/asyncapi-upgrader/package.json",
+      "sourceSha256": "b7df496d86b821958f28d722d43602fbdf9914ef6929f3b21898fca1a471d80f",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/blocks",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/blocks/package.json",
-      "sourceSha256": "2522b1c11fcdc4542cc55ff74c683dbaa4a12699b76c474f34b7001683a4e4ae",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/blocks/package.json",
+      "sourceSha256": "b42ffe552045f2cca103ac6ac4012ffc2944765f3d3de1ab904b7d925cbb0068",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/code-highlight",
-      "version": "0.4.8",
+      "version": "0.4.11",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/code-highlight/package.json",
-      "sourceSha256": "baf8fda68b41e20683996499f8abd920145810ad90ab0014576e78f259884b14",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/code-highlight/package.json",
+      "sourceSha256": "f510340ed05774b8340e53b8b0be785dcc8608b02fa9b74654ef7e19cc9dae25",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/components",
-      "version": "0.30.7",
+      "version": "0.33.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/components/package.json",
-      "sourceSha256": "351c5805ae3ccdec3de0abb2ceb4fa9d483efed1dd5c46c68e5d71b196f77a11",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/components/package.json",
+      "sourceSha256": "326b44efec03b18df10b1543a80cd7777a169e9ab8bfbb72aaeb632999ce7bb0",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/helpers",
-      "version": "0.16.1",
+      "version": "0.16.4",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/helpers/package.json",
-      "sourceSha256": "346b04767add1a96a781f5147eef2c2c1e515ef21efd43953120ef7d75958017",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/helpers/package.json",
+      "sourceSha256": "2829655836c01ba198be3d68b9aaab0e7aa425da7a55be0b2447a431512db604",
+      "basis": "source-map workspace path and exact source-commit manifest"
+    },
+    {
+      "name": "@scalar/highlight",
+      "version": "0.6.0",
+      "declaredLicense": "MIT",
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/highlight/package.json",
+      "sourceSha256": "c6111acc52a7d80f2c630cb0ac4f45700158b8c2dbf171cf5d78fff30ceb4322",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/icons",
-      "version": "0.7.6",
+      "version": "0.7.8",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/icons/package.json",
-      "sourceSha256": "0e5405d915bc461ff6569b87d73021f0b552e97be20e121d207428b1e260d8e2",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/icons/package.json",
+      "sourceSha256": "46fb0186a7feaa0a781b306af1c121d4e7d31707ffc4b433ac6a594f9f0b4689",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/json-magic",
-      "version": "0.15.5",
+      "version": "0.17.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/json-magic/package.json",
-      "sourceSha256": "73a968f6b98ada910cc4e0eedf364c8d38b8366ba0626ce5b450d363e1a1e17a",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/json-magic/package.json",
+      "sourceSha256": "ccc0146f2b0271f75da86e40f7c4ab3d01101f533db3cc062209fc6a81e43258",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/localization",
-      "version": "0.2.5",
+      "version": "0.2.9",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/localization/package.json",
-      "sourceSha256": "8794d65a8a685d6efe09b45ebfdc3b76107588854158bcce3cb5dd6bfb262b69",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/localization/package.json",
+      "sourceSha256": "983a84872eb7aa04913f549f6c6613e55f126d6e187fb6b422494fb43bb133f8",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/oas-utils",
-      "version": "0.20.10",
+      "version": "0.20.15",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/oas-utils/package.json",
-      "sourceSha256": "2ee1101715afa300a756396b307c8f0e53f2fa45ea6dadc0892e9d72e8346600",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/oas-utils/package.json",
+      "sourceSha256": "1691f3ccf2a159fbc0fea8e810c10fdbed7c3022e62a351dc83914e16c12621e",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/openapi-to-markdown",
-      "version": "1.5.2",
+      "version": "1.7.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/openapi-to-markdown/package.json",
-      "sourceSha256": "38f5d0abb9d097ef1c687748eeaa024916fc81f245d9f4b0d1514197f4593a4c",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/openapi-to-markdown/package.json",
+      "sourceSha256": "f758f9765118ddd86c082ec4a7f1dafff25cf22639a6aba24927a3234444f3d3",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/openapi-upgrader",
-      "version": "0.4.2",
+      "version": "0.4.6",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/openapi-upgrader/package.json",
-      "sourceSha256": "c01cc0ca559ec149c05f9a82b88392c7c7a4b0c3f3e7cb2216ae0ef1e4e6e8a4",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/openapi-upgrader/package.json",
+      "sourceSha256": "8dbebfc93307295ac7883a1061dba81afa93b9930c5b80848de831339259aeab",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/schemas",
-      "version": "0.13.0",
+      "version": "0.15.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/schemas/package.json",
-      "sourceSha256": "2753b36bce56050691b02aff17a70cebe82d0e8919706db98422b29fed102830",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/schemas/package.json",
+      "sourceSha256": "bd8ffc6b5097fe33b745ff9ae3ebccca2e14a043c98d7f73cbbedac90322d581",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/sidebar",
-      "version": "0.11.12",
+      "version": "0.12.3",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/sidebar/package.json",
-      "sourceSha256": "1e8221620452c67427c57af1ec5def0f417dc85bc6af3f366c103e4a6b875435",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/sidebar/package.json",
+      "sourceSha256": "9ee2cf234327bcfbb2049121a23223095dd9937f8c6255cbd0053f461e8ea273",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/snippetz",
-      "version": "0.10.6",
+      "version": "0.10.11",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/snippetz/package.json",
-      "sourceSha256": "432c38e7296d4bf6f700f2fe98a5b9c4169d13b2f0f985a7f4ee327c7eb4276c",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/snippetz/package.json",
+      "sourceSha256": "632565f79722b69941ec341822a4b82aca1dc375370e2943a31c2024d654c5cb",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/themes",
-      "version": "0.18.1",
+      "version": "0.19.3",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/themes/package.json",
-      "sourceSha256": "1d877f43df74f2b9c0cf11ca72d8c15b17c454cd75a1c5afabcf320c1ad4f870",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/themes/package.json",
+      "sourceSha256": "f53400479e653ac4551531ad58cb3ca40797ebd5b38b20bdac481459b656e09a",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/types",
-      "version": "0.23.0",
+      "version": "0.25.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/types/package.json",
-      "sourceSha256": "45f69e1b1cab463ecf89ba02e9323aa0802091d2c4c45248f0ab2b6526cadd93",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/types/package.json",
+      "sourceSha256": "08a18b5222de311c01f4bbdacce2aeef73df1a204bf42b403deb45db53f96124",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/use-codemirror",
-      "version": "0.14.15",
+      "version": "0.14.16",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/use-codemirror/package.json",
-      "sourceSha256": "d4bbafe1e2236fcde972a2ab5f7114f37f55fca314f435de80d9159bc3eb5c3c",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/use-codemirror/package.json",
+      "sourceSha256": "d34594c515405d8b889382e6197db003bc60202c46ec04b9d2a77dd541382eff",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/use-hooks",
-      "version": "0.4.18",
+      "version": "0.4.22",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/use-hooks/package.json",
-      "sourceSha256": "89fd506327e4e37e329565be993432d279bff433e5227b147e63f9f3b93dd78e",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/use-hooks/package.json",
+      "sourceSha256": "e3b8cb1ea780376d40ccb3ba8a3df2a8f04fac386a6b10f5bf5a624c5b65daeb",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/use-toasts",
-      "version": "0.10.5",
+      "version": "0.10.6",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/use-toasts/package.json",
-      "sourceSha256": "f163e50745e93936a4358d4e0e6278487d619ccb2d1316b8d95106ef379c8f2d",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/use-toasts/package.json",
+      "sourceSha256": "8da35fd8f0064210508c4df0cc5bd344edd614a822cc33df727ff6c264435e08",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/validation",
-      "version": "0.6.6",
+      "version": "0.6.7",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/validation/package.json",
-      "sourceSha256": "08d21edd594bddb0e80560e6aacf4c543fa9a875c2b4783267e2b37b2229fb5e",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/validation/package.json",
+      "sourceSha256": "e87b3f2a4c5638909e8688ebbc0bad817a0b7f170106366e65f26539904ae79a",
+      "basis": "source-map workspace path and exact source-commit manifest"
     },
     {
       "name": "@scalar/workspace-store",
-      "version": "0.68.1",
+      "version": "0.69.0",
       "declaredLicense": "MIT",
-      "source": "https://raw.githubusercontent.com/scalar/scalar/df377038e7c1c6cd4f615ec6438ecf2571520226/packages/workspace-store/package.json",
-      "sourceSha256": "0ff569a598076202af6577c2ed81633622961535c1635560b3d68c5424c604e0",
-      "basis": "source-map workspace path and pinned source manifest"
+      "source": "https://raw.githubusercontent.com/scalar/scalar/74361961e3156ef7211395f01c20db733f87ad45/packages/workspace-store/package.json",
+      "sourceSha256": "54dad5136cf6102fa56f9c10f1766f5e9e80df34b480f623c8cded0189b5f576",
+      "basis": "source-map workspace path and exact source-commit manifest"
     }
-  ],
-  "unmatchedExternalSourcePaths": [],
-  "limitations": [
-    "Current advisory and registry-license metadata query saved separately; metadata is not independent legal clearance.",
-    "Source-map inventory does not by itself prove every nested prebundled component is enumerated.",
-    "Disabled AI/client features remain physically bundled and must not be excluded from dependency assessment.",
-    "No production documentation mapping or certification claim."
   ]
 }

@@ -7694,46 +7694,6 @@
       "Finding": {
         "Rule": "CQ001",
         "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(string)",
-        "Fingerprint": "EA092B4170274922A461DAA81541FADE00AC231570F28C9DCF726F305A79C3E7"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(string)",
-        "Fingerprint": "EA092B4170274922A461DAA81541FADE00AC231570F28C9DCF726F305A79C3E7"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(string)",
-        "Fingerprint": "EA092B4170274922A461DAA81541FADE00AC231570F28C9DCF726F305A79C3E7"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Genuine_keyboard_login_completes_under_strict_csp_and_keeps_tokens_out_of_browser_storage(string)",
-        "Fingerprint": "EA092B4170274922A461DAA81541FADE00AC231570F28C9DCF726F305A79C3E7"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Browser/LoginBrowserTests.cs",
         "Symbol": "IdentityPlatform.Issuer.Tests.Features.Browser.LoginBrowserTests.Both_themes_reflow_and_have_no_automated_accessibility_violations(string,string,int)",
         "Fingerprint": "13D4D8A3C45F6837AC20075045EE4E292773165DBBD92900E0F6498D243B8D95"
       },
@@ -16166,36 +16126,6 @@
         "Path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Documentation/ViewerTests.cs",
         "Symbol": "IdentityPlatform.Api.Contracts.Tests.Features.Documentation.ViewerTests.Both_viewers_render_local_read_only_contracts_without_credentials(string,bool)",
         "Fingerprint": "C25C6FF698E86BDB60A006326604467BD4CB297589416D22F26281BB60A79102"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Documentation/ViewerTests.cs",
-        "Symbol": "IdentityPlatform.Api.Contracts.Tests.Features.Documentation.ViewerTests.VerifyRenderedDocumentAsync(IPage,string,bool,bool)",
-        "Fingerprint": "C5514B6C518AA97CB7AED983A3ABDB2B63F0640ACFBD5E9A7E61A8575AB289C8"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Documentation/ViewerTests.cs",
-        "Symbol": "IdentityPlatform.Api.Contracts.Tests.Features.Documentation.ViewerTests.VerifyRenderedDocumentAsync(IPage,string,bool,bool)",
-        "Fingerprint": "C5514B6C518AA97CB7AED983A3ABDB2B63F0640ACFBD5E9A7E61A8575AB289C8"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Documentation/ViewerTests.cs",
-        "Symbol": "IdentityPlatform.Api.Contracts.Tests.Features.Documentation.ViewerTests.VerifyRenderedDocumentAsync(IPage,string,bool,bool)",
-        "Fingerprint": "C5514B6C518AA97CB7AED983A3ABDB2B63F0640ACFBD5E9A7E61A8575AB289C8"
       },
       "Task": "T015",
       "Owner": "Implementation lead"

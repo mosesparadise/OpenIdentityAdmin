@@ -1,0 +1,76 @@
+{
+  "checkedAt": "2026-10-27T17:42:26.372267+00:00",
+  "configurationHashes": {
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Setup.cs": {
+      "prior": "a9c2f7f310c14efc2c2b0ee46dd7df90dd4611d4b3404b65c195d7aa0125d0ae",
+      "actual": "a9c2f7f310c14efc2c2b0ee46dd7df90dd4611d4b3404b65c195d7aa0125d0ae",
+      "matches": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/swagger.js": {
+      "prior": "c97036cbc88ad336f5a5c72bea74f2f719e4c627f1b5c3c5a94e7732a6ccab00",
+      "actual": "c97036cbc88ad336f5a5c72bea74f2f719e4c627f1b5c3c5a94e7732a6ccab00",
+      "matches": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/scalar-bootstrap.js": {
+      "prior": "17514cf19496dd40ed7d046acdf6f60e85d4a8b55542b5ce9757b3e8398f9e1f",
+      "actual": "17514cf19496dd40ed7d046acdf6f60e85d4a8b55542b5ce9757b3e8398f9e1f",
+      "matches": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationPolicy.cs": {
+      "prior": "d87dd51b11eafa9b3c4dc2ea317cfd28ddbbb229cc9fdc62f07bc12cabe0af14",
+      "actual": "d87dd51b11eafa9b3c4dc2ea317cfd28ddbbb229cc9fdc62f07bc12cabe0af14",
+      "matches": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationAssets.cs": {
+      "prior": "44c7c9cbfe901c6a4dd864b85a580a2fd487f0dfced61d48070ff707c01d9260",
+      "actual": "44c7c9cbfe901c6a4dd864b85a580a2fd487f0dfced61d48070ff707c01d9260",
+      "matches": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationOptions.cs": {
+      "prior": "b4babe3c2a25ca7c7ae1d0e33e4e60ed96201fc3e26d340a4026a246589577bc",
+      "actual": "b4babe3c2a25ca7c7ae1d0e33e4e60ed96201fc3e26d340a4026a246589577bc",
+      "matches": true
+    },
+    "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/index.html": {
+      "prior": "ef86fe0bec3a4da2a7f08e1c7f01c2cb398d83e24ef2b98124fb256f73f08133",
+      "actual": "ef86fe0bec3a4da2a7f08e1c7f01c2cb398d83e24ef2b98124fb256f73f08133",
+      "matches": true
+    }
+  },
+  "actualDomPurifyVersion": "3.4.16",
+  "versionOffsetUtf8": 1415784,
+  "versionExcerpt": "DOMPurify.version=\"3.4.16\",DOMPurify.removed=[],!s||!s.document||s.document.nodeType!==DP|",
+  "sanitizerExcerpt": "function sanitizer(s,{useUnsafeMarkdown:o=!1}={}){const i=o,a=o?[]:[\"style\",\"class\"];return o&&!sanitizer.hasWarnedAboutDeprecation&&(console.warn(\"useUnsafeMarkdown display configuration parameter is deprecated since >3.26.0 and will be removed in v4.0.0.\"),sanitizer.hasWarnedAboutDeprecation=!0),WP.sanitize(s,{ADD_ATTR:[\"target\"],FORBID_TAGS:[\"style\",\"form\"],ALLOW_DATA_ATTR:i,FORBID_ATTR:a})}sanitizer.hasWarnedAboutDeprecation=!1",
+  "sanitizerSha256": "4befc24c4d764dbbe9ffd5c8319b67f4ffd96736bb1cb4a29aa66f4f2588ae69",
+  "sanitizerObservation": "Actual caller uses ADD_ATTR target/FORBID_TAGS style,form/ALLOW_DATA_ATTR/FORBID_ATTR only; no IN_PLACE,SAFE_FOR_TEMPLATES,PARSER_MEDIA_TYPE option at this inspected call. This is a bounded caller observation, not a complete reachability conclusion or automatic disposition carry-forward.",
+  "newQsAdvisory": "GHSA-6pq8-jhm2-2vcw /1243452",
+  "newQsDisposition": "candidate_component_association_and_runtime_reachability_unresolved_activation_blocked",
+  "newQsRationale": "Published source-map byte identity to old known-inconsistent map prevents exact qs bundle association. Current upstream lock contains qs6.15.2 within affected range; absent qs diagnostic strings is not proof absence. Viewers remain unmapped by production/demo composition; no active-viewer safety conclusion.",
+  "inventoryComplete": false,
+  "activationBlocked": true,
+  "historicalAdvisories": "Preserve all12 old findings and source-bound assessments as historical, not carried to newasset. Unionquery13includesnewqs; currentcandidatequery6mustnotbe representedascompleteinventory/clearance.",
+  "npm": {
+    "lockSha256": "95038c659079e667b3921968cfc442f0ef8de54b9dd6194fae0863180d187eac",
+    "entries": 75,
+    "installed": 50,
+    "optionalPlatformExcluded": 25,
+    "installedIdentityMismatches": [],
+    "invalidMissingEntries": [],
+    "auditSha256": "961bee18a3aaa22ec31ffc9d287b846d0d62726773849adf15e8910eacb04ccd",
+    "auditVulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "unpackagedLicenseNotices": [
+      "@esbuild/linux-x64/0.28.2",
+      "@redocly/openapi-core/2.71.2",
+      "change-case/5.4.4",
+      "@redocly/openapi-core/1.34.20",
+      "uri-js-replace/1.0.1"
+    ]
+  }
+}

@@ -11,6 +11,17 @@ BASELINE = "38eb41e06d40b6addbe57e3af839f912645e6dea"
 PROJECT = ROOT / "eng/IdentityPlatform.ProviderCompatibility.Baseline/IdentityPlatform.ProviderCompatibility.Baseline.csproj"
 
 
+def require_frozen_packages(dependencies, locked):
+    """Reject any runtime package whose version is absent from the immutable producer lock."""
+    expected = {f"{name}/{item['resolved']}".lower()
+                for framework in locked["dependencies"].values()
+                for name, item in framework.items() if item["type"].lower() != "project"}
+    observed = {name.lower() for name, item in dependencies["libraries"].items()
+                if item["type"].lower() == "package"}
+    if not observed or not observed.issubset(expected):
+        raise ValueError("Compatibility producer runtime packages differ from the frozen lock")
+
+
 def prepare(restore_only=False):
     """Verify the fixed commit, isolate its checkout, and build the producer against that checkout only."""
     checkout = ROOT / "work/provider-compatibility-baseline"
@@ -21,16 +32,17 @@ def prepare(restore_only=False):
     dirty = subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no"], cwd=checkout, text=True)
     if observed != BASELINE or dirty:
         raise ValueError("Frozen compatibility source does not match the required clean checkpoint")
-    setting = f"-p:ProviderCompatibilityBaselineRoot={checkout}"
-    command = ["dotnet", "restore", str(PROJECT), setting, "--nologo"]
+    settings = [f"-p:ProviderCompatibilityBaselineRoot={checkout}"]
+    command = ["dotnet", "restore", str(PROJECT), *settings, "--nologo"]
     if not restore_only:
         command.append("--locked-mode")
     subprocess.run(command, cwd=ROOT, check=True)
     if restore_only:
         return
-    subprocess.run(["dotnet", "build", str(PROJECT), setting, "--no-restore", "--nologo", "-m:1", "-nr:false"], cwd=ROOT, check=True)
+    subprocess.run(["dotnet", "build", str(PROJECT), *settings, "--no-restore", "--nologo", "-m:1", "-nr:false"], cwd=ROOT, check=True)
     executable = PROJECT.parent / "bin/baseline/net10.0/IdentityPlatform.ProviderCompatibility.Baseline.dll"
     dependencies = json.loads(executable.with_suffix(".deps.json").read_text())
+    require_frozen_packages(dependencies, json.loads((PROJECT.parent / "packages.baseline.lock.json").read_text()))
     if any(name.startswith("IdentityPlatform.Database.") for name in dependencies["libraries"]):
         raise ValueError("Compatibility producer unexpectedly references the new provider implementation")
     evidence = ROOT / "artifacts/provider-compatibility"

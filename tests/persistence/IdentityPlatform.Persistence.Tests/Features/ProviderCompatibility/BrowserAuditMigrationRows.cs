@@ -24,7 +24,8 @@ internal static class BrowserAuditMigrationRows
     private const int CommandSeconds = 30;
     private const string PlatformHistory = "SELECT * FROM \"platform\".\"PlatformMigrations\" ORDER BY \"MigrationId\"";
     private const string SessionsHistory = "SELECT * FROM \"bff\".\"SessionMigrations\" ORDER BY \"MigrationId\"";
-    private const string ProductVersion = "10.0.12";
+    // Newly applied rows use the reviewed EF runtime; captured historical rows retain their original versions.
+    private const string ProductVersion = "10.0.14";
     private const string ActorParameter = "legacyActor";
     private const string TargetParameter = "legacyTarget";
     private const string SubjectParameter = "legacySubject";
@@ -69,9 +70,15 @@ internal static class BrowserAuditMigrationRows
         var after = await CaptureHistoryAsync(platform, sessions, token);
         for (var index = 0; index < before.Length; index++)
         {
-            var expected = before[index].Append(JsonSerializer.Serialize(new[] { additions[index], ProductVersion })).Order(StringComparer.Ordinal);
-            Assert.Equal(DatabaseSnapshot.Fingerprint(expected), DatabaseSnapshot.Fingerprint(after[index].Order(StringComparer.Ordinal)));
+            RequireHistory(before[index], after[index], additions[index]);
         }
+    }
+
+    /// <summary>Preserves every full old row and independently checks the version of the one newly applied migration.</summary>
+    internal static void RequireHistory(string[] before, string[] after, string addition)
+    {
+        var expected = before.Append(JsonSerializer.Serialize(new[] { addition, ProductVersion })).Order(StringComparer.Ordinal);
+        Assert.Equal(DatabaseSnapshot.Fingerprint(expected), DatabaseSnapshot.Fingerprint(after.Order(StringComparer.Ordinal)));
     }
 
     /// <summary>Requires one appended null only, then compares the complete unchanged original rows and multiplicity.</summary>

@@ -1,58 +1,56 @@
-# Disposable B3 demo from Windows
+# Disposable B3 demo through Aspire
 
-**Implementation delivered in PR #105: required Linux container CI passes on both providers. Actual Windows Docker Desktop execution remains unverified (SC-001/T014).** See [verification](verification.md). Default startup remains health-only; this profile exposes the accepted administrator browser flows.
+The accepted container implementation from PR #105 is retained. [Feature 015](../015-aspire-local-entry/spec.md) replaces the PowerShell helpers with native Aspire launch and dashboard initialization; [current verification](../015-aspire-local-entry/verification.md) is pending. Actual Windows Docker Desktop execution remains unverified (SC-001/T014).
 
 ## Prerequisites
 
-- Windows with Docker Desktop running **Linux containers**. No WSL terminal is required. SQL Server requires a supported x64 container host; ARM64 suitability is not claimed.
-- PowerShell **7.4 or later**, .NET SDK **10.0.401**, and access to NuGet and the pinned Microsoft/container image registries.
-- A current .NET development HTTPS certificate trusted by Windows and valid for `*.dev.localhost`. Chrome or Edge can resolve these localhost names without changing the Windows hosts file.
+- Windows with Docker Desktop running **Linux containers**; no WSL terminal or custom PowerShell scripts. SQL Server requires a supported x64 container host; ARM64 suitability is not claimed.
+- A stable **.NET 10.x SDK**, with access to NuGet and the configured container registries.
+- A current .NET development HTTPS certificate trusted by Windows and valid for `*.dev.localhost`. Chrome/Edge resolve these names without editing the hosts file.
 - Available dashboard port 17100, issuer port 17443 and BFF port 17444.
 
-From the repository root in PowerShell:
+## Start the AppHost
 
-```powershell
+Set **IdentityPlatform.AppHost** as your IDE startup project, select its **local-demo** launch profile and run/debug normally. Alternatively, from the repository root in any terminal:
+
+```text
 dotnet tool restore
 dotnet restore --locked-mode
 dotnet dev-certs https --trust
-./scripts/local-demo/Start-LocalDemo.ps1 -Provider PostgreSql
+dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-demo
 ```
 
-Select `-Provider SqlServer` for the other existing provider. The script passes the provider identifier through the existing registry; an explicitly registered provider remains selectable. Start checks the SDK, Linux daemon and certificate prerequisites. It never deletes or replaces certificates. If an older certificate lacks the SAN, inspect the development certificates and create a current one deliberately; do not disable browser or backchannel certificate validation.
+Certificate trust is a normal one-time development prerequisite. If a stale certificate lacks the required SAN, inspect it and deliberately create a current .NET development certificate; never disable TLS validation.
 
-Keep this terminal open. Image builds can take several minutes on the first run. Open the authenticated Aspire dashboard URL printed locally. Wait for `migrator` to complete successfully, `auth` and `admin-bff` to become healthy, and `initializer` to run. Health confirms schema/runtime availability; it does not mean an administrator has been created.
+PostgreSQL is the existing default. To select SQL Server, append `-- --Database:Provider=SqlServer` to the run command, or set `Database:Provider` through AppHost user secrets. Existing registered provider implementations remain selectable. The ordinary `https` profile retains health-only startup.
+
+The authenticated Aspire dashboard opens from the launch profile. Keep the AppHost running. Initial image builds can take several minutes. Wait for `migrator` to complete, `auth` and `admin-bff` to become healthy, and `initializer` to run. Health does not mean an administrator exists.
 
 ## Initialize and enroll
 
-In a second PowerShell 7.4+ terminal at the repository root:
+In the dashboard, open the **initializer** resource actions and choose **Initialize administrator**. Enter a synthetic username and password in the dialog; the password field is masked.
 
-```powershell
-./scripts/local-demo/Initialize-LocalDemo.ps1
-```
-
-The helper requires exactly one running demo initializer, verifies its run label, prompts for a synthetic username/password, and supplies bootstrap JSON only through redirected UTF-8 stdin. Passwords are never placed in argv, configuration, environment or a bootstrap file. Native password policy still applies. It then runs separate public registration and revision-one B3 upgrade operations. No mutation is retried automatically. Do not use real production credentials.
+Aspire sends the bounded bootstrap document to the exact run-owned initializer through redirected UTF-8 stdin, followed by separate public registration and revision-one B3 upgrade operations. Credentials are not stored in arguments, configuration, resource properties or logs. Native password policy still applies. Once a mutation has been attempted, initialization cannot be repeated for that run. Do not use production credentials.
 
 1. Open <https://issuer.dev.localhost:17443/account/administrator/enrollment>.
-2. Enter the credentials just initialized, add the displayed setup key to an authenticator, and submit a genuine TOTP.
+2. Enter the initialized credentials, add the setup key to an authenticator, and submit a genuine TOTP.
 3. Save the one-time recovery codes privately for this disposable run.
-4. Open <https://bff.dev.localhost:17444/bff/login> and start sign-in. Each explicit sign-in requires fresh password and MFA, including when an issuer cookie exists.
-5. Inspect <https://bff.dev.localhost:17444/bff/session> for authenticated status. This is a small server-rendered demo; React management and management APIs are not delivered here.
-6. Open <https://bff.dev.localhost:17444/bff/logout>. Local sign-out revokes the BFF session. The issuer option first completes local sign-out, then offers a separate issuer confirmation. Returning from the issuer does not independently prove its revocation; the page retains the accepted unverified-return wording.
+4. Open <https://bff.dev.localhost:17444/bff/login>. Every explicit sign-in requires fresh password and MFA, including when an issuer cookie exists.
+5. Inspect <https://bff.dev.localhost:17444/bff/session> for authenticated status. This is a small server-rendered demo; React management and management APIs remain pending.
+6. Open <https://bff.dev.localhost:17444/bff/logout>. Local sign-out revokes the BFF session. The issuer option first signs out locally and then offers separate issuer confirmation. Returning alone does not prove issuer revocation.
 
-The dashboard's localhost links are health/resource links. Use the canonical URLs above for account and BFF journeys so origins agree with the registered native protocol identities.
+Use these canonical URLs for account/BFF journeys so origins match the native registrations; dashboard resource links may target health endpoints.
 
 ## Stop, restart and troubleshoot
 
-Stop the first terminal with Ctrl+C. The wrapper attempts removal only for containers labelled with its unique run ID, including their attached anonymous volumes. It never prunes unrelated Docker resources. Data and accounts are not reused by subsequent runs. Both-provider Linux CI verifies native DCP removal of owned containers and attached anonymous database volumes. Windows Docker Desktop disposal remains part of the separate walkthrough.
+Stop the AppHost through your IDE or Ctrl+C. Native Aspire/DCP disposes its run-owned containers and anonymous volumes. No cleanup script or global Docker prune is used. Subsequent runs do not reuse accounts or data. Prior both-provider Linux CI verifies native disposal; the new command path and Windows walkthrough require their own evidence. Forced host termination is not a cleanup guarantee.
 
-Private application certificates and encrypted key rings live in app-owned Linux tmpfs. Restarting an individual issuer/BFF container loses that protection state while databases may still exist: **restart the whole disposable graph, initialize and enroll again**. There is no single-container continuity or automatic repair guarantee. Application certificates expire after one day; use a fresh complete run for later sessions.
+Private certificates and encrypted key rings live in application-owned Linux tmpfs. Restarting an individual issuer/BFF container loses those keys while its database may still exist: **restart the whole graph, initialize and enroll again**. No individual-container continuity or automatic repair is promised. Application certificates expire after one day; start a fresh complete run for later sessions.
 
-Aspire secret parameters mask display, but Docker-authorized local operators can inspect environment metadata containing encrypted PFX/passwords. Removing owned containers is part of disposal; no secure-erasure or memory-only transport claim is made. The normal TLS development certificate is managed separately by .NET/Aspire.
+Aspire secret parameters mask display, but Docker-authorized local operators can inspect encrypted PFX/password metadata. No secure-erasure or memory-only transport claim is made. The TLS development certificate remains managed separately by .NET/Aspire.
 
-If initialization fails or is interrupted, the helper attempts to stop only the exact selected initializer. A mutation may already have committed; start a fresh complete run instead of retrying it. If prerequisites, image pulls, migrations, runtime health or TLS fail, use the fixed error and resource state to identify the failing stage. Never bypass TLS or private-file permissions. Browser automation/Playwright report issues remain documented under A-009 and do not change the manual demo commands.
+After failed/interrupted initialization, the command attempts to stop only the verified immutable initializer container and reports if cleanup could not be confirmed. A mutation may already have committed; start a new complete run instead of retrying. Never bypass TLS or private-file permissions. A-009 browser/report deferrals remain documented.
 
-## Acceptance scope
+## Acceptance limits
 
-[Requirements](spec.md) and [tasks](tasks.md) require both-provider graph checks, normal runtime startup, native stdin initialization, genuine browser enrollment/login/logout and fresh-run cookie invalidation. Existing Chromium/WebKit security matrices remain required under the exact A-009 deferrals. The added demo-specific automation uses Chromium, matching Windows Chrome/Edge availability. Linux hosted execution does not establish actual Windows Docker Desktop execution; that limit must remain explicit.
-
-M02-C refresh, M02-D API authority, M02-E React, all six historical findings, human assessment and production/public-release gates remain open.
+Required automation retains real PostgreSQL/SQL Server, native bootstrap, genuine Chromium enrollment/login/logout, fresh-run invalidation, existing Chromium/WebKit security matrices and exact A-009 deferrals. Linux CI does not establish actual Windows Docker Desktop execution. M02-C refresh, M02-D API authority, M02-E React, all six historical findings, human assessment and production/public-release gates remain open.

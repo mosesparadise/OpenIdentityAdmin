@@ -1,0 +1,757 @@
+{
+  "schemaVersion": 1,
+  "scope": "Embedded asset byte provenance with inconsistent published source map; component-version list is candidate inventory, not verified complete bundled inventory",
+  "nuget": {
+    "name": "Swashbuckle.AspNetCore.SwaggerUI",
+    "version": "10.3.0",
+    "archiveSha256": "fae94d74c5e8453e2da253aa0feba892ba1656d787d871ed443ab36723a8dcdd",
+    "sourceCommit": "8505e3382689240473ae263d50832318a061cc7d",
+    "sourcePackageManifest": "https://raw.githubusercontent.com/domaindrivendev/Swashbuckle.AspNetCore/8505e3382689240473ae263d50832318a061cc7d/src/Swashbuckle.AspNetCore.SwaggerUI/package.json"
+  },
+  "npm": {
+    "name": "swagger-ui-dist",
+    "version": "5.33.1",
+    "sourceCommit": "cac3d136b5e37bfbe3288c8591f6f4fcf9870599",
+    "tarball": "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-5.33.1.tgz",
+    "integrity": "sha512-H872wWkA53bFIsGgi7OWgmq+CRWw3nFQGdJWRqOB9wNwTm6e5ol34+qPDkV4AJlK+gglM2EsJiOOzsGsEGbluA==",
+    "integrityVerified": true,
+    "archiveSha256": "b468ff5f49451f194a739bc245c85b28c7d3d33057a8409a9b2369da37e215b9"
+  },
+  "asset": {
+    "path": "package/swagger-ui-bundle.js",
+    "bytes": 1586002,
+    "sha256": "050bc415ee7048dcd881682678f720264e7da5e373f7461d7c58c755305255f7",
+    "embeddedByteIdentityVerified": true,
+    "sourceMapSha256": "5c0d0705c0079e3c1b24ae88062dfc25968f4f9754de8fa14cbb548af8996954",
+    "sourceCount": 1650
+  },
+  "upstreamLock": {
+    "url": "https://raw.githubusercontent.com/swagger-api/swagger-ui/cac3d136b5e37bfbe3288c8591f6f4fcf9870599/package-lock.json",
+    "sha256": "33e636b68e29785d54c3fe922a47a2bf78f764cf8179e8fae30a243581d84d90"
+  },
+  "secondaryLockInspected": {
+    "package": "swagger-client@3.38.2",
+    "commit": "cee21d677908b77b79a1a59dd2fbef571e910d14",
+    "sha256": "dcd2dfce79606508b2c87097a709643c603728738b205a69b0e4a9aab14e741c",
+    "unmatchedFourAlsoAbsent": true
+  },
+  "notices": [
+    {
+      "path": "notices/swagger-Apache-LICENSE.txt",
+      "npmArchivePath": "package/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "notices/swagger-NOTICE.txt",
+      "npmArchivePath": "package/NOTICE",
+      "sha256": "0d20d1adef18aee3f40dd258172155521ce702ac445cb5f7b7d60ed32dad2fb2"
+    },
+    {
+      "path": "notices/swagger-bundle-LICENSE.txt",
+      "npmArchivePath": "package/swagger-ui-bundle.js.LICENSE.txt",
+      "sha256": "63818894e4b04cd0e3180d9cb20761e227a939121e7484f8e1d528227c756f89"
+    }
+  ],
+  "mappedComponents": [
+    {
+      "name": "@babel/runtime",
+      "version": "7.27.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/@babel/runtime",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@babel/runtime-corejs3",
+      "version": "7.27.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/@babel/runtime-corejs3",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-ast",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-ast",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-core",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-core",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-error",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-error",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-json-pointer",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-json-pointer",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-ns-json-schema-draft-4",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-ns-json-schema-draft-4",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-ns-openapi-3-0",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-ns-openapi-3-0",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-ns-openapi-3-1",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-ns-openapi-3-1",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "@swagger-api/apidom-reference",
+      "version": "1.11.6",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/@swagger-api/apidom-reference",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "autolinker",
+      "version": "3.16.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/autolinker",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/base64-js",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "buffer",
+      "version": "6.0.3",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/buffer",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "call-bind",
+      "version": "1.0.8",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/call-bind",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "classnames",
+      "version": "2.5.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/classnames",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "cookie",
+      "version": "0.7.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/cookie",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "copy-to-clipboard",
+      "version": "3.3.3",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/copy-to-clipboard",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "core-js-pure",
+      "version": "3.40.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/core-js-pure",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "css.escape",
+      "version": "1.5.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/css.escape",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "deep-extend",
+      "version": "0.6.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/deep-extend",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "deepmerge",
+      "version": "4.3.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/deepmerge",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "define-data-property",
+      "version": "1.1.4",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/define-data-property",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "dompurify",
+      "version": "3.4.13",
+      "declaredLicense": "(MPL-2.0 OR Apache-2.0)",
+      "lockPath": "node_modules/dompurify",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "drange",
+      "version": "1.1.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/drange",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "es-define-property",
+      "version": "1.0.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/es-define-property",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "es-errors",
+      "version": "1.3.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/es-errors",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "events",
+      "version": "3.3.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/events",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "fast-json-patch",
+      "version": "3.1.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/fast-json-patch",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "fault",
+      "version": "1.0.4",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/fault",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "format",
+      "version": "0.2.2",
+      "declaredLicense": null,
+      "lockPath": "node_modules/format",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "function-bind",
+      "version": "1.1.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/function-bind",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "get-intrinsic",
+      "version": "1.2.7",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/get-intrinsic",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "gopd",
+      "version": "1.2.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/gopd",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "has-property-descriptors",
+      "version": "1.0.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/has-property-descriptors",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "has-proto",
+      "version": "1.2.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/has-proto",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "has-symbols",
+      "version": "1.1.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/has-symbols",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "hasown",
+      "version": "2.0.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/hasown",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "highlight.js",
+      "version": "10.7.3",
+      "declaredLicense": "BSD-3-Clause",
+      "lockPath": "node_modules/highlight.js",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "ieee754",
+      "version": "1.2.1",
+      "declaredLicense": "BSD-3-Clause",
+      "lockPath": "node_modules/ieee754",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "immutable",
+      "version": "5.1.9",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/immutable",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "inherits",
+      "version": "2.0.4",
+      "declaredLicense": "ISC",
+      "lockPath": "node_modules/inherits",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "js-file-download",
+      "version": "0.4.12",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/js-file-download",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.3.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/js-yaml",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "lodash",
+      "version": "4.18.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/lodash",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "lodash.debounce",
+      "version": "4.0.8",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/lodash.debounce",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "lowlight",
+      "version": "1.20.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/lowlight",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "minim",
+      "version": "0.23.8",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/minim",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "object-inspect",
+      "version": "1.13.4",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/object-inspect",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "process",
+      "version": "0.11.10",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/process",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "prop-types",
+      "version": "15.8.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/prop-types",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "qs",
+      "version": "6.15.2",
+      "declaredLicense": "BSD-3-Clause",
+      "lockPath": "node_modules/qs",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "querystringify",
+      "version": "2.2.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/querystringify",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "ramda",
+      "version": "0.30.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/ramda",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "ramda-adjunct",
+      "version": "5.1.0",
+      "declaredLicense": "BSD-3-Clause",
+      "lockPath": "node_modules/ramda-adjunct",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "randexp",
+      "version": "0.5.3",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/randexp",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "randombytes",
+      "version": "2.1.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/randombytes",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react",
+      "version": "18.3.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-copy-to-clipboard",
+      "version": "5.1.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-copy-to-clipboard",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-debounce-input",
+      "version": "3.3.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-debounce-input",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-dom",
+      "version": "18.3.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-dom",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-immutable-proptypes",
+      "version": "2.2.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-immutable-proptypes",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-immutable-pure-component",
+      "version": "2.2.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-immutable-pure-component",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-redux",
+      "version": "9.3.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-redux",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "react-syntax-highlighter",
+      "version": "16.0.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/react-syntax-highlighter",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "readable-stream",
+      "version": "3.6.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/readable-stream",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "redux",
+      "version": "5.0.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/redux",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "remarkable",
+      "version": "2.0.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/remarkable",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "repeat-string",
+      "version": "1.6.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/repeat-string",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "requires-port",
+      "version": "1.0.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/requires-port",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "reselect",
+      "version": "5.1.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/reselect",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "ret",
+      "version": "0.2.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/ret",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.2.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/safe-buffer",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "scheduler",
+      "version": "0.23.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/scheduler",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "serialize-error",
+      "version": "8.1.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/serialize-error",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "set-function-length",
+      "version": "1.2.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/set-function-length",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "sha.js",
+      "version": "2.4.12",
+      "declaredLicense": "(MIT AND BSD-3-Clause)",
+      "lockPath": "node_modules/sha.js",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "short-unique-id",
+      "version": "5.3.2",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/short-unique-id",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "side-channel",
+      "version": "1.1.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/side-channel",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "stream-browserify",
+      "version": "3.0.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/stream-browserify",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "string_decoder",
+      "version": "1.3.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/string_decoder",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "swagger-client",
+      "version": "3.38.2",
+      "declaredLicense": "Apache-2.0",
+      "lockPath": "node_modules/swagger-client",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "toggle-selection",
+      "version": "1.0.6",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/toggle-selection",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "ts-mixer",
+      "version": "6.0.4",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/ts-mixer",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "tslib",
+      "version": "2.8.1",
+      "declaredLicense": "0BSD",
+      "lockPath": "node_modules/tslib",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "url-parse",
+      "version": "1.5.10",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/url-parse",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "use-sync-external-store",
+      "version": "1.4.0",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/use-sync-external-store",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "util-deprecate",
+      "version": "1.0.2",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/util-deprecate",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "xml",
+      "version": "1.0.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/xml",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "xml-but-prettier",
+      "version": "1.0.1",
+      "declaredLicense": "MIT",
+      "lockPath": "node_modules/xml-but-prettier",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    },
+    {
+      "name": "zenscroll",
+      "version": "4.0.2",
+      "declaredLicense": "Unlicense",
+      "lockPath": "node_modules/zenscroll",
+      "basis": "Candidate only: published source-map path matched pinned lock, but published map fails generated-coordinate validation against actual embedded asset"
+    }
+  ],
+  "unresolvedSourcePackages": [
+    {
+      "name": "@braintree/sanitize-url",
+      "version": null,
+      "sourcePaths": [
+        "node_modules/@braintree/sanitize-url/dist/constants.js",
+        "node_modules/@braintree/sanitize-url/dist/index.js"
+      ]
+    },
+    {
+      "name": "redux-immutable",
+      "version": null,
+      "sourcePaths": [
+        "node_modules/redux-immutable/dist/combineReducers.js",
+        "node_modules/redux-immutable/dist/index.js",
+        "node_modules/redux-immutable/dist/utilities/getStateName.js",
+        "node_modules/redux-immutable/dist/utilities/getUnexpectedInvocationParameterMessage.js",
+        "node_modules/redux-immutable/dist/utilities/index.js",
+        "node_modules/redux-immutable/dist/utilities/validateNextState.js"
+      ]
+    },
+    {
+      "name": "stampit",
+      "version": null,
+      "sourcePaths": [
+        "node_modules/stampit/dist/stampit.min.js"
+      ]
+    },
+    {
+      "name": "traverse",
+      "version": null,
+      "sourcePaths": [
+        "node_modules/traverse/index.js"
+      ]
+    }
+  ],
+  "legacyLicenseMetadata": [
+    {
+      "name": "format",
+      "version": "0.2.2",
+      "license": null,
+      "licenses": [
+        {
+          "url": "http://sjs.mit-license.org",
+          "type": "MIT"
+        }
+      ],
+      "packagedLicenseFileFound": false,
+      "disposition": "Legacy MIT metadata is evidence, not legal clearance; preserve reviewed exact evidence before resolving the missing license field."
+    }
+  ],
+  "limitations": [
+    "Published map fails generated-coordinate validation; the 90 map-to-lock pairs are only candidates and cannot establish full exact embedded inventory.",
+    "Four source-map package names have no established exact version; these remain unresolved, alongside the broader map association gap.",
+    "Wrapper embedding excludes .txt files; preserved notices do not prove complete third-party notice/license fulfillment.",
+    "Current advisory query is saved separately and covers supplied candidate versions only; it is not a clean or complete scan of this artifact.",
+    "No independent legal clearance, production activation or public release acceptance."
+  ],
+  "sourceMapAssociation": {
+    "verified": false,
+    "evidence": "swagger-source-map-mismatch.json"
+  },
+  "independentlyConfirmedComponents": [
+    {
+      "name": "dompurify",
+      "version": "3.4.13",
+      "basis": "Literal DOMPurify.version in actual embedded JavaScript",
+      "evidence": "swagger-dompurify-reachability.json"
+    }
+  ]
+}
