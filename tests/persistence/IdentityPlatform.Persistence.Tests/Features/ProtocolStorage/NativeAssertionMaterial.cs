@@ -24,7 +24,7 @@ internal sealed class NativeAssertionMaterial : IDisposable
     }
 
     /// <summary>Creates exact public test configuration before constructing either service provider.</summary>
-    internal NativeAssertionMaterial()
+    internal NativeAssertionMaterial(bool browser = false)
     {
         var parameters = rsa.ExportParameters(false);
         var json = JsonSerializer.Serialize(new
@@ -37,6 +37,10 @@ internal sealed class NativeAssertionMaterial : IDisposable
             e = Base64UrlEncoder.Encode(parameters.Exponent)
         });
         Policy = AdministratorRegistrationPolicy.Create(Callback, AdministratorPublicKey.Parse(json)!)!;
+        if (browser)
+        {
+            Policy = Policy.ForBrowserSessions()!;
+        }
     }
 
     /// <summary>Signs a fresh intentional proof with real RSA; native server validation must verify it against persisted public registration.</summary>

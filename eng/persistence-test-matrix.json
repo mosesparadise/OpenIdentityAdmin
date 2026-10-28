@@ -460,6 +460,120 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeCleanupAssertionTests",
+        "methodName": "Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeCleanupAssertionTests",
+        "methodName": "Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeCleanupAssertionTests",
+        "methodName": "Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeCleanupAssertionTests",
+        "methodName": "Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeCleanupAssertionTests",
+        "methodName": "Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage",
+        "typeName": "NativeCleanupAssertionTests",
+        "methodName": "Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -474,7 +588,10 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.UpgradeWitnessTests.Given_ApprovedAdditiveUpgrade_When_ColumnProvenanceOrOldRowsAreForged_Then_IndependentWitnessRejectsEverySubstitution(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserCoordinationUpgradeWitnessTests.Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_IndependentAuditUpgradeWitness_When_SchemaOrHistoricalRowsAreForged_Then_EachDefectDenies(provider: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -488,6 +605,9 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.UpgradeWitnessTests.Given_ApprovedAdditiveUpgrade_When_ColumnProvenanceOrOldRowsAreForged_Then_IndependentWitnessRejectsEverySubstitution(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserCoordinationUpgradeWitnessTests.Given_ApprovedBrowserAdditions_When_HistoryOwnershipOrSeedIsForged_Then_IndependentWitnessRejects(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_IndependentAuditUpgradeWitness_When_SchemaOrHistoricalRowsAreForged_Then_EachDefectDenies(provider: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"SqlServer\")"
   ]
 }

@@ -34,6 +34,7 @@ internal static class NativeAssertionAuthentication
         otherClock.Set(now);
         try
         {
+            await CleanupAssertionBindings.RequireB2DeniedAsync(first, material.Policy, token);
             using var foreign = new NativeAssertionMaterial();
             Assert.Equal(OpenIddictConstants.Errors.InvalidClient,
                 (await AuthenticateAsync(first, foreign.Sign(now.ToUnixTimeSeconds()), false, token)).Error);
@@ -121,7 +122,7 @@ internal static class NativeAssertionAuthentication
         });
 
     /// <summary>Installs the ordinary native server crypto pipeline and owned stores with the explicit dormant assertion adapters.</summary>
-    private static ServiceProvider CreateRoot(NativeProviderFixture fixture, NativeAssertionMaterial material)
+    internal static ServiceProvider CreateRoot(NativeProviderFixture fixture, NativeAssertionMaterial material, bool cleanup = false)
     {
         var services = new ServiceCollection().AddLogging().AddPlatformPersistence(fixture.Provider,
             fixture.RuntimeConnection(DatabaseStore.Platform), fixture.RuntimeConnection(DatabaseStore.Sessions));
@@ -137,11 +138,21 @@ internal static class NativeAssertionAuthentication
         var server = services.AddOpenIddict().AddServer().SetIssuer(new Uri(NativeAssertionMaterial.Issuer))
             .SetAuthorizationEndpointUris(AuthorizePath).SetTokenEndpointUris(TokenPath).SetPushedAuthorizationEndpointUris(ParPath)
             .AllowAuthorizationCodeFlow().AddEphemeralSigningKey().AddEphemeralEncryptionKey().AddAdministratorAssertions();
+        if (cleanup)
+        {
+            CleanupAssertionFixture.Configure(services, server);
+        }
         server.UseAspNetCore();
         server.AddAdministratorParIssuance();
         NativeParFault.Configure(server);
         services.AddOptions<OpenIddictServerOptions>().Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
-        return services.BuildServiceProvider(validateScopes: true);
+        var root = services.BuildServiceProvider(validateScopes: true);
+        try
+        {
+            CleanupAssertionBindings.RequireComposition(root, cleanup);
+            return root;
+        }
+        catch { root.Dispose(); throw; }
     }
 
     /// <summary>Reads actual persisted use count through a separate owned context, independently of handler return values.</summary>
