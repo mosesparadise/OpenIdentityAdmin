@@ -17,7 +17,17 @@ internal sealed class LoginCspEvidence(IPage page)
         Directive, Source, Line, Column, Phase
     }
     private const int FieldCount = 5;
-    private static readonly CompositeFormat EventFormat = CompositeFormat.Parse("{0}; source={1}; line={2}; column={3}; phase={4}");
+    private const int EventWaitSeconds = 15;
+    private const string ControlHtml = "<meta http-equiv=\"Content-Security-Policy\" content=\"style-src 'none'\"><body>synthetic CSP control</body>";
+    private const string BlockedStyle = """
+        () => {
+          const node = document.createElement('div');
+          document.body.append(node);
+          node.setAttribute('style', 'color: rgb(1, 2, 3)');
+          return getComputedStyle(node).color !== 'rgb(1, 2, 3)';
+        }
+        """;
+    private static readonly CompositeFormat EventFormat = CompositeFormat.Parse("{4}|{0}|{1}|{2}:{3}");
     private const string OverflowMessage = "CSP event limit exceeded.";
     private const string UnknownPhase = "Unknown";
     private const int MaximumEvents = 16;
@@ -44,7 +54,32 @@ internal sealed class LoginCspEvidence(IPage page)
     private static readonly string[] Directives = ["other", "style-src-attr", "style-src-elem", "script-src-attr", "script-src-elem", "form-action", "connect-src"];
     private static readonly string[] Sources = ["empty", "same-origin-login", "same-origin-theme", "other"];
     private readonly List<string> events = [];
+    private readonly TaskCompletionSource firstEvent = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private bool overflow;
+
+    /// <summary>Proves the real browser blocks inline style and the actual binding rejects it before trusting an empty journey result.</summary>
+    internal static async Task RequireControlsAsync(IBrowserContext context)
+    {
+        var page = await context.NewPageAsync();
+        try
+        {
+            await page.SetContentAsync(ControlHtml);
+            var evidence = await ObserveAsync(page);
+            await page.EvaluateAsync(Observer);
+            evidence.RequireEmpty();
+            Assert.True(await page.EvaluateAsync<bool>(BlockedStyle));
+            await evidence.firstEvent.Task.WaitAsync(TimeSpan.FromSeconds(EventWaitSeconds), TestContext.Current.CancellationToken);
+            lock (evidence.events)
+            {
+                Assert.Single(evidence.events);
+                Assert.ThrowsAny<Xunit.Sdk.XunitException>(evidence.RequireEmpty);
+            }
+        }
+        finally
+        {
+            await page.CloseAsync();
+        }
+    }
 
     /// <summary>Registers the observer before navigation and projects browser values to finite categories only.</summary>
     internal static async Task<LoginCspEvidence> ObserveAsync(IPage page)
@@ -89,6 +124,7 @@ internal sealed class LoginCspEvidence(IPage page)
             var origin = Sources[source >= 0 && source < Sources.Length ? source : 0];
             events.Add(string.Format(CultureInfo.InvariantCulture, EventFormat, rule, origin,
                 Math.Clamp(line, 0, MaximumPosition), Math.Clamp(column, 0, MaximumPosition), category));
+            firstEvent.TrySetResult();
         }
     }
 }

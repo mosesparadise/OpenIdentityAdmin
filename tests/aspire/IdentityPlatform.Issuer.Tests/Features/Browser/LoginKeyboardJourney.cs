@@ -1,6 +1,6 @@
 using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http;
 using IdentityPlatform.Issuer.Tests.Fixtures;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Issuer.Tests.Features.Browser;
@@ -57,6 +57,7 @@ internal static class LoginKeyboardJourney
     {
         await using var session = await BrowserSession.CreateAsync();
         var context = session.Context;
+        await LoginCspEvidence.RequireControlsAsync(context);
         var page = await context.NewPageAsync();
         var violations = await LoginCspEvidence.ObserveAsync(page);
         var flow = environment.RelyingParty.Prepare(exchange: true);
