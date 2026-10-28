@@ -1,5 +1,7 @@
 # Native authenticated cleanup characterization
 
+**Subsequent prerequisite delivered:** [PR114 cleanup assertion ownership](cleanup-assertion.md#accepted-internal-delivery--28-october-2026) adds dormant durable proof consumption and disabled-profile eligibility. The remaining integration discussion below describes this prototype’s historical boundary; it is not a claim that those newly delivered primitives remain unimplemented. Integrated family admission, original client transport/deadline proof and safe activation remain open.
+
 **Current accepted checkpoint (28 October 2026):** PR112 delivers the native cleanup component tests and separately reproduced [navigation-budget correction](demo-navigation.md). The accepted evidence below supersedes candidate/pending wording in the historical sections. The original failed demo report remains retained with unknown cause; no retrospective cause is invented.
 
 ## Accepted internal delivery — 28 October 2026

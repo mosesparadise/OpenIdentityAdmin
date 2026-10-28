@@ -1,5 +1,26 @@
 # Dormant cleanup assertion ownership
 
+**Current accepted checkpoint:** PR114 is delivered. The accepted evidence below supersedes candidate/pending wording in the retained acquisition history. Product refresh remains disabled.
+
+## Accepted internal delivery — 28 October 2026
+
+[PR #114](https://github.com/mosesparadise/OpenIdentityAdmin/pull/114) is squash-merged as `2c06a481fd510c48585e444d2ff07d3ecdd3eebc`. [Run 40739986203 attempt 1](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40739986203/attempts/1) passed all **95 jobs**. Source `6e3ba3b0abe4ba73849222fd422b5e08d50661f5`, tested merge `e384a332c3d496357afa5d53fdb74ad12a25ff8d` and squash share tree `56f5e0f0a566282a9da5ffeda8aa167830355e0b`; tested base was `3fec8b8bf1692e13113544e11b7b0601dfcf913a`. Exact-head checks, current base and GitHub review state were verified before normal expected-head squash; no restriction was bypassed.
+
+Independent architecture/security and test source reviews pass. Independent evidence review verifies **89 downloaded artifact ZIP hashes**, **79 raw ordinary TRX reports / 4,703 passes**, zero failures or skips, all **76 coverage inputs / 15 unchanged module floors**, and **64 mutation kills** with 64 passing baseline and 64 restored controls. All 4,697 earlier execution name/class/method multiplicities are preserved; only six persistence executions are added. Persistence runs 15/provider, preserving all 24 prior portable metadata records and adding six. Both actual provider demos and all 54 existing SessionRefresh cases pass. The focused WebKit contrast execution is separate from the ordinary 4,703 total.
+
+| Provider evidence | Artifact ID / ZIP SHA256 | Raw TRX SHA256 / result |
+| --- | --- | --- |
+| PostgreSQL persistence | `12838568613` / `c5158ca7d44b27ee30151cbc2708b7ab7003d7de9600d527f4d5444a06acb4b9` | `cfc7539d6dc5a0784f1b092fd5b6521c87f34efe3aa637639616b9c85437ada0` / 15 passed, 0 skipped |
+| SQL Server persistence | `12839896083` / `f956b5ba9189e2a3e9cca1e8d6ffab03ebcf9dfd52b558ceb999d0f341737079` | `d7995364e705e9e0fab666cdac6a8f3a0716eb077b30e4406e724338d034ddf6` / 15 passed, 0 skipped |
+
+Coverage artifact `12839958914` has ZIP SHA256 `151082b944e0da6e5aaa5a087ee76457449a2b18425d3feff6c8193a0ae4a926` and merged XML SHA256 `4c3fa3aec3a6a64923e7dd1f772567b2fd003809960d81f7d6a6ef0ab76a79e5`. Full independent receipt SHA256 is `e8203f5426a257748444101729c03fc29ad8d193c3f741f2a0c78cfc35f7b705`. Mutation review checks actual compact receipts, exact source/mutant hashes and baseline/restored identities; failed mutant TRX/assertion-marker payloads are not in those archives and rely on the strict CI verifier. Artifacts remain attached to the run under repository retention. SDK 10.0.403/runtime 10.0.14, OpenIddict 7.7.2 and the existing Playwright 1.63 compatibility exception remain unchanged; retained Chromium/WebKit obligations pass and named A-009 deferrals remain deferred.
+
+The two rejected acquisitions below remain preserved. For run 40738805745, PostgreSQL ZIP SHA256 `13646672fc682e3a687ff5d4c7bdf0a5b88b7434aa5812b20fea30be8a2d792c`, TRX `47157b49c1620b671fe6fe2290990aed985640aeb5fba92d095106909a191d32`; SQL ZIP `2b3c2eea02e6728566446e72005a683f27a0070e2fa6ca71637ecbe8140a8bb4`, TRX `22d84f2b130fe702bdcac072e146d795720376f81a234d08c5ffc61380443451` independently confirm 14 passes/one fixture failure/zero skips per provider. Corrected final source passes both complete suites without weakening ownership, reach markers, deadlines or floors.
+
+This accepts a dormant production mechanism and its required both-provider component tests. It does not establish a production cleanup endpoint, successful family revocation, integrated B3 admission, credential/cleanup capacity, genuine HTTP confirmation or TLS response-loss behavior. T003–T022 and every historical/human/Windows/viewer/assurance/production/public-release gate remain open.
+
+**Next bounded implementation:** extend native client revocation ownership through `RevokeTokenAsync` child scopes, signing, transport and actual disposal while retaining the original deadline and exactly one send. Use a cleanup-specific permit with fixed destination and trusted HTTPS controls for cancellation, response loss, redirects, delayed acquisition/disposal and no retry. Keep composition dormant. This independently advances T003/T004; T005 Sessions reservations and T007 profile changes remain separate dependencies, avoiding premature refresh activation.
+
 ## Candidate scope — 28 October 2026
 
 This T003 increment starts from main `3fec8b8bf1692e13113544e11b7b0601dfcf913a` after PR112/113. It implements a separately typed, explicitly composed cleanup client-proof receipt. It uses native cryptographic assertion validation and the existing durable assertion ledger; it does not add a production endpoint, change the B3 manifest, reserve Sessions credential/cleanup slots or enable refresh.
