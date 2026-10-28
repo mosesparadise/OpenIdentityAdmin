@@ -1,5 +1,7 @@
 # Tasks: Administrator session refresh
 
+**Cleanup assertion candidate (28 October 2026):** [Dormant cleanup proof ownership](cleanup-assertion.md) implements native assertion consumption, exact disabled-profile cleanup eligibility and one-use owned receipts, with six new both-provider persistence identities. Local build, quality, inventory and independent source reviews pass; hosted acceptance is pending. T003–T022 remain open. Sessions credential/cleanup capacity (T005), refresh profile permissions (T007), integrated admission and original transport/deadline proof remain dependencies; product refresh stays disabled.
+
 Implementation packet for M02-C. The [native primitive increment](native-integration.md#accepted-internal-delivery--28-october-2026) is delivered by PR110 within T003; no runtime task is complete. Existing B3/native Aspire delivery is preserved; prior counts are baselines only. The [native cleanup increment](native-cleanup.md#accepted-internal-delivery--28-october-2026) is delivered by PR112:22 further T003 cases, the demo-navigation correction and95 successful jobs/4,697 raw passes. It closes no runtime task; integrated B3 admission/durable proof/receipt/capacity, disabled-profile cleanup, retention and actual transport/deadline obligations remain. Each story includes its tests. Paths below are existing roots or explicitly planned new files/directories; actual test IDs are recorded before execution.
 
 ## Phase 1 — Setup and reviewed packet

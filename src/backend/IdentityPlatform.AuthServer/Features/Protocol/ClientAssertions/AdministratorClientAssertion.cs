@@ -50,14 +50,18 @@ internal sealed class AdministratorAssertionGuard : IOpenIddictServerHandler<Ope
     /// <summary>Requires the exact form identity/method and an ASCII compact assertion within the approved bound.</summary>
     public ValueTask HandleAsync(OpenIddictServerEvents.ProcessAuthenticationContext context)
     {
-        if (AdministratorClientAssertion.Applies(context) && (context.Request.ClientId != AdministratorProtocolIdentity.ClientId ||
-            context.ClientAssertion is not { Length: > 0 and <= ClientAssertionShape.MaximumBytes } assertion || !assertion.All(char.IsAscii) ||
-            context.ClientAssertionType != OpenIddictConstants.ClientAssertionTypes.JwtBearer || !string.IsNullOrEmpty(context.Request.ClientSecret)))
+        if (AdministratorClientAssertion.Applies(context) && !HasBoundedProof(context))
         {
             context.Reject(OpenIddictConstants.Errors.InvalidClient);
         }
         return ValueTask.CompletedTask;
     }
+
+    /// <summary>Shares only the established fixed-client input shape, without expanding any caller's endpoint eligibility.</summary>
+    internal static bool HasBoundedProof(OpenIddictServerEvents.ProcessAuthenticationContext context) =>
+        context.Request.ClientId == AdministratorProtocolIdentity.ClientId &&
+        context.ClientAssertion is { Length: > 0 and <= ClientAssertionShape.MaximumBytes } assertion && assertion.All(char.IsAscii) &&
+        context.ClientAssertionType == OpenIddictConstants.ClientAssertionTypes.JwtBearer && string.IsNullOrEmpty(context.Request.ClientSecret);
 }
 
 /// <summary>Captures only completed native validation before its caller promotes the assertion principal to authenticated-client evidence.</summary>

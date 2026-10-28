@@ -10,22 +10,32 @@ internal static class AdministratorRegistration
     /// <summary>Requires an active write epoch and uncached native managers; the caller retains profile ownership through its final commit.</summary>
     internal static async ValueTask<AdministratorRegistrationBinding?> ReadLockedAsync(ProtocolStorageScope scope,
         AdministratorRegistrationPolicy expected, CancellationToken token)
-        => await ReadAsync(scope, expected, write: true, token);
+        => await ReadAsync(scope, expected, write: true, cleanup: false, token);
+
+    /// <summary>Verifies exact B3 proof identity while allowing only central issuance disablement; this grants no endpoint or family authority.</summary>
+    internal static ValueTask<AdministratorCleanupRegistration?> ReadCleanupLockedAsync(ProtocolStorageScope scope,
+        AdministratorRegistrationPolicy expected, CancellationToken token) => AdministratorCleanupRegistration.ReadAsync(scope, expected, token);
+
+    /// <summary>Returns nonauthoritative observed identity for the cleanup binding's owned factory; only that factory mints deny-only authority.</summary>
+    internal static ValueTask<AdministratorRegistrationBinding?> ReadCleanupStateAsync(ProtocolStorageScope scope,
+        AdministratorRegistrationPolicy expected, CancellationToken token) => expected.IsBrowserSession
+        ? ReadAsync(scope, expected, write: true, cleanup: true, token) : ValueTask.FromResult<AdministratorRegistrationBinding?>(null);
 
     /// <summary>Observes exact registration for a nonissuing logout request; this does not serialize concurrent profile disablement.</summary>
     internal static ValueTask<AdministratorRegistrationBinding?> ObserveLogoutAsync(ProtocolStorageScope scope,
         AdministratorRegistrationPolicy expected, CancellationToken token) => expected.IsBrowserSession
-        ? ReadAsync(scope, expected, write: false, token) : ValueTask.FromResult<AdministratorRegistrationBinding?>(null);
+        ? ReadAsync(scope, expected, write: false, cleanup: false, token) : ValueTask.FromResult<AdministratorRegistrationBinding?>(null);
 
     /// <summary>Shares the exact manifest reader while keeping issuance's required write ownership explicit.</summary>
     private static async ValueTask<AdministratorRegistrationBinding?> ReadAsync(ProtocolStorageScope scope,
-        AdministratorRegistrationPolicy expected, bool write, CancellationToken token)
+        AdministratorRegistrationPolicy expected, bool write, bool cleanup, CancellationToken token)
     {
         var owner = scope.Owner;
         var phase = owner.Capture(write);
         var profile = await owner.RunAsync(current => new ValueTask<AdministratorProtocolProfile?>(owner.Database
             .Set<AdministratorProtocolProfile>().AsNoTracking().SingleOrDefaultAsync(row => row.Id == AdministratorProtocolProfile.SingletonId, current)), token);
-        if (profile is not { Enabled: true, Revision: > 0 } || profile.RedirectUri != expected.RedirectUri || profile.PublicKeyFingerprint != expected.Key.Fingerprint)
+        if (profile is not { Revision: > 0 } || (!cleanup && !profile.Enabled) ||
+            profile.RedirectUri != expected.RedirectUri || profile.PublicKeyFingerprint != expected.Key.Fingerprint)
         {
             return null;
         }

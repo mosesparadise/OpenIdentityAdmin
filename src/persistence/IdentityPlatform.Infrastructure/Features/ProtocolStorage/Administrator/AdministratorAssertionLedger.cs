@@ -17,12 +17,25 @@ internal static class AdministratorAssertionLedger
 
     /// <summary>Reserves after the caller has acquired profile serialization and verified the complete current registration in that same transaction.</summary>
     internal static ValueTask<long?> ReserveLockedAsync(ProtocolStorageOwner owner, AdministratorAssertion assertion, CancellationToken token)
+        => ReserveCoreAsync(owner, assertion, cleanup: null, token);
+
+    /// <summary>Consumes deny-only proof against the just-verified B3 binding, including central disablement, with the same shared replay budget.</summary>
+    internal static ValueTask<long?> ReserveCleanupLockedAsync(ProtocolStorageOwner owner, AdministratorAssertion assertion,
+        AdministratorCleanupRegistration registration, CancellationToken token)
+    {
+        registration.RequireCurrent(owner, token);
+        return ReserveCoreAsync(owner, assertion, registration, token);
+    }
+
+    /// <summary>Shares storage mechanics while preserving enabled issuance and exact deny-only registration identity as separate entry conditions.</summary>
+    private static ValueTask<long?> ReserveCoreAsync(ProtocolStorageOwner owner, AdministratorAssertion assertion,
+        AdministratorCleanupRegistration? cleanup, CancellationToken token)
     {
         return owner.RunAsync<long?>(async cancellation =>
         {
             var profile = await owner.Database.Set<AdministratorProtocolProfile>().SingleOrDefaultAsync(
                 row => row.Id == AdministratorProtocolProfile.SingletonId, cancellation);
-            if (profile is not { Enabled: true } || !TryTime(profile, owner.Clock, out var now))
+            if (profile is null || !Eligible(profile, cleanup) || !TryTime(profile, owner.Clock, out var now))
             {
                 return null;
             }
@@ -48,6 +61,11 @@ internal static class AdministratorAssertionLedger
             return TryTime(profile, owner.Clock, out var finalNow) && assertion.Allows(finalNow) ? profile.ObservedAt : null;
         }, token, write: true);
     }
+
+    /// <summary>Only a cleanup binding may tolerate central disablement; neither path adopts a different application, scope or revision.</summary>
+    private static bool Eligible(AdministratorProtocolProfile profile, AdministratorCleanupRegistration? cleanup) => cleanup is null
+        ? profile.Enabled : profile.Revision > 0 && profile.Revision == cleanup.Revision &&
+            profile.ApplicationId == cleanup.ApplicationId && profile.ScopeId == cleanup.ScopeId;
 
     /// <summary>Deletes at most one deterministic expired batch and rechecks retention in the actual delete predicate.</summary>
     private static async Task CleanupAsync(DbContext database, long now, CancellationToken token)

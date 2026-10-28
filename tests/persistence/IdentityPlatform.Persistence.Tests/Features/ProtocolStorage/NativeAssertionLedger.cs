@@ -109,7 +109,7 @@ internal static class NativeAssertionLedger
     }
 
     /// <summary>Seeds the exact capacity through bounded independent fixture transactions without extending any write-phase deadline.</summary>
-    private static async Task FillAsync(IServiceProvider root, long now, CancellationToken token)
+    internal static async Task FillAsync(IServiceProvider root, long now, CancellationToken token)
     {
         var count = await CountAsync(root, token);
         while (count < Capacity)
