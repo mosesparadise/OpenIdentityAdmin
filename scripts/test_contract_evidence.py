@@ -4,10 +4,21 @@ from pathlib import Path
 import tempfile
 import unittest
 from contract_evidence import catalogue, require_node_report
-from export_api_contracts import require_no_socket_effects
+from export_api_contracts import require_no_socket_effects, native_tool_path
 
 
 class ContractEvidenceTests(unittest.TestCase):
+    def test_native_exporter_tracks_locked_upgrades_and_rejects_unsafe_versions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            for version in ['10.0.14', '10.0.15', '../10.0.12', '10.0.14-preview.1', None]:
+                lock = {'dependencies': {'net10.0': {'Microsoft.Extensions.ApiDescription.Server': {'resolved': version}}}}
+                (project / 'packages.lock.json').write_text(json.dumps(lock))
+                if version in ('10.0.14', '10.0.15'):
+                    self.assertEqual(f'microsoft.extensions.apidescription.server/{version}/tools/dotnet-getdocument.dll', native_tool_path(project).as_posix())
+                else:
+                    with self.assertRaises(ValueError): native_tool_path(project)
+
     def test_discovery_rejects_missing_duplicate_and_misclassified_identity(self):
         case = {'uid': 'a', 'displayName': 'VersionSelectionTests.Valid'}
         correct = {'schemaVersion': 1, 'tests': [case]}

@@ -19,7 +19,7 @@ internal static class AdministratorBrowserEvidence
     private const string Timeout = "Timeout";
     private static readonly CompositeFormat Failure = CompositeFormat.Parse("Administrator browser failure ({0}); source lines {1}; sensitive diagnostics suppressed.");
     private static readonly string[] Categories = ["ERR_CACHE_MISS", "NS_ERROR_DOCUMENT_NOT_CACHED",
-        "Execution context was destroyed", "page is navigating", Timeout, "NS_BINDING_ABORTED"];
+        "Execution context was destroyed", "page is navigating", Timeout, "NS_BINDING_ABORTED", "ERR_ABORTED"];
 
     /// <summary>Runs a secret-bearing journey and limits failures to fixed classifications and repository source line numbers.</summary>
     internal static async Task RunAsync(Func<Task> action)

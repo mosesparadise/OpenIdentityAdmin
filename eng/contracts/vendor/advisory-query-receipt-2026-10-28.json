@@ -1,0 +1,14 @@
+{
+  "queriedDate": "2026-10-28",
+  "source": "https://registry.npmjs.org/-/npm/v1/security/advisories/bulk",
+  "requestSha256": "a1bfb2660c41d6e70af6e1a18572671e3c49d5988aad2f1dbc7d95d4e470f51d",
+  "retainedPreviousResponseSha256": "b4ceb021fbc7b25e5f0801d404328c06f6b6812368fb24323ccda9c2330bc1ee",
+  "retainedUnionResponseSha256": "67e9fb0178dfa2d997a47c11b23c3c56017e6400d4f1e12a9d4c984fe3f6c156",
+  "newIds": [
+    1243505
+  ],
+  "retainedUnionCount": 14,
+  "historicalFindingsRetained": 13,
+  "activationBlocked": true,
+  "inventoryComplete": false
+}

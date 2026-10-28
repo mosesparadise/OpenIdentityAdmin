@@ -11,7 +11,7 @@ from verify_contrast_experiment import execute, install_cancellation_handler
 ROOT = Path(__file__).resolve().parents[1]
 SURFACES = (('Api', 'v1'), ('Bff', 'bff-v1'))
 EXPORT_TIMEOUT_SECONDS = 60
-NATIVE_TOOL_PATH = 'microsoft.extensions.apidescription.server/10.0.12/tools/dotnet-getdocument.dll'
+NATIVE_TOOL_PACKAGE = 'Microsoft.Extensions.ApiDescription.Server'
 SYNTHETIC_DATABASE = 'Host=127.0.0.1;Port=1;Database=contract_export;Username=synthetic;Password=synthetic'
 PROBE_TITLE = 'Configured native export probe'
 PROBE_DESCRIPTION = 'Synthetic environment override proves native configuration reaches generated metadata.'
@@ -41,11 +41,21 @@ def export_command(surface, directory, trace):
     cache = Path(os.environ.get('NUGET_PACKAGES', str(Path.home() / '.nuget/packages')))
     project = ROOT / f'src/backend/IdentityPlatform.Admin.{surface}'
     assembly = project / f'bin/Debug/net10.0/IdentityPlatform.Admin.{surface}.dll'
+    tool = native_tool_path(project)
     return ['strace', '-f', '-qq', '-e', 'trace=%network', '-e', 'signal=none', '-o', str(trace),
-            'dotnet', str(cache / NATIVE_TOOL_PATH), '--assembly', str(assembly),
+            'dotnet', str(cache / tool), '--assembly', str(assembly),
             '--file-list', str(directory / 'files.txt'), '--framework', '.NETCoreApp,Version=v10.0',
             '--output', str(directory), '--project', f'IdentityPlatform.Admin.{surface}',
             '--assets-file', str(project / 'obj/project.assets.json'), '--platform', 'AnyCPU']
+
+
+def native_tool_path(project):
+    """Resolve the exporter from this host's exact checked-in lock, never an older incidental cache entry."""
+    locked = json.loads((project / 'packages.lock.json').read_text())
+    version = locked['dependencies']['net10.0'][NATIVE_TOOL_PACKAGE]['resolved']
+    if not isinstance(version, str) or not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version):
+        raise ValueError('Native exporter requires a locked stable package version')
+    return Path(NATIVE_TOOL_PACKAGE.lower()) / version / 'tools/dotnet-getdocument.dll'
 
 
 def export_once(surface, environment):

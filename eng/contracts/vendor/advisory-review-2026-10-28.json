@@ -1,0 +1,35 @@
+{
+  "reviewedDate": "2026-10-28",
+  "scope": "Independent bounded review of a newly published advisory in the unchanged shipped Swagger viewer. Evidence-only update; no activation or release clearance.",
+  "advisory": {
+    "id": 1243505,
+    "ghsa": "GHSA-gcqx-w48m-w2h4",
+    "package": "deepmerge",
+    "candidateVersion": "4.3.1",
+    "affectedRange": ">=4.2.0 <=4.3.1",
+    "registrySeverity": "low",
+    "disposition": "unresolved_affected_implementation_present"
+  },
+  "evidence": {
+    "shippedSwaggerJavaScriptSha256": "3861ec4cc8e7b9fa9f250280da9350436e418137788282c753b9a2ac5fb7bd2f",
+    "module": 14744,
+    "moduleUtf8ByteOffset": 34952,
+    "mergeObjectUtf8ByteOffset": 35913,
+    "moduleImportUtf8ByteOffset": 771160,
+    "mergeDeepCallUtf8ByteOffset": 771879,
+    "finding": "The shipped implementation creates an ordinary object and assigns target keys without the unsafe-key guard applied to source keys. Swagger's mergeDeep patch handler imports and calls it.",
+    "versionLimit": "Exact version remains an upstream-lock candidate. The stale source map cannot establish a complete inventory.",
+    "metadataSource": "npm bulk advisory response; primary GitHub advisory retrieval returned403 in this environment."
+  },
+  "exposure": "Production/default and local-demo hosts leave documentation unmapped. Contract fixtures use fixed local documents, disabled query configuration and submission, and no credentials. These controls do not prove the affected merge primitive unreachable.",
+  "independentReview": "Scalar/vendor reviewer independently compared old and new advisory objects: exactly1243505 added, all13prior entries unchanged; inspected actual shipped module and caller bytes.",
+  "retainedUnionAdvisoryCount": 14,
+  "historicalAdvisoriesRetained": 13,
+  "activationBlocked": true,
+  "inventoryComplete": false,
+  "limitations": [
+    "All prior findings and notice/inventory obligations remain open.",
+    "No clean-vendor, exploitability-exclusion, production or public-release claim.",
+    "The strict gate continues to reject any additional or changed unreviewed advisory."
+  ]
+}
