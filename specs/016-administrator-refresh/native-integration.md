@@ -1,6 +1,6 @@
 # Native refresh primitive characterization
 
-**Follow-on candidate (28 October 2026):** [Native authenticated cleanup characterization](native-cleanup.md) extends the delivered primitives with complete native code/offline issuance and private selector client/server cryptography. Its22 new cases are pending hosted acceptance. It does not close T003 or establish B3, TLS or durable assertion replay integration.
+**Follow-on increment delivered (28 October 2026):** [Native authenticated cleanup acceptance](native-cleanup.md#accepted-internal-delivery--28-october-2026) records PR112,22 further native cases and the independently reproduced demo-navigation correction, with95 jobs/4,697 raw passing executions. T003 remains open for integrated B3 admission, durable proof/receipt/capacity, disabled-profile cleanup, retention and actual transport/deadline prerequisites.
 
 ## Scope and checkpoint — 28 October 2026
 

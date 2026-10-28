@@ -1,5 +1,7 @@
 # Refresh verification and review record
 
+**Latest accepted increment (28 October 2026):** [PR112 native cleanup delivery](native-cleanup.md#accepted-internal-delivery--28-october-2026), squash `5e8719040a9beaddb6e15c1e9197b5a79ec44048`, adds22 native component cases and four navigation-control executions while preserving every prior inventory. Independent review verifies95 jobs,89 artifacts,79 raw reports/4,697 passes,76 coverage inputs,15 unchanged floors and64 mutation controls. Both genuine provider demos pass. The old5d failure remains historically unexplained; the separately reproduced navigation correction has its own accepted evidence. T003–T022 and all external gates remain open. The earlier native-primitive checkpoint below is preserved, not the latest inventory.
+
 ## Native primitive delivery — 28 October 2026
 
 [Accepted native evidence](native-integration.md#accepted-internal-delivery--28-october-2026) records PR110 squash `5cccabe559f24822d2827f86a7b3ae221a1e723e`, all95 exact-head checks and independent review. All89 artifact hashes were independently verified;79 native reports contain4,671 passes, including16 new cases per provider. All76 coverage inputs,15 unchanged floors and64 mutation controls pass. Source/tested merge/squash share tree `d5c8a7b7d4c56a818e91099a0b671c72700df057`.
