@@ -1,8 +1,8 @@
 # Feature Specification: Administrator session refresh
 
-**Feature Branch**: `112-bff-refresh-plan`  
-**Created**: 2026-10-28  
-**Status**: Reviewed planning packet; no refresh implementation or runtime acceptance evidence  
+**Feature Branch**: `112-bff-refresh-plan`
+**Created**: 2026-10-28
+**Status**: Reviewed planning packet; no refresh implementation or runtime acceptance evidence
 **Input**: Continue the next roadmap item, M02-C, after native Aspire delivery. The user requested “Please proceed” following that recommendation.
 
 ## Authority and scope
