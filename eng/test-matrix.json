@@ -34,14 +34,14 @@
     },
     "PostgreSql": {
       "Persistence": 12,
-      "AppHost": 19,
+      "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 904
     },
     "SqlServer": {
       "Persistence": 12,
-      "AppHost": 19,
+      "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
       "Administrator": 1009
@@ -171,8 +171,8 @@
       "SqlServer": 10
     },
     "LocalDemo": {
-      "PostgreSql": 1,
-      "SqlServer": 1
+      "PostgreSql": 3,
+      "SqlServer": 3
     }
   },
   "browser_session_groups": {

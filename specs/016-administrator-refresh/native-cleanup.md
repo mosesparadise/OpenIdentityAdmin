@@ -1,5 +1,7 @@
 # Native authenticated cleanup characterization
 
+**Current correction (28 October 2026):** source132dadd subsequently passed the complete95-job/4,693-execution matrix and three focused demo diagnostics, without establishing the historical failure's cause. A separately reproduced [navigation-budget defect and permanent correction](demo-navigation.md) now explains why the original click can preempt the explicitly configured navigation wait. Corrected-source hosted acceptance is pending; the original failed report remains retained and no historical cause is invented.
+
 ## Candidate boundary — 28 October 2026
 
 This T003 increment continues verified main `82006403626128cf3cd0ff2fc9e42c1b2802a57e` after PR110/111. It adds an **isolated test-only native server/client composition**, not production refresh or B3 cleanup activation. No schema, production registration, quota, browser contract or historical approval changes. All T003–T022 checkboxes remain open pending their complete obligations.

@@ -26,8 +26,6 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private const string IssuerLink = "#issuer-sign-out";
     private const string ConfirmIssuer = "Sign out this issuer session";
     private const string Unverified = "Issuer sign-out result is unverified.";
-    private const int DefaultTimeoutMilliseconds = 15000;
-    private const int NavigationTimeoutMilliseconds = 20000;
     private const string Issuer = "https://issuer.dev.localhost:17443";
     private const string Client = "https://bff.dev.localhost:17444";
     private const string UsernameField = "#username";
@@ -59,8 +57,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         {
             browser = await playwright.Chromium.LaunchAsync();
             var context = await browser.NewContextAsync();
-            context.SetDefaultTimeout(DefaultTimeoutMilliseconds);
-            context.SetDefaultNavigationTimeout(NavigationTimeoutMilliseconds);
+            LocalDemoNavigation.Configure(context);
             return new(playwright, browser, context, await context.NewPageAsync());
         }
         catch
@@ -102,7 +99,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         finally { page.Response -= evidence.Observe; }
     }
 
-    /// <summary>Records passive finite failure observations without changing authentication, navigation deadlines or retry behavior.</summary>
+    /// <summary>Records finite failure observations while the exact post-MFA navigation owns its already-configured twenty-second budget.</summary>
     private async Task SignInAsync(LocalDemoRuntime runtime, LocalDemoSignInEvidence evidence)
     {
         string? code = null;
@@ -128,9 +125,8 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
             usedCodes.Add(code);
             evidence.Current = LocalDemoSignInEvidence.Stage.FactorSubmission;
             await page.Locator(CodeField).FillAsync(code);
-            await page.Locator(Submit).ClickAsync();
             evidence.Current = LocalDemoSignInEvidence.Stage.Callback;
-            await page.WaitForURLAsync(Client + LoginPath);
+            await LocalDemoNavigation.SubmitAsync(page, page.Locator(Submit), Client + LoginPath);
             evidence.Current = LocalDemoSignInEvidence.Stage.Status;
             await RequireStatusAsync(true);
         }
