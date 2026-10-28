@@ -1,0 +1,31 @@
+{
+  "checkedUtc": "2026-10-28T09:06:30.925757+00:00",
+  "registry": "https://api.nuget.org/v3-flatcontainer/microsoft.playwright/index.json",
+  "registryResponseSha256": "52059b4027c0dd7e3e704262c55d614795743a8eaf17e6089ff2e431766e0b7c",
+  "latestStable": "1.64.1",
+  "candidateCompatible": "1.63.0",
+  "upstreamIssue": "https://github.com/microsoft/playwright/issues/43416",
+  "duplicate": "https://github.com/microsoft/playwright/issues/43497",
+  "review": "Independent test reviewer verified primary maintainer comments and both installed browser manifests; full current-source CI remains required.",
+  "noSecurityWaiver": true,
+  "noEngineMixing": true,
+  "decision": "Retain existing1.63.0 as latest compatible choice; optional user preference presented, no affirmative response claimed.",
+  "affectedBrowser": {
+    "package": "1.64.1",
+    "webkitRevision": "2370",
+    "webkitVersion": "27.2"
+  },
+  "selectedBrowser": {
+    "package": "1.63.0",
+    "webkitRevision": "2359",
+    "webkitVersion": "26.6",
+    "chromiumRevision": "1243",
+    "chromiumVersion": "153.0.8010.12"
+  },
+  "upstreamMaintainerComment": "https://github.com/microsoft/playwright/issues/43416#issuecomment-6198266325",
+  "limits": [
+    "No CSP bypass, event filter, test skip, mixed driver/browser or claimed current Safari compatibility.",
+    "Conflicting Bugzilla IDs in upstream comments are not represented as a verified canonical tracker.",
+    "All prior browser restoration and public-release gates remain open."
+  ]
+}

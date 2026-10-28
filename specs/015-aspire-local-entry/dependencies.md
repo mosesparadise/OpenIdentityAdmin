@@ -61,10 +61,19 @@ See [review.json](evidence/review.json) for SDK selectors, frozen-baseline prese
 
 ## Selected compatibility decisions
 
-Microsoft.OpenApi2.13.0 is the latest compatible stable2.x; ASP.NET OpenAPI10.0.14 requires `[2.12.2,3.0.0)` and Asp.Versioning10.2.3 requires `<3.0.0`. TypeScript5.9.3 remains because openapi-typescript7.13.0 imports its APIs at runtime and declares peer`^5.x`. All other direct packages/tools use the listed latest stable versions. No force/legacy-peer-deps or dependency-warning suppression.
+Microsoft.OpenApi2.13.0 is the latest compatible stable2.x; ASP.NET OpenAPI10.0.14 requires `[2.12.2,3.0.0)` and Asp.Versioning10.2.3 requires `<3.0.0`. TypeScript5.9.3 remains because openapi-typescript7.13.0 imports its APIs at runtime and declares peer`^5.x`. Playwright is retained at1.63.0 under the separately documented browser regression exception below. All remaining direct packages/tools use the listed latest stable versions. No force/legacy-peer-deps or dependency-warning suppression.
 
 SDK selection uses numeric minimum10.0.100 (required global.json syntax), `latestMinor`, and `allowPrerelease=false`: stable10.x only, no exactSDKrequirement or11.xrollforward. CI installs10.x; localbuildcurrently10.0.403/runtime10.0.14. DockerbuildSDKuses10.0channel; runtimeimageuses10.0.14with registry-verifieddigest. Package/tool locks remain exact. Frozen provider producer and baseline lock are unchanged.
 
 First upgrade restore reported missing Microsoft.Testing.Platform2.5.2. Independent directpackage/nuspec/index checks subsequently verified availability; one fresh supported no-http-cache restore passed. Earlierfailure is retained as acquisition evidence, not a testpass.
 
 Embedded Scalar/Swagger upgrades have independently reviewed byte provenance and updated notice metadata. Existing twelve viewer findings remain historical/unclosed; newqs1243452 is unresolved. Currentcandidatequeryreturns6findings; unionqueryretains13. No production/demo documentation mapping is enabled.
+
+
+## Playwright compatibility exception — 28 October 2026
+
+Playwright1.64.1 remains the newest stable NuGet package, but its WebKit2370/27.2 reports false inline-style CSP events for native `<select>` creation. The [primary maintainer report](https://github.com/microsoft/playwright/issues/43416#issuecomment-6198266325) independently identifies the regression and unaffected1.63.0/WebKit2359; [duplicate43497](https://github.com/microsoft/playwright/issues/43497) describes matching empty-source event metadata. Our both-provider WebKit failures have the same directive and the rendered theme-selector line. No released stable fix is present in the current registry query.
+
+The selected compatible package is therefore the existing1.63.0, including its own matching browser revisions; no package/browser mixing. Deque.AxeCore.Playwright4.14.0 remains upgraded and accepts this dependency (minimum1.20.2). This is a documented compatibility decision within the upgrade, not an invented user approval: the optional preference was presented and the recommended choice applied while permitting later steering. All other upgrades continue. The zero-CSP assertion, real login inputs, permanent native blocked-style detection control, both providers and retained browser matrix remain mandatory. No upstream `bypassCSP` suggestion is applied. Full final-source verification is required; Safari27.2 support is not claimed. Restore the upgrade after a stable fixed release passes these same controls. [Registry/manifests/review record](evidence/playwright-compatibility.json).
+
+The28October vendor refresh retains14unresolved findings, including newly reported deepmerge1243505; [review](../../eng/contracts/vendor/advisory-review-2026-10-28.json). Earlier dated counts above remain historical.
