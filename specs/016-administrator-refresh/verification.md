@@ -1,5 +1,9 @@
 # Refresh verification and review record
 
+## Native primitive candidate — 28 October 2026
+
+[Native integration evidence](native-integration.md) records the first T003 increment, preserved discovery inventory, precise selected-handler seams, required both-provider lanes, source review and remaining integration gates. Hosted execution is pending; T003 remains open. Planning PR109 is merged at `34c5df010df65ac2f2166a525d4028fcd7e86dcd`. The historical planning observations below retain their original scope.
+
 ## Planning checkpoint — 28 October 2026
 
 Remote main verified at `44d86237cafa0c407561e084eb35db64938434e6` (PR108), following implementation PR107 squash `b9fdfc7bf3e18c20efe655cdcfe48bd405c9edd3`. Existing worktrees/branches remain preserved. No runtime, SQL, Docker, SDK/package or workflow changes occur in this packet.
