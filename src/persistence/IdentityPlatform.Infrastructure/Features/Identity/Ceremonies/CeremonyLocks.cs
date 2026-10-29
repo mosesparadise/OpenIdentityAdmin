@@ -1,6 +1,7 @@
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,11 @@ internal sealed class CeremonyLocks(PlatformDbContext database)
         {
             Require(await database.Set<AdministratorGovernance>().Where(row => row.Id == 1)
                 .ExecuteUpdateAsync(update => update.SetProperty(row => row.Revision, row => row.Revision + 1), token));
+        }
+        if (plan.Profile)
+        {
+            Require(await database.Set<AdministratorProtocolProfile>().Where(row => row.Id == AdministratorProtocolProfile.SingletonId)
+                .ExecuteUpdateAsync(update => update.SetProperty(row => row.LockRevision, row => row.LockRevision + 1), token));
         }
         if (plan.Admission)
         {
@@ -59,6 +65,10 @@ internal sealed class CeremonyLockPlan
     {
         get;
     }
+    internal bool Profile
+    {
+        get;
+    }
     internal IReadOnlyList<string> Browsers
     {
         get;
@@ -69,9 +79,10 @@ internal sealed class CeremonyLockPlan
     }
 
     /// <summary>Snapshots and sorts caller input so later mutation cannot authorize an unacquired lock.</summary>
-    internal CeremonyLockPlan(bool governance, bool admission, string[] browsers, string[] users)
+    internal CeremonyLockPlan(bool governance, bool admission, string[] browsers, string[] users, bool profile = false)
     {
         Governance = governance;
+        Profile = profile;
         Admission = admission;
         Browsers = Array.AsReadOnly(browsers.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray());
         Users = Array.AsReadOnly(users.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToArray());

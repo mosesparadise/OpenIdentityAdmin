@@ -104,7 +104,13 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 1);
+  assert.equal(inventory(browserStatus, 'bff').size, 2);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/session']);
+  const management = browserStatus.paths['/bff/api/v1/applications'].get;
+  assert.deepEqual(management.security, [{ BrowserSession: [] }]);
+  assert.equal(management['x-required-permission'], 'applications.read');
+  assert.deepEqual(browserStatus.paths['/bff/session'].get.security, [{}, { BrowserSession: [] }]);
+  assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/api/v1/applications'].get.security = [{}]; }), 'bff'));
   assert.throws(() => inventory(browserStatus, 'api'));
 });
 test('Given browser status When authentication or cache semantics drift Then validation rejects the contract', () => {

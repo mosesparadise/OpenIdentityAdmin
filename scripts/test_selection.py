@@ -165,7 +165,7 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
         actual = [test[0] for test in all_tests.values() if test[1] == name]
         if count <= 0 or len(expected) != count + browser_count or len(set(expected)) != count + browser_count or sorted(actual) != sorted(expected):
             raise ValueError('Administrator catalogue differs from reviewed identities')
-    ordinary = {'IdentityPlatform.Administrator.Tests.Features.' + story for story in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh')}
+    ordinary = {'IdentityPlatform.Administrator.Tests.Features.' + story for story in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications')}
     browser_namespace = 'IdentityPlatform.Administrator.Tests.Features.Browser'
     if any(len(test) != 5 or (test[3] != browser_namespace if test[2] else test[3] not in ordinary) or
            (test[4] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection') if test[2] else test[4] is not None) for test in all_tests.values()):
@@ -179,7 +179,7 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
 
 def administrator_invocations(matrix, profile, story=None):
     stories = matrix['administrator_stories']
-    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh'}:
+    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications'}:
         raise ValueError('Administrator stories and provider must be explicitly reviewed')
     if story is not None and story not in stories:
         raise ValueError('Unknown administrator story')

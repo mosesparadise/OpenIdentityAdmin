@@ -16,6 +16,7 @@ internal sealed class BrowserCallbackReceipt(HttpContext http, IServiceScopeFact
     private BrowserSessionIdentity? identity;
     private string? identityToken;
     private string? accessToken;
+    private BrowserAccessCredential? access;
     private ClaimsPrincipal? identityPrincipal;
     private string? identityClaims;
     private int admitted;
@@ -40,13 +41,15 @@ internal sealed class BrowserCallbackReceipt(HttpContext http, IServiceScopeFact
         RequireTransport(context);
         if (Interlocked.Exchange(ref captured, 1) != 0 || context.BackchannelIdentityTokenPrincipal is not { } principal ||
             context.BackchannelIdentityToken is not { Length: > 0 } encoded || context.BackchannelAccessToken is not { Length: > 0 } access ||
-            BrowserSessionIdentity.Validate(principal, encoded, admission!.Pending.Digest, clock.GetUtcNow()) is not { } validated)
+            BrowserSessionIdentity.Validate(principal, encoded, admission!.Pending.Digest, clock.GetUtcNow()) is not { } validated ||
+            BrowserAccessCredential.Capture(access, context.BackchannelAccessTokenExpirationDate, clock.GetUtcNow()) is not { } credential)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
         identity = validated;
         identityToken = encoded;
         accessToken = access;
+        this.access = credential;
         identityPrincipal = principal;
         identityClaims = NativeStateBinding.Claims(principal);
     }
@@ -69,7 +72,8 @@ internal sealed class BrowserCallbackReceipt(HttpContext http, IServiceScopeFact
     {
         var context = original ?? throw ProtocolStorageOwner.Unavailable();
         RequireTransport(context);
-        if (captured != 1 || identity is null || identityToken != context.BackchannelIdentityToken || accessToken != context.BackchannelAccessToken ||
+        if (captured != 1 || identity is null || access is null || identityToken != context.BackchannelIdentityToken || accessToken != context.BackchannelAccessToken ||
+            access.ExpiresAt != context.BackchannelAccessTokenExpirationDate || access.ExpiresAt <= clock.GetUtcNow() ||
             !ReferenceEquals(identityPrincipal, context.BackchannelIdentityTokenPrincipal) || identityClaims != NativeStateBinding.Claims(identityPrincipal!) ||
             !NativeClientTokenTime.Current(context.BackchannelIdentityTokenPrincipal, clock) ||
             !NativeBrowserIdentity.Matches(context))
@@ -78,11 +82,11 @@ internal sealed class BrowserCallbackReceipt(HttpContext http, IServiceScopeFact
         }
     }
 
-    /// <summary>Returns only the captured identity and exact reservation after full native authentication succeeds.</summary>
-    internal (BrowserCallbackAdmission Admission, BrowserSessionIdentity Identity) Completed()
+    /// <summary>Returns the exact captured identity, access credential and reservation after full native authentication succeeds.</summary>
+    internal (BrowserCallbackAdmission Admission, BrowserSessionIdentity Identity, BrowserAccessCredential Access) Completed()
     {
         Require();
-        return (admission!, identity!);
+        return (admission!, identity!, access!);
     }
 
     /// <summary>Requires the route's original feature and native transaction, preventing replacement or reuse on another request.</summary>

@@ -153,26 +153,6 @@
     {
       "Finding": {
         "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.Admin.Api/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.Admin.Api.Features.Setup.AddFeatures(thisWebApplicationBuilder)",
-        "Fingerprint": "016FE2948EF402D2B9A3FF5CF3BEE2159677AE50A78E42D736AD95187FF97357"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.Admin.Api/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.Admin.Api.Features.Setup.MapFeaturesEndpoints(thisWebApplication)",
-        "Fingerprint": "4B0AB198BA10FB37FA5A8672A19DB1EB8DBA1C763026E0F2439B08406A8DE8C4"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
         "Path": "src/backend/IdentityPlatform.Admin.Bff/Composition/WebApplicationExtensions.cs",
         "Symbol": "IdentityPlatform.Admin.Bff.Composition.WebApplicationExtensions.AddConfigurations(thisWebApplicationBuilder)",
         "Fingerprint": "7F1BE2D9C26B1EC4D7071C1812DD540E0915999F2A484FB0278A3908593502B5"

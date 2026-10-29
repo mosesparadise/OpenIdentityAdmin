@@ -58,6 +58,15 @@ internal sealed class GovernanceGrants(PlatformDbContext database)
         return result;
     }
 
+    /// <summary>Reuses persisted grant semantics for one rollback-only API read without granting issuance or mutation authority.</summary>
+    internal async Task<GovernanceGrantView> ReadApiAsync(CeremonyTransaction transaction, string userId)
+    {
+        transaction.RequireApiRead(database, userId);
+        var result = await ReadCoreAsync([userId], null, transaction.Token);
+        transaction.RequireApiRead(database, userId);
+        return result;
+    }
+
     /// <summary>Reads only the declared accounts and relevant persisted role claims after the caller has proved its lock ownership.</summary>
     private async Task<GovernanceGrantView> ReadCoreAsync(IReadOnlyList<string> users, string? targetRole, CancellationToken token)
     {

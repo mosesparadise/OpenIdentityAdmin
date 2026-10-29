@@ -46,6 +46,9 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private readonly HashSet<string> usedCodes = new(StringComparer.Ordinal);
     private string? seed;
 
+    /// <summary>Exercises the actual API-backed list through the shipped React view without exposing its protected transport.</summary>
+    internal Task RequireApplicationsAsync() => LocalDemoApplications.RequireAsync(page);
+
     /// <summary>Retains sensitive browser state only in memory until the context closes.</summary>
     private LocalDemoBrowser(IPlaywright playwright, IBrowser browser, IBrowserContext context, IPage page)
     {

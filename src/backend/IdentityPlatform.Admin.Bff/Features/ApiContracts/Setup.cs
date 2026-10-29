@@ -41,13 +41,14 @@ internal static class Setup
             var includesVersion = options.Document.ShouldInclude;
             options.Document.ShouldInclude = description => includesVersion(description) && description.GroupName == options.Description.GroupName;
             options.Document.AddDocumentTransformer<MetadataTransformer>();
+            options.Document.AddDocumentTransformer<Applications.ApplicationListContract>();
             options.Document.AddDocumentTransformer<BrowserSessions.BrowserSessionContractTransformer>();
         });
         return services;
     }
 
     /// <summary>Map only the supported management major, keeping identity protocol routes outside API versioning.</summary>
-    internal static RouteGroupBuilder MapManagementGroup(this WebApplication app)
+    internal static RouteGroupBuilder MapManagementGroup(this IEndpointRouteBuilder app)
     {
         var versions = app.NewApiVersionSet().HasApiVersion(new ApiVersion(SupportedMajor)).ReportApiVersions().Build();
         return app.MapGroup(RoutePrefix).WithApiVersionSet(versions).MapToApiVersion(SupportedMajor);

@@ -10,10 +10,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http" />
+    <PackageReference Include="OpenIddict.Validation.AspNetCore" />
+    <PackageReference Include="OpenIddict.Validation.SystemNetHttp" />
     <PackageReference Include="Asp.Versioning.OpenApi" />
     <PackageReference Include="Microsoft.OpenApi" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" PrivateAssets="all" />
     <InternalsVisibleTo Include="IdentityPlatform.Api.Contracts.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
   </ItemGroup>
 </Project>

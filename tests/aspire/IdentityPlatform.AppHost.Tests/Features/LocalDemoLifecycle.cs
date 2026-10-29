@@ -10,7 +10,7 @@ internal static class LocalDemoLifecycle
     private const string NamesProjection = "{{.Names}}";
     private const string ContainerPrefix = "oid-demo-";
     private const string NameSeparator = "-";
-    private static readonly string[] RequiredLiveRoles = ["database", "auth", "admin-bff", "initializer"];
+    private static readonly string[] RequiredLiveRoles = ["database", "auth", "admin-api", "admin-bff", "initializer"];
     private const string FilterArgument = "--filter";
     private const string RunFilter = "label=openidentityadmin.local-demo.run=";
     private const string InspectArgument = "inspect";

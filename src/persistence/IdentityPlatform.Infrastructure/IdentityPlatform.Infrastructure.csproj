@@ -2,6 +2,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="IdentityPlatform.Migrator" />
     <InternalsVisibleTo Include="IdentityPlatform.Admin.Bff" />
+    <InternalsVisibleTo Include="IdentityPlatform.Admin.Api" />
     <InternalsVisibleTo Include="IdentityPlatform.Persistence.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AppHost.Tests" />
     <InternalsVisibleTo Include="IdentityPlatform.AuthServer" />

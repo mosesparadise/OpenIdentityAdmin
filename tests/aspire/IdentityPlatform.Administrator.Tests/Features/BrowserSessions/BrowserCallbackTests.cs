@@ -18,6 +18,11 @@ namespace IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 [Collection("administrator-bootstrap")]
 public sealed class BrowserCallbackTests(BootstrapFixture fixture)
 {
+    private const int StoredCredentials = 2;
+    private const string AccessTokenName = "access_token";
+    private const string AccessExpiryName = "expires_at";
+    private const string IdentityTokenName = "id_token";
+    private const string RefreshTokenName = "refresh_token";
     private const string SessionPrefix = "__Host-identity-admin-session=";
     private const string CookieHeader = "Cookie";
 
@@ -95,7 +100,12 @@ public sealed class BrowserCallbackTests(BootstrapFixture fixture)
             Assert.Equal(SessionTicketPolicy.Scheme, canonical.AuthenticationScheme);
             Assert.Single(canonical.Principal.Identities);
             Assert.Equal(CanonicalClaims, canonical.Principal.Claims.Count());
-            Assert.Empty(canonical.Properties.GetTokens());
+            Assert.Equal(StoredCredentials, canonical.Properties.GetTokens().Count());
+            Assert.False(string.IsNullOrEmpty(canonical.Properties.GetTokenValue(AccessTokenName)));
+            Assert.False(string.IsNullOrEmpty(canonical.Properties.GetTokenValue(AccessExpiryName)));
+            Assert.Null(canonical.Properties.GetTokenValue(IdentityTokenName));
+            Assert.Null(canonical.Properties.GetTokenValue(RefreshTokenName));
+            Assert.False(canonical.Properties.AllowRefresh);
             var audit = await database.Set<BrowserSessionAudit>().SingleAsync(row => row.Operation == BrowserMutation.Establish, TestContext.Current.CancellationToken);
             Assert.Equal(ticket.Subject, audit.Subject);
             Assert.Equal(ticket.SourceSession, audit.SourceSession);

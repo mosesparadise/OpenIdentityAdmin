@@ -954,7 +954,27 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_DisposedApiTransaction_When_NativeStoreFirstResolves_Then_ExpiredScopeIsRejected(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ForeignApiTransaction_When_StoreSelectionIsAttempted_Then_ScopePermanentlyRejectsResolution(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_MoreRowsThanPage_When_PagesAreRead_Then_OrderingAndLookaheadAreDeterministic(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeApplications_When_LiteralPrefixesAreRead_Then_OnlyMatchingSafeSummariesAreReturned(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeMetadataBoundaries_When_Projected_Then_ExactMaximumsSucceedAndOverflowFails(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_RealAccessToken_When_NativeBindingsOrSignatureDiffer_Then_IndependentApiDeniesEverySubstitution(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_TwoWarmApis_When_ReadPermissionCommitsRemoval_Then_BothDenyWithinFiveSecondsWithoutClaimFallback(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Account)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Authorization)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Factor)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Profile)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: SecurityStamp)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: SourceSession)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Token)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationDeadlineBrowserTests.Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationListBrowserTests.Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationPresentationBrowserTests.Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2015,7 +2035,27 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_DisposedApiTransaction_When_NativeStoreFirstResolves_Then_ExpiredScopeIsRejected(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ForeignApiTransaction_When_StoreSelectionIsAttempted_Then_ScopePermanentlyRejectsResolution(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_MoreRowsThanPage_When_PagesAreRead_Then_OrderingAndLookaheadAreDeterministic(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeApplications_When_LiteralPrefixesAreRead_Then_OnlyMatchingSafeSummariesAreReturned(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeMetadataBoundaries_When_Projected_Then_ExactMaximumsSucceedAndOverflowFails(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_RealAccessToken_When_NativeBindingsOrSignatureDiffer_Then_IndependentApiDeniesEverySubstitution(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_TwoWarmApis_When_ReadPermissionCommitsRemoval_Then_BothDenyWithinFiveSecondsWithoutClaimFallback(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Account)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Authorization)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Factor)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Profile)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: SecurityStamp)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: SourceSession)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Token)",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationDeadlineBrowserTests.Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationListBrowserTests.Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationPresentationBrowserTests.Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -43183,6 +43223,1004 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
         "typeName": "WorkspaceBrowserTests",
         "methodName": "Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReadOwnershipTests",
+        "methodName": "Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-read-commit"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReadOwnershipTests",
+        "methodName": "Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-read-commit"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_DisposedApiTransaction_When_NativeStoreFirstResolves_Then_ExpiredScopeIsRejected(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReadOwnershipTests",
+        "methodName": "Given_DisposedApiTransaction_When_NativeStoreFirstResolves_Then_ExpiredScopeIsRejected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_DisposedApiTransaction_When_NativeStoreFirstResolves_Then_ExpiredScopeIsRejected(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReadOwnershipTests",
+        "methodName": "Given_DisposedApiTransaction_When_NativeStoreFirstResolves_Then_ExpiredScopeIsRejected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ForeignApiTransaction_When_StoreSelectionIsAttempted_Then_ScopePermanentlyRejectsResolution(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReadOwnershipTests",
+        "methodName": "Given_ForeignApiTransaction_When_StoreSelectionIsAttempted_Then_ScopePermanentlyRejectsResolution",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ForeignApiTransaction_When_StoreSelectionIsAttempted_Then_ScopePermanentlyRejectsResolution(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReadOwnershipTests",
+        "methodName": "Given_ForeignApiTransaction_When_StoreSelectionIsAttempted_Then_ScopePermanentlyRejectsResolution",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_MoreRowsThanPage_When_PagesAreRead_Then_OrderingAndLookaheadAreDeterministic(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_MoreRowsThanPage_When_PagesAreRead_Then_OrderingAndLookaheadAreDeterministic",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_MoreRowsThanPage_When_PagesAreRead_Then_OrderingAndLookaheadAreDeterministic(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_MoreRowsThanPage_When_PagesAreRead_Then_OrderingAndLookaheadAreDeterministic",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeApplications_When_LiteralPrefixesAreRead_Then_OnlyMatchingSafeSummariesAreReturned(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_NativeApplications_When_LiteralPrefixesAreRead_Then_OnlyMatchingSafeSummariesAreReturned",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeApplications_When_LiteralPrefixesAreRead_Then_OnlyMatchingSafeSummariesAreReturned(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_NativeApplications_When_LiteralPrefixesAreRead_Then_OnlyMatchingSafeSummariesAreReturned",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeMetadataBoundaries_When_Projected_Then_ExactMaximumsSucceedAndOverflowFails(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_NativeMetadataBoundaries_When_Projected_Then_ExactMaximumsSucceedAndOverflowFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_NativeMetadataBoundaries_When_Projected_Then_ExactMaximumsSucceedAndOverflowFails(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_NativeMetadataBoundaries_When_Projected_Then_ExactMaximumsSucceedAndOverflowFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-projection-overflow"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationReaderTests",
+        "methodName": "Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-projection-overflow"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_RealAccessToken_When_NativeBindingsOrSignatureDiffer_Then_IndependentApiDeniesEverySubstitution(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationApiBrowserTests",
+        "methodName": "Given_RealAccessToken_When_NativeBindingsOrSignatureDiffer_Then_IndependentApiDeniesEverySubstitution",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_RealAccessToken_When_NativeBindingsOrSignatureDiffer_Then_IndependentApiDeniesEverySubstitution(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationApiBrowserTests",
+        "methodName": "Given_RealAccessToken_When_NativeBindingsOrSignatureDiffer_Then_IndependentApiDeniesEverySubstitution",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_TwoWarmApis_When_ReadPermissionCommitsRemoval_Then_BothDenyWithinFiveSecondsWithoutClaimFallback(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationApiBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_ReadPermissionCommitsRemoval_Then_BothDenyWithinFiveSecondsWithoutClaimFallback",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationApiBrowserTests.Given_TwoWarmApis_When_ReadPermissionCommitsRemoval_Then_BothDenyWithinFiveSecondsWithoutClaimFallback(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationApiBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_ReadPermissionCommitsRemoval_Then_BothDenyWithinFiveSecondsWithoutClaimFallback",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Account)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Authorization)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Factor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Profile)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: SecurityStamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: SourceSession)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"PostgreSql\", defect: Token)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Account)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Authorization)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Factor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Profile)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: SecurityStamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: SourceSession)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationAuthorityBrowserTests.Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound(provider: \"SqlServer\", defect: Token)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationAuthorityBrowserTests",
+        "methodName": "Given_TwoWarmApis_When_CurrentAuthorityIsRevoked_Then_BothDenyWithinOriginalPropagationBound",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRevocation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationDeadlineBrowserTests.Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationDeadlineBrowserTests",
+        "methodName": "Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationDeadlineBrowserTests.Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationDeadlineBrowserTests",
+        "methodName": "Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationListBrowserTests.Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationListBrowserTests",
+        "methodName": "Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationListBrowserTests.Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationListBrowserTests",
+        "methodName": "Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationPresentationBrowserTests.Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationPresentationBrowserTests",
+        "methodName": "Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationPresentationBrowserTests.Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationPresentationBrowserTests",
+        "methodName": "Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationProxyBrowserTests",
+        "methodName": "Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationProxyBrowserTests",
+        "methodName": "Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

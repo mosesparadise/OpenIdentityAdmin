@@ -1,5 +1,6 @@
 using IdentityPlatform.Admin.Bff.Features.AdminUi;
 using IdentityPlatform.Admin.Bff.Features.ApiContracts;
+using IdentityPlatform.Admin.Bff.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Admin.Bff.Features.Documentation;
 using IdentityPlatform.Admin.Bff.Features.LocalDemo;
@@ -26,7 +27,14 @@ internal static class Setup
             app.UseAdministratorUi();
         }
         app.UseRouting();
-        app.UseEndpoints(endpoints => endpoints.MapPlatformHealthEndpoints());
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapPlatformHealthEndpoints();
+            if (startup.Enabled)
+            {
+                endpoints.MapApplicationProxy();
+            }
+        });
         return app;
     }
 

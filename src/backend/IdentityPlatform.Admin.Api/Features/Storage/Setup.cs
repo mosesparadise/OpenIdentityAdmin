@@ -15,12 +15,18 @@ internal static class Setup
     /// <summary>Selects an explicitly registered provider and composes least-privilege storage with bounded readiness.</summary>
     internal static WebApplicationBuilder AddStorage(this WebApplicationBuilder builder)
     {
-        var provider = DatabaseProviderRegistration.Providers.Select(builder.Configuration[ProviderSetting]);
-        builder.Services.AddIdentityPersistence(provider,
-            builder.Configuration[PlatformConnectionSetting] ?? "");
-        builder.Services.AddHealthChecks().Add(new Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration(
+        builder.Services.AddStorage(builder.Configuration);
+        return builder;
+    }
+
+    /// <summary>Registers the same provider and bounded readiness in explicitly owned generic hosting.</summary>
+    internal static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration)
+    {
+        var provider = DatabaseProviderRegistration.Providers.Select(configuration[ProviderSetting]);
+        services.AddIdentityPersistence(provider, configuration[PlatformConnectionSetting] ?? "");
+        services.AddHealthChecks().Add(new Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration(
             StorageCheck, services => new SchemaReadinessCheck<PlatformDbContext>(services,
                 SchemaCatalog.Platform(provider)), failureStatus: null, tags: [ReadinessTag], timeout: TimeSpan.FromSeconds(ReadinessSeconds)));
-        return builder;
+        return services;
     }
 }

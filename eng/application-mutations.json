@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "application-read-commit",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+      "before": "mode != CeremonyMode.Maintenance",
+      "after": "mode is not (CeremonyMode.Maintenance or CeremonyMode.ApiRead)",
+      "marker": "application-read-commit-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted"
+    },
+    {
+      "id": "application-projection-overflow",
+      "path": "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs",
+      "before": "value.DisplayName is null or { Length: <= DisplayNameLength } && ",
+      "after": "",
+      "marker": "application-projection-overflow-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed"
+    }
+  ]
+}

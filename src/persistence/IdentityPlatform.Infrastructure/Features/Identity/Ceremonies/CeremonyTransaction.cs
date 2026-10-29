@@ -74,6 +74,27 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     internal static Task<CeremonyTransaction> OpenGovernanceAsync(PlatformDbContext database, NativeOperation operation,
         CeremonyLockPlan plan, CancellationToken cancellationToken) => OpenCoreAsync(database, operation, plan, CeremonyMode.Governance, cancellationToken);
 
+    /// <summary>Opens rollback-only API reads on a fresh context with governance, profile and exact account locks.</summary>
+    internal static Task<CeremonyTransaction> OpenApiReadAsync(PlatformDbContext database, NativeOperation operation,
+        string userId, CancellationToken token)
+    {
+        if (database.ChangeTracker.Entries().Any() || string.IsNullOrEmpty(userId))
+        {
+            throw new FactorUnavailableException();
+        }
+        return OpenCoreAsync(database, operation, new CeremonyLockPlan(true, false, [], [userId], profile: true), CeremonyMode.ApiRead, token);
+    }
+
+    /// <summary>Requires this exact rollback-only context and declared account; it confers no commit capability.</summary>
+    internal void RequireApiRead(PlatformDbContext current, string userId)
+    {
+        RequireContext(current);
+        if (mode != CeremonyMode.ApiRead || !Plan.Governance || !Plan.Profile || Plan.Users.Count != 1 || Plan.Users[0] != userId)
+        {
+            throw new FactorUnavailableException();
+        }
+    }
+
     /// <summary>Creates bounded connection and transaction lifetimes and releases every partially acquired resource on failure.</summary>
     private static async Task<CeremonyTransaction> OpenCoreAsync(PlatformDbContext database, NativeOperation operation,
         CeremonyLockPlan plan, CeremonyMode mode, CancellationToken cancellationToken)
@@ -280,5 +301,5 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
 
 internal enum CeremonyMode
 {
-    Authentication, Maintenance, Governance, Continuation
+    Authentication, Maintenance, Governance, Continuation, ApiRead
 }

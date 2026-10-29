@@ -24,6 +24,8 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     private const string RunArgument = "--LocalDemo:RunId=";
     private const string ProviderArgument = "--Database:Provider=";
     private const string IssuerResource = "auth";
+    private const string ApiResource = "admin-api";
+    private const string ApiPort = "17445";
     private const string ClientResource = "admin-bff";
     private const string InitializerResource = "initializer";
     private const string Docker = "docker";
@@ -69,6 +71,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             await app.StartAsync(token);
             await app.ResourceNotifications.WaitForResourceHealthyAsync(IssuerResource, token);
             await app.ResourceNotifications.WaitForResourceHealthyAsync(ClientResource, token);
+            await app.ResourceNotifications.WaitForResourceHealthyAsync(ApiResource, token);
             await app.ResourceNotifications.WaitForResourceAsync(InitializerResource, KnownResourceStates.Running, token);
             await RequireLoopbackAsync(run, token);
             var runtime = new LocalDemoRuntime(builder, app, run);
@@ -107,7 +110,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     /// <summary>Inspects only actual published ports and rejects wildcard exposure without retaining Docker environment metadata.</summary>
     private static async Task RequireLoopbackAsync(string run, CancellationToken token)
     {
-        foreach (var (role, port) in new[] { (IssuerResource, IssuerPort), (ClientResource, ClientPort) })
+        foreach (var (role, port) in new[] { (IssuerResource, IssuerPort), (ClientResource, ClientPort), (ApiResource, ApiPort) })
         {
             var name = ContainerPrefix + run + NameSeparator + role;
             var output = await ExecuteAsync([InspectArgument, FormatArgument, PortsProjection, name], string.Empty, token);
