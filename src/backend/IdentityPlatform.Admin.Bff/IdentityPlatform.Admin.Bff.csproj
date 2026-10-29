@@ -32,4 +32,7 @@
     <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/browser-document.css" LogicalName="IdentityPlatform.BrowserDocument.browser-document.css" />
     <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/theme.js" LogicalName="IdentityPlatform.BrowserDocument.theme.js" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.Admin.Ui/generated/*" LogicalName="IdentityPlatform.Admin.Ui.%(Filename)%(Extension)" />
+  </ItemGroup>
 </Project>

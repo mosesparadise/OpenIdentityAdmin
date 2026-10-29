@@ -1,0 +1,18 @@
+{
+  "lockSha256": "7fae09055a53b43acdf2be450aefcef89a11055daef25ca03997abfab0784366",
+  "allowedExpressions": [
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "ISC",
+    "MIT",
+    "MPL-2.0"
+  ],
+  "scope": "Frontend build/test tools and browser runtime. Runtime notices include full MIT texts. MPL lightningcss is build tooling; no modified upstream source or native binary is shipped in the browser.",
+  "optionalPlatformExclusions": {
+    "linux-x64-glibc": [
+      "@parcel/watcher-linux-x64-musl",
+      "@tailwindcss/oxide-linux-x64-musl",
+      "lightningcss-linux-x64-musl"
+    ]
+  }
+}

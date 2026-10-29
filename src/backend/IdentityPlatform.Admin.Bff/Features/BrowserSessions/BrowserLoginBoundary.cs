@@ -106,7 +106,7 @@ internal static class BrowserLoginBoundary
         var content = string.Format(System.Globalization.CultureInfo.InvariantCulture, PageFormat, Login, BrowserRequestPolicy.AntiforgeryField, token);
         http.Response.Headers[ReferrerPolicy] = FormReferrer;
         http.Response.Headers.ContentSecurityPolicy = FormPolicy + scope.ServiceProvider.GetRequiredService<BrowserSessionDestinations>().Issuer.GetLeftPart(UriPartial.Authority) + BrowserDocument.AssetPolicy;
-        return (Results.Content(BrowserDocument.Render(Title, content), Html), null);
+        return (Results.Content(BrowserDocument.Render(Title, content + BrowserWorkspaceNavigation.Link(http)), Html), null);
     }
 
     /// <summary>Resolves the actual named native handler only inside its substituted owned scope, retaining library request and challenge dispatch.</summary>

@@ -1,3 +1,4 @@
+using IdentityPlatform.Admin.Bff.Features.AdminUi;
 using IdentityPlatform.Admin.Bff.Features.ApiContracts;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Admin.Bff.Features.Documentation;
@@ -22,6 +23,7 @@ internal static class Setup
         if (startup.Enabled)
         {
             app.UseBrowserLogin();
+            app.UseAdministratorUi();
         }
         app.UseRouting();
         app.UseEndpoints(endpoints => endpoints.MapPlatformHealthEndpoints());

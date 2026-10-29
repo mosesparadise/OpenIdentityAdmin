@@ -950,7 +950,11 @@
     "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_EmptyOrOrdinaryRevocationResponse_When_NativeClientReturns_Then_CleanupRemainsUnconfirmed(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_IssuanceRollbackOrDuplicateIntent_When_NativeCodeRuns_Then_SelectorCannotEscapeOrRebind(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_RealRefreshCredential_When_OrdinaryNativeRevocationRuns_Then_OnlyTargetIsRevokedWithoutPrivateConfirmation(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_UnexchangedCode_When_CleanupCommitsFirst_Then_NativeLateExchangeIsDenied(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_UnexchangedCode_When_CleanupCommitsFirst_Then_NativeLateExchangeIsDenied(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2007,7 +2011,11 @@
     "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_EmptyOrOrdinaryRevocationResponse_When_NativeClientReturns_Then_CleanupRemainsUnconfirmed(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_IssuanceRollbackOrDuplicateIntent_When_NativeCodeRuns_Then_SelectorCannotEscapeOrRebind(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_RealRefreshCredential_When_OrdinaryNativeRevocationRuns_Then_OnlyTargetIsRevokedWithoutPrivateConfirmation(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_UnexchangedCode_When_CleanupCommitsFirst_Then_NativeLateExchangeIsDenied(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.SessionRefresh.NativeCleanupTests.Given_UnexchangedCode_When_CleanupCommitsFirst_Then_NativeLateExchangeIsDenied(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -42974,6 +42982,222 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_AnonymousWorkspace_When_AppearanceAndNavigationChange_Then_AccessibleResponsiveViewsRemainUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_BrowserCapabilitiesUnavailable_When_WorkspaceOpens_Then_ExplicitNativeNavigationRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_GenuineWorkspaceSession_When_ReadFailsAndOriginalDeadlineArrives_Then_IdentityClearsWithoutRenewal",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.WorkspaceBrowserTests.Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "WorkspaceBrowserTests",
+        "methodName": "Given_ObservedWorkspace_When_TransportOrPageLifecycleChanges_Then_StaleIdentityIsNeverRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

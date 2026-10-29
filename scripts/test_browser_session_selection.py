@@ -32,7 +32,7 @@ class BrowserSessionSelectionTests(unittest.TestCase):
         require_browser_session_selections(self.catalogue, self.groups[provider], provider, self.matrix, self.inventory)
 
     def test_Given_DefaultAndExplicitGroups_When_Selected_Then_BothProvidersRetainEveryIdentityExactlyOnce(self):
-        self.assertEqual(2005, len(self.catalogue))
+        self.assertEqual(2013, len(self.catalogue))
         for provider in ('PostgreSql', 'SqlServer'):
             self.verify(provider)
             self.assertEqual([('Foundations', 167), ('Product', 98), ('Lifecycle', 57)], browser_session_invocations(self.matrix, provider))

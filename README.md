@@ -2,7 +2,17 @@
 
 A greenfield administration platform built with OpenIddict and ASP.NET Core Identity. The approved product includes client/resource and user/role management, security, auditing and operational health through a React/TypeScript Admin BFF and a Razor Pages authentication service.
 
-**Current state: administrator accounts and B3 browser sessions are internally accepted; full product acceptance remains incomplete.** The repository includes extensible relational EF Core providers, PostgreSQL/SQL Server migrations, protected enrollment/MFA/recovery, native administrator protocol flows, server-held BFF sessions and local/issuer-assisted logout. Default startup exposes operational health only. The [Windows Docker Desktop local demo](specs/014-local-b3-demo/quickstart.md) uses the AppHost `local-demo` profile and dashboard initialization with disposable state; no custom PowerShell is required. The [native-entry/package correction](specs/015-aspire-local-entry/verification.md) is delivered through PR #107; actual Windows execution remains open. See its [verification status](specs/014-local-b3-demo/verification.md). Server-held refresh, usable management APIs and the React administration client remain pending. This is not a deployable or certified identity product.
+**Current state: administrator accounts and B3 browser sessions are internally accepted; full product acceptance remains incomplete.** The repository includes extensible relational EF Core providers, PostgreSQL/SQL Server migrations, protected enrollment/MFA/recovery, native administrator protocol flows, server-held BFF sessions and local/issuer-assisted logout. Default startup exposes operational health only. The [Windows Docker Desktop local demo](specs/014-local-b3-demo/quickstart.md) uses the AppHost `local-demo` profile and dashboard initialization with disposable state; no custom PowerShell is required. The [native-entry/package correction](specs/015-aspire-local-entry/verification.md) is delivered through PR #107; actual Windows execution remains open. See its [verification status](specs/014-local-b3-demo/verification.md). The [visible React workspace](specs/017-administrator-ui/quickstart.md) adds Overview, session details, appearance, and navigation into the existing fresh sign-in/logout flows; its [acceptance evidence](specs/017-administrator-ui/verification.md) records the current validation state. Server-held refresh and management data/actions remain pending. This is not a deployable or certified identity product.
+
+## Run the visible local workspace
+
+Set **IdentityPlatform.AppHost** as your startup project and select **local-demo**, or run:
+
+```text
+dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-demo
+```
+
+Use Docker Desktop with Linux containers and a trusted .NET development certificate. Open **https://bff.dev.localhost:17444/** after the dashboard resources become healthy. Initialize the administrator from the dashboard and enroll an authenticator using the [local quickstart](specs/014-local-b3-demo/quickstart.md). The workspace then offers **Sign in**, **Your session**, **Check session** and **Sign out**, with light/dark/system appearance. No custom PowerShell or frontend build command is required. The run is disposable; application management is the next increment.
 
 ## Approved design
 
@@ -23,7 +33,7 @@ Version 0.2 and A-001 are approved. The ten-document baseline preserves its orig
 
 ## Project organization
 
-Source and solution folders are grouped under `aspire`, `backend`, `core`, `migrations`, `persistence` and `frontend` (shared design tokens; React administration is planned). Tests use corresponding responsibility groups plus `architecture`; Features remain inside each project. See the [layout and native MTP guide](docs/engineering/project-layout.md).
+Source and solution folders are grouped under `aspire`, `backend`, `core`, `migrations`, `persistence` and `frontend` (React workspace, generated BFF contracts and shared design tokens). Tests use corresponding responsibility groups plus `architecture`; Features remain inside each project. See the [layout and native MTP guide](docs/engineering/project-layout.md).
 
 ## Local foundation
 

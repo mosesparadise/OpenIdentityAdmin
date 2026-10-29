@@ -35,9 +35,9 @@ Aspire sends the bounded bootstrap document to the exact run-owned initializer t
 1. Open <https://issuer.dev.localhost:17443/account/administrator/enrollment>.
 2. Enter the initialized credentials, add the setup key to an authenticator, and submit a genuine TOTP.
 3. Save the one-time recovery codes privately for this disposable run.
-4. Open <https://bff.dev.localhost:17444/bff/login>. Every explicit sign-in requires fresh password and MFA, including when an issuer cookie exists.
-5. Inspect <https://bff.dev.localhost:17444/bff/session> for authenticated status. This is a small server-rendered demo; React management and management APIs remain pending.
-6. Open <https://bff.dev.localhost:17444/bff/logout>. Local sign-out revokes the BFF session. The issuer option first signs out locally and then offers separate issuer confirmation. Returning alone does not prove issuer revocation.
+4. Open the workspace at <https://bff.dev.localhost:17444/> and choose **Sign in**. Every explicit sign-in requires fresh password and MFA, including when an issuer cookie exists. Completion returns to Overview.
+5. Choose **Your session** to view the account ID and original expiry. **Check session** performs a read without extending the session. Appearance supports light/dark/system. Management APIs and application/user management screens remain pending.
+6. Choose **Sign out**. Local sign-out revokes the BFF session. The issuer option first signs out locally and then offers separate issuer confirmation. Returning alone does not prove issuer revocation. Use **Back to workspace** to return and observe signed-out status.
 
 Use these canonical URLs for account/BFF journeys so origins match the native registrations; dashboard resource links may target health endpoints.
 

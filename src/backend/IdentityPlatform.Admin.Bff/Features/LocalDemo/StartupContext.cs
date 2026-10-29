@@ -1,3 +1,4 @@
+using IdentityPlatform.Admin.Bff.Features.AdminUi;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
@@ -48,6 +49,7 @@ internal sealed class StartupContext : IDisposable
             LocalDemoProfile.Callback, LocalDemoProfile.AssertionKeyId, credentials).ForBrowserSessions();
         services.AddAdministratorClient(profile, credentials);
         services.AddBrowserLogin(new BrowserSessionDestinations(LocalDemoProfile.Issuer, LocalDemoProfile.Client), protection);
+        services.AddAdministratorUi();
     }
 
     /// <summary>Disposes protection consumers and native keys before deleting this owner's files, including partial startup.</summary>

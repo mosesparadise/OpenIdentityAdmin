@@ -55,6 +55,6 @@ internal static class BrowserLogoutPage
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers[ReferrerPolicy] = referrer;
         http.Response.Headers[ContentSecurityPolicy] = Policy + BrowserDocument.AssetPolicy;
-        return Results.Content(BrowserDocument.Render(Title, content), Html, statusCode: status);
+        return Results.Content(BrowserDocument.Render(Title, content + BrowserWorkspaceNavigation.Link(http)), Html, statusCode: status);
     }
 }
