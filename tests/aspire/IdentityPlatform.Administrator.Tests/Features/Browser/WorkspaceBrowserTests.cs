@@ -96,6 +96,8 @@ public sealed class WorkspaceBrowserTests(BootstrapFixture fixture)
             await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, probe.Configure, workspace: true);
             await using var session = await BrowserSession.CreateAsync();
             var page = await session.Context.NewPageAsync();
+            // Install before React captures Date.now; later clock updates then reach the same clock owner.
+            await page.Clock.SetFixedTimeAsync(environment.Issuer.Account.Journey.Clock.Now.UtcDateTime);
             await SignInAsync(environment, page);
             await page.GetByRole(AriaRole.Link, new()
             {
