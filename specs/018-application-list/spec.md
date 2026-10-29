@@ -2,7 +2,7 @@
 
 **Feature Branch**: `121-protected-application-list`
 **Created**: 2026-10-29
-**Status**: Authorized next visible slice; design in progress
+**Status**: Internally delivered in PR #118; human and release acceptance remain open
 **Input**: The user requested the next item after delivery of the visible workspace: the protected application list, followed separately by creation/editing.
 
 ## User Scenarios & Testing

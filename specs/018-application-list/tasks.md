@@ -1,6 +1,6 @@
 # Tasks: Protected application list
 
-Implementation is present. T011–T013 retain hosted acceptance obligations; checked implementation tasks below have the scoped local results recorded in [verification](verification.md).
+T001–T013 are complete for this internal read-only slice. PR #118 delivers the implementation; the normal squash of the delivery-record followup reconciles these tasks, roadmap and quickstarts. [Verification](verification.md) records exact mixed-attempt hosted acceptance and all remaining human/release gates.
 
 ## Design and prerequisites
 
@@ -20,8 +20,8 @@ Implementation is present. T011–T013 retain hosted acceptance obligations; che
 ## US3 — Visible Applications journey
 
 - [x] T010 Add Applications navigation, generated client, search/paging and finite accessible UI states under frontend Features/Applications; preserve session/logout/theme behavior. FR-001/002/007.
-- [ ] T011 Exercise real sign-in/list/search/page/logout and permission/expiry/dependency/stale-response states on both providers and retained browsers; extend both native local demos. FR-001–008.
-- [ ] T012 Update native/Node discovery inventories, coverage inputs and critical mutation controls; run required checks and resolve independent source/test/UX/evidence findings. FR-001–008.
-- [ ] T013 Record actual results/limits, update quickstarts/roadmap/handoff, and normal squash only after exact final-head checks and review. FR-008.
+- [x] T011 Exercise real sign-in/list/search/page/logout and permission/expiry/dependency/stale-response states on both providers and retained browsers; extend both native local demos. FR-001–008.
+- [x] T012 Update native/Node discovery inventories, coverage inputs and critical mutation controls; run required checks and resolve independent source/test/UX/evidence findings. FR-001–008.
+- [x] T013 Record actual results/limits, update quickstarts/roadmap/handoff, and normal squash only after exact final-head checks and review. FR-008.
 
 Dependencies: T002 precedes affected code; T003/T004 enableT005/T007; T005/T006/T007/T008/T009 enableT010/T011; T012/T013 require all earlier criteria. Root owns integration; independent reviewers do not replace human acceptance. No refresh, create/edit or production activation.

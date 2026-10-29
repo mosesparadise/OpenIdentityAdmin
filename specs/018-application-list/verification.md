@@ -1,5 +1,37 @@
 # Protected application list verification
 
+## Accepted internal delivery — 29 October 2026
+
+[PR #118](https://github.com/mosesparadise/OpenIdentityAdmin/pull/118) is squash-merged as `27ccdf033db5aa7bf13eab26fafd0eda5ffe7a9d`. Native Aspire now serves a real Applications catalogue with literal client-ID prefix search and paging through React, the protected BFF and an independently authorized Admin API. Use the [quickstart](quickstart.md); no custom PowerShell or separate frontend build is required.
+
+Source `a689f53f3f8ca19df78b5ee49808c0b345931367`, tested merge `a9508340ff98fe88ce7ef9081e7bfacca6411d1b` and the squash share tree `9e4389b9e43b4233b9c06923a8ff68e678a4df2e`. Base was `0f71ceabee7d232f920895f615c97e96a95631be`; remote main and the squash tree were verified after merge. [Run 40960329950](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40960329950), accepted attempt 2, satisfies all 100 job obligations.
+
+Acceptance combines 97 retained successful attempt-1 executions with the bounded SQL Chromium Security rerun and dependent coverage/final gates. Independent review matches the retained executions by exact name, start/end timestamps and conclusion despite GitHub assigning new job identifiers. The rerun passes all five cases with zero skips. The earlier startup failure remains recorded below with unproven cause; this is neither a clean first attempt nor a root-cause correction.
+
+| Verified boundary | Accepted evidence |
+| --- | --- |
+| Ordinary execution | Hosted strict verifiers account for 81 report obligations and 4,869 passes, with no failed/skipped case in the accepted execution set |
+| Preservation | All 2,013 previous administrator native names/type/traits retained; 40 additions produce 2,053; prior Node identities retained |
+| Host and provider reads | 1,644 Host passes; seven application read/ownership cases per real provider |
+| API authority | Genuine signed-token substitutions, current account/source/profile/token/authorization/grant changes across two instances, original signed/persisted expiry, native lock contention and rollback-only cleanup |
+| Browser protection | 28/28 in each PostgreSQL/SQL Server × pinned Chromium/WebKit cell, including real paging, permission/failure/expiry clearing, proxy faults and distinct browser/transport cancellation controls |
+| Native Aspire | Both provider demos pass three cases each, including genuine initialization/enrollment/sign-in, the real Applications list, logout and disposable restart |
+| Contracts | 44 native core, seven Chromium and seven WebKit cases; 37 separate Node controls, exact routes, deterministic generated clients and compatibility checks |
+| Frontend | Eleven retained plus nine new exact cases; 104-entry locked dependency review and deterministic embedded assets; scoped critical controller/observation coverage passes |
+| Coverage | All 78 required inputs and 15 unchanged module floors pass; Admin API 92.4% lines/97.7% branches, BFF 94.4%/97.2% |
+| Mutation controls | 68 behavioral kills with passing baseline/restored controls and source restoration, including two new application controls per provider |
+| Artifact bindings | 94 accepted upload-log/API SHA-256 matches; the separately retained failed artifact is excluded |
+
+The [artifact manifest](accepted-artifacts.md) records every accepted identity, execution attempt and digest. Final independent receipt SHA-256 is `01d53def5522a0d593e0f6cd548c498682906f7a61bc5a40d95f74a147f13b24`. Accepted manifest SHA-256 is `73752ea442084e306d2225b8abe9fb1aa52510fcb13a7bb3c3493f10e98aa46b`. Coverage artifact `12937416519` has upload/API digest `2bcd739df0359f7a4f727214fd67bae7c3bcc442e60843d62eba5e6b50517c72`. Coverage download logs select successful SQL Security artifact `12936489215`, not failed artifact `12936447506`.
+
+Independent architecture/security, test/CI, UX and hosted-evidence reviews pass within their recorded scope. Evidence review inspected exact committed verifier logic, finite hosted results, source/tree bindings and upload/API digest agreement. The enforced runtime network policy blocked raw artifact transfer; no local ZIP-byte hashing or raw XML reparse is claimed. The ordinary count excludes separate frontend/Node checks, mutation executions and the focused WebKit experiment. Successful hosted verifiers enforce exact native identities, complete counters and mutation markers; these claims do not imply local raw-report inspection.
+
+Feature 018 T001–T013 is complete for internal read-only delivery, with the normal squash of the coherent evidence/roadmap followup completing the record. Next is application creation/editing with its required permissions, concurrency, atomic audit and provider/browser tests. No schema or provider migration history changes. Refresh stays disabled. Actual Windows Docker Desktop, qualified screen-reader/manual acceptance, actual BFCache restoration, all six historical findings, Firefox/A-009 restoration, vendor activation and production/public-release gates remain open. Synthetic pagehide/pageshow tests do not establish real BFCache behavior, and source/automated UX review does not replace qualified manual acceptance.
+
+## Historical implementation and verification record
+
+The following checkpoints retain their then-current status. The accepted delivery above supersedes their pending wording; rejected observations and evidence limits remain applicable.
+
 ## Starting checkpoint and authority
 
 Remote main verified29October2026 as `0f71ceabee7d232f920895f615c97e96a95631be`, preserving PR116 UI and PR117 acceptance. Current work is `121-protected-application-list`. The user's next-item request continues the approved protected-list → creation/editing sequence. The protected-list implementation is under verification; no hosted acceptance or merge is claimed.
@@ -49,3 +81,11 @@ Both WebKit failures occur after upstream start and a browser Fetch `AbortError`
 Runtime artifact-download limitation: the GitHub connector provides jobs/logs/artifact metadata and a file-service ZIP reference, but the current enforced network policy denies the signed artifact-download host. Independent review uses exact-source strict verifier execution, finite logs and upload/API digest agreement; it does not claim local ZIP-byte or raw XML reinspection. Historical raw artifacts are not reused for this head.
 
 The corrected cancellation test builds without warnings/errors and passes the focused SQL Server diagnostic case, including one shared three-second cancellation envelope. Final narrow source review passes; code-quality verification remains unchanged. Corrected-source pinned-browser and full hosted acceptance are still required.
+
+## Corrected-head startup failure and bounded verification rerun
+
+[Run 40960329950](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/40960329950), attempt 1, tests source `a689f53f3f8ca19df78b5ee49808c0b345931367` through merge `a9508340ff98fe88ce7ef9081e7bfacca6411d1b`; both have tree `9e4389b9e43b4233b9c06923a8ff68e678a4df2e`. All four BrowserProtection provider/engine cells pass 28/28, including the corrected browser and transport cancellation controls. All three contract lanes, both native Aspire demos and all 68 mutation controls pass.
+
+Attempt 1 is not full acceptance: 97 jobs succeed, SQL Server Chromium Security and final acceptance fail, and coverage aggregation is skipped. The five-case security lane passes four and fails the dark/320 case before the journey, at `BootstrapHost.CreateAsync`. The original startup deadline expires with the database resource `Exited`/255 and dependent resources waiting. Exit 255 does not establish a cause; later SQL handshake diagnostics do not establish why the original container exited. Failed artifact `12936447506` has upload/API SHA-256 `8d807f970391e748fae77efe7bafb784749c160ddded4bd3325a6d71315181b1`. The independently frozen attempt-1 rejected receipt has SHA-256 `99fbbfe80531ba8f4b78c4caa2f852ae9c8640f654edbef1ba2f65acf86fd6f2`.
+
+Independent test and hosted-evidence reviewers accept one bounded rerun of the unchanged failed job and dependent gates to supply the missing execution evidence. No source, assertion, deadline, inventory, coverage floor or browser obligation changes. The failed attempt remains evidence; any later acceptance must explicitly reconcile retained successes with the rerun, without claiming a clean first attempt or a root-cause fix. Repeated failure requires investigation rather than another automatic retry.

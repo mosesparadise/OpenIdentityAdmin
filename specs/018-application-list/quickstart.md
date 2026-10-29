@@ -1,6 +1,6 @@
 # Run the protected Applications screen
 
-The feature is currently a candidate on `121-protected-application-list`; use main after its delivery PR is merged. Prerequisites are stable .NET 10, Docker Desktop using Linux containers, and a trusted development certificate. Follow the [native initialization and enrollment guide](../014-local-b3-demo/quickstart.md).
+Use current main ([PR #118](https://github.com/mosesparadise/OpenIdentityAdmin/pull/118) or later). Prerequisites are stable .NET 10, Docker Desktop using Linux containers, and a trusted development certificate. Follow the [native initialization and enrollment guide](../014-local-b3-demo/quickstart.md).
 
 Set `IdentityPlatform.AppHost` as the startup project and choose `local-demo`, or run:
 
