@@ -66,20 +66,25 @@ public sealed class ApplicationProxyBrowserTests(BootstrapFixture fixture)
                 Assert.Equal(0, probe.Redirects);
                 Assert.True(probe.CredentialsMatch);
             }
-            await RequireCallerAbortAsync(page, probe);
+            await RequireBrowserAbortAsync(page, probe);
+            await ApplicationProxyCancellation.RequireAsync(environment, page, probe);
             await RequireDeadlineAsync(page, probe, access.Value);
             await RequireCookieAsync(environment.Profile.ClientUri, access.Value);
         });
 
-    /// <summary>A caller abort reaches the actual downstream request before the server deadline and leaves no retry or late response.</summary>
-    private static async Task RequireCallerAbortAsync(IPage page, ApplicationProxyProbe probe)
+    /// <summary>Browser abort returns no data, and downstream work joins within the original server deadline and cleanup envelope.</summary>
+    private static async Task RequireBrowserAbortAsync(IPage page, ApplicationProxyProbe probe)
     {
         probe.BeginDelay();
         var calls = probe.Requests;
+        var started = Stopwatch.GetTimestamp();
         await page.EvaluateAsync(BeginRead);
         await probe.Started.Task.WaitAsync(TimeSpan.FromSeconds(CancellationJoinSeconds), TestContext.Current.CancellationToken);
         Assert.True(await page.EvaluateAsync<bool>(AbortRead));
-        await probe.Canceled.Task.WaitAsync(TimeSpan.FromSeconds(CancellationJoinSeconds), TestContext.Current.CancellationToken);
+        var remaining = TimeSpan.FromSeconds(UpperDeadlineSeconds) - Stopwatch.GetElapsedTime(started);
+        Assert.True(remaining > TimeSpan.Zero);
+        await probe.Canceled.Task.WaitAsync(remaining, TestContext.Current.CancellationToken);
+        Assert.True(Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(UpperDeadlineSeconds));
         Assert.Equal(calls + 1, probe.Requests);
     }
 

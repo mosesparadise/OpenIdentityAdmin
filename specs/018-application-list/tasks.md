@@ -6,7 +6,7 @@ Implementation is present. T011–T013 retain hosted acceptance obligations; che
 
 - [x] T001 Record current authorization and feature specification/research/plan/contracts in specs/018-application-list/ and docs/approval.md.
 - [x] T002 Complete independent design/security/test review and requirement traceability before affected implementation.
-- [ ] T003 Retain exact callback access token/original expiry in protected BFF ticket through existing atomic establishment; add receipt/binding/expiry/old-ticket regressions in BrowserSessions and matching Host/Administrator tests. FR-004/005.
+- [x] T003 Retain exact callback access token/original expiry in protected BFF ticket through existing atomic establishment; add receipt/binding/expiry/old-ticket regressions in BrowserSessions and matching Host/Administrator tests. FR-004/005.
 - [x] T004 Add explicit API read ownership and reuse current source/session/profile/grant policy under declared lock order; prove rollback-only modes and metadata-only factor checks on both providers. FR-003.
 
 ## US1/US2 — Real protected list
@@ -14,8 +14,8 @@ Implementation is present. T011–T013 retain hosted acceptance obligations; che
 - [x] T005 Add native API discovery/asymmetric/token+authorization validation, strict claims and original bounded deadline under Admin.Api/Features/Authentication; direct real-token and fault/revocation tests. FR-003/005.
 - [x] T006 Add bounded ordinal native application summary query and explicit versioned API endpoint under Features/Applications; both-provider search/page/projection/input tests. FR-001/002/006.
 - [x] T007 Add exact BFF management route, protected credential reader, fixed HTTPS transport and safe projection; header/redirect/body/expiry/deadline/substitution tests. FR-004/005/006.
-- [ ] T008 Extend authoritative contracts and regenerate browser types; compatibility and exact schema/metadata tests. FR-006.
-- [ ] T009 Add API runtime stage and native Aspire local-demo composition, real HTTPS fixtures and two-instance authority enforcement tests. FR-003/008.
+- [x] T008 Extend authoritative contracts and regenerate browser types; compatibility and exact schema/metadata tests. FR-006.
+- [x] T009 Add API runtime stage and native Aspire local-demo composition, real HTTPS fixtures and two-instance authority enforcement tests. FR-003/008.
 
 ## US3 — Visible Applications journey
 
