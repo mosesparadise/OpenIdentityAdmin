@@ -15,6 +15,7 @@
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
     <Using Include="Xunit" />
     <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj" />
+    <ProjectReference Include="../../../src/backend/IdentityPlatform.Admin.Api/IdentityPlatform.Admin.Api.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.Issuer.Tests/Fixtures/IssuerEnvironment.cs" Link="Fixtures/IssuerEnvironment.cs" />

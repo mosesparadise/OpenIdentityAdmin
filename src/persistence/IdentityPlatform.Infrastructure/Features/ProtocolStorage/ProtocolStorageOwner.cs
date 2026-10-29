@@ -45,6 +45,19 @@ internal sealed class ProtocolStorageOwner(IOpenIddictEntityFrameworkCoreContext
         }
     }
 
+    /// <summary>Binds an explicitly ordinary read scope to its actual native context without activating protocol ownership.</summary>
+    internal async ValueTask RequireUnactivatedContextAsync(DbContext current, CancellationToken token)
+    {
+        RequireNeverActivated();
+        var selected = await native.GetDbContextAsync(token);
+        RequireNeverActivated();
+        if (!ReferenceEquals(selected, current))
+        {
+            Fail();
+            throw Unavailable();
+        }
+    }
+
     /// <summary>Activates only for the scope handle that retains the complete native resource graph through cleanup.</summary>
     internal async Task StartAsync(ProtocolStorageScope scope, CancellationToken token, ProtocolStorageRequest? original = null)
     {

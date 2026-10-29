@@ -670,6 +670,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(6, len(manifest(ROOT, "governance")))
         self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
         self.assertEqual(8, len(manifest(ROOT, "browser-session")))
+        self.assertEqual(2, len(manifest(ROOT, "applications")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 

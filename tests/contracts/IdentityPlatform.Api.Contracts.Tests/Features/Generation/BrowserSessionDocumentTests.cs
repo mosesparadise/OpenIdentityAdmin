@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Admin.Bff.Features.Applications;
 using IdentityPlatform.Api.Contracts.Tests.Fixtures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
@@ -13,6 +14,11 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 /// <summary>Exports the explicitly dormant product handler and DTO, separately from both production and synthetic management documents.</summary>
 public sealed class BrowserSessionDocumentTests
 {
+    private const int OperationCount = 2;
+    private const string ApplicationsPath = "/bff/api/v1/applications";
+    private const string ListOperation = "ListBrowserApplications";
+    private const string ReadPermission = "applications.read";
+    private const string ListSecurity = "[{\"BrowserSession\":[]}]";
     private const string OutputVariable = "IDENTITY_CONTRACT_OUTPUT";
     private const string DocumentUri = "/openapi/bff-v1.json";
     private const string Info = "info";
@@ -56,6 +62,7 @@ public sealed class BrowserSessionDocumentTests
         builder.Services.AddSingleton(TimeProvider.System);
         await using var app = builder.Build();
         app.MapBrowserSessionStatus();
+        app.MapApplicationProxy();
         app.MapOpenApi(DocumentPath).WithDocumentPerVersion();
         await app.StartAsync(TestContext.Current.CancellationToken);
         using var client = app.GetTestClient();
@@ -90,7 +97,12 @@ public sealed class BrowserSessionDocumentTests
         const string Subject = "subject";
         const string NoStore = "no-store";
         Assert.Equal(ExpectedVersion, document[Info]![Version]!.GetValue<string>());
-        Assert.Single(document[Paths]!.AsObject());
+        Assert.Equal(OperationCount, document[Paths]!.AsObject().Count);
+        var applications = document[Paths]![ApplicationsPath]![Get]!;
+        Assert.Equal(ListOperation, applications[OperationId]!.GetValue<string>());
+        Assert.Equal(ReadPermission, applications[Permission]!.GetValue<string>());
+        Assert.Equal(1, applications[Downstream]!.GetValue<int>());
+        Assert.Equal(ListSecurity, applications[Security]!.ToJsonString());
         var operation = document[Paths]![StatusPath]![Get]!;
         Assert.Equal(ExpectedOperation, operation[OperationId]!.GetValue<string>());
         Assert.True(operation[StatusExtension]!.GetValue<bool>());

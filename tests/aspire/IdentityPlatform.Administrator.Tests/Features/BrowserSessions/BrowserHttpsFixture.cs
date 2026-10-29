@@ -1,3 +1,4 @@
+using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
@@ -25,6 +26,10 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     private SessionProtection? protection;
     private BrowserIssuerHost? issuerHost;
     private BootstrapSessions? database;
+    internal ApplicationApiHost? Api
+    {
+        get; private set;
+    }
     internal BrowserHttpsClient Client { get; private set; } = null!;
     internal AdministratorProtocolScenario Issuer { get; private set; } = null!;
     internal NativeClientProfile Profile { get; private set; } = null!;
@@ -69,7 +74,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
     internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
         Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false,
-        BrowserPilotClient? pilot = null, bool workspace = false)
+        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null)
     {
         var owner = new BrowserHttpsFixture(distinctSites);
         try
@@ -85,8 +90,13 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             owner.database = await fixture.LeaseSessionsAsync(provider);
             owner.issuerHost = await BrowserIssuerHost.CreateHttpsAsync(owner.Issuer.Account.Journey, provider,
                 owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer, pilot);
+            if (applications)
+            {
+                owner.Api = await ApplicationApiHost.CreateAsync(owner.Issuer.Account.Journey, provider, owner.Profile.Issuer,
+                    new Uri(owner.Profile.ClientUri, CallbackPath).AbsoluteUri, applicationProbe);
+            }
             owner.Client = await BrowserHttpsClient.CreateAsync(owner.database, owner.Issuer.Account.Journey.Clock,
-                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace);
+                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace, owner.Api?.Address);
             return owner;
         }
         catch { await owner.DisposeAsync(); throw; }
@@ -116,6 +126,29 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             clientEndpoint.StageAttacker(form, issuerEndpoint.Address, fetch);
     }
 
+    /// <summary>Joins both API and issuer owners even when one host's cleanup fails.</summary>
+    private async Task<bool> DisposeIssuerHostsAsync()
+    {
+        var failed = false;
+        try
+        {
+            if (Api is not null)
+            {
+                await Api.DisposeAsync();
+            }
+        }
+        catch { failed = true; }
+        try
+        {
+            if (issuerHost is not null)
+            {
+                await issuerHost.DisposeAsync();
+            }
+        }
+        catch { failed = true; }
+        return failed;
+    }
+
     /// <summary>Attempts every cleanup in dependency order, joining both network roots before releasing keys or database leases.</summary>
     public async ValueTask DisposeAsync()
     {
@@ -128,14 +161,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             }
         }
         catch { failed = true; }
-        try
-        {
-            if (issuerHost is not null)
-            {
-                await issuerHost.DisposeAsync();
-            }
-        }
-        catch { failed = true; }
+        failed |= await DisposeIssuerHostsAsync();
         try
         {
             if (database is not null)

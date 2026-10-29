@@ -85,3 +85,23 @@
     .info-card { padding: 24px; } .page-footer { margin-top: 36px; }
   }
 }
+
+@layer components {
+  .applications-card { padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+  .applications-card > [role="status"] p { color: var(--muted); margin-top: 8px; font-size: 14px; }
+  .application-filters { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin: 28px 0; }
+  .application-filters label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .application-filters input, .application-filters select { border: 1px solid var(--input-border); border-radius: 8px; min-height: 44px; padding: 9px 12px; background: var(--surface); color: var(--text); max-width: 100%; }
+  .application-filters input { width: 300px; }
+  .application-filters p { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  .application-filters > button { margin-top: 27px; }
+  .application-table-scroll { overflow-x: auto; margin-block: 24px; }
+  .application-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+  .application-table th, .application-table td { border-bottom: 1px solid var(--border); padding: 14px 12px; overflow-wrap: anywhere; min-width: 110px; }
+  .application-table th { color: var(--muted); font-weight: 600; font-size: 12px; }
+  .application-client-id { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .application-pagination { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 13px; color: var(--muted); }
+  .application-pagination .actions { margin-top: 0; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 640px) { .applications-card { padding: 20px; } .application-filters > div:first-child { width: 100%; } .application-filters input { width: 100%; } }
+}

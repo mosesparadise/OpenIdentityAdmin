@@ -1,0 +1,37 @@
+# Protected application list verification
+
+## Starting checkpoint and authority
+
+Remote main verified29October2026 as `0f71ceabee7d232f920895f615c97e96a95631be`, preserving PR116 UI and PR117 acceptance. Current work is `121-protected-application-list`. The user's next-item request continues the approved protected-list → creation/editing sequence. The protected-list implementation is under verification; no hosted acceptance or merge is claimed.
+
+Managed environment observations are current, network policy enforced, both MCR layer hosts allowed; no configured credential bindings or VPN. Existing worktrees and evidence are preserved.
+
+## Independent planning review
+
+Architecture review confirms approved validation choice and identifies missing protected access-token retention and current API authority. It rejects reusing issuance proofs or independent reads described as a snapshot. Test review independently confirms real API composition and browser-fixture prerequisites. Design dispositions appear in plan/research. Final source review dispositions are recorded below; hosted evidence review remains pending.
+
+## Evidence limits
+
+Local verification is in progress; retained-engine CI and both-provider final acceptance remain pending. Feature017 evidence is historical baseline only. All six findings, human rows, actual Windows, Firefox/A-009, vendor-documentation and production/public-release gates remain open; refresh stays disabled.
+
+Architecture final design PASS: fixed query contract, original five-second budget, protected credentials and rollback-only authority fit approved scope. Test review caught native unbounded DisplayName/Id fields; contract now specifies finite per-field limits, SQL limit+1 projection, whole-response overflow denial and512KiB response cap. Boundary and overflow tests are mandatory for both providers.
+
+Final test design PASS after bounded-projection correction. SQL substring semantics differ for supplementary Unicode but remain finite; final .NET UTF-16 limits enforce the wire contract. Cross-artifact analysis maps FR001–008 to T003–T013 and their named host/persistence/browser/contract boundaries; no unresolved design or authority question remains. Spec Kit prerequisite checks resolve all required documents; no extension hooks are installed. Requirements checklist passes7/7.
+
+## Local implementation checkpoint — 29 October 2026
+
+Native API/BFF composition, protected access credentials, current rollback-only authority, bounded provider projection, generated contracts, Aspire API runtime and React Applications screen are implemented. Refresh remains disabled.
+
+The first corrected PostgreSQL run passed18of19 cases with zero skips: query/UTF16/ownership, seven two-instance authority revocations, current permission, actual list/search/expiry, real HTTPS response faults and visible paging/theme/focus/lifecycle/logout controls. The failed issuer-signed expiry substitution was retained and corrected for further verification. Host41 focused cases passed. Contract44 nonbrowser cases passed;7 browser cases failed because the pinned browser binary is absent in this environment. These are incomplete local results, not acceptance.
+
+Browser diagnostics use systemChromium151.0.7922.173 with the synthetic dev certificate trusted, through Playwright1.63.0. They do not substitute for pinned Chromium153.0.8010.12/revision1243 or WebKit CI. Synthetic pagehide/pageshow events test lifecycle handlers, not actual BFCache navigation. No authenticated screenshots or token payloads are retained.
+
+Independent source review found and approved corrections for public `client_id` (native private-presenter precedence), original signed `exp` (persisted-expiry restoration), and minimum BFF/API/access/session expiry. Upstream7.7.2 references: [server rounding](https://github.com/openiddict/openiddict-core/blob/7.7.2/src/OpenIddict.Server/OpenIddictServerHandlers.cs#L5663-L5667), [client expiry](https://github.com/openiddict/openiddict-core/blob/7.7.2/src/OpenIddict.Client/OpenIddictClientHandlers.cs#L3214-L3219), [presenter precedence](https://github.com/openiddict/openiddict-core/blob/7.7.2/src/OpenIddict.Validation/OpenIddictValidationHandlers.Protection.cs#L491-L498), [native lifetime configuration](https://github.com/openiddict/openiddict-core/blob/7.7.2/src/OpenIddict.Validation/OpenIddictValidationOptions.cs#L212-L214), [stored expiry restoration](https://github.com/openiddict/openiddict-core/blob/7.7.2/src/OpenIddict.Validation/OpenIddictValidationHandlers.Protection.cs#L589-L595). Signed public expiry is checked only after genuine native cryptographic/lifecycle validation, and the earlier signed/stored deadline is retained.
+
+UX source review passes after stable error filters, requested-read focus restoration, page/count announcements and input-border contrast corrections. Test review requires observed native database contention/cleanup, caller abort and deterministic paging identities; these controls are being added before final acceptance. Temporary application diagnostic logging has been removed. Historical evidence and the six findings remain unchanged.
+
+Final scoped architecture/security and test/CI source reviews pass. All 2,013 prior administrator native metadata records are unchanged; 40 additions yield 2,053. Ordinary Applications adds seven cases per provider, and BrowserProtection adds thirteen per provider. New required mutation lanes exercise rollback-only commit exclusion and whole-page lookahead overflow; their exact native identities, source boundaries and assertion markers use the existing fail-closed mutation verifier. Coverage obligations increase from 76 to 78 without changing the 15 module floors. The unchanged 58 mutation-verifier controls pass locally; actual mutant execution remains pending hosted evidence.
+
+The corrected PostgreSQL diagnostic run passes 20/20, including original signed expiry, caller-abort propagation, observed native governance-lock deadline, joined cleanup, hashed authority rollback and subsequent reuse. Full Host tests pass 1,644/1,644 with zero skips. UI verification passes the retained eleven plus nine new cases, deterministic shipped assets, critical observation/controller coverage and the 104-entry locked dependency inventory. Code quality passes with only two obsolete legacy allowances retired. SQL Server and final hosted evidence remain pending.
+
+SQL Server diagnostic run also passes 20/20 with zero skips. The AppHost test project builds with zero warnings/errors; full native container demos remain hosted obligations. The source candidate has no known local provider test failure; pinned retained-engine, mutation, coverage and exact-head acceptance are still pending.

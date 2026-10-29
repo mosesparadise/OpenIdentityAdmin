@@ -1,4 +1,5 @@
 using IdentityPlatform.Admin.Bff.Features.AdminUi;
+using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
@@ -21,7 +22,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
 
     /// <summary>Composes only Sessions credentials and existing native/browser services; no issuer bridge or injected authentication is installed.</summary>
     internal static async Task<BrowserHttpsClient> CreateAsync(BootstrapSessions database, TimeProvider clock, NativeClientProfile profile,
-        NativeClientCredentials keys, SessionProtection protection, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null, bool workspace = false)
+        NativeClientCredentials keys, SessionProtection protection, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null, bool workspace = false, Uri? api = null)
     {
         var builder = new HostBuilder().ConfigureWebHost(web =>
         {
@@ -30,6 +31,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
                 web.UseEnvironment(Environments.Development);
             }
             endpoint.Configure(web);
+            ApplicationClientSetup.Configure(web, api);
             web.ConfigureLogging(logging => logging.ClearProviders()).ConfigureServices(services =>
             {
                 database.AddPersistence(services);
@@ -50,6 +52,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
                 {
                     app.UseAdministratorUi();
                 }
+                ApplicationClientSetup.Use(app, api);
                 app.Run(http =>
                 {
                     http.Response.StatusCode = StatusCodes.Status404NotFound;

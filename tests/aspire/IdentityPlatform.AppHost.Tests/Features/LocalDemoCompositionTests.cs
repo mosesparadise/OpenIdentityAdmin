@@ -20,6 +20,9 @@ public sealed class LocalDemoCompositionTests
     private const string PfxSuffix = "__Pfx";
     private const string PasswordSuffix = "__Password";
     private const string IssuerHost = "issuer.dev.localhost";
+    private const string ApiHost = "api.dev.localhost";
+    private const int ApiPort = 17445;
+    private const string ApiResource = "admin-api";
     private const string ClientHost = "bff.dev.localhost";
     private const string LoopbackAddress = "127.0.0.1";
     private const string RegistrationVariable = "LOCAL_DEMO_REGISTRATION";
@@ -57,13 +60,15 @@ public sealed class LocalDemoCompositionTests
         Assert.Empty(builder.Resources.OfType<ProjectResource>());
         RequireMaterial(environments[IssuerResource], IssuerRoles);
         RequireMaterial(environments[ClientResource], ClientRoles);
-        foreach (var name in new[] { InitializerResource, MigratorResource })
+        foreach (var name in new[] { InitializerResource, MigratorResource, ApiResource })
         {
             Assert.DoesNotContain(environments[name].Keys, key => key.StartsWith(MaterialPrefix, StringComparison.Ordinal));
         }
         Assert.False(environments[InitializerResource].ContainsKey(SessionsConnection));
         Assert.False(environments[ClientResource].ContainsKey(PlatformConnection));
         Assert.False(environments[IssuerResource].ContainsKey(SessionsConnection));
+        Assert.False(environments[ApiResource].ContainsKey(SessionsConnection));
+        Assert.True(environments[ApiResource].ContainsKey(PlatformConnection));
         Assert.Equal("false", environments[InitializerResource][ProvisionRoles]);
         Assert.Equal(TrueValue, environments[MigratorResource][ProvisionRoles]);
         Assert.Equal("https://issuer.dev.localhost:17443/", environments[IssuerResource][IssuerVariable]);
@@ -117,7 +122,7 @@ public sealed class LocalDemoCompositionTests
     /// <summary>Requires exact same host/container HTTPS ports and canonical Docker aliases, with no explicit persistent mounts.</summary>
     private static void RequireEndpoints(IDistributedApplicationTestingBuilder builder)
     {
-        foreach (var (name, alias, port) in new[] { (IssuerResource, IssuerHost, IssuerPort), (ClientResource, ClientHost, ClientPort) })
+        foreach (var (name, alias, port) in new[] { (IssuerResource, IssuerHost, IssuerPort), (ClientResource, ClientHost, ClientPort), (ApiResource, ApiHost, ApiPort) })
         {
             var resource = Assert.Single(builder.Resources.OfType<ContainerResource>(), value => value.Name == name);
             var endpoint = Assert.Single(resource.Annotations.OfType<EndpointAnnotation>());

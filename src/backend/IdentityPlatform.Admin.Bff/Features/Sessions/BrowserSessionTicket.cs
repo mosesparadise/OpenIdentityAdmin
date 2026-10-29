@@ -15,10 +15,11 @@ internal sealed class BrowserSessionTicket(string handle, long created, long exp
     /// <summary>Uses the existing T005 transaction instead of opening an independent B1 store commit.</summary>
     internal static async Task<BrowserSessionTicket> EstablishAsync(BrowserCallbackReceipt receipt, IServiceScopeFactory factory, TimeProvider clock, CancellationToken token)
     {
-        var (admission, identity) = receipt.Completed();
+        var (admission, identity, access) = receipt.Completed();
         await using var scope = factory.CreateAsyncScope();
         var codec = scope.ServiceProvider.GetRequiredService<SessionTicketCodec>();
         var ticket = identity.CreateTicket();
+        access.Store(ticket.Properties);
         var reference = SessionHandle.Create();
         var row = SessionTicketPolicy.Create(reference.Digest, ticket.Principal.FindFirst(BrowserSessionClaims.Subject)!.Value,
             ticket.Principal.FindFirst(BrowserSessionClaims.Session)!.Value, clock.GetUtcNow(), identity.SourceExpiresAt,

@@ -20,6 +20,8 @@ internal static class Setup
     private const string IssuerStage = "issuer";
     private const string ClientResource = "admin-bff";
     private const string ClientStage = "bff";
+    private const string ApiResource = "admin-api";
+    private const string ApiStage = "api";
     private const string InitializerResource = "initializer";
     private const string ProviderVariable = "Database__Provider";
     private const string ProvisionRoles = "LocalDevelopment__ProvisionRuntimeRoles";
@@ -85,9 +87,12 @@ internal static class Setup
             .WithEnvironment(IssuerVariable, LocalDemoProfile.Issuer).WithEnvironment(AccountsVariable, TrueValue)
             .WithEnvironment(ProtocolVariable, TrueValue).WithEnvironment(RedirectVariable, LocalDemoProfile.Callback)
             .WaitForCompletion(migrator);
+        var api = builder.AddDemoContainer(ApiResource, ApiStage, run).WithDemoHttps(LocalDemoProfile.ApiHost, LocalDemoProfile.ApiPort)
+            .WithEnvironment(ProviderVariable, database.Provider).WithEnvironment(PlatformConnection, database.PlatformRuntime)
+            .WaitForCompletion(migrator).WaitFor(auth);
         var bff = builder.AddDemoContainer(ClientResource, ClientStage, run).WithDemoHttps(LocalDemoProfile.ClientHost, LocalDemoProfile.ClientPort)
             .WithEnvironment(ProviderVariable, database.Provider).WithEnvironment(SessionsConnection, database.SessionsRuntime)
-            .WaitForCompletion(migrator);
+            .WaitForCompletion(migrator).WaitFor(api);
         var assertion = AddMaterial(builder, auth, bff);
         auth.WithEnvironment(PublicKeyVariable, assertion.PublicKey);
         AddInitializer(builder, database, migrator, run, assertion.PublicKey);

@@ -11,10 +11,13 @@ public static class LocalDemoProfile
     public const string EnabledSetting = "Enabled";
     public const string IssuerHost = "issuer.dev.localhost";
     public const string ClientHost = "bff.dev.localhost";
+    public const string ApiHost = "api.dev.localhost";
     public const int IssuerPort = 17443;
     public const int ClientPort = 17444;
+    public const int ApiPort = 17445;
     public const string Issuer = "https://issuer.dev.localhost:17443/";
     public const string Client = "https://bff.dev.localhost:17444/";
+    public const string Api = "https://api.dev.localhost:17445/";
     public const string Callback = "https://bff.dev.localhost:17444/bff/callback";
     public const string AssertionKeyId = "local-demo-assertion";
     public const string MaterialRoot = "/run/identity-demo";
