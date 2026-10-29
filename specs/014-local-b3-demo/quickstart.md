@@ -7,7 +7,7 @@ The accepted container implementation from PR #105 is retained. [Feature 015](..
 - Windows with Docker Desktop running **Linux containers**; no WSL terminal or custom PowerShell scripts. SQL Server requires a supported x64 container host; ARM64 suitability is not claimed.
 - A stable **.NET 10.x SDK**, with access to NuGet and the configured container registries.
 - A current .NET development HTTPS certificate trusted by Windows and valid for `*.dev.localhost`. Chrome/Edge resolve these names without editing the hosts file.
-- Available dashboard port 17100, issuer port 17443 and BFF port 17444.
+- Available dashboard port 17100, issuer port 17443, BFF port 17444 and Admin API port 17445.
 
 ## Start the AppHost
 
@@ -24,7 +24,7 @@ Certificate trust is a normal one-time development prerequisite. If a stale cert
 
 PostgreSQL is the existing default. To select SQL Server, append `-- --Database:Provider=SqlServer` to the run command, or set `Database:Provider` through AppHost user secrets. Existing registered provider implementations remain selectable. The ordinary `https` profile retains health-only startup.
 
-The authenticated Aspire dashboard opens from the launch profile. Keep the AppHost running. Initial image builds can take several minutes. Wait for `migrator` to complete, `auth` and `admin-bff` to become healthy, and `initializer` to run. Health does not mean an administrator exists.
+The authenticated Aspire dashboard opens from the launch profile. Keep the AppHost running. Initial image builds can take several minutes. Wait for `migrator` to complete, `auth`, `admin-api` and `admin-bff` to become healthy, and `initializer` to run. Health does not mean an administrator exists.
 
 ## Initialize and enroll
 
@@ -36,7 +36,7 @@ Aspire sends the bounded bootstrap document to the exact run-owned initializer t
 2. Enter the initialized credentials, add the setup key to an authenticator, and submit a genuine TOTP.
 3. Save the one-time recovery codes privately for this disposable run.
 4. Open the workspace at <https://bff.dev.localhost:17444/> and choose **Sign in**. Every explicit sign-in requires fresh password and MFA, including when an issuer cookie exists. Completion returns to Overview.
-5. Choose **Your session** to view the account ID and original expiry. **Check session** performs a read without extending the session. Appearance supports light/dark/system. Management APIs and application/user management screens remain pending.
+5. Choose **Your session** to view the account ID and original expiry. **Check session** performs a read without extending the session. Appearance supports light/dark/system. Choose **Applications** to browse real registrations, search by literal client-ID prefix and change pages. Application creation/editing and user management remain pending.
 6. Choose **Sign out**. Local sign-out revokes the BFF session. The issuer option first signs out locally and then offers separate issuer confirmation. Returning alone does not prove issuer revocation. Use **Back to workspace** to return and observe signed-out status.
 
 Use these canonical URLs for account/BFF journeys so origins match the native registrations; dashboard resource links may target health endpoints.
@@ -53,4 +53,4 @@ After failed/interrupted initialization, the command attempts to stop only the v
 
 ## Acceptance limits
 
-Required automation retains real PostgreSQL/SQL Server, native bootstrap, genuine Chromium enrollment/login/logout, fresh-run invalidation, existing Chromium/WebKit security matrices and exact A-009 deferrals. Linux CI does not establish actual Windows Docker Desktop execution. The M02-E visible React shell is delivered in [PR #116](https://github.com/mosesparadise/OpenIdentityAdmin/pull/116). M02-C refresh, M02-D management API authority, application management screens, all six historical findings, human assessment and production/public-release gates remain open.
+Required automation retains real PostgreSQL/SQL Server, native bootstrap, genuine Chromium enrollment/login/logout, fresh-run invalidation, existing Chromium/WebKit security matrices and exact A-009 deferrals. Linux CI does not establish actual Windows Docker Desktop execution. The M02-E visible React shell is delivered in [PR #116](https://github.com/mosesparadise/OpenIdentityAdmin/pull/116). The [protected Applications list](../018-application-list/quickstart.md) adds the first M02-D/M04 management read through the real BFF/API. M02-C refresh, remaining application/user management, all six historical findings, human assessment and production/public-release gates remain open.

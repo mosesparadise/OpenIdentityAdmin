@@ -20,7 +20,7 @@ Deliver the next real user journey: Applications in the existing Aspire workspac
 
 ## Constitution Check
 
-Approved visible-first sequencing and current user continuation cover M02-D/M04 read dependencies. Architecture already specifies remote discovery plus native token/authorization entry validation. Production and external declarations remain unauthorized. Features stay within existing projects, native managers retain protocol ownership, no schema/history rewriting, real both-provider tests and relevant independent reviews required. No exception or new policy waiver is proposed. Post-design gates: independent architecture/security, test and UX source reviews pass. Implementation is present; complete hosted acceptance remains pending.
+Approved visible-first sequencing and current user continuation cover M02-D/M04 read dependencies. Architecture already specifies remote discovery plus native token/authorization entry validation. Production and external declarations remain unauthorized. Features stay within existing projects, native managers retain protocol ownership, no schema/history rewriting, real both-provider tests and relevant independent reviews required. No exception or new policy waiver is proposed. Post-design gates: independent architecture/security, test and UX source reviews pass. Implementation and scoped hosted acceptance are delivered in PR #118; verification records exact mixed-attempt provenance and remaining external gates.
 
 ## Project Structure
 

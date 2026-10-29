@@ -6,4 +6,4 @@
 - [x] Existing approved documents resolve validation/authorization decisions.
 - [x] Exact search/sort/page semantics defined in contracts/http.md.
 - [x] Final independent architecture and test design reviews pass; bounded projection finding resolved.
-- [x] Every functional requirement maps to tasks and named verification boundaries; exact test identities will be recorded from implementation/discovery.
+- [x] Every functional requirement maps to tasks and named verification boundaries; exact test identities are recorded in the committed native/Node inventories and accepted hosted verification.
