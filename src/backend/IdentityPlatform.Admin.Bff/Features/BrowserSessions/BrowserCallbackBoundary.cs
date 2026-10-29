@@ -76,7 +76,7 @@ internal static class BrowserCallbackBoundary
         http.Response.Cookies.Append(BrowserSessionCookies.Session, ticket.Handle, BrowserSessionCookies.SessionOptions());
         http.Response.Cookies.Append(BrowserSessionCookies.Generation, ticket.Generation, options);
         http.Response.Cookies.Delete(BrowserSessionCookies.Prelogin, BrowserSessionCookies.SessionOptions());
-        http.Response.Headers.Location = BrowserLoginBoundary.Login;
+        http.Response.Headers.Location = BrowserWorkspaceNavigation.Destination(http);
         http.Response.StatusCode = StatusCodes.Status303SeeOther;
     }
 }

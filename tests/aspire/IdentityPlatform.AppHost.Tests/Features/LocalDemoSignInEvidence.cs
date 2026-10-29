@@ -8,6 +8,9 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 /// <summary>Retains only closed stage/route categories and status codes, never browser URLs, form fields or exception text.</summary>
 internal sealed class LocalDemoSignInEvidence
 {
+    private const string WorkspacePath = "/";
+    private const string WorkspaceSession = "/session";
+
     private const string Issuer = "https://issuer.dev.localhost:17443";
     private const string Client = "https://bff.dev.localhost:17444";
     private const string PasswordPath = "/account/administrator/browser/login";
@@ -100,6 +103,8 @@ internal sealed class LocalDemoSignInEvidence
             (Client, CallbackPath) => Location.Callback,
             (Client, ErrorPath) => Location.ClientError,
             (Client, LoginPath) => Location.ClientLogin,
+            (Client, WorkspacePath) => Location.Workspace,
+            (Client, WorkspaceSession) => Location.Workspace,
             (Client, ResumePath) => Location.ClientResume,
             (Client, SessionPath) => Location.ClientStatus,
             _ => Location.Other
@@ -112,7 +117,7 @@ internal sealed class LocalDemoSignInEvidence
     }
     private enum Location
     {
-        Other, Password, Factor, Callback, ClientError, ClientLogin, ClientResume, ClientStatus
+        Other, Password, Factor, Callback, ClientError, ClientLogin, ClientResume, ClientStatus, Workspace
     }
     private enum Failure
     {

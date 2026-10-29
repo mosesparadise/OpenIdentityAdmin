@@ -7,6 +7,14 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 /// <summary>Exercises normal demo pages over real browser TLS without authority fixtures, certificate overrides or screenshots.</summary>
 internal sealed class LocalDemoBrowser : IAsyncDisposable
 {
+    private const string WorkspacePath = "/";
+    private const string WorkspaceSignedOut = "Not signed in";
+    private const string WorkspaceSignedIn = "You’re signed in";
+    private const string WorkspaceSignIn = "Sign in";
+    private const string WorkspaceView = "View session";
+    private const string WorkspaceIdentity = ".account-id";
+    private const string WorkspaceReturn = "#workspace-return";
+
     private const int SuccessStatus = 200;
     private const int UnauthorizedStatus = 401;
     private const string SecurityPath = "/account/administrator/security";
@@ -14,7 +22,6 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private const string EnrollmentPath = "/account/administrator/enrollment";
     private const string SetupKey = "#setup-key";
     private const string RecoveryCodes = ".recovery-codes code";
-    private const string LoginPath = "/bff/login";
     private const string StartLabel = "Start sign-in";
     private const string SessionPath = "/bff/session";
     private const string AuthenticatedField = "authenticated";
@@ -107,8 +114,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         try
         {
             evidence.Current = LocalDemoSignInEvidence.Stage.Navigation;
-            var response = await page.GotoAsync(Client + LoginPath);
-            Assert.Equal(SuccessStatus, response!.Status);
+            await OpenWorkspaceSignInAsync();
             evidence.Current = LocalDemoSignInEvidence.Stage.Start;
             await page.GetByRole(AriaRole.Button, new()
             {
@@ -126,7 +132,8 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
             evidence.Current = LocalDemoSignInEvidence.Stage.FactorSubmission;
             await page.Locator(CodeField).FillAsync(code);
             evidence.Current = LocalDemoSignInEvidence.Stage.Callback;
-            await LocalDemoNavigation.SubmitAsync(page, page.Locator(Submit), Client + LoginPath);
+            await LocalDemoNavigation.SubmitAsync(page, page.Locator(Submit), Client + WorkspacePath);
+            await RequireWorkspaceSessionAsync();
             evidence.Current = LocalDemoSignInEvidence.Stage.Status;
             await RequireStatusAsync(true);
         }
@@ -134,6 +141,39 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         {
             throw await evidence.FailureAsync(page, error, seed, code, sampled);
         }
+    }
+
+    /// <summary>Opens the visible workspace and follows its explicit sign-in entry into the native ceremony.</summary>
+    private async Task OpenWorkspaceSignInAsync()
+    {
+        var response = await page.GotoAsync(Client + WorkspacePath);
+        Assert.Equal(SuccessStatus, response!.Status);
+        await page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = WorkspaceSignedOut,
+            Exact = true
+        }).WaitForAsync();
+        await page.GetByRole(AriaRole.Link, new()
+        {
+            Name = WorkspaceSignIn,
+            Exact = true
+        }).ClickAsync();
+    }
+
+    /// <summary>Requires the real callback landing and rendered account details before the independent status oracle.</summary>
+    private async Task RequireWorkspaceSessionAsync()
+    {
+        await page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = WorkspaceSignedIn,
+            Exact = true
+        }).WaitForAsync();
+        await page.GetByRole(AriaRole.Link, new()
+        {
+            Name = WorkspaceView,
+            Exact = true
+        }).ClickAsync();
+        await page.Locator(WorkspaceIdentity).WaitForAsync();
     }
 
     /// <summary>Submits only the actual page's password form; it cannot grant or inject an authenticated principal.</summary>
@@ -186,6 +226,12 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
                 HasText = Unverified
             }).WaitForAsync();
         }
+        await page.Locator(WorkspaceReturn).ClickAsync();
+        await page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = WorkspaceSignedOut,
+            Exact = true
+        }).WaitForAsync();
         await RequireStatusAsync(false);
     }
 

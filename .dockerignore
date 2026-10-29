@@ -15,3 +15,6 @@
 **/*.key
 **/.env*
 **/appsettings.*.local.json
+
+**/node_modules/**
+**/test-results/**

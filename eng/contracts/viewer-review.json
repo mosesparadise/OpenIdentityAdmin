@@ -11,12 +11,12 @@
     "src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/Assets/theme.css": "e35b6eee1de81df70384586d0bd90dec1610eb11694dc4cf5360cb6d69be16e5"
   },
   "requestSha256": "a1bfb2660c41d6e70af6e1a18572671e3c49d5988aad2f1dbc7d95d4e470f51d",
-  "responseSha256": "67e9fb0178dfa2d997a47c11b23c3c56017e6400d4f1e12a9d4c984fe3f6c156",
+  "responseSha256": "991253886b41b70ce6fba7c1d9c2f5a2b80aa5ff8e19f55ce35daa010c277101",
   "configurationAssessment": "vendor/configuration-review-2026-10-12.json",
   "supplementalConfigurationAssessment": "vendor/configuration-review-2026-10-22.json",
   "additionalConfigurationAssessment": "vendor/configuration-review-2026-10-23.json",
   "localDemoConfigurationAssessment": "vendor/configuration-review-2026-10-26.json",
   "packageUpgradeAssessment": "vendor/package-upgrade-2026-10-27.json",
   "nativeLinkConfigurationAssessment": "vendor/configuration-review-2026-10-27.json",
-  "latestAdvisoryAssessment": "vendor/advisory-review-2026-10-28.json"
+  "latestAdvisoryAssessment": "vendor/advisory-review-2026-10-29.json"
 }

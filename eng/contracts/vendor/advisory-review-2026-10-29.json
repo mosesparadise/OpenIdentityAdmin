@@ -1,0 +1,26 @@
+{
+  "reviewedDate": "2026-10-29",
+  "scope": "Exact metadata-identity replacement for an existing unresolved candidate viewer advisory; no runtime/configuration or release-clearance change.",
+  "advisory": {
+    "package": "qs",
+    "ghsa": "GHSA-6pq8-jhm2-2vcw",
+    "previousNpmId": 1243452,
+    "currentNpmId": 1243687,
+    "severity": "moderate",
+    "affectedRange": ">=6.7.0 <=6.16.0",
+    "disposition": "unresolved",
+    "priorAssessment": "package-upgrade-2026-10-27.json"
+  },
+  "comparison": "Current bulk response replaces1243452 with1243687. All fields other than id are identical; every other common object is unchanged. Preserve all14 prior objects and append the exact replacement; the retained union has15 objects representing14 unique advisory URLs.",
+  "currentResponseObjects": 14,
+  "retainedUnionObjects": 15,
+  "distinctAdvisoryUrls": 14,
+  "independentReview": "Architecture/security reviewer independently compared both complete JSON responses and confirmed the sole id-field change and unchanged unresolved disposition.",
+  "activationBlocked": true,
+  "inventoryComplete": false,
+  "limitations": [
+    "Default and local-demo hosts still leave documentation unmapped.",
+    "No exploitability exclusion, clean-vendor or public-release claim.",
+    "Strict gate still rejects any other new or changed unreviewed object; prior findings and inventory/notice obligations remain open."
+  ]
+}

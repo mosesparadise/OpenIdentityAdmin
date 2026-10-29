@@ -1,0 +1,3 @@
+# Browser observation model
+
+No migrations or server state. Session state is a discriminated ephemeral union: loading, anonymous, authenticated(subject,expiresAt), elapsed, unavailable. Runtime input is bounded, exact and parsed from the generated minimal browser DTO. Only a fresh successful nonexpired observation produces authenticated state. Recheck clears prioridentity; request generations reject stale completions. Timer/pagehide/unmount fences prevent stale restoration. Elapsed means local display deadline reached, not proof that logout committed. Theme is system/light/dark; only identity-theme is persisted, with storage failure tolerated. No username/permission/token snapshot or bearer transport.

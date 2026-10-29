@@ -12,6 +12,12 @@ namespace IdentityPlatform.Host.Tests.Features.LocalDemo;
 /// <summary>Exercises the BFF's actual generic startup rather than a duplicate fixture pipeline.</summary>
 public sealed class LocalDemoHostTests(LocalDemoFixture fixture) : IClassFixture<LocalDemoFixture>
 {
+    private const string WorkspacePath = "/";
+    private const string WorkspaceSession = "/session";
+    private const string WorkspaceAsset = "/admin-assets/app.js";
+    private const string UnknownSession = "/session/";
+    private const string UnknownSourceMap = "/admin-assets/app.js.map";
+
     private const string EnabledSetting = "LocalDemo:Enabled";
     private const string AlivePath = "/alive";
     private const string UnknownPath = "/unknown";
@@ -40,10 +46,16 @@ public sealed class LocalDemoHostTests(LocalDemoFixture fixture) : IClassFixture
             client.BaseAddress = new Uri(LocalDemoProfile.Client);
             using var alive = await client.GetAsync(AlivePath, TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, alive.StatusCode);
-            foreach (var path in new[] { UnknownPath, ApiPath, ScalarPath, SwaggerPath })
+            foreach (var path in new[] { UnknownPath, ApiPath, ScalarPath, SwaggerPath, UnknownSession, UnknownSourceMap })
             {
                 using var response = await client.GetAsync(path, TestContext.Current.CancellationToken);
                 Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            }
+            foreach (var path in new[] { WorkspacePath, WorkspaceSession, WorkspaceAsset })
+            {
+                using var workspace = await client.GetAsync(path, TestContext.Current.CancellationToken);
+                Assert.Equal(enabled ? HttpStatusCode.OK : HttpStatusCode.NotFound, workspace.StatusCode);
+                Assert.False(workspace.Headers.Contains(SetCookieHeader));
             }
             using var login = await client.GetAsync(LoginPath, TestContext.Current.CancellationToken);
             // Login creates durable browser coordination; unavailable storage must fail closed.

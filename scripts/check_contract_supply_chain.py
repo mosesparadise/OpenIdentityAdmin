@@ -18,9 +18,11 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def inventory_toolchain():
-    review = json.loads((POLICY / 'npm-review.json').read_text())
-    lock_path = PACKAGE / 'package-lock.json'
+def inventory_toolchain(package=None, policy=None):
+    package = PACKAGE if package is None else package
+    policy = POLICY if policy is None else policy
+    review = json.loads((policy / 'npm-review.json').read_text())
+    lock_path = package / 'package-lock.json'
     if digest(lock_path) != review['lockSha256']:
         raise ValueError('npm dependency graph changed without a supply-chain review')
     lock = json.loads(lock_path.read_text())
@@ -33,7 +35,7 @@ def inventory_toolchain():
             raise ValueError('Unreviewed npm license or missing artifact integrity')
         if not item.get('resolved', '').startswith('https://registry.npmjs.org/'):
             raise ValueError('npm artifact has an unreviewed registry source')
-        installed = PACKAGE / location / 'package.json'
+        installed = package / location / 'package.json'
         if installed.exists():
             actual = json.loads(installed.read_text())
             if actual.get('name') != name or actual.get('version') != item['version'] or actual.get('license') != item['license']:
@@ -41,7 +43,9 @@ def inventory_toolchain():
         else:
             host_os = {'Linux': 'linux', 'Darwin': 'darwin', 'Windows': 'win32'}.get(platform.system())
             host_cpu = {'x86_64': 'x64', 'AMD64': 'x64', 'aarch64': 'arm64'}.get(platform.machine())
-            excluded = (item.get('os') and host_os not in item['os']) or (item.get('cpu') and host_cpu not in item['cpu'])
+            platform_key = f'{host_os}-{host_cpu}-{platform.libc_ver()[0]}'
+            reviewed_exclusion = name in review.get('optionalPlatformExclusions', {}).get(platform_key, [])
+            excluded = reviewed_exclusion or (item.get('os') and host_os not in item['os']) or (item.get('cpu') and host_cpu not in item['cpu'])
             if not item.get('optional') or not excluded:
                 raise ValueError('Required npm dependency is not installed')
         result.append({'name': name, 'version': item['version'], 'license': item['license'], 'integrity': item['integrity']})
