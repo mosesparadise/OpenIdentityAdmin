@@ -1,9 +1,9 @@
 using IdentityPlatform.Admin.Bff.Features.AdminUi;
-using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
+using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

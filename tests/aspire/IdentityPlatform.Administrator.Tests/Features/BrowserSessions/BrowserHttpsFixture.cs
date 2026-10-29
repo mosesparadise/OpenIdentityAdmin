@@ -1,7 +1,7 @@
-using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Credentials;
 using IdentityPlatform.Admin.Bff.Features.Authentication.Protocol;
 using IdentityPlatform.Admin.Bff.Features.Sessions;
+using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Migrator.Features.AdministratorProtocol;

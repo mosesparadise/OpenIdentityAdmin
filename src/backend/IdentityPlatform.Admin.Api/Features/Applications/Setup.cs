@@ -1,5 +1,5 @@
-using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.ApiContracts;
+using IdentityPlatform.Core.Features.Applications;
 
 namespace IdentityPlatform.Admin.Api.Features.Applications;
 

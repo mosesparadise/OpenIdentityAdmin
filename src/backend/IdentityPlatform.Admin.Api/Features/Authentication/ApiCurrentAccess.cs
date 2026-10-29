@@ -1,5 +1,5 @@
-using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;

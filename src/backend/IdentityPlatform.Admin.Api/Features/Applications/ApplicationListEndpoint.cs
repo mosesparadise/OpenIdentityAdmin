@@ -1,10 +1,9 @@
 using System.Text.Json;
 using IdentityPlatform.Admin.Api.Features.Authentication;
 using IdentityPlatform.Core.Features.Applications;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Features;
-using OpenIddict.Validation.AspNetCore;
 using OpenIddict.Abstractions;
+using OpenIddict.Validation.AspNetCore;
 
 namespace IdentityPlatform.Admin.Api.Features.Applications;
 

@@ -1,7 +1,7 @@
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Validation;
 using Polly;
