@@ -53,4 +53,4 @@ After failed/interrupted initialization, the command attempts to stop only the v
 
 ## Acceptance limits
 
-Required automation retains real PostgreSQL/SQL Server, native bootstrap, genuine Chromium enrollment/login/logout, fresh-run invalidation, existing Chromium/WebKit security matrices and exact A-009 deferrals. Linux CI does not establish actual Windows Docker Desktop execution. M02-C refresh, M02-D API authority, M02-E React, all six historical findings, human assessment and production/public-release gates remain open.
+Required automation retains real PostgreSQL/SQL Server, native bootstrap, genuine Chromium enrollment/login/logout, fresh-run invalidation, existing Chromium/WebKit security matrices and exact A-009 deferrals. Linux CI does not establish actual Windows Docker Desktop execution. The M02-E visible React shell is delivered in [PR #116](https://github.com/mosesparadise/OpenIdentityAdmin/pull/116). M02-C refresh, M02-D management API authority, application management screens, all six historical findings, human assessment and production/public-release gates remain open.

@@ -2,7 +2,7 @@
 
 **Feature Branch**: `119-admin-visible-shell`
 **Created**: 2026-10-29
-**Status**: Authorized first visible slice; implemented candidate; full hosted acceptance pending
+**Status**: Internally accepted in PR #116; manual and release gates remain open
 **Input**: The user approved the recommendation to deliver a visible shell, then a protected application list, then application creation/editing. This feature delivers the first independently demonstrable slice; M02-D/M04 protect the subsequent management slices.
 
 ## User Scenarios & Testing
