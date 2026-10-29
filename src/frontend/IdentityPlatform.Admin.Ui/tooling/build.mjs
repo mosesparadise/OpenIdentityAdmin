@@ -25,7 +25,7 @@ async function notices() {
     if (!license) throw new Error("Missing runtime license");
     content += `${name}@${version} — ${manifest.license}\n${await readFile(path.join(directory, license), "utf8")}\n\n`;
   }
-  return content.replaceAll("\r\n", "\n");
+  return content.replaceAll("\r\n", "\n").trimEnd() + "\n";
 }
 try {
   const result = await build({ absWorkingDir: root, entryPoints: ["main.tsx"], outfile: "app.js", bundle: true,
