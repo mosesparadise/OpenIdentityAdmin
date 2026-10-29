@@ -7,7 +7,7 @@
     "MIT",
     "MPL-2.0"
   ],
-  "scope": "Frontend build/test tools and browser runtime. Runtime notices include full MIT texts. MPL lightningcss is build tooling; no modified upstream source or native binary is shipped in the browser.",
+  "scope": "Frontend build/test tools and browser runtime. Shipped notices include full MIT texts for runtime dependencies and Tailwind CSS included in app.css. MPL lightningcss is build tooling; no modified upstream source or native binary is shipped in the browser.",
   "optionalPlatformExclusions": {
     "linux-x64-glibc": [
       "@parcel/watcher-linux-x64-musl",

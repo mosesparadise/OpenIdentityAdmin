@@ -16,6 +16,9 @@ async function notices() {
   const packages = new Map();
   const visit = node => { for (const [name, item] of Object.entries(node.dependencies ?? {})) { packages.set(name, item.version); visit(item); } };
   visit(tree);
+  // Tailwind is a build dependency, but its preflight/theme CSS is distributed in app.css.
+  const manifest = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+  packages.set("tailwindcss", manifest.devDependencies.tailwindcss);
   let content = "OpenIdentityAdmin browser runtime — third-party notices\n\n";
   for (const [name, version] of [...packages].sort(([a], [b]) => a.localeCompare(b, "en"))) {
     const directory = path.join(root, "node_modules", name);
