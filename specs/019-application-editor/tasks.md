@@ -10,7 +10,7 @@
 - [x] T003 Characterize real native authorization caching, cached subtype/restoration, cached-request/code redemption transaction boundaries and the required managed publication seams in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/. FR-002–004/012.
 - [x] T004 Implement bounded profile/input/DTO/version contracts in src/core/IdentityPlatform.Core/Features/Applications/ and permanent Host tests: clientId1–100 UTF-16/no whitespace or controls, displayName1–200/no controls, redirects1–10/exact HTTPS/max2048, required future whole-second UTC expiry. FR-001/002/007/010.
 - [x] T005 Add ApplicationPolicy and exact managed authentication/consent model under src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and Features/Identity/ManagedApplications/; append both provider Platform migrations/descriptors and exact upgrade witnesses. FR-006/008/012.
-- [ ] T006 Add owned current mutation authority and native-manager/audit transaction in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and Admin.Api/Features/Applications/; preserve ApiRead rollback-only. FR-005/006/008.
+- [x] T006 Add owned current mutation authority and native-manager/audit transaction in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and Admin.Api/Features/Applications/; preserve ApiRead rollback-only. FR-005/006/008.
 - [ ] T007 Add genuine JSON antiforgery binding/token acquisition and fixed bounded mutation transport in src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ with Host/provider/browser negatives. FR-009.
 
 ## US1 — Create a usable registration

@@ -980,7 +980,24 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: False, rollback: True)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: True, rollback: False)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: True, rollback: True)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PersistedSystemBinding_When_TargetHasManagedMetadata_Then_EditAndReplacementStillDeny(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditDeleted)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditFailure)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: CredentialExpired)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: PolicyChanged)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: SourceRebound)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: SourceRevoked)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: TokenRevoked)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CancellationAfterNativeSave_When_CreateRuns_Then_NoResultOrPersistedMutationSurvives(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CommittedMutation_When_ChildCleanupFails_Then_CredentialOutputIsWithheldWithoutImplicitRetry(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"PostgreSql\", replacement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"PostgreSql\", replacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_IdentifierAliases_When_UpdateCarriesOriginalVersion_Then_ExactResourceBindingDenies(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2067,7 +2084,24 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: False, rollback: True)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: True, rollback: False)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: True, rollback: True)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PersistedSystemBinding_When_TargetHasManagedMetadata_Then_EditAndReplacementStillDeny(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditDeleted)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditFailure)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: CredentialExpired)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: PolicyChanged)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: SourceRebound)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: SourceRevoked)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: TokenRevoked)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CancellationAfterNativeSave_When_CreateRuns_Then_NoResultOrPersistedMutationSurvives(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CommittedMutation_When_ChildCleanupFails_Then_CredentialOutputIsWithheldWithoutImplicitRetry(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"SqlServer\", replacement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"SqlServer\", replacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_IdentifierAliases_When_UpdateCarriesOriginalVersion_Then_ExactResourceBindingDenies(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -44485,6 +44519,670 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
         "typeName": "NativeCacheTests",
         "methodName": "Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PersistedSystemBinding_When_TargetHasManagedMetadata_Then_EditAndReplacementStillDeny(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PersistedSystemBinding_When_TargetHasManagedMetadata_Then_EditAndReplacementStillDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PersistedSystemBinding_When_TargetHasManagedMetadata_Then_EditAndReplacementStillDeny(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PersistedSystemBinding_When_TargetHasManagedMetadata_Then_EditAndReplacementStillDeny",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditDeleted)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditFailure)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: CredentialExpired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: PolicyChanged)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: SourceRebound)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: SourceRevoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: TokenRevoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditDeleted)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditFailure)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: CredentialExpired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: PolicyChanged)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: SourceRebound)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: SourceRevoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: TokenRevoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationFailureTests",
+        "methodName": "Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWriteDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CancellationAfterNativeSave_When_CreateRuns_Then_NoResultOrPersistedMutationSurvives(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationPublicationTests",
+        "methodName": "Given_CancellationAfterNativeSave_When_CreateRuns_Then_NoResultOrPersistedMutationSurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CancellationAfterNativeSave_When_CreateRuns_Then_NoResultOrPersistedMutationSurvives(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationPublicationTests",
+        "methodName": "Given_CancellationAfterNativeSave_When_CreateRuns_Then_NoResultOrPersistedMutationSurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CommittedMutation_When_ChildCleanupFails_Then_CredentialOutputIsWithheldWithoutImplicitRetry(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationPublicationTests",
+        "methodName": "Given_CommittedMutation_When_ChildCleanupFails_Then_CredentialOutputIsWithheldWithoutImplicitRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationPublicationTests.Given_CommittedMutation_When_ChildCleanupFails_Then_CredentialOutputIsWithheldWithoutImplicitRetry(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationPublicationTests",
+        "methodName": "Given_CommittedMutation_When_ChildCleanupFails_Then_CredentialOutputIsWithheldWithoutImplicitRetry",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"PostgreSql\", replacement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationRollbackTests",
+        "methodName": "Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"PostgreSql\", replacement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationRollbackTests",
+        "methodName": "Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"SqlServer\", replacement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationRollbackTests",
+        "methodName": "Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain(provider: \"SqlServer\", replacement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationRollbackTests",
+        "methodName": "Given_ExistingRegistration_When_UpdatePersistenceIsFaulted_Then_OriginalSecretLifecycleVersionAndAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_IdentifierAliases_When_UpdateCarriesOriginalVersion_Then_ExactResourceBindingDenies(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationRollbackTests",
+        "methodName": "Given_IdentifierAliases_When_UpdateCarriesOriginalVersion_Then_ExactResourceBindingDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationRollbackTests.Given_IdentifierAliases_When_UpdateCarriesOriginalVersion_Then_ExactResourceBindingDenies(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationRollbackTests",
+        "methodName": "Given_IdentifierAliases_When_UpdateCarriesOriginalVersion_Then_ExactResourceBindingDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationMutationTests",
+        "methodName": "Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
