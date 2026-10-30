@@ -167,6 +167,8 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Policy, label: administrator-SqlServer-governance-policy }
           - { profile: SqlServer, partition: administrator, story: Governance.Commands, label: administrator-SqlServer-governance-commands }
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
+          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, label: administrator-PostgreSql-managedapplications }
+          - { profile: SqlServer, partition: administrator, story: ManagedApplications, label: administrator-SqlServer-managedapplications }
           - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
           - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }

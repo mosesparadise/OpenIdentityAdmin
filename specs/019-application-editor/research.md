@@ -32,3 +32,11 @@ Architecture and test reviewers independently confirm the above dependencies. No
 The user has three pending scope questions recorded in the specification. Dependent issuer/profile/credential implementation waits for those answers. Independent prerequisite research and specification work continue. Credential expiry/initial issuance/recovery details must be resolved in the chosen profile's plan before affected implementation; existing replacement safeguards must not be weakened.
 
 Final independent architecture review passes this planning checkpoint only. The approved create contract uses `applications.write`; replacement explicitly requires `applications.credentials` and recent MFA. Any stronger initial-issuance policy must be identified as a proposed choice, not claimed to be already mandated by that create contract. Shared-secret expiry remains a selected-profile planning obligation.
+
+## User-selected scope — 29 October 2026
+
+The user answered “all recommended”: confidential web code/S256 with a generated one-time secret; OpenID/sub-only explicit consent; existing administrator accounts with fresh password/MFA and no administrator claims. The pending-question observations above are historical and resolved by this answer. Ordinary API catalogue, public-key credentials, other client profiles and ordinary-user onboarding remain later scope.
+
+Initial create retains the approved `applications.write` policy. Explicit credential replacement requires `applications.credentials`, current read access for its details and fresh MFA proof within the approved five-minute bound. The expiry is required operator-provided future UTC input, with no invented global default. Lost-output recovery uses explicit replacement with the current version; no plaintext retention or automatic retry.
+
+Fresh managed-client authentication must not call the administrator session-grant completion path: the current `JourneyCompletion` creates `AdministratorSession`. Reuse lower password/factor/replay/budget primitives through a separate exact-purpose interaction/completion that creates neither an administrator cookie nor a BFF ticket. Existing administrator sessions are not a substitute for the selected fresh ceremony.

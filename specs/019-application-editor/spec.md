@@ -2,7 +2,7 @@
 
 **Feature Branch**: `123-application-editor`
 **Created**: 2026-10-29
-**Status**: Draft; three initial-slice choices awaiting user response
+**Status**: Initial-slice choices accepted; design and implementation in progress
 **Input**: After PRs #118/#119 delivered the protected Applications list, the user requested “Please proceed with the next item.” The authorized visible-first sequence continues with application creation/editing and required dependencies.
 
 ## User Scenarios & Testing
@@ -57,9 +57,9 @@ Concurrent duplicate creates, stale/malformed/missing preconditions, ordinal ide
 ### Functional Requirements
 
 - **FR-001**: Deliver real application creation and sanitized details/editing from the existing Applications workspace, with immutable unique client IDs. Product FR-01/19.
-- **FR-002**: Offer only profiles and credential modes backed by implemented protocol behavior. [NEEDS CLARIFICATION Q1: first confidential-web code/S256 profile with a generated one-time shared secret, confidential-web public-key credentials, or all five R1 profiles and their dependencies?] Product FR-02/03/09.
-- **FR-003**: Enforce only approved scopes, audiences, claims and consent. [NEEDS CLARIFICATION Q2: OpenID sign-in with stable subject and explicit consent first, or include ordinary API scope/audience catalogue and claim-policy implementation now?] Product FR-04/08/09.
-- **FR-004**: Implement the actual authentication prerequisites for the selected user journey. [NEEDS CLARIFICATION Q3: existing administrator accounts with fresh password/MFA and explicit consent but no administrator claims, or ordinary-user onboarding/sign-in first?] Product FR-05/07/09/11.
+- **FR-002**: Offer only profiles and credential modes backed by implemented protocol behavior. The user selected a confidential web application using authorization code with PKCE S256 and a generated one-time shared secret. Other client profiles and asymmetric credentials remain separate. Product FR-02/03/09.
+- **FR-003**: Enforce only approved scopes, audiences, claims and consent. The user selected OpenID sign-in with only a stable subject identifier and explicit consent. Ordinary API scopes/audiences and claim-policy catalogue remain separate. Product FR-04/08/09.
+- **FR-004**: Implement the actual authentication prerequisites for the selected user journey. The user selected existing administrator accounts, fresh password/MFA for each sign-in and explicit consent. The application receives no administrator roles, permissions, source-session identity or management authority. Ordinary-user onboarding remains separate. Product FR-05/07/09/11.
 - **FR-005**: Independently require current `applications.write` inside the mutation transaction; enforce the separately specified credential permission and recent-MFA rules for replacement. Specify initial credential issuance authorization explicitly in the selected profile plan. A read-only or stale bearer/session grants no mutation authority. Product FR-06/11.
 - **FR-006**: Commit native application/product policy/version and sanitized audit intent atomically, using the same owned persistence context even when managers save internally. Record actor/action/target/outcome/UTC time/correlation without credentials or request-body dumps. Product FR-12/17.
 - **FR-007**: Details expose an editable-resource ETag; updates require If-Match, returning 428 when missing and 412 when stale. Duplicate/domain conflicts return 409. Client identity cannot be renamed in place. Product FR-01/16.
@@ -86,6 +86,6 @@ Concurrent duplicate creates, stale/malformed/missing preconditions, ordinal ide
 - **SC-005**: All defined UI states pass retained-engine functional, keyboard, reflow and automated accessibility checks; qualified manual and actual Windows acceptance remain explicitly separate.
 - **SC-006**: Existing required identities remain covered, both-provider/browser checks and unchanged coverage/mutation gates pass, and independent reviews pass before normal squash delivery.
 
-## Confirmed boundaries and pending decisions
+## Confirmed boundaries and decisions
 
-The new request continues the approved creation/editing sequence; it does not activate refresh, production, certification or vendor documentation. The three questions above are pending choices, not defaults silently accepted by elapsed time. No affected implementation has begun. Approved invariants already settle immutable IDs, current permissions, same-transaction audit, native manager ownership and version preconditions; those do not require repeated permission. Clone, disable/delete and unrelated full lifecycle remain separately tracked unless a selected prerequisite requires an explicitly documented bounded part. All six historical findings, human/Windows/Firefox/A-009 and public-release gates remain open.
+The new request continues the approved creation/editing sequence; it does not activate refresh, production, certification or vendor documentation. On 29 October 2026 the user answered “all recommended”, explicitly selecting the three choices above. Implementation includes their necessary issuer, authentication, consent and management-write dependencies. Approved invariants already settle immutable IDs, current permissions, same-transaction audit, native manager ownership and version preconditions; those do not require repeated permission. Clone, disable/delete and unrelated full lifecycle remain separately tracked unless a selected prerequisite requires an explicitly documented bounded part. All six historical findings, human/Windows/Firefox/A-009 and public-release gates remain open.

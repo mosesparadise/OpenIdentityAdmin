@@ -974,7 +974,13 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationDeadlineBrowserTests.Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationListBrowserTests.Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationPresentationBrowserTests.Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_InitialAuthorization_When_NativeCacheResumes_Then_ExactDemandSurvivesOuterSubstitutionAndIssuesOnce(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: False, rollback: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: False, rollback: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: True, rollback: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: True, rollback: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2055,7 +2061,13 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationDeadlineBrowserTests.Given_NativeGovernanceLock_When_OriginalApiDeadlineEnds_Then_RequestDeniesAndAllAuthorityRollsBack(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationListBrowserTests.Given_RegisteredApplications_When_AdministratorSignsInAndSearches_Then_RealCollectionExpiresWithoutRenewal(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationPresentationBrowserTests.Given_RealPagedCollection_When_NavigatedAndPermissionRemoved_Then_AccessibleStatesClearProtectedData(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationProxyBrowserTests.Given_RealBrowserCredential_When_UpstreamResponsesOrBrowserHeadersAreHostile_Then_ProxyRemainsBoundedAndPrivate(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_InitialAuthorization_When_NativeCacheResumes_Then_ExactDemandSurvivesOuterSubstitutionAndIssuesOnce(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: False, rollback: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: False, rollback: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: True, rollback: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: True, rollback: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -44236,6 +44248,250 @@
           "key": "Category",
           "value": "Browser"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_InitialAuthorization_When_NativeCacheResumes_Then_ExactDemandSurvivesOuterSubstitutionAndIssuesOnce(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_InitialAuthorization_When_NativeCacheResumes_Then_ExactDemandSurvivesOuterSubstitutionAndIssuesOnce",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_InitialAuthorization_When_NativeCacheResumes_Then_ExactDemandSurvivesOuterSubstitutionAndIssuesOnce(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_InitialAuthorization_When_NativeCacheResumes_Then_ExactDemandSurvivesOuterSubstitutionAndIssuesOnce",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: False, rollback: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: False, rollback: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: True, rollback: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"PostgreSql\", codeArtifact: True, rollback: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: False, rollback: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: False, rollback: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: True, rollback: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction(provider: \"SqlServer\", codeArtifact: True, rollback: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_LateFailureAfterNativeRedemption_When_OwnerCommitsOrRollsBack_Then_PersistedReplayStateFollowsTheActualTransaction",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.NativeCacheTests.Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "NativeCacheTests",
+        "methodName": "Given_TwoValidRegisteredClients_When_CachedRequestIsSubstituted_Then_NativeRestorationRejectsForeignBinding",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"
