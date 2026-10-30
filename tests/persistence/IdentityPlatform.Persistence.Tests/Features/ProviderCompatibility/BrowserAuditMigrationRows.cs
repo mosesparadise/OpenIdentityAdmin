@@ -64,8 +64,8 @@ internal static class BrowserAuditMigrationRows
     internal static async Task<string[][]> CaptureHistoryAsync(DbContext platform, DbContext sessions, CancellationToken token) =>
         [await ReadAsync(platform, PlatformHistory, false, token), await ReadAsync(sessions, SessionsHistory, false, token)];
 
-    /// <summary>Requires every full old history row plus exactly one independently named native migration/version after each upgrade.</summary>
-    internal static async Task RequireHistoryAsync(DbContext platform, DbContext sessions, string[][] before, string[] additions, CancellationToken token)
+    /// <summary>Requires every full old history row plus exactly the independently named native migration/version additions after each upgrade.</summary>
+    internal static async Task RequireHistoryAsync(DbContext platform, DbContext sessions, string[][] before, string[][] additions, CancellationToken token)
     {
         var after = await CaptureHistoryAsync(platform, sessions, token);
         for (var index = 0; index < before.Length; index++)
@@ -74,10 +74,10 @@ internal static class BrowserAuditMigrationRows
         }
     }
 
-    /// <summary>Preserves every full old row and independently checks the version of the one newly applied migration.</summary>
-    internal static void RequireHistory(string[] before, string[] after, string addition)
+    /// <summary>Preserves every full old row and independently checks the versions of each explicitly named new migration.</summary>
+    internal static void RequireHistory(string[] before, string[] after, params string[] additions)
     {
-        var expected = before.Append(JsonSerializer.Serialize(new[] { addition, ProductVersion })).Order(StringComparer.Ordinal);
+        var expected = before.Concat(additions.Select(addition => JsonSerializer.Serialize(new[] { addition, ProductVersion }))).Order(StringComparer.Ordinal);
         Assert.Equal(DatabaseSnapshot.Fingerprint(expected), DatabaseSnapshot.Fingerprint(after.Order(StringComparer.Ordinal)));
     }
 

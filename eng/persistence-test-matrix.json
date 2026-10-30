@@ -574,6 +574,158 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "ManagedSchemaTests",
+        "methodName": "Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -591,7 +743,11 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues(provider: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -608,6 +764,10 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_NativeCleanupProof_When_EligibilityAndReplayAreExercised_Then_OnlyExactDenyOnlyProofIsConsumed(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_ConsumedCleanupProof_When_ReceiptAndCommitBoundariesChange_Then_OnlyOriginalLiveOwnershipContinues(provider: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProtocolStorage.NativeCleanupAssertionTests.Given_DisabledCleanupProfile_When_LedgerBoundariesAreReached_Then_RetentionAndCapacityRemainStrict(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"SqlServer\")"
   ]
 }

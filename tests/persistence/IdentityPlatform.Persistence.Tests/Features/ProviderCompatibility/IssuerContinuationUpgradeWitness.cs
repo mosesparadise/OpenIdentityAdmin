@@ -28,8 +28,8 @@ internal static class IssuerContinuationUpgradeWitness
     private const int NullableIndex = 8;
     private const int Type = 9;
     private const int MaximumLength = 10;
-    private static readonly string[] PostgresPlatform = ["20261017224010_AdministratorProtocol", "20261023223630_AdministratorIssuerContinuation", "20261026113929_BrowserAuditCorrelation"];
-    private static readonly string[] SqlPlatform = ["20261017224016_AdministratorProtocol", "20261023223639_AdministratorIssuerContinuation", "20261026114108_BrowserAuditCorrelation"];
+    private static readonly string[] PostgresPlatform = ["20261017224010_AdministratorProtocol", "20261023223630_AdministratorIssuerContinuation", "20261026113929_BrowserAuditCorrelation", ManagedApplicationUpgradeWitness.PostgresMigration];
+    private static readonly string[] SqlPlatform = ["20261017224016_AdministratorProtocol", "20261023223639_AdministratorIssuerContinuation", "20261026114108_BrowserAuditCorrelation", ManagedApplicationUpgradeWitness.SqlMigration];
 
     /// <summary>Recognizes only exact independently queried ownership, never an index/check name that resembles the new column.</summary>
     internal static bool IsInteraction(string row)

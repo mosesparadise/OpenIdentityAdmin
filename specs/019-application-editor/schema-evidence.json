@@ -1,0 +1,38 @@
+{
+  "source_base": "944419d8e647240d7c93e8afab6d48ab639690ae",
+  "scope": "T005 local provider/schema checkpoint only; no full CI, browser, mutation acceptance, feature delivery or merge",
+  "results": {
+    "PostgreSql": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    "SqlServer": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "preserved_native_records": 30,
+  "added_native_records": 8,
+  "artifacts": {
+    "feature019-persistence-pg/persistence-pg.trx": "393a4edf56bfaac6aab8407d4b56346102d90137bc2675d635c14ea268bf4159",
+    "feature019-persistence-sql-sequential/persistence-sql.trx": "1f15d5e437849e0da47c7b6d66cd8b66093e1e743221e870df0a8431eec77982",
+    "feature019-persistence-discovery.json": "b559fa556f0802b19ecf268babf615da97f65be33d6f1ec8689461a8ff22bde9",
+    "feature019-schema-source.json": "58740a4de0e2e848ee8489c44643a11147a0f77a790517a6615a3d8f14ac41bd",
+    "feature019-schema-selection3.log": "3e107ba14c712371549066e35cab3e117856cc0b547e282cf89921cfd8dbec9e",
+    "feature019-schema-quality-final.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-schema-build3.log": "a9cc9cc3e0c55d8610fb74379bb928b63e6eb7e7e04031f8b80e7e5c41b5398c",
+    "feature019-schema-style.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "feature019-schema-instructions.log": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def",
+    "feature019-schema-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+    "feature019-baseline-build.log": "ab04e314e694704f311b921fd30459a612741d8602db2b9ad1c76f3ca5231bae",
+    "feature019-schema-sql/schema-sql.trx": "fd5824030789c93f9854fc527226470ccef87605c7f3235b1329b755cc8c4c7b",
+    "feature019-persistence-sql.log": "967ea7a13851fbf24fa1abfc72438fe19079afc4a4a0d750161b1940496d7239",
+    "feature019-schema-pg-image.log": "16ab38c5854ea4fce016b78b146b582440e12024b3a0ac58d01d3fd2127dd843",
+    "feature019-docker-space-inspection.log": "50926a4cff66ab6fb6280dd9ec2c19000fbd09b8cc6cf3fd6d51c2cd99273a12",
+    "feature019-docker-layer-references.log": "bd5c76cf7af3f51f0564eb38a3ddcfecdd8cc3e62fedb8e33d23778a9c9d0e31",
+    "feature019-docker-layer-cleanup.log": "4e281753698f612a36034d6b03530ca272d3c82f3b4b6d16c81e0c41e2a2fdfb",
+    "feature019-docker-pull-layer-cleanup.log": "60d939a295c2db36a51a551c6ecf22c21a589d556e9bae025160918745b17de8"
+  }
+}

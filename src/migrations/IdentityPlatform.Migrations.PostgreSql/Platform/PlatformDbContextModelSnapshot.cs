@@ -18,10 +18,53 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("platform")
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", b =>
+                {
+                    b.Property<string>("ApplicationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("CredentialExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CredentialIssuedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CredentialRevision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Profile")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("character varying(14)");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ApplicationId");
+
+                    b.HasIndex("CredentialExpiresAt");
+
+                    b.ToTable("ApplicationPolicy", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Profile", "\"Profile\" = 'managed-web-v1'");
+
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Revision", "\"Revision\" >= \"CredentialRevision\" AND \"CredentialRevision\" > 0");
+
+                            t.HasCheckConstraint("CK_ApplicationPolicy_Time", "\"CredentialIssuedAt\" >= 0 AND \"CredentialExpiresAt\" > \"CredentialIssuedAt\" AND \"ObservedAt\" >= \"CredentialIssuedAt\"");
+                        });
+                });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion.IssuerContinuation", b =>
                 {
@@ -114,6 +157,149 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                             t.HasCheckConstraint("CK_AdministratorIssuerContinuation_Revision", "\"Revision\" > 0");
 
                             t.HasCheckConstraint("CK_AdministratorIssuerContinuation_Time", "\"CreatedAt\" > 0 AND \"ExpiresAt\" > \"CreatedAt\" AND \"RetainUntil\" >= \"ExpiresAt\"");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications.ManagedLoginInteraction", b =>
+                {
+                    b.Property<string>("SelectorDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("ApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("ApplicationRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AuthenticationGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AuthorizationId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<string>("BrowserBudgetId")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("BrowserDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("CeremonyBrowserDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid?>("CeremonyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CodeId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long?>("ConsentVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DemandDigest")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long?>("EnrollmentRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("FactorGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("MfaVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("NativeDependencyCreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("NativeDependencyExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ObservedAt")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PasswordVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("RequestExpiresAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RequestId")
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("RetainUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.HasKey("SelectorDigest");
+
+                    b.HasIndex("AuthorizationId")
+                        .IsUnique();
+
+                    b.HasIndex("CeremonyId")
+                        .IsUnique();
+
+                    b.HasIndex("CodeId")
+                        .IsUnique();
+
+                    b.HasIndex("RequestId")
+                        .IsUnique();
+
+                    b.HasIndex("RetainUntil");
+
+                    b.HasIndex("ApplicationId", "ApplicationRevision");
+
+                    b.HasIndex("State", "ExpiresAt");
+
+                    b.HasIndex("BrowserDigest", "State", "ExpiresAt");
+
+                    b.ToTable("ManagedLoginInteraction", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Code", "(\"State\" = 5 AND \"AuthorizationId\" IS NOT NULL AND \"CodeId\" IS NOT NULL) OR (\"State\" <> 5 AND \"AuthorizationId\" IS NULL AND \"CodeId\" IS NULL)");
+
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Native", "(\"RequestId\" IS NULL AND \"RequestExpiresAt\" IS NULL AND \"NativeDependencyCreatedAt\" IS NULL AND \"NativeDependencyExpiresAt\" IS NULL) OR (\"RequestId\" IS NOT NULL AND \"RequestExpiresAt\" IS NOT NULL AND \"NativeDependencyCreatedAt\" IS NOT NULL AND \"NativeDependencyExpiresAt\" IS NOT NULL AND \"RequestExpiresAt\" >= \"ExpiresAt\" AND \"NativeDependencyCreatedAt\" >= \"CreatedAt\" AND \"NativeDependencyExpiresAt\" >= \"RequestExpiresAt\" AND \"NativeDependencyExpiresAt\" > \"NativeDependencyCreatedAt\" AND \"RetainUntil\" >= \"NativeDependencyExpiresAt\")");
+
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Proof", "\"State\" IN (6, 7) OR (\"State\" = 1 AND \"CeremonyId\" IS NULL AND \"CeremonyBrowserDigest\" IS NULL AND \"BrowserBudgetId\" IS NULL AND \"UserId\" IS NULL AND \"SecurityStamp\" IS NULL AND \"AuthenticationGeneration\" IS NULL AND \"FactorGeneration\" IS NULL AND \"EnrollmentRevision\" IS NULL AND \"PasswordVerifiedAt\" IS NULL AND \"MfaVerifiedAt\" IS NULL AND \"ConsentVerifiedAt\" IS NULL) OR (\"RequestId\" IS NOT NULL AND \"CeremonyId\" IS NOT NULL AND \"CeremonyBrowserDigest\" IS NOT NULL AND \"BrowserBudgetId\" IS NOT NULL AND \"UserId\" IS NOT NULL AND \"SecurityStamp\" IS NOT NULL AND \"AuthenticationGeneration\" IS NOT NULL AND \"AuthenticationGeneration\" > 0 AND \"FactorGeneration\" IS NOT NULL AND \"FactorGeneration\" > 0 AND \"EnrollmentRevision\" IS NOT NULL AND \"EnrollmentRevision\" >= 0 AND \"PasswordVerifiedAt\" IS NOT NULL AND \"PasswordVerifiedAt\" >= \"CreatedAt\" AND \"PasswordVerifiedAt\" < \"ExpiresAt\" AND ((\"State\" = 2 AND \"MfaVerifiedAt\" IS NULL AND \"ConsentVerifiedAt\" IS NULL) OR (\"State\" = 3 AND \"MfaVerifiedAt\" IS NOT NULL AND \"MfaVerifiedAt\" >= \"PasswordVerifiedAt\" AND \"MfaVerifiedAt\" < \"ExpiresAt\" AND \"ConsentVerifiedAt\" IS NULL) OR (\"State\" IN (4, 5) AND \"MfaVerifiedAt\" IS NOT NULL AND \"MfaVerifiedAt\" >= \"PasswordVerifiedAt\" AND \"MfaVerifiedAt\" < \"ExpiresAt\" AND \"ConsentVerifiedAt\" IS NOT NULL AND \"ConsentVerifiedAt\" >= \"MfaVerifiedAt\" AND \"ConsentVerifiedAt\" < \"ExpiresAt\")))");
+
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Revision", "\"Revision\" > 0 AND \"ApplicationRevision\" > 0");
+
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_State", "\"State\" IN (1, 2, 3, 4, 5, 6, 7)");
+
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Time", "\"CreatedAt\" >= 0 AND \"ExpiresAt\" > \"CreatedAt\" AND \"ExpiresAt\" - \"CreatedAt\" <= 300 AND \"ObservedAt\" >= \"CreatedAt\" AND \"RetainUntil\" >= \"ExpiresAt\"");
                         });
                 });
 
