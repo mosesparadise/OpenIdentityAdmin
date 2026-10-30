@@ -23,7 +23,7 @@ internal sealed class ApplicationApiHost(IHost host, BrowserHttpsEndpoint endpoi
     internal IServiceProvider Services => host.Services;
 
     /// <summary>Uses native HTTPS and real provider stores without issuer signing keys, cookies or authentication substitutes.</summary>
-    internal static async Task<ApplicationApiHost> CreateAsync(JourneyScenario scenario, string provider, Uri issuer, string callback, ApplicationProxyProbe? probe = null)
+    internal static async Task<ApplicationApiHost> CreateAsync(JourneyScenario scenario, string provider, Uri issuer, string callback, ApplicationProxyProbe? probe = null, ApplicationMutationProbe? mutationProbe = null)
     {
         var endpoint = new BrowserHttpsEndpoint();
         IHost? host = null;
@@ -51,6 +51,10 @@ internal sealed class ApplicationApiHost(IHost host, BrowserHttpsEndpoint endpoi
                     if (probe is not null)
                     {
                         app.Use(probe.InvokeAsync);
+                    }
+                    if (mutationProbe is not null)
+                    {
+                        app.Use(mutationProbe.InvokeAsync);
                     }
                     app.UseRouting();
                     app.UseEndpoints(routes => routes.MapApplicationList());

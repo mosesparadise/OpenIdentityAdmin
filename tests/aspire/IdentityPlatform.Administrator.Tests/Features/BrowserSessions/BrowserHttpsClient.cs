@@ -22,7 +22,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
 
     /// <summary>Composes only Sessions credentials and existing native/browser services; no issuer bridge or injected authentication is installed.</summary>
     internal static async Task<BrowserHttpsClient> CreateAsync(BootstrapSessions database, TimeProvider clock, NativeClientProfile profile,
-        NativeClientCredentials keys, SessionProtection protection, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null, bool workspace = false, Uri? api = null)
+        NativeClientCredentials keys, SessionProtection protection, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null, bool workspace = false, Uri? api = null, bool mutations = false)
     {
         var builder = new HostBuilder().ConfigureWebHost(web =>
         {
@@ -52,7 +52,7 @@ internal sealed class BrowserHttpsClient(IHost host, BrowserHttpsEndpoint endpoi
                 {
                     app.UseAdministratorUi();
                 }
-                ApplicationClientSetup.Use(app, api);
+                ApplicationClientSetup.Use(app, api, mutations);
                 app.Run(http =>
                 {
                     http.Response.StatusCode = StatusCodes.Status404NotFound;

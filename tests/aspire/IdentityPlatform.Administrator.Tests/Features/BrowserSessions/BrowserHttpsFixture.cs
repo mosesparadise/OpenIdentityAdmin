@@ -74,7 +74,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
     internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
         Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false,
-        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null)
+        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null, ApplicationMutationProbe? mutationProbe = null)
     {
         var owner = new BrowserHttpsFixture(distinctSites);
         try
@@ -93,10 +93,10 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             if (applications)
             {
                 owner.Api = await ApplicationApiHost.CreateAsync(owner.Issuer.Account.Journey, provider, owner.Profile.Issuer,
-                    new Uri(owner.Profile.ClientUri, CallbackPath).AbsoluteUri, applicationProbe);
+                    new Uri(owner.Profile.ClientUri, CallbackPath).AbsoluteUri, applicationProbe, mutationProbe);
             }
             owner.Client = await BrowserHttpsClient.CreateAsync(owner.database, owner.Issuer.Account.Journey.Clock,
-                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace, owner.Api?.Address);
+                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace, owner.Api?.Address, mutationProbe is not null);
             return owner;
         }
         catch { await owner.DisposeAsync(); throw; }

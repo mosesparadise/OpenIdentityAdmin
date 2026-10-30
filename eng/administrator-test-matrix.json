@@ -997,7 +997,11 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2101,7 +2105,11 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_CurrentWriteAuthority_When_CreateEditAndReplacementCommit_Then_NativeSecretsVersionsAndAuditsAgree(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -45183,6 +45191,190 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
         "typeName": "ApplicationMutationTests",
         "methodName": "Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationMutationBrowserTests",
+        "methodName": "Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationMutationBrowserTests",
+        "methodName": "Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationMutationBrowserTests",
+        "methodName": "Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationMutationBrowserTests",
+        "methodName": "Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationTransportTests",
+        "methodName": "Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationTransportTests",
+        "methodName": "Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationTransportTests",
+        "methodName": "Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationTransportTests",
+        "methodName": "Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

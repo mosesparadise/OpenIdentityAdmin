@@ -1,7 +1,7 @@
 {
   "core": 44,
   "browser": 7,
-  "node": 37,
+  "node": 38,
   "browsers": [
     "chromium",
     "firefox",
@@ -44,6 +44,7 @@
     "unsupported referenced or path-level preconditions fail closed even unchanged",
     "Given dormant browser status When inventoried Then only the explicit public local read is admitted",
     "Given browser status When authentication or cache semantics drift Then validation rejects the contract",
-    "Given browser status When a native route or extra verb is substituted Then no broad exception admits it"
+    "Given browser status When a native route or extra verb is substituted Then no broad exception admits it",
+    "Given application token acquisition When identity cache or method changes Then the exact local boundary fails closed"
   ]
 }

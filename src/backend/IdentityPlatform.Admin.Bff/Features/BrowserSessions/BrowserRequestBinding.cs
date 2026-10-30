@@ -8,6 +8,7 @@ internal sealed class BrowserRequestBinding
 {
     private const string Separator = ":";
     private const string Purpose = "browser-mutation-v1";
+    private const string ApplicationPurpose = "application-mutation-v1";
     internal string AdditionalData
     {
         get;
@@ -16,6 +17,10 @@ internal sealed class BrowserRequestBinding
     /// <summary>Keeps the exact browser digest and generation in native protected additional data, distinct from authentication authority.</summary>
     private BrowserRequestBinding(string digest, long generation, string purpose = Purpose) =>
         AdditionalData = string.Join(Separator, purpose, digest, generation.ToString(CultureInfo.InvariantCulture));
+
+    /// <summary>Separates application JSON tokens from login/logout forms using only an already authenticated durable snapshot.</summary>
+    internal static BrowserRequestBinding? ForApplications(string digest, long generation, BrowserContext row, DateTimeOffset now) =>
+        generation > 0 && FromRead(digest, generation, row, now) is not null ? new(digest, generation, ApplicationPurpose) : null;
 
     private const string ReconciliationPurpose = "browser-logout-reconciliation-v1";
 

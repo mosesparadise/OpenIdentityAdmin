@@ -14,7 +14,12 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 /// <summary>Exports the explicitly dormant product handler and DTO, separately from both production and synthetic management documents.</summary>
 public sealed class BrowserSessionDocumentTests
 {
-    private const int OperationCount = 2;
+    private const string TokenPath = "/bff/api/v1/applications/antiforgery";
+    private const string TokenOperation = "GetApplicationAntiforgeryToken";
+    private const string TokenField = "requestToken";
+    private const string TokenSchema = "ApplicationAntiforgeryToken";
+
+    private const int OperationCount = 3;
     private const string ApplicationsPath = "/bff/api/v1/applications";
     private const string ListOperation = "ListBrowserApplications";
     private const string ReadPermission = "applications.read";
@@ -103,6 +108,16 @@ public sealed class BrowserSessionDocumentTests
         Assert.Equal(ReadPermission, applications[Permission]!.GetValue<string>());
         Assert.Equal(1, applications[Downstream]!.GetValue<int>());
         Assert.Equal(ListSecurity, applications[Security]!.ToJsonString());
+        var token = document[Paths]![TokenPath]![Get]!;
+        Assert.Equal(TokenOperation, token[OperationId]!.GetValue<string>());
+        Assert.Equal(ListSecurity, token[Security]!.ToJsonString());
+        Assert.Null(token[Permission]);
+        Assert.Null(token[Downstream]);
+        Assert.Equal(new[] { TokenField }, document[Components]![Schemas]![TokenSchema]![Properties]!.AsObject().Select(value => value.Key));
+        foreach (var response in token[Responses]!.AsObject())
+        {
+            Assert.Equal(NoStore, response.Value![Headers]![CacheControl]![Schema]![Const]!.GetValue<string>());
+        }
         var operation = document[Paths]![StatusPath]![Get]!;
         Assert.Equal(ExpectedOperation, operation[OperationId]!.GetValue<string>());
         Assert.True(operation[StatusExtension]!.GetValue<bool>());

@@ -6,6 +6,10 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 /// <summary>Composes one explicitly configured application proxy without a generic forwarding surface.</summary>
 internal static class Setup
 {
+    private const string TokenPath = "/applications/antiforgery";
+    private const string TokenOperation = "GetApplicationAntiforgeryToken";
+    private const string TokenSummary = "Acquire a native token for this browser generation's application mutations";
+
     private const string CollectionPath = "/applications";
     private const string Operation = "ListBrowserApplications";
     private const string Summary = "List applications through the current browser session";
@@ -19,6 +23,9 @@ internal static class Setup
         endpoints.MapManagementGroup().MapGet(CollectionPath, (Func<HttpContext, Task>)ApplicationProxyEndpoint.HandleAsync)
             .WithName(Operation).WithSummary(Summary)
             .Produces<ApplicationPage>().ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        endpoints.MapManagementGroup().MapGet(TokenPath, (Func<HttpContext, Task>)ApplicationAntiforgeryEndpoint.HandleAsync)
+            .WithName(TokenOperation).WithSummary(TokenSummary)
+            .Produces<ApplicationAntiforgeryToken>().ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
         return endpoints;
     }
 }

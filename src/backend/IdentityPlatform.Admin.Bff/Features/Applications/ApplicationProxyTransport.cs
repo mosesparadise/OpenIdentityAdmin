@@ -1,7 +1,5 @@
 using System.Net;
 using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore.WebUtilities;
@@ -17,18 +15,8 @@ internal sealed class ApplicationProxyTransport : IDisposable
     private const string JsonType = "application/json";
     private const string Bearer = "Bearer";
     private const int HeaderKilobytes = 16;
-    private const int BufferBytes = 8192;
-    private const int MaximumDepth = 16;
     private readonly Uri target;
     private readonly HttpClient client;
-    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web)
-    {
-        PropertyNameCaseInsensitive = false,
-        UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
-        RespectRequiredConstructorParameters = true,
-        NumberHandling = JsonNumberHandling.Strict,
-        MaxDepth = MaximumDepth
-    };
 
     /// <summary>Rejects noncanonical destinations and owns a redirect-free, cookie-free transport with no automatic retries.</summary>
     internal ApplicationProxyTransport(Uri origin)
@@ -67,53 +55,10 @@ internal sealed class ApplicationProxyTransport : IDisposable
         {
             return (StatusCodes.Status503ServiceUnavailable, null);
         }
-        var bytes = await ReadBoundedAsync(response.Content, token);
-        using var document = JsonDocument.Parse(bytes, new JsonDocumentOptions { MaxDepth = MaximumDepth });
-        RequireUnique(document.RootElement);
-        var page = JsonSerializer.Deserialize<ApplicationPage>(bytes, Json);
+        await using var stream = await response.Content.ReadAsStreamAsync(token);
+        var bytes = await ApplicationJson.ReadAsync(stream, ApplicationProjection.MaximumResponseBytes, token);
+        var page = ApplicationJson.Parse<ApplicationPage>(bytes);
         return IsValid(page, query) ? (StatusCodes.Status200OK, page) : (StatusCodes.Status503ServiceUnavailable, null);
-    }
-
-    /// <summary>Bounds actual decoded bytes independently of Content-Length and never exposes a partial body.</summary>
-    private static async Task<byte[]> ReadBoundedAsync(HttpContent content, CancellationToken token)
-    {
-        await using var stream = await content.ReadAsStreamAsync(token);
-        using var output = new MemoryStream();
-        var buffer = new byte[BufferBytes];
-        int count;
-        while ((count = await stream.ReadAsync(buffer, token)) != 0)
-        {
-            if (output.Length + count > ApplicationProjection.MaximumResponseBytes)
-            {
-                throw new InvalidDataException();
-            }
-            output.Write(buffer, 0, count);
-        }
-        return output.ToArray();
-    }
-
-    /// <summary>Rejects duplicate JSON keys before the serializer can choose a misleading last value.</summary>
-    private static void RequireUnique(JsonElement value)
-    {
-        if (value.ValueKind == JsonValueKind.Object)
-        {
-            var names = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var property in value.EnumerateObject())
-            {
-                if (!names.Add(property.Name))
-                {
-                    throw new InvalidDataException();
-                }
-                RequireUnique(property.Value);
-            }
-        }
-        else if (value.ValueKind == JsonValueKind.Array)
-        {
-            foreach (var item in value.EnumerateArray())
-            {
-                RequireUnique(item);
-            }
-        }
     }
 
     /// <summary>Requires the requested page and exact finite safe records, without trusting upstream schema annotations.</summary>
@@ -121,6 +66,37 @@ internal sealed class ApplicationProxyTransport : IDisposable
         page.PageSize == query.PageSize && page.Items is not null && page.Items.Count <= query.PageSize &&
         (!page.HasNextPage || page.Items.Count == query.PageSize) && page.Items.All(item => item is not null && ApplicationProjection.IsValid(item)) &&
         page.Items.Select(item => item.Id).Distinct(StringComparer.Ordinal).Count() == page.Items.Count;
+
+    private const string IfMatchHeader = "If-Match";
+
+    /// <summary>Forwards only code-owned method/path/media, current server bearer and canonical precondition; neither cookies nor retries are enabled.</summary>
+    internal async Task<ApplicationProxyResult> WriteAsync(BrowserAccessCredential access, ApplicationMutationRequest mutation, CancellationToken token)
+    {
+        using var request = new HttpRequestMessage(mutation.Method, new Uri(target, mutation.Path));
+        request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, access.Value);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(JsonType));
+        if (mutation.Version is { } version)
+        {
+            request.Headers.TryAddWithoutValidation(IfMatchHeader, version);
+        }
+        request.Content = new ReadOnlyMemoryContent(mutation.Body);
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonType);
+        using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
+        if (response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.NotFound or
+            HttpStatusCode.Conflict or HttpStatusCode.PreconditionFailed or HttpStatusCode.PreconditionRequired)
+        {
+            return new((int)response.StatusCode, null, null, null);
+        }
+        var expected = mutation.Action == ApplicationProxyAction.Create ? HttpStatusCode.Created : HttpStatusCode.OK;
+        if (response.StatusCode != expected || response.Content.Headers.ContentType?.MediaType != JsonType || response.Content.Headers.ContentEncoding.Count != 0 ||
+            response.Content.Headers.ContentLength > ApplicationProjection.MaximumResponseBytes || response.Headers.ETag?.ToString() is not { } tag || !ApplicationVersion.IsCanonical(tag))
+        {
+            return new(StatusCodes.Status503ServiceUnavailable, null, null, null);
+        }
+        await using var stream = await response.Content.ReadAsStreamAsync(token);
+        var bytes = await ApplicationJson.ReadAsync(stream, ApplicationProjection.MaximumResponseBytes, token);
+        return ApplicationProxyResult.Parse(bytes, tag, mutation, (int)expected);
+    }
 
     /// <summary>Disposes pooled transport when the owning host stops; response/request owners are joined by each awaited read.</summary>
     public void Dispose() => client.Dispose();

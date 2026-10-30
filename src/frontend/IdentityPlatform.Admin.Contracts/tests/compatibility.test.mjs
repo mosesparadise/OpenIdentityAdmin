@@ -104,8 +104,8 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 2);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/session']);
+  assert.equal(inventory(browserStatus, 'bff').size, 3);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/session']);
   const management = browserStatus.paths['/bff/api/v1/applications'].get;
   assert.deepEqual(management.security, [{ BrowserSession: [] }]);
   assert.equal(management['x-required-permission'], 'applications.read');
@@ -123,4 +123,21 @@ test('Given browser status When authentication or cache semantics drift Then val
 test('Given browser status When a native route or extra verb is substituted Then no broad exception admits it', () => {
   assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/login/resume'] = doc.paths['/bff/session']; delete doc.paths['/bff/session']; }), 'bff'));
   assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/session'].post = structuredClone(op); }), 'bff'));
+});
+
+test('Given application token acquisition When identity cache or method changes Then the exact local boundary fails closed', () => {
+  for (const change of [op => { op.security = [{}]; }, op => { delete op.responses['401']; },
+    op => { op.responses['200'].headers['Cache-Control'].schema.const = 'public'; },
+    op => { op['x-downstream-api-version'] = 1; }, op => { op.operationId = 'GenericToken'; }]) {
+    const candidate = structuredClone(browserStatus);
+    change(candidate.paths['/bff/api/v1/applications/antiforgery'].get);
+    assert.throws(() => inventory(candidate, 'bff'));
+  }
+  const pathInput = structuredClone(browserStatus);
+  pathInput.paths['/bff/api/v1/applications/antiforgery'].parameters = [{ in: 'query', name: 'unexpected', required: false, schema: { type: 'string' } }];
+  assert.throws(() => inventory(pathInput, 'bff'));
+  const candidate = structuredClone(browserStatus);
+  candidate.paths['/bff/api/v1/applications/antiforgery'].post = structuredClone(candidate.paths['/bff/api/v1/applications/antiforgery'].get);
+  delete candidate.paths['/bff/api/v1/applications/antiforgery'].get;
+  assert.throws(() => inventory(candidate, 'bff'));
 });
