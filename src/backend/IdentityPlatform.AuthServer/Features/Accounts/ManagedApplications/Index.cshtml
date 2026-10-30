@@ -1,0 +1,38 @@
+@page "/account/application/sign-in"
+@model IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications.IndexModel
+@{ ViewData["Title"] = "Application sign in"; }
+<section class="card" aria-labelledby="heading">
+  <p class="eyebrow">Application sign in</p>
+  <h1 id="heading">@(Model.Phase == 1 ? "Sign in" : Model.Phase == 2 ? "Verify your authenticator" : Model.Phase == 3 ? "Review access" : Model.Phase == 6 ? "Sign-in cancelled" : "Consent saved")</h1>
+  <p>Application: <strong>@Model.ClientId</strong></p>
+  @if (Model.Error is not null)
+  {
+    <div id="error-summary" class="error-summary" tabindex="-1"><p>@Model.Error</p></div>
+  }
+  @if (Model.Flow is not null && Model.Phase is >= 1 and <= 3)
+  {
+    <form asp-antiforgery="true" method="post" action="/account/application/sign-in">
+      <input type="hidden" name="Flow" value="@Model.Flow" />
+      @if (Model.Phase == 1)
+      {
+        <p>Enter your password and a new authenticator code for this sign-in.</p>
+        <partial name="/Features/Accounts/Shared/_AdministratorPassword.cshtml" />
+      }
+      else if (Model.Phase == 2)
+      {
+        <partial name="/Features/Accounts/Shared/_AdministratorCode.cshtml" />
+      }
+      else
+      {
+        <p>Allow this application to receive your stable sign-in identifier (<code>openid</code>)? Administrator permissions are not shared.</p>
+        <button class="primary" type="submit" name="Decision" value="approve">Allow sign-in</button>
+        <button type="submit" name="Decision" value="deny">Cancel</button>
+      }
+    </form>
+  }
+  else
+  {
+    <p>Return to your application. No sign-in credentials have been issued.</p>
+  }
+  <p class="footnote">If this request has expired, start a new sign-in from your application.</p>
+</section>

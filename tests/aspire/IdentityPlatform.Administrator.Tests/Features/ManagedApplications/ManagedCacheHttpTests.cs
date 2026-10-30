@@ -38,7 +38,7 @@ public sealed class ManagedCacheHttpTests(BootstrapFixture fixture)
         Assert.Equal(0, cached.Authorizations);
         Assert.Equal(before.Sessions, cached.Sessions);
         using var pending = await test.SendAsync(resume);
-        await ManagedCacheTestContext.UnavailableAsync(pending);
+        await ManagedHumanHttp.EntryAsync(pending);
         var after = await test.SnapshotAsync();
         Assert.Equal(row.ExpiresAt, Assert.Single(after.Interactions).ExpiresAt);
         Assert.Equal(OpenIddictConstants.Statuses.Valid, Assert.Single(after.Tokens).Status);

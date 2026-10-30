@@ -1,4 +1,6 @@
 using System.Security.Cryptography;
+using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +16,40 @@ internal sealed class AdministratorUserManager(IUserStore<PlatformUser> store, I
     IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<PlatformUser>> logger, FactorAccess access, NativeOperation operation)
     : UserManager<PlatformUser>(store, options, hasher, userValidators, passwordValidators, normalizer, errors, services, logger)
 {
+    private ManagedPasswordUpdate? managedPassword;
+
+    /// <summary>Observes only one lexical managed password verification; native Identity remains the verifier and update orchestrator.</summary>
+    internal async Task<CeremonyPassword?> ObservePasswordAsync(ManagedPasswordUpdate observation, Func<Task<CeremonyPassword?>> verify)
+    {
+        if (managedPassword is not null)
+        {
+            throw new FactorUnavailableException();
+        }
+        managedPassword = observation;
+        try
+        {
+            return await verify();
+        }
+        finally { managedPassword = null; }
+    }
+
+    /// <summary>Records the actual native result before Identity decides whether a password hash upgrade is required.</summary>
+    protected override async Task<PasswordVerificationResult> VerifyPasswordAsync(IUserPasswordStore<PlatformUser> passwordStore, PlatformUser user, string password)
+    {
+        var result = await base.VerifyPasswordAsync(passwordStore, user, password);
+        managedPassword?.Verified(user, result);
+        return result;
+    }
+
+    /// <summary>Freezes the native-generated successor before persistence and rejects a discarded native update failure or save-callback mutation.</summary>
+    protected override async Task<IdentityResult> UpdateUserAsync(PlatformUser user)
+    {
+        managedPassword?.BeforeUpdate(user);
+        var result = await base.UpdateUserAsync(user);
+        managedPassword?.AfterUpdate(user, result);
+        return result;
+    }
+
     protected override CancellationToken CancellationToken => operation.Token.CanBeCanceled ? operation.Token : access.Token;
 
     /// <summary>Rejects native manager substitution when a ceremony requires the original operation cancellation lease.</summary>

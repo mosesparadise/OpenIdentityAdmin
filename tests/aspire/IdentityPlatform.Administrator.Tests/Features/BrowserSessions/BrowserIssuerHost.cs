@@ -62,7 +62,7 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         BrowserIssuerHost? owner = null;
         try
         {
-            var builder = CreateBuilder(scenario, provider, pilot, faults, out credentials, endpoint, client);
+            var builder = CreateBuilder(scenario, provider, pilot, faults, out credentials, endpoint, client, managed);
             pilotClient?.Configure(builder);
             if (logout is not null)
             {
@@ -129,7 +129,7 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
 
     /// <summary>Shares real provider, key and account setup while limiting the optional pilot to explicit disposable tests.</summary>
     private static WebApplicationBuilder CreateBuilder(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,
-        out IssuerCredentials credentials, BrowserHttpsEndpoint? endpoint, Uri? client)
+        out IssuerCredentials credentials, BrowserHttpsEndpoint? endpoint, Uri? client, bool managed)
     {
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions
         {
@@ -156,7 +156,7 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         }
         builder.Services.AddSingleton<TimeProvider>(scenario.Clock);
         builder.Services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies();
-        builder.Services.AddAccounts(pilot, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, client?.AbsoluteUri ?? Client));
+        builder.Services.AddAccounts(pilot, administrator: true, new BrowserAccountProfile(credentials.Issuer.AbsoluteUri, client?.AbsoluteUri ?? Client), managed);
         ExcludeBackgroundCleanup(builder.Services);
         return builder;
     }

@@ -1035,7 +1035,26 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHttpTests.Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAtomicityTests.Given_ActualManagedPhases_When_InternalOrFinalPersistenceFails_Then_ProofAuditAndAuthorityRollBack(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanBudgetTests.Given_ExistingAdministratorProof_When_ManagedAuthenticationRuns_Then_FreshProofAndSharedBudgetRemainRequired(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_OriginalHumanDeadline_When_PasswordIsLateAndMfaArrivesAtEquality_Then_DeadlineNeverRenews(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_PasswordAndMfaBoundInteraction_When_CurrentAuthorityChanges_Then_EachPhaseFailsClosedWithoutProofConsumption(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanInputTests.Given_RealPasswordForm_When_FramingOrBrowserIsInvalid_Then_NoAuthorityOrFailureBudgetChanges(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanOwnershipTests.Given_ActualOwnedTransaction_When_ManagedCeremonyBorrowsNativeLease_Then_GenericCommitsAndEscapedUseFail(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Acknowledgement)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Callback)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Disposal)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_ManagedMfaWaitingOnRealLock_When_AccountGenerationChanges_Then_CurrentAuthorityRejectsProof(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"PostgreSql\", consent: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"PostgreSql\", consent: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: Concurrency)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: None)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: PersistedStamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: TrackedStamp)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2177,7 +2196,26 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHttpTests.Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAtomicityTests.Given_ActualManagedPhases_When_InternalOrFinalPersistenceFails_Then_ProofAuditAndAuthorityRollBack(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanBudgetTests.Given_ExistingAdministratorProof_When_ManagedAuthenticationRuns_Then_FreshProofAndSharedBudgetRemainRequired(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_OriginalHumanDeadline_When_PasswordIsLateAndMfaArrivesAtEquality_Then_DeadlineNeverRenews(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_PasswordAndMfaBoundInteraction_When_CurrentAuthorityChanges_Then_EachPhaseFailsClosedWithoutProofConsumption(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanInputTests.Given_RealPasswordForm_When_FramingOrBrowserIsInvalid_Then_NoAuthorityOrFailureBudgetChanges(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanOwnershipTests.Given_ActualOwnedTransaction_When_ManagedCeremonyBorrowsNativeLease_Then_GenericCommitsAndEscapedUseFail(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Acknowledgement)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Callback)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Disposal)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_ManagedMfaWaitingOnRealLock_When_AccountGenerationChanges_Then_CurrentAuthorityRejectsProof(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"SqlServer\", consent: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"SqlServer\", consent: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: Concurrency)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: None)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: PersistedStamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: TrackedStamp)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -46767,6 +46805,752 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAtomicityTests.Given_ActualManagedPhases_When_InternalOrFinalPersistenceFails_Then_ProofAuditAndAuthorityRollBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanAtomicityTests",
+        "methodName": "Given_ActualManagedPhases_When_InternalOrFinalPersistenceFails_Then_ProofAuditAndAuthorityRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAtomicityTests.Given_ActualManagedPhases_When_InternalOrFinalPersistenceFails_Then_ProofAuditAndAuthorityRollBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanAtomicityTests",
+        "methodName": "Given_ActualManagedPhases_When_InternalOrFinalPersistenceFails_Then_ProofAuditAndAuthorityRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanBudgetTests.Given_ExistingAdministratorProof_When_ManagedAuthenticationRuns_Then_FreshProofAndSharedBudgetRemainRequired(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanBudgetTests",
+        "methodName": "Given_ExistingAdministratorProof_When_ManagedAuthenticationRuns_Then_FreshProofAndSharedBudgetRemainRequired",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanBudgetTests.Given_ExistingAdministratorProof_When_ManagedAuthenticationRuns_Then_FreshProofAndSharedBudgetRemainRequired(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanBudgetTests",
+        "methodName": "Given_ExistingAdministratorProof_When_ManagedAuthenticationRuns_Then_FreshProofAndSharedBudgetRemainRequired",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_OriginalHumanDeadline_When_PasswordIsLateAndMfaArrivesAtEquality_Then_DeadlineNeverRenews(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanDriftTests",
+        "methodName": "Given_OriginalHumanDeadline_When_PasswordIsLateAndMfaArrivesAtEquality_Then_DeadlineNeverRenews",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_OriginalHumanDeadline_When_PasswordIsLateAndMfaArrivesAtEquality_Then_DeadlineNeverRenews(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanDriftTests",
+        "methodName": "Given_OriginalHumanDeadline_When_PasswordIsLateAndMfaArrivesAtEquality_Then_DeadlineNeverRenews",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_PasswordAndMfaBoundInteraction_When_CurrentAuthorityChanges_Then_EachPhaseFailsClosedWithoutProofConsumption(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanDriftTests",
+        "methodName": "Given_PasswordAndMfaBoundInteraction_When_CurrentAuthorityChanges_Then_EachPhaseFailsClosedWithoutProofConsumption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanDriftTests.Given_PasswordAndMfaBoundInteraction_When_CurrentAuthorityChanges_Then_EachPhaseFailsClosedWithoutProofConsumption(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanDriftTests",
+        "methodName": "Given_PasswordAndMfaBoundInteraction_When_CurrentAuthorityChanges_Then_EachPhaseFailsClosedWithoutProofConsumption",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanHttpTests",
+        "methodName": "Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanHttpTests",
+        "methodName": "Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanHttpTests",
+        "methodName": "Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanHttpTests",
+        "methodName": "Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanInputTests.Given_RealPasswordForm_When_FramingOrBrowserIsInvalid_Then_NoAuthorityOrFailureBudgetChanges(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanInputTests",
+        "methodName": "Given_RealPasswordForm_When_FramingOrBrowserIsInvalid_Then_NoAuthorityOrFailureBudgetChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanInputTests.Given_RealPasswordForm_When_FramingOrBrowserIsInvalid_Then_NoAuthorityOrFailureBudgetChanges(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanInputTests",
+        "methodName": "Given_RealPasswordForm_When_FramingOrBrowserIsInvalid_Then_NoAuthorityOrFailureBudgetChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanOwnershipTests.Given_ActualOwnedTransaction_When_ManagedCeremonyBorrowsNativeLease_Then_GenericCommitsAndEscapedUseFail(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanOwnershipTests",
+        "methodName": "Given_ActualOwnedTransaction_When_ManagedCeremonyBorrowsNativeLease_Then_GenericCommitsAndEscapedUseFail",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanOwnershipTests.Given_ActualOwnedTransaction_When_ManagedCeremonyBorrowsNativeLease_Then_GenericCommitsAndEscapedUseFail(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanOwnershipTests",
+        "methodName": "Given_ActualOwnedTransaction_When_ManagedCeremonyBorrowsNativeLease_Then_GenericCommitsAndEscapedUseFail",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Acknowledgement)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Callback)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Disposal)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"PostgreSql\", defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Acknowledgement)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Callback)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Disposal)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationTests.Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt(provider: \"SqlServer\", defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanPublicationTests",
+        "methodName": "Given_RealPasswordCommit_When_PublicationBoundaryFails_Then_NoOutputEscapesAndOldFormCannotRepeatIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanPublicationDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_ManagedMfaWaitingOnRealLock_When_AccountGenerationChanges_Then_CurrentAuthorityRejectsProof(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanRaceTests",
+        "methodName": "Given_ManagedMfaWaitingOnRealLock_When_AccountGenerationChanges_Then_CurrentAuthorityRejectsProof",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_ManagedMfaWaitingOnRealLock_When_AccountGenerationChanges_Then_CurrentAuthorityRejectsProof(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanRaceTests",
+        "methodName": "Given_ManagedMfaWaitingOnRealLock_When_AccountGenerationChanges_Then_CurrentAuthorityRejectsProof",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"PostgreSql\", consent: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanRaceTests",
+        "methodName": "Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"PostgreSql\", consent: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanRaceTests",
+        "methodName": "Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"SqlServer\", consent: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanRaceTests",
+        "methodName": "Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanRaceTests.Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits(provider: \"SqlServer\", consent: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedHumanRaceTests",
+        "methodName": "Given_SameManagedProof_When_TwoActualRequestsWaitThenRace_Then_OnlyOnePhaseTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: Concurrency)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: None)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: PersistedStamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: TrackedStamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: Concurrency)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: None)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: PersistedStamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: TrackedStamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedPasswordUpgradeTests",
+        "methodName": "Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
         ]
       },
       "traits": [

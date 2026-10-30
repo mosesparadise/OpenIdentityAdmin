@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;
 
 /// <summary>Fails closed for disabled or unknown compiled pages instead of exposing every Razor page through MapRazorPages.</summary>
-internal sealed class AccountPageConvention(bool pilot, bool administrator, bool browser = false) : IPageRouteModelConvention
+internal sealed class AccountPageConvention(bool pilot, bool administrator, bool browser = false, bool managed = false) : IPageRouteModelConvention
 {
+    private const string ManagedPage = "/ManagedApplications/Index";
+    private const string ManagedRoute = "account/application/sign-in";
     private static readonly Dictionary<string, string> PilotPages = new(StringComparer.Ordinal)
     {
         ["/Login/Index"] = "account/login",
@@ -44,6 +46,10 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator, bool
             {
                 model.Selectors.RemoveAt(index);
             }
+            else if (managed && model.ViewEnginePath == ManagedPage)
+            {
+                model.Selectors[index].EndpointMetadata.Add(new IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications.ManagedAccountEndpoint());
+            }
             else if (pilot && PilotPages.ContainsKey(model.ViewEnginePath))
             {
                 model.Selectors[index].EndpointMetadata.Add(new PilotAccountEndpoint());
@@ -54,6 +60,10 @@ internal sealed class AccountPageConvention(bool pilot, bool administrator, bool
     /// <summary>Resolves an explicitly supported page only when its feature was enabled at composition.</summary>
     private string? AllowedRoute(string page)
     {
+        if (administrator && managed && page == ManagedPage)
+        {
+            return ManagedRoute;
+        }
         if (pilot && PilotPages.TryGetValue(page, out var pilotRoute))
         {
             return pilotRoute;

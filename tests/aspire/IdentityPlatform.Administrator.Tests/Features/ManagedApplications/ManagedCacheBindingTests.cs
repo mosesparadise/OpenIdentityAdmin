@@ -1,7 +1,6 @@
 using System.Net;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Applications;
-using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +40,7 @@ public sealed class ManagedCacheBindingTests(BootstrapFixture fixture)
         resume[OpenIddictConstants.Parameters.Scope] = ForeignScope;
         resume[OpenIddictConstants.Parameters.CodeChallenge] = ForeignChallenge;
         using var pending = await test.SendAsync(resume);
-        await ManagedCacheTestContext.UnavailableAsync(pending);
+        await ManagedHumanHttp.EntryAsync(pending);
         var restored = Assert.Single((await test.SnapshotAsync()).Interactions);
         Assert.Equal(test.Http.Now.ToUnixTimeSeconds(), restored.ObservedAt);
         Assert.Equal(before.DemandDigest, restored.DemandDigest);
@@ -68,7 +67,7 @@ public sealed class ManagedCacheBindingTests(BootstrapFixture fixture)
         _ = await test.ResumeAsync(second);
         test.Http.Environment.Issuer.Account.Journey.Clock.Now = test.Http.Now.AddSeconds(1);
         using var own = await browser.GetAsync(second.Headers.Location, TestContext.Current.CancellationToken);
-        await ManagedCacheTestContext.UnavailableAsync(own);
+        await ManagedHumanHttp.EntryAsync(own);
         var positive = await test.SnapshotAsync();
         var secondRow = Assert.Single(positive.Interactions, row => row.RequestId != original.RequestId);
         Assert.NotEqual(original.BrowserDigest, secondRow.BrowserDigest);

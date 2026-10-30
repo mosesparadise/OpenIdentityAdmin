@@ -81,7 +81,7 @@ public sealed class ManagedCacheRaceTests(BootstrapFixture fixture)
     }
 
     /// <summary>Releases the real lock and joins every HTTP request even when observation fails, retaining the primary failure.</summary>
-    private static async Task<HttpResponseMessage[]> ReleaseAndJoinAsync(IDbContextTransaction transaction, Func<Task> observe,
+    internal static async Task<HttpResponseMessage[]> ReleaseAndJoinAsync(IDbContextTransaction transaction, Func<Task> observe,
         params Task<HttpResponseMessage>[] requests)
     {
         List<Exception> failures = [];

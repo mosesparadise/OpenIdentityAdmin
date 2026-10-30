@@ -33,6 +33,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     internal BrowserHttpsClient Client { get; private set; } = null!;
     internal AdministratorProtocolScenario Issuer { get; private set; } = null!;
     internal NativeClientProfile Profile { get; private set; } = null!;
+    internal IServiceProvider IssuerServices => issuerHost!.Services;
     internal int ParRequests => issuerEndpoint.ParRequests;
     internal int TokenRequests => issuerEndpoint.TokenRequests;
     internal int EndSessionGets => issuerEndpoint.EndSessionGets;
