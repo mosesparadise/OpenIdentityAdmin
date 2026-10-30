@@ -27,6 +27,34 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
         return new(status, details, credential, tag);
     }
 
+    /// <summary>Accepts only the requested resource, validating managed versions or the deliberately empty protected-registration projection.</summary>
+    internal static ApplicationProxyResult ParseDetails(byte[] bytes, string id, string? tag)
+    {
+        var details = ApplicationJson.Parse<ApplicationDetails>(bytes);
+        if (details.Id != id || details.ExpiresAt.Offset != TimeSpan.Zero)
+        {
+            throw new InvalidDataException();
+        }
+        if (details.Editable)
+        {
+            if (!Valid(details) || !ApplicationVersion.IsCanonical(tag))
+            {
+                throw new InvalidDataException();
+            }
+            var revision = long.Parse(tag!.AsSpan(RevisionStart, tag!.Length - RevisionStart - 1), System.Globalization.CultureInfo.InvariantCulture);
+            if (!ApplicationVersion.Matches(tag, id, revision))
+            {
+                throw new InvalidDataException();
+            }
+        }
+        else if (!ApplicationProjection.IsValid(new(details.Id, details.ClientId, details.DisplayName, null)) ||
+            details.RedirectUris is not { Count: 0 } || details.Profile is not null || details.Credential is not null || tag is not null)
+        {
+            throw new InvalidDataException();
+        }
+        return new(StatusCodes.Status200OK, details, null, tag);
+    }
+
     /// <summary>Requires the selected managed profile and exact finite lifecycle/presentation fields, excluding native protected state.</summary>
     private static bool Valid(ApplicationDetails details) => ApplicationEditorRules.IsText(details.Id, ApplicationProjection.IdentifierLength) &&
         ApplicationEditorRules.IsClientId(details.ClientId) && ApplicationEditorRules.Validate(new ApplicationEdit(details.DisplayName!, details.RedirectUris)).Count == 0 &&

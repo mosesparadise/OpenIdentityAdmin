@@ -19,7 +19,7 @@ public sealed class BrowserSessionDocumentTests
     private const string TokenField = "requestToken";
     private const string TokenSchema = "ApplicationAntiforgeryToken";
 
-    private const int OperationCount = 3;
+    private const int OperationCount = 4;
     private const string ApplicationsPath = "/bff/api/v1/applications";
     private const string ListOperation = "ListBrowserApplications";
     private const string ReadPermission = "applications.read";
@@ -103,6 +103,7 @@ public sealed class BrowserSessionDocumentTests
         const string NoStore = "no-store";
         Assert.Equal(ExpectedVersion, document[Info]![Version]!.GetValue<string>());
         Assert.Equal(OperationCount, document[Paths]!.AsObject().Count);
+        ApplicationEditorAssertions.Require(document, browser: true);
         var applications = document[Paths]![ApplicationsPath]![Get]!;
         Assert.Equal(ListOperation, applications[OperationId]!.GetValue<string>());
         Assert.Equal(ReadPermission, applications[Permission]!.GetValue<string>());

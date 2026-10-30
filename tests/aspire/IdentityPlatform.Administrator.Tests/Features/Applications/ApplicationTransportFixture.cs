@@ -118,7 +118,7 @@ internal sealed class ApplicationTransportFixture(BrowserLoginFixture login, App
     }
 }
 
-/// <summary>Adds only the explicit test transport routes; production mutation routes remain dependent on T009/T016 API implementation.</summary>
+/// <summary>Uses production create/token/details routes and adds only the test edit/replacement transport routes pending T016.</summary>
 internal sealed class ApplicationTransportStartup(Uri api) : IStartupFilter
 {
     private const string TitleSetting = "ApiContracts:Metadata:Title";

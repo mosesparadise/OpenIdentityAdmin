@@ -1,2 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.Admin.Api" />
+    <InternalsVisibleTo Include="IdentityPlatform.Admin.Bff" />
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+  </ItemGroup>
 </Project>

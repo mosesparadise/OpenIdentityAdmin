@@ -42,6 +42,7 @@ internal static class Setup
             options.Document.ShouldInclude = description => includesVersion(description) && description.GroupName == options.Description.GroupName;
             options.Document.AddDocumentTransformer<MetadataTransformer>();
             options.Document.AddDocumentTransformer<Applications.ApplicationListContract>();
+            options.Document.AddDocumentTransformer<Applications.ApplicationEditorContract>();
         });
         return services;
     }

@@ -15,8 +15,8 @@
 
 ## US1 — Create a usable registration
 
-- [ ] T008 [US1] Prove real both-provider create/duplicate/permission/audit-failure/expiry/system-binding behavior in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ before accepting creation. FR-001/005/006/008/010.
-- [ ] T009 [US1] Add sanitized details and create endpoints in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ plus their exact BFF projections; generated native secret appears once only. FR-001/005/006/010/011.
+- [x] T008 [US1] Prove real both-provider create/duplicate/permission/audit-failure/expiry/system-binding behavior in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ before accepting creation. FR-001/005/006/008/010. [Local authenticated HTTP evidence](http-endpoints.md); complete usable-client acceptance remains T010–T014.
+- [x] T009 [US1] Add sanitized details and create endpoints in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ plus their exact BFF projections; generated native secret appears once only. FR-001/005/006/010/011. [Create/details checkpoint](http-endpoints.md); T007 retained-browser execution remains pending.
 - [ ] T010 [US1] Add a separate managed-client native profile/admission/cache/decision flow in src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/, retaining Owned storage and fixed administrator/pilot guards. FR-002–004.
 - [ ] T011 [US1] Implement managed-purpose password/MFA and explicit-consent state transitions under Infrastructure/Features/Identity/ManagedApplications/ and AuthServer/Features/Accounts/ManagedApplications/; create no administrator session/cookie or BFF grant. FR-004/008/009.
 - [ ] T012 [US1] Implement managed native code/token generation, durable consumption, current policy/source checks and committed response publication in AuthServer/Features/Protocol/ManagedApplications/; preserve native crypto/replay/formatters. FR-002–006/010.

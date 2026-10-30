@@ -1001,7 +1001,16 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ActualApiBearer_When_ItIsMissingOrRevoked_Then_DetailsReturnAuthenticationFailure(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ManagedCredentialExpiry_When_ReadThenNativeProfileDrifts_Then_MetadataRemainsReadableButDriftIsRejected(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ProtectedAndUnmanagedRows_When_DetailsAreRequested_Then_OnlyExactSafeReadOnlyMetadataIsPublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_InitiallyValidHttpCreate_When_CredentialExpiresAfterSave_Then_NativeStateAndAuditRollBack(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_RealBffCreate_When_NativeAntiforgeryIsMissingOrInvalid_Then_NoManagedStateOrAuditIsWritten(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2109,7 +2118,16 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_AuthenticatedBrowser_When_ApplicationTokensCrossPurposeOrGeneration_Then_OnlyCurrentBoundNativeTokenDispatches(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationMutationBrowserTests.Given_RealJsonTransport_When_UpstreamSubstitutesOrGenerationChanges_Then_NoSecretOrRetryEscapes(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_GenuineSession_When_FiniteMutationsAndHostileResponsesUseTls_Then_OnlyBoundedExactResultsArePublished(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ActualApiBearer_When_ItIsMissingOrRevoked_Then_DetailsReturnAuthenticationFailure(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ManagedCredentialExpiry_When_ReadThenNativeProfileDrifts_Then_MetadataRemainsReadableButDriftIsRejected(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ProtectedAndUnmanagedRows_When_DetailsAreRequested_Then_OnlyExactSafeReadOnlyMetadataIsPublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_InitiallyValidHttpCreate_When_CredentialExpiresAfterSave_Then_NativeStateAndAuditRollBack(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_RealBffCreate_When_NativeAntiforgeryIsMissingOrInvalid_Then_NoManagedStateOrAuditIsWritten(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -45375,6 +45393,348 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
         "typeName": "ApplicationTransportTests",
         "methodName": "Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ActualApiBearer_When_ItIsMissingOrRevoked_Then_DetailsReturnAuthenticationFailure(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationDetailsHttpTests",
+        "methodName": "Given_ActualApiBearer_When_ItIsMissingOrRevoked_Then_DetailsReturnAuthenticationFailure",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ActualApiBearer_When_ItIsMissingOrRevoked_Then_DetailsReturnAuthenticationFailure(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationDetailsHttpTests",
+        "methodName": "Given_ActualApiBearer_When_ItIsMissingOrRevoked_Then_DetailsReturnAuthenticationFailure",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ManagedCredentialExpiry_When_ReadThenNativeProfileDrifts_Then_MetadataRemainsReadableButDriftIsRejected(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationDetailsHttpTests",
+        "methodName": "Given_ManagedCredentialExpiry_When_ReadThenNativeProfileDrifts_Then_MetadataRemainsReadableButDriftIsRejected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ManagedCredentialExpiry_When_ReadThenNativeProfileDrifts_Then_MetadataRemainsReadableButDriftIsRejected(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationDetailsHttpTests",
+        "methodName": "Given_ManagedCredentialExpiry_When_ReadThenNativeProfileDrifts_Then_MetadataRemainsReadableButDriftIsRejected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ProtectedAndUnmanagedRows_When_DetailsAreRequested_Then_OnlyExactSafeReadOnlyMetadataIsPublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationDetailsHttpTests",
+        "methodName": "Given_ProtectedAndUnmanagedRows_When_DetailsAreRequested_Then_OnlyExactSafeReadOnlyMetadataIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationDetailsHttpTests.Given_ProtectedAndUnmanagedRows_When_DetailsAreRequested_Then_OnlyExactSafeReadOnlyMetadataIsPublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationDetailsHttpTests",
+        "methodName": "Given_ProtectedAndUnmanagedRows_When_DetailsAreRequested_Then_OnlyExactSafeReadOnlyMetadataIsPublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_InitiallyValidHttpCreate_When_CredentialExpiresAfterSave_Then_NativeStateAndAuditRollBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpFailureTests",
+        "methodName": "Given_InitiallyValidHttpCreate_When_CredentialExpiresAfterSave_Then_NativeStateAndAuditRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_InitiallyValidHttpCreate_When_CredentialExpiresAfterSave_Then_NativeStateAndAuditRollBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpFailureTests",
+        "methodName": "Given_InitiallyValidHttpCreate_When_CredentialExpiresAfterSave_Then_NativeStateAndAuditRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_RealBffCreate_When_NativeAntiforgeryIsMissingOrInvalid_Then_NoManagedStateOrAuditIsWritten(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpFailureTests",
+        "methodName": "Given_RealBffCreate_When_NativeAntiforgeryIsMissingOrInvalid_Then_NoManagedStateOrAuditIsWritten",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpFailureTests.Given_RealBffCreate_When_NativeAntiforgeryIsMissingOrInvalid_Then_NoManagedStateOrAuditIsWritten(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpFailureTests",
+        "methodName": "Given_RealBffCreate_When_NativeAntiforgeryIsMissingOrInvalid_Then_NoManagedStateOrAuditIsWritten",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpTests",
+        "methodName": "Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace IdentityPlatform.Admin.Bff.Features.Applications;
+namespace IdentityPlatform.Core.Features.Applications;
 
 /// <summary>Bounds actual bytes and rejects ambiguous JSON before deserializing finite application contracts.</summary>
 internal static class ApplicationJson

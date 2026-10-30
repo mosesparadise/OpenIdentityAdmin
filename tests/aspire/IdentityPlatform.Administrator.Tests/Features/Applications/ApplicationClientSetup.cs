@@ -9,7 +9,6 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 /// <summary>Adds only the explicitly selected real proxy to the existing HTTPS BFF fixture.</summary>
 internal static class ApplicationClientSetup
 {
-    private const string Collection = "/bff/api/v1/applications";
     private const string Details = "/bff/api/v1/applications/{id}";
     private const string IdParameter = "id";
     private const string Replacement = "/bff/api/v1/applications/{id}/secret-replacements";
@@ -51,7 +50,6 @@ internal static class ApplicationClientSetup
             routes.MapApplicationProxy();
             if (mutations)
             {
-                routes.MapPost(Collection, context => ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Create));
                 routes.MapPut(Details, context => ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Edit, (string?)context.Request.RouteValues[IdParameter]));
                 routes.MapPost(Replacement, context => ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Replace, (string?)context.Request.RouteValues[IdParameter]));
             }

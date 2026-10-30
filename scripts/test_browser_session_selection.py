@@ -32,7 +32,7 @@ class BrowserSessionSelectionTests(unittest.TestCase):
         require_browser_session_selections(self.catalogue, self.groups[provider], provider, self.matrix, self.inventory)
 
     def test_Given_DefaultAndExplicitGroups_When_Selected_Then_BothProvidersRetainEveryIdentityExactlyOnce(self):
-        self.assertEqual(2107, len(self.catalogue))
+        self.assertEqual(2125, len(self.catalogue))
         for provider in ('PostgreSql', 'SqlServer'):
             self.verify(provider)
             self.assertEqual([('Foundations', 167), ('Product', 98), ('Lifecycle', 57)], browser_session_invocations(self.matrix, provider))
@@ -48,7 +48,7 @@ class BrowserSessionSelectionTests(unittest.TestCase):
         self.assertEqual(20, len(self.matrix['browser_session_groups']['Lifecycle']['classes']))
 
     def test_Given_UngroupedInvocation_When_Expanded_Then_AllGroupsAreExecutedAndNoStoryDisappears(self):
-        for provider, total in (('PostgreSql', 936), ('SqlServer', 1041)):
+        for provider, total in (('PostgreSql', 945), ('SqlServer', 1050)):
             expected = [('BrowserSessions', 'Foundations', 167), ('BrowserSessions', 'Product', 98), ('BrowserSessions', 'Lifecycle', 57)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, 'BrowserSessions'))
             all_stories = administrator_execution_invocations(self.matrix, provider)

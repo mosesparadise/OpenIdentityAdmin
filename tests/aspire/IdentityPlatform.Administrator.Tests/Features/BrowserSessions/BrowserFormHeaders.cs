@@ -24,7 +24,7 @@ internal static class BrowserFormHeaders
         Assert.True(Header(response, ReferrerPolicy) == (form ? FormPolicy : InertPolicy));
 
     /// <summary>Requires all original CSP directives, the actual rendered nonce and only the fixed MFA return origin.</summary>
-    internal static async Task AccountAsync(HttpResponseMessage response, bool mfa = false)
+    internal static async Task AccountAsync(HttpResponseMessage response, bool mfa = false, Uri? client = null)
     {
         Referrer(response, form: true);
         var policy = Header(response, ContentSecurityPolicy);
@@ -34,7 +34,7 @@ internal static class BrowserFormHeaders
         Assert.True(end > Prefix.Length);
         var nonce = policy[Prefix.Length..end];
         Assert.True(Convert.TryFromBase64String(nonce, new byte[NonceBytes], out var used) && used == NonceBytes);
-        var expected = Prefix + nonce + Suffix + (mfa ? SourceSeparator + new Uri(BrowserIssuerHost.Client).GetLeftPart(UriPartial.Authority) : string.Empty);
+        var expected = Prefix + nonce + Suffix + (mfa ? SourceSeparator + (client ?? new Uri(BrowserIssuerHost.Client)).GetLeftPart(UriPartial.Authority) : string.Empty);
         Assert.True(policy == expected);
         var html = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var scripts = Regex.Matches(html, ScriptNonce, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1));

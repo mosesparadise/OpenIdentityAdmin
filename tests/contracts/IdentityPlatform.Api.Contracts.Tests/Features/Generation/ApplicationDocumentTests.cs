@@ -14,6 +14,7 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 public sealed class ApplicationDocumentTests
 {
     private const int QueryFields = 3;
+    private const int PathCount = 2;
     private const int MaximumIdentifier = 400;
     private const int MaximumClientId = 100;
     private const int MaximumDisplayName = 200;
@@ -67,7 +68,7 @@ public sealed class ApplicationDocumentTests
         ApiContracts.AddApiContracts(builder);
         builder.Services.AddSingleton(TimeProvider.System);
         await using var app = builder.Build();
-        app.MapApplicationList();
+        app.MapApplications();
         app.MapOpenApi(DocumentPath).WithDocumentPerVersion();
         await app.StartAsync(TestContext.Current.CancellationToken);
         using var client = app.GetTestClient();
@@ -79,7 +80,8 @@ public sealed class ApplicationDocumentTests
     /// <summary>Assertions use independent wire expectations, so weakening a DTO attribute or operation security cannot silently update the oracle.</summary>
     private static void RequireContract(JsonNode document)
     {
-        Assert.Single(document[Paths]!.AsObject());
+        Assert.Equal(PathCount, document[Paths]!.AsObject().Count);
+        ApplicationEditorAssertions.Require(document, browser: false);
         var operation = document[Paths]![CollectionPath]![Get]!;
         Assert.Equal(Operation, operation[OperationId]!.GetValue<string>());
         Assert.Equal(Permission, operation[PermissionExtension]!.GetValue<string>());

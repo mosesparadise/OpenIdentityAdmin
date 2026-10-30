@@ -98,6 +98,27 @@ internal sealed class ApplicationProxyTransport : IDisposable
         return ApplicationProxyResult.Parse(bytes, tag, mutation, (int)expected);
     }
 
+    /// <summary>Reads one encoded resource from the fixed API and discards every upstream header except a validated aggregate version.</summary>
+    internal async Task<ApplicationProxyResult> DetailsAsync(BrowserAccessCredential access, string id, CancellationToken token)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(target.AbsoluteUri + RootPath + Uri.EscapeDataString(id)));
+        request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, access.Value);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(JsonType));
+        using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
+        if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.NotFound)
+        {
+            return new((int)response.StatusCode, null, null, null);
+        }
+        if (response.StatusCode != HttpStatusCode.OK || response.Content.Headers.ContentType?.MediaType != JsonType ||
+            response.Content.Headers.ContentEncoding.Count != 0 || response.Content.Headers.ContentLength > ApplicationProjection.MaximumResponseBytes)
+        {
+            return new(StatusCodes.Status503ServiceUnavailable, null, null, null);
+        }
+        await using var stream = await response.Content.ReadAsStreamAsync(token);
+        var bytes = await ApplicationJson.ReadAsync(stream, ApplicationProjection.MaximumResponseBytes, token);
+        return ApplicationProxyResult.ParseDetails(bytes, id, response.Headers.ETag?.ToString());
+    }
+
     /// <summary>Disposes pooled transport when the owning host stops; response/request owners are joined by each awaited read.</summary>
     public void Dispose() => client.Dispose();
 }
