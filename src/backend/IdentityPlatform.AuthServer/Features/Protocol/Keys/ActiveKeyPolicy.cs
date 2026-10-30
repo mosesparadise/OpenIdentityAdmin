@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
-using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
@@ -23,9 +23,8 @@ public static class ActiveKeyPolicy
     /// <summary>Observes the existing active-key selection only within an owned administrator generation.</summary>
     /// <example><code>await ActiveKeyPolicy.ApplyAsync(context, configuredIssuerCredentials);</code></example>
     public static ValueTask ApplyAsync(GenerateTokenContext context, IssuerCredentials credentials) =>
-        NativeIssuanceProof.Find(context.Transaction) is { } proof
-            ? proof.ObserveAsync(context, entry => entry.RefreshCredentialsAsync(() => ApplyPolicyAsync(context, credentials)))
-            : ApplyPolicyAsync(context, credentials);
+        NativeTokenObservations.ObserveAsync(context, entry => entry.RefreshCredentialsAsync(() => ApplyPolicyAsync(context, credentials)),
+            () => ApplyPolicyAsync(context, credentials));
 
     /// <summary>Retains the configured certificate validity and token-lifetime policy.</summary>
     private static ValueTask ApplyPolicyAsync(GenerateTokenContext context, IssuerCredentials credentials)

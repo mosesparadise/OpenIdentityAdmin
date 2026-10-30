@@ -1,6 +1,7 @@
 using System.Text.Json;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
@@ -35,6 +36,7 @@ internal sealed class ServerStoreSelection(ProtocolStorageSelection selection, P
             }
             selection.Select(ProtocolStorageMode.Owned);
             if (context.EndpointType is not (OpenIddictServerEndpointType.Configuration or OpenIddictServerEndpointType.JsonWebKeySet) &&
+                !(profiles.Managed && context.EndpointType == OpenIddictServerEndpointType.Authorization && client.ValueKind == JsonValueKind.String && ManagedDemand.Candidate(client.GetString())) &&
                 (profiles.Administrator is null || client.ValueKind != JsonValueKind.String || client.GetString() != AdministratorProtocolIdentity.ClientId))
             {
                 context.Reject(OpenIddictConstants.Errors.InvalidClient);

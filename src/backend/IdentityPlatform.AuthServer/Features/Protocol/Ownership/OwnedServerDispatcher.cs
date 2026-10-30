@@ -1,6 +1,7 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Server;
@@ -55,6 +56,17 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
             services.GetService<ProtocolHostRequest>()?.Track(request);
             return NativeErrorOrigin.TrackAsync(request, () => AdministratorPassthrough.TrackAsync(request, () => native.DispatchAsync(request)));
         }
+        if (ManagedApplications.Setup.Managed(context, services))
+        {
+            if (context is OpenIddictServerEvents.ValidateAuthorizationRequestContext managedValidation)
+            {
+                return ManagedAdmission.ValidateAsync(managedValidation, () => native.DispatchAsync(managedValidation));
+            }
+            if (context is OpenIddictServerEvents.ProcessSignInContext managedSignIn)
+            {
+                return services.GetRequiredService<ManagedCacheCoordinator>().RunAsync(managedSignIn);
+            }
+        }
         if (context is OpenIddictServerEvents.ProcessSignInContext signIn &&
             (signIn.EndpointType == OpenIddictServerEndpointType.PushedAuthorization ||
                 (signIn.EndpointType is OpenIddictServerEndpointType.Authorization or OpenIddictServerEndpointType.Token &&
@@ -72,7 +84,7 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
         {
             return origin.ObserveValidationAsync(validation, () => native.DispatchAsync(validation));
         }
-        return context is OpenIddictServerEvents.GenerateTokenContext generation && NativeIssuanceProof.Find(context.Transaction) is { } proof
-            ? proof.GenerateAsync(generation, () => native.DispatchAsync(context)) : native.DispatchAsync(context);
+        return context is OpenIddictServerEvents.GenerateTokenContext generation
+            ? NativeTokenObservations.GenerateAsync(generation, () => native.DispatchAsync(context)) : native.DispatchAsync(context);
     }
 }

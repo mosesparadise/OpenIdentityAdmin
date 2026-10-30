@@ -31,13 +31,14 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     internal BrowserHttpsFixture Environment => environment;
     internal HttpClient Browser => browser;
     internal HttpClient Api => api;
+    internal HttpClient IssuerClient => issuer;
     internal DateTimeOffset Now => environment.Issuer.Account.Journey.Clock.Now;
     internal string Access { private get; set; } = string.Empty;
 
     /// <summary>Owns actual three-host TLS composition and runs the real ceremony before obtaining any protected API credential.</summary>
-    internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null)
+    internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, bool managed = false, Action<IServiceCollection>? configureIssuer = null)
     {
-        var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, applications: true, configureApi: services =>
+        var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, applications: true, managed: managed, configureIssuer: configureIssuer, configureApi: services =>
         {
             if (fault is not null)
             {

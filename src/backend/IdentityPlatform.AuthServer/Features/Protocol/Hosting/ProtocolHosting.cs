@@ -1,5 +1,6 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using OpenIddict.Server;
@@ -70,6 +71,10 @@ internal static class ProtocolHosting
         if (endpoint == OpenIddictServerEndpointType.EndSession && IssuerLogoutFlow.Find(outer.Transaction) is { } logout)
         {
             return logout.Claim(outer);
+        }
+        if (ManagedCacheCoordinator.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.Committed;
         }
         if (NativeErrorCoordinator.Claim(http, outer))
         {

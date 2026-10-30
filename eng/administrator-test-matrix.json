@@ -1010,7 +1010,32 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_BoundCachedRequest_When_OuterDemandOrBrowserChanges_Then_OnlyOriginalBrowserObservesOriginalIntent(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CachedApplication_When_RevisionChangesOrCredentialExpires_Then_NoStaleDecisionOrNewNativeArtifactIsAdmitted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CommittedManagedObservation_When_NextRequestClockRollsBack_Then_DurableWatermarkRejectsNewCache(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_TwoRealManagedBrowsers_When_FirstCacheIsSentWithSecondProof_Then_FirstInteractionRemainsUnobserved(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_IndependentNativeRequestLimit_When_InteractionCapacityIsEmpty_Then_ExtraCacheStillDenies(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"PostgreSql\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"PostgreSql\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_SameManagedBrowser_When_EightCachesExist_Then_NinthDeniesWithoutReplacingAnyNativeRequest(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCleanupTests.Given_MixedRetainedInteractions_When_RealCacheRunsCleanup_Then_OnlyStrictlyEligibleBoundedBatchIsRemoved(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"PostgreSql\", liveDependency: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"PostgreSql\", liveDependency: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"PostgreSql\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"PostgreSql\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Browser)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: NativeRevoked)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Policy)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Throw)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Watermark)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"PostgreSql\", requests: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"PostgreSql\", requests: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHttpTests.Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2127,7 +2152,32 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CreateHttpBoundary_When_AuthenticationOrInputIsInvalid_Then_NoRegistrationOrAuditIsCreated(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_CurrentBearer_When_WriteAndReadGrantsAreRemoved_Then_TheirHttpOperationsAreIndependentlyDenied(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_GenuineHttpsSession_When_ApplicationCreatedThenRead_Then_OneAtomicRegistrationAndSafeDetailsAreReturned(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpTests.Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_BoundCachedRequest_When_OuterDemandOrBrowserChanges_Then_OnlyOriginalBrowserObservesOriginalIntent(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CachedApplication_When_RevisionChangesOrCredentialExpires_Then_NoStaleDecisionOrNewNativeArtifactIsAdmitted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CommittedManagedObservation_When_NextRequestClockRollsBack_Then_DurableWatermarkRejectsNewCache(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_TwoRealManagedBrowsers_When_FirstCacheIsSentWithSecondProof_Then_FirstInteractionRemainsUnobserved(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_IndependentNativeRequestLimit_When_InteractionCapacityIsEmpty_Then_ExtraCacheStillDenies(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"SqlServer\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"SqlServer\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_SameManagedBrowser_When_EightCachesExist_Then_NinthDeniesWithoutReplacingAnyNativeRequest(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCleanupTests.Given_MixedRetainedInteractions_When_RealCacheRunsCleanup_Then_OnlyStrictlyEligibleBoundedBatchIsRemoved(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"SqlServer\", liveDependency: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"SqlServer\", liveDependency: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"SqlServer\", cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"SqlServer\", cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Browser)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: NativeRevoked)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Policy)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Throw)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Watermark)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"SqlServer\", requests: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"SqlServer\", requests: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHttpTests.Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -45735,6 +45785,984 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
         "typeName": "ApplicationHttpTests",
         "methodName": "Given_NativeHttpCreate_When_AuditSaveFails_Then_ResponseIsSanitizedAndEntireWriteRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_BoundCachedRequest_When_OuterDemandOrBrowserChanges_Then_OnlyOriginalBrowserObservesOriginalIntent(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_BoundCachedRequest_When_OuterDemandOrBrowserChanges_Then_OnlyOriginalBrowserObservesOriginalIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_BoundCachedRequest_When_OuterDemandOrBrowserChanges_Then_OnlyOriginalBrowserObservesOriginalIntent(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_BoundCachedRequest_When_OuterDemandOrBrowserChanges_Then_OnlyOriginalBrowserObservesOriginalIntent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CachedApplication_When_RevisionChangesOrCredentialExpires_Then_NoStaleDecisionOrNewNativeArtifactIsAdmitted(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_CachedApplication_When_RevisionChangesOrCredentialExpires_Then_NoStaleDecisionOrNewNativeArtifactIsAdmitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CachedApplication_When_RevisionChangesOrCredentialExpires_Then_NoStaleDecisionOrNewNativeArtifactIsAdmitted(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_CachedApplication_When_RevisionChangesOrCredentialExpires_Then_NoStaleDecisionOrNewNativeArtifactIsAdmitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CommittedManagedObservation_When_NextRequestClockRollsBack_Then_DurableWatermarkRejectsNewCache(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_CommittedManagedObservation_When_NextRequestClockRollsBack_Then_DurableWatermarkRejectsNewCache",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_CommittedManagedObservation_When_NextRequestClockRollsBack_Then_DurableWatermarkRejectsNewCache(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_CommittedManagedObservation_When_NextRequestClockRollsBack_Then_DurableWatermarkRejectsNewCache",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_TwoRealManagedBrowsers_When_FirstCacheIsSentWithSecondProof_Then_FirstInteractionRemainsUnobserved(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_TwoRealManagedBrowsers_When_FirstCacheIsSentWithSecondProof_Then_FirstInteractionRemainsUnobserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheBindingTests.Given_TwoRealManagedBrowsers_When_FirstCacheIsSentWithSecondProof_Then_FirstInteractionRemainsUnobserved(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheBindingTests",
+        "methodName": "Given_TwoRealManagedBrowsers_When_FirstCacheIsSentWithSecondProof_Then_FirstInteractionRemainsUnobserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_IndependentNativeRequestLimit_When_InteractionCapacityIsEmpty_Then_ExtraCacheStillDenies(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_IndependentNativeRequestLimit_When_InteractionCapacityIsEmpty_Then_ExtraCacheStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_IndependentNativeRequestLimit_When_InteractionCapacityIsEmpty_Then_ExtraCacheStillDenies(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_IndependentNativeRequestLimit_When_InteractionCapacityIsEmpty_Then_ExtraCacheStillDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"PostgreSql\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"PostgreSql\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"SqlServer\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies(provider: \"SqlServer\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_LastManagedInteractionSlot_When_CacheThenOverflowArrive_Then_EqualitySucceedsAndNextDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_SameManagedBrowser_When_EightCachesExist_Then_NinthDeniesWithoutReplacingAnyNativeRequest(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_SameManagedBrowser_When_EightCachesExist_Then_NinthDeniesWithoutReplacingAnyNativeRequest",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCapacityTests.Given_SameManagedBrowser_When_EightCachesExist_Then_NinthDeniesWithoutReplacingAnyNativeRequest(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCapacityTests",
+        "methodName": "Given_SameManagedBrowser_When_EightCachesExist_Then_NinthDeniesWithoutReplacingAnyNativeRequest",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCleanupTests.Given_MixedRetainedInteractions_When_RealCacheRunsCleanup_Then_OnlyStrictlyEligibleBoundedBatchIsRemoved(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCleanupTests",
+        "methodName": "Given_MixedRetainedInteractions_When_RealCacheRunsCleanup_Then_OnlyStrictlyEligibleBoundedBatchIsRemoved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheCleanupTests.Given_MixedRetainedInteractions_When_RealCacheRunsCleanup_Then_OnlyStrictlyEligibleBoundedBatchIsRemoved(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheCleanupTests",
+        "methodName": "Given_MixedRetainedInteractions_When_RealCacheRunsCleanup_Then_OnlyStrictlyEligibleBoundedBatchIsRemoved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"PostgreSql\", liveDependency: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheDependencyTests",
+        "methodName": "Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"PostgreSql\", liveDependency: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheDependencyTests",
+        "methodName": "Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"SqlServer\", liveDependency: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheDependencyTests",
+        "methodName": "Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheDependencyTests.Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted(provider: \"SqlServer\", liveDependency: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheDependencyTests",
+        "methodName": "Given_RealAttachedCache_When_RetentionPasses_Then_OnlyExpiredNativeDependencyCanBeDeleted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"PostgreSql\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"PostgreSql\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"SqlServer\", cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains(provider: \"SqlServer\", cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_CommittedNativeCache_When_AcknowledgementOrDisposalFails_Then_NoRedirectEscapesAndOneAttachedRowRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Browser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: NativeRevoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Policy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Throw)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"PostgreSql\", defect: Watermark)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Browser)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: NativeRevoked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Policy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Throw)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheFailureTests.Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld(provider: \"SqlServer\", defect: Watermark)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheFailureTests",
+        "methodName": "Given_RealNativeCache_When_FinalAttachmentChangesOrFails_Then_EntireTransactionAndRedirectAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedAttachmentDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"PostgreSql\", requests: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHistoryTests",
+        "methodName": "Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"PostgreSql\", requests: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHistoryTests",
+        "methodName": "Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"SqlServer\", requests: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHistoryTests",
+        "methodName": "Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold(provider: \"SqlServer\", requests: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHistoryTests",
+        "methodName": "Given_LastRetainedNativeSlot_When_CacheThenOverflowRun_Then_ExactHistoricalTokenAndRequestLimitsHold",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHistoryTests",
+        "methodName": "Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHistoryTests.Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHistoryTests",
+        "methodName": "Given_ManagedAuthorizationHistory_When_CountExceedsIndependentLimit_Then_AnonymousCacheCannotAddNativeState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHttpTests.Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHttpTests",
+        "methodName": "Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheHttpTests.Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheHttpTests",
+        "methodName": "Given_RealManagedRegistration_When_NativeCacheAndResumeRun_Then_OnlyBoundAnonymousRequestCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheRaceTests",
+        "methodName": "Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheRaceTests",
+        "methodName": "Given_ManagedCacheWaitingOnGovernance_When_CredentialExpiresBeforeAcquisition_Then_NoNativeOrInteractionRowCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheRaceTests",
+        "methodName": "Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedCacheRaceTests.Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedCacheRaceTests",
+        "methodName": "Given_OneGlobalSlot_When_TwoIssuerRootsWaitThenRace_Then_ExactlyOneNativeCacheCommits",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

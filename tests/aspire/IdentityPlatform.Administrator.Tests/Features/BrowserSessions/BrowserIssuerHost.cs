@@ -50,13 +50,13 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
     /// <summary>Runs the full native account/protocol pipeline over a retained real HTTPS listener and immutable BFF identity.</summary>
     internal static Task<BrowserIssuerHost> CreateHttpsAsync(JourneyScenario scenario, string provider,
         AdministratorRegistrationPolicy policy, Uri client, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null,
-        BrowserPilotClient? pilot = null) =>
-        CreateCoreAsync(scenario, provider, pilot is not null, [], policy, configure, endpoint, client, pilot);
+        BrowserPilotClient? pilot = null, bool managed = false) =>
+        CreateCoreAsync(scenario, provider, pilot is not null, [], policy, configure, endpoint, client, pilot, managed);
 
     /// <summary>Composes one explicit account host and preserves cleanup ownership under failed startup.</summary>
     private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,
         AdministratorRegistrationPolicy? logout = null, Action<IServiceCollection>? configure = null,
-        BrowserHttpsEndpoint? endpoint = null, Uri? client = null, BrowserPilotClient? pilotClient = null)
+        BrowserHttpsEndpoint? endpoint = null, Uri? client = null, BrowserPilotClient? pilotClient = null, bool managed = false)
     {
         IssuerCredentials? credentials = null;
         BrowserIssuerHost? owner = null;
@@ -66,7 +66,7 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
             pilotClient?.Configure(builder);
             if (logout is not null)
             {
-                builder.Services.AddProtocolStorageOwnership().AddProtocol(credentials, new ProtocolProfiles(pilot, logout));
+                builder.Services.AddProtocolStorageOwnership().AddProtocol(credentials, new ProtocolProfiles(pilot, logout, managed));
                 builder.Services.AddBrowserSessionProtocol().AddIssuerLogout();
                 builder.Services.AddOptions<OpenIddict.Server.OpenIddictServerOptions>().Configure<TimeProvider>((options, clock) => options.TimeProvider = clock);
             }
