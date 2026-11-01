@@ -29,9 +29,21 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     /// <summary>Creates actual native caching and completes a fresh password/MFA/consent ceremony using native CSRF and replay state.</summary>
     internal async Task ApproveAsync()
     {
-        initial = NativeCacheFlow.Initial(verifier, ManagedCacheTestContext.Client, ManagedCacheTestContext.Callback);
+        await CacheAsync();
+        await DecideAsync();
+    }
+
+    /// <summary>Creates a real native cached request for this API-created client's exact callback and independent PKCE/state/nonce.</summary>
+    internal async Task CacheAsync()
+    {
+        initial = NativeCacheFlow.Initial(verifier, test.ClientIdentifier, test.CallbackUri);
         using var cached = await test.SendAsync(initial);
         Resume = await test.ResumeAsync(cached);
+    }
+
+    /// <summary>Completes fresh native password/MFA and the explicit chosen consent decision for the retained original request.</summary>
+    internal async Task DecideAsync(bool approve = true)
+    {
         using var entry = await test.SendAsync(Resume);
         await ManagedHumanHttp.EntryAsync(entry);
         var form = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, entry.Headers.Location!);
@@ -41,8 +53,16 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
         using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
         await ManagedHumanHttp.EntryAsync(factor);
         var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
-        using var approved = await ManagedHumanHttp.DecideAsync(test, consent);
-        await ResumeRedirectAsync(test, approved, Resume);
+        using var decision = await ManagedHumanHttp.DecideAsync(test, consent, approve);
+        if (approve)
+        {
+            await ResumeRedirectAsync(test, decision, Resume);
+        }
+        else
+        {
+            await ManagedHumanHttp.EntryAsync(decision);
+            await ManagedHumanHttp.TerminalAsync(test, decision.Headers.Location!);
+        }
     }
 
     /// <summary>Requires the exact original issuer-local native request redirect with no body or new authority cookie.</summary>
@@ -53,7 +73,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
         var location = new Uri(test.Http.Environment.Profile.Issuer, response.Headers.Location!);
         Assert.True(location.GetLeftPart(UriPartial.Path) == new Uri(test.Http.Environment.Profile.Issuer, NativeCacheProfile.Authorize).AbsoluteUri && string.IsNullOrEmpty(location.Fragment));
         var query = QueryHelpers.ParseQuery(location.Query);
-        Assert.True(query.Count == ResumeFields && query[ClientId].Count == 1 && query[ClientId][0] == ManagedCacheTestContext.Client && query[RequestUri].Count == 1);
+        Assert.True(query.Count == ResumeFields && query[ClientId].Count == 1 && query[ClientId][0] == test.ClientIdentifier && query[RequestUri].Count == 1);
         if (expected is not null)
         {
             Assert.True(query[RequestUri][0] == expected[RequestUri]);
@@ -68,7 +88,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     {
         using var response = await test.SendAsync(Resume);
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
-        Assert.True(response.Headers.Location?.GetLeftPart(UriPartial.Path) == ManagedCacheTestContext.Callback && string.IsNullOrEmpty(response.Headers.Location.Fragment));
+        Assert.True(response.Headers.Location?.GetLeftPart(UriPartial.Path) == test.CallbackUri && string.IsNullOrEmpty(response.Headers.Location.Fragment));
         var fields = QueryHelpers.ParseQuery(response.Headers.Location!.Query);
         Assert.True(fields.Keys.ToHashSet(StringComparer.Ordinal).SetEquals([Code, State, Issuer]) && fields.All(pair => pair.Value.Count == 1));
         Assert.True(fields[State][0] == initial![State] && fields[Issuer][0] == test.Http.Environment.Profile.Issuer.AbsoluteUri && !string.IsNullOrEmpty(fields[Code][0]));
@@ -78,20 +98,20 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     }
 
     /// <summary>Uses actual Basic credentials and the independently retained original S256 verifier over real HTTPS.</summary>
-    internal async Task<HttpResponseMessage> ExchangeAsync(string code, string? secret = null, string? proof = null, string? callback = null, HttpClient? client = null)
+    internal async Task<HttpResponseMessage> ExchangeAsync(string code, string? secret = null, string? proof = null, string? callback = null, HttpClient? client = null, string? clientId = null)
     {
         using var request = new HttpRequestMessage(HttpMethod.Post, NativeCacheProfile.Token)
         {
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 [Grant] = CodeGrant,
-                [Redirect] = callback ?? ManagedCacheTestContext.Callback,
+                [Redirect] = callback ?? test.CallbackUri,
                 [Code] = code,
                 [Verifier] = proof ?? verifier
             })
         };
         request.Headers.Authorization = new AuthenticationHeaderValue(Basic, Convert.ToBase64String(Encoding.UTF8.GetBytes(
-            Uri.EscapeDataString(ManagedCacheTestContext.Client) + CredentialSeparator + Uri.EscapeDataString(secret ?? test.Secret))));
+            Uri.EscapeDataString(clientId ?? test.ClientIdentifier) + CredentialSeparator + Uri.EscapeDataString(secret ?? test.Secret))));
         return await (client ?? test.Http.IssuerClient).SendAsync(request, TestContext.Current.CancellationToken);
     }
 }

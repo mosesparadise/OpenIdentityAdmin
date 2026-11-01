@@ -1,0 +1,126 @@
+{
+  "source_base": "ccfe3c3159a878fc12dfb11e0c1fc136bd9f5e23",
+  "remote_main": "4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa",
+  "branch": "123-application-editor",
+  "local_worktree_branch": "124-managed-token-issuance",
+  "scope": "T013 local genuine created-client journeys; test/helper/inventory changes only. Reuses accepted T012 coverage and closes cancellation continuation, successful cached-request replay and both-direction two-real-client substitution. No new production implementation, UI/browser-engine/full-CI/merge acceptance.",
+  "toolchain": {
+    "sdk": "10.0.403",
+    "runtime": "10.0.14",
+    "openiddict": "7.7.2",
+    "build": "Administrator build4; single MSBuild node, no node reuse; no subsequent C# edits"
+  },
+  "results": {
+    "PostgreSql.ManagedApplications": {
+      "passed": 104,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-journey-pg-accepted/ManagedApplications.trx",
+      "sha256": "8cb5f2420c61311567c5fa169295741a14895ad0e2e73bbab07ecaa36d8fd133",
+      "exact_identity_reconciliation": true
+    },
+    "PostgreSql.Applications": {
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-journey-pg-accepted/Applications.trx",
+      "sha256": "cef45abce17ec7647ff07a95de9073ef3b0986a95dcaf3bb372d8d35a2c00c4a",
+      "exact_identity_reconciliation": true
+    },
+    "SqlServer.ManagedApplications": {
+      "passed": 104,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-journey-sql-accepted/ManagedApplications.trx",
+      "sha256": "c7aaa46b167148c434dd3b20aa81402ec92b94f2318f7190a63c1a29023b4c87",
+      "exact_identity_reconciliation": true
+    },
+    "SqlServer.Applications": {
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-journey-sql-accepted/Applications.trx",
+      "sha256": "0d5e7d0d183af1c5721d5f8f277a3b715ed724a84e9b13726e196b7a31b3d8a0",
+      "exact_identity_reconciliation": true
+    }
+  },
+  "selection_controls": 67,
+  "preserved_native_records": 2315,
+  "added_native_records": 6,
+  "current_native_records": 2321,
+  "prior_metadata_and_order_preserved": true,
+  "source_sha256": {
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpTests.cs": "0f3889624f7dd700c1bf56bd9c28995de291fd09c03c765d0c0050c3e8689d05",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheTestContext.cs": "9e8afc97b9947517a7796673d334eead6321db64a1daa36b8570a790f561927d",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttp.cs": "300509e20a68a6223c77f6b2ef5d61bd2285f2271f58d3d379cd787b80746b7f",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenEvidence.cs": "e54afae1b77f2cedf8d2bb331db9fecf7a85251a19fb39cda377a10ab5a13027",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs": "f57c72a90d647bb08bf39df6a304a70613ecca356802491f48b6c425ce9bb040",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenOracle.cs": "ca83e298307d3e9aa1c285bfc255063dd86696207e3166582693d58e61f68ab6",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyEvidence.cs": "012eb714c4a57c220417ae3fd825d5ca146c5cf94258d75650987a654e867020",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyTests.cs": "7faa5ab14e68f387fec11ee35ec16bce2c23c89c9d5e06de1f28e68a16e8b18b",
+    "eng/administrator-test-matrix.json": "9c5887658e1f301e27153db5e826707d8fd762f1a6f4c9b9c07ff7b6ed804be8",
+    "eng/test-matrix.json": "9a3a339204eaf0c02b7bf59113edbf59cd909fcd92b20d0eb62892329984a057",
+    "scripts/test_browser_session_selection.py": "67a3c018725df5144c14f6cfc084bd0cbe2d33391af6f663c41a1f7cf438fc44",
+    "scripts/test_lifecycle_selection.py": "21c11595e2777dcd2de0466542042eafb53bd54bcdb7e93b4c9c793896056934"
+  },
+  "artifact_sha256": {
+    "feature019-journey-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+    "feature019-journey-build1.log": "543e5797b3a8e240f56d49eeb05e5a40becad850d28f386aac0f5d44cc79e9f3",
+    "feature019-journey-build2.log": "d17ca834842c496b623df8cfecef0a9f178f7bcdfaebc1acc300873f5c58aa81",
+    "feature019-journey-build3-source.json": "0c99afc1c4379ce94835af39ec100288275caa95851e65f65a808dcf76757afd",
+    "feature019-journey-build3.log": "d3a63019f286a9028dcd2212d6614b359cc009a29794d5dd3c7437ac2d25630e",
+    "feature019-journey-build4.log": "a6c36567ae592567a784b6925b003962a36b18abe212fb003121b7c10ab44402",
+    "feature019-journey-discovery-final.json": "b138f66194e10e64d0b14dd58b134b960fbcbe54a067778e55c480f549a78961",
+    "feature019-journey-discovery.json": "ca6533f0f5086e7040a6b9dfaea725f1bc9637ea701fa1ac46bd500237848d23",
+    "feature019-journey-instructions.log": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def",
+    "feature019-journey-pg-Applications-accepted.log": "082585d1e5aa34c0fd4dfc608288c7b5d0d80206745c7b3c85a97345c0b4bba1",
+    "feature019-journey-pg-ManagedApplications-accepted.log": "a17dbd64760b1e6f9db61cd3d3b99b09ad1729e67496ad82bf34ea96b012253e",
+    "feature019-journey-pg-accepted/Applications.trx": "cef45abce17ec7647ff07a95de9073ef3b0986a95dcaf3bb372d8d35a2c00c4a",
+    "feature019-journey-pg-accepted/ManagedApplications.trx": "8cb5f2420c61311567c5fa169295741a14895ad0e2e73bbab07ecaa36d8fd133",
+    "feature019-journey-pg-focused/Journeys.trx": "75c025cbdc06332e8ebc9d198ae3cf5ded8194d313a243562c2a0d5e6488910c",
+    "feature019-journey-pg-focused.log": "c3ae713504f8da15c9a698f91b3537ed2aad9127a55d0a7a857796a9ef813098",
+    "feature019-journey-pg-focused2/Journeys.trx": "6424f831496bbcddff0ed70b8d9eb096222d3635898f618bf07d594f8e30e13a",
+    "feature019-journey-pg-focused2.log": "504d9778eb7c2fc0ef5ed97388c50aa0ad05134eb96a8f7d5dec284284add2f2",
+    "feature019-journey-quality-accepted.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-journey-quality-final.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-journey-quality1.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-journey-selection.log": "4208ca56c54767a30556d892e5f8e0749bcc3df5df424a39afe346c953e2a6b7",
+    "feature019-journey-source.json": "841cb1db18e9695a2cfe2450cced29671d7c29e6c10dd67900312b4d48b4f561",
+    "feature019-journey-sql-Applications-accepted.log": "6d058995e33a693b5da1ab493dd1be6a9a148d77176d92c8f5069048c087533d",
+    "feature019-journey-sql-ManagedApplications-accepted.log": "c32d1376f760ae28ca7e7961438f730958e0f78e7f26bbeede5734449eb8ce93",
+    "feature019-journey-sql-accepted/Applications.trx": "0d5e7d0d183af1c5721d5f8f277a3b715ed724a84e9b13726e196b7a31b3d8a0",
+    "feature019-journey-sql-accepted/ManagedApplications.trx": "c7aaa46b167148c434dd3b20aa81402ec92b94f2318f7190a63c1a29023b4c87"
+  },
+  "reused_evidence": {
+    "path": "specs/019-application-editor/native-issuance-evidence.json",
+    "sha256": "f91ab1da94c6c7ad71fea2174301bd85e3b847671774645634b8f31328074cd8",
+    "note": "T012 implementation, core journey and Host acceptance remain historical evidence. Current full ManagedApplications selection re-executes its prior provider scenarios; no new Host, coverage or dedicated mutation-testing run is claimed."
+  },
+  "reconciliation_helper": {
+    "path": "reconcile_t013.py",
+    "sha256": "e6ca03cd9d7ba1f7ab8ff4d829f1c876bcfef8640be670046765bf81f9aef0f1"
+  },
+  "review_dispositions": {
+    "architecture_security": "Pass: real proof isolation and correct native binding error; existing broad interaction/audit defaults preserved via explicit per-application opt-in, returned registration identity/callback checked against submitted values, digest scope qualified to token/authorization descriptors and product policy.",
+    "test_source": "Pass: three real-provider journeys with both-direction substitutions, exact unnormalized all-client persisted evidence and cryptographically checked rightful exchanges. Prior test metadata and global assertion defaults preserved.",
+    "raw_evidence": "Pass: independent final bounded T013 review verifies 278 exact passing executions with complete result/definition/entry/execution linkage and zero failures/skips, all 12 source and 26 artifact hashes, preservation of 2315 prior records/order plus six additions, 67 selection controls, final build, quality, instruction and assurance checks. Product code is unchanged; prior failed attempts remain separate. UI/browser/full-CI/merge and external gates remain open."
+  },
+  "commands": [
+    "dotnet build tests/aspire/IdentityPlatform.Administrator.Tests --no-restore -m:1 -nodeReuse:false",
+    "dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore --no-progress --filter FullyQualifiedName~Features.<ManagedApplications|Applications>.&Provider=<provider> --report-trx --report-trx-filename <story>.trx --results-directory /workspace/feature019-journey-<pg|sql>-accepted",
+    "python3 scripts/check_code_quality.py",
+    "python3 -m unittest discover -s scripts -p 'test_*selection.py'",
+    "python3 scripts/check-ai-instructions.py",
+    "python3 scripts/check_assurance.py",
+    "git diff --check"
+  ],
+  "failure_provenance": "Build1 failed new anonymous-object formatting; builds2/3/4 pass. Build3 focused PostgreSQL passed two cases and failed one expected invalid_request versus actual invalid_token from the earlier managed durable client-binding guard. Build4 corrects that exact expectation and preserves all state and positive assertions; its focused three-case pass is supplementary, and only the four results reports establish final whole-affected-selection acceptance. All earlier receipts remain retained separately.",
+  "limits": [
+    "Raw artifacts are retained in the current workspace; repository hashes do not imply hosted upload.",
+    "Native application descriptors are outside the exact rejection digest; native token/authorization descriptors, all-client product policy/human/audit and administrator authority are covered.",
+    "Production source, migrations, packages and runtime configuration are unchanged; no new Host execution, module coverage measurement or dedicated mutation-testing run is claimed.",
+    "T014 visible create/details/one-time-output UI is next. T007 retained-browser execution, full-feature CI/review/squash T022/T023 and all historical/human/Windows/Firefox/A-009/vendor/production/public-release gates remain open.",
+    "No blocked browser download retry, refresh activation or closure of the six historical findings. All 345 assurance controls remain not_assessed."
+  ]
+}

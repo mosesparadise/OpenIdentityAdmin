@@ -90,8 +90,8 @@ internal static class ManagedHumanHttp
         });
 
     /// <summary>Submits explicit consent through the same actual protected form path.</summary>
-    internal static Task<HttpResponseMessage> DecideAsync(ManagedCacheTestContext test, Dictionary<string, string> form) =>
-        BrowserIssuerHttp.PostAsync(test.Http.IssuerClient, Path, new Dictionary<string, string>(form, StringComparer.Ordinal) { [Decision] = Approve });
+    internal static Task<HttpResponseMessage> DecideAsync(ManagedCacheTestContext test, Dictionary<string, string> form, bool approve = true) =>
+        BrowserIssuerHttp.PostAsync(test.Http.IssuerClient, Path, new Dictionary<string, string>(form, StringComparer.Ordinal) { [Decision] = approve ? Approve : Deny });
 
     /// <summary>Allows only native antiforgery-cookie establishment; managed proof creation never returns administrator/BFF authority cookies.</summary>
     internal static void NoAuthorityCookie(HttpResponseMessage response)

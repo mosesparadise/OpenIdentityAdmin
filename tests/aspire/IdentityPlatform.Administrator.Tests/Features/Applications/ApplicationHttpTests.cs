@@ -173,11 +173,11 @@ public sealed class ApplicationHttpTests(BootstrapFixture fixture)
     }
 
     /// <summary>Builds independently named wire fields with an explicit future UTC second.</summary>
-    internal static string Input(DateTimeOffset now, string client = Client) => JsonSerializer.Serialize(new
+    internal static string Input(DateTimeOffset now, string client = Client, string redirect = Redirect) => JsonSerializer.Serialize(new
     {
         clientId = client,
         displayName = Display,
-        redirectUris = new[] { Redirect },
+        redirectUris = new[] { redirect },
         credentialExpiresAt = now.AddMinutes(LifetimeMinutes).ToString(ExpiryFormat, CultureInfo.InvariantCulture)
     });
 

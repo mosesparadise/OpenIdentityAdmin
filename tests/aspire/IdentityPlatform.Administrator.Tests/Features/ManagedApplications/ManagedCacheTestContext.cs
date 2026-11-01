@@ -31,6 +31,8 @@ internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, Appli
     internal ApplicationHttpFixture Http => http;
     internal string Id => created.Application.Id;
     internal string Secret => created.ClientSecret;
+    internal string ClientIdentifier => created.Application.ClientId;
+    internal string CallbackUri => Assert.Single(created.Application.RedirectUris);
 
     /// <summary>Enables the real managed profile while preserving genuine administrator password/MFA and native credential exchange.</summary>
     internal static async Task<ManagedCacheTestContext> CreateAsync(BootstrapFixture fixture, string provider,
@@ -40,7 +42,10 @@ internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, Appli
         try
         {
             using var response = await http.CreateAsync(ApplicationHttpTests.Input(http.Now, Client));
-            return new(http, await ApplicationHttpTests.CreatedAsync(response));
+            var result = new ManagedCacheTestContext(http, await ApplicationHttpTests.CreatedAsync(response));
+            Assert.Equal(Client, result.ClientIdentifier);
+            Assert.Equal(Callback, result.CallbackUri);
+            return result;
         }
         catch { await http.DisposeAsync(); throw; }
     }
@@ -73,17 +78,17 @@ internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, Appli
         var query = QueryHelpers.ParseQuery(response.Headers.Location!.Query);
         Assert.Equal(RedirectParameters, query.Count);
         Assert.True(query.TryGetValue(RequestUri, out var reference) && reference.Count == 1 && !string.IsNullOrEmpty(reference[0]));
-        Assert.Equal(Client, query[ClientId].Single());
+        Assert.Equal(ClientIdentifier, query[ClientId].Single());
         Assert.True(response.Headers.CacheControl?.NoStore == true);
         return query.ToDictionary(pair => pair.Key, pair => pair.Value.Single()!, StringComparer.Ordinal);
     }
 
     /// <summary>Reads committed native and product state independently in a fresh provider context.</summary>
-    internal async Task<ManagedCacheSnapshot> SnapshotAsync()
+    internal async Task<ManagedCacheSnapshot> SnapshotAsync(bool applicationOnly = false)
     {
         await using var scope = http.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        var rows = await database.Set<ManagedLoginInteraction>().AsNoTracking().OrderBy(row => row.SelectorDigest).ToArrayAsync(TestContext.Current.CancellationToken);
+        var rows = await database.Set<ManagedLoginInteraction>().AsNoTracking().Where(row => !applicationOnly || row.ApplicationId == Id).OrderBy(row => row.SelectorDigest).ToArrayAsync(TestContext.Current.CancellationToken);
         var tokens = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().Include(row => row.Authorization).Where(row => row.Application!.Id == Id)
             .OrderBy(row => row.Id).ToArrayAsync(TestContext.Current.CancellationToken);
         return new(rows, tokens, await database.Set<OpenIddictEntityFrameworkCoreAuthorization>().CountAsync(row => row.Application!.Id == Id, TestContext.Current.CancellationToken),

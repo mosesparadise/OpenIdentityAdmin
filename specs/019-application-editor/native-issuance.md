@@ -51,4 +51,6 @@ Build/format/analyzer failures and all rejected runtime receipts are retained se
 
 ## Remaining delivery
 
+**Subsequent checkpoint:** [T013 created-client journeys](created-client-journeys.md) now closes the three integration gaps identified below. The following paragraph retains the T012 handoff scope; T014 visible UI is now next.
+
 The core T013 created-client success, proof denial, code replay, source drift and late-save/audit-failure replay journeys are already exercised by T012 tests and must not be reimplemented. Remaining T013 integration checks should concentrate on the original authorization request after explicit consent cancellation, cached-request replay after successful issuance, and substitution between two genuinely API-created managed clients; final coverage reconciliation precedes checking T013. T014 still owns the visible create/details/one-time-output UI. T007 retained Chromium/WebKit execution remains pending after the documented download-policy failure. No blocked browser download was repeated. Initial Firefox exclusion, A-009 limitations, actual Windows/human acceptance, all six historical findings, vendor/production/public-release gates and disabled refresh remain unchanged. Normal full-feature review, CI and squash remain T022/T023.

@@ -43,7 +43,7 @@ internal static class ManagedTokenOracle
     private static readonly string[] AccessClaims = ["iss", Subject, "iat", "exp", "nbf", "jti", ClientId, Scope, AuthorizationId, TokenId, Presenter];
 
     /// <summary>Checks signatures, lifetime, issuer, ID-token recipient and nonce/hash bindings without printing credential contents.</summary>
-    internal static async Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject)
+    internal static async Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject, bool applicationOnly = false)
     {
         using var discovery = JsonDocument.Parse(await test.Http.IssuerClient.GetStringAsync(DiscoveryPath, TestContext.Current.CancellationToken));
         var uri = new Uri(discovery.RootElement.GetProperty(JwksUri).GetString()!);
@@ -51,7 +51,7 @@ internal static class ManagedTokenOracle
         var keys = new JsonWebKeySet(await test.Http.IssuerClient.GetStringAsync(uri, TestContext.Current.CancellationToken));
         Assert.All(keys.Keys, key => Assert.True(string.IsNullOrEmpty(key.D) && string.IsNullOrEmpty(key.K)));
         var identityParameters = Parameters(test, keys, IdentityType);
-        identityParameters.ValidAudience = ManagedCacheTestContext.Client;
+        identityParameters.ValidAudience = test.ClientIdentifier;
         var identity = await ValidateAsync(body.GetProperty(IdentityField).GetString()!, identityParameters, IdentityClaims);
         var access = body.GetProperty(AccessField).GetString()!;
         var expectedHash = Base64UrlEncoder.Encode(SHA256.HashData(Encoding.ASCII.GetBytes(access)).AsSpan(0, HalfDigestBytes).ToArray());
@@ -61,9 +61,9 @@ internal static class ManagedTokenOracle
         var credentials = test.Http.Environment.IssuerServices.GetRequiredService<IssuerCredentials>();
         accessParameters.TokenDecryptionKeys = credentials.EncryptionKeys.All.Select(certificate => new X509SecurityKey(certificate));
         var principal = await ValidateAsync(access, accessParameters, AccessClaims);
-        Assert.True(principal.GetClaim(Subject) == subject && principal.GetClaim(ClientId) == ManagedCacheTestContext.Client && principal.GetClaim(Scope) == OpenId);
-        Assert.True(identity.GetClaim(AuthorizedParty) == ManagedCacheTestContext.Client && principal.GetClaim(Presenter) == ManagedCacheTestContext.Client);
-        var snapshot = await test.SnapshotAsync();
+        Assert.True(principal.GetClaim(Subject) == subject && principal.GetClaim(ClientId) == test.ClientIdentifier && principal.GetClaim(Scope) == OpenId);
+        Assert.True(identity.GetClaim(AuthorizedParty) == test.ClientIdentifier && principal.GetClaim(Presenter) == test.ClientIdentifier);
+        var snapshot = await test.SnapshotAsync(applicationOnly);
         Assert.True(identity.GetClaim(TokenId) == snapshot.Tokens.Single(value => value.Type == StoredIdentityType).Id);
         Assert.True(principal.GetClaim(TokenId) == snapshot.Tokens.Single(value => value.Type == StoredAccessType).Id);
         var authorization = Assert.Single(snapshot.Interactions).AuthorizationId;
