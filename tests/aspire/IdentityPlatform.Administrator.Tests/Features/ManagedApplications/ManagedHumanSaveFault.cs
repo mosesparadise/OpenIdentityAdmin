@@ -79,7 +79,7 @@ internal sealed class ManagedHumanSaveFault : SaveChangesInterceptor
 }
 
 /// <summary>Names causal faults before final snapshot adoption and after the final durable save.</summary>
-internal enum ManagedHumanSaveDefect
+public enum ManagedHumanSaveDefect
 {
     InternalBinding, Ceremony, Throw, FinalBinding, Expired
 }

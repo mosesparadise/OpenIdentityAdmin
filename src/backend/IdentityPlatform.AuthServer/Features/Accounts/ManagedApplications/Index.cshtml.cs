@@ -1,3 +1,5 @@
+using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using OpenIddict.Abstractions;
 using IdentityPlatform.AuthServer.Features.Accounts.Shared;
 using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Core.Features.Identity.Authentication;
@@ -67,6 +69,14 @@ public sealed class IndexModel : PageModel
         }
         var result = await ExecuteAsync(request, action.Value, form[AdministratorBrowser.Username].SingleOrDefault(),
             action == ManagedHumanAction.Password ? form[AdministratorBrowser.Password].SingleOrDefault() : form[AdministratorBrowser.Code].SingleOrDefault());
+        if (result.Accepted && result.State == ManagedLoginState.Approved)
+        {
+            return LocalRedirect(QueryHelpers.AddQueryString(ProtocolOptions.AuthorizePath, new Dictionary<string, string?>
+            {
+                [OpenIddictConstants.Parameters.ClientId] = request.ClientId,
+                [OpenIddictConstants.Parameters.RequestUri] = request.RequestUri
+            }));
+        }
         Flow = ManagedFormProof.Protect(HttpContext, ManagedFormProof.Advance(request, result));
         if (result.Accepted)
         {

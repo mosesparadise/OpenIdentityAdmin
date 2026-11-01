@@ -36,7 +36,7 @@ public sealed class ManagedHumanDriftTests(BootstrapFixture fixture)
             await ManagedHumanDrift.CheckAsync(test, defect, () => ManagedHumanHttp.DecideAsync(test, consent));
         }
         using var approved = await ManagedHumanHttp.DecideAsync(test, consent);
-        await ManagedHumanHttp.EntryAsync(approved);
+        await ManagedTokenFlow.ResumeRedirectAsync(test, approved);
         Assert.Equal(ManagedLoginState.Approved, Assert.Single((await test.SnapshotAsync()).Interactions).State);
     }
 

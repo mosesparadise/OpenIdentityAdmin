@@ -50,7 +50,7 @@ public sealed class ManagedPasswordUpgradeTests(BootstrapFixture fixture)
         await ManagedHumanHttp.EntryAsync(factor);
         var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
         using var decision = await ManagedHumanHttp.DecideAsync(test, consent);
-        await ManagedHumanHttp.EntryAsync(decision);
+        await ManagedTokenFlow.ResumeRedirectAsync(test, decision);
         Assert.Equal(ManagedLoginState.Approved, Assert.Single((await test.SnapshotAsync()).Interactions).State);
     }
 

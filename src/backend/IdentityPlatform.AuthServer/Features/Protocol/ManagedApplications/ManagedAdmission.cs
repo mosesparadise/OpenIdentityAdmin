@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
@@ -13,6 +14,11 @@ internal sealed class ManagedAdmission
     internal ManagedDemand Demand
     {
         get;
+    }
+
+    internal ManagedEndpointParent? Parent
+    {
+        get; private set;
     }
 
     /// <summary>Retains exact actual validation and its immutable restored intent after native handlers return normally.</summary>
@@ -50,7 +56,9 @@ internal sealed class ManagedAdmission
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        Parent = new ManagedEndpointParent(context.Transaction.GetHttpRequest()!.HttpContext);
         await native();
+        Parent.RequireEmpty();
         if (!context.IsRequestSkipped || context.IsRequestHandled || context.IsRejected || !Demand.Matches(context.Request))
         {
             throw ProtocolStorageOwner.Unavailable();

@@ -62,9 +62,15 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
             {
                 return ManagedAdmission.ValidateAsync(managedValidation, () => native.DispatchAsync(managedValidation));
             }
+            if (context is OpenIddictServerEvents.ValidateTokenRequestContext managedToken)
+            {
+                return ManagedTokenAdmission.ValidateAsync(managedToken, () => native.DispatchAsync(managedToken));
+            }
             if (context is OpenIddictServerEvents.ProcessSignInContext managedSignIn)
             {
-                return services.GetRequiredService<ManagedCacheCoordinator>().RunAsync(managedSignIn);
+                return managedSignIn.EndpointType == OpenIddictServerEndpointType.Authorization && ManagedAdmission.Find(context.Transaction) is { Demand.Cached: false }
+                    ? services.GetRequiredService<ManagedCacheCoordinator>().RunAsync(managedSignIn)
+                    : services.GetRequiredService<ManagedIssuanceCoordinator>().RunAsync(managedSignIn);
             }
         }
         if (context is OpenIddictServerEvents.ProcessSignInContext signIn &&

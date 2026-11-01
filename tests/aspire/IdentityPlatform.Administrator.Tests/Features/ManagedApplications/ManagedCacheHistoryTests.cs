@@ -58,7 +58,7 @@ public sealed class ManagedCacheHistoryTests(BootstrapFixture fixture)
     }
 
     /// <summary>Seeds disposable native occupancy in bounded fixture batches; these rows carry no usable credential or authenticated subject.</summary>
-    private static async Task FillAsync(ManagedCacheTestContext test, int count, string? type)
+    internal static async Task FillAsync(ManagedCacheTestContext test, int count, string? type)
     {
         for (var offset = 0; offset < count; offset += BatchSize)
         {

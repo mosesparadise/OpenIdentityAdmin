@@ -5,13 +5,21 @@ using OpenIddict.Server.AspNetCore;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 
-/// <summary>Composes explicit managed native caching without granting administrator proof or enabling incomplete human/token issuance.</summary>
+/// <summary>Composes explicit managed native caching and issuance without granting administrator proof.</summary>
 internal static class Setup
 {
+    private const int BeforePreparationGuard = 2;
     /// <summary>Imports the real native self-redirection descriptor and adds a principal-boundary check before native generators execute.</summary>
     internal static OpenIddictServerBuilder AddManagedApplications(this OpenIddictServerBuilder builder)
     {
         builder.Services.AddScoped<ManagedCacheCoordinator>();
+        builder.Services.AddScoped<ManagedIssuanceCoordinator>();
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<OpenManagedIssuance>()
+            .SetOrder(OpenIddictServerHandlers.RestoreInternalClaims.Descriptor.Order + 1));
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<ReserveManagedIssuance>()
+            .SetOrder(OpenIddictServerHandlers.EvaluateGeneratedTokens.Descriptor.Order + 1));
+        builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseScopedHandler<BoundManagedIssuance>()
+            .SetOrder(OpenIddictServerHandlers.GenerateAccessToken.Descriptor.Order - BeforePreparationGuard));
         builder.AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(handler => handler.UseSingletonHandler<PrepareManagedCache>()
             .SetOrder(OpenIddictServerHandlers.GenerateAccessToken.Descriptor.Order - 1));
         var descriptor = OpenIddictServerAspNetCoreHandlers.Authentication.ProcessSelfRedirection.Descriptor;

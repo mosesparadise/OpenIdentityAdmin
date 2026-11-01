@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -17,6 +18,10 @@ internal sealed class DurableServerValidation(IServiceScopeFactory factory, Open
             context.Reject(OpenIddictConstants.Errors.InvalidToken);
             return ValueTask.CompletedTask;
         }
+        if (ManagedTokenBinding.Candidate(context.Principal))
+        {
+            return ValidateManagedAsync(context);
+        }
         if (!DurableServerToken.IsAdministrator(context.Principal))
         {
             return native.HandleAsync(context);
@@ -28,4 +33,7 @@ internal sealed class DurableServerValidation(IServiceScopeFactory factory, Open
         }
         return DurableServerToken.RunAsync(factory, context);
     }
+    /// <summary>Isolates managed replay validation without redeeming a valid artifact before client authentication and PKCE finish.</summary>
+    private async ValueTask ValidateManagedAsync(OpenIddictServerEvents.ValidateTokenContext context) => await ManagedDurableToken.RunAsync(factory, context);
+
 }

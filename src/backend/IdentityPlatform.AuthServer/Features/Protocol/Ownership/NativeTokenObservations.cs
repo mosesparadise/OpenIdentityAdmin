@@ -13,7 +13,8 @@ internal static class NativeTokenObservations
     {
         Exclusive(context);
         return NativeIssuanceProof.Find(context.Transaction) is { } administrator ? administrator.GenerateAsync(context, native) :
-            ManagedCacheProof.Find(context.Transaction) is { } managed ? managed.GenerateAsync(context, native) : native();
+            ManagedCacheProof.Find(context.Transaction) is { } managed ? managed.GenerateAsync(context, native) :
+            ManagedIssuanceProof.Find(context.Transaction) is { } issuance ? issuance.GenerateAsync(context, native) : native();
     }
 
     /// <summary>Reuses low-level native token preparation/persistence evidence while preserving separate profile ownership checks.</summary>
@@ -22,13 +23,15 @@ internal static class NativeTokenObservations
     {
         Exclusive(context);
         return NativeIssuanceProof.Find(context.Transaction) is { } administrator ? administrator.ObserveAsync(context, operation) :
-            ManagedCacheProof.Find(context.Transaction) is { } managed ? managed.ObserveAsync(context, operation) : native();
+            ManagedCacheProof.Find(context.Transaction) is { } managed ? managed.ObserveAsync(context, operation) :
+            ManagedIssuanceProof.Find(context.Transaction) is { } issuance ? issuance.ObserveAsync(context, operation) : native();
     }
 
     /// <summary>Rejects any attempt to combine managed cache and administrator issuance observations in one native transaction.</summary>
     private static void Exclusive(OpenIddictServerEvents.GenerateTokenContext context)
     {
-        if (NativeIssuanceProof.Find(context.Transaction) is not null && ManagedCacheProof.Find(context.Transaction) is not null)
+        if ((NativeIssuanceProof.Find(context.Transaction) is null ? 0 : 1) + (ManagedCacheProof.Find(context.Transaction) is null ? 0 : 1) +
+            (ManagedIssuanceProof.Find(context.Transaction) is null ? 0 : 1) > 1)
         {
             throw ProtocolStorageOwner.Unavailable();
         }

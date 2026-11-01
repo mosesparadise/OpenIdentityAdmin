@@ -30,7 +30,7 @@ public sealed class ManagedHumanAtomicityTests(BootstrapFixture fixture)
         var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
         await RequireFaultsAsync(test, fault, () => ManagedHumanHttp.DecideAsync(test, consent), internalSaves: false);
         using var approved = await ManagedHumanHttp.DecideAsync(test, consent);
-        await ManagedHumanHttp.EntryAsync(approved);
+        await ManagedTokenFlow.ResumeRedirectAsync(test, approved);
         Assert.Equal(ManagedLoginState.Approved, Assert.Single((await test.SnapshotAsync()).Interactions).State);
     }
 

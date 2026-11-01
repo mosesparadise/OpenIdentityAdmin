@@ -14,5 +14,7 @@ internal sealed class NativeAdministratorPassthrough<TContext, TFilter>(OpenIddi
     /// <summary>Wraps actual native execution; no endpoint or custom handler can manufacture a receipt by setting skipped state.</summary>
     public ValueTask HandleAsync(TContext context) => context.Transaction.Request?.ClientId == AdministratorProtocolIdentity.ClientId
         ? AdministratorPassthrough.ObserveAsync(context, () => native.HandleAsync(context)) : context is OpenIddictServerEvents.HandleAuthorizationRequestContext authorization && ManagedAdmission.Find(context.Transaction) is { Demand.Cached: true } managed
-            ? managed.ObservePassthroughAsync(authorization, () => native.HandleAsync(context)) : native.HandleAsync(context);
+            ? managed.ObservePassthroughAsync(authorization, () => native.HandleAsync(context)) :
+                context is OpenIddictServerEvents.HandleTokenRequestContext token && ManagedTokenAdmission.Find(context.Transaction) is { } exchange
+                    ? exchange.ObserveAsync(token, () => native.HandleAsync(context)) : native.HandleAsync(context);
 }

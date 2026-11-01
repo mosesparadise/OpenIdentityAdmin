@@ -12,6 +12,18 @@ internal static class ManagedHumanDrift
     /// <summary>Applies one isolated stale authority condition while retaining exact tracked originals for explicit restoration.</summary>
     internal static async Task CheckAsync(ManagedCacheTestContext test, ManagedHumanAuthority defect, Func<Task<HttpResponseMessage>> send)
     {
+        await WithAsync(test, defect, async () =>
+        {
+            var before = await ManagedHumanEvidence.DigestAsync(test);
+            using var response = await send();
+            await ManagedCacheTestContext.UnavailableAsync(response);
+            Assert.Equal(before, await ManagedHumanEvidence.DigestAsync(test));
+        });
+    }
+
+    /// <summary>Retains exact original values while a caller proves its own durable-consumption or no-write invariant under current authority drift.</summary>
+    internal static async Task WithAsync(ManagedCacheTestContext test, ManagedHumanAuthority defect, Func<Task> verify)
+    {
         await using var scope = test.Http.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var token = TestContext.Current.CancellationToken;
@@ -24,10 +36,7 @@ internal static class ManagedHumanDrift
         await database.SaveChangesAsync(token);
         try
         {
-            var before = await ManagedHumanEvidence.DigestAsync(test);
-            using var response = await send();
-            await ManagedCacheTestContext.UnavailableAsync(response);
-            Assert.Equal(before, await ManagedHumanEvidence.DigestAsync(test));
+            await verify();
         }
         finally
         {
@@ -77,7 +86,7 @@ internal static class ManagedHumanDrift
 }
 
 /// <summary>Identifies independent current-authority invalidations, each followed by exact restoration before the next control.</summary>
-internal enum ManagedHumanAuthority
+public enum ManagedHumanAuthority
 {
     Disabled, Suspended, Stamp, Authentication, Factor, Enrollment, Policy, Credential, Locked
 }

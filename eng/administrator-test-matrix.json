@@ -1054,7 +1054,58 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: Concurrency)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: None)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: PersistedStamp)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: TrackedStamp)"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"PostgreSql\", defect: TrackedStamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: Ceremony)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: FinalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: InternalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: Ceremony)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: FinalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: InternalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"PostgreSql\", exchange: False, authorizations: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"PostgreSql\", exchange: False, authorizations: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"PostgreSql\", exchange: True, authorizations: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"access\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"code\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"identity\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"nonce\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Authentication)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Credential)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Disabled)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Enrollment)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Factor)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Locked)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Policy)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Stamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Suspended)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Authentication)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Credential)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Disabled)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Enrollment)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Factor)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Locked)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Policy)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Stamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Suspended)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"PostgreSql\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedCode_When_ClientSecretVerifierOrCallbackIsWrong_Then_CodeRemainsUsableOnlyWithOriginalProofs(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenHttpTests.Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: False, cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: False, cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: True, cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: True, cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"PostgreSql\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"PostgreSql\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"PostgreSql\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2215,7 +2266,58 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: Concurrency)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: None)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: PersistedStamp)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: TrackedStamp)"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeTests.Given_OlderNativePasswordHash_When_ManagedPasswordUpgradesIt_Then_OnlySuccessfulExactNativeSuccessorCanReachConsent(provider: \"SqlServer\", defect: TrackedStamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: Ceremony)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: FinalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: InternalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: Ceremony)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: FinalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: InternalBinding)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"SqlServer\", exchange: False, authorizations: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"SqlServer\", exchange: False, authorizations: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"SqlServer\", exchange: True, authorizations: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"access\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"code\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"identity\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"nonce\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Authentication)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Credential)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Disabled)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Enrollment)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Factor)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Locked)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Policy)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Stamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Suspended)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Authentication)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Credential)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Disabled)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Enrollment)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Factor)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Locked)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Policy)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Stamp)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Suspended)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"SqlServer\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedCode_When_ClientSecretVerifierOrCallbackIsWrong_Then_CodeRemainsUsableOnlyWithOriginalProofs(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenHttpTests.Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: False, cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: False, cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: True, cleanup: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: True, cleanup: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"SqlServer\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"SqlServer\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"SqlServer\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -47551,6 +47653,2104 @@
         "parameterTypeFullNames": [
           "System.String",
           "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedPasswordUpgradeDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: Ceremony)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: FinalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: False, defect: InternalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: Ceremony)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: FinalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"PostgreSql\", exchange: True, defect: InternalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: Ceremony)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: FinalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: False, defect: InternalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: Ceremony)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: FinalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenAtomicityTests.Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack(provider: \"SqlServer\", exchange: True, defect: InternalBinding)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenAtomicityTests",
+        "methodName": "Given_ActualManagedIssuance_When_SaveCallbackMutatesSourceOrExpiresProof_Then_AllIssuanceWritesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanSaveDefect"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"PostgreSql\", exchange: False, authorizations: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenCapacityTests",
+        "methodName": "Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"PostgreSql\", exchange: False, authorizations: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenCapacityTests",
+        "methodName": "Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"PostgreSql\", exchange: True, authorizations: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenCapacityTests",
+        "methodName": "Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"SqlServer\", exchange: False, authorizations: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenCapacityTests",
+        "methodName": "Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"SqlServer\", exchange: False, authorizations: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenCapacityTests",
+        "methodName": "Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenCapacityTests.Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld(provider: \"SqlServer\", exchange: True, authorizations: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenCapacityTests",
+        "methodName": "Given_LastManagedNativeCapacity_When_TwoApprovedInputsIssue_Then_ExactFinalDeltaFitsAndOverflowIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"access\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"code\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"identity\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"nonce\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"access\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"code\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"identity\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"nonce\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenClaimTests",
+        "methodName": "Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Authentication)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Credential)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Disabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Enrollment)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Factor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Locked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Policy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Stamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: False, defect: Suspended)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Authentication)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Credential)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Disabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Enrollment)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Factor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Locked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Policy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Stamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Suspended)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Authentication)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Credential)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Disabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Enrollment)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Factor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Locked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Policy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Stamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: False, defect: Suspended)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Authentication)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Credential)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Disabled)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Enrollment)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Factor)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Locked)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Policy)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Stamp)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Suspended)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenDriftTests",
+        "methodName": "Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanAuthority"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"PostgreSql\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"PostgreSql\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"SqlServer\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable(provider: \"SqlServer\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_DurableNativeConsumption_When_LaterIssuanceSaveFails_Then_RollbackCannotMakeOriginalInputUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedCode_When_ClientSecretVerifierOrCallbackIsWrong_Then_CodeRemainsUsableOnlyWithOriginalProofs(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_RealManagedCode_When_ClientSecretVerifierOrCallbackIsWrong_Then_CodeRemainsUsableOnlyWithOriginalProofs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedCode_When_ClientSecretVerifierOrCallbackIsWrong_Then_CodeRemainsUsableOnlyWithOriginalProofs(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_RealManagedCode_When_ClientSecretVerifierOrCallbackIsWrong_Then_CodeRemainsUsableOnlyWithOriginalProofs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenFailureTests",
+        "methodName": "Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenHttpTests.Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenHttpTests",
+        "methodName": "Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenHttpTests.Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenHttpTests",
+        "methodName": "Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: False, cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: False, cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: True, cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"PostgreSql\", exchange: True, cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: False, cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: False, cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: True, cleanup: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials(provider: \"SqlServer\", exchange: True, cleanup: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_AcknowledgementOrDisposalFails_Then_DurableRowsRemainWithoutPublishedCredentials",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"PostgreSql\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"PostgreSql\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"SqlServer\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld(provider: \"SqlServer\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_CommittedManagedIssuance_When_OriginalDeadlineExpiresAfterCleanup_Then_RowsRemainButCredentialsAreWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"PostgreSql\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"PostgreSql\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"SqlServer\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenPublicationTests.Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld(provider: \"SqlServer\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenPublicationTests",
+        "methodName": "Given_ManagedNativeResponse_When_ActualCallbackChangesOutput_Then_IssuanceRollsBackAndResponseIsWithheld",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"PostgreSql\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenRaceTests",
+        "methodName": "Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"PostgreSql\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenRaceTests",
+        "methodName": "Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"SqlServer\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenRaceTests",
+        "methodName": "Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits(provider: \"SqlServer\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenRaceTests",
+        "methodName": "Given_ManagedIssuanceWaitingOnGovernance_When_OriginalDeadlineExpires_Then_NoCredentialOrRenewedDeadlineCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenRaceTests",
+        "methodName": "Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenRaceTests.Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenRaceTests",
+        "methodName": "Given_OneManagedCode_When_TwoIssuerRootsCompete_Then_OnlyOneIssuanceCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenReplayTests",
+        "methodName": "Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedTokenReplayTests",
+        "methodName": "Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
         ]
       },
       "traits": [

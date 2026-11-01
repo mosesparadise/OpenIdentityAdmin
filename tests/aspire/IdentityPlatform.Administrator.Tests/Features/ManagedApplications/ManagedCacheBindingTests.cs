@@ -17,6 +17,7 @@ public sealed class ManagedCacheBindingTests(BootstrapFixture fixture)
     private const string ForeignState = "foreign-state";
     private const string ForeignScope = "foreign.scope";
     private const string ForeignChallenge = "foreign-challenge";
+    private const string InvalidToken = "invalid_token";
 
     /// <summary>The actual native restore protects original intent; a browser without the separate cookie never reaches interaction observation.</summary>
     [Theory]
@@ -95,7 +96,7 @@ public sealed class ManagedCacheBindingTests(BootstrapFixture fixture)
                 .ExecuteUpdateAsync(setter => setter.SetProperty(row => row.Revision, row => row.Revision + 1), TestContext.Current.CancellationToken);
         }
         using var stale = await test.SendAsync(resume);
-        await ManagedCacheTestContext.UnavailableAsync(stale);
+        await ManagedTokenEvidence.ErrorAsync(stale, HttpStatusCode.BadRequest, InvalidToken, local: true);
         Assert.Equal(before.ObservedAt, Assert.Single((await test.SnapshotAsync()).Interactions).ObservedAt);
         await using (var scope = test.Http.Scope())
         {

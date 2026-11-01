@@ -37,6 +37,13 @@ internal static class ManagedDecision
             var row = await RequireInteractionAsync(scope, admission, registration, principal.GetClaim(ManagedDemand.SelectorClaim)!, browser,
                 principal.GetTokenId()!, principal.GetExpirationDate()?.ToUnixTimeSeconds(), token);
             ProtocolStorageAmbient.Current!.Request.RestrictPublication(DateTimeOffset.FromUnixTimeSeconds(Math.Min(row.ExpiresAt, registration.ExpiresAt)));
+            if (row.State == ManagedLoginState.Approved)
+            {
+                var identity = ManagedPrincipal.Create(row, registration.ClientId, principal.GetClaim(ManagedDemand.SelectorClaim)!);
+                await response.SealAsync();
+                await transaction.CommitAsync(token);
+                return new AuthorizationChoice(row.ExpiresAt, identity);
+            }
             var form = CreateForm(admission, outer, principal, row);
             var location = QueryHelpers.AddQueryString(ManagedFormProof.Path, ManagedFormProof.Field, ManagedFormProof.Protect(http, form));
             await Results.LocalRedirect(location).ExecuteAsync(http);
@@ -56,9 +63,13 @@ internal static class ManagedDecision
                 throw ProtocolStorageOwner.Unavailable();
             }
             await transaction.CommitAsync(token);
-            return row.ExpiresAt;
+            return new AuthorizationChoice(row.ExpiresAt, null);
         });
-        await ManagedEntryPublication.PrepareAsync(http, outer, admission, result.Output ?? throw ProtocolStorageOwner.Unavailable(), result.Result);
+        if (result.Result.Principal is { } identity)
+        {
+            return ManagedEndpointDecision.Attach(http, identity);
+        }
+        await ManagedEntryPublication.PrepareAsync(http, outer, admission, result.Output ?? throw ProtocolStorageOwner.Unavailable(), result.Result.ExpiresAt);
         return Results.Empty;
     }
 
@@ -111,7 +122,7 @@ internal static class ManagedDecision
         if (row is null || row.SelectorDigest != digest || row.BrowserDigest != ManagedLoginRules.Digest(browser) ||
             row.ApplicationId != registration.ApplicationId || row.ApplicationRevision != registration.Revision || row.RequestId != requestId ||
             row.RequestExpiresAt != expiration || row.ExpiresAt != expiration || row.DemandDigest != admission.Demand.Digest ||
-            row.State != ManagedLoginState.PendingPassword || ManagedLoginRules.Observe(scope.Owner.Clock, row.ObservedAt) >= row.ExpiresAt)
+            row.State is not (ManagedLoginState.PendingPassword or ManagedLoginState.Approved) || ManagedLoginRules.Observe(scope.Owner.Clock, row.ObservedAt) >= row.ExpiresAt)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
@@ -137,4 +148,11 @@ internal static class ManagedDecision
         row.ObservedAt = now;
         return row;
     }
+    /// <summary>Retains only a newly projected identity or a completed local form redirect after actual decision-child cleanup.</summary>
+    private sealed class AuthorizationChoice(long expiresAt, System.Security.Claims.ClaimsPrincipal? principal)
+    {
+        internal long ExpiresAt => expiresAt;
+        internal System.Security.Claims.ClaimsPrincipal? Principal => principal;
+    }
+
 }

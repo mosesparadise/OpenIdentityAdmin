@@ -47,8 +47,15 @@ public sealed class ManagedHumanHttpTests(BootstrapFixture fixture)
         Assert.Null(afterMfa.ConsentVerifiedAt);
         using var decision = await BrowserIssuerHttp.PostAsync(test.Http.IssuerClient, ManagedHumanHttp.Path,
             new Dictionary<string, string>(consent, StringComparer.Ordinal) { [ManagedHumanHttp.Decision] = approve ? ManagedHumanHttp.Approve : ManagedHumanHttp.Deny });
-        await ManagedHumanHttp.EntryAsync(decision);
-        await ManagedHumanHttp.TerminalAsync(test, decision.Headers.Location!, approve);
+        if (approve)
+        {
+            await ManagedTokenFlow.ResumeRedirectAsync(test, decision);
+        }
+        else
+        {
+            await ManagedHumanHttp.EntryAsync(decision);
+            await ManagedHumanHttp.TerminalAsync(test, decision.Headers.Location!);
+        }
         await RequireFinalAsync(test, original, sessions, approve);
         Assert.Equal(authority, await ManagedHumanEvidence.AuthorityAsync(test));
         using var replay = await BrowserIssuerHttp.PostAsync(test.Http.IssuerClient, ManagedHumanHttp.Path,

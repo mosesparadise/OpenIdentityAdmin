@@ -16,7 +16,6 @@ internal static class ManagedHumanHttp
     internal const string Username = "Username";
     internal const string Password = "Password";
     internal const string Code = "Code";
-    private const string ApprovedHeading = "Consent saved";
     private const string DeniedHeading = "Sign-in cancelled";
     private const string FormStart = "<form";
     private const string QueryStart = "?";
@@ -64,14 +63,14 @@ internal static class ManagedHumanHttp
     }
 
     /// <summary>Reads the real terminal Razor page and requires the decision-specific heading with no further actionable form or authority cookie.</summary>
-    internal static async Task TerminalAsync(ManagedCacheTestContext test, Uri location, bool approve)
+    internal static async Task TerminalAsync(ManagedCacheTestContext test, Uri location)
     {
         using var page = await test.Http.IssuerClient.GetAsync(location, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
         await BrowserFormHeaders.AccountAsync(page);
         NoAuthorityCookie(page);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
-        Assert.True(html.Contains(approve ? ApprovedHeading : DeniedHeading, StringComparison.Ordinal));
+        Assert.True(html.Contains(DeniedHeading, StringComparison.Ordinal));
         Assert.False(html.Contains(FormStart, StringComparison.OrdinalIgnoreCase));
     }
 

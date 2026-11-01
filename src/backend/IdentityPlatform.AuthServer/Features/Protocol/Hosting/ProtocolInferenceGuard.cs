@@ -11,6 +11,10 @@ internal sealed class ProtocolInferenceGuard(ProtocolHostRequest request, Protoc
     public ValueTask HandleAsync(OpenIddictServerEvents.ProcessRequestContext context)
     {
         request.RequireInferred(context);
+        if (profiles is { Managed: true } && !request.IsPilot && ManagedTokenTransport.Candidate(context))
+        {
+            return ManagedTokenTransport.ValidateAsync(context);
+        }
         return profiles is { Managed: true } && !request.IsPilot && ManagedTransport.Candidate(context)
             ? ManagedTransport.ValidateAsync(context) : AdministratorTransportGuard.ValidateAsync(context, request);
     }

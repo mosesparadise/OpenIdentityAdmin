@@ -33,6 +33,11 @@ internal static class ProtocolDecisions
     /// <summary>Keeps pilot eligibility and authorization-manager resolution out of administrator exchanges.</summary>
     internal static Task<IResult> ExchangeAsync(HttpContext http)
     {
+        if (http.RequestServices.GetRequiredService<ProtocolProfiles>().Managed && ManagedTokenAdmission.Find(
+            http.Features.Get<OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreFeature>()!.Transaction!) is { } managed && managed.Current())
+        {
+            return ManagedEndpointDecision.ExchangeAsync(http);
+        }
         var pilot = IsPilot(http, OpenIddictServerEndpointType.Token);
         return pilot ? TokenEndpoint.HandleAsync(http, http.RequestServices.GetRequiredService<PilotEligibility>(),
             http.RequestServices.GetRequiredService<IOpenIddictAuthorizationManager>()) : AdministratorDecision.ExchangeAsync(http);

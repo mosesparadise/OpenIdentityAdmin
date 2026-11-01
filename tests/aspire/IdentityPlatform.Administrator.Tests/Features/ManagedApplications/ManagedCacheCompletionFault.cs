@@ -9,12 +9,17 @@ using OpenIddict.Server;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
-/// <summary>Fails only the genuine managed cache child after actual provider commit or actual context disposal.</summary>
-internal sealed class ManagedCacheCompletionFault(bool cleanup) : DbTransactionInterceptor
+/// <summary>Fails the selected genuine managed cache or issuance child after actual provider commit or actual context disposal.</summary>
+internal sealed class ManagedCacheCompletionFault(bool cleanup, bool issuance = false) : DbTransactionInterceptor
 {
     private const string Failure = "Synthetic managed cache completion failure.";
     private PlatformDbContext? database;
     private Guid transactionId;
+    internal bool Armed { get; set; } = true;
+    internal Action? Advance
+    {
+        get; set;
+    }
     internal int Commits
     {
         get; private set;
@@ -44,12 +49,18 @@ internal sealed class ManagedCacheCompletionFault(bool cleanup) : DbTransactionI
     /// <summary>Captures only the native reference-cache generation after its real payload save, excluding administrator issuance.</summary>
     private ValueTask ObserveAsync(OpenIddictServerEvents.GenerateTokenContext context)
     {
-        if (ManagedCacheProof.Find(context.Transaction) is null)
+        if (!Armed || (issuance ? ManagedIssuanceProof.Find(context.Transaction) is null : ManagedCacheProof.Find(context.Transaction) is null))
         {
             return ValueTask.CompletedTask;
         }
-        Assert.Null(database);
         var scope = ProtocolStorageAmbient.Current!.Scope;
+        if (issuance && database is not null)
+        {
+            Assert.Same(database, scope.Owner.Database);
+            Assert.Equal(transactionId, database.Database.CurrentTransaction!.TransactionId);
+            return ValueTask.CompletedTask;
+        }
+        Assert.Null(database);
         database = Assert.IsType<PlatformDbContext>(scope.Owner.Database);
         transactionId = database.Database.CurrentTransaction!.TransactionId;
         scope.Services.GetRequiredService<NativeClientCreationCleanup>().Complete = AfterDisposal;
@@ -63,7 +74,7 @@ internal sealed class ManagedCacheCompletionFault(bool cleanup) : DbTransactionI
         {
             Assert.Equal(transactionId, eventData.TransactionId);
             Commits++;
-            if (!cleanup)
+            if (!cleanup && Advance is null)
             {
                 Faults++;
                 throw new InvalidOperationException(Failure);
@@ -77,7 +88,13 @@ internal sealed class ManagedCacheCompletionFault(bool cleanup) : DbTransactionI
     {
         Assert.IsType<ObjectDisposedException>(Record.Exception(() => _ = database!.Model));
         Disposals++;
-        if (cleanup)
+        if (Advance is not null)
+        {
+            Assert.Equal(1, Commits);
+            Faults++;
+            Advance();
+        }
+        else if (cleanup)
         {
             Assert.Equal(1, Commits);
             Faults++;

@@ -77,6 +77,10 @@ internal static class ProtocolHosting
         {
             return logout.Claim(outer);
         }
+        if (ManagedIssuanceCoordinator.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.Committed;
+        }
         if (ManagedEntryPublication.Claim(http, outer))
         {
             return ProtocolResponseOutcome.Committed;
