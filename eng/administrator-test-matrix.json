@@ -1108,7 +1108,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2323,7 +2324,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenReplayTests.Given_TwoSuccessfulManagedGrants_When_FirstCodeIsReplayed_Then_OnlyItsLinkedTokensAreDurablyRevoked(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -49867,6 +49869,44 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
         "typeName": "ManagedJourneyTests",
         "methodName": "Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationWorkspaceTests",
+        "methodName": "Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationWorkspaceTests",
+        "methodName": "Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

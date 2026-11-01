@@ -1,0 +1,218 @@
+{
+  "source_base": "e55181ea9285fffcd5e3ba0168ccd3fc8dfb576f",
+  "remote_main": "4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa",
+  "branch": "123-application-editor",
+  "local_worktree_branch": "124-managed-token-issuance",
+  "scope": "T014 visible create/details/one-time-output UI implementation with local Node/HTTPS/Host checks; T014 remains unchecked for retained browser/native Aspire acceptance. No full CI, PR, merge or production/release activation.",
+  "toolchain": {
+    "sdk": "10.0.403",
+    "runtime": "10.0.14",
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "packages": "unchanged locked versions",
+    "admin_build": "build4 final source, one MSBuild node/no node reuse",
+    "host_build": "host-build final shipped assets; later changes only new Administrator test helper constants/root lookup"
+  },
+  "results": {
+    "PostgreSql.Applications": {
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-ui-pg-accepted/Applications.trx",
+      "sha256": "e3bb0341c6d7f55034f599ae497436cc8e66787a6495425e8be85fb7f12f6d6e",
+      "exact_identity_reconciliation": true
+    },
+    "SqlServer.Applications": {
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-ui-sql-accepted/Applications.trx",
+      "sha256": "19dcd06bd12c2eba8937f0c4ab67fd4bca96f829f7369fd9b59523987fb18ea5",
+      "exact_identity_reconciliation": true
+    },
+    "Host": {
+      "passed": 1820,
+      "failed": 0,
+      "skipped": 0,
+      "report": "feature019-ui-host/Host.trx",
+      "sha256": "7ac470233c96b0ef224e9c64d54b6ea581a25c7be97b29830127483674e4801b",
+      "prior_identity_multiplicities_preserved": true,
+      "portable_fields": [
+        "displayName",
+        "className",
+        "methodName",
+        "adapterTypeName"
+      ],
+      "baseline_sha256": "ad0de0591fc473605c53a8433d79ac06b1985bb0864189725395cc13d4641c8c"
+    },
+    "Node.session": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/admin-ui/session.xml",
+      "sha256": "80d03a372bdad79c80c409b73ded603d366983fbd561a54db406cff1bd4c3de2",
+      "exact_identity_reconciliation": true
+    },
+    "Node.applications": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/admin-ui/applications.xml",
+      "sha256": "79912b53d9e1f0a7444816145f40dd3a78062ac4f967846f2ad2ea2f76ce1927",
+      "exact_identity_reconciliation": true
+    },
+    "Node.editor": {
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/admin-ui/editor.xml",
+      "sha256": "56867515341deee94a8c16ed28a188eb13967f5258920e9db5e1c8245d635fba",
+      "exact_identity_reconciliation": true
+    }
+  },
+  "selection_controls": 67,
+  "preserved_native_records": 2321,
+  "added_native_records": 2,
+  "current_native_records": 2323,
+  "prior_metadata_and_order_preserved": true,
+  "coverage": {
+    "modules": [
+      "client",
+      "controller",
+      "focus",
+      "input",
+      "lifecycle",
+      "observation"
+    ],
+    "per_module_minimum": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "aggregate_observed": {
+      "lines": 99.21,
+      "branches": 98.99,
+      "functions": 100
+    },
+    "old_floors": "unchanged",
+    "limit": "Compiled critical TypeScript modules only; React DOM/hooks and browser rendering are not covered by this Node measurement."
+  },
+  "source_sha256": {
+    "eng/admin-ui/editor-test-identities.json": "38a332337aa1aaa3d56fbc07ad1d7c6ef0e9455a9afe7c7dba82df15f988438a",
+    "eng/administrator-test-matrix.json": "9fc1c3cb68c4e5efe12842aea01894f8ae6ddda0af65579747da55b2f394b67c",
+    "eng/test-matrix.json": "32d28940f97bf7c571f7d7bbcc139b7796f60ca72f2f502160c5b3b22eecc0f8",
+    "scripts/test_browser_session_selection.py": "27cd170626f1fce76e6340e59f40c61f5ea395e9f3e8a19c942606d6a9550881",
+    "scripts/test_lifecycle_selection.py": "ad4a1848fe10d83f2da0dc093bd021a397c51974a71a81fb6f5048baa41da851",
+    "scripts/verify_admin_ui.py": "98b299d569c8863dc931bf3706528a17216128c3704f8d0c77af7ade822977a8",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/ApplicationsPanel.tsx": "9764d98d1eda8a39064a055d79fb4cedb941bdcb301ab397133e79b1913e35cf",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ApplicationsWorkspace.tsx": "64094f627afcb253df89c7ca3e8c1038888c782404cac67906bf259a09446d9a",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/CreateForm.tsx": "c46c56de7a4260e218c5e9301951a0a906b20465c0d406a0d840415e11934032",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/DetailsView.tsx": "a7cbc209d94d2d4c8dc27e101cf55845f5e936eac084323c6e328494b283b2ec",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ProblemView.tsx": "20fcfd375d999a96d3fddd1505110c2f274f465dae124eea043e1f321377d7a2",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/client.ts": "b62bc7649dda20927aaab0025cd31d867231d5e5f101ee48a48c0a638c64628c",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/controller.ts": "f451346736c36984f15484cc68b48029a6061f8040d5d8cfe5fa98165115a126",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/focus.ts": "6bc5c57aba890af325e1e0be27080092beeab49310e5c53add57ecccdb79d331",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/input.ts": "b9bf259e23fc6cc4b9a42091155b37f2ba99374d31e88f7bb57797e23dbf0dc5",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/lifecycle.ts": "e32e73f8bc1e4baf1c86ad1a3d4dd2747a580a03442e0117db1c21ec60027a76",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/observation.ts": "277229996d1363c3894fecec4f03eddef055c57c4d16560b9727745f082787f5",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/useEditor.ts": "c35ef61a8e1e0e548f4fda00aece332548d4b06983154c4675023a35caba1758",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Shell/App.tsx": "a2f74847a64cd5c59901e358264dea586a2bbe57e6b406e4cf8333be38c0b4e8",
+    "src/frontend/IdentityPlatform.Admin.Ui/Features/Shell/app.css": "40b8de95280dc0b7b6d5400e89997938e1a63eddad192459fc5024de5d5e7126",
+    "src/frontend/IdentityPlatform.Admin.Ui/generated/app.css": "fc9c9a6f1a0c04ac5eaa4d73191232e0cb711d813fce417315b0a09d2136cae1",
+    "src/frontend/IdentityPlatform.Admin.Ui/generated/app.js": "16f90557e495afc0613e4abafa07b8feec015450112beba00e5448ce3a4d1b01",
+    "src/frontend/IdentityPlatform.Admin.Ui/package.json": "0ef1920f8bc77b5b955831694264429f0e96727b31e9ad1371dca8e502bc7207",
+    "src/frontend/IdentityPlatform.Admin.Ui/tests/editor.test.mjs": "494787545147b1f939bb70fabe4b0e559c0e733009005d5de37e47de2307773c",
+    "src/frontend/IdentityPlatform.Admin.Ui/tooling/test-editor.mjs": "8d4370787b28e871bb220aeff360de9887866e3c864d4e8cb0aced07ef604e15",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpFixture.cs": "11ff132036ad46738a8171e137fc68fb6e9c2891c58489c9562faf51c88c8c92",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationWorkspaceTests.cs": "e0be938e6ea8a136a02abe8de031df844ecb75e7e3c8ad912abf19f61e15cf02"
+  },
+  "artifact_sha256": {
+    "feature019-ui-admin-build1.log": "f145ccc2daa0c4080a86d86d682d773058c61f881293da6e697427fc9405a272",
+    "feature019-ui-admin-build2.log": "9ffe27332d61b80720abe29ca46c79fc502ee9217e56c85e64d3555df352f64f",
+    "feature019-ui-admin-build3.log": "5f8ce681d4c0d3ba5b8dda5a8339716ad0bd9ed2f20d96e2601e2ded7963e428",
+    "feature019-ui-admin-build4.log": "fa86a74ab357bc9c877444437523ee7ab579c55e0bfdcac39ecd32c846398a86",
+    "feature019-ui-assets1.log": "bb7d8aef7b3597ea9fc879a6a6f3bf6e4759d271efafa40d2b777714e65e1fdc",
+    "feature019-ui-assets2.log": "bb7d8aef7b3597ea9fc879a6a6f3bf6e4759d271efafa40d2b777714e65e1fdc",
+    "feature019-ui-assurance-final.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+    "feature019-ui-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+    "feature019-ui-discovery-final.json": "69e9a12aaf830fba12194bb5618313f882348e09035def61d5c6d6d2571abe91",
+    "feature019-ui-discovery.json": "8199f9f5c00fb97ec3f341ece77c4b6e4e1e7e040e1eebfe25e58dfdd4478aff",
+    "feature019-ui-editor1.log": "e2d7eab87da27467bbf3cd8a1d2abd76502f56935c0d21c240525eda162b7220",
+    "feature019-ui-editor2.log": "a65545406366631268cd1d8e20683dc64b3e470daa8eb2bc4ae368185a3714bb",
+    "feature019-ui-editor3.log": "f1f407a46ae5142f5ace002c398002e306b867f283150a38df3008dfc3e49e71",
+    "feature019-ui-editor4.log": "422e8ff268597e1980bb11c52799a50a29fc06027486f807dfa94b8700293861",
+    "feature019-ui-host/Host.trx": "7ac470233c96b0ef224e9c64d54b6ea581a25c7be97b29830127483674e4801b",
+    "feature019-ui-host-build.log": "59fd26ec6bcfd65c919b59f2212c840c30ef22af332b5da3e3b75ade1b65fb1b",
+    "feature019-ui-host.log": "6af70b9f20f2e4b1c5816a1655c20fa977d792cc2f4e2bf7dbad038d067106bf",
+    "feature019-ui-instructions-final.log": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def",
+    "feature019-ui-instructions.log": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def",
+    "feature019-ui-npm.log": "1aa330023e30a0b78569fa629ad45796c95860827409d6b87a7d56cb45f77f20",
+    "feature019-ui-pg/Applications.trx": "2925ef60b2d6baebfbdd433cb97f20ffcfd3206c56874f3e78ef8da1dc9801b3",
+    "feature019-ui-pg-accepted/Applications.trx": "e3bb0341c6d7f55034f599ae497436cc8e66787a6495425e8be85fb7f12f6d6e",
+    "feature019-ui-pg-accepted.log": "23fa43624a37e011fdb7168c0e62855ae69e27fb506f6af047877ca842c15060",
+    "feature019-ui-pg.log": "75301c5462c4c57821f70138d5010fc8c1ffe74bf38cc22ab882b47970267719",
+    "feature019-ui-quality-final.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-ui-quality-inventory.json": "98a2182acfdb8d042e065d8455ada55ad6cc05844475c91cf0b80a758f770087",
+    "feature019-ui-quality-inventory2.json": "820ae4dc8c89750dc3ef9602ddd91ffb62e69739349228cfee8fd54d0f82cdce",
+    "feature019-ui-quality1.log": "7e064eca61a39a8f503a2130d5e306036f96ee41c578046424cd74ea645d647d",
+    "feature019-ui-quality2.log": "8335806a8856d3e114d0d3c9473f11106261f18b01616177ae663b246020fbcf",
+    "feature019-ui-quality3.log": "24321e39be87ee7c9b81d08cc8e73bbf56d4d7cd4db0f39d6c7006fdc10589ee",
+    "feature019-ui-quality4.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-ui-selection.log": "dd4e330d4f8217bd050ba2b8889df8308849d2eb170fe3d172476e2de2c0f885",
+    "feature019-ui-selection2.log": "1b5e9038e200208f5c59cab558f7a295b3375ba1f585d05e15938fc1245c103d",
+    "feature019-ui-source.json": "87fb1d6a25213dc926c23a23b038ae4d00d16101c286e07cead39de006f84a04",
+    "feature019-ui-sql-accepted/Applications.trx": "19dcd06bd12c2eba8937f0c4ab67fd4bca96f829f7369fd9b59523987fb18ea5",
+    "feature019-ui-sql-accepted.log": "9b849950dd2cf5963e8120cc545684fe5e74133870c733a92ebb5329a8fcff34",
+    "feature019-ui-types1.log": "1de6c0f0ecdf254ce06ad156add088c3476a03bce95e9eba913561a75692f6c2",
+    "feature019-ui-types2.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "feature019-ui-verify1.log": "4e059e38cf1dc92c7d0a1fd2477464e4adc6bf6c843e327c4af150b0983ce8ad",
+    "artifacts/admin-ui/applications.xml": "79912b53d9e1f0a7444816145f40dd3a78062ac4f967846f2ad2ea2f76ce1927",
+    "artifacts/admin-ui/editor.xml": "56867515341deee94a8c16ed28a188eb13967f5258920e9db5e1c8245d635fba",
+    "artifacts/admin-ui/session.tap": "4b0c1a599b00ee31c1baf5e44ea722bb68888a6000f28cb719b81df8df6b2e0c",
+    "artifacts/admin-ui/npm-inventory.json": "48738e1d60a941209acae441bc75f082119eb7329b9e731a41c7ab9123aadd78",
+    "artifacts/admin-ui/applications.tap": "e30a616048e4e89fc13bfa8ae47e9706f0d65c22df3d3b38d0a1501a962b6d05",
+    "artifacts/admin-ui/editor.tap": "6808234cc811c3bcbc6f9bd9298e173d71046852b57802c8f1b1e60da65bac93",
+    "artifacts/admin-ui/session.xml": "80d03a372bdad79c80c409b73ded603d366983fbd561a54db406cff1bd4c3de2",
+    "artifacts/admin-ui/npm-audit.json": "1fd3400202b6c9c3866b369747461e9aa74d4083efca1ea28f5ea5b22a539177"
+  },
+  "reconciliation_helper": {
+    "path": "reconcile_t014.py",
+    "sha256": "93cc924bab8d1aa2f61ccbd540d432c3872ddd8d3103346756470a95d485ca89"
+  },
+  "reused_evidence": {
+    "specs/019-application-editor/native-issuance-evidence.json": "f91ab1da94c6c7ad71fea2174301bd85e3b847671774645634b8f31328074cd8",
+    "specs/019-application-editor/created-client-journeys-evidence.json": "dd7a43e12280265e4b73fad8b51c6caa0cf14f5cd9be39ef4bda5d8ab6fa8d2f"
+  },
+  "review_dispositions": {
+    "architecture_security": "Pass on corrected source: exact callback sets, strict managed metadata, original session/lifecycle fencing, pre-dispatch credential expiry and no retry; post-dispatch401 remains ambiguous.",
+    "test_source": "Pass:26 exact editor identities, unchanged11 session/9 list source+inventories+runners, per-module floors and meaningful delayed-proof/crypto/deadline/error-markup/focus regressions; real HTTPS asset/contract provider oracle.",
+    "ux_source": "Pass: linked fields/errors, neutral output-expiry guidance distinct from session expiry, usable disabled-button focus fallback, secret outside live region, honest unavailable replacement.",
+    "raw_evidence": "Pass: independent final review verifies1938 exact passing executions (36 per provider,1820 Host,46 Node), zero final failures/skips, full TRX result/definition/entry/execution linkage and preserved Host portable multiplicities;27 source and47 artifact hashes, helper/baseline and reused evidence hashes;2321 prior metadata records/order plus2 additions; six per-module editor floors,67 controls and successful final builds/quality/instruction checks. Earlier failures remain separate. This accepts local UI implementation only; T014 browser/native Aspire, Windows, full CI, merge and external gates remain open."
+  },
+  "commands": [
+    "npm ci --ignore-scripts (UI directory)",
+    "node tooling/test-editor.mjs (UI directory)",
+    "npm run build (UI directory)",
+    "python3 scripts/verify_admin_ui.py",
+    "dotnet build tests/aspire/IdentityPlatform.Administrator.Tests --no-restore -m:1 -nodeReuse:false",
+    "dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore --no-progress --filter FullyQualifiedName~Features.Applications.&Provider=<provider> --report-trx",
+    "dotnet build tests/backend/IdentityPlatform.Host.Tests --no-restore -m:1 -nodeReuse:false",
+    "dotnet test --project tests/backend/IdentityPlatform.Host.Tests --no-build --no-restore --no-progress --report-trx",
+    "python3 scripts/check_code_quality.py",
+    "python3 -m unittest discover -s scripts -p 'test_*selection.py'",
+    "python3 scripts/check-ai-instructions.py",
+    "python3 scripts/check_assurance.py",
+    "git diff --check"
+  ],
+  "failure_provenance": "Wrong-working-directory npx tsc downloaded a temporary incorrect tsc package and failed; correct local TypeScript passed, no dependency/lock changes. Initial editor runner was invoked from repo root and failed to locate tooling. First proper Node run exposed relative generated-client path serializer, stale-response re-emission, and SSR attribute casing expectation; fixed before passing. Initial C# build required braces/formatting; quality attempts needed managed SDK environment and named test constants. Initial selection controls had one stale total. First PostgreSQL run passed35 and failed the new asset case because the root helper stopped at tests/Directory.Build.props; final build4 requires the generated source directory as well. Earlier receipts are retained separately and excluded from final acceptance.",
+  "limits": [
+    "No browser installation retry or browser execution. CDN403 remains documented; Firefox remains excluded.",
+    "No new full native AppHost container demo, actual Windows Docker Desktop or manual accessibility observation. HTTPS fixture checks actual production hosts/assets and native authentication, not interactive browser behavior.",
+    "T014 and T007 remain unchecked for retained browser/native acceptance. T015 edit/replacement tests are next; T016/T017 endpoints/forms and T019/T022/T023 acceptance/delivery remain open.",
+    "No OAuth token or secret persistence/automatic clipboard; dropping references/DOM is not secure memory zeroization.",
+    "No new C# module coverage or dedicated mutation run. Existing 80 coverage inputs/15 floors are not changed.",
+    "No full CI, PR, merge, refresh activation or closure of six historical findings or human/Windows/A-009/vendor/production/public-release gates.",
+    "Raw artifacts are local workspace receipts; hashes do not imply hosted upload."
+  ]
+}

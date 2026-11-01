@@ -36,9 +36,9 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     internal string Access { private get; set; } = string.Empty;
 
     /// <summary>Owns actual three-host TLS composition and runs the real ceremony before obtaining any protected API credential.</summary>
-    internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, bool managed = false, Action<IServiceCollection>? configureIssuer = null)
+    internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, bool managed = false, Action<IServiceCollection>? configureIssuer = null, bool workspace = false)
     {
-        var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, applications: true, managed: managed, configureIssuer: configureIssuer, configureApi: services =>
+        var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: workspace, applications: true, managed: managed, configureIssuer: configureIssuer, configureApi: services =>
         {
             if (fault is not null)
             {
