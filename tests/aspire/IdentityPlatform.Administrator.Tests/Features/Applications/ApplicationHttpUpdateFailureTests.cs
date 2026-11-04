@@ -1,11 +1,6 @@
 using System.Net;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
-using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using static IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateEvidence;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Applications;

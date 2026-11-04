@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "scope": "Remove exactly12 namespace imports reported unnecessary by SDK IDE0005 across9 files; no namespace/declaration/method body change. Full build and static checks remain required.",
+  "scope": "Remove exactly 17 namespace imports identified by SDK IDE0005/formatter across 9 files; no namespace/declaration/method body change. Full build and static checks remain required.",
   "files": [
     {
       "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPrincipal.cs",
@@ -34,9 +34,14 @@
     {
       "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateFailureTests.cs",
       "before_sha256": "ebe20f054617b5aa77197b9f565c57f5a2c782d99c22ae4e1b72ae595d46e7cb",
-      "after_sha256": "d538ea0f11fbe592de79c060f465e9e5d5620c18ee730b6f161c932ec2c53aa3",
+      "after_sha256": "856e72d62ecbfaa7c88f402adbaedccdb6af8a1d5e068dc1bb9fc2f5a41e182f",
       "removed_unused_directives": [
-        "using IdentityPlatform.Core.Features.Applications;"
+        "using IdentityPlatform.Core.Features.Applications;",
+        "using IdentityPlatform.Infrastructure.Features.Identity.Persistence;",
+        "using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;",
+        "using IdentityPlatform.Infrastructure.Persistence;",
+        "using Microsoft.EntityFrameworkCore;",
+        "using Microsoft.Extensions.DependencyInjection;"
       ],
       "namespace_and_body_unchanged": true
     },

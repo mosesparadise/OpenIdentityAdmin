@@ -4,8 +4,8 @@ using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using OpenIddict.Abstractions;
 

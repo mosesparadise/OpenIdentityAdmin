@@ -5,14 +5,14 @@
     {
       "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
       "before_sha256": "381e8e2261f4b0f980a47ab030df82130a1d4f30abcccd77400b457c3297bfad",
-      "after_sha256": "2dffefaab1f5be18c55ac126f880d1f0f989c976ce967697d475eab6345c5c4d",
+      "after_sha256": "076a47e32903f184a08c76c8be9d3492992dce59d38774a2772b34672b4f2ba8",
       "namespace_and_body_unchanged": true,
       "using_directives_set_unchanged": true
     },
     {
       "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/NativeResponseHandlers.cs",
       "before_sha256": "bcbaa6f7dc41425f5b0e3b8e8209f11d4ca88a49dddaf16a201c0808b2777659",
-      "after_sha256": "713d8db87857a9a2bf639051f1f33c8a8e1056d80033a88c59b1aad8b66cc485",
+      "after_sha256": "1622cb3ebeb9edfa3ec0a46d43070b967428119a7dc0057ca693cfb5de19e318",
       "namespace_and_body_unchanged": true,
       "using_directives_set_unchanged": true
     },
@@ -61,7 +61,7 @@
     {
       "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs",
       "before_sha256": "66c0b47cb9dec7bfba359b80fc935bd580a762b05c67674db7d23007be6cfe52",
-      "after_sha256": "61e153e0dd638020ec056a68d35ea8d98a7589bc897af9d84fed3b90fb2f6689",
+      "after_sha256": "41c05ad74ffc31c73bec03f26983d73b6c916e80274a1d7006f5c80417a471c2",
       "namespace_and_body_unchanged": true,
       "using_directives_set_unchanged": true
     }
