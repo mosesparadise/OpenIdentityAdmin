@@ -146,3 +146,26 @@ The [correction candidate](browser-corrections.md) separates source-supported pr
 issues from fixture limitations. Broad native-demo and response-seam failures do
 not establish a more specific cause. Retain the original failures; no timeout,
 retry, browser obligation, coverage floor or private-output rule is weakened.
+
+
+## Fifth candidate: consent and native desktop corrections
+
+Run [41846849133](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41846849133)
+verified head`1efd6a78a6baafd2bb91af46dd8c6e0c8ace8bfe`. Its final122 jobs contain108
+successes,13 failures and skipped aggregate coverage. Both native demos pass3/3;
+all12 consent-cancellation, editor-recovery and authority lanes pass. Required
+acceptance remains failed; these receipts do not accept a later source tree.
+
+| Failed jobs | Retained observation |
+| --- | --- |
+| 126632731512 /126632731693 /126632732079 /126632731889 | The existing computed-style diagnostic control fails at its stable selector index; two new selectors had been prepended. |
+| 126632731549 /126632731705 /126632731932 /126632732084 | Only the cross-purpose/generation method fails: genuine foreign text/plain POST returns415, while the test incorrectly expected400. Each lane reports30 passes/one failure. |
+| 126632731671 /126632731722 | Chromium preflight observes an iconic native window, then times out waiting for hidden DOM state; the original driver session still owns visible capture. |
+| 126632731912 /126632731919 | WebKit cannot find the anchored temporary window title because MiniBrowser adds its fixed prefix; both selected cases fail before native-cycle acceptance. |
+| 126646899120 | Required failures prevent verification acceptance. |
+
+[The targeted follow-up](browser-corrections.md#fifth-attempt-fixture-follow-up)
+preserves diagnostic order, exact media admission, genuine valid-JSON Origin guards,
+engine-specific native activity, and every existing timing/visibility/secret oracle.
+The earlier claimed public-CDP reset is explicitly superseded. No old execution is
+relabelled as a corrected pass, and raw artifact transfer remains unavailable.

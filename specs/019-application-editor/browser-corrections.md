@@ -1,7 +1,7 @@
 # Browser acceptance corrections — 4 November 2026
 
 This is a correction candidate within approved feature019/T019–T022. PR120 remains
-draft/unmerged. The fourth hosted attempt is retained in [hosted verification](hosted-verification.md);
+draft/unmerged. The fourth and fifth hosted attempts are retained in [hosted verification](hosted-verification.md);
 none of its failing cases or skipped aggregate coverage counts as acceptance.
 
 ## Product form behavior
@@ -70,14 +70,18 @@ Visibility predicates use50ms timer polling within that same bound because nativ
 minimization can suspend animation frames; the predicate still reads actual DOM
 state, and trusted events remain independently required.
 
-Chromium uses its public CDP API to disable the automation focus override. WebKit
-uses an **instrumented Playwright1.63 lifecycle driver**, not a claim of unchanged
-driver behavior: copy the installed driver into a disposable directory and replace
-one reviewed startup `setActiveAndFocused({active:true})` call with `{}`. The original
-package remains byte-identical. The supported .NET `PLAYWRIGHT_DRIVER_SEARCH_PATH`
-selects the copy only for the WebKit lifecycle child process; inherited overrides
-are removed. Other browser lanes use the unmodified driver. No engine binary,
-product code, synthetic event or forced `active:false` supplies hidden state.
+Both engines use an **instrumented Playwright1.63 lifecycle driver**, not a claim
+of unchanged-driver visibility behavior. Copy the exact original installed driver
+to a disposable directory and change exactly one engine-specific startup call:
+WebKit `setActiveAndFocused({active:true})` becomes `{}`, while Chromium
+`setFocusEmulationEnabled({enabled:true})` becomes `{enabled:false}` in its original
+driver session. These distinct semantics disable their respective overrides; they
+do not force hidden state. The original package remains byte-identical. The supported
+.NET `PLAYWRIGHT_DRIVER_SEARCH_PATH` selects the copy only for the lifecycle child
+process; inherited overrides are removed. Other browser lanes use the unmodified
+driver. No engine binary, product code, synthetic event or WebKit `active:false`
+supplies hidden state. The earlier additional public Chromium CDP session was
+ineffective and is removed, with that recommendation explicitly superseded.
 
 Pinned [native source](https://github.com/microsoft/playwright/blob/v1.63.0/browser_patches/webkit/patches/bootstrap.diff)
 declares `active` optional (lines539–547), forwards `std::optional<bool>` unchanged
@@ -90,9 +94,11 @@ requires actual hosted runtime proof. Retrieved source SHA-256:
 The wrapper rejects version, original hash, replacement count and resulting hash
 drift. Original bundle SHA-256:
 `549070af3acabb3efcc4f55bfe6210f9f7c2fcf633cf7eaa59bfe60719969171`;
-copy SHA-256:
-`dc9fb491407327fc249fa9287fc868d5fe79d64e45db306b00194c3cd28b0458`.
-Ten permanent Python controls pass, including unchanged-source copying, hostile
+WebKit-only copy SHA-256:
+`dc9fb491407327fc249fa9287fc868d5fe79d64e45db306b00194c3cd28b0458`;
+Chromium-only copy SHA-256:
+`a1822c4ef78eba42059e6fd7187f5387290ec6c5b456132ba1aaec68a0b9c439`.
+Eleven permanent Python controls pass, including unchanged-source copying, hostile
 inputs and exact lane/coverage paths, engine environment, failure propagation and
 window-manager cleanup. Browser processes are joined before temporary copy cleanup.
 Native utilities bound exit/output/cleanup and never publish captured diagnostics.
@@ -120,3 +126,47 @@ correctly configured controls and final checks pass. Expected hosted obligations
 122 jobs,116 artifacts,101 ordinary reports/5,427 cases, plus55 UI and44 Node cases,
 98 coverage inputs,15 floors and90 mutation controls across14 lanes. These are
 expectations, not execution receipts.
+
+
+## Fifth-attempt fixture follow-up
+
+Run41846849133 at`1efd6a7` finishes108 successful/13 failed/one skipped jobs. Both
+native Aspire demos pass3/3. All12 new consent-cancellation/recovery/authority lanes
+pass, covering both providers and retained engines. The remaining source corrections
+below preserve those scenarios and all required obligations; no previous failure
+becomes a pass and aggregate coverage remains unaccepted.
+
+- Appending the consent-button diagnostic selectors preserves the established index
+  ordering. Prepending them broke an existing secret-suppression control at index0.
+  The unchanged control fails2/2 before correction and passes2/2 afterward in native
+  non-browser-launch execution. Before TRX SHA-256:
+  `359d4cb640bec74a63510ccea152b13f5468e8f99813c90df48bc2d399e92c1b`;
+  after: `fd3fe9966208c74f1201d147aafbb3d3a499aa7e2e43a7f6f485e9780dab11e9`.
+- A genuine foreign-origin `no-cors` simple POST has `text/plain`, so JSON endpoint
+  media admission rejects it with415 before the feature Origin check. The browser
+  test now requires exact415, privately verifies actual browser-generated Origin
+  and exact media type, and retains zero upstream dispatch. It does not claim the
+  feature Origin guard executed. Existing valid-JSON foreign-Origin controls in
+  `ApplicationTransportTests` and `ApplicationHttpUpdateAuthorityTests` retain
+  exact400/no-dispatch/unchanged persistence and their legitimate positive controls.
+- Chromium's additional CDP session cannot release Playwright's original-session
+  visible capture. Pinned [EmulationHandler](https://github.com/chromium/chromium/blob/153.0.8010.12/content/browser/devtools/protocol/emulation_handler.cc#L1004)
+  returns early when a new handler already has disabled focus emulation; the owning
+  session's true setting increments visible capture. Pinned
+  [WebContents](https://github.com/chromium/chromium/blob/153.0.8010.12/content/browser/web_contents/web_contents_impl.cc#L5159)
+  keeps DOM visibility visible while that capture exists, explaining the observed
+  iconic-window/visible-document mismatch. The engine-specific original-session
+  correction above removes that capture. No launch flags or visibility assertions
+  are changed. Whole-file source hashes respectively:
+  `1447e3b18e2b87ea58a6c60fda002200693b627bee1aa1107f2951cf31c51e4b` and
+  `0ab4088c0d47084561833d6a87eb436b5df28f0d31866bfcb09f5abf2ad30b92`.
+- Pinned WebKit [MiniBrowser title handling](https://github.com/microsoft/playwright/blob/v1.63.0/browser_patches/webkit/patches/bootstrap.diff#L19472)
+  prefixes document titles with `🎭 Playwright: `. Removing only the start anchor
+  lets the unpredictable page-owned marker match that title. Exactly one visible
+  numeric window, original-title restoration and every native-state check remain.
+
+Independent test/security integration reviews pass the eight-file fixture delta,
+qualified by pending actual corrected browser execution. Full solution build,
+format/import and quality checks pass without warnings, errors or new allowances.
+The11 native-driver controls pass; no database experiment, browser download,
+production correction or merge is added by this follow-up.

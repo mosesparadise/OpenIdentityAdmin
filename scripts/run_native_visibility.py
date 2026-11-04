@@ -15,33 +15,41 @@ DRIVER = ROOT / 'tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net
 BUNDLE = Path('package/lib/coreBundle.js')
 VERSION = '1.63.0'
 ORIGINAL_SHA = '549070af3acabb3efcc4f55bfe6210f9f7c2fcf633cf7eaa59bfe60719969171'
-NATIVE_SHA = 'dc9fb491407327fc249fa9287fc868d5fe79d64e45db306b00194c3cd28b0458'
-OVERRIDE = b'this._pageProxySession.send("Emulation.setActiveAndFocused", { active: true })'
-NATIVE = b'this._pageProxySession.send("Emulation.setActiveAndFocused", {})'
+PATCHES = {
+    'webkit': (b'this._pageProxySession.send("Emulation.setActiveAndFocused", { active: true })',
+               b'this._pageProxySession.send("Emulation.setActiveAndFocused", {})',
+               'dc9fb491407327fc249fa9287fc868d5fe79d64e45db306b00194c3cd28b0458'),
+    'chromium': (b'this._client.send("Emulation.setFocusEmulationEnabled", { enabled: true })',
+                 b'this._client.send("Emulation.setFocusEmulationEnabled", { enabled: false })',
+                 'a1822c4ef78eba42059e6fd7187f5387290ec6c5b456132ba1aaec68a0b9c439'),
+}
 
 
-def native_bundle(content: bytes, version: str) -> bytes:
-    """Unset the pinned WebKit automation override; never force visible/hidden."""
+def native_bundle(content: bytes, version: str, browser: str) -> bytes:
+    """Disable the owning driver session's override; never force visible/hidden."""
+    if browser not in PATCHES:
+        raise ValueError('Unsupported native visibility engine')
+    override, native, result_sha = PATCHES[browser]
     if version != VERSION or hashlib.sha256(content).hexdigest() != ORIGINAL_SHA:
         raise ValueError('Native visibility requires the reviewed pinned driver')
-    if content.count(OVERRIDE) != 1:
+    if content.count(override) != 1:
         raise ValueError('Native visibility override count changed')
-    result = content.replace(OVERRIDE, NATIVE)
-    if hashlib.sha256(result).hexdigest() != NATIVE_SHA:
+    result = content.replace(override, native)
+    if hashlib.sha256(result).hexdigest() != result_sha:
         raise ValueError('Native visibility driver result changed')
     return result
 
 
-def prepare_driver(source: Path, destination: Path) -> None:
+def prepare_driver(source: Path, destination: Path, browser: str) -> None:
     """Copy before modifying; retain a byte-for-byte original bundle witness."""
     original = (source / BUNDLE).read_bytes()
     version = json.loads((source / 'package/package.json').read_text())['version']
-    replacement = native_bundle(original, version)
+    replacement = native_bundle(original, version, browser)
     shutil.copytree(source, destination / '.playwright')
     (destination / '.playwright' / BUNDLE).write_bytes(replacement)
     if (source / BUNDLE).read_bytes() != original:
         raise ValueError('Original driver changed')
-    print(f'Native visibility driver {VERSION}: original {ORIGINAL_SHA}; copy {NATIVE_SHA}', flush=True)
+    print(f'Native visibility driver {VERSION}/{browser}: original {ORIGINAL_SHA}; copy {PATCHES[browser][2]}', flush=True)
 
 
 def run(provider: str, browser: str, desktop: bool) -> None:
@@ -57,9 +65,8 @@ def run(provider: str, browser: str, desktop: bool) -> None:
     with tempfile.TemporaryDirectory(prefix='identity-native-visibility-') as directory:
         environment = dict(os.environ)
         environment.pop('PLAYWRIGHT_DRIVER_SEARCH_PATH', None)
-        if browser == 'webkit':
-            prepare_driver(DRIVER, Path(directory))
-            environment['PLAYWRIGHT_DRIVER_SEARCH_PATH'] = directory
+        prepare_driver(DRIVER, Path(directory), browser)
+        environment['PLAYWRIGHT_DRIVER_SEARCH_PATH'] = directory
         manager = subprocess.Popen(['openbox', '--sm-disable'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         try:
             # The native property appears only after the WM claims this private display.

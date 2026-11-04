@@ -13,7 +13,6 @@ internal sealed class ApplicationNativeWindow(string id)
     private const string Sync = "--sync";
     private const string OnlyVisible = "--onlyvisible";
     private const string Name = "--name";
-    private const string Anchor = "^";
     private const string IdentifierFormat = "N";
     private const string Minimize = "windowminimize";
     private const string Map = "windowmap";
@@ -35,7 +34,7 @@ internal sealed class ApplicationNativeWindow(string id)
         var original = await page.EvaluateAsync<string>(Title, marker);
         try
         {
-            var result = await CommandAsync(Tool, Search, Sync, OnlyVisible, Name, Anchor + marker);
+            var result = await CommandAsync(Tool, Search, Sync, OnlyVisible, Name, marker);
             var ids = result.Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             Assert.True(ids.Length == 1 && ulong.TryParse(ids[0], NumberStyles.None, CultureInfo.InvariantCulture, out var value) && value != 0);
             return new(ids[0]);

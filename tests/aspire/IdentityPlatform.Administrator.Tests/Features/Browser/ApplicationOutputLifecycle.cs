@@ -22,7 +22,7 @@ internal static class ApplicationOutputLifecycle
         await using var browser = await BrowserSession.CreateHeadedAsync();
         var page = await browser.Context.NewPageAsync();
         var access = await ApplicationAccessFixture.SignInAsync(environment, page);
-        await using var visibility = await ApplicationNativeVisibility.CreateAsync(page);
+        var visibility = await ApplicationNativeVisibility.CreateAsync(page);
         await page.Clock.SetFixedTimeAsync(environment.Issuer.Account.Journey.Clock.Now.UtcDateTime);
         await using var observation = await ApplicationLifecycleObservation.CreateAsync(page);
         await ApplicationLifecycleUi.PrepareAsync(page, environment.Profile.ClientUri, environment.Issuer.Account.Journey.Clock.Now, ApplicationLifecycleUi.LongLifetimeSeconds);

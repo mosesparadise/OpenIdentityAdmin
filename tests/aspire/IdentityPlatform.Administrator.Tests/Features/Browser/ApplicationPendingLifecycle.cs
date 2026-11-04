@@ -54,7 +54,7 @@ internal static class ApplicationPendingLifecycle
         await using var browser = await BrowserSession.CreateHeadedAsync();
         var page = await browser.Context.NewPageAsync();
         var access = await ApplicationAccessFixture.SignInAsync(environment, page);
-        await using var visibility = await ApplicationNativeVisibility.CreateAsync(page);
+        var visibility = await ApplicationNativeVisibility.CreateAsync(page);
         var now = environment.Issuer.Account.Journey.Clock.Now;
         await page.Clock.SetFixedTimeAsync(now.UtcDateTime);
         probe.Access = access.Value;

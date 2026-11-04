@@ -49,6 +49,10 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
     private const int Unauthorized = 401;
     private const int Created = 201;
     private const int Denied = 400;
+    private const int UnsupportedMedia = 415;
+    private const string OriginHeader = "origin";
+    private const string ContentType = "content-type";
+    private const string PlainText = "text/plain";
     private const int Unavailable = 503;
     private const int JoinSeconds = 3;
     private static readonly string[] Faults = ["redirect", "duplicate", "unknown", "oversized", "html", "client", "fields", "etag-id", "revision", "fractional", "abort"];
@@ -177,7 +181,7 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
         probe.ExpectedVersion = null;
     }
 
-    /// <summary>Uses a genuine document at the issuer origin to send an ambient-cookie simple POST; the BFF rejects browser-generated foreign provenance before dispatch.</summary>
+    /// <summary>Requires actual browser-generated foreign provenance on a simple POST and exact JSON-media admission denial; native valid-JSON tests separately prove the Origin guard.</summary>
     private static async Task RequireForeignOriginAsync(BrowserHttpsFixture environment, IPage page, ApplicationMutationProbe probe)
     {
         const string Attack = "async target => { await fetch(target, {method:'POST',mode:'no-cors',credentials:'include',headers:{'Content-Type':'text/plain'},body:'{}'}); }";
@@ -188,7 +192,10 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
             var target = new Uri(environment.Profile.ClientUri, Collection).AbsoluteUri;
             var calls = probe.Requests;
             var response = await attacker.RunAndWaitForResponseAsync(() => attacker.EvaluateAsync(Attack, target), value => value.Url == target);
-            Assert.Equal(Denied, response.Status);
+            Assert.Equal(UnsupportedMedia, response.Status);
+            var headers = await response.Request.AllHeadersAsync();
+            Assert.True(headers.TryGetValue(OriginHeader, out var origin) && origin == environment.Profile.Issuer.GetLeftPart(UriPartial.Authority));
+            Assert.True(headers.TryGetValue(ContentType, out var contentType) && contentType == PlainText);
             Assert.Equal(calls, probe.Requests);
         }
         finally { await attacker.CloseAsync(); }
