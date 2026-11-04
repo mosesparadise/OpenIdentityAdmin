@@ -33,7 +33,7 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
     private const string PrivateField = "private";
     private const string Canary = "private-canary";
 
-    private const string Acquire = "async () => { const r=await fetch('/bff/api/v1/applications/antiforgery',{cache:'no-store'}); return {status:r.status,cache:r.headers.get('Cache-Control'),body:await r.json()}; }";
+    private const string Acquire = "async () => { const r=await fetch('/bff/api/v1/applications/antiforgery',{cache:'no-store'}); return {status:r.status,cache:r.headers.get('Cache-Control'),body:await r.text()}; }";
     private const string Send = "async arg => { const headers={'Content-Type':'application/json','X-CSRF-TOKEN':arg.token,'X-Identity':'forged'}; if(arg.version)headers['If-Match']=arg.version; const r=await fetch(arg.path??'/bff/api/v1/applications',{method:arg.method??'POST',headers,body:JSON.stringify(arg.body),redirect:'error'}); return {status:r.status,version:r.headers.get('ETag'),cache:r.headers.get('Cache-Control'),private:r.headers.get('X-Private'),body:await r.json()}; }";
     private const string Begin = "arg => { window.pendingMutation = (" + Send + ")(arg); }";
     private const string Finish = "async () => { const r=await window.pendingMutation; delete window.pendingMutation; return r; }";
@@ -244,8 +244,9 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
         var result = await page.EvaluateAsync<JsonElement>(Acquire);
         Assert.Equal(Success, result.GetProperty(StatusField).GetInt32());
         Assert.Equal(NativeTokenCacheControl, result.GetProperty(CacheField).GetString());
-        Assert.Single(result.GetProperty(BodyField).EnumerateObject());
-        return result.GetProperty(BodyField).GetProperty(TokenField).GetString()!;
+        using var body = JsonDocument.Parse(result.GetProperty(BodyField).GetString()!);
+        Assert.True(body.RootElement.EnumerateObject().Select(field => field.Name).SequenceEqual([TokenField]));
+        return body.RootElement.GetProperty(TokenField).GetString()!;
     }
 
     /// <summary>Provides a finite explicit operator command, independent of production serializers.</summary>

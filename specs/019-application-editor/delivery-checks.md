@@ -5,6 +5,8 @@ secret replacement and managed issuer paths. FR-001–012. The visible feature i
 `123-application-editor`; use the ordinary Aspire [local-demo quickstart](quickstart.md).
 It is not merged into main. Required browser/native-demo acceptance, complete hosted
 verification and aggregate coverage remain open until their actual reports pass.
+[Hosted attempts and bounded corrections](hosted-verification.md) retain both failed
+runs, successful native demos and the subsequent exhaustive managed-suite grouping.
 
 ## Contract generator and dependency correction
 
@@ -67,8 +69,10 @@ baseline/restored cases on PostgreSQL/SQL Server. The native consumption witness
 require the actual owned child commit, exact input and independent status read;
 early 503 and commit failure cannot masquerade as bypasses. No production mutation
 remains. Eleven new controls add 22 selection traits to existing provider cases.
-The 80 coverage inputs, 15 module floors and 55 UI identities are unchanged; no new
+The original checkpoint preserves 80 coverage inputs, 15 module floors and 55 UI identities; no new
 aggregate coverage result is claimed from these uninstrumented runs.
+The later hosted-timeout correction exhaustively splits two managed-suite reports
+into four, requiring 82 inputs without dropping cases or changing floors.
 
 [Evidence-format provenance](evidence-format.md) records the lossless conversion of
 historical digest maps to explicit path/hash records. It preserves 375 associations,

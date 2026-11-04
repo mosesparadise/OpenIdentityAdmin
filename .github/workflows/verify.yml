@@ -167,8 +167,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Policy, label: administrator-SqlServer-governance-policy }
           - { profile: SqlServer, partition: administrator, story: Governance.Commands, label: administrator-SqlServer-governance-commands }
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
-          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, label: administrator-PostgreSql-managedapplications }
-          - { profile: SqlServer, partition: administrator, story: ManagedApplications, label: administrator-SqlServer-managedapplications }
+          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-PostgreSql-managedapplications-admission }
+          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-PostgreSql-managedapplications-issuance }
+          - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-SqlServer-managedapplications-admission }
+          - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-SqlServer-managedapplications-issuance }
           - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
           - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }
@@ -211,6 +213,7 @@ jobs:
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
+      - run: python3 scripts/test_managed_application_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
@@ -240,7 +243,7 @@ jobs:
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }} ${{ matrix.managed_application_group && format('--managed-application-group {0}', matrix.managed_application_group) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -283,6 +286,7 @@ jobs:
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
+      - run: python3 scripts/test_managed_application_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py

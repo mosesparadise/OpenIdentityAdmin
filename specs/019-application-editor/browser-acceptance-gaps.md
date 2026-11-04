@@ -42,3 +42,40 @@ Full hosted checks remain valuable regression evidence. Record exactly which cas
 ran and their source version, while leaving these absent scenarios and manual
 acceptance open. Reuse the existing issuer and browser fixtures when implementing the
 two groups; no second issuer implementation or weaker acceptance gate is proposed.
+
+## Bounded implementation sequence
+
+Independent requirement/UX review recommends extending the existing positive editor
+journey and adding four focused two-provider browser theories. Preserve the existing
+positive/demo identities; discover and reconcile new records before changing counts.
+
+- Extend the positive journey with a private in-memory handoff of the UI-created,
+  edited registration and current one-time credential. Reuse native authorization
+  intent, actual password/TOTP sources, a genuine test HTTPS callback receiver and
+  existing cryptographic oracles through a narrow non-owning evidence adapter. Keep
+  code exchange server-side. Run with the existing issuer session still present to
+  require a fresh ceremony. Share the ceremony with both ordinary native demos.
+- Add explicit browser consent denial with accessible terminal cancellation and
+  independent absence-of-issuance observations.
+- Add visible editor recovery checks for real permission removal/expiry and bounded
+  upstream failure seams. Cover each defined presentation state, correct focus,
+  operation-specific recovery and no automatic duplicate send.
+- Add actual history navigation and visibility changes around one-time output.
+  Record whether bfcache was used; do not weaken no-store or security headers to make
+  a page eligible. Check actual secrets against URL/history, storage and bounded
+  console/page-error observations without emitting inspected values.
+- Add pending-write navigation/visibility, session-change and original-deadline
+  checks using joined response gates. Release the delayed response and require one
+  send, honest uncertainty and no secret/success resurrection after ownership loss.
+
+This is a proposed eight-record native inventory addition, producing sixteen retained
+engine executions if Chromium/WebKit selection is unchanged; these are not executed
+counts. Existing native protocol negatives need not be duplicated in every browser
+combination. No production relying-party UI, secret-bearing screenshots, duplicate
+demo axe matrix or Firefox reinstatement is required. Human Windows and qualified
+manual accessibility acceptance remain separate.
+
+Successful exact-head execution of the current transport and create/details/demo
+cases can close scoped T007 and T014 independently. Integrated same-registration
+browser acceptance and the remaining state/lifecycle requirements still belong to
+T019, and therefore keep final T022 acceptance open.

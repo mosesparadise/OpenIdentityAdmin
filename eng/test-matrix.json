@@ -301,5 +301,52 @@
         "SqlServer": 57
       }
     }
+  },
+  "managed_application_groups": {
+    "Admission": {
+      "classes": [
+        "ManagedCacheBindingTests",
+        "ManagedCacheCapacityTests",
+        "ManagedCacheCleanupTests",
+        "ManagedCacheDependencyTests",
+        "ManagedCacheFailureTests",
+        "ManagedCacheHistoryTests",
+        "ManagedCacheHttpTests",
+        "ManagedCacheRaceTests",
+        "ManagedHumanAtomicityTests",
+        "ManagedHumanBudgetTests",
+        "ManagedHumanDriftTests",
+        "ManagedHumanHttpTests",
+        "ManagedHumanInputTests",
+        "ManagedHumanOwnershipTests",
+        "ManagedHumanPublicationTests",
+        "ManagedHumanRaceTests",
+        "ManagedPasswordUpgradeTests",
+        "NativeCacheTests"
+      ],
+      "counts": {
+        "PostgreSql": 50,
+        "SqlServer": 50
+      }
+    },
+    "Issuance": {
+      "classes": [
+        "ManagedJourneyTests",
+        "ManagedTokenAtomicityTests",
+        "ManagedTokenCapacityTests",
+        "ManagedTokenClaimTests",
+        "ManagedTokenDriftTests",
+        "ManagedTokenFailureTests",
+        "ManagedTokenHttpTests",
+        "ManagedTokenPublicationTests",
+        "ManagedTokenRaceTests",
+        "ManagedTokenReplayTests",
+        "ManagedUpdateJourneyTests"
+      ],
+      "counts": {
+        "PostgreSql": 56,
+        "SqlServer": 56
+      }
+    }
   }
 }
