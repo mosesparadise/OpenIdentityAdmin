@@ -1,7 +1,7 @@
-using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
-using OpenIddict.Server;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using OpenIddict.Server.AspNetCore;
+using OpenIddict.Server;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 

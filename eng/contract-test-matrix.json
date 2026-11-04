@@ -1,7 +1,7 @@
 {
   "core": 44,
   "browser": 7,
-  "node": 40,
+  "node": 44,
   "browsers": [
     "chromium",
     "firefox",
@@ -47,6 +47,10 @@
     "Given browser status When a native route or extra verb is substituted Then no broad exception admits it",
     "Given application token acquisition When identity cache or method changes Then the exact local boundary fails closed",
     "Given real application updates When native contracts are generated Then independent authority and finite update shapes remain explicit",
-    "Given application replacement When MFA or strong version semantics weaken Then compatibility fails closed"
+    "Given application replacement When MFA or strong version semantics weaken Then compatibility fails closed",
+    "Given reviewed parser When URL patterns select headers Then only intended destinations match",
+    "Given current matcher When the import adaptation is omitted Then the genuine call site rejects its incompatible API",
+    "Given reviewed upstream bytes When preparation runs Then only the exact idempotent import adaptation is accepted",
+    "Given an amplifying header pattern When the fixed parser matches Then bounded execution omits the out-of-limit header"
   ]
 }

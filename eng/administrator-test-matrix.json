@@ -59,38 +59,38 @@
     "IdentityPlatform.Administrator.Tests.Features.Accounts.WaitingVerificationTests.Given_WaitingLoginCompletion_When_AuthorityOrFreshnessChanges_Then_StaleProofCannotCommitAndFreshAdmissionRemainsUsable(provider: \"PostgreSql\", change: Revision)",
     "IdentityPlatform.Administrator.Tests.Features.Accounts.WaitingVerificationTests.Given_WaitingLoginCompletion_When_AuthorityOrFreshnessChanges_Then_StaleProofCannotCommitAndFreshAdmissionRemainsUsable(provider: \"PostgreSql\", change: Stamp)",
     "IdentityPlatform.Administrator.Tests.Features.Accounts.WaitingVerificationTests.Given_WaitingLoginCompletion_When_AuthorityOrFreshnessChanges_Then_StaleProofCannotCommitAndFreshAdmissionRemainsUsable(provider: \"PostgreSql\", change: Suspension)",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"escaped-high\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"escaped-low\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"invalid-canary\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"invalid-utf8\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"missing-eof\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"too-large\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"escaped-high\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"escaped-low\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"invalid-canary\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"invalid-utf8\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"missing-eof\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"too-large\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"PostgreSql\", scenario: \"maximum\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"PostgreSql\", scenario: \"minimum\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"PostgreSql\", scenario: \"process\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"audit\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"cancel-lock\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"cancel-manager\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"kill-precommit\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"manager\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"PostgreSql\", scenario: \"conflicting\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"PostgreSql\", scenario: \"identical\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"audit\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"cancel-lock\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"cancel-manager\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"kill-precommit\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"manager\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"PostgreSql\", scenario: \"conflicting\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"PostgreSql\", scenario: \"identical\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"deleted\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"disabled\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"membership\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"ordinary\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"password\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"renamed\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"local-roles\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"missing-connection\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"operation\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"terminal\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"lost-result\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"old-schema\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"runtime-only\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"unrelated-data\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"upgrade-only\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Real_pilot_allows_its_user_and_denies_pending_administrator_without_issuing_authority(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"local-roles\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"missing-connection\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"operation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"terminal\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"lost-result\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"old-schema\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"runtime-only\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"unrelated-data\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"upgrade-only\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapPilotIsolationTests.Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"consumed-without-receipt\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"different-identity\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"different-operation\")",
@@ -1196,38 +1196,38 @@
     "IdentityPlatform.Administrator.Tests.Features.Accounts.WaitingVerificationTests.Given_WaitingLoginCompletion_When_AuthorityOrFreshnessChanges_Then_StaleProofCannotCommitAndFreshAdmissionRemainsUsable(provider: \"SqlServer\", change: Revision)",
     "IdentityPlatform.Administrator.Tests.Features.Accounts.WaitingVerificationTests.Given_WaitingLoginCompletion_When_AuthorityOrFreshnessChanges_Then_StaleProofCannotCommitAndFreshAdmissionRemainsUsable(provider: \"SqlServer\", change: Stamp)",
     "IdentityPlatform.Administrator.Tests.Features.Accounts.WaitingVerificationTests.Given_WaitingLoginCompletion_When_AuthorityOrFreshnessChanges_Then_StaleProofCannotCommitAndFreshAdmissionRemainsUsable(provider: \"SqlServer\", change: Suspension)",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"escaped-high\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"escaped-low\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"invalid-canary\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"invalid-utf8\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"missing-eof\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"too-large\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"escaped-high\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"escaped-low\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"invalid-canary\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"invalid-utf8\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"missing-eof\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"too-large\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"SqlServer\", scenario: \"maximum\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"SqlServer\", scenario: \"minimum\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"SqlServer\", scenario: \"process\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"audit\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"cancel-lock\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"cancel-manager\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"kill-precommit\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"manager\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"SqlServer\", scenario: \"conflicting\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"SqlServer\", scenario: \"identical\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"audit\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"cancel-lock\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"cancel-manager\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"kill-precommit\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"manager\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"SqlServer\", scenario: \"conflicting\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"SqlServer\", scenario: \"identical\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"deleted\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"disabled\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"membership\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"ordinary\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"password\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"renamed\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"local-roles\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"missing-connection\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"operation\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"terminal\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"lost-result\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"old-schema\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"runtime-only\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"unrelated-data\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"upgrade-only\")",
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Real_pilot_allows_its_user_and_denies_pending_administrator_without_issuing_authority(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"local-roles\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"missing-connection\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"operation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"terminal\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"lost-result\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"old-schema\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"runtime-only\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"unrelated-data\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"upgrade-only\")",
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapPilotIsolationTests.Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"consumed-without-receipt\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"different-identity\")",
     "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"different-operation\")",
@@ -4626,12 +4626,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"escaped-high\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"escaped-high\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4646,12 +4646,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"escaped-low\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"escaped-low\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4666,12 +4666,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"invalid-canary\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"invalid-canary\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4686,12 +4686,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"invalid-utf8\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"invalid-utf8\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4706,12 +4706,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"missing-eof\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"missing-eof\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4726,12 +4726,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"PostgreSql\", scenario: \"too-large\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"too-large\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4746,12 +4746,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"escaped-high\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"escaped-high\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4766,12 +4766,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"escaped-low\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"escaped-low\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4786,12 +4786,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"invalid-canary\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"invalid-canary\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4806,12 +4806,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"invalid-utf8\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"invalid-utf8\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4826,12 +4826,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"missing-eof\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"missing-eof\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4846,12 +4846,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Actual_pipe_input_is_bounded_and_never_disclosed(provider: \"SqlServer\", scenario: \"too-large\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"too-large\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Actual_pipe_input_is_bounded_and_never_disclosed",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -4986,12 +4986,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"audit\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"audit\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5006,12 +5006,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"cancel-lock\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"cancel-lock\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5026,12 +5026,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"cancel-manager\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"cancel-manager\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5046,12 +5046,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"kill-precommit\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"kill-precommit\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5066,12 +5066,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"PostgreSql\", scenario: \"manager\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"manager\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5086,12 +5086,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"audit\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"audit\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5106,12 +5106,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"cancel-lock\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"cancel-lock\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5126,12 +5126,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"cancel-manager\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"cancel-manager\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5146,12 +5146,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"kill-precommit\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"kill-precommit\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5166,12 +5166,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Failed_or_interrupted_initialization_rolls_back_every_write(provider: \"SqlServer\", scenario: \"manager\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"manager\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Failed_or_interrupted_initialization_rolls_back_every_write",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5186,12 +5186,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"PostgreSql\", scenario: \"conflicting\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"PostgreSql\", scenario: \"conflicting\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Independent_processes_contend_and_only_one_initializes",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5206,12 +5206,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"PostgreSql\", scenario: \"identical\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"PostgreSql\", scenario: \"identical\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Independent_processes_contend_and_only_one_initializes",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5226,12 +5226,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"SqlServer\", scenario: \"conflicting\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"SqlServer\", scenario: \"conflicting\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Independent_processes_contend_and_only_one_initializes",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5246,12 +5246,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Independent_processes_contend_and_only_one_initializes(provider: \"SqlServer\", scenario: \"identical\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"SqlServer\", scenario: \"identical\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Independent_processes_contend_and_only_one_initializes",
+        "typeName": "BootstrapAtomicityTests",
+        "methodName": "Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5506,12 +5506,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"local-roles\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"local-roles\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5526,12 +5526,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"missing-connection\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"missing-connection\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5546,12 +5546,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"operation\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"operation\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5566,12 +5566,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"PostgreSql\", scenario: \"terminal\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"terminal\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5586,12 +5586,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"local-roles\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"local-roles\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5606,12 +5606,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"missing-connection\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"missing-connection\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5626,12 +5626,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"operation\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"operation\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5646,12 +5646,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_rejects_unsafe_operation_configuration_before_any_write(provider: \"SqlServer\", scenario: \"terminal\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"terminal\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_rejects_unsafe_operation_configuration_before_any_write",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5666,12 +5666,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"lost-result\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"lost-result\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5686,12 +5686,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"old-schema\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"old-schema\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5706,12 +5706,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"runtime-only\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"runtime-only\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5726,12 +5726,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"unrelated-data\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"unrelated-data\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5746,12 +5746,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"PostgreSql\", scenario: \"upgrade-only\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"upgrade-only\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5766,12 +5766,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"lost-result\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"lost-result\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5786,12 +5786,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"old-schema\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"old-schema\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5806,12 +5806,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"runtime-only\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"runtime-only\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5826,12 +5826,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"unrelated-data\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"unrelated-data\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5846,12 +5846,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Process_restart_upgrade_and_privilege_boundaries_are_explicit(provider: \"SqlServer\", scenario: \"upgrade-only\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"upgrade-only\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Process_restart_upgrade_and_privilege_boundaries_are_explicit",
+        "typeName": "BootstrapProcessTests",
+        "methodName": "Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5866,12 +5866,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Real_pilot_allows_its_user_and_denies_pending_administrator_without_issuing_authority(provider: \"PostgreSql\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapPilotIsolationTests.Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority(provider: \"PostgreSql\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Real_pilot_allows_its_user_and_denies_pending_administrator_without_issuing_authority",
+        "typeName": "BootstrapPilotIsolationTests",
+        "methodName": "Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
@@ -5885,12 +5885,12 @@
         }
       ]
     },
-    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Real_pilot_allows_its_user_and_denies_pending_administrator_without_issuing_authority(provider: \"SqlServer\")": {
+    "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapPilotIsolationTests.Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority(provider: \"SqlServer\")": {
       "type": {
         "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "namespace": "IdentityPlatform.Administrator.Tests.Features.Bootstrap",
-        "typeName": "BootstrapTests",
-        "methodName": "Real_pilot_allows_its_user_and_denies_pending_administrator_without_issuing_authority",
+        "typeName": "BootstrapPilotIsolationTests",
+        "methodName": "Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

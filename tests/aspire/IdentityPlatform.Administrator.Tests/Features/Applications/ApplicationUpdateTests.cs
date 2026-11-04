@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Runtime.ExceptionServices;
 using IdentityPlatform.Admin.Api.Features.Applications;
-using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
-using IdentityPlatform.Infrastructure.Features.Applications;
+using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Applications;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;

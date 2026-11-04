@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
+using Microsoft.AspNetCore;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 

@@ -5,10 +5,10 @@ using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using OpenIddict.EntityFrameworkCore.Models;
+using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 

@@ -675,6 +675,7 @@ jobs:
           node-version: '24.19.0'
       - run: npm install --global npm@11.9.0
       - run: npm ci --prefix src/frontend/IdentityPlatform.Admin.Contracts --ignore-scripts --strict-peer-deps
+      - run: npm run prepare:generator --prefix src/frontend/IdentityPlatform.Admin.Contracts
       - run: npm run bundle --prefix src/frontend/IdentityPlatform.Admin.Contracts
       - run: dotnet tool restore
       - run: dotnet restore --locked-mode

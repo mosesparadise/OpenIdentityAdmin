@@ -1,0 +1,13 @@
+# Development generator matcher compatibility
+
+The generator's former nested minimatch 5.1.9 dependency was affected by GHSA-g3hv-75wg-m249. The scoped override updates only its Redocly parser to 1.34.23 and matcher to 11.0.4, plus the matcher's three required transitives. Direct Redocly 2.71.2 and openapi-typescript 7.13.0 remain pinned. Updating the generator's parser to Redocly 2 is incompatible with its private imports; replacing the matcher alone breaks its CommonJS callable import.
+
+`generator-compatibility.json` binds the reviewed upstream archive integrity, versions, source path and original/adapted whole-file SHA256. The only source change is destructuring the named `minimatch` export. No matcher rule, validation, network policy or advisory suppression changes. The genuine call site selects URL-specific headers in Redocly's `readFileFromUrl`.
+
+After `npm ci --ignore-scripts --strict-peer-deps`, run `npm run prepare:generator` in the Contracts package. It accepts only exact upstream or already adapted bytes and rejects drift. `npm run check` verifies without writing. The independent Python supply-chain gate checks locked/installed versions, archive integrity, the adapted hash and exact reversal to upstream bytes before querying advisories. CI performs preparation explicitly; no install hook executes.
+
+Four permanent Node controls exercise actual URL/header selection (including lookalike hosts, protocols and paths), demonstrate the omitted-patch API failure and restored behavior, reject source drift and prove idempotence, and run a bounded hostile brace-pattern case through the real parser. The hostile case requires the expected fetch/result/header behavior; a crash or timeout fails. Python controls independently reject missing adaptation, byte, version and archive drift. The existing 40 compatibility controls remain required, alongside native contracts, deterministic generation and TypeScript positive/negative consumers.
+
+The 76-entry locked inventory includes BlueOak-1.0.0 for minimatch and its nonrecursive matcher. The shipped license texts were reviewed for permissive copyright/patent grants and notice obligations. Preserve their notices or license links when redistributing tooling. This review does not close organizational legal, complete vendor inventory, production viewer or public-release gates.
+
+Remove the override and adaptation together when a maintained generator supports a fixed matcher through its parser without this patch; rerun generation, security controls, compatibility and current audit before accepting the replacement. Do not expand this into a general dependency patch mechanism.

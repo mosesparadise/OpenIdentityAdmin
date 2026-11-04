@@ -24,3 +24,7 @@ The [26 October configuration reassessment](vendor/configuration-review-2026-10-
 ## Dormant browser-session contract
 
 The native `bff-v1.browser.json` export and generated TypeScript declarations describe the explicitly composed `/bff/session` handler. They are generated and checked alongside the empty production inventories and separate synthetic management fixtures. The route is version-neutral; its contract version is 1. Its public unauthenticated response and optional cookie authority are narrowly classified by validation; ordinary management permission/version/CSRF requirements remain mandatory. Callback/resume and inert HTML pages are excluded. This adds no React client, API proxy or production documentation activation.
+
+## Generator matcher remediation
+
+The [scoped generator compatibility review](generator-compatibility.md) binds the fixed matcher, nested parser and exact single-import adaptation. Preparation is explicit after an ignore-scripts install; the independent supply-chain gate rejects missing or changed adapted bytes before accepting audit results. This does not alter embedded viewer assets or close their activation gates.

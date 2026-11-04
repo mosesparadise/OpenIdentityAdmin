@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "scope": "Final SDK format gate correction only. Reorders identical namespace using directives; namespace/declarations/method bodies unchanged. Earlier runtime receipts remain tied to their original source hashes. Bootstrap before hash is the extracted proposal, other before hashes are pre-format delivery source.",
+  "files": [
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
+      "before_sha256": "381e8e2261f4b0f980a47ab030df82130a1d4f30abcccd77400b457c3297bfad",
+      "after_sha256": "2dffefaab1f5be18c55ac126f880d1f0f989c976ce967697d475eab6345c5c4d",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/NativeResponseHandlers.cs",
+      "before_sha256": "bcbaa6f7dc41425f5b0e3b8e8209f11d4ca88a49dddaf16a201c0808b2777659",
+      "after_sha256": "713d8db87857a9a2bf639051f1f33c8a8e1056d80033a88c59b1aad8b66cc485",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedAdmission.cs",
+      "before_sha256": "31fa0ab89e3f90d15992507e1500f30cc9b4332712bbec97eddeb1ec8528a093",
+      "after_sha256": "cc2f37e7abe0515ac9bb54d39e6311f880164384941689f734accdac353e5ea7",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedTokenAdmission.cs",
+      "before_sha256": "5c5785d621bdc237d02a27dec71ffdeb26f6b1e80f44a5d3e3e06e8f1533129e",
+      "after_sha256": "a478c2501305d6c49a0cbbff823384ecdbec73363bfb456b9ce461af0ba855e9",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedIssuanceSource.cs",
+      "before_sha256": "d6d2b2538f2cbcb992fede931aabb16889cd11947a5f6279689aa95dd42b3e30",
+      "after_sha256": "cae8ffb196477f85ebddc748650184ee61e6956ad8b76535ca0e80da72d573b9",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateEvidence.cs",
+      "before_sha256": "0d0f62b04945a3413e9df3228dc503a98126891c95a00e694591c991bce687a4",
+      "after_sha256": "1772dbe5de0b397eb1a41e579a03cf57cc7badbd2cc59ab6ffda98481ff0138a",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationUpdateTests.cs",
+      "before_sha256": "c6925d94ac86eef97a523ac0b53e9af75d25d2224e87b5be2dd92d08abd906df",
+      "after_sha256": "b850e8ec6f1d2bf5bf87306f4374eaf7fdf4cda3e64661d68cedb453919b068d",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
+      "before_sha256": "74f27e68fb9dc859ad0970a1d1761e3c7bbc307b3ca0929fcc09ca5d878ecb49",
+      "after_sha256": "390d2486e3644c83bf65f1213686271b481dae9c9f49d9dca148facc822e8264",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs",
+      "before_sha256": "66c0b47cb9dec7bfba359b80fc935bd580a762b05c67674db7d23007be6cfe52",
+      "after_sha256": "61e153e0dd638020ec056a68d35ea8d98a7589bc897af9d84fed3b90fb2f6689",
+      "namespace_and_body_unchanged": true,
+      "using_directives_set_unchanged": true
+    }
+  ]
+}

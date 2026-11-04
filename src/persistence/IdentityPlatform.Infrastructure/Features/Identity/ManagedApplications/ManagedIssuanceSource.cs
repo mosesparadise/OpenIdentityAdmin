@@ -1,6 +1,6 @@
-using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
+using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;

@@ -1,160 +1,103 @@
 using System.Text;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
-using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.Extensions.DependencyInjection;
+using static IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapEvidence;
+using static IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapSnapshot;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Bootstrap;
 
-public sealed partial class BootstrapTests
+/// <summary>Real command framing, lifecycle and configuration scenarios.</summary>
+[Collection("administrator-bootstrap")]
+public sealed class BootstrapProcessTests(BootstrapFixture fixture)
 {
+    private const string EscapedHighScenario = "escaped-high";
+    private const string EscapedHighInput = "{\"password\":\"\\uD800\"}";
+    private const string EscapedLowScenario = "escaped-low";
+    private const string EscapedLowInput = "{\"password\":\"\\uDC00\"}";
+    private const string InvalidUtf8Scenario = "invalid-utf8";
+    private const byte InvalidUtf8LeadByte = 0xFF;
+    private const byte InvalidUtf8ContinuationByte = 0xFE;
+    private const string TooLargeScenario = "too-large";
+    private const int OversizedInputLength = 4097;
+    private const string InvalidCanaryScenario = "invalid-canary";
+    private const string CanaryInput = "{\"password\":\"canary-secret-value\",\"unknown\":true}";
+    private const string MissingEofScenario = "missing-eof";
+    private const int InvalidInputExitCode = 2;
+    private const string CanarySecret = "canary-secret-value";
+    private const string DisclosedPipeInput = "Input appeared in process diagnostics.";
+    private const string ChangedInvalidInputState = "Invalid or incomplete input wrote database state.";
+    private const string MissingConnectionScenario = "missing-connection";
+    private const string OperationScenario = "operation";
+    private const string UnknownOperation = "unknown-operation";
+    private const string InitializeOperation = "initialize-administrator";
+    private const string LocalRolesScenario = "local-roles";
+    private const string DevelopmentEnvironment = "Development";
+    private const string ProductionEnvironment = "Production";
+    private const string TerminalScenario = "terminal";
+    private const string InvalidInputMessage = "Invalid administrator bootstrap input.";
+    private const string InvalidConfigurationMessage = "Invalid migration configuration.";
+    private const string WrongConfigurationBoundary = "Failure was not attributed to the expected command boundary.";
+    private const string ConfigurationDisclosedCredentials = "Rejected command or PTY echoed credentials.";
+    private const string ChangedConfigurationState = "Rejected operation configuration changed persisted state.";
+
     private static readonly string[] Processes = ["lost-result", "old-schema", "runtime-only", "unrelated-data", "upgrade-only"];
     private static readonly string[] Inputs = ["invalid-utf8", "too-large", "missing-eof", "invalid-canary", "escaped-high", "escaped-low"];
     public static IEnumerable<TheoryDataRow<string, string>> ProcessCases => Cases(Processes);
     public static IEnumerable<TheoryDataRow<string, string>> InputCases => Cases(Inputs);
 
+    /// <summary>Checks native restart, schema, privilege and upgrade boundaries.</summary>
     [Theory]
     [MemberData(nameof(ProcessCases))]
-    public async Task Process_restart_upgrade_and_privilege_boundaries_are_explicit(string provider, string scenario)
+    public async Task Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(string provider, string scenario)
     {
         await using var lease = await fixture.LeaseAsync(provider);
-        switch (scenario)
-        {
-            case "lost-result":
-                await using (var first = new BootstrapProcess(provider, lease.RuntimeConnection))
-                {
-                    await first.SendAsync(lease.Input());
-                    // Deliberately discard completion/output: the next invocation must reconcile persisted state.
-                    _ = await first.CompleteAsync();
-                }
-                var before = await SnapshotAsync(lease);
-                var again = await RunAsync(lease, provider, lease.Input());
-                Assert.Equal(0, again.ExitCode);
-                Assert.True(again.Output.Contains("already initialized", StringComparison.Ordinal), "Reconciliation outcome missing.");
-                Assert.True(before == await SnapshotAsync(lease), "Ambiguous-result reconciliation changed state.");
-                break;
-            case "old-schema":
-                await using (var scope = lease.Administrator.CreateAsyncScope())
-                {
-                    var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-                    var migrations = (await database.Database.GetAppliedMigrationsAsync(Token)).ToArray();
-                    await database.GetService<IMigrator>().MigrateAsync(migrations[^2], Token);
-                }
-                var old = await RunAsync(lease, provider, lease.Input());
-                Assert.Equal(1, old.ExitCode);
-                await using (var scope = lease.Administrator.CreateAsyncScope())
-                {
-                    Assert.Empty(await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Users.ToListAsync(Token));
-                }
-                break;
-            case "runtime-only":
-                await using (var scope = lease.Runtime.CreateAsyncScope())
-                {
-                    var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-                    Assert.NotNull(await Record.ExceptionAsync(() => database.Database.ExecuteSqlRawAsync("CREATE TABLE platform.unauthorized_probe (id int)", Token)));
-                }
-                Assert.Equal(0, (await RunAsync(lease, provider, lease.Input())).ExitCode);
-                break;
-            case "unrelated-data":
-                string original;
-                await using (var scope = lease.Administrator.CreateAsyncScope())
-                {
-                    var users = scope.ServiceProvider.GetRequiredService<UserManager<PlatformUser>>();
-                    var user = new PlatformUser { UserName = "unrelated.user" };
-                    Require(await users.CreateAsync(user, lease.Password));
-                    original = user.PasswordHash!;
-                }
-                Assert.Equal(0, (await RunAsync(lease, provider, lease.Input())).ExitCode);
-                await using (var scope = lease.Administrator.CreateAsyncScope())
-                {
-                    var user = await scope.ServiceProvider.GetRequiredService<UserManager<PlatformUser>>().FindByNameAsync("unrelated.user");
-                    Assert.True(user is { IsEnabled: true } && user.PasswordHash == original, "Unrelated account was modified.");
-                }
-                break;
-            case "upgrade-only":
-                await using (var scope = lease.Administrator.CreateAsyncScope())
-                {
-                    var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-                    var migrations = (await database.Database.GetAppliedMigrationsAsync(Token)).ToArray();
-                    await database.GetService<IMigrator>().MigrateAsync(migrations[^2], Token);
-                    var users = scope.ServiceProvider.GetRequiredService<UserManager<PlatformUser>>();
-                    var user = new PlatformUser { UserName = "prior.pilot" };
-                    Require(await users.CreateAsync(user, lease.Password));
-                    Require(await users.AddClaimAsync(user, new System.Security.Claims.Claim("prior-claim", "preserved")));
-                    Require(await users.SetAuthenticationTokenAsync(user, "prior-provider", "prior-token", "synthetic-token"));
-                    var application = new OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication { ClientId = "prior-pilot" };
-                    var scopeRow = new OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope { Name = "prior-scope" };
-                    database.AddRange(application, scopeRow);
-                    database.Add(new PilotManifest { UserId = user.Id, UserName = user.UserName, ApplicationId = application.Id!, ScopeId = scopeRow.Id!, RedirectUri = "https://localhost/prior-callback" });
-                    database.Add(new LocalIdentitySession { Id = new string('s', 43), UserId = user.Id, SecurityStamp = user.SecurityStamp!, AuthenticatedAt = 1, ExpiresAt = 2 });
-                    await database.SaveChangesAsync(Token);
-                }
-                var priorState = await SnapshotAsync(lease, includeBootstrap: false);
-                await using (var process = new BootstrapProcess(provider, lease.AdministratorConnection, "upgrade", sessionConnection: lease.AdministratorConnection))
-                {
-                    await process.SendAsync(lease.Input());
-                    var result = await process.CompleteAsync();
-                    Assert.Equal(0, result.ExitCode);
-                    Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal), "Upgrade disclosed unused stdin.");
-                }
-                await using (var scope = lease.Administrator.CreateAsyncScope())
-                {
-                    var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-                    Assert.Single(await database.Users.ToListAsync(Token));
-                    Assert.False((await database.Set<AdministratorGovernance>().SingleAsync(Token)).BootstrapConsumed);
-                    Assert.True(priorState == await SnapshotAsync(lease, includeBootstrap: false), "Upgrade modified prior Identity, pilot or session data.");
-                }
-                break;
-        }
+        await BootstrapProcessScenarios.RunScenarioAsync(lease, provider, scenario);
     }
 
+    /// <summary>Rejects malformed or incomplete real pipe input without state changes or disclosure.</summary>
     [Theory]
     [MemberData(nameof(InputCases))]
-    public async Task Actual_pipe_input_is_bounded_and_never_disclosed(string provider, string scenario)
+    public async Task Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(string provider, string scenario)
     {
         await using var lease = await fixture.LeaseAsync(provider);
         var before = await SnapshotAsync(lease);
         await using var process = new BootstrapProcess(provider, lease.RuntimeConnection);
         var input = scenario switch
         {
-            "escaped-high" => Encoding.UTF8.GetBytes("{\"password\":\"\\uD800\"}"),
-            "escaped-low" => Encoding.UTF8.GetBytes("{\"password\":\"\\uDC00\"}"),
-            "invalid-utf8" => new byte[] { 0xFF, 0xFE },
-            "too-large" => Encoding.UTF8.GetBytes(new string(' ', 4097)),
-            "invalid-canary" => Encoding.UTF8.GetBytes("{\"password\":\"canary-secret-value\",\"unknown\":true}"),
+            EscapedHighScenario => Encoding.UTF8.GetBytes(EscapedHighInput),
+            EscapedLowScenario => Encoding.UTF8.GetBytes(EscapedLowInput),
+            InvalidUtf8Scenario => new byte[] { InvalidUtf8LeadByte, InvalidUtf8ContinuationByte },
+            TooLargeScenario => Encoding.UTF8.GetBytes(new string(' ', OversizedInputLength)),
+            InvalidCanaryScenario => Encoding.UTF8.GetBytes(CanaryInput),
             _ => lease.Input()
         };
-        await process.SendAsync(input, close: scenario != "missing-eof");
+        await process.SendAsync(input, close: scenario != MissingEofScenario);
         var result = await process.CompleteAsync();
-        Assert.Equal(scenario == "missing-eof" ? 1 : 2, result.ExitCode);
-        Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal) || result.Output.Contains("canary-secret-value", StringComparison.Ordinal), "Input appeared in process diagnostics.");
-        Assert.True(before == await SnapshotAsync(lease), "Invalid or incomplete input wrote database state.");
+        Assert.Equal(scenario == MissingEofScenario ? 1 : InvalidInputExitCode, result.ExitCode);
+        Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal) || result.Output.Contains(CanarySecret, StringComparison.Ordinal), DisclosedPipeInput);
+        Assert.True(before == await SnapshotAsync(lease), ChangedInvalidInputState);
     }
+
     private static readonly string[] Configuration = ["operation", "local-roles", "missing-connection", "terminal"];
     public static IEnumerable<TheoryDataRow<string, string>> ConfigurationCases => Cases(Configuration);
 
+    /// <summary>Rejects unsafe real process configuration before writing or disclosing credentials.</summary>
     [Theory]
     [MemberData(nameof(ConfigurationCases))]
-    public async Task Process_rejects_unsafe_operation_configuration_before_any_write(string provider, string scenario)
+    public async Task Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(string provider, string scenario)
     {
         await using var lease = await fixture.LeaseAsync(provider);
         var before = await SnapshotAsync(lease);
-        await using var process = new BootstrapProcess(provider, scenario == "missing-connection" ? "" : lease.RuntimeConnection,
-            operation: scenario == "operation" ? "unknown-operation" : "initialize-administrator",
-            environment: scenario == "local-roles" ? "Development" : "Production",
-            sessionConnection: scenario == "operation" ? lease.AdministratorConnection : null, provision: scenario == "local-roles", terminal: scenario == "terminal");
+        await using var process = new BootstrapProcess(provider, scenario == MissingConnectionScenario ? "" : lease.RuntimeConnection,
+            operation: scenario == OperationScenario ? UnknownOperation : InitializeOperation,
+            environment: scenario == LocalRolesScenario ? DevelopmentEnvironment : ProductionEnvironment,
+            sessionConnection: scenario == OperationScenario ? lease.AdministratorConnection : null, provision: scenario == LocalRolesScenario, terminal: scenario == TerminalScenario);
         // Otherwise valid input prevents malformed-input rejection from masking a missing guard.
         await process.SendAsync(lease.Input());
         var result = await process.CompleteAsync();
-        Assert.Equal(2, result.ExitCode);
-        var expected = scenario == "terminal" ? "Invalid administrator bootstrap input." : "Invalid migration configuration.";
-        Assert.True(result.Output.Contains(expected, StringComparison.Ordinal), "Failure was not attributed to the expected command boundary.");
-        Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal), "Rejected command or PTY echoed credentials.");
-        Assert.True(before == await SnapshotAsync(lease), "Rejected operation configuration changed persisted state.");
+        Assert.Equal(InvalidInputExitCode, result.ExitCode);
+        var expected = scenario == TerminalScenario ? InvalidInputMessage : InvalidConfigurationMessage;
+        Assert.True(result.Output.Contains(expected, StringComparison.Ordinal), WrongConfigurationBoundary);
+        Assert.False(result.Output.Contains(lease.Password, StringComparison.Ordinal), ConfigurationDisclosedCredentials);
+        Assert.True(before == await SnapshotAsync(lease), ChangedConfigurationState);
     }
-
 }

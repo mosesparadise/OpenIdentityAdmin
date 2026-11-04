@@ -1,9 +1,9 @@
-using System.Net;
 using System.Net.Http.Headers;
+using System.Net;
 using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
