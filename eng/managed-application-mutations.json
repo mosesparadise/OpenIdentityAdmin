@@ -20,16 +20,16 @@
     {
       "id": "managed-request-consumption",
       "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs",
-      "before": "            await transaction.CommitAsync(token);",
-      "after": "            if (signIn?.EndpointType != OpenIddictServerEndpointType.Authorization)\n            {\n                await transaction.CommitAsync(token);\n            }",
+      "before": "                    await scope.Services.GetRequiredService<OpenIddictServerHandlers.RedeemTokenEntry>().HandleAsync(signIn);",
+      "after": "                    if (signIn.EndpointType != OpenIddictServerEndpointType.Authorization)\n                    {\n                        await scope.Services.GetRequiredService<OpenIddictServerHandlers.RedeemTokenEntry>().HandleAsync(signIn);\n                    }",
       "marker": "managed-request-consumption-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent"
     },
     {
       "id": "managed-code-consumption",
       "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs",
-      "before": "            await transaction.CommitAsync(token);",
-      "after": "            if (signIn?.EndpointType != OpenIddictServerEndpointType.Token)\n            {\n                await transaction.CommitAsync(token);\n            }",
+      "before": "                    await scope.Services.GetRequiredService<OpenIddictServerHandlers.RedeemTokenEntry>().HandleAsync(signIn);",
+      "after": "                    if (signIn.EndpointType != OpenIddictServerEndpointType.Token)\n                    {\n                        await scope.Services.GetRequiredService<OpenIddictServerHandlers.RedeemTokenEntry>().HandleAsync(signIn);\n                    }",
       "marker": "managed-code-consumption-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent"
     },

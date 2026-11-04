@@ -34,24 +34,46 @@ public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
     [InlineData("SqlServer", true, Traits = ["Provider", "SqlServer", "CriticalDecision", "managed-code-consumption"])]
     public async Task Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(string provider, bool exchange)
     {
-        await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
+        var witness = new ManagedRedemptionWitness();
+        await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider, witness.Configure);
         var flow = new ManagedTokenFlow(test);
         await flow.ApproveAsync();
         var code = exchange ? await flow.CodeAsync() : null;
         var row = Assert.Single((await test.SnapshotAsync()).Interactions);
+        witness.Identifier = (exchange ? row.CodeId : row.RequestId)!;
+        witness.ReadStatus = () => ReadStatusAsync(test, witness.Identifier);
         var before = await ManagedTokenEvidence.RollbackDigestAsync(test);
+        await RequireEarlyFailureAsync(test, flow, code, witness);
+        Assert.Equal(before, await ManagedTokenEvidence.RollbackDigestAsync(test));
         var lease = test.Http.Environment.Issuer.Account.Journey.Lease;
         await IssuerAuditPermission.RunAsync(lease, async () =>
         {
             using var response = exchange ? await flow.ExchangeAsync(code!) : await test.SendAsync(flow.Resume);
             await ManagedCacheTestContext.UnavailableAsync(response);
         });
+        witness.RequireObserved();
         var consumed = (await test.SnapshotAsync()).Tokens.Single(value => value.Id == (exchange ? row.CodeId : row.RequestId)).Status;
-        Assert.False(consumed == Valid, exchange ? CodeConsumptionBypass : RequestConsumptionBypass);
+        Assert.False(witness.InputRemainedValid && consumed == Valid, exchange ? CodeConsumptionBypass : RequestConsumptionBypass);
         await RequireStatusAsync(test, (exchange ? row.CodeId : row.RequestId)!, Redeemed);
         Assert.Equal(before, await ManagedTokenEvidence.RollbackDigestAsync(test));
         using var replay = exchange ? await flow.ExchangeAsync(code!) : await test.SendAsync(flow.Resume);
         await ManagedTokenEvidence.ErrorAsync(replay, HttpStatusCode.BadRequest, exchange ? InvalidGrant : InvalidToken, local: !exchange);
+    }
+
+    /// <summary>A genuine early unavailable response with an unspent input cannot satisfy the commit witness or its mutation marker.</summary>
+    private static async Task RequireEarlyFailureAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, string? code, ManagedRedemptionWitness witness)
+    {
+        witness.FailBeforeRedemption = true;
+        try
+        {
+            using var failed = code is null ? await test.SendAsync(flow.Resume) : await flow.ExchangeAsync(code);
+            await ManagedCacheTestContext.UnavailableAsync(failed);
+            Assert.True(witness.EarlyFailed);
+            Assert.False(witness.Observed);
+            Assert.Throws<InvalidOperationException>(witness.RequireObserved);
+            await RequireStatusAsync(test, witness.Identifier!, Valid);
+        }
+        finally { witness.FailBeforeRedemption = false; }
     }
 
     /// <summary>Wrong native Basic, S256 or redirect proofs cannot spend the code; the original valid exchange still succeeds afterward.</summary>
@@ -112,12 +134,15 @@ public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
 
     /// <summary>Uses an independent provider connection while the failing issuance transaction is still active.</summary>
     private static async Task RequireStatusAsync(ManagedCacheTestContext test, string identifier, string expected)
+        => Assert.True(await ReadStatusAsync(test, identifier) == expected);
+
+    /// <summary>Reads one exact original input on a fresh independent connection without printing its identifier or credential.</summary>
+    private static async Task<string?> ReadStatusAsync(ManagedCacheTestContext test, string identifier)
     {
         await using var scope = test.Http.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        var status = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().Where(row => row.Id == identifier)
+        return await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().Where(row => row.Id == identifier)
             .Select(row => row.Status).SingleAsync(TestContext.Current.CancellationToken);
-        Assert.True(status == expected);
     }
 
     /// <summary>Requires no new native artifacts or audit, preserving exact interaction state despite separately committed redemption.</summary>

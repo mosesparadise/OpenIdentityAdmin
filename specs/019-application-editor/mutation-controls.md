@@ -25,9 +25,11 @@ mutation source or scoped execution alone.
 | --- | --- |
 | managed-explicit-consent | Explicit denial persists Approved. |
 | managed-claim-isolation | The prepared access-token claim injection fires and token issuance succeeds. |
-| managed-request-consumption | The exact cached request remains Valid after failed issuance that requires prior durable consumption. |
-| managed-code-consumption | The exact code remains Valid after failed issuance that requires prior durable consumption. |
+| managed-request-consumption | The exact cached request remains Valid across a witnessed successful native consumption commit. |
+| managed-code-consumption | The exact code remains Valid across a witnessed successful native consumption commit. |
 | managed-current-credential | Expiry equality admits actual redemption of the original code. A later publication denial does not undo that admission. |
+
+The consumption witnesses bind the exact input and native child transaction, observe actual provider commit, and read status on an independent connection. Seeded early503 controls must fail the witness ordinarily; a commit failure cannot satisfy it.
 
 Every other unexpected result retains ordinary assertions and cannot satisfy the
 mutation runner's exact marker check. Each suite requires clean baseline and restored
