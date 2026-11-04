@@ -30,7 +30,9 @@ public sealed class BrowserEvidenceTests
         Assert.False(string.IsNullOrWhiteSpace(provider));
         (Exception Error, string Expected)[] failures = [(new PlaywrightException(KnownMessage), KnownSafeMessage),
             (new PlaywrightException(SensitiveMessage), UnknownSafeMessage),
-            (new TimeoutException(KnownMessage, new InvalidOperationException(SensitiveMessage)), KnownSafeMessage)];
+            (new TimeoutException(KnownMessage, new InvalidOperationException(SensitiveMessage)), KnownSafeMessage),
+            (new AggregateException(new Xunit.Sdk.XunitException(SensitiveMessage), new TimeoutException(SensitiveMessage)), KnownSafeMessage),
+            (new AggregateException(new InvalidOperationException(SensitiveMessage), new PlaywrightException(SensitiveMessage)), UnknownSafeMessage)];
         foreach (var failure in failures)
         {
             failure.Error.Data[DataKey] = Canary;

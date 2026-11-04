@@ -8,6 +8,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 [Trait("BrowserStory", "ApplicationLifecycle")]
 public sealed class ApplicationLifecycleBrowserTests(BootstrapFixture fixture)
 {
+    private const string BoundaryReport = "application-lifecycle pending-boundary={0}";
+
     /// <summary>Real API-created output cannot survive native history restoration or an observed hidden-document transition.</summary>
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
@@ -30,6 +32,7 @@ public sealed class ApplicationLifecycleBrowserTests(BootstrapFixture fixture)
             List<string> secrets = [];
             foreach (var boundary in Enum.GetValues<ApplicationPendingBoundary>())
             {
+                TestContext.Current.TestOutputHelper?.WriteLine(BoundaryReport, boundary);
                 secrets.AddRange(await ApplicationPendingLifecycle.RunAsync(fixture, provider, boundary));
             }
             return secrets.ToArray();

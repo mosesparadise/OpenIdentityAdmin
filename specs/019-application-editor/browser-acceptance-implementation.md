@@ -41,9 +41,14 @@ Pending lifecycle races use the already named upstream response probe and remain
 separate from genuine persistence tests.
 
 Lifecycle cases use headed Chromium/WebKit under Xvfb in their dedicated CI cells.
-The Chromium helper removes Playwright's focus emulation through public CDP on both
-disposable pages, then requires native hidden/visible transitions. WebKit uses native
-activation. There is no synthetic-event fallback or visibility skip. History checks
+Each engine uses the separately hash-pinned disposable driver copy documented in
+[browser corrections](browser-corrections.md), disabling only its automation-owned
+visibility override before requiring actual window-manager and DOM transitions.
+Chromium lifecycle events use a raw synchronous Runtime binding, avoiding the
+exposed-function execution-context lookup after unload; WebKit retains exposed
+functions. Both record only finite trusted main-document events. Pending navigation
+and visibility require no late output and joined browser/upstream completion;
+they do not equate browser abort with an immediate remote transport disconnect. There is no synthetic-event fallback or visibility skip. History checks
 record native persisted-page restoration counts; zero does not claim bfcache use.
 No cache/security header is weakened to make a page eligible. The legacy synthetic
 pagehide handler control is retained separately: untrusted events consume the

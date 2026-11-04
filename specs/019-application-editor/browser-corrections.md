@@ -170,3 +170,59 @@ qualified by pending actual corrected browser execution. Full solution build,
 format/import and quality checks pass without warnings, errors or new allowances.
 The11 native-driver controls pass; no database experiment, browser download,
 production correction or merge is added by this follow-up.
+
+
+## Native lifecycle event and completion follow-up
+
+The [sixth hosted attempt](hosted-verification.md#sixth-candidate--native-lifecycle-observation)
+passes116 jobs, including both demos, all standard/protection cells and all12 new
+consent/recovery/authority cells. Four lifecycle cells and final acceptance fail;
+aggregate coverage is skipped. WebKit output/history/visibility passes on both
+providers. Chromium misses a required event-counter join; the exact missing event
+was not retained. Pinned Playwright coreBundle.js `_onBindingCalled` resolves its
+execution context after an await and returns if that document disappeared. The
+correction receives the raw Runtime binding event directly on an owned CDP session,
+without that lookup. It adds no storage writes and manufactures no browser events.
+
+The shared payload parser accepts only a three-field tuple, four finite event kinds,
+Boolean trusted/persisted flags and at most64 characters. Independent malformed,
+wrong-type, extra-field, unknown-kind and overflow controls run before capture.
+Main-document listeners exclude iframe events. Untrusted events cannot increment
+native acceptance counters; missing transitions still fail after the original5s
+observation join with finite previous/current counters. Actual bfcache restoration
+remains reported only when observed.
+
+Pending lifecycle no longer assumes remote RequestAborted within3s of navigation
+or browser Fetch cancellation. It retains observed dispatch, the original5s semantic
+boundary, actual history/visibility, native browser finish/failure, one send and no
+late output. The released paused middleware is independently joined, including its
+cancellation/error finally, within one existing3s cleanup cap. Cleanup can complete
+after test cancellation within that same cap. Genuine transport cancellation tests
+remain unchanged. This is UI race/completion evidence, not immediate server-side
+cancellation evidence.
+
+Primary and cleanup failures are preserved together; disposing the network observer
+only detaches handlers and cannot introduce a fresh timeout that hides the primary.
+Sanitization traverses aggregate source stacks while discarding arbitrary messages,
+exception state and inner exceptions. Existing two-provider diagnostic identities
+add seeded aggregate secrecy controls; no ordinary case is added or removed.
+
+Initial local builds rejected formatting, required braces and nullable diagnostic
+arguments; the local quality gate also rejected unnamed literals. These are retained
+failed checks, corrected without allowances. Final local verification and the new
+exact-head hosted run remain pending at this documentation checkpoint.
+
+Final local checks pass: full solution build0warnings/errors; formatting/imports;
+quality rules and seeded static rejection controls; six exact native executions
+(two diagnostic cases plus two transport cases per real provider), zero failures/skips.
+The unchanged strict TRX validator reconciles exact expected names, complete counters,
+result/definition/entry execution bindings and no run errors. These provider checks
+retain real TLS forwarding, genuine cancellation propagation and foreign/stale JSON
+proof denial. They are not retained-engine lifecycle execution. Final independent
+source/test/security reviews pass; hosted acceptance remains required.
+
+| Local receipt | SHA-256 |
+| --- | --- |
+| `t019-native-events-diagnostics/diagnostics.trx` | `fbd6c081bca474bb3fbebe6b09d561ccd6bd3264b9f584a6663f787e2276956f` |
+| `t019-native-events-PostgreSql/transport.trx` | `2a8fac7c24fce603ee20a2af8ac36a47319d3c21bbf546d5fd37cf42641954b3` |
+| `t019-native-events-SqlServer/transport.trx` | `91587cb20401b3d48ec721da7858d106eac7a1f719679f9c2584b500db38de56` |

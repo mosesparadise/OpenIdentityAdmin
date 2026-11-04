@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.ExceptionServices;
 using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
@@ -101,7 +102,8 @@ internal static class ApplicationPendingLifecycle
         probe.Fault = Pause;
         var before = probe.Requests;
         var started = Stopwatch.GetTimestamp();
-        await using var write = new ApplicationLifecycleWrite(page);
+        using var write = new ApplicationLifecycleWrite(page);
+        Exception? failure = null;
         try
         {
             await ApplicationLifecycleUi.Button(page, boundary == ApplicationPendingBoundary.OriginalDeadline ? ApplicationLifecycleUi.Replace : ApplicationLifecycleUi.Create).ClickAsync();
@@ -111,8 +113,8 @@ internal static class ApplicationPendingLifecycle
             await BoundaryAsync(page, visibility, environment, probe, observation, boundary, now);
             Assert.True(Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(OriginalBudgetSeconds));
         }
-        finally { probe.Release.TrySetResult(); }
-        await write.JoinAsync();
+        catch (Exception exception) { failure = exception; }
+        await CompleteAsync(probe, write, failure);
         Assert.Equal(MutationCount, write.Requests);
         if (boundary is ApplicationPendingBoundary.Session or ApplicationPendingBoundary.OriginalDeadline)
         {
@@ -140,6 +142,23 @@ internal static class ApplicationPendingLifecycle
         Assert.Equal(0, probe.Redirects);
     }
 
+    /// <summary>Releases once and joins native browser and upstream work under one cleanup budget without replacing a primary failure.</summary>
+    private static async Task CompleteAsync(ApplicationMutationProbe probe, ApplicationLifecycleWrite write, Exception? failure)
+    {
+        probe.Release.TrySetResult();
+        try
+        {
+            var upstream = probe.Started.Task.IsCompleted ? probe.Completed.Task : Task.CompletedTask;
+            var browser = write.Requests > 0 ? write.JoinAsync() : Task.CompletedTask;
+            await Task.WhenAll(upstream, browser).WaitAsync(TimeSpan.FromSeconds(GateSeconds));
+        }
+        catch (Exception cleanup) { failure = failure is null ? cleanup : new AggregateException(failure, cleanup); }
+        if (failure is not null)
+        {
+            ExceptionDispatchInfo.Capture(failure).Throw();
+        }
+    }
+
     /// <summary>Separates actual BFF session denial from a successful still-current response rejected solely by the older browser display ceiling.</summary>
     private static async Task RequireResultAsync(IResponse response, ApplicationPendingBoundary boundary, DateTimeOffset now)
     {
@@ -163,11 +182,9 @@ internal static class ApplicationPendingLifecycle
         {
             case ApplicationPendingBoundary.Navigation:
                 await ApplicationOutputLifecycle.HistoryAsync(page, environment.Profile.ClientUri, observation);
-                await probe.Canceled.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
                 break;
             case ApplicationPendingBoundary.Visibility:
                 await ApplicationOutputLifecycle.HideAsync(page, visibility, observation);
-                await probe.Canceled.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
                 break;
             case ApplicationPendingBoundary.Session:
                 Assert.True(await page.EvaluateAsync<bool>(Logout));

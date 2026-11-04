@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
 /// <summary>Joins the exact browser mutation's native network completion without reading or logging credential-bearing wire bodies.</summary>
-internal sealed class ApplicationLifecycleWrite : IAsyncDisposable
+internal sealed class ApplicationLifecycleWrite : IDisposable
 {
     private const string Post = "POST";
     private const int JoinSeconds = 3;
@@ -60,24 +60,14 @@ internal sealed class ApplicationLifecycleWrite : IAsyncDisposable
     }
 
     /// <summary>Waits under an independent bounded cleanup budget for the original browser request.</summary>
-    internal Task JoinAsync() => completed.Task.WaitAsync(TimeSpan.FromSeconds(JoinSeconds), TestContext.Current.CancellationToken);
+    internal Task JoinAsync() => completed.Task.WaitAsync(TimeSpan.FromSeconds(JoinSeconds));
 
-    /// <summary>Joins an initiated request before detaching, including when a later semantic assertion fails.</summary>
-    public async ValueTask DisposeAsync()
+    /// <summary>Detaches only after the owner has explicitly joined cleanup and preserved any primary failure.</summary>
+    public void Dispose()
     {
-        try
-        {
-            if (request is not null)
-            {
-                await JoinAsync();
-            }
-        }
-        finally
-        {
-            page.Request -= Sent;
-            page.Response -= Received;
-            page.RequestFinished -= Ended;
-            page.RequestFailed -= Ended;
-        }
+        page.Request -= Sent;
+        page.Response -= Received;
+        page.RequestFinished -= Ended;
+        page.RequestFailed -= Ended;
     }
 }

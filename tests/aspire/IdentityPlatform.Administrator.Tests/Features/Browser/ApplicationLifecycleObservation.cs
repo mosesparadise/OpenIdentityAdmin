@@ -13,16 +13,18 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
     private const int MaximumArguments = 16;
     private const int JoinSeconds = 5;
     private const int PollMilliseconds = 20;
+    private const int Unrequested = -1;
     private const string HiddenEvent = "hidden";
     private const string HideEvent = "hide";
     private const string ShowEvent = "show";
     private const string Report = "application-lifecycle native-hidden={0} pagehide={1} pageshow={2} bfcache-restores={3}";
+    private const string TransitionFailure = "Required native lifecycle transition was not observed.";
+    private const string TransitionReport = "application-lifecycle transition hidden={0}/{1} hides={2}/{3} shows={4}/{5}";
     private const string Canary = "synthetic-lifecycle-console-control";
-    private const string Binding = "recordApplicationLifecycle";
     private const string State = "() => JSON.stringify({url:location.href,state:history.state})";
     private const string Seed = "value => console.debug(value, {nested:value})";
-    private const string Init = "addEventListener('pageshow', e => window.recordApplicationLifecycle('show', e.isTrusted, e.persisted)); addEventListener('pagehide', e => window.recordApplicationLifecycle('hide', e.isTrusted, e.persisted)); document.addEventListener('visibilitychange', e => window.recordApplicationLifecycle(document.visibilityState, e.isTrusted, false));";
     private readonly IPage page;
+    private readonly ApplicationLifecycleEvents events;
     private readonly ConcurrentQueue<string> values = [];
     private readonly ConcurrentBag<Task> pending = [];
     private int items;
@@ -42,6 +44,7 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
     private ApplicationLifecycleObservation(IPage page)
     {
         this.page = page;
+        events = new(Lifecycle, () => Interlocked.Increment(ref failures));
         page.Console += Console;
         page.PageError += Error;
         page.FrameNavigated += Navigated;
@@ -53,8 +56,7 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
         var observer = new ApplicationLifecycleObservation(page);
         try
         {
-            await page.ExposeFunctionAsync(Binding, (string kind, bool trusted, bool persisted) => { observer.Lifecycle(kind, trusted, persisted); return true; });
-            await page.AddInitScriptAsync(Init);
+            await observer.events.AttachAsync(page);
             await page.EvaluateAsync(Seed, Canary);
             await observer.JoinAsync();
             Assert.Contains(observer.values, value => value.Contains(Canary, StringComparison.Ordinal));
@@ -170,7 +172,11 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
         var started = Stopwatch.GetTimestamp();
         while (previousHidden is { } hidden && Hidden <= hidden || previousHides is { } hides && Hides <= hides || previousShows is { } shows && Shows <= shows)
         {
-            Assert.True(Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(JoinSeconds));
+            if (Stopwatch.GetElapsedTime(started) >= TimeSpan.FromSeconds(JoinSeconds))
+            {
+                TestContext.Current.TestOutputHelper?.WriteLine(TransitionReport, Hidden, previousHidden.GetValueOrDefault(Unrequested), Hides, previousHides.GetValueOrDefault(Unrequested), Shows, previousShows.GetValueOrDefault(Unrequested));
+                Assert.Fail(TransitionFailure);
+            }
             await Task.Delay(PollMilliseconds, TestContext.Current.CancellationToken);
         }
     }
@@ -191,6 +197,7 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
         page.Console -= Console;
         page.PageError -= Error;
         page.FrameNavigated -= Navigated;
+        await events.DisposeAsync();
         await JoinAsync();
         while (values.TryDequeue(out _))
         {

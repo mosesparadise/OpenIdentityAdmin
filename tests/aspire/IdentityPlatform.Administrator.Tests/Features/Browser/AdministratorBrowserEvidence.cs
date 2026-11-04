@@ -8,7 +8,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 /// <summary>Reports source line and allowlisted error categories without retaining secret-bearing browser diagnostics.</summary>
 internal static class AdministratorBrowserEvidence
 {
-    private static readonly string[] SourceFiles = ["ApplicationNativeWindow.cs", "ApplicationBrowserDiagnostics.cs", "ApplicationNativeVisibility.cs", "EditorRecoveryResponse.cs", "EditorRecoveryWorking.cs", "EditorRecoveryStore.cs", "EditorRecoveryView.cs", "EditorRecoveryBrowserTests.cs", "EditorRecoveryFailures.cs", "EditorRecoveryJourney.cs", "EditorRecoverySends.cs", "ApplicationLifecycleUi.cs", "ApplicationLifecycleBrowserTests.cs", "ApplicationLifecycleObservation.cs", "ApplicationPendingLifecycle.cs", "ApplicationOutputLifecycle.cs", "ApplicationLifecycleWrite.cs", "ApplicationConsentBrowserTests.cs", "ApplicationMutationBrowserTests.cs", "ApplicationManagedBrowserEvidence.cs", "ManagedBrowserJourney.cs", "ManagedBrowserRelyingParty.cs", "ApplicationEditorJourney.cs", "ApplicationEditorBrowserTests.cs", "EnrollmentBrowserTests.cs", "SecurityBrowserTests.cs", "SecurityBrowserJourney.cs",
+    private static readonly string[] SourceFiles = ["ApplicationLifecycleEvents.cs", "ApplicationNativeWindow.cs", "ApplicationBrowserDiagnostics.cs", "ApplicationNativeVisibility.cs", "EditorRecoveryResponse.cs", "EditorRecoveryWorking.cs", "EditorRecoveryStore.cs", "EditorRecoveryView.cs", "EditorRecoveryBrowserTests.cs", "EditorRecoveryFailures.cs", "EditorRecoveryJourney.cs", "EditorRecoverySends.cs", "ApplicationLifecycleUi.cs", "ApplicationLifecycleBrowserTests.cs", "ApplicationLifecycleObservation.cs", "ApplicationPendingLifecycle.cs", "ApplicationOutputLifecycle.cs", "ApplicationLifecycleWrite.cs", "ApplicationConsentBrowserTests.cs", "ApplicationMutationBrowserTests.cs", "ApplicationManagedBrowserEvidence.cs", "ManagedBrowserJourney.cs", "ManagedBrowserRelyingParty.cs", "ApplicationEditorJourney.cs", "ApplicationEditorBrowserTests.cs", "EnrollmentBrowserTests.cs", "SecurityBrowserTests.cs", "SecurityBrowserJourney.cs",
         "ClipboardBrowserTests.cs", "AdministratorClipboard.cs", "SessionLogoutBrowserTests.cs", "BrowserHttpsJourney.cs",
         "SessionLogoutReturnBrowserTests.cs", "SessionLogoutBindingBrowserTests.cs", "SessionLogoutFailureBrowserTests.cs",
         "SessionLogoutRemoteBrowserTests.cs", "BrowserLogoutJourney.cs", "BrowserLostReturn.cs", "SessionLogoutCrossSiteBrowserTests.cs",
@@ -31,9 +31,10 @@ internal static class AdministratorBrowserEvidence
         catch (Exception exception) when (exception is PlaywrightException or TimeoutException ||
             exception is AggregateException aggregate && aggregate.Flatten().InnerExceptions.Any(error => error is PlaywrightException or TimeoutException))
         {
-            var category = exception is TimeoutException ? Timeout :
-                Categories.FirstOrDefault(value => exception.Message.Contains(value, StringComparison.Ordinal)) ?? Unknown;
-            var lines = new StackTrace(exception, true).GetFrames()
+            IEnumerable<Exception> failures = exception is AggregateException combined ? combined.Flatten().InnerExceptions : [exception];
+            var category = failures.Any(error => error is TimeoutException) ? Timeout :
+                Categories.FirstOrDefault(value => failures.Any(error => error.Message.Contains(value, StringComparison.Ordinal))) ?? Unknown;
+            var lines = failures.SelectMany(error => new StackTrace(error, true).GetFrames())
                 .Where(frame => SourceFiles.Contains(Path.GetFileName(frame.GetFileName()), StringComparer.Ordinal)).Select(frame => frame.GetFileLineNumber());
             throw new Xunit.Sdk.XunitException(string.Format(CultureInfo.InvariantCulture, Failure, category, string.Join(',', lines)));
         }

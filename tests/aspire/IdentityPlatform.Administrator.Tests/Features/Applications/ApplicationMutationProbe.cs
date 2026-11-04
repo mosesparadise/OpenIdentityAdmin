@@ -84,6 +84,7 @@ internal sealed class ApplicationMutationProbe
     internal TaskCompletionSource Started { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Canceled { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Release { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    internal TaskCompletionSource Completed { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     /// <summary>Requires the genuine retained credential and finite forwarding surface, without recording sensitive values.</summary>
     internal async Task InvokeAsync(HttpContext http, RequestDelegate next)
@@ -107,6 +108,23 @@ internal sealed class ApplicationMutationProbe
         using var input = await JsonDocument.ParseAsync(http.Request.Body, cancellationToken: http.RequestAborted);
         SafeRequest &= ExpectedBody is null || input.RootElement.GetRawText() == ExpectedBody;
         var body = Response(http, input.RootElement);
+        var paused = Fault == Pause;
+        try
+        {
+            await PublishAsync(http, body);
+        }
+        finally
+        {
+            if (paused)
+            {
+                Completed.TrySetResult();
+            }
+        }
+    }
+
+    /// <summary>Completes one controlled response; the caller joins actual middleware completion even after cancellation.</summary>
+    private async Task PublishAsync(HttpContext http, string body)
+    {
         if (Fault == Pause)
         {
             Started.TrySetResult();

@@ -1,5 +1,44 @@
 # Hosted verification
 
+## Sixth candidate — native lifecycle observation
+
+[Run 41852108038](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41852108038)
+tests `7a8d724d1e618661d6fc68f6f8cf4e80722c78cd` through merge
+`1acf6a5274e90567410a1b18af6590f598724480`, sharing source tree
+`b63d5a183822f7b8f330b4ed22897c4e9299d47c`. All122 jobs are accounted for:
+116success, five failures and one skipped coverage aggregate. This run is rejected.
+Both native demos, all four standard browser cells, all four protection cells and
+all12 new consent/recovery/authority cells pass. Every mutation lane passes.
+
+The four ApplicationLifecycle cells and final acceptance fail. Chromium on both
+providers reaches real navigation but fails the required history-event counter
+join. The retained stack does not distinguish which counter failed. Pinned driver
+source confirms that its exposed-function handler resolves the execution context
+after an await and drops the callback if navigation destroyed that context. That
+is a concrete observation vulnerability and a plausible explanation, not a proven
+attribution of the exact lost event. Subsequent source uses an owned raw Chromium
+Runtime binding, restricted to the main document and bounded finite event data;
+it requires the same trusted native transitions and adds finite failure counters.
+
+WebKit passes the complete output/history/visibility case on both providers, then
+fails the pending navigation case while waiting three seconds for upstream
+RequestAborted before releasing its response gate. Browser document teardown does
+not establish an immediate remote transport disconnect. The correction retains
+the original five-second UI boundary, native browser completion, one send and no
+late output, releases the gate and joins actual upstream middleware completion
+within the existing three-second cleanup cap. Existing genuine transport-disconnect
+tests are unchanged. This lifecycle case does not claim cancellation propagation.
+
+Chromium's pending-case cleanup timeout masked its primary failure. Cleanup now
+preserves the original exception and aggregates a cleanup failure without a second
+join during disposal. Safe diagnostics inspect both inner source stacks without
+retaining private messages. Neither old failing result is relabeled as passed.
+Corrected-head execution remains required; no product behavior, deadline, inventory,
+coverage floor, retry rule or browser obligation changes.
+
+Failed lifecycle jobs: PostgreSQL/Chromium126651056736, PostgreSQL/WebKit126651056876,
+SQLServer/Chromium126651056920, SQLServer/WebKit126651057004.
+
 ## First candidate
 
 Run [41824740733](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41824740733)
