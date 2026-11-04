@@ -49,20 +49,56 @@
   "added_native_records": 6,
   "current_native_records": 2321,
   "prior_metadata_and_order_preserved": true,
-  "source_sha256": {
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpTests.cs": "0f3889624f7dd700c1bf56bd9c28995de291fd09c03c765d0c0050c3e8689d05",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheTestContext.cs": "9e8afc97b9947517a7796673d334eead6321db64a1daa36b8570a790f561927d",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttp.cs": "300509e20a68a6223c77f6b2ef5d61bd2285f2271f58d3d379cd787b80746b7f",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenEvidence.cs": "e54afae1b77f2cedf8d2bb331db9fecf7a85251a19fb39cda377a10ab5a13027",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs": "f57c72a90d647bb08bf39df6a304a70613ecca356802491f48b6c425ce9bb040",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenOracle.cs": "ca83e298307d3e9aa1c285bfc255063dd86696207e3166582693d58e61f68ab6",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyEvidence.cs": "012eb714c4a57c220417ae3fd825d5ca146c5cf94258d75650987a654e867020",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyTests.cs": "7faa5ab14e68f387fec11ee35ec16bce2c23c89c9d5e06de1f28e68a16e8b18b",
-    "eng/administrator-test-matrix.json": "9c5887658e1f301e27153db5e826707d8fd762f1a6f4c9b9c07ff7b6ed804be8",
-    "eng/test-matrix.json": "9a3a339204eaf0c02b7bf59113edbf59cd909fcd92b20d0eb62892329984a057",
-    "scripts/test_browser_session_selection.py": "67a3c018725df5144c14f6cfc084bd0cbe2d33391af6f663c41a1f7cf438fc44",
-    "scripts/test_lifecycle_selection.py": "21c11595e2777dcd2de0466542042eafb53bd54bcdb7e93b4c9c793896056934"
-  },
+  "source_sha256": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpTests.cs",
+      "sha256": "0f3889624f7dd700c1bf56bd9c28995de291fd09c03c765d0c0050c3e8689d05"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheTestContext.cs",
+      "sha256": "9e8afc97b9947517a7796673d334eead6321db64a1daa36b8570a790f561927d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttp.cs",
+      "sha256": "300509e20a68a6223c77f6b2ef5d61bd2285f2271f58d3d379cd787b80746b7f"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenEvidence.cs",
+      "sha256": "e54afae1b77f2cedf8d2bb331db9fecf7a85251a19fb39cda377a10ab5a13027"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs",
+      "sha256": "f57c72a90d647bb08bf39df6a304a70613ecca356802491f48b6c425ce9bb040"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenOracle.cs",
+      "sha256": "ca83e298307d3e9aa1c285bfc255063dd86696207e3166582693d58e61f68ab6"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyEvidence.cs",
+      "sha256": "012eb714c4a57c220417ae3fd825d5ca146c5cf94258d75650987a654e867020"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyTests.cs",
+      "sha256": "7faa5ab14e68f387fec11ee35ec16bce2c23c89c9d5e06de1f28e68a16e8b18b"
+    },
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "9c5887658e1f301e27153db5e826707d8fd762f1a6f4c9b9c07ff7b6ed804be8"
+    },
+    {
+      "path": "eng/test-matrix.json",
+      "sha256": "9a3a339204eaf0c02b7bf59113edbf59cd909fcd92b20d0eb62892329984a057"
+    },
+    {
+      "path": "scripts/test_browser_session_selection.py",
+      "sha256": "67a3c018725df5144c14f6cfc084bd0cbe2d33391af6f663c41a1f7cf438fc44"
+    },
+    {
+      "path": "scripts/test_lifecycle_selection.py",
+      "sha256": "21c11595e2777dcd2de0466542042eafb53bd54bcdb7e93b4c9c793896056934"
+    }
+  ],
   "artifact_sha256": {
     "feature019-journey-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
     "feature019-journey-build1.log": "543e5797b3a8e240f56d49eeb05e5a40becad850d28f386aac0f5d44cc79e9f3",

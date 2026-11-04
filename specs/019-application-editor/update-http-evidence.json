@@ -110,13 +110,28 @@
     "local_source_sha256": "e1af83219370b1faa1580301749df1be9bd9f05301d3af4627827fe18bc569cb",
     "observation": "AttachTokenParameters adds0.5 before integral expires_in conversion; native persisted expiry remains authoritative"
   },
-  "binary_sha256": {
-    "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.Administrator.Tests.dll": "e3799b3aa3ee047577286036e9e4878ff654cbb5f948d8663a6f9adf14166131",
-    "tests/backend/IdentityPlatform.Host.Tests/bin/Debug/net10.0/IdentityPlatform.Host.Tests.dll": "b535c01c728792ffc6a108dee194a6b57ab467c880b338abbb066a5b92343b7b",
-    "tests/contracts/IdentityPlatform.Api.Contracts.Tests/bin/Debug/net10.0/IdentityPlatform.Api.Contracts.Tests.dll": "674736e054c11cf4825c53ffd523bc7e636986f3927a1984984480421845c7d9",
-    "src/backend/IdentityPlatform.Admin.Api/bin/Debug/net10.0/IdentityPlatform.Admin.Api.dll": "8592535b2388229ca9594e38e663112eedc91c4991f69d19e6a15b0e32092626",
-    "src/backend/IdentityPlatform.Admin.Bff/bin/Debug/net10.0/IdentityPlatform.Admin.Bff.dll": "221efdfb73a98bad1b71b4a39a16d56d161c237a4105cc68f16fa9aa55567974"
-  },
+  "binary_sha256": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.Administrator.Tests.dll",
+      "sha256": "e3799b3aa3ee047577286036e9e4878ff654cbb5f948d8663a6f9adf14166131"
+    },
+    {
+      "path": "tests/backend/IdentityPlatform.Host.Tests/bin/Debug/net10.0/IdentityPlatform.Host.Tests.dll",
+      "sha256": "b535c01c728792ffc6a108dee194a6b57ab467c880b338abbb066a5b92343b7b"
+    },
+    {
+      "path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/bin/Debug/net10.0/IdentityPlatform.Api.Contracts.Tests.dll",
+      "sha256": "674736e054c11cf4825c53ffd523bc7e636986f3927a1984984480421845c7d9"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/bin/Debug/net10.0/IdentityPlatform.Admin.Api.dll",
+      "sha256": "8592535b2388229ca9594e38e663112eedc91c4991f69d19e6a15b0e32092626"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/bin/Debug/net10.0/IdentityPlatform.Admin.Bff.dll",
+      "sha256": "221efdfb73a98bad1b71b4a39a16d56d161c237a4105cc68f16fa9aa55567974"
+    }
+  ],
   "review_dispositions": {
     "architecture_security": "PASS corrected production source, exact authority/deadline/output/framing boundaries and contract compatibility; npm blocker kept open",
     "test_source": "PASS after full response/protected-target/replay snapshot and actual native expiry corrections; initial timing assumptions rejected by runtime evidence",

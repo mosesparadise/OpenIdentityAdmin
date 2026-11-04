@@ -38,46 +38,160 @@
   "preserved_native_records": 2107,
   "added_native_records": 18,
   "source_manifest": "feature019-http-source.json",
-  "source_sha256": {
-    "eng/administrator-test-matrix.json": "4ba3258e3cbce31d0bce13806b568c547f28fe6abd265718ae73c208e4eede7d",
-    "eng/test-matrix.json": "b40009a02ea197cf8e875215f820294a2cc0ab9b67617d71ef1ab0444d2112af",
-    "scripts/test_browser_session_selection.py": "d0b331005d3f5eed982764b84a35b40a6331b7161130374a8ee404c512f1d19c",
-    "scripts/test_lifecycle_selection.py": "eb1ef2805a603f9e11022d23556e6744ff85b7af212dbdc9a37f18ef082939df",
-    "src/backend/IdentityPlatform.Admin.Api/Features/ApiContracts/Setup.cs": "ff4437554094cc4d0765bb0ac0a84cc0d7a7f7380d1cf37c10f37ce5085e1adc",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationCreateEndpoint.cs": "801e727616658d23b11123c4228cc56f6dbe9032c4b15be2853aeddd819821a6",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationDetailsEndpoint.cs": "291e54a60a6042b8df6a990be759fbfe3b07c48bd79c863603f624f20ba316ec",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationDetailsOperation.cs": "c10d698882836ea0e6bb94cb42ac6cdb8abd0a4e6994fc45d6bce867c0aec01a",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationDetailsReader.cs": "7aa8c33358cd83cfddc34101f0100776aa48ccb504f341f0fbf8e19ff163ddf3",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationEditorContract.cs": "5f2936f36322c2835814672dc8099c3567b040ec9847b220c767816a56e598af",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationHttpBoundary.cs": "ad2f7aede6504875cac55cc5b41600b9275e1d5cd12d00640f2dd5e53cdae135",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/Setup.cs": "6d98469ade7ceeed83e068c8bcdba40cb641ba3da11c829cc8aeb2986de37738",
-    "src/backend/IdentityPlatform.Admin.Api/Features/Setup.cs": "550791bf809ee6049f689546ffaecefa6b8963f58cf0026373b7a3257d48f4d9",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/ApiContracts/Setup.cs": "b8ba395b10accd87fd79c13e7369f8a3607019aea40ef82aa39d3cd19e3acd84",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationDetailsProxy.cs": "5da0130b5ed0cf3f1037cfcab86898012661d22824c03a4d496b8925371577f2",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationEditorContract.cs": "41b99efb659647d6fc0b4fe50859cb97d348f6b94ec6d792166b29f3567a0360",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationProxyResult.cs": "041e8a0bd8686ae700ae12b3f374c676e6a23bfdc1a123c730ab1142da61c1f5",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationProxyTransport.cs": "34ae3e3adb0172a99183cc72d554d8ed251ffb6dbc23e1eb472400442c151d3e",
-    "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/Setup.cs": "d3d6cee8de751d43bfe82e4c8996f341cff23898940070d7702b19965546d5e2",
-    "src/core/IdentityPlatform.Core/Features/Applications/ApplicationJson.cs": "b2ac7a87b2d716f5f039c8f3913f5aedee69d6ca7d151a317782f4ba4188534f",
-    "src/core/IdentityPlatform.Core/IdentityPlatform.Core.csproj": "bf3b67f3182376801324f88de7fcf73196d98203115c49cffdd10863d425c98e",
-    "src/frontend/IdentityPlatform.Admin.Contracts/generated/bff-v1.browser.d.ts": "d8ed2075698195699526abfc81f14064c491deb3b89f3315da9204800b37258d",
-    "src/frontend/IdentityPlatform.Admin.Contracts/generated/bff-v1.browser.json": "41c6568c694fbe506a41a9b789724c5db5d47b103143b2c8e58bd0510b97d19d",
-    "src/frontend/IdentityPlatform.Admin.Contracts/tests/compatibility.test.mjs": "fb3d49751a798b264c7d934410274b00e2450259383c3aafb416e4c4cbc12f8a",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationApiHost.cs": "926041a4a71e123bdbf0143dd8e8b94dd05736cba2dedc5c25b241599cfea8ca",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationClientSetup.cs": "cb8539a2a46cffe52b23c31d1e3d0b9bb17178c6e91458d6c59cbb6b92971950",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationDetailsHttpTests.cs": "9eab341812c742a8c4bf8b049f2aba83b6439f0d64e1314c2a6adaa372779652",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpFailureTests.cs": "3344e61b8bdb2bd2c91d89dbb604a6f64afe194eef88d77a20a5c4c849e56aa5",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpFixture.cs": "11a8e30ba01f7298f1328ce079d26654f77b87e371555d40e25150f24e0115b8",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpTests.cs": "63b2a6351aa9607ff4afaa94907b89641f6b69bdee960e4eb3cc9c31be7d2eb2",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationTransportFixture.cs": "43c69da1800f3aa388dafd278f1da94e25eb70d21dd1b06caf8da03e2a8a2e4f",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserFormHeaders.cs": "41bdbda0ba0de866e2f8c8627460c8657ef416dead393ad3f09508ab35eea662",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserHttpsFixture.cs": "ab9bef37e5f973b2ddda53c045c9e29fbf46d7fe7620ab151e823b760b3fa01d",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserIssuerHttp.cs": "473f65991905d06bde6b6d86d40cbf910a9046670ef6653752f8ce73ff5fcfeb",
-    "tests/backend/IdentityPlatform.Host.Tests/Features/Applications/ApplicationPublicationTests.cs": "58ad515e88c66ad39a2492ee205549268aa614e874deddfd8604cbb64ba36d65",
-    "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/ApplicationDocumentTests.cs": "e6c1804ed05f1c18925db07a422150b426eab535aeaa3287c64ca4aecb541e4b",
-    "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/ApplicationEditorAssertions.cs": "536b912ee4963bc30d3a28a9c6fd185238bbb44449f4d6669c5541a6602b0fe1",
-    "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/BrowserSessionDocumentTests.cs": "aa3dccccc9a1777aa2e0cffee475c3c1c043c5ff1c6d7f1cd10cb3464688c95c"
-  },
+  "source_sha256": [
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "4ba3258e3cbce31d0bce13806b568c547f28fe6abd265718ae73c208e4eede7d"
+    },
+    {
+      "path": "eng/test-matrix.json",
+      "sha256": "b40009a02ea197cf8e875215f820294a2cc0ab9b67617d71ef1ab0444d2112af"
+    },
+    {
+      "path": "scripts/test_browser_session_selection.py",
+      "sha256": "d0b331005d3f5eed982764b84a35b40a6331b7161130374a8ee404c512f1d19c"
+    },
+    {
+      "path": "scripts/test_lifecycle_selection.py",
+      "sha256": "eb1ef2805a603f9e11022d23556e6744ff85b7af212dbdc9a37f18ef082939df"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/ApiContracts/Setup.cs",
+      "sha256": "ff4437554094cc4d0765bb0ac0a84cc0d7a7f7380d1cf37c10f37ce5085e1adc"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationCreateEndpoint.cs",
+      "sha256": "801e727616658d23b11123c4228cc56f6dbe9032c4b15be2853aeddd819821a6"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationDetailsEndpoint.cs",
+      "sha256": "291e54a60a6042b8df6a990be759fbfe3b07c48bd79c863603f624f20ba316ec"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationDetailsOperation.cs",
+      "sha256": "c10d698882836ea0e6bb94cb42ac6cdb8abd0a4e6994fc45d6bce867c0aec01a"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationDetailsReader.cs",
+      "sha256": "7aa8c33358cd83cfddc34101f0100776aa48ccb504f341f0fbf8e19ff163ddf3"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationEditorContract.cs",
+      "sha256": "5f2936f36322c2835814672dc8099c3567b040ec9847b220c767816a56e598af"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationHttpBoundary.cs",
+      "sha256": "ad2f7aede6504875cac55cc5b41600b9275e1d5cd12d00640f2dd5e53cdae135"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/Setup.cs",
+      "sha256": "6d98469ade7ceeed83e068c8bcdba40cb641ba3da11c829cc8aeb2986de37738"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Setup.cs",
+      "sha256": "550791bf809ee6049f689546ffaecefa6b8963f58cf0026373b7a3257d48f4d9"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/ApiContracts/Setup.cs",
+      "sha256": "b8ba395b10accd87fd79c13e7369f8a3607019aea40ef82aa39d3cd19e3acd84"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationDetailsProxy.cs",
+      "sha256": "5da0130b5ed0cf3f1037cfcab86898012661d22824c03a4d496b8925371577f2"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationEditorContract.cs",
+      "sha256": "41b99efb659647d6fc0b4fe50859cb97d348f6b94ec6d792166b29f3567a0360"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationProxyResult.cs",
+      "sha256": "041e8a0bd8686ae700ae12b3f374c676e6a23bfdc1a123c730ab1142da61c1f5"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationProxyTransport.cs",
+      "sha256": "34ae3e3adb0172a99183cc72d554d8ed251ffb6dbc23e1eb472400442c151d3e"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/Setup.cs",
+      "sha256": "d3d6cee8de751d43bfe82e4c8996f341cff23898940070d7702b19965546d5e2"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/Features/Applications/ApplicationJson.cs",
+      "sha256": "b2ac7a87b2d716f5f039c8f3913f5aedee69d6ca7d151a317782f4ba4188534f"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/IdentityPlatform.Core.csproj",
+      "sha256": "bf3b67f3182376801324f88de7fcf73196d98203115c49cffdd10863d425c98e"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/generated/bff-v1.browser.d.ts",
+      "sha256": "d8ed2075698195699526abfc81f14064c491deb3b89f3315da9204800b37258d"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/generated/bff-v1.browser.json",
+      "sha256": "41c6568c694fbe506a41a9b789724c5db5d47b103143b2c8e58bd0510b97d19d"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/tests/compatibility.test.mjs",
+      "sha256": "fb3d49751a798b264c7d934410274b00e2450259383c3aafb416e4c4cbc12f8a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationApiHost.cs",
+      "sha256": "926041a4a71e123bdbf0143dd8e8b94dd05736cba2dedc5c25b241599cfea8ca"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationClientSetup.cs",
+      "sha256": "cb8539a2a46cffe52b23c31d1e3d0b9bb17178c6e91458d6c59cbb6b92971950"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationDetailsHttpTests.cs",
+      "sha256": "9eab341812c742a8c4bf8b049f2aba83b6439f0d64e1314c2a6adaa372779652"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpFailureTests.cs",
+      "sha256": "3344e61b8bdb2bd2c91d89dbb604a6f64afe194eef88d77a20a5c4c849e56aa5"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpFixture.cs",
+      "sha256": "11a8e30ba01f7298f1328ce079d26654f77b87e371555d40e25150f24e0115b8"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpTests.cs",
+      "sha256": "63b2a6351aa9607ff4afaa94907b89641f6b69bdee960e4eb3cc9c31be7d2eb2"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationTransportFixture.cs",
+      "sha256": "43c69da1800f3aa388dafd278f1da94e25eb70d21dd1b06caf8da03e2a8a2e4f"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserFormHeaders.cs",
+      "sha256": "41bdbda0ba0de866e2f8c8627460c8657ef416dead393ad3f09508ab35eea662"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserHttpsFixture.cs",
+      "sha256": "ab9bef37e5f973b2ddda53c045c9e29fbf46d7fe7620ab151e823b760b3fa01d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserIssuerHttp.cs",
+      "sha256": "473f65991905d06bde6b6d86d40cbf910a9046670ef6653752f8ce73ff5fcfeb"
+    },
+    {
+      "path": "tests/backend/IdentityPlatform.Host.Tests/Features/Applications/ApplicationPublicationTests.cs",
+      "sha256": "58ad515e88c66ad39a2492ee205549268aa614e874deddfd8604cbb64ba36d65"
+    },
+    {
+      "path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/ApplicationDocumentTests.cs",
+      "sha256": "e6c1804ed05f1c18925db07a422150b426eab535aeaa3287c64ca4aecb541e4b"
+    },
+    {
+      "path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/ApplicationEditorAssertions.cs",
+      "sha256": "536b912ee4963bc30d3a28a9c6fd185238bbb44449f4d6669c5541a6602b0fe1"
+    },
+    {
+      "path": "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/BrowserSessionDocumentTests.cs",
+      "sha256": "aa3dccccc9a1777aa2e0cffee475c3c1c043c5ff1c6d7f1cd10cb3464688c95c"
+    }
+  ],
   "deleted_source": [
     "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationJson.cs"
   ],

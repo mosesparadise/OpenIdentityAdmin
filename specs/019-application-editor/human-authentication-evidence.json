@@ -73,58 +73,208 @@
   "added_native_records": 38,
   "current_native_records": 2213,
   "source_manifest": "feature019-human-source.json",
-  "source_sha256": {
-    "eng/administrator-test-matrix.json": "ab61737c636b0a9cbe530f47344ad1f1f06fc1a68564a68b476668a1d66b6f69",
-    "eng/test-matrix.json": "1ea722ffe2f7428c8f178033524cfe9f08a374e26eff518fd5cd7d761e1fc287",
-    "scripts/test_browser_session_selection.py": "68577d24f5fc99921d4aeb0ed4d6eabdae22d1802aa5ef4b98fd8b9bfd94a040",
-    "scripts/test_lifecycle_selection.py": "4cb64b7056b62d8c8448066236c6c0d34d9906c7eec59736aea5cf806381efe9",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml": "ab7a7871d9a0ef0eb9a52ebfef2c6db0eeb44867856c11153b193da7e5d40c9c",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs": "7bcf28393b464429103619eb7d2f9ca327531019776741c18ae575a86d3c829d",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedAccountBoundary.cs": "d9f6ee11bce7972e632c064b5803dba7a17b2605dde2a066b961c6f6d6c4b8e6",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedAccountRequest.cs": "b0b1182e7572ad941d6fbac10a41baf5b58166c6ebe3601d753a59cc056d2ee9",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedFormProof.cs": "46e2f8fa0bef1a7608f9b430d27b650969f399705429f7f797bd9bd41dc240ec",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedResponseFreeze.cs": "c5b8f821326245c6134bbd95f12977d0fdade7c59262045d085a20843d2bbc06",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Setup.cs": "a0afc2206ae0970c3d2287115ccf0302c985c953b4c0ef4bd858789cd5df1526",
-    "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Shared/AccountPageConvention.cs": "e4d7b1ebcd1b8c1c4969498d4d5e27567e28ca87db04906f2cacd91a75cd6e53",
-    "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Hosting/ProtocolHosting.cs": "e6a77daca293d3f84573177420e5db15dec89d1a9e4694a6922a8929e6d5faf3",
-    "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDecision.cs": "dfe68cee4daffd6a79c6773621cb78a3773a85706b66bae3c17fbf3747565000",
-    "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedEntryPublication.cs": "5dbea7f055ea7f00c720bcce58a53dfc76f3016e6ed861afe12a6d5b649799d6",
-    "src/backend/IdentityPlatform.AuthServer/Features/Setup.cs": "cf722ccd5270e02ff618c534ffc67d3a5151d3f4f914d5ddae03fb0abc8d0569",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAdmission.cs": "01f3b6fcf9cf438d665e63a3e74c7a49441f0516551d301f02d1e3e3f2c9d49e",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Factors/AdministratorUserManager.cs": "6388cd1b8e146ae8be3fad3b1a17d3c69309fb9533d39628071287dc5320bdb5",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedAuthentication.cs": "401376a90a31eb997c39dd251b60528117cdbbe25d34ea8779c1c4922c0bc99a",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedCeremonyLocks.cs": "3aaffeb835d172b766c9f5bf74c693642a222f3306b585c7581c68466b8f39fe",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanAudit.cs": "edf0ce9db5885be8e74bb4835ad991c0232763dea2b502460ec052659ca0fe90",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanBinding.cs": "0adfad057978f12c1720fa3064e1212327564c01ea94ec2c686d72a87fc2c732",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanCandidates.cs": "d1c3cd37ef6dbc9e3f40d58703d656404ebaf66c69562741f7a06e821d7634de",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanInvariant.cs": "fb0c4ed6c421461d85ae052029ab68d926510c14a471ea3bf83876e165e05cb1",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanOperation.cs": "83d8dc216fca82dd06da240c1ee5e434a7026ad2bb0334b689e0c77548cba50c",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanRequest.cs": "37c8498f983d013aebfcbae7bf077bf59dd262e2ad8e4b0a5bef021108d23766",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanSnapshot.cs": "f4f8a37e1f4e9fc689b1785745c90205ec07fd69bb3ffe490dccba0e232b2b78",
-    "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedPasswordUpdate.cs": "e8949f5c213d29f74386a46e0caae2d64874320e9fd12e7187ecd4a19cc207d0",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserHttpsFixture.cs": "5529907e376417dbe9d18deec320600a0b350a0c71b65e9ae5ac6dcdf8e5b10e",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserIssuerHost.cs": "be4789e8b8bdb9f9e9776e547c1b8d13a39f58c15bdc18079d9c493711704c61",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheBindingTests.cs": "12a232c66f700824346d5e81c51b162a1d42a0a2f0ec622a4e554590d60e02ae",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheHttpTests.cs": "bd6b9c5016c8a611f777089d05216d50b9d685d895d057f99c2f65685cf7fd1e",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheRaceTests.cs": "dad65bdbd1201b4da408142cf07711cc968a0955dae661d7b232eb3204dc8bc3",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanAtomicityTests.cs": "73b53a70188cef6bfa77e3b04ee2d7cc86bd65f701b8673a48d412eef848bd42",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanBudgetTests.cs": "909220e4d9d2ce8019764ffa05d839f603218d20721587a303341b1637425883",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanDrift.cs": "08254f5a38fc8efcd3e704983cab5c403794de583c8210752ddb5209c8850739",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanDriftTests.cs": "2b7e25bb3c5db464b3af6fef394014db18f4252509f031740670c48626d353cf",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanEvidence.cs": "275c3c4f7eadc08c0f6850fc662acb680db6b8363451ad5723e32edba1fabe27",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttp.cs": "92fc6760e3e134a7e356710890364bbe005defc5e55f60aceb7570f558b1e093",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttpTests.cs": "dba65effc427cf4254496fcb39eb73a3a622487ce7505ce3d9b3866cbf65f0fc",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanInputTests.cs": "f1594f6ebf08e0b1cbb78adb72aab9a9599b1bc8d467aa32e6d42592436a4b70",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanOwnershipTests.cs": "1dc4230854864dd9557ecd78f64b1e5a6e27f371e3e0637135e46b9642569d02",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanPublicationFault.cs": "041334ab4be49153e25bca96c0b42455eb86b54d2c6e33290c47aaa936729817",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanPublicationTests.cs": "bbf6d66a23401e3a1c418d3b5a1b2b87e4321f56737228bde9de607c45d25a5e",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanRaceTests.cs": "f9f1ae06400d67c9eed22c959ad12a867f2d7aba6f52948d695c49b4751bb639",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanSaveFault.cs": "4fcc3defc456c466df0d492e3c80aad3d221dda5ecf82cb0d3c17145cf0cd55a",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedPasswordUpgradeFault.cs": "f420c667014b3e888fa8f07ad46a6e926d42143340b8638f7716ae957e7b342f",
-    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedPasswordUpgradeTests.cs": "c8ee75c91c67a26986f3ae57c054be4163386b164326afc7cb54057043ff8197",
-    "tests/backend/IdentityPlatform.Host.Tests/Features/ManagedApplications/ManagedFormTests.cs": "f6d0764c2c134e100d5187c61f9765edbce6f55628bf6a8511bdd064c7728968"
-  },
+  "source_sha256": [
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "ab61737c636b0a9cbe530f47344ad1f1f06fc1a68564a68b476668a1d66b6f69"
+    },
+    {
+      "path": "eng/test-matrix.json",
+      "sha256": "1ea722ffe2f7428c8f178033524cfe9f08a374e26eff518fd5cd7d761e1fc287"
+    },
+    {
+      "path": "scripts/test_browser_session_selection.py",
+      "sha256": "68577d24f5fc99921d4aeb0ed4d6eabdae22d1802aa5ef4b98fd8b9bfd94a040"
+    },
+    {
+      "path": "scripts/test_lifecycle_selection.py",
+      "sha256": "4cb64b7056b62d8c8448066236c6c0d34d9906c7eec59736aea5cf806381efe9"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml",
+      "sha256": "ab7a7871d9a0ef0eb9a52ebfef2c6db0eeb44867856c11153b193da7e5d40c9c"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
+      "sha256": "7bcf28393b464429103619eb7d2f9ca327531019776741c18ae575a86d3c829d"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedAccountBoundary.cs",
+      "sha256": "d9f6ee11bce7972e632c064b5803dba7a17b2605dde2a066b961c6f6d6c4b8e6"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedAccountRequest.cs",
+      "sha256": "b0b1182e7572ad941d6fbac10a41baf5b58166c6ebe3601d753a59cc056d2ee9"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedFormProof.cs",
+      "sha256": "46e2f8fa0bef1a7608f9b430d27b650969f399705429f7f797bd9bd41dc240ec"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/ManagedResponseFreeze.cs",
+      "sha256": "c5b8f821326245c6134bbd95f12977d0fdade7c59262045d085a20843d2bbc06"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Setup.cs",
+      "sha256": "a0afc2206ae0970c3d2287115ccf0302c985c953b4c0ef4bd858789cd5df1526"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Shared/AccountPageConvention.cs",
+      "sha256": "e4d7b1ebcd1b8c1c4969498d4d5e27567e28ca87db04906f2cacd91a75cd6e53"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Hosting/ProtocolHosting.cs",
+      "sha256": "e6a77daca293d3f84573177420e5db15dec89d1a9e4694a6922a8929e6d5faf3"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDecision.cs",
+      "sha256": "dfe68cee4daffd6a79c6773621cb78a3773a85706b66bae3c17fbf3747565000"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedEntryPublication.cs",
+      "sha256": "5dbea7f055ea7f00c720bcce58a53dfc76f3016e6ed861afe12a6d5b649799d6"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Setup.cs",
+      "sha256": "cf722ccd5270e02ff618c534ffc67d3a5151d3f4f914d5ddae03fb0abc8d0569"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAdmission.cs",
+      "sha256": "01f3b6fcf9cf438d665e63a3e74c7a49441f0516551d301f02d1e3e3f2c9d49e"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+      "sha256": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Factors/AdministratorUserManager.cs",
+      "sha256": "6388cd1b8e146ae8be3fad3b1a17d3c69309fb9533d39628071287dc5320bdb5"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedAuthentication.cs",
+      "sha256": "401376a90a31eb997c39dd251b60528117cdbbe25d34ea8779c1c4922c0bc99a"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedCeremonyLocks.cs",
+      "sha256": "3aaffeb835d172b766c9f5bf74c693642a222f3306b585c7581c68466b8f39fe"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanAudit.cs",
+      "sha256": "edf0ce9db5885be8e74bb4835ad991c0232763dea2b502460ec052659ca0fe90"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanBinding.cs",
+      "sha256": "0adfad057978f12c1720fa3064e1212327564c01ea94ec2c686d72a87fc2c732"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanCandidates.cs",
+      "sha256": "d1c3cd37ef6dbc9e3f40d58703d656404ebaf66c69562741f7a06e821d7634de"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanInvariant.cs",
+      "sha256": "fb0c4ed6c421461d85ae052029ab68d926510c14a471ea3bf83876e165e05cb1"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanOperation.cs",
+      "sha256": "83d8dc216fca82dd06da240c1ee5e434a7026ad2bb0334b689e0c77548cba50c"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanRequest.cs",
+      "sha256": "37c8498f983d013aebfcbae7bf077bf59dd262e2ad8e4b0a5bef021108d23766"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanSnapshot.cs",
+      "sha256": "f4f8a37e1f4e9fc689b1785745c90205ec07fd69bb3ffe490dccba0e232b2b78"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedPasswordUpdate.cs",
+      "sha256": "e8949f5c213d29f74386a46e0caae2d64874320e9fd12e7187ecd4a19cc207d0"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserHttpsFixture.cs",
+      "sha256": "5529907e376417dbe9d18deec320600a0b350a0c71b65e9ae5ac6dcdf8e5b10e"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/BrowserSessions/BrowserIssuerHost.cs",
+      "sha256": "be4789e8b8bdb9f9e9776e547c1b8d13a39f58c15bdc18079d9c493711704c61"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheBindingTests.cs",
+      "sha256": "12a232c66f700824346d5e81c51b162a1d42a0a2f0ec622a4e554590d60e02ae"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheHttpTests.cs",
+      "sha256": "bd6b9c5016c8a611f777089d05216d50b9d685d895d057f99c2f65685cf7fd1e"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheRaceTests.cs",
+      "sha256": "dad65bdbd1201b4da408142cf07711cc968a0955dae661d7b232eb3204dc8bc3"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanAtomicityTests.cs",
+      "sha256": "73b53a70188cef6bfa77e3b04ee2d7cc86bd65f701b8673a48d412eef848bd42"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanBudgetTests.cs",
+      "sha256": "909220e4d9d2ce8019764ffa05d839f603218d20721587a303341b1637425883"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanDrift.cs",
+      "sha256": "08254f5a38fc8efcd3e704983cab5c403794de583c8210752ddb5209c8850739"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanDriftTests.cs",
+      "sha256": "2b7e25bb3c5db464b3af6fef394014db18f4252509f031740670c48626d353cf"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanEvidence.cs",
+      "sha256": "275c3c4f7eadc08c0f6850fc662acb680db6b8363451ad5723e32edba1fabe27"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttp.cs",
+      "sha256": "92fc6760e3e134a7e356710890364bbe005defc5e55f60aceb7570f558b1e093"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanHttpTests.cs",
+      "sha256": "dba65effc427cf4254496fcb39eb73a3a622487ce7505ce3d9b3866cbf65f0fc"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanInputTests.cs",
+      "sha256": "f1594f6ebf08e0b1cbb78adb72aab9a9599b1bc8d467aa32e6d42592436a4b70"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanOwnershipTests.cs",
+      "sha256": "1dc4230854864dd9557ecd78f64b1e5a6e27f371e3e0637135e46b9642569d02"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanPublicationFault.cs",
+      "sha256": "041334ab4be49153e25bca96c0b42455eb86b54d2c6e33290c47aaa936729817"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanPublicationTests.cs",
+      "sha256": "bbf6d66a23401e3a1c418d3b5a1b2b87e4321f56737228bde9de607c45d25a5e"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanRaceTests.cs",
+      "sha256": "f9f1ae06400d67c9eed22c959ad12a867f2d7aba6f52948d695c49b4751bb639"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedHumanSaveFault.cs",
+      "sha256": "4fcc3defc456c466df0d492e3c80aad3d221dda5ecf82cb0d3c17145cf0cd55a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedPasswordUpgradeFault.cs",
+      "sha256": "f420c667014b3e888fa8f07ad46a6e926d42143340b8638f7716ae957e7b342f"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedPasswordUpgradeTests.cs",
+      "sha256": "c8ee75c91c67a26986f3ae57c054be4163386b164326afc7cb54057043ff8197"
+    },
+    {
+      "path": "tests/backend/IdentityPlatform.Host.Tests/Features/ManagedApplications/ManagedFormTests.cs",
+      "sha256": "f6d0764c2c134e100d5187c61f9765edbce6f55628bf6a8511bdd064c7728968"
+    }
+  ],
   "artifacts_sha256": {
     "feature019-human-assurance-final.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
     "feature019-human-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
