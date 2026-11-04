@@ -477,3 +477,40 @@ Source gitleaks, instruction and diff checks pass. An initial method-size findin
 resolved by an awaited final-view helper, and formatting/named-expectation findings
 were corrected without any new allowance. These local checks do not execute retained
 browsers or accept the rejected hosted candidate.
+
+## Chromium launch-observation prerequisite
+
+Run507 rejects both PostgreSQL and SQL Server Chromium pending Navigation before dispatch, at
+`ApplicationNativeNetwork.ObserveDocumentAsync`'s `Browser.getBrowserCommandLine`
+call. The fixed diagnostic is unclassified; no raw exception or command-line contents
+are exposed. The original-context observer has not yet been enabled at that point,
+so this result does not exercise the new context-epoch or BFF-completion witness.
+
+Pinned Chromium153.0.8010.12's [BrowserHandler::GetBrowserCommandLine](https://github.com/chromium/chromium/blob/153.0.8010.12/content/browser/devtools/protocol/browser_handler.cc#L670) requires
+`--enable-automation`; the Playwright1.63.0 default switch list includes
+`--disable-back-forward-cache` but omits that prerequisite. The reviewed correction
+opts into `--enable-automation` only for pending Navigation on Chromium through an
+explicit `BrowserSession.CreateHeadedAsync` parameter. All other calls default to no
+additional arguments; non-Chromium opt-in is rejected. The same page CDP session,
+actual command-line policy assertion, Runtime/Network continuity, native window/DOM
+observations and original deadlines remain required. Changing CDP target alone would
+not satisfy the missing launch prerequisite and is not part of this correction.
+
+Automation changes Chromium's configuration and can affect browser chrome. Results
+therefore apply to this explicitly configured lifecycle fixture, not an ordinary
+unmodified browser launch. No product code, TLS policy, request count, native lifecycle
+assertion, timeout or security boundary is relaxed. Source inspection establishes the
+command's missing prerequisite; it does not recover the suppressed hosted error text.
+
+Scoped architecture/security/test reviews pass. The full solution build passes with
+zero warnings/errors; whitespace/imports, quality, instruction and diff checks pass.
+All three compiled synthetic calibration groups pass; they remain calibration only,
+not native browser execution. Local pinned browser executables remain unavailable.
+No fallback engine, blocked download retry, mirror test or inferred runtime pass is
+used. The new exact-head hosted execution must verify this configured browser.
+
+| Local correction receipt | SHA256 |
+| --- | --- |
+| Solution build | `2991778bdac3bacb0cb54d5cd3af4eefb5f1f1342ec7fadde3c82e473fb042a2` |
+| Quality gate | `7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6` |
+| Compiled synthetic calibration | `39b197284812a9d22e9707d145bee80f91c2a9aaf46eb8e236b15cd7b23af9c4` |

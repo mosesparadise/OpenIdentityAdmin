@@ -83,8 +83,8 @@ internal sealed class BrowserSession : IAsyncDisposable
         }
     }
 
-    /// <summary>Owns a visible retained-engine session for native lifecycle acceptance; unsupported engines fail rather than falling back.</summary>
-    public static async Task<BrowserSession> CreateHeadedAsync()
+    /// <summary>Owns a visible retained-engine session; Chromium navigation may explicitly enable the native command-line observation prerequisite.</summary>
+    public static async Task<BrowserSession> CreateHeadedAsync(bool observeChromiumLaunch = false)
     {
         const string Chromium = "chromium";
         const string WebKit = "webkit";
@@ -92,15 +92,18 @@ internal sealed class BrowserSession : IAsyncDisposable
         const int Height = 900;
         const int ActionMilliseconds = 15000;
         const int NavigationMilliseconds = 20000;
+        const string EnableAutomation = "--enable-automation";
         BrowserEvidence.Mark(BrowserPhase.Creation);
         Assert.True(Engine is Chromium or WebKit);
+        Assert.True(!observeChromiumLaunch || Engine == Chromium);
         var session = new BrowserSession(await Playwright.CreateAsync());
         try
         {
             var engine = Engine == WebKit ? session.playwright.Webkit : session.playwright.Chromium;
             session.browser = await engine.LaunchAsync(new()
             {
-                Headless = false
+                Headless = false,
+                Args = observeChromiumLaunch ? [EnableAutomation] : []
             });
             session.Context = await session.browser.NewContextAsync(new()
             {

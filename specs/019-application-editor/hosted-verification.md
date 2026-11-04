@@ -382,3 +382,40 @@ The retained rejected-run snapshot binds all122 jobs,113 successful decoded rece
 source/merge/tree and terminal metadata; SHA256
 `9b2fc81509bd80bfe9f26bdbd2441430b1d37f6bf88cc5fec8e41151755a81dd`.
 No strict acceptance reconciliation is run for this rejected candidate.
+
+## Eleventh candidate — Chromium launch observation remains rejected
+
+Candidate `f0da126d9df54dc512aedbbf79f0416b4416839a` and tested merge
+`db8f65b257fd6e83c2b5e2f384456b438d0e2083` share tree
+`95366e36d2d4d2ce47960e427ee9b0618fc28829` over unchanged main `4c9fb24`.
+[Run507](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41887219260),
+attempt1, completes122 jobs:118 successful, three failed and one skipped. Both
+Chromium lifecycle cells and final acceptance fail; aggregate coverage is skipped.
+All other required jobs pass, but this run remains rejected.
+
+Both ordinary native Aspire demos pass3/3. Both managed-mutation lanes pass their
+strict baseline, exact-mutant and restored-source obligations. Both WebKit lifecycle
+jobs (`126774980433` SQL Server and `126774980584` PostgreSQL) pass2/2, zero skips,
+with strict verifier receipts and the final Pending/OriginalDeadline/PrivacyChecked
+checkpoint. These observations do not accept another source or recover prior failures.
+
+Both Chromium lifecycle jobs (`126774980251` PostgreSQL and `126774980284` SQL Server)
+pass the output/history/visibility case and fail pending Navigation:1/2 each, zero
+skips. Safe unclassified diagnostics identify source line100 of
+`ApplicationNativeNetwork.ObserveDocumentAsync`, the `Browser.getBrowserCommandLine`
+call. Last progress is Pending/Navigation/Prepared, before request dispatch or Runtime
+subscription. Neither the new context-epoch nor BFF-completion witness has executed
+for Chromium. Raw errors and command-line contents remain suppressed.
+
+Pinned source confirms this command requires `--enable-automation`, which the pinned
+Playwright defaults omit. The [scoped launch correction](browser-corrections.md#chromium-launch-observation-prerequisite)
+provides it only for pending Navigation on Chromium; actual command-line/BFCache
+assertions, native observations and deadlines remain mandatory. This identifies an
+unmet source prerequisite, not the exact suppressed hosted exception. All earlier
+rejected candidates and historical/human/external gates remain open. PR120 stays
+draft/unmerged; no full acceptance or merge is claimed.
+
+The retained rejected snapshot binds terminal run/source/merge/tree, all122 jobs and
+118 successful decoded receipts; SHA256
+`b60e7fae03f615c8e4364b4da3e7f5325d3f653a27c97ee232afeb39b9d044a1`.
+No strict acceptance reconciliation is run for this rejected candidate.

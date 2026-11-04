@@ -14,6 +14,7 @@ internal static class ApplicationPendingLifecycle
 {
     private const string CleanupReport = "application-lifecycle cleanup requests={0} context-completed={1} page-completed={2} upstream-started={3} upstream-completed={4} response-present={5} native-dispatches={6} native-completed={7} native-failed={8} document-end={9} bff-requests={10} bff-pipeline={11} bff-response={12} bff-status={13} bff-started={14} bff-aborted={15} upstream-written={16} upstream-aborted={17}";
     private const string BffPrefix = "/bff";
+    private const string Chromium = "chromium";
     private const string Pause = "pause";
     private const string ReplaceSuffix = "/secret-replacements";
     private const string Api = "/api/v1/applications/";
@@ -59,7 +60,8 @@ internal static class ApplicationPendingLifecycle
         using var environmentDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Environment);
         progress.Mark(ApplicationLifecycleStage.EnvironmentReady);
         var nativeWindow = boundary is ApplicationPendingBoundary.Navigation or ApplicationPendingBoundary.Visibility;
-        await using var browser = nativeWindow ? await BrowserSession.CreateHeadedAsync() : await BrowserSession.CreateAsync();
+        var observeChromiumLaunch = boundary == ApplicationPendingBoundary.Navigation && BrowserSession.Engine == Chromium;
+        await using var browser = nativeWindow ? await BrowserSession.CreateHeadedAsync(observeChromiumLaunch) : await BrowserSession.CreateAsync();
         using var browserDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Browser);
         progress.Mark(ApplicationLifecycleStage.BrowserReady);
         var page = await browser.Context.NewPageAsync();
