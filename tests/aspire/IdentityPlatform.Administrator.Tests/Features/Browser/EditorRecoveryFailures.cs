@@ -52,7 +52,7 @@ internal static class EditorRecoveryFailures
                 }).IsVisibleAsync());
                 Assert.Equal(1, probe.Sends);
                 Assert.Equal(1, sends.Count);
-                Assert.False(probe.Failed);
+                probe.RequireHealthy();
                 Assert.Equal(before, await EditorRecoveryStore.ReadAsync(environment, id));
             }
             await EditorRecoveryView.Button(page, EditorRecoveryView.Reload).ClickAsync();
@@ -79,7 +79,7 @@ internal static class EditorRecoveryFailures
         }).IsVisibleAsync());
         Assert.Equal(1, probe.Sends);
         Assert.Equal(0, sends.Count);
-        Assert.False(probe.Failed);
+        probe.RequireHealthy();
         Assert.Equal(before, await EditorRecoveryStore.ReadAsync(environment, id));
     }
 
@@ -123,7 +123,7 @@ internal static class EditorRecoveryFailures
             await EditorRecoveryView.Button(page, EditorRecoveryView.Replace).ClickAsync();
             await EditorRecoveryView.ProblemAsync(page, Unknown);
             Assert.Equal(1, probe.Sends);
-            Assert.False(probe.Failed);
+            probe.RequireHealthy();
             Assert.Equal(Success, probe.CommittedStatus);
             Assert.True(!string.IsNullOrEmpty(probe.SuppressedSecret));
         }

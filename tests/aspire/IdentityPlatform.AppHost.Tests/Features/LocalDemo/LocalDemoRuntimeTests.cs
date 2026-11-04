@@ -58,7 +58,7 @@ public sealed class LocalDemoRuntimeTests
         phase(LoginPhase);
         await browser.SignInAsync(runtime);
         phase(ApplicationsPhase);
-        await browser.RequireApplicationsAsync(runtime);
+        await browser.RequireApplicationsAsync(runtime, phase);
         var cookies = await browser.CookiesAsync();
         phase(LocalLogoutPhase);
         await browser.LogoutAsync(issuer: false);

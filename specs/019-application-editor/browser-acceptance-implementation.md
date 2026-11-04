@@ -109,3 +109,8 @@ unsafe/misformatted/naming rejection checks pass. A later narrowly reviewed obse
 correction excludes untrusted legacy handler-control events from native counters;
 its affected Administrator build is checked separately. No analyzer allowance or
 security timeout changed.
+
+
+The fourth hosted attempt and subsequent product/fixture corrections are recorded
+in [browser corrections](browser-corrections.md). Its instrumented native-visibility
+lane supersedes the earlier BringToFront preflight; actual acceptance remains open.

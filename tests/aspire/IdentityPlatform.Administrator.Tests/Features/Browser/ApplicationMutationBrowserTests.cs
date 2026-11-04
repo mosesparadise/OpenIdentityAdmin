@@ -14,6 +14,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 [Trait("BrowserStory", "BrowserProtection")]
 public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
 {
+    private const string Applications = "/applications";
     private const string Collection = "/bff/api/v1/applications";
     private const string ApiCollection = "/api/v1/applications";
     private const string Version = "version";
@@ -85,6 +86,7 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
             }), Denied, access.Value);
             await page.GotoAsync(new Uri(environment.Profile.ClientUri, BrowserHttpsJourney.Logout).AbsoluteUri);
             var formToken = await page.Locator(FormTokenSelector).InputValueAsync();
+            await page.GotoAsync(new Uri(environment.Profile.ClientUri, Applications).AbsoluteUri);
             Require(await page.EvaluateAsync<JsonElement>(Send, new
             {
                 token = formToken,

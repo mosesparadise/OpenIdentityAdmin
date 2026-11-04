@@ -15,8 +15,6 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications;
 /// <example><code>// Follow the issuer's native managed authorization cache redirect, then submit only its protected rendered form.</code></example>
 public sealed class IndexModel : PageModel
 {
-    private const string Referrer = "Referrer-Policy";
-    private const string FormReferrer = "strict-origin";
     public string? Flow
     {
         get; private set;
@@ -47,7 +45,7 @@ public sealed class IndexModel : PageModel
         var result = await ExecuteAsync(request, ManagedHumanAction.Read, null, null);
         ClientId = result.ClientId;
         Phase = (int)result.State;
-        Response.Headers[Referrer] = FormReferrer;
+        ManagedFormPolicy.Apply(HttpContext, request, result);
         return Page();
     }
 
@@ -86,7 +84,7 @@ public sealed class IndexModel : PageModel
         Phase = (int)result.State;
         Error = AdministratorBrowser.Denied;
         Response.StatusCode = StatusCodes.Status400BadRequest;
-        Response.Headers[Referrer] = FormReferrer;
+        ManagedFormPolicy.Apply(HttpContext, request, result);
         return Page();
     }
 

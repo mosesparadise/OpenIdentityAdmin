@@ -24,9 +24,9 @@ internal static class BrowserFormHeaders
         Assert.True(Header(response, ReferrerPolicy) == (form ? FormPolicy : InertPolicy));
 
     /// <summary>Requires all original CSP directives, the actual rendered nonce and only the fixed MFA return origin.</summary>
-    internal static async Task AccountAsync(HttpResponseMessage response, bool mfa = false, Uri? client = null)
+    internal static async Task AccountAsync(HttpResponseMessage response, bool mfa = false, Uri? client = null, bool form = true)
     {
-        Referrer(response, form: true);
+        Referrer(response, form);
         var policy = Header(response, ContentSecurityPolicy);
         var hasExpectedPrefix = policy.StartsWith(Prefix, StringComparison.Ordinal);
         Assert.True(hasExpectedPrefix);

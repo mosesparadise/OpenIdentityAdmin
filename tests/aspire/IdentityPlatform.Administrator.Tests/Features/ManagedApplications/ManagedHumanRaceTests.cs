@@ -32,7 +32,7 @@ public sealed class ManagedHumanRaceTests(BootstrapFixture fixture)
         {
             using var factor = await ManagedHumanHttp.MfaAsync(test, form, code);
             await ManagedHumanHttp.EntryAsync(factor);
-            form = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
+            form = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri);
         }
         var before = Assert.Single((await test.SnapshotAsync()).Interactions);
         await using var scope = test.Http.Scope();

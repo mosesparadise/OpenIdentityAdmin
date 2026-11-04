@@ -310,6 +310,8 @@ jobs:
           # WebKit uses the ephemeral runner's OS bundle; trust only this public synthetic leaf.
           sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
           sudo update-ca-certificates
+          # Playwright route.fetch uses Node TLS independently of OS/NSS browser trust.
+          echo "NODE_EXTRA_CA_CERTS=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
           echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
           # Chromium uses NSS peer trust. Firefox imports the exact leaf as an explicit anchor in its private profile.
           mkdir -p "$HOME/.pki/nssdb"
@@ -319,8 +321,17 @@ jobs:
       - name: Compare fixed isolated and startup-overlap history observations
         if: matrix.partition == 'administrator' && matrix.browser == 'firefox' && matrix.browser_story == 'Accounts'
         run: python3 scripts/verify_history_experiment.py ${{ matrix.provider }}
+      - name: Provision isolated native visibility desktop
+        if: matrix.browser_story == 'ApplicationLifecycle'
+        run: sudo apt-get install -y openbox xdotool x11-utils
+      - name: Validate pinned native visibility instrumentation
+        run: python3 scripts/test_native_visibility.py
+      - name: Test native window lifecycle with child-process coverage
+        if: matrix.browser_story == 'ApplicationLifecycle'
+        run: python3 scripts/run_native_visibility.py ${{ matrix.provider }} ${{ matrix.browser }}
       - name: Test with child-process coverage
-        run: ${{ matrix.browser_story == 'ApplicationLifecycle' && 'xvfb-run --auto-servernum' || '' }} dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
+        if: matrix.browser_story != 'ApplicationLifecycle'
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

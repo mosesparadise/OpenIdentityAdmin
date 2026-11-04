@@ -12,11 +12,13 @@ internal sealed class ApplicationNativeVisibility : IAsyncDisposable
     private const string FocusOverride = "Emulation.setFocusEmulationEnabled";
     private const string Hidden = "() => document.visibilityState === 'hidden'";
     private const string Visible = "() => document.visibilityState === 'visible'";
+    private const int PollingMilliseconds = 50;
     private const int ObservationMilliseconds = 3000;
     private readonly List<ICDPSession> sessions = [];
+    private ApplicationNativeWindow window = null!;
 
-    /// <summary>Uses public CDP only to disable Playwright's Chromium override on both pages; WebKit retains its native activation implementation.</summary>
-    internal static async Task<ApplicationNativeVisibility> CreateAsync(IPage page, IPage other)
+    /// <summary>Disables Chromium's public focus override; the lifecycle wrapper separately restores WebKit's native activity state.</summary>
+    internal static async Task<ApplicationNativeVisibility> CreateAsync(IPage page)
     {
         var owner = new ApplicationNativeVisibility();
         try
@@ -24,7 +26,7 @@ internal sealed class ApplicationNativeVisibility : IAsyncDisposable
             Assert.True(BrowserSession.Engine is Chromium or WebKit);
             if (BrowserSession.Engine == Chromium)
             {
-                foreach (var target in new[] { page, other })
+                foreach (var target in new[] { page })
                 {
                     var session = await target.Context.NewCDPSessionAsync(target);
                     owner.sessions.Add(session);
@@ -34,33 +36,43 @@ internal sealed class ApplicationNativeVisibility : IAsyncDisposable
                     });
                 }
             }
-            await RequireNativeCycleAsync(page, other);
+            owner.window = await ApplicationNativeWindow.FindAsync(page);
+            await owner.RequireNativeCycleAsync(page);
             return owner;
         }
         catch { await owner.DisposeAsync(); throw; }
     }
 
     /// <summary>Rejects an environment that cannot produce real hidden/visible transitions before any secret or pending-write assertion is attempted.</summary>
-    private static async Task RequireNativeCycleAsync(IPage page, IPage other)
+    private async Task RequireNativeCycleAsync(IPage page)
     {
-        await page.BringToFrontAsync();
+        await RestoreAsync();
         await page.WaitForFunctionAsync(Visible, options: new()
         {
-            Timeout = ObservationMilliseconds
+            Timeout = ObservationMilliseconds,
+            PollingInterval = PollingMilliseconds
         });
-        await other.BringToFrontAsync();
+        await MinimizeAsync();
         await page.WaitForFunctionAsync(Hidden, options: new()
         {
-            Timeout = ObservationMilliseconds
+            Timeout = ObservationMilliseconds,
+            PollingInterval = PollingMilliseconds
         });
-        await page.BringToFrontAsync();
+        await RestoreAsync();
         await page.WaitForFunctionAsync(Visible, options: new()
         {
-            Timeout = ObservationMilliseconds
+            Timeout = ObservationMilliseconds,
+            PollingInterval = PollingMilliseconds
         });
     }
 
-    /// <summary>Joins both public CDP detach operations and retains all cleanup failures before the owning browser is disposed.</summary>
+    /// <summary>Minimizes the exact native browser window on the isolated desktop.</summary>
+    internal Task MinimizeAsync() => window.MinimizeAsync();
+
+    /// <summary>Restores the same native window before any further user interaction.</summary>
+    internal Task RestoreAsync() => window.RestoreAsync();
+
+    /// <summary>Joins owned public CDP detach operations and retains all cleanup failures before the owning browser is disposed.</summary>
     public async ValueTask DisposeAsync()
     {
         List<Exception> failures = [];

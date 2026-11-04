@@ -30,7 +30,7 @@ public sealed class ManagedHumanDriftTests(BootstrapFixture fixture)
         }
         using var accepted = await ManagedHumanHttp.MfaAsync(test, mfa, code);
         await ManagedHumanHttp.EntryAsync(accepted);
-        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, accepted.Headers.Location!);
+        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, accepted.Headers.Location!, test.CallbackUri);
         foreach (var defect in Enum.GetValues<ManagedHumanAuthority>())
         {
             await ManagedHumanDrift.CheckAsync(test, defect, () => ManagedHumanHttp.DecideAsync(test, consent));

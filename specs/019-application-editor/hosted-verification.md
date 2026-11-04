@@ -122,3 +122,27 @@ source filename allowlist now preserves useful line numbers without private mess
 This run predates the new same-registration browser ceremony and lifecycle/recovery
 acceptance additions. Its successes cannot substitute for their execution. Earlier
 failures remain separate; the raw artifact transfer limitation remains unchanged.
+
+
+## Fourth candidate: complete browser scenario source
+
+Run [41840008939](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41840008939)
+verified head `0d03974e6969b979d0b169e022deb37d4370a74c`. The final two-page inventory
+contains122 jobs:104 successful,17 failed and one skipped aggregate-coverage job.
+All four new permission/expiry lanes and both Chromium consent-cancellation lanes
+passed. None of these successes accepts the complete feature or a later source tree.
+
+| Failed jobs | Retained observation |
+| --- | --- |
+| 126608883228 /126608883274 | Both native demos fail during the generic application/editor phase. |
+| 126608959915 /126608960048 | Chromium protection: positive managed callback ERR_ABORTED and cross-purpose token fetch failure at line88. |
+| 126608959926 /126608960087 | WebKit protection: consent Cancel contrast failure and the same cross-purpose fetch failure. |
+| 126608959852 /126608959921 /126608959962 /126608960244 | Editor recovery reaches the lost-committed-output seam; its private failure flag is true. |
+| 126608959871 /126608960086 /126608960224 /126608960014 | Lifecycle preflight times out waiting for actual hidden visibility. |
+| 126608960085 /126608960207 | WebKit managed-consent cancellation finds white-on-silver contrast1.81 on the unstyled Cancel button. |
+| 126622048969 | Required failures prevent verification acceptance. |
+
+The [correction candidate](browser-corrections.md) separates source-supported product
+issues from fixture limitations. Broad native-demo and response-seam failures do
+not establish a more specific cause. Retain the original failures; no timeout,
+retry, browser obligation, coverage floor or private-output rule is weakened.

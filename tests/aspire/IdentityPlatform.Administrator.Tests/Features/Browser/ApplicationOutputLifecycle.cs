@@ -12,6 +12,7 @@ internal static class ApplicationOutputLifecycle
     private const string Visible = "() => document.visibilityState === 'visible'";
     private const string Hidden = "() => document.visibilityState === 'hidden'";
     private const string Root = "/";
+    private const int PollingMilliseconds = 50;
     private const int VisibilityMilliseconds = 3000;
 
     /// <summary>Uses a separate genuine account/provider fixture for each native lifecycle boundary and keeps actual secrets private.</summary>
@@ -19,10 +20,9 @@ internal static class ApplicationOutputLifecycle
     {
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true);
         await using var browser = await BrowserSession.CreateHeadedAsync();
-        var other = await browser.Context.NewPageAsync();
         var page = await browser.Context.NewPageAsync();
         var access = await ApplicationAccessFixture.SignInAsync(environment, page);
-        await using var visibility = await ApplicationNativeVisibility.CreateAsync(page, other);
+        await using var visibility = await ApplicationNativeVisibility.CreateAsync(page);
         await page.Clock.SetFixedTimeAsync(environment.Issuer.Account.Journey.Clock.Now.UtcDateTime);
         await using var observation = await ApplicationLifecycleObservation.CreateAsync(page);
         await ApplicationLifecycleUi.PrepareAsync(page, environment.Profile.ClientUri, environment.Issuer.Account.Journey.Clock.Now, ApplicationLifecycleUi.LongLifetimeSeconds);
@@ -36,7 +36,7 @@ internal static class ApplicationOutputLifecycle
         }
         else
         {
-            await HideAsync(page, other, observation);
+            await HideAsync(page, visibility, observation);
         }
 
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
@@ -62,26 +62,29 @@ internal static class ApplicationOutputLifecycle
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
     }
 
-    /// <summary>Uses native tab activation and requires observed hidden/visible state; engines unable to expose it do not receive a synthetic pass.</summary>
-    internal static async Task HideAsync(IPage page, IPage other, ApplicationLifecycleObservation observation)
+    /// <summary>Minimizes and restores the owned native window and requires real hidden/visible state; no synthetic event can satisfy the oracle.</summary>
+    internal static async Task HideAsync(IPage page, ApplicationNativeVisibility visibility, ApplicationLifecycleObservation observation)
     {
-        await page.BringToFrontAsync();
+        await visibility.RestoreAsync();
         await page.WaitForFunctionAsync(Visible, options: new()
         {
-            Timeout = VisibilityMilliseconds
+            Timeout = VisibilityMilliseconds,
+            PollingInterval = PollingMilliseconds
         });
         var hidden = observation.Hidden;
-        await other.BringToFrontAsync();
+        await visibility.MinimizeAsync();
         await page.WaitForFunctionAsync(Hidden, options: new()
         {
-            Timeout = VisibilityMilliseconds
+            Timeout = VisibilityMilliseconds,
+            PollingInterval = PollingMilliseconds
         });
         await observation.RequireTransitionsAsync(previousHidden: hidden);
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
-        await page.BringToFrontAsync();
+        await visibility.RestoreAsync();
         await page.WaitForFunctionAsync(Visible, options: new()
         {
-            Timeout = VisibilityMilliseconds
+            Timeout = VisibilityMilliseconds,
+            PollingInterval = PollingMilliseconds
         });
         await ApplicationLifecycleUi.HeadingAsync(page, ApplicationLifecycleUi.Problem);
     }

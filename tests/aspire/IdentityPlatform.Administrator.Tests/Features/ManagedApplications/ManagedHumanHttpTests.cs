@@ -42,7 +42,7 @@ public sealed class ManagedHumanHttpTests(BootstrapFixture fixture)
         Assert.Null(afterPassword.MfaVerifiedAt);
         using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
         await ManagedHumanHttp.EntryAsync(factor);
-        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
+        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri);
         var afterMfa = Assert.Single((await test.SnapshotAsync()).Interactions);
         Assert.Equal(ManagedLoginState.PendingConsent, afterMfa.State);
         Assert.Equal(test.Http.Now.ToUnixTimeSeconds(), afterMfa.MfaVerifiedAt);

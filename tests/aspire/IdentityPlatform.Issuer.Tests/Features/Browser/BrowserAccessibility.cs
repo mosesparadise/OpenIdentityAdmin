@@ -13,7 +13,7 @@ internal static class BrowserAccessibility
     private static readonly SearchValues<char> HexCharacters = SearchValues.Create("0123456789abcdefABCDEF");
     private static readonly string[] Targets =
     [
-        "#submit", "#theme", "#show-password", "#username", "#password", "#heading", "#error-summary > p",
+        "#consent-approve", "#consent-deny", "#submit", "#theme", "#show-password", "#username", "#password", "#heading", "#error-summary > p",
         ".error-summary > p", ".wordmark", ".brand-mark", ".badge", ".eyebrow", ".subtitle", ".footnote",
         "footer", "label", "strong", "p", ".skip-link", "body", "html", ".card", "#contrast-probe"
     ];

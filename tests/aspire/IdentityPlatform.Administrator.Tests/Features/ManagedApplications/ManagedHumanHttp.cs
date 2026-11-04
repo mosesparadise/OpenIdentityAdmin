@@ -36,6 +36,7 @@ internal static class ManagedHumanHttp
     internal static async Task EntryAsync(HttpResponseMessage response)
     {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        BrowserFormHeaders.Referrer(response);
         Assert.True(response.Headers.Location is { IsAbsoluteUri: false });
         var uri = new Uri(new Uri(ParseOrigin), response.Headers.Location!);
         Assert.True(response.Headers.Location!.OriginalString.StartsWith(Path + QueryStart, StringComparison.Ordinal) &&
@@ -48,11 +49,11 @@ internal static class ManagedHumanHttp
     }
 
     /// <summary>Reads actual native form fields, verifying the same-origin security headers without retaining markup in failure output.</summary>
-    internal static async Task<Dictionary<string, string>> FormAsync(HttpClient browser, Uri location)
+    internal static async Task<Dictionary<string, string>> FormAsync(HttpClient browser, Uri location, string? callback = null)
     {
         using var page = await browser.GetAsync(location, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
-        await BrowserFormHeaders.AccountAsync(page);
+        await BrowserFormHeaders.AccountAsync(page, mfa: callback is not null, client: callback is null ? null : new Uri(callback));
         NoAuthorityCookie(page);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         return new(StringComparer.Ordinal)
@@ -67,7 +68,7 @@ internal static class ManagedHumanHttp
     {
         using var page = await test.Http.IssuerClient.GetAsync(location, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
-        await BrowserFormHeaders.AccountAsync(page);
+        await BrowserFormHeaders.AccountAsync(page, form: false);
         NoAuthorityCookie(page);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         Assert.True(html.Contains(DeniedHeading, StringComparison.Ordinal));

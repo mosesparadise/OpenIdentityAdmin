@@ -27,7 +27,7 @@ public sealed class ManagedHumanAtomicityTests(BootstrapFixture fixture)
         await RequireFaultsAsync(test, fault, () => ManagedHumanHttp.MfaAsync(test, mfa, code), internalSaves: true);
         using var factor = await ManagedHumanHttp.MfaAsync(test, mfa, code);
         await ManagedHumanHttp.EntryAsync(factor);
-        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
+        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri);
         await RequireFaultsAsync(test, fault, () => ManagedHumanHttp.DecideAsync(test, consent), internalSaves: false);
         using var approved = await ManagedHumanHttp.DecideAsync(test, consent);
         await ManagedTokenFlow.ResumeRedirectAsync(test, approved);

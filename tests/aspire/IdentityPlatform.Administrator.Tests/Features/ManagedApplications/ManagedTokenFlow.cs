@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
@@ -63,7 +64,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
         var mfa = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, password.Headers.Location!);
         using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
         await ManagedHumanHttp.EntryAsync(factor);
-        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!);
+        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri);
         using var decision = await ManagedHumanHttp.DecideAsync(test, consent, approve);
         if (approve)
         {
@@ -80,6 +81,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     internal static async Task ResumeRedirectAsync(ManagedCacheTestContext test, HttpResponseMessage response, Dictionary<string, string>? expected = null)
     {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        BrowserFormHeaders.Referrer(response);
         Assert.True(response.Headers.Location is { IsAbsoluteUri: false });
         var location = new Uri(test.Http.Environment.Profile.Issuer, response.Headers.Location!);
         Assert.True(location.GetLeftPart(UriPartial.Path) == new Uri(test.Http.Environment.Profile.Issuer, NativeCacheProfile.Authorize).AbsoluteUri && string.IsNullOrEmpty(location.Fragment));
@@ -99,6 +101,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     {
         using var response = await test.SendAsync(Resume);
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        BrowserFormHeaders.Referrer(response);
         Assert.True(response.Headers.Location?.GetLeftPart(UriPartial.Path) == test.CallbackUri && string.IsNullOrEmpty(response.Headers.Location.Fragment));
         var fields = QueryHelpers.ParseQuery(response.Headers.Location!.Query);
         Assert.True(fields.Keys.ToHashSet(StringComparer.Ordinal).SetEquals([Code, State, Issuer]) && fields.All(pair => pair.Value.Count == 1));

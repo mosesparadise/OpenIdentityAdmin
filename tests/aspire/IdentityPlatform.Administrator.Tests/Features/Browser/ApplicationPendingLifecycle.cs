@@ -52,10 +52,9 @@ internal static class ApplicationPendingLifecycle
         var probe = new ApplicationMutationProbe();
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true, mutationProbe: probe);
         await using var browser = await BrowserSession.CreateHeadedAsync();
-        var other = await browser.Context.NewPageAsync();
         var page = await browser.Context.NewPageAsync();
         var access = await ApplicationAccessFixture.SignInAsync(environment, page);
-        await using var visibility = await ApplicationNativeVisibility.CreateAsync(page, other);
+        await using var visibility = await ApplicationNativeVisibility.CreateAsync(page);
         var now = environment.Issuer.Account.Journey.Clock.Now;
         await page.Clock.SetFixedTimeAsync(now.UtcDateTime);
         probe.Access = access.Value;
@@ -68,7 +67,7 @@ internal static class ApplicationPendingLifecycle
             await PrepareReplacementAsync(page, probe, now);
         }
 
-        await ExerciseAsync(page, other, environment, probe, observation, boundary, now);
+        await ExerciseAsync(page, visibility, environment, probe, observation, boundary, now);
         var secret = Convert.ToBase64String(new byte[SecretBytes]);
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
         await BrowserSecretOracle.StorageAsync(page, [secret, access.Value]);
@@ -96,7 +95,7 @@ internal static class ApplicationPendingLifecycle
     }
 
     /// <summary>Requires an observed pending downstream send, applies one original boundary, and releases the gate on every exit.</summary>
-    private static async Task ExerciseAsync(IPage page, IPage other, BrowserHttpsFixture environment, ApplicationMutationProbe probe,
+    private static async Task ExerciseAsync(IPage page, ApplicationNativeVisibility visibility, BrowserHttpsFixture environment, ApplicationMutationProbe probe,
         ApplicationLifecycleObservation observation, ApplicationPendingBoundary boundary, DateTimeOffset now)
     {
         probe.Fault = Pause;
@@ -109,7 +108,7 @@ internal static class ApplicationPendingLifecycle
             await probe.Started.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
             Assert.Equal(before + MutationCount, probe.Requests);
             Assert.False(probe.Canceled.Task.IsCompleted);
-            await BoundaryAsync(page, other, environment, probe, observation, boundary, now);
+            await BoundaryAsync(page, visibility, environment, probe, observation, boundary, now);
             Assert.True(Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(OriginalBudgetSeconds));
         }
         finally { probe.Release.TrySetResult(); }
@@ -156,8 +155,8 @@ internal static class ApplicationPendingLifecycle
         }
     }
 
-    /// <summary>Uses real navigation, tab visibility or native logout; only the documented deadline case advances the browser clock.</summary>
-    private static async Task BoundaryAsync(IPage page, IPage other, BrowserHttpsFixture environment, ApplicationMutationProbe probe,
+    /// <summary>Uses real navigation, window minimization or native logout; only the documented deadline case advances the browser clock.</summary>
+    private static async Task BoundaryAsync(IPage page, ApplicationNativeVisibility visibility, BrowserHttpsFixture environment, ApplicationMutationProbe probe,
         ApplicationLifecycleObservation observation, ApplicationPendingBoundary boundary, DateTimeOffset now)
     {
         switch (boundary)
@@ -167,7 +166,7 @@ internal static class ApplicationPendingLifecycle
                 await probe.Canceled.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
                 break;
             case ApplicationPendingBoundary.Visibility:
-                await ApplicationOutputLifecycle.HideAsync(page, other, observation);
+                await ApplicationOutputLifecycle.HideAsync(page, visibility, observation);
                 await probe.Canceled.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
                 break;
             case ApplicationPendingBoundary.Session:

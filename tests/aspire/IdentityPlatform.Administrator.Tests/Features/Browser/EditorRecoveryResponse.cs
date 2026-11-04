@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using Microsoft.Playwright;
 
@@ -10,6 +11,20 @@ internal sealed class EditorRecoveryResponse : IAsyncDisposable
     {
         FiniteStatus, HoldWithoutDispatch, DropCommitted
     }
+    internal enum FailurePhase
+    {
+        None, Dispatch, Status, Body, Dispose, Abort
+    }
+    internal FailurePhase Phase
+    {
+        get; private set;
+    }
+    internal bool CertificateRejected
+    {
+        get; private set;
+    }
+    private const string CertificateFailure = "self-signed certificate";
+    private static readonly System.Text.CompositeFormat FailureFormat = System.Text.CompositeFormat.Parse("Response seam failed at {0}; status {1}; certificate rejected {2}.");
     private const string JsonProblem = "application/problem+json";
     private const string SecretField = "clientSecret";
     private const string Cache = "Cache-Control";
@@ -103,13 +118,23 @@ internal sealed class EditorRecoveryResponse : IAsyncDisposable
                 });
             }
         }
-        catch { Failed = true; try { await route.AbortAsync(); } catch { } }
+        catch (Exception error)
+        {
+            Failed = true;
+            CertificateRejected = error is PlaywrightException && error.Message.Contains(CertificateFailure, StringComparison.OrdinalIgnoreCase);
+            try
+            {
+                await route.AbortAsync();
+            }
+            catch { }
+        }
         finally { joined.TrySetResult(); }
     }
 
     /// <summary>Completes one real mutation, retains its generated secret privately, then loses only the browser response.</summary>
     private async Task DropAsync(IRoute route)
     {
+        Phase = FailurePhase.Dispatch;
         var response = await route.FetchAsync(new()
         {
             MaxRedirects = 0,
@@ -118,19 +143,36 @@ internal sealed class EditorRecoveryResponse : IAsyncDisposable
         });
         try
         {
+            Advance(FailurePhase.Status);
             CommittedStatus = response.Status;
             if (response.Status is not (Success or Created))
             {
                 Failed = true;
             }
+            Advance(FailurePhase.Body);
             using var body = JsonDocument.Parse(await response.BodyAsync());
             if (body.RootElement.TryGetProperty(SecretField, out var value))
             {
                 SuppressedSecret = value.GetString();
             }
         }
-        finally { await response.DisposeAsync(); }
+        catch { Failed = true; throw; }
+        finally { Advance(FailurePhase.Dispose); await response.DisposeAsync(); }
+        Advance(FailurePhase.Abort);
         await route.AbortAsync();
+        Advance(FailurePhase.None);
+    }
+
+    /// <summary>Reports only finite phase/status and one allowlisted certificate category; never publishes arbitrary exception details.</summary>
+    internal void RequireHealthy() => Assert.True(!Failed, string.Format(CultureInfo.InvariantCulture, FailureFormat, Phase, CommittedStatus, CertificateRejected));
+
+    /// <summary>Retains the first failure stage even while disposal and response abortion complete.</summary>
+    private void Advance(FailurePhase phase)
+    {
+        if (!Failed)
+        {
+            Phase = phase;
+        }
     }
 
     /// <summary>Releases and joins interception before removing it; the caller owns subsequent explicit recovery.</summary>
