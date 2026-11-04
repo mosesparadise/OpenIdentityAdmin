@@ -16,6 +16,54 @@
       "after": "",
       "marker": "application-projection-overflow-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed"
+    },
+    {
+      "id": "application-write-permission",
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+      "before": "if (!grants.Permissions(identity.Subject).Contains(permission))",
+      "after": "if (command.Kind == ApplicationMutationKind.Replace && !grants.Permissions(identity.Subject).Contains(permission))",
+      "marker": "application-write-permission-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes"
+    },
+    {
+      "id": "application-strong-version",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "before": "if (!ApplicationVersion.Matches(command.Version, policy.ApplicationId, policy.Revision))",
+      "after": "if (command.Version is null && !ApplicationVersion.Matches(command.Version, policy.ApplicationId, policy.Revision))",
+      "marker": "application-strong-version-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit"
+    },
+    {
+      "id": "application-recent-mfa",
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+      "before": "checked(source.FactorVerifiedAt + AdministratorPolicy.FreshnessSeconds)",
+      "after": "checked(source.FactorVerifiedAt + AdministratorPolicy.FreshnessSeconds + 1)",
+      "marker": "application-recent-mfa-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks"
+    },
+    {
+      "id": "application-json-csrf",
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs",
+      "before": "string.Equals(binding.AdditionalData, additionalData, StringComparison.Ordinal);",
+      "after": "!string.IsNullOrEmpty(binding.AdditionalData) && !string.IsNullOrEmpty(additionalData);",
+      "marker": "application-json-csrf-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent"
+    },
+    {
+      "id": "application-audit-atomicity",
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs",
+      "before": "        await ApplicationMutationWriter.VerifyAuditAsync(scope, command, state, identity.Subject, audit, token);",
+      "after": "        _ = audit;",
+      "marker": "application-audit-atomicity-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack"
+    },
+    {
+      "id": "application-credential-expiry",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "before": "command.CredentialExpiry is { } expiry && expiry <= now",
+      "after": "command.CredentialExpiry is { } expiry && expiry <= DateTimeOffset.MinValue",
+      "marker": "application-credential-expiry-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack"
     }
   ]
 }

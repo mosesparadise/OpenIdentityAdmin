@@ -11,6 +11,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 [Collection("administrator-bootstrap")]
 public sealed class ApplicationTransportTests(BootstrapFixture fixture)
 {
+    private const string CsrfBypass = "application-json-csrf-bypass";
+
     private const string PathSeparator = "/";
     private const string CookieHeader = "Set-Cookie";
     private const string PrivateHeader = "X-Private";
@@ -91,6 +93,7 @@ public sealed class ApplicationTransportTests(BootstrapFixture fixture)
     }
 
     /// <summary>Actual native token acquisition does not renew state; foreign origin, form-purpose and old-generation tokens cause zero TLS sends.</summary>
+    [Trait("CriticalDecision", "application-json-csrf")]
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -107,6 +110,7 @@ public sealed class ApplicationTransportTests(BootstrapFixture fixture)
         foreach (var value in new[] { Missing, form })
         {
             using var denied = await test.SendAsync(value, HttpMethod.Post, ApplicationTransportFixture.Collection, body);
+            Assert.True(test.Probe.Requests == 0, CsrfBypass);
             await RequireAsync(denied, HttpStatusCode.BadRequest, secret: false);
         }
         using var foreign = await test.SendAsync(csrf, HttpMethod.Post, ApplicationTransportFixture.Collection, body, origin: ForeignOrigin);

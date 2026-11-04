@@ -44861,6 +44861,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "application-audit-atomicity"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -44900,6 +44904,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-credential-expiry"
+        },
         {
           "key": "Provider",
           "value": "PostgreSql"
@@ -45001,6 +45009,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "application-audit-atomicity"
+        },
+        {
           "key": "Provider",
           "value": "SqlServer"
         }
@@ -45040,6 +45052,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-credential-expiry"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -45334,6 +45350,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "application-strong-version"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -45352,6 +45372,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-strong-version"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -45410,6 +45434,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "application-recent-mfa"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -45428,6 +45456,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-recent-mfa"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -45448,6 +45480,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "application-write-permission"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -45466,6 +45502,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-write-permission"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -45632,6 +45672,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "application-json-csrf"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -45650,6 +45694,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-json-csrf"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -47143,6 +47191,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "managed-explicit-consent"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -47182,6 +47234,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-explicit-consent"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -48199,6 +48255,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "managed-claim-isolation"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -48278,6 +48338,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-claim-isolation"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -48569,6 +48633,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-current-credential"
+        },
         {
           "key": "Provider",
           "value": "PostgreSql"
@@ -48948,6 +49016,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "managed-current-credential"
+        },
+        {
           "key": "Provider",
           "value": "SqlServer"
         }
@@ -49233,6 +49305,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "managed-request-consumption"
+        },
+        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -49252,6 +49328,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-code-consumption"
+        },
         {
           "key": "Provider",
           "value": "PostgreSql"
@@ -49273,6 +49353,10 @@
       },
       "traits": [
         {
+          "key": "CriticalDecision",
+          "value": "managed-request-consumption"
+        },
+        {
           "key": "Provider",
           "value": "SqlServer"
         }
@@ -49292,6 +49376,10 @@
         ]
       },
       "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-code-consumption"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

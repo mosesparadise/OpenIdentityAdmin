@@ -182,7 +182,8 @@ def manifest(root, suite='issuer'):
         'issuer': (7, 'eng/critical-mutations.json', 'src/backend/IdentityPlatform.AuthServer/Features'),
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
-        'applications': (2, 'eng/application-mutations.json', None),
+        'applications': (8, 'eng/application-mutations.json', None),
+        'managed-applications': (5, 'eng/managed-application-mutations.json', None),
         'browser-session': (8, 'eng/browser-session-mutations.json', None),
         'governance': (6, 'eng/governance-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance')
     }
@@ -209,11 +210,24 @@ def manifest(root, suite='issuer'):
             'src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs',
         }
-        if suite in ('administrator-protocol', 'browser-session', 'applications'):
-            allowed = ({'src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs',
-                        'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs'}
-                       if suite == 'applications' else protocol_paths if suite == 'administrator-protocol' else browser_paths)
-            permitted = path in {(root / value).resolve() for value in allowed}
+        application_paths = {
+            'src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs',
+            'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs',
+            'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs',
+            'src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs'
+        }
+        managed_paths = {
+            'src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs',
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs',
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs'
+        }
+        exact_paths = {'administrator-protocol': protocol_paths, 'browser-session': browser_paths,
+                       'applications': application_paths, 'managed-applications': managed_paths}
+        if suite in exact_paths:
+            permitted = path in {(root / value).resolve() for value in exact_paths[suite]}
         else:
             permitted = path.is_relative_to((root / boundary).resolve()) or witness_lock
         if not permitted or path.suffix != '.cs':
@@ -370,11 +384,11 @@ def main():
     global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=['PostgreSql', 'SqlServer'])
-    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications'], default='issuer')
+    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
-    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications'):
+    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications'):
         PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))

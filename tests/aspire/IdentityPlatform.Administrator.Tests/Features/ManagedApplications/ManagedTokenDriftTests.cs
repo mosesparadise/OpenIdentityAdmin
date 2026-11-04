@@ -7,6 +7,10 @@ namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 [Collection("administrator-bootstrap")]
 public sealed class ManagedTokenDriftTests(BootstrapFixture fixture)
 {
+    private const string CredentialBypass = "managed-current-credential-bypass";
+    private const string CriticalDecision = "CriticalDecision";
+    private const string CredentialDecision = "managed-current-credential";
+
     private const string InvalidGrant = "invalid_grant";
     private const string InvalidToken = "invalid_token";
     private const string PostgreSql = "PostgreSql";
@@ -33,6 +37,12 @@ public sealed class ManagedTokenDriftTests(BootstrapFixture fixture)
             var before = await ManagedTokenEvidence.RollbackDigestAsync(test,
                 observed: !exchange && defect is not (ManagedHumanAuthority.Policy or ManagedHumanAuthority.Credential) ? test.Http.Now.ToUnixTimeSeconds() : null);
             using var response = exchange ? await flow.ExchangeAsync(code!) : await test.SendAsync(flow.Resume);
+            if (exchange && defect == ManagedHumanAuthority.Credential)
+            {
+                var early = await test.SnapshotAsync();
+                var codeId = Assert.Single(early.Interactions).CodeId;
+                Assert.False(early.Tokens.Single(value => value.Id == codeId).Status == Redeemed, CredentialBypass);
+            }
             if (defect is ManagedHumanAuthority.Policy or ManagedHumanAuthority.Credential)
             {
                 await ManagedTokenEvidence.ErrorAsync(response, HttpStatusCode.BadRequest, exchange ? InvalidGrant : InvalidToken, local: !exchange);
@@ -55,5 +65,12 @@ public sealed class ManagedTokenDriftTests(BootstrapFixture fixture)
         from provider in Providers
         from exchange in Phases
         from defect in Enum.GetValues<ManagedHumanAuthority>()
-        select new TheoryDataRow<string, bool, ManagedHumanAuthority>(provider, exchange, defect).WithTrait(ProviderTrait, provider);
+        select Case(provider, exchange, defect);
+
+    /// <summary>Tags only exact credential-expiry equality after real code issuance for the mutation witness.</summary>
+    private static TheoryDataRow<string, bool, ManagedHumanAuthority> Case(string provider, bool exchange, ManagedHumanAuthority defect)
+    {
+        var row = new TheoryDataRow<string, bool, ManagedHumanAuthority>(provider, exchange, defect).WithTrait(ProviderTrait, provider);
+        return exchange && defect == ManagedHumanAuthority.Credential ? row.WithTrait(CriticalDecision, CredentialDecision) : row;
+    }
 }

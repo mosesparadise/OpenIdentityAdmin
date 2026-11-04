@@ -12,6 +12,10 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 [Collection("administrator-bootstrap")]
 public sealed class ApplicationMutationFailureTests(BootstrapFixture fixture)
 {
+    private const int CreatedStatus = 201;
+    private const string AuditBypass = "application-audit-atomicity-bypass";
+    private const string ExpiryBypass = "application-credential-expiry-bypass";
+
     private const int ExpiryAdvanceSeconds = 2;
     private const string PilotId = "synthetic-managed-protection";
     private const string PilotScope = "synthetic-pilot-scope";
@@ -23,17 +27,17 @@ public sealed class ApplicationMutationFailureTests(BootstrapFixture fixture)
     [InlineData("PostgreSql", ApplicationWriteDefect.AuditFailure, Traits = ["Provider", "PostgreSql"])]
     [InlineData("PostgreSql", ApplicationWriteDefect.TokenRevoked, Traits = ["Provider", "PostgreSql"])]
     [InlineData("PostgreSql", ApplicationWriteDefect.SourceRevoked, Traits = ["Provider", "PostgreSql"])]
-    [InlineData("PostgreSql", ApplicationWriteDefect.AuditDeleted, Traits = ["Provider", "PostgreSql"])]
+    [InlineData("PostgreSql", ApplicationWriteDefect.AuditDeleted, Traits = ["Provider", "PostgreSql", "CriticalDecision", "application-audit-atomicity"])]
     [InlineData("PostgreSql", ApplicationWriteDefect.PolicyChanged, Traits = ["Provider", "PostgreSql"])]
-    [InlineData("PostgreSql", ApplicationWriteDefect.CredentialExpired, Traits = ["Provider", "PostgreSql"])]
+    [InlineData("PostgreSql", ApplicationWriteDefect.CredentialExpired, Traits = ["Provider", "PostgreSql", "CriticalDecision", "application-credential-expiry"])]
     [InlineData("PostgreSql", ApplicationWriteDefect.SourceRebound, Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", ApplicationWriteDefect.SourceRebound, Traits = ["Provider", "SqlServer"])]
     [InlineData("SqlServer", ApplicationWriteDefect.AuditFailure, Traits = ["Provider", "SqlServer"])]
     [InlineData("SqlServer", ApplicationWriteDefect.TokenRevoked, Traits = ["Provider", "SqlServer"])]
     [InlineData("SqlServer", ApplicationWriteDefect.SourceRevoked, Traits = ["Provider", "SqlServer"])]
-    [InlineData("SqlServer", ApplicationWriteDefect.AuditDeleted, Traits = ["Provider", "SqlServer"])]
+    [InlineData("SqlServer", ApplicationWriteDefect.AuditDeleted, Traits = ["Provider", "SqlServer", "CriticalDecision", "application-audit-atomicity"])]
     [InlineData("SqlServer", ApplicationWriteDefect.PolicyChanged, Traits = ["Provider", "SqlServer"])]
-    [InlineData("SqlServer", ApplicationWriteDefect.CredentialExpired, Traits = ["Provider", "SqlServer"])]
+    [InlineData("SqlServer", ApplicationWriteDefect.CredentialExpired, Traits = ["Provider", "SqlServer", "CriticalDecision", "application-credential-expiry"])]
     public async Task Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(string provider, ApplicationWriteDefect defect)
     {
         var fault = new ApplicationWriteFault(defect);
@@ -43,11 +47,15 @@ public sealed class ApplicationMutationFailureTests(BootstrapFixture fixture)
         var command = defect == ApplicationWriteDefect.CredentialExpired ? test.Create(lifetime: 1) : test.Create();
         if (defect is ApplicationWriteDefect.AuditFailure or ApplicationWriteDefect.AuditDeleted or ApplicationWriteDefect.PolicyChanged)
         {
-            await Assert.ThrowsAsync<InvalidOperationException>(() => test.ExecuteAsync(command));
+            var status = 0;
+            var failure = await Record.ExceptionAsync(async () => { status = (await test.ExecuteAsync(command)).Status; });
+            Assert.False(failure is null && status == CreatedStatus && fault.Fired && await test.AuditsAsync() == 0, AuditBypass);
+            Assert.IsType<InvalidOperationException>(failure);
         }
         else
         {
             var result = await test.ExecuteAsync(command);
+            Assert.False(result.Status == CreatedStatus && fault.Fired, ExpiryBypass);
             Assert.Equal(defect == ApplicationWriteDefect.CredentialExpired ? 400 : 401, result.Status);
             Assert.Null(result.Credential);
             Assert.Null(result.Application);

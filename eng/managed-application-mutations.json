@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "managed-explicit-consent",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
+      "before": "ManagedAccountRequest.Deny => ManagedHumanAction.Deny,",
+      "after": "ManagedAccountRequest.Deny => ManagedHumanAction.Approve,",
+      "marker": "managed-explicit-consent-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits"
+    },
+    {
+      "id": "managed-claim-isolation",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs",
+      "before": "Common.Contains(claim.Type) || claim.Type is Claims.ClientId or Claims.Private.Presenter or Claims.Private.Scope",
+      "after": "Common.Contains(claim.Type) || claim.Type is Claims.Role or Claims.ClientId or Claims.Private.Presenter or Claims.Private.Scope",
+      "marker": "managed-claim-isolation-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority"
+    },
+    {
+      "id": "managed-request-consumption",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs",
+      "before": "            await transaction.CommitAsync(token);",
+      "after": "            if (signIn?.EndpointType != OpenIddictServerEndpointType.Authorization)\n            {\n                await transaction.CommitAsync(token);\n            }",
+      "marker": "managed-request-consumption-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent"
+    },
+    {
+      "id": "managed-code-consumption",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs",
+      "before": "            await transaction.CommitAsync(token);",
+      "after": "            if (signIn?.EndpointType != OpenIddictServerEndpointType.Token)\n            {\n                await transaction.CommitAsync(token);\n            }",
+      "marker": "managed-code-consumption-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent"
+    },
+    {
+      "id": "managed-current-credential",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+      "before": "policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
+      "after": "policy.CredentialExpiresAt < ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
+      "marker": "managed-current-credential-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish"
+    }
+  ]
+}

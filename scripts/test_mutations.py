@@ -670,9 +670,29 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(6, len(manifest(ROOT, "governance")))
         self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
         self.assertEqual(8, len(manifest(ROOT, "browser-session")))
-        self.assertEqual(2, len(manifest(ROOT, "applications")))
+        self.assertEqual(8, len(manifest(ROOT, "applications")))
+        self.assertEqual(5, len(manifest(ROOT, "managed-applications")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
+
+    def test_Given_ApplicationManifests_When_InventoryOrBoundaryChanges_Then_GateRejectsDrift(self):
+        """New write/issuer controls cannot disappear or mutate adjacent unreviewed source."""
+        reader = Path.read_text
+        for suite, filename in (('applications', 'application-mutations.json'),
+                                ('managed-applications', 'managed-application-mutations.json')):
+            path = ROOT / 'eng' / filename
+            reviewed = json.loads(reader(path))
+            for defect in ('missing', 'duplicate', 'outside', 'anchor'):
+                candidate = json.loads(json.dumps(reviewed))
+                if defect == 'missing': candidate['mutations'].pop()
+                elif defect == 'duplicate': candidate['mutations'][1]['id'] = candidate['mutations'][0]['id']
+                elif defect == 'outside': candidate['mutations'][0]['path'] = 'src/backend/IdentityPlatform.AuthServer/Program.cs'
+                else: candidate['mutations'][0]['before'] = 'missing synthetic mutation anchor'
+                def substitute(current, *arguments, **keywords):
+                    """Replace only the reviewed manifest; actual source anchors remain independently read."""
+                    return json.dumps(candidate) if current == path else reader(current, *arguments, **keywords)
+                with self.subTest(suite=suite, defect=defect), patch.object(Path, 'read_text', substitute):
+                    with self.assertRaises(ValueError): manifest(ROOT, suite)
 
     def test_Given_GovernanceManifest_When_InventoryOrSourceBoundaryDrifts_Then_VerificationRejectsIt(self):
         """Keep all six targets and the sole witness-lock exception explicit without touching sources."""

@@ -1,4 +1,5 @@
 using System.Net;
+using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -13,6 +14,9 @@ namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 [Collection("administrator-bootstrap")]
 public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
 {
+    private const string CodeConsumptionBypass = "managed-code-consumption-bypass";
+    private const string RequestConsumptionBypass = "managed-request-consumption-bypass";
+
     private const string InvalidClient = "invalid_client";
     private const string InvalidGrant = "invalid_grant";
     private const string InvalidToken = "invalid_token";
@@ -24,10 +28,10 @@ public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
 
     /// <summary>Real provider audit INSERT denial rolls back generated credentials while preserving earlier committed native input consumption.</summary>
     [Theory]
-    [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql"])]
-    [InlineData("SqlServer", false, Traits = ["Provider", "SqlServer"])]
-    [InlineData("PostgreSql", true, Traits = ["Provider", "PostgreSql"])]
-    [InlineData("SqlServer", true, Traits = ["Provider", "SqlServer"])]
+    [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql", "CriticalDecision", "managed-request-consumption"])]
+    [InlineData("SqlServer", false, Traits = ["Provider", "SqlServer", "CriticalDecision", "managed-request-consumption"])]
+    [InlineData("PostgreSql", true, Traits = ["Provider", "PostgreSql", "CriticalDecision", "managed-code-consumption"])]
+    [InlineData("SqlServer", true, Traits = ["Provider", "SqlServer", "CriticalDecision", "managed-code-consumption"])]
     public async Task Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(string provider, bool exchange)
     {
         await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
@@ -37,13 +41,13 @@ public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
         var row = Assert.Single((await test.SnapshotAsync()).Interactions);
         var before = await ManagedTokenEvidence.RollbackDigestAsync(test);
         var lease = test.Http.Environment.Issuer.Account.Journey.Lease;
-        await lease.AuditPermissionAsync(false, TestContext.Current.CancellationToken);
-        try
+        await IssuerAuditPermission.RunAsync(lease, async () =>
         {
             using var response = exchange ? await flow.ExchangeAsync(code!) : await test.SendAsync(flow.Resume);
             await ManagedCacheTestContext.UnavailableAsync(response);
-        }
-        finally { await lease.AuditPermissionAsync(true, TestContext.Current.CancellationToken); }
+        });
+        var consumed = (await test.SnapshotAsync()).Tokens.Single(value => value.Id == (exchange ? row.CodeId : row.RequestId)).Status;
+        Assert.False(consumed == Valid, exchange ? CodeConsumptionBypass : RequestConsumptionBypass);
         await RequireStatusAsync(test, (exchange ? row.CodeId : row.RequestId)!, Redeemed);
         Assert.Equal(before, await ManagedTokenEvidence.RollbackDigestAsync(test));
         using var replay = exchange ? await flow.ExchangeAsync(code!) : await test.SendAsync(flow.Resume);

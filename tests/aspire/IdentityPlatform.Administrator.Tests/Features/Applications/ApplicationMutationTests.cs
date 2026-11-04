@@ -12,6 +12,11 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 [Collection("administrator-bootstrap")]
 public sealed class ApplicationMutationTests(BootstrapFixture fixture)
 {
+    private const string VersionBypass = "application-strong-version-bypass";
+    private const string PermissionBypass = "application-write-permission-bypass";
+    private const string MfaBypass = "application-recent-mfa-bypass";
+
+    private static readonly int[] ConcurrentStatuses = [200, 412];
     private const string Edited = "Edited managed application";
     private const string Write = "applications.write";
     private const string Credentials = "applications.credentials";
@@ -52,6 +57,7 @@ public sealed class ApplicationMutationTests(BootstrapFixture fixture)
     }
 
     /// <summary>Same-resource races serialize under actual provider locks and only the winning duplicate/versioned write receives an audit.</summary>
+    [Trait("CriticalDecision", "application-strong-version")]
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -63,7 +69,8 @@ public sealed class ApplicationMutationTests(BootstrapFixture fixture)
         var created = Assert.Single(creates, value => value.Status == CreatedStatus);
         var command = ApplicationMutationCommand.Edit(created.Application!.Id, created.Version!, new(Edited, [ApplicationMutationFixture.Redirect]))!;
         var edits = await Task.WhenAll(test.ExecuteAsync(command), test.ExecuteAsync(command));
-        Assert.Equal([200, 412], edits.Select(value => value.Status).Order().ToArray());
+        Assert.False(edits.All(value => value.Status == UpdatedStatus), VersionBypass);
+        Assert.Equal(ConcurrentStatuses, edits.Select(value => value.Status).Order().ToArray());
         var edited = Assert.Single(edits, value => value.Status == UpdatedStatus);
         var replacement = test.Replace(edited);
         var replacements = await Task.WhenAll(test.ExecuteAsync(replacement), test.ExecuteAsync(replacement));
@@ -72,6 +79,7 @@ public sealed class ApplicationMutationTests(BootstrapFixture fixture)
     }
 
     /// <summary>Read access does not authorize writes; removing the credential grant denies replacement while ordinary edits remain permitted.</summary>
+    [Trait("CriticalDecision", "application-write-permission")]
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -85,11 +93,14 @@ public sealed class ApplicationMutationTests(BootstrapFixture fixture)
         var edited = await test.ExecuteAsync(ApplicationMutationCommand.Edit(created.Application!.Id, created.Version!, new(Edited, [ApplicationMutationFixture.Redirect]))!);
         Assert.Equal(200, edited.Status);
         await RemoveAsync(test, Write);
-        Assert.Equal(403, (await test.ExecuteAsync(test.Create(ReplacementOnly))).Status);
+        var denied = await test.ExecuteAsync(test.Create(ReplacementOnly));
+        Assert.False(denied.Status == CreatedStatus, PermissionBypass);
+        Assert.Equal(403, denied.Status);
         Assert.Equal(2, await test.AuditsAsync());
     }
 
     /// <summary>Equality at the persisted MFA deadline denies replacement while the otherwise current session can still edit presentation.</summary>
+    [Trait("CriticalDecision", "application-recent-mfa")]
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -101,7 +112,9 @@ public sealed class ApplicationMutationTests(BootstrapFixture fixture)
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var verified = await database.Set<AdministratorSession>().Select(row => row.FactorVerifiedAt).SingleAsync(test.Token);
         test.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(verified + MfaSeconds);
-        Assert.Equal(403, (await test.ExecuteAsync(test.Replace(created))).Status);
+        var denied = await test.ExecuteAsync(test.Replace(created));
+        Assert.False(denied.Status == UpdatedStatus, MfaBypass);
+        Assert.Equal(403, denied.Status);
         var edited = await test.ExecuteAsync(ApplicationMutationCommand.Edit(created.Application!.Id, created.Version!, new(Edited, [ApplicationMutationFixture.Redirect]))!);
         Assert.Equal(200, edited.Status);
         Assert.True(await test.AcceptsAsync(created.Application.Id, created.Credential!.ClientSecret));

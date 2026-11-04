@@ -13,6 +13,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 [Collection("administrator-bootstrap")]
 public sealed class ManagedHumanHttpTests(BootstrapFixture fixture)
 {
+    private const string ConsentBypass = "managed-explicit-consent-bypass";
+
     private const string ExpectedPurpose = "managed-application-login";
     private const string Consumed = "Consumed";
 
@@ -20,8 +22,8 @@ public sealed class ManagedHumanHttpTests(BootstrapFixture fixture)
     [Theory]
     [InlineData("PostgreSql", true, Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", true, Traits = ["Provider", "SqlServer"])]
-    [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql"])]
-    [InlineData("SqlServer", false, Traits = ["Provider", "SqlServer"])]
+    [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql", "CriticalDecision", "managed-explicit-consent"])]
+    [InlineData("SqlServer", false, Traits = ["Provider", "SqlServer", "CriticalDecision", "managed-explicit-consent"])]
     public async Task Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(string provider, bool approve)
     {
         await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
@@ -47,6 +49,7 @@ public sealed class ManagedHumanHttpTests(BootstrapFixture fixture)
         Assert.Null(afterMfa.ConsentVerifiedAt);
         using var decision = await BrowserIssuerHttp.PostAsync(test.Http.IssuerClient, ManagedHumanHttp.Path,
             new Dictionary<string, string>(consent, StringComparer.Ordinal) { [ManagedHumanHttp.Decision] = approve ? ManagedHumanHttp.Approve : ManagedHumanHttp.Deny });
+        Assert.False(!approve && Assert.Single((await test.SnapshotAsync()).Interactions).State == ManagedLoginState.Approved, ConsentBypass);
         if (approve)
         {
             await ManagedTokenFlow.ResumeRedirectAsync(test, decision);
