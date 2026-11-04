@@ -49,3 +49,6 @@ Batch acceptance: T017/T018/T019 were independently AI-reviewed and normally squ
 
 
 - [x] T021 Correct the current-base CI image-preparation gap evidenced by run `38746001120`: acquire and verify the already-pinned provider image before native test startup, with bounded one-attempt failure propagation and seeded preparation/workflow controls. Requirements: ENG-09, NFR-08/11/14. Exact-candidate run `38751626290` and independent reviews passed; PR #50 delivered T020/T021 as squash `e780cfa9`. The separate DCP timeout and historical certificate cause remain unresolved; see `witness-ci-disposition.md`.
+
+
+The feature 019 [bootstrap remediation](../019-application-editor/delivery-checks.md) removes 40 exact legacy allowances and the expired BootstrapTests exception without renewal. Both providers pass 45 bootstrap cases; an explicit 46-case rename ledger preserves all 90 cases. This bounded contribution does not complete the wider T015 retrofit or close historical findings.

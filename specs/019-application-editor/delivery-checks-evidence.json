@@ -1,0 +1,514 @@
+{
+  "schemaVersion": 1,
+  "source_commit": "89dba331645f3deb8367d84b502e2046c58879c1",
+  "scope": "Scoped local T020/T021 acceptance and T022 remediation. Not full exact-head hosted CI or aggregate/browser acceptance.",
+  "source_files": [
+    {
+      "path": ".github/workflows/verify.yml",
+      "sha256": "29003e356e3dc095f31a2cce27503c23055804192d30a9a267ee6e0809fb363f"
+    },
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "de36ace4df55ec9975ddc1ac09862c705d4d17687ef351700ff77370ceac1495"
+    },
+    {
+      "path": "eng/code-quality/allowances.json",
+      "sha256": "379b2e24c369a13762d0c38ba8b2bc2a21e13aecb571aa73fd6ffe624150409b"
+    },
+    {
+      "path": "eng/contract-test-matrix.json",
+      "sha256": "259c572abe549f55043ec5b11571b67aa55501011b988bda82c561f45a49828d"
+    },
+    {
+      "path": "eng/contracts/README.md",
+      "sha256": "fcc76049f271e432e8fea6992681e85f7e938beb448e2c1aa3a66a594ffe82d3"
+    },
+    {
+      "path": "eng/contracts/generator-compatibility.json",
+      "sha256": "d57e905da9f7af0343aece723504d73fd2a211a8ac6d0e33bde043157e42ca94"
+    },
+    {
+      "path": "eng/contracts/generator-compatibility.md",
+      "sha256": "5e73ff3ee59742f147915746a8f56ab90f386bd270d1f26d762728874a5698d0"
+    },
+    {
+      "path": "eng/contracts/npm-review.json",
+      "sha256": "19907dd2342843216d9d432f91acc0e1a650314d28c763b5297b15dfc7fc0cf5"
+    },
+    {
+      "path": "scripts/check_contract_supply_chain.py",
+      "sha256": "8f046d3ce53acfc2e6f9b50c05038c63256c677cc27887a356685488476df9b6"
+    },
+    {
+      "path": "scripts/test_contract_supply_chain.py",
+      "sha256": "6c99b1297572f74e675f6fb3ab90fd2d3a53d9d5529b797627ef12c8db0279a0"
+    },
+    {
+      "path": "scripts/verify_contracts.py",
+      "sha256": "e65dfcfe3f498b3c419563ebec0d6ebdc85a39358f2ff83ae5bdb31ae1527d24"
+    },
+    {
+      "path": "specs/019-application-editor/bootstrap-case-renames.json",
+      "sha256": "0cc97bb7ff89f67b49ccf44f54a205979a536fb6e9fb06b78315b275898e9bff"
+    },
+    {
+      "path": "specs/019-application-editor/import-order-ledger.json",
+      "sha256": "26a97d764b72152fe3c03f0603e897e3692a9b0d0cb9dca4dd4bb223fe5b19a1"
+    },
+    {
+      "path": "specs/019-application-editor/unused-import-ledger.json",
+      "sha256": "9ec0f47a257c0af25f20cbd3b25f2a5a212c563895a3ea333004599b45076040"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
+      "sha256": "076a47e32903f184a08c76c8be9d3492992dce59d38774a2772b34672b4f2ba8"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/NativeResponseHandlers.cs",
+      "sha256": "1622cb3ebeb9edfa3ec0a46d43070b967428119a7dc0057ca693cfb5de19e318"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedAdmission.cs",
+      "sha256": "cc2f37e7abe0515ac9bb54d39e6311f880164384941689f734accdac353e5ea7"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPrincipal.cs",
+      "sha256": "d37ecc6770089df57c979a8e7489086aa59b41579330fe07c0221f6235d152a6"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedTokenAdmission.cs",
+      "sha256": "a478c2501305d6c49a0cbbff823384ecdbec73363bfb456b9ce461af0ba855e9"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/Setup.cs",
+      "sha256": "fd38925397f72960cf21be3568b43a8509e3c4f09726ecc16fe4bad6ee3426e1"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/README.md",
+      "sha256": "8c2369feb75950c5f07703f81aee9ace3f454805b06b449c59b00e19ba6d5f8c"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/package-lock.json",
+      "sha256": "4978a5eeafd23169ed846dcb8c98b2ede8c2c21e3b1c2d3ba0d73d495314f7f3"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/package.json",
+      "sha256": "fd7f86a318d4f74bf7f1aba72aefacfdcb14435cc755767d13c7035315260b9a"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/tests/generator-compatibility.test.mjs",
+      "sha256": "4eb9e9c76ca4f89a322b1c2e8553ef9970910859b044da3835bd72bbe81b1bb6"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/tests/generator-matcher-child.mjs",
+      "sha256": "ef73ca30608e1f0ec3d9ad5e7b6fce67ea42eeaa162d81f924e95444203cc41b"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Contracts/tooling/prepare-generator.mjs",
+      "sha256": "1ea7069d0e84636d65918342385a94baa7d94e48deb5c8176c768797675f2a3f"
+    },
+    {
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedIssuanceSource.cs",
+      "sha256": "cae8ffb196477f85ebddc748650184ee61e6956ad8b76535ca0e80da72d573b9"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateAuthorityTests.cs",
+      "sha256": "0ec16bce77ac77619f7a0e061bc215b97085be5740524364558aed36c3e47b82"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateEvidence.cs",
+      "sha256": "1772dbe5de0b397eb1a41e579a03cf57cc7badbd2cc59ab6ffda98481ff0138a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateFailureTests.cs",
+      "sha256": "856e72d62ecbfaa7c88f402adbaedccdb6af8a1d5e068dc1bb9fc2f5a41e182f"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateTests.cs",
+      "sha256": "0ecae2f58c7ba94f80ef29299be4ca07ef99dbdfd7df218e09a5cd0c24af6d24"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationMutationProbe.cs",
+      "sha256": "b98a213c7d900c9512ca5e12915b78fa9f4e582e2e33e90b9402326006c6caea"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationUpdateTests.cs",
+      "sha256": "b850e8ec6f1d2bf5bf87306f4374eaf7fdf4cda3e64661d68cedb453919b068d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/AtomicityTests.cs",
+      "sha256": "ea4a23c77eeb5b53e552dd0f8950084539f73f3ddf3a3c72e95de100189b8c74"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapBundles.cs",
+      "sha256": "66f3870ff06dfa86f324ef90d24fe5699bbcfe0c742b0956ddedd9b72973dd67"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapCancellation.cs",
+      "sha256": "4932e66cfcea945a0810f6ebafa170a88655ffc1a1d9308835cc3d23037ce64b"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapCreatedEvidence.cs",
+      "sha256": "44fca7ca50e08fb0d1e480a7cf3ef438034f1cbfb58b5c5090c956cd73d2d41d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapEvidence.cs",
+      "sha256": "457873a09d04eabac6932745b50d76c419d36247fc37ddaae5f1bf604c7fc75a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapFailureScenarios.cs",
+      "sha256": "802fa68907c1856a2b4ddb6cc525773c90e3567e8daba83f8a48f422d8bdfed0"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapProcessScenarios.cs",
+      "sha256": "48af3b2c783f07b7b5a8c85df4e41d0acd96e427520f42621e510dda2e50d47e"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapSnapshot.cs",
+      "sha256": "edc905e6000db9658a897534afc9e508dc408b46c15aa4a828851067028614d0"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
+      "sha256": "390d2486e3644c83bf65f1213686271b481dae9c9f49d9dca148facc822e8264"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapUpgradeScenario.cs",
+      "sha256": "a00e0a6ba1b8d97af8b70d0ada257d4a1fb3dd3c9113c71cad286748a1149573"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/PilotIsolationTests.cs",
+      "sha256": "e0dfacaa98201c1a347acb7b957510f4e63fc2ec043e391e8a9dad0628e32a5b"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/ProcessTests.cs",
+      "sha256": "c86dbd82565971190cfb9edddd932765e36f42b64cb06acb2dc67ff260aa2ca5"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheCapacityTests.cs",
+      "sha256": "74c1f2cf42a016ba8a2f0ab45a68c847d37d03554ddffd3781f4883b29fe8efd"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheCleanupTests.cs",
+      "sha256": "bfbc39b3a75a9552d0ea47a90668e89a83bdb5e48e3151bddc4d353e3a76be05"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs",
+      "sha256": "41c05ad74ffc31c73bec03f26983d73b6c916e80274a1d7006f5c80417a471c2"
+    },
+    {
+      "path": "tests/backend/IdentityPlatform.Host.Tests/Features/ManagedApplications/ManagedProfileTests.cs",
+      "sha256": "c5a975f7025cb151bad3940ac4a3955fc223eb0de68abcae384ed8496f42fea2"
+    }
+  ],
+  "source_version_limits": "Bootstrap runtime began on the reviewed extracted source before final import ordering. All namespace/declaration/method bodies and directive sets are identical, bound by import-order-ledger.json; no final-binary equivalence or exact-head full-CI result is inferred. A second compiler-directed cleanup removes17 unused imports in9 other files with unchanged namespace/declaration/method bodies, recorded in unused-import-ledger.json. Contract source/dependencies match this source snapshot; native contract code is unchanged by these import-only changes.",
+  "bootstrap": [
+    {
+      "provider": "PostgreSql",
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0,
+      "report": {
+        "path": "artifacts/tests/administrator-PostgreSql-bootstrap/Administrator.trx",
+        "sha256": "49f7fbd7b3e5f657806c05bd75d304df4824b09fdd86c3090914fd804ed0339b"
+      },
+      "log": {
+        "path": "t022-bootstrap-pg.log",
+        "sha256": "e2f30df553405de1119f58d5353ab2277dad9bdffc199fa70bcfda73b0357d99"
+      },
+      "executed_names": [
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"audit\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"cancel-lock\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"cancel-manager\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"kill-precommit\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"PostgreSql\", scenario: \"manager\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"PostgreSql\", scenario: \"conflicting\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"PostgreSql\", scenario: \"identical\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapPilotIsolationTests.Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"local-roles\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"missing-connection\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"operation\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"PostgreSql\", scenario: \"terminal\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"escaped-high\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"escaped-low\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"invalid-canary\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"invalid-utf8\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"missing-eof\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"PostgreSql\", scenario: \"too-large\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"lost-result\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"old-schema\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"runtime-only\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"unrelated-data\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"PostgreSql\", scenario: \"upgrade-only\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"PostgreSql\", scenario: \"maximum\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"PostgreSql\", scenario: \"minimum\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"PostgreSql\", scenario: \"process\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"deleted\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"disabled\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"membership\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"ordinary\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"password\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"PostgreSql\", scenario: \"renamed\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"consumed-without-receipt\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"different-identity\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"different-operation\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"missing-singleton\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"normalized-user\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"pending\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"receipt-without-consumed\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"reserved-role\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"PostgreSql\", scenario: \"unowned-permission\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"PostgreSql\", scenario: \"case\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"PostgreSql\", scenario: \"case-and-exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"PostgreSql\", scenario: \"padding\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"PostgreSql\", scenario: \"padding-and-exact\")"
+      ]
+    },
+    {
+      "provider": "SqlServer",
+      "passed": 45,
+      "failed": 0,
+      "skipped": 0,
+      "report": {
+        "path": "artifacts/tests/administrator-SqlServer-bootstrap/Administrator.trx",
+        "sha256": "b9083cd74b03574beac396ab77f5a597344fe30de9f55f3cae87b81cf6ced4f6"
+      },
+      "log": {
+        "path": "t022-bootstrap-sql.log",
+        "sha256": "3d053113e390e0c53f33ecd95d0a819b552cf28beac19e08de551ac8a5b46811"
+      },
+      "executed_names": [
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"audit\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"cancel-lock\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"cancel-manager\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"kill-precommit\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_BootstrapInitialization_When_StorageOrProcessIsInterrupted_Then_AllWritesRollbackAndRecoverySucceeds(provider: \"SqlServer\", scenario: \"manager\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"SqlServer\", scenario: \"conflicting\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapAtomicityTests.Given_IndependentProcesses_When_BootstrapOperationsContend_Then_OneInitializationAndExactReconciliationOccur(provider: \"SqlServer\", scenario: \"identical\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapPilotIsolationTests.Given_RealPilotAndPendingAdministrator_When_EachSignsIn_Then_OnlyPilotReceivesAuthority(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"local-roles\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"missing-connection\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"operation\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapConfiguration_When_UnsafeOperationIsRequested_Then_CommandRejectsBeforeWriting(provider: \"SqlServer\", scenario: \"terminal\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"escaped-high\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"escaped-low\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"invalid-canary\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"invalid-utf8\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"missing-eof\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapPipeInput_When_InvalidOrIncomplete_Then_NoCredentialOrWriteEscapes(provider: \"SqlServer\", scenario: \"too-large\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"lost-result\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"old-schema\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"runtime-only\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"unrelated-data\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapProcessTests.Given_BootstrapProcess_When_RestartSchemaOrPrivilegeBoundaryIsExercised_Then_PersistedStateIsPreserved(provider: \"SqlServer\", scenario: \"upgrade-only\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"SqlServer\", scenario: \"maximum\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"SqlServer\", scenario: \"minimum\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Creates_exact_inert_identity_with_native_password_and_atomic_audit(provider: \"SqlServer\", scenario: \"process\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"deleted\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"disabled\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"membership\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"ordinary\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"password\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Matching_receipt_never_repairs_changed_account_or_authority(provider: \"SqlServer\", scenario: \"renamed\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"consumed-without-receipt\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"different-identity\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"different-operation\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"missing-singleton\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"normalized-user\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"pending\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"receipt-without-consumed\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"reserved-role\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Rejects_conflicts_without_adoption_repair_or_partial_mutation(provider: \"SqlServer\", scenario: \"unowned-permission\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"SqlServer\", scenario: \"case\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"SqlServer\", scenario: \"case-and-exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"SqlServer\", scenario: \"padding\")",
+        "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests.Reserved_permission_type_uses_ordinal_semantics_on_both_providers(provider: \"SqlServer\", scenario: \"padding-and-exact\")"
+      ]
+    }
+  ],
+  "bootstrap_preformat_sources": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/AtomicityTests.cs",
+      "sha256": "ea4a23c77eeb5b53e552dd0f8950084539f73f3ddf3a3c72e95de100189b8c74"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapBundles.cs",
+      "sha256": "66f3870ff06dfa86f324ef90d24fe5699bbcfe0c742b0956ddedd9b72973dd67"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapCancellation.cs",
+      "sha256": "4932e66cfcea945a0810f6ebafa170a88655ffc1a1d9308835cc3d23037ce64b"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapCreatedEvidence.cs",
+      "sha256": "44fca7ca50e08fb0d1e480a7cf3ef438034f1cbfb58b5c5090c956cd73d2d41d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapEvidence.cs",
+      "sha256": "457873a09d04eabac6932745b50d76c419d36247fc37ddaae5f1bf604c7fc75a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapFailureScenarios.cs",
+      "sha256": "802fa68907c1856a2b4ddb6cc525773c90e3567e8daba83f8a48f422d8bdfed0"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapProcessScenarios.cs",
+      "sha256": "48af3b2c783f07b7b5a8c85df4e41d0acd96e427520f42621e510dda2e50d47e"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapSnapshot.cs",
+      "sha256": "edc905e6000db9658a897534afc9e508dc408b46c15aa4a828851067028614d0"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
+      "sha256": "74f27e68fb9dc859ad0970a1d1761e3c7bbc307b3ca0929fcc09ca5d878ecb49"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapUpgradeScenario.cs",
+      "sha256": "a00e0a6ba1b8d97af8b70d0ada257d4a1fb3dd3c9113c71cad286748a1149573"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/PilotIsolationTests.cs",
+      "sha256": "e0dfacaa98201c1a347acb7b957510f4e63fc2ec043e391e8a9dad0628e32a5b"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/ProcessTests.cs",
+      "sha256": "c86dbd82565971190cfb9edddd932765e36f42b64cb06acb2dc67ff260aa2ca5"
+    }
+  ],
+  "native_discovery": {
+    "records": 2375,
+    "unchanged_names": 2329,
+    "explicit_case_renames": 46,
+    "unchanged_bootstrap_cases": 44,
+    "discovery": {
+      "path": "t022-administrator-discovery.json",
+      "sha256": "e552f34ebd7cafd6186538edc03c19f6c73b9b420c2a1ece9c45c6f5d69adb36"
+    },
+    "rename_ledger": "bootstrap-case-renames.json"
+  },
+  "contracts": {
+    "native_passed": 44,
+    "node_passed": 44,
+    "failed": 0,
+    "skipped": 0,
+    "documents_compared_with_main": 5,
+    "base_commit": "4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa",
+    "reports": [
+      {
+        "path": "artifacts/tests/contracts-core/Contracts.trx",
+        "sha256": "bf776b0a4d11bd3869773c6c5e73685d738f0c74ad963cf7d53ff3b91be35e7a"
+      },
+      {
+        "path": "artifacts/tests/contracts-core/node.xml",
+        "sha256": "af9485f9b0f37f026bdb1f24fbd0bc633255530297dbff9a01b6d4224efe64b9"
+      },
+      {
+        "path": "t020-contract-core-final.log",
+        "sha256": "843806bd8661ca82ac824cb15d7df8949f6510b94c201336b2e84391d3640ac4"
+      }
+    ],
+    "generation_and_types": "passed without output drift",
+    "native_exports": "repeatable 3.1.1 inventories/configured metadata; zero network effects",
+    "supply_chain": {
+      "locked_entries": 76,
+      "npm_vulnerabilities": 0,
+      "audit": {
+        "path": "artifacts/contracts/supply-chain/npm-audit.json",
+        "sha256": "2b718fd99c65a957d9d8506228e1602b1c82ebe2e6336939d5039a42baf5a3af"
+      },
+      "inventory": {
+        "path": "artifacts/contracts/supply-chain/npm-inventory.json",
+        "sha256": "84cc4b714afc68bd3075be7728da75a0f77aea853ddade4c7a59a5735927e11a"
+      },
+      "review": "../../eng/contracts/generator-compatibility.md"
+    }
+  },
+  "static": {
+    "result": "passed",
+    "warnings": 0,
+    "errors": 0,
+    "quality_findings": 1654,
+    "removed_legacy_allowances": 40,
+    "removed_expired_exceptions": 1,
+    "added_or_rebound_allowances": 0,
+    "log": {
+      "path": "t022-static-final.log",
+      "sha256": "04993d04502f688198555bc5f2a439c604944695bb49dcf994908e934a28f266"
+    }
+  },
+  "controls": {
+    "selection_mutation_contract_ci_native_image_browser_controls": 118,
+    "coverage_controls": 3,
+    "logs": [
+      {
+        "path": "t022-controls.log",
+        "sha256": "d2e97004739909f7d6aa1cf0606bff0fa93318b73d19d15b9e2ddfa047fb4c75"
+      },
+      {
+        "path": "t022-coverage-controls.log",
+        "sha256": "9c2dcdbed803180dd4999ac35e5b9b9f6dc50e14da044d05f59dac4152878a7a"
+      },
+      {
+        "path": "t022-instructions.log",
+        "sha256": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def"
+      }
+    ]
+  },
+  "earlier_failures": [
+    {
+      "result": "failed; not counted as a pass",
+      "cause": "Full no-restore build lacked assets for seven previously unbuilt projects; locked restore supplied them without lock changes.",
+      "log": {
+        "path": "t022-static-missing-assets.log",
+        "sha256": "dd2ee335ac8358bd6c3dc095df594505267117fe4b65544d236fb8e0325d2063"
+      }
+    },
+    {
+      "result": "failed; not counted as a pass",
+      "cause": "SDK import ordering in nine files; exact directive-set/body preservation is recorded in import-order-ledger.json.",
+      "log": {
+        "path": "t022-static-import-order.log",
+        "sha256": "54a9b26938482e56eb4c7930c0f686e33cf183c3807ba9edbdac46b3dda91b04"
+      }
+    },
+    {
+      "result": "failed; not counted as a pass",
+      "cause": "SDK IDE0005 identified12 unused imports in9 files; exact removals/body preservation are recorded in unused-import-ledger.json.",
+      "log": {
+        "path": "t022-static-unused-imports.log",
+        "sha256": "a4aea911d47883703aeaceb78790d0528ee2231ef9027a33b1535408c22d7db5"
+      }
+    },
+    {
+      "result": "failed; not counted as a pass",
+      "cause": "Three prefix namespaces required parent-before-child ordering; the initial manual sorter included semicolons. Corrected without changing directive sets or declaration bodies.",
+      "log": {
+        "path": "t022-static-prefix-import-order.log",
+        "sha256": "c1845c3363fd200f0e7f4e93e2534702ebbf0781a3d06f72cc4a729cfbd1b75c"
+      }
+    },
+    {
+      "result": "failed; not counted as a pass",
+      "cause": "A further style pass exposed five additional unused directives in one existing failure-test file. The SDK formatter removed them; unused-import-ledger.json records17 total removals.",
+      "log": {
+        "path": "t022-style-additional-unused-import.log",
+        "sha256": "dd6f3d58cf1c8c1ff4472697b644f34de2197fee6020a6842b0ebd4cdd6529d6"
+      }
+    }
+  ],
+  "independent_reviews": {
+    "architecture": "PASS: bootstrap proposal, final import-only ledger, narrow generator adaptation",
+    "security": "PASS: actual native-consumption commit witnesses and semantic-preserving bootstrap extraction; existing audit-denial cleanup edge unchanged",
+    "test": "PASS: all four mutation receipts/source reconstructions and exact native metadata; both final raw Bootstrap reports pass exact case/counter/linkage review",
+    "dependency": "PASS: actual-parser controls, independent hash/version/archive gate, complete core-contract and clean audit receipts",
+    "evidence": "PASS after distinguishing current discovery from old mutation commits; historical digest conversion lossless"
+  },
+  "open_gates": [
+    "T022 exact-head full hosted verification and aggregate coverage",
+    "T007/T014/T019 retained Chromium/WebKit/native-demo acceptance",
+    "All six historical findings",
+    "Human/Windows/A-009/vendor/production/public-release gates"
+  ],
+  "firefox": "excluded under existing initial-phase decision",
+  "refresh_enabled": false
+}
