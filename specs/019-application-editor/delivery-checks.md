@@ -80,7 +80,7 @@ still produced the expected finding. Final source scanning is performed on the c
 
 [The final local receipt](delivery-checks-evidence.json) records 90 bootstrap passes, 44 native/44 Node contracts, 118 verification controls, three coverage controls and the complete static gate. T020 and T021 have scoped local evidence; T022 remains open for exact-head full CI,
 aggregate coverage and retained-engine/native-demo acceptance. T007/T014/T019 remain
-unchecked. Blocked browser downloads are not retried and Firefox stays excluded under
+unchecked at this checkpoint. [The browser gap review](browser-acceptance-gaps.md) distinguishes absent scenarios from pending execution; a green current matrix alone does not close T019/T022. Blocked browser downloads are not retried and Firefox stays excluded under
 the existing initial-phase decision. All six historical findings and human, Windows,
 A-009, vendor, production and public-release gates remain open. Refresh is disabled.
 A draft PR is a reviewable delivery candidate, not merge or release approval.

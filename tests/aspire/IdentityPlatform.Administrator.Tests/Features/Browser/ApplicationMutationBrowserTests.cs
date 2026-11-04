@@ -43,6 +43,7 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
     private const string SecretField = "clientSecret";
     private const string CacheField = "cache";
     private const string NoStore = "no-store";
+    private const string NativeTokenCacheControl = "no-cache, no-store";
     private const int Success = 200;
     private const int Unauthorized = 401;
     private const int Created = 201;
@@ -242,7 +243,7 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
     {
         var result = await page.EvaluateAsync<JsonElement>(Acquire);
         Assert.Equal(Success, result.GetProperty(StatusField).GetInt32());
-        Assert.Equal(NoStore, result.GetProperty(CacheField).GetString());
+        Assert.Equal(NativeTokenCacheControl, result.GetProperty(CacheField).GetString());
         Assert.Single(result.GetProperty(BodyField).EnumerateObject());
         return result.GetProperty(BodyField).GetProperty(TokenField).GetString()!;
     }

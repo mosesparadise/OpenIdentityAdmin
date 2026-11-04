@@ -32,7 +32,7 @@
 ## US3 — Clear, accessible, bounded failure states
 
 - [x] T018 [US3] Implement field errors, stale edit, ambiguous result, forbidden/expired, no-auto-retry and sensitive-output dismissal states under Admin.Ui/Features/Applications/; verify exact Node identities and bounded memory handling. FR-009/010/012. [Exact Node identities and bounded-output evidence](editor-recovery.md); all prior editor identities and module floors preserved.
-- [ ] T019 [US3] Run retained Chromium/WebKit create/edit/consent/secrecy/keyboard/themes/reflow/accessibility journeys on both providers under Administrator.Tests/Features/Browser/ and both native Aspire demos. FR-001–012. [Retained editor journey source](editor-recovery.md) is compiled and shared with both native demos; engines remain unavailable, execution and browser consent/history acceptance remain open. No blocked download is retried.
+- [ ] T019 [US3] Run retained Chromium/WebKit create/edit/consent/secrecy/keyboard/themes/reflow/accessibility journeys on both providers under Administrator.Tests/Features/Browser/ and both native Aspire demos. FR-001–012. [Retained editor journey source](editor-recovery.md) is compiled and shared with both native demos; engines remain unavailable, execution and browser consent/history acceptance remain open. No blocked download is retried. [Final source review](browser-acceptance-gaps.md) also identifies missing same-registration browser consent and editor lifecycle/recovery/state coverage; passing the current matrix alone cannot complete this task.
 
 ## Contracts and delivery
 

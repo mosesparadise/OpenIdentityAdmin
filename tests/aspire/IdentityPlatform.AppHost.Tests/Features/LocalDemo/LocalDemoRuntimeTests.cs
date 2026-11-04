@@ -9,6 +9,7 @@ public sealed class LocalDemoRuntimeTests
     private const string InitializationPhase = "stdin initialization";
     private const string EnrollmentPhase = "password and TOTP enrollment";
     private const string LoginPhase = "fresh browser login";
+    private const string ApplicationsPhase = "application list and editor journeys";
     private const string LocalLogoutPhase = "local logout and replay denial";
     private const string SecondLoginPhase = "fresh second ceremony";
     private const string IssuerPositivePhase = "issuer cookie positive control";
@@ -56,6 +57,7 @@ public sealed class LocalDemoRuntimeTests
         await browser.EnrollAsync(runtime);
         phase(LoginPhase);
         await browser.SignInAsync(runtime);
+        phase(ApplicationsPhase);
         await browser.RequireApplicationsAsync();
         var cookies = await browser.CookiesAsync();
         phase(LocalLogoutPhase);

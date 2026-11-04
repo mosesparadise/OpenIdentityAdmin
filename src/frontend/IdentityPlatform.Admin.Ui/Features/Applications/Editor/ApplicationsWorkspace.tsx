@@ -23,7 +23,7 @@ export function ApplicationsWorkspace({ session }: { session: SessionState }) {
   }, [state]);
   const back = () => state.kind === "working" ? owner.current?.suspend() : owner.current?.list();
   if (state.kind === "list") return <>
-    <h2 tabIndex={-1} ref={listHeading}>Registered applications</h2>
+    <h2 tabIndex={-1} ref={listHeading}>Application actions</h2>
     <div className="application-create-bar"><Button ref={createButton} disabled={session.kind !== "authenticated"} onClick={() => owner.current?.newForm()}>Create application</Button>
       <p>{session.kind === "authenticated" ? "Your current permissions are checked when you submit." : "Sign in to create an application."}</p></div>
     <ApplicationsPanel onDetails={id => { void owner.current?.details(id); }} />
