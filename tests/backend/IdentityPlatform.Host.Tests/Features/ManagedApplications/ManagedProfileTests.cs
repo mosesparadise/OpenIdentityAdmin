@@ -3,7 +3,6 @@ using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Host.Tests.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
-using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using OpenIddict.Abstractions;

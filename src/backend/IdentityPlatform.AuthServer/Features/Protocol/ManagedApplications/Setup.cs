@@ -1,5 +1,4 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Server;
 using OpenIddict.Server.AspNetCore;
 

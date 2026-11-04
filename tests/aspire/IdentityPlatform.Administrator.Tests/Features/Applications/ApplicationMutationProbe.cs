@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore.Http;
 

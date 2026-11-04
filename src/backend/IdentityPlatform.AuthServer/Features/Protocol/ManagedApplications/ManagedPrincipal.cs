@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Security.Claims;
 using System.Text.Json;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
