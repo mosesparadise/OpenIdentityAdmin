@@ -76,7 +76,10 @@ class NativeVisibilityPipelineTests(unittest.TestCase):
             path.write_text('[2,1,9,2]')
             self.assertEqual(target.progress_summary(path),
                 'Native lifecycle last checkpoint: scenario=Pending; boundary=Visibility; operation=BoundaryComplete; disposal=Browser')
-            for invalid in ('private-canary', '[true,0,0,0]', '[3,0,0,0]', '[0,-1,0,0]', '[0,0,14,0]',
+            path.write_text('[2,3,18,0]')
+            self.assertEqual(target.progress_summary(path),
+                'Native lifecycle last checkpoint: scenario=Pending; boundary=OriginalDeadline; operation=PresentationChecked; disposal=None')
+            for invalid in ('private-canary', '[true,0,0,0]', '[3,0,0,0]', '[0,-1,0,0]', '[0,0,19,0]',
                             '[0,0,0,4]', '[0,0,0,0,0]', '{"private":"canary"}', ' ' * 65, 'null'):
                 path.write_text(invalid)
                 self.assertEqual(target.progress_summary(path), unavailable)

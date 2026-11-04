@@ -242,3 +242,43 @@ preserves diagnostic order, exact media admission, genuine valid-JSON Origin gua
 engine-specific native activity, and every existing timing/visibility/secret oracle.
 The earlier claimed public-CDP reset is explicitly superseded. No old execution is
 relabelled as a corrected pass, and raw artifact transfer remains unavailable.
+
+
+## Eighth candidate — native history observed, pending completion still open
+
+Candidate `51e76c64217e4fc7e0c5bf49debbde36bd3a66a3`, tested merge
+`b4aaebd25038ad1e475aebf89143b9f5cf688a61`, share tree
+`d3d8065103e7b7e54525aca7896f3f29189c3b06` over main `4c9fb24`.
+[Run503](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41866449915),
+attempt1, is rejected by actual failed jobs; it is not accepted through prior results.
+
+Both Chromium lifecycle jobs (`126701941357` PostgreSQL and `126701941586` SQL Server)
+pass the output/history/native-visibility method and fail the pending-write method:
+one pass/one failure per provider, zero skips. The finite checkpoint identifies
+Pending/Navigation/Release, followed by environment disposal. The native history
+transition assertions complete; the independent cleanup join then expires under
+its unchanged three-second budget. Exactly one browser request was observed,
+upstream started/completed are true, browser completion is false and no response
+was observed. This distinguishes the new failure from the earlier missing pagehide
+counter, without proving why the native page-level terminal event is absent.
+
+PostgreSQL's ordinary Aspire demo job `126701863155` passes two cases and fails the
+runtime journey in the fixed phase “application creation, edit and replacement.”
+Its outer sanitizer retained no more precise source location or error category.
+SQL Server's ordinary demo passes3/3. The failure cause is unproven; teardown health
+messages and an immediate validation-focus assertion are not established causes.
+No retry, focus assertion change, deadline extension or test waiver follows.
+
+Both WebKit lifecycle commands reach the unchanged660s command deadline, with no
+completed case report accepted. Their last finite checkpoint is identically
+Pending/OriginalDeadline/ResultChecked/disposalNone. This establishes the last
+recorded operation, not a completed privacy/storage/presentation check or timeout
+cause. SQL job `126701941793` reports it at16:49:14UTC; PostgreSQL job `126701941687`
+at16:52:09UTC. The next source appends milestones for secret absence, observation,
+storage and final presentation without changing prior stage ordinals or assertions.
+
+Terminal metadata is now verified: all122 jobs are present;115 pass, six fail and
+aggregate coverage is skipped. Failures are the PostgreSQL demo, all four lifecycle
+cells and final acceptance. All other ordinary jobs, including SQL demo3/3 and all
+consent/editor-recovery/authority cells, pass on this candidate. These results do not
+accept the next source. PR120 stays draft/unmerged; no rejected run is rewritten.

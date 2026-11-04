@@ -63,7 +63,8 @@ internal enum ApplicationLifecycleScenario
 internal enum ApplicationLifecycleStage
 {
     Start, EnvironmentReady, BrowserReady, SignedIn, VisibilityReady, ObserverReady, Prepared,
-    OutputReady, Boundary, BoundaryComplete, Release, RequestsJoined, ResultChecked, PrivacyChecked
+    OutputReady, Boundary, BoundaryComplete, Release, RequestsJoined, ResultChecked, PrivacyChecked,
+    SecretAbsent, ObservationChecked, StorageChecked, PresentationStarted, PresentationChecked
 }
 
 /// <summary>Identifies only which owned resource is about to dispose.</summary>

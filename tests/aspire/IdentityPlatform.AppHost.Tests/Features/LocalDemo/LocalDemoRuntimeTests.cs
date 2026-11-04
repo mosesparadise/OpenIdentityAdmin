@@ -42,7 +42,7 @@ public sealed class LocalDemoRuntimeTests
         catch (Exception error)
         {
             // Native browser exceptions may contain private form values or protocol URLs.
-            var diagnostic = error is LocalDemoSignInFailure observed ? observed.Message : string.Empty;
+            var diagnostic = error is LocalDemoSignInFailure observed ? observed.Message : LocalDemoFailureEvidence.Describe(error);
             throw new InvalidOperationException(FailurePrefix + phase + FailureSuffix + diagnostic);
         }
     }

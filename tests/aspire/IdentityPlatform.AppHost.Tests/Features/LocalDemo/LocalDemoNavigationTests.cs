@@ -73,6 +73,7 @@ public sealed class LocalDemoNavigationTests
         var error = await Assert.ThrowsAsync<TimeoutException>(() => LocalDemoNavigation.SubmitAsync(page,
             page.Locator(LocalDemoNavigationFixture.SubmitSelector), fixture.Destination));
         Assert.Contains(ActionDeadline, error.Message, StringComparison.Ordinal);
+        RequireSafeFailureEvidence(error);
         Assert.True(elapsed.Elapsed >= JoinedNavigationLowerBound, AbandonedNavigation);
         Assert.Equal(0, fixture.Submissions);
     }
@@ -83,5 +84,42 @@ public sealed class LocalDemoNavigationTests
         var error = await Assert.ThrowsAsync<TimeoutException>(() => LocalDemoNavigation.SubmitAsync(page,
             page.Locator(LocalDemoNavigationFixture.SubmitSelector), fixture.Destination));
         Assert.Contains(NavigationDeadline, error.Message, StringComparison.Ordinal);
+        RequireSafeFailureEvidence(error);
+    }
+
+    /// <summary>Actual native timeouts keep a fixed category while nested secret-bearing errors cannot enter the diagnostic surface.</summary>
+    private static void RequireSafeFailureEvidence(Exception error)
+    {
+        const string TimeoutCategory = " Failure category=Timeout; sources=";
+        const string Canary = "synthetic-private-demo-canary";
+        const string Private = "https://example.invalid/?code=synthetic-private-demo-canary <input value='synthetic-private-demo-canary'>";
+        const string DataKey = "private-detail";
+        Assert.StartsWith(TimeoutCategory, LocalDemoFailureEvidence.Describe(error), StringComparison.Ordinal);
+        RequireNavigationLocation(LocalDemoFailureEvidence.Describe(error));
+        Exception[] controls = [new Microsoft.Playwright.PlaywrightException(Private), new Xunit.Sdk.XunitException(Private),
+            new AggregateException(error, new InvalidOperationException(Private, new TimeoutException(Private)))];
+        foreach (var control in controls)
+        {
+            control.Data[DataKey] = Canary;
+            var result = LocalDemoFailureEvidence.Describe(control);
+            Assert.DoesNotContain(Canary, result, StringComparison.Ordinal);
+            Assert.DoesNotContain(Private, result, StringComparison.Ordinal);
+            Assert.DoesNotContain(DataKey, result, StringComparison.Ordinal);
+            if (control is AggregateException)
+            {
+                RequireNavigationLocation(result);
+            }
+        }
+    }
+
+    /// <summary>Rejects a sanitizer that suppresses every source location instead of retaining the actual owned-navigation failure.</summary>
+    private static void RequireNavigationLocation(string diagnostic)
+    {
+        const string Pattern = @"LocalDemoNavigation\.cs:([0-9]+)";
+        const int MaximumLine = 100000;
+        var match = System.Text.RegularExpressions.Regex.Match(diagnostic, Pattern);
+        Assert.True(match.Success);
+        Assert.True(int.TryParse(match.Groups[1].Value, out var line));
+        Assert.InRange(line, 1, MaximumLine);
     }
 }

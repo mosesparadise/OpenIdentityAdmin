@@ -277,3 +277,49 @@ corrected without an allowance. The native TRX SHA256 is
 its exact identities and result/definition/entry links are reconciled. Source
 gitleaks, instruction and diff checks pass. These local controls do not execute
 the retained browsers; corrected exact-head browser acceptance remains pending.
+
+
+## Context terminal events and safe ordinary-demo locations
+
+[The eighth attempt](hosted-verification.md#eighth-candidate--native-history-observed-pending-completion-still-open)
+now observes native Chromium output/history/visibility on both providers. Pending
+navigation still lacks the page-associated terminal event after upstream completion.
+The test retains the original request captured from its owned page, but subscribes
+to context-level native response/finished/failed events with exact object identity.
+A separate page-associated terminal flag distinguishes the two observations on
+failure. Context completion and upstream completion must still join under the same
+three-second cleanup budget. Navigation, pagehide or upstream completion cannot
+substitute for a missing native terminal event. This is a source-supported observation
+change, not a proven diagnosis of the hosted failure.
+
+Pinned Playwright1.63.0 evidence is the [.NET finish dispatch](https://github.com/microsoft/playwright-dotnet/blob/v1.63.0/src/Playwright/Core/BrowserContext.cs#L259),
+[failure dispatch](https://github.com/microsoft/playwright-dotnet/blob/v1.63.0/src/Playwright/Core/BrowserContext.cs#L268)
+and [server optional page association](https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/dispatchers/browserContextDispatcher.ts#L178).
+Independent test and security source reviews pass this narrowly scoped correction;
+they do not claim the optional association caused the observed timeout.
+
+The ordinary demo's outer failure boundary adds only a closed error category and
+allowlisted source filenames with positive bounded line numbers. It traverses at
+most eight exceptions, inspects at most128 frames per exception and retains at most
+eight locations. Messages, URLs, selectors, values, paths, Data and unsafe inner
+exceptions are never attached. The existing navigation-failure identities require
+both a useful native navigation source location and secret-canary suppression,
+including an aggregate inner exception. Journey behavior and timing are unchanged.
+
+Local scratch reflection controls exercise actual compiled source frames using
+explicit injected null-page failures, nested canaries, a hostile Message/ToString
+implementation and the permanent diagnostic-control method. They pass; they are not
+native browser execution and add nothing to ordinary test totals. The complete solution build, formatting/imports, quality and seeded analysis controls
+pass with zero build warnings/errors. Source gitleaks, instruction and diff checks
+pass. A newly added property formatting failure was corrected without an allowance.
+Corrected exact-head browser/demo acceptance remains pending.
+
+The two WebKit last-checkpoint records additionally justify five appended milestones
+for secret absence, observation, storage and presentation. Existing stage ordinals
+remain unchanged; all12 Python controls pass, including the new highest valid stage
+and rejection of19. The added markers exceeded the method-size rule; extracting the
+unchanged privacy tail into an awaited helper resolves it without a new allowance.
+Independent review confirms check and disposal ordering. The final complete solution
+build, style/imports, quality and seeded rejection gates pass with zero warnings/errors;
+final source gitleaks and diff checks pass. No browser pass is inferred from these
+local controls.

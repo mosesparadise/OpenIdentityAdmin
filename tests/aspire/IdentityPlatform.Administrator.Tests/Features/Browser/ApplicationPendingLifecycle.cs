@@ -12,7 +12,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 /// <summary>Separates UI lifecycle/output races from persistence acceptance with the existing explicitly response-only upstream probe.</summary>
 internal static class ApplicationPendingLifecycle
 {
-    private const string CleanupReport = "application-lifecycle cleanup requests={0} browser-completed={1} upstream-started={2} upstream-completed={3} response-present={4}";
+    private const string CleanupReport = "application-lifecycle cleanup requests={0} context-completed={1} page-completed={2} upstream-started={3} upstream-completed={4} response-present={5}";
     private const string Pause = "pause";
     private const string ReplaceSuffix = "/secret-replacements";
     private const string Api = "/api/v1/applications/";
@@ -81,16 +81,28 @@ internal static class ApplicationPendingLifecycle
         }
 
         await ExerciseAsync(page, visibility, environment, probe, observation, boundary, now, progress);
+        return await RequirePrivacyAsync(page, observation, access.Value, boundary, progress);
+    }
+
+    /// <summary>Separately observes secret absence, private surfaces and final presentation without moving their original disposal boundary.</summary>
+    private static async Task<string[]> RequirePrivacyAsync(IPage page, ApplicationLifecycleObservation observation, string access,
+        ApplicationPendingBoundary boundary, ApplicationLifecycleProgress progress)
+    {
         var secret = Convert.ToBase64String(new byte[SecretBytes]);
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
-        await observation.RequireAsync([secret, access.Value]);
-        await BrowserSecretOracle.StorageAsync(page, [secret, access.Value]);
+        progress.Mark(ApplicationLifecycleStage.SecretAbsent);
+        await observation.RequireAsync([secret, access]);
+        progress.Mark(ApplicationLifecycleStage.ObservationChecked);
+        await BrowserSecretOracle.StorageAsync(page, [secret, access]);
+        progress.Mark(ApplicationLifecycleStage.StorageChecked);
         if (boundary == ApplicationPendingBoundary.OriginalDeadline)
         {
+            progress.Mark(ApplicationLifecycleStage.PresentationStarted);
             await EditorRecoveryView.PresentationAsync(page);
+            progress.Mark(ApplicationLifecycleStage.PresentationChecked);
         }
         progress.Mark(ApplicationLifecycleStage.PrivacyChecked);
-        return [secret, access.Value];
+        return [secret, access];
     }
 
     /// <summary>Retains a short original display observation while the later replacement response and session have longer valid lifetimes.</summary>
@@ -172,7 +184,7 @@ internal static class ApplicationPendingLifecycle
         }
         catch (Exception cleanup)
         {
-            TestContext.Current.TestOutputHelper?.WriteLine(CleanupReport, write.Requests, write.IsCompleted, probe.Started.Task.IsCompleted, probe.Completed.Task.IsCompleted, write.Response is not null);
+            TestContext.Current.TestOutputHelper?.WriteLine(CleanupReport, write.Requests, write.IsCompleted, write.IsPageCompleted, probe.Started.Task.IsCompleted, probe.Completed.Task.IsCompleted, write.Response is not null);
             failure = failure is null ? cleanup : new AggregateException(failure, cleanup);
         }
         if (failure is not null)

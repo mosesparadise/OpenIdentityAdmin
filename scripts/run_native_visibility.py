@@ -28,7 +28,8 @@ SCENARIOS = ('History', 'Visibility', 'Pending')
 BOUNDARIES = ('Navigation', 'Visibility', 'Session', 'OriginalDeadline')
 STAGES = ('Start', 'EnvironmentReady', 'BrowserReady', 'SignedIn', 'VisibilityReady',
           'ObserverReady', 'Prepared', 'OutputReady', 'Boundary', 'BoundaryComplete',
-          'Release', 'RequestsJoined', 'ResultChecked', 'PrivacyChecked')
+          'Release', 'RequestsJoined', 'ResultChecked', 'PrivacyChecked',
+          'SecretAbsent', 'ObservationChecked', 'StorageChecked', 'PresentationStarted', 'PresentationChecked')
 DISPOSALS = ('None', 'Observation', 'Browser', 'Environment')
 
 

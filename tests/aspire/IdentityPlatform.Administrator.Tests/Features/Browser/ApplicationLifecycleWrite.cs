@@ -8,9 +8,14 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     private const string Post = "POST";
     private const int JoinSeconds = 3;
     private readonly IPage page;
+    private readonly IBrowserContext context;
     private readonly TaskCompletionSource completed = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private IRequest? request;
     internal bool IsCompleted => completed.Task.IsCompletedSuccessfully;
+    internal bool IsPageCompleted
+    {
+        get; private set;
+    }
     internal IResponse? Response
     {
         get; private set;
@@ -24,10 +29,13 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     internal ApplicationLifecycleWrite(IPage page)
     {
         this.page = page;
+        context = page.Context;
         page.Request += Sent;
-        page.Response += Received;
-        page.RequestFinished += Ended;
-        page.RequestFailed += Ended;
+        page.RequestFinished += PageEnded;
+        page.RequestFailed += PageEnded;
+        context.Response += Received;
+        context.RequestFinished += Ended;
+        context.RequestFailed += Ended;
     }
 
     /// <summary>Retains the first actual browser request identity and counts every additional dispatch as a separate attempt.</summary>
@@ -51,12 +59,21 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
         }
     }
 
-    /// <summary>Observes actual finish or abort; merely releasing the upstream gate does not finish this witness.</summary>
+    /// <summary>Observes native finish or abort even when navigation removes the event's optional page association; upstream release cannot finish this witness.</summary>
     private void Ended(object? sender, IRequest value)
     {
         if (ReferenceEquals(value, request))
         {
             completed.TrySetResult();
+        }
+    }
+
+    /// <summary>Separately records the optional page-associated notification without substituting for native context completion.</summary>
+    private void PageEnded(object? sender, IRequest value)
+    {
+        if (ReferenceEquals(value, request))
+        {
+            IsPageCompleted = true;
         }
     }
 
@@ -67,8 +84,10 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     public void Dispose()
     {
         page.Request -= Sent;
-        page.Response -= Received;
-        page.RequestFinished -= Ended;
-        page.RequestFailed -= Ended;
+        page.RequestFinished -= PageEnded;
+        page.RequestFailed -= PageEnded;
+        context.Response -= Received;
+        context.RequestFinished -= Ended;
+        context.RequestFailed -= Ended;
     }
 }
