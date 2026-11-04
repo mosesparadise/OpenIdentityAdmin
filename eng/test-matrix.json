@@ -49,7 +49,7 @@
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 66
+    "Administrator": 71
   },
   "lifecycle_stories": {
     "Restart": {
@@ -132,7 +132,11 @@
     "Security": 5,
     "BrowserSessions": 13,
     "BrowserProtection": 31,
-    "BrowserLogin": 9
+    "BrowserLogin": 9,
+    "ApplicationEditor": 1,
+    "ApplicationAuthority": 1,
+    "ApplicationLifecycle": 2,
+    "ManagedConsent": 1
   },
   "issuer_http_groups": {
     "Flows": {

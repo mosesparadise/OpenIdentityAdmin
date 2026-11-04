@@ -3,10 +3,7 @@ using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
-using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
-using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.EntityFrameworkCore.Models;
 
@@ -83,17 +80,9 @@ internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, Appli
         return query.ToDictionary(pair => pair.Key, pair => pair.Value.Single()!, StringComparer.Ordinal);
     }
 
-    /// <summary>Reads committed native and product state independently in a fresh provider context.</summary>
-    internal async Task<ManagedCacheSnapshot> SnapshotAsync(bool applicationOnly = false)
-    {
-        await using var scope = http.Scope();
-        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        var rows = await database.Set<ManagedLoginInteraction>().AsNoTracking().Where(row => !applicationOnly || row.ApplicationId == Id).OrderBy(row => row.SelectorDigest).ToArrayAsync(TestContext.Current.CancellationToken);
-        var tokens = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().Include(row => row.Authorization).Where(row => row.Application!.Id == Id)
-            .OrderBy(row => row.Id).ToArrayAsync(TestContext.Current.CancellationToken);
-        return new(rows, tokens, await database.Set<OpenIddictEntityFrameworkCoreAuthorization>().CountAsync(row => row.Application!.Id == Id, TestContext.Current.CancellationToken),
-            await database.Set<AdministratorSession>().CountAsync(TestContext.Current.CancellationToken));
-    }
+    /// <summary>Reads committed native and product state independently through the shared fresh-scope snapshot implementation.</summary>
+    internal Task<ManagedCacheSnapshot> SnapshotAsync(bool applicationOnly = false) =>
+        ManagedCacheSnapshotReader.ReadAsync(http.Scope, Id, applicationOnly);
 
     /// <summary>Requires bounded local unavailable output with no redirect, cookie, credential or state leak.</summary>
     internal static async Task UnavailableAsync(HttpResponseMessage response)

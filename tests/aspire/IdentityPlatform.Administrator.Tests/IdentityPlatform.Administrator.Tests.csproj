@@ -74,4 +74,10 @@
     <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeTokenBudgetFixture.cs" Link="Fixtures/Protocol/NativeTokenBudgetFixture.cs" />
     <Compile Include="../../persistence/IdentityPlatform.Persistence.Tests/Features/ProtocolStorage/NativeRedemptionBarrier.cs" Link="Fixtures/Protocol/NativeRedemptionBarrier.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../shared/ManagedAuthorizationRequest.cs" Link="Fixtures/ManagedAuthorizationRequest.cs" />
+    <Compile Include="../../shared/ManagedIdentityTokenOracle.cs" Link="Fixtures/ManagedIdentityTokenOracle.cs" />
+    <Compile Include="../../shared/ManagedIdentityTokenEvidence.cs" Link="Fixtures/ManagedIdentityTokenEvidence.cs" />
+    <Compile Include="../../shared/ManagedTokenValidation.cs" Link="Fixtures/ManagedTokenValidation.cs" />
+  </ItemGroup>
 </Project>

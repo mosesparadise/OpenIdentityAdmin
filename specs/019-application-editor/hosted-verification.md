@@ -99,3 +99,26 @@ tests build with zero warnings/errors. Architecture review accepts the exhaustiv
 partition and coverage wiring. Split-lane execution still needs current hosted
 evidence; grouping does not establish the timeout's underlying cause or guarantee
 runtime duration. No local browser download or SQL diagnostic experiment is repeated.
+
+## Grouped candidate — 4 November 2026
+
+Run [41833225401](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41833225401)
+used `3c433e8190958d2f3766d0e751a5fc0ee799b03f`. The complete 106-job inventory
+finished with 100 successes, five failures and one skipped coverage job. Both
+managed groups on both providers and both native demo jobs succeeded. Each of the
+four protection jobs completed 31 cases: 30 passed and the cross-purpose/generation
+mutation case failed. Failed job IDs are 126585569846, 126585569914, 126585569974 and
+126585570114; acceptance 126597288097 failed. No aggregate coverage pass is claimed.
+
+The safe failure category was unclassified and source lines were absent because the
+mutation test file was missing from the diagnostic allowlist. Source inspection found
+that the foreign-origin fetch ran from the issuer product page, whose CSP disallows
+that connection. The correction uses the existing explicitly test-owned attacker
+page with the exact allowed peer, as the existing origin tests do. Product CSP,
+origin validation and request assertions remain unchanged. The correction is a
+source-supported hypothesis until the corrected test actually executes. The fixed
+source filename allowlist now preserves useful line numbers without private messages.
+
+This run predates the new same-registration browser ceremony and lifecycle/recovery
+acceptance additions. Its successes cannot substitute for their execution. Earlier
+failures remain separate; the raw artifact transfer limitation remains unchanged.

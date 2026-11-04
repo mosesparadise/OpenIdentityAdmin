@@ -320,7 +320,7 @@ jobs:
         if: matrix.partition == 'administrator' && matrix.browser == 'firefox' && matrix.browser_story == 'Accounts'
         run: python3 scripts/verify_history_experiment.py ${{ matrix.provider }}
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
+        run: ${{ matrix.browser_story == 'ApplicationLifecycle' && 'xvfb-run --auto-servernum' || '' }} dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

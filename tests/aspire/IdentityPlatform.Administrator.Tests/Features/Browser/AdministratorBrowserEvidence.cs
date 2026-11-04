@@ -8,7 +8,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 /// <summary>Reports source line and allowlisted error categories without retaining secret-bearing browser diagnostics.</summary>
 internal static class AdministratorBrowserEvidence
 {
-    private static readonly string[] SourceFiles = ["ApplicationEditorJourney.cs", "ApplicationEditorBrowserTests.cs", "EnrollmentBrowserTests.cs", "SecurityBrowserTests.cs", "SecurityBrowserJourney.cs",
+    private static readonly string[] SourceFiles = ["ApplicationBrowserDiagnostics.cs", "ApplicationNativeVisibility.cs", "EditorRecoveryResponse.cs", "EditorRecoveryWorking.cs", "EditorRecoveryStore.cs", "EditorRecoveryView.cs", "EditorRecoveryBrowserTests.cs", "EditorRecoveryFailures.cs", "EditorRecoveryJourney.cs", "EditorRecoverySends.cs", "ApplicationLifecycleUi.cs", "ApplicationLifecycleBrowserTests.cs", "ApplicationLifecycleObservation.cs", "ApplicationPendingLifecycle.cs", "ApplicationOutputLifecycle.cs", "ApplicationLifecycleWrite.cs", "ApplicationConsentBrowserTests.cs", "ApplicationMutationBrowserTests.cs", "ApplicationManagedBrowserEvidence.cs", "ManagedBrowserJourney.cs", "ManagedBrowserRelyingParty.cs", "ApplicationEditorJourney.cs", "ApplicationEditorBrowserTests.cs", "EnrollmentBrowserTests.cs", "SecurityBrowserTests.cs", "SecurityBrowserJourney.cs",
         "ClipboardBrowserTests.cs", "AdministratorClipboard.cs", "SessionLogoutBrowserTests.cs", "BrowserHttpsJourney.cs",
         "SessionLogoutReturnBrowserTests.cs", "SessionLogoutBindingBrowserTests.cs", "SessionLogoutFailureBrowserTests.cs",
         "SessionLogoutRemoteBrowserTests.cs", "BrowserLogoutJourney.cs", "BrowserLostReturn.cs", "SessionLogoutCrossSiteBrowserTests.cs",

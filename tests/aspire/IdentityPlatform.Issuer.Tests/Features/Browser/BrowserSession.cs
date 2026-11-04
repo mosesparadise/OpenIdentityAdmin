@@ -83,6 +83,46 @@ internal sealed class BrowserSession : IAsyncDisposable
         }
     }
 
+    /// <summary>Owns a visible retained-engine session for native lifecycle acceptance; unsupported engines fail rather than falling back.</summary>
+    public static async Task<BrowserSession> CreateHeadedAsync()
+    {
+        const string Chromium = "chromium";
+        const string WebKit = "webkit";
+        const int Width = 1280;
+        const int Height = 900;
+        const int ActionMilliseconds = 15000;
+        const int NavigationMilliseconds = 20000;
+        BrowserEvidence.Mark(BrowserPhase.Creation);
+        Assert.True(Engine is Chromium or WebKit);
+        var session = new BrowserSession(await Playwright.CreateAsync());
+        try
+        {
+            var engine = Engine == WebKit ? session.playwright.Webkit : session.playwright.Chromium;
+            session.browser = await engine.LaunchAsync(new()
+            {
+                Headless = false
+            });
+            session.Context = await session.browser.NewContextAsync(new()
+            {
+                ViewportSize = new()
+                {
+                    Width = Width,
+                    Height = Height
+                },
+                ReducedMotion = ReducedMotion.Reduce
+            });
+            session.Context.SetDefaultTimeout(ActionMilliseconds);
+            session.Context.SetDefaultNavigationTimeout(NavigationMilliseconds);
+            BrowserEvidence.Mark(BrowserPhase.Ready);
+            return session;
+        }
+        catch
+        {
+            await session.DisposeAsync();
+            throw;
+        }
+    }
+
     private static async Task ImportAsync(string[] arguments)
     {
         var start = new ProcessStartInfo("certutil") { RedirectStandardOutput = true, RedirectStandardError = true };

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using IdentityPlatform.Administrator.Tests.Features.Browser;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using Microsoft.Playwright;
 
@@ -8,6 +9,7 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 internal sealed class LocalDemoBrowser : IAsyncDisposable
 {
     private const string WorkspacePath = "/";
+    private const string ReadSubject = "async () => { const r=await fetch('/bff/session',{cache:'no-store'}); if(r.status!==200)throw new Error('Session unavailable'); const body=await r.json(); if(!body.authenticated || typeof body.subject!=='string')throw new Error('Session unavailable'); return body.subject; }";
     private const string WorkspaceSignedOut = "Not signed in";
     private const string WorkspaceSignedIn = "You’re signed in";
     private const string WorkspaceSignIn = "Sign in";
@@ -47,10 +49,23 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private string? seed;
 
     /// <summary>Exercises the actual API-backed list through the shipped React view without exposing its protected transport.</summary>
-    internal async Task RequireApplicationsAsync()
+    internal async Task RequireApplicationsAsync(LocalDemoRuntime runtime)
     {
         await LocalDemoApplications.RequireAsync(page);
-        await IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationEditorJourney.RunAsync(page, new Uri(Client), DateTimeOffset.UtcNow);
+        await using var relyingParty = new ManagedBrowserRelyingParty();
+        await relyingParty.StartAsync(new Uri(Issuer));
+        var registration = await ApplicationEditorJourney.RunAsync(page, new Uri(Client), DateTimeOffset.UtcNow, callback: relyingParty.Callback);
+        var subject = await page.EvaluateAsync<string>(ReadSubject);
+        await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
+            ManagedFactorAsync, subject);
+    }
+
+    /// <summary>Uses the same real enrollment seed and replay set for the additional managed-client MFA ceremony.</summary>
+    private Task<string> ManagedFactorAsync()
+    {
+        var code = FactorOracle.UnusedCode(seed!, usedCodes);
+        usedCodes.Add(code);
+        return Task.FromResult(code);
     }
 
     /// <summary>Retains sensitive browser state only in memory until the context closes.</summary>

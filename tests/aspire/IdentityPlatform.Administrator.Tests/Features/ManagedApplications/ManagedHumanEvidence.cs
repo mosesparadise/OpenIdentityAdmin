@@ -33,10 +33,13 @@ internal static class ManagedHumanEvidence
     }
 
     /// <summary>Hashes unchanged administrator sessions, issuer completion grants and BFF tickets across their actual separate databases.</summary>
-    internal static async Task<string> AuthorityAsync(ManagedCacheTestContext test)
+    internal static Task<string> AuthorityAsync(ManagedCacheTestContext test) => AuthorityAsync(ManagedTokenEvidenceContext.Borrow(test));
+
+    /// <summary>Reads original authority from the already-owned environment without creating another managed client or ceremony.</summary>
+    internal static async Task<string> AuthorityAsync(ManagedTokenEvidenceContext test)
     {
-        await using var scope = test.Http.Scope();
-        await using var bff = test.Http.Environment.Client.Services.CreateAsyncScope();
+        await using var scope = test.Scope();
+        await using var bff = test.Environment.Client.Services.CreateAsyncScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var sessions = bff.ServiceProvider.GetRequiredService<AdminSessionDbContext>();
         var token = TestContext.Current.CancellationToken;

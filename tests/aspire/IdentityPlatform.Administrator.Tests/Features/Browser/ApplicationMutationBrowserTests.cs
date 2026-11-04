@@ -182,7 +182,7 @@ public sealed class ApplicationMutationBrowserTests(BootstrapFixture fixture)
         var attacker = await page.Context.NewPageAsync();
         try
         {
-            await attacker.GotoAsync(environment.Profile.Issuer.AbsoluteUri);
+            await attacker.GotoAsync(environment.StageAttacker(environment.Profile.Issuer, string.Empty, fetch: true).AbsoluteUri);
             var target = new Uri(environment.Profile.ClientUri, Collection).AbsoluteUri;
             var calls = probe.Requests;
             var response = await attacker.RunAndWaitForResponseAsync(() => attacker.EvaluateAsync(Attack, target), value => value.Url == target);

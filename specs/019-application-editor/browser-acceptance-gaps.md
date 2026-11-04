@@ -1,6 +1,6 @@
 # Remaining browser acceptance
 
-4 November 2026. This source review distinguishes implemented test coverage from the
+Historical source-gap review, 4 November 2026. [The subsequent implementation](browser-acceptance-implementation.md) adds the missing scenario source; runtime acceptance remains pending. This source review distinguishes implemented test coverage from the
 remaining feature 019 FR-012, SC-001/SC-005 and T019 obligations. A green current matrix
 would not, by itself, complete T019 or T022. Existing Firefox/A-009 and human/Windows
 boundaries are unchanged.

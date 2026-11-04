@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
@@ -7,6 +8,12 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 internal static class ApplicationEditorJourney
 {
     private const string Applications = "/applications";
+    private const string CollectionPath = "/bff/api/v1/applications";
+    private const string Post = "POST";
+    private const string ApplicationField = "application";
+    private const string IdField = "id";
+    private const string SecretField = "clientSecret";
+    private const int CreatedStatus = 201;
     private const string Client = "browser-managed-editor";
     private const string Display = "Browser managed application";
     private const string Updated = "Updated browser application";
@@ -47,9 +54,10 @@ internal static class ApplicationEditorJourney
     private const string ConfirmationLabel = "Confirm replacement";
     private const string SpaceKey = "Space";
     /// <summary>Uses two independent browser contexts sharing the authenticated cookie to produce a real stale version, then replaces and synchronously clears output.</summary>
-    internal static async Task RunAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null)
+    internal static async Task<ApplicationEditorRegistration> RunAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null, string? callback = null)
     {
-        var output = await CreateAsync(page, origin, now, presentation);
+        var created = await CreateAsync(page, origin, now, presentation);
+        var output = created.Secret;
         await Button(page, Hide).ClickAsync();
         await HeadingAsync(page, DetailsTitle);
         await BrowserSecretOracle.StorageAsync(page, [output]);
@@ -71,7 +79,7 @@ internal static class ApplicationEditorJourney
             await OpenAsync(other, origin);
             await Button(other, EditAction).ClickAsync();
             await HeadingAsync(other, EditAction);
-            await EditAsync(page, presentation);
+            await EditAsync(page, presentation, callback ?? UpdatedCallback);
             await other.Locator(DisplayField).FillAsync(StaleDraft);
             await Button(other, SaveAction).ClickAsync();
             await HeadingAsync(other, ProblemTitle);
@@ -88,11 +96,12 @@ internal static class ApplicationEditorJourney
             await BrowserSecretOracle.StorageAsync(other, [output]);
         }
         finally { await other.CloseAsync(); }
-        await ReplaceAsync(page, now, output, presentation);
+        var replacement = await ReplaceAsync(page, now, output, presentation);
+        return new(created.Id, Client, callback ?? UpdatedCallback, replacement, output);
     }
 
     /// <summary>Requires local linked validation and a genuinely generated one-time secret without recording its value in diagnostics.</summary>
-    private static async Task<string> CreateAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null)
+    private static async Task<ApplicationEditorRegistration> CreateAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null)
     {
         await page.GotoAsync(new Uri(origin, Applications).AbsoluteUri);
         await Button(page, CreateAction).ClickAsync();
@@ -106,11 +115,15 @@ internal static class ApplicationEditorJourney
         await page.Locator(CallbacksField).FillAsync(Callback);
         await page.Locator(ExpiryField).FillAsync(now.AddMinutes(LifetimeMinutes).ToString(ExpiryFormat, CultureInfo.InvariantCulture));
         await Button(page, CreateAction).FocusAsync();
-        await page.Keyboard.PressAsync(EnterKey);
+        var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(EnterKey),
+            item => item.Request.Method == Post && item.Url == new Uri(origin, CollectionPath).AbsoluteUri);
+        Assert.Equal(CreatedStatus, response.Status);
         await HeadingAsync(page, CreatedTitle);
         var output = await page.Locator(Secret).InputValueAsync();
         Assert.True(output.Length == SecretLength);
-        return output;
+        using var body = JsonDocument.Parse(await response.TextAsync());
+        Assert.True(body.RootElement.GetProperty(SecretField).GetString() == output);
+        return new(body.RootElement.GetProperty(ApplicationField).GetProperty(IdField).GetString()!, Client, Callback, output, output);
     }
 
     /// <summary>Opens the exact newly registered client through its actual protected list projection.</summary>
@@ -122,25 +135,25 @@ internal static class ApplicationEditorJourney
     }
 
     /// <summary>Edits only mutable fields using the keyboard and verifies actual saved safe metadata.</summary>
-    private static async Task EditAsync(IPage page, Func<IPage, Task>? presentation)
+    private static async Task EditAsync(IPage page, Func<IPage, Task>? presentation, string callback)
     {
         await Button(page, EditAction).ClickAsync();
         await HeadingAsync(page, EditAction);
         await PresentationAsync(page, presentation);
         Assert.Equal(0, await page.Locator(ClientField).CountAsync());
         await page.Locator(DisplayField).FillAsync(Updated);
-        await page.Locator(CallbacksField).FillAsync(UpdatedCallback);
+        await page.Locator(CallbacksField).FillAsync(callback);
         await Button(page, SaveAction).FocusAsync();
         await page.Keyboard.PressAsync(EnterKey);
         await HeadingAsync(page, UpdatedTitle);
-        Assert.True(await page.GetByText(UpdatedCallback, new()
+        Assert.True(await page.GetByText(callback, new()
         {
             Exact = true
         }).IsVisibleAsync());
     }
 
     /// <summary>Requires unchecked confirmation, independent output and synchronous pagehide erasure, then verifies no browser persistence.</summary>
-    private static async Task ReplaceAsync(IPage page, DateTimeOffset now, string previous, Func<IPage, Task>? presentation)
+    private static async Task<string> ReplaceAsync(IPage page, DateTimeOffset now, string previous, Func<IPage, Task>? presentation)
     {
         await Button(page, ReplaceAction).ClickAsync();
         await HeadingAsync(page, ReplaceAction);
@@ -165,6 +178,7 @@ internal static class ApplicationEditorJourney
         await HeadingAsync(page, ProblemTitle);
         await BrowserSecretOracle.StorageAsync(page, [previous, output]);
         await PresentationAsync(page, presentation);
+        return output;
     }
 
     /// <summary>Checks forms and safe failure states in both themes and each required width without recording authenticated pixels.</summary>

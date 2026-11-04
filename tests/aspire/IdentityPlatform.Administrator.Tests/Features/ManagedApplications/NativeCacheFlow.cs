@@ -14,17 +14,8 @@ internal static class NativeCacheFlow
 {
     private const string JsonMediaType = "application/json";
     /// <summary>Creates complete initial authorization bytes with independent state, nonce and verifier values.</summary>
-    internal static Dictionary<string, string> Initial(string verifier, string client = NativeCacheProfile.Client, string callback = NativeCacheProfile.Callback) => new(StringComparer.Ordinal)
-    {
-        [OpenIddictConstants.Parameters.ClientId] = client,
-        [OpenIddictConstants.Parameters.RedirectUri] = callback,
-        [OpenIddictConstants.Parameters.ResponseType] = OpenIddictConstants.ResponseTypes.Code,
-        [OpenIddictConstants.Parameters.Scope] = OpenIddictConstants.Scopes.OpenId,
-        [OpenIddictConstants.Parameters.CodeChallengeMethod] = OpenIddictConstants.CodeChallengeMethods.Sha256,
-        [OpenIddictConstants.Parameters.CodeChallenge] = NativeCacheProfile.Challenge(verifier),
-        [OpenIddictConstants.Parameters.State] = NativeCacheProfile.Random(),
-        [OpenIddictConstants.Parameters.Nonce] = NativeCacheProfile.Random()
-    };
+    internal static Dictionary<string, string> Initial(string verifier, string client = NativeCacheProfile.Client, string callback = NativeCacheProfile.Callback) =>
+        IdentityPlatform.Testing.ManagedAuthorizationRequest.Initial(verifier, client, callback);
 
     /// <summary>Requires an actual issuer self-redirect and extracts only its native query; an OAuth error or RP redirect cannot satisfy caching.</summary>
     internal static Dictionary<string, string> Resume(NativeCacheResponse response)
