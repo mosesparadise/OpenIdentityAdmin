@@ -1,7 +1,7 @@
 import { Button } from "../../../Components/Button";
 import type { Details } from "./observation";
 /** Shows only checked registration metadata; callbacks remain inert text rather than external navigation. */
-export function DetailsView({ details, secret, dismiss }: { details: Details; secret?: string; dismiss: () => void }) {
+export function DetailsView({ details, secret, dismiss, edit, replace }: { details: Details; secret?: string; dismiss: () => void; edit?: () => void; replace?: () => void }) {
   return <>
     {secret !== undefined && <section className="editor-secret" aria-labelledby="secret-heading"><h3 id="secret-heading">Save your client secret now</h3>
       <p>Store it in your application’s secret store. This is the only time it is shown. Switching tabs, hiding this page or session expiry clears this view.</p>
@@ -17,6 +17,7 @@ export function DetailsView({ details, secret, dismiss }: { details: Details; se
       {details.credential && <><div><dt>Secret issued (UTC)</dt><dd><time dateTime={details.credential.issuedAt}>{details.credential.issuedAt}</time></dd></div>
         <div><dt>Secret expires (UTC)</dt><dd><time dateTime={details.credential.expiresAt}>{details.credential.expiresAt}</time>{Date.parse(details.credential.expiresAt) <= Date.now() && " — expired"}</dd></div></>}
     </dl>
-    <p className="editor-help">{details.editable ? "Editing and secret replacement are not yet available in this workspace. Details never return a previously issued secret." : "System-owned and unmanaged registrations cannot be changed through this editor."}</p>
+    <p className="editor-help">{details.editable ? "Client ID cannot be changed. Details never return a previously issued secret." : "System-owned and unmanaged registrations cannot be changed through this editor."}</p>
+    {details.editable && <div className="actions"><Button onClick={edit}>Edit application</Button><Button secondary onClick={replace}>Replace secret</Button></div>}
   </>;
 }

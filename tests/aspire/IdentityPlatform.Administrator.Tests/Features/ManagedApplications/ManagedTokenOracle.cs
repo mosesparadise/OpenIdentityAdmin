@@ -43,7 +43,7 @@ internal static class ManagedTokenOracle
     private static readonly string[] AccessClaims = ["iss", Subject, "iat", "exp", "nbf", "jti", ClientId, Scope, AuthorizationId, TokenId, Presenter];
 
     /// <summary>Checks signatures, lifetime, issuer, ID-token recipient and nonce/hash bindings without printing credential contents.</summary>
-    internal static async Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject, bool applicationOnly = false)
+    internal static async Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject, bool applicationOnly = false, bool multipleFlows = false)
     {
         using var discovery = JsonDocument.Parse(await test.Http.IssuerClient.GetStringAsync(DiscoveryPath, TestContext.Current.CancellationToken));
         var uri = new Uri(discovery.RootElement.GetProperty(JwksUri).GetString()!);
@@ -63,7 +63,11 @@ internal static class ManagedTokenOracle
         var principal = await ValidateAsync(access, accessParameters, AccessClaims);
         Assert.True(principal.GetClaim(Subject) == subject && principal.GetClaim(ClientId) == test.ClientIdentifier && principal.GetClaim(Scope) == OpenId);
         Assert.True(identity.GetClaim(AuthorizedParty) == test.ClientIdentifier && principal.GetClaim(Presenter) == test.ClientIdentifier);
-        var snapshot = await test.SnapshotAsync(applicationOnly);
+        var all = await test.SnapshotAsync(applicationOnly);
+        var interaction = Assert.Single(all.Interactions, row => row.RequestId == flow.RequestId);
+        var snapshot = multipleFlows
+            ? new ManagedCacheSnapshot([interaction], all.Tokens, all.Authorizations, all.Sessions)
+            : all;
         Assert.True(identity.GetClaim(TokenId) == snapshot.Tokens.Single(value => value.Type == StoredIdentityType).Id);
         Assert.True(principal.GetClaim(TokenId) == snapshot.Tokens.Single(value => value.Type == StoredAccessType).Id);
         var authorization = Assert.Single(snapshot.Interactions).AuthorizationId;

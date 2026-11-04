@@ -1,6 +1,6 @@
 import createClient from "openapi-fetch";
 import type { paths } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { addressable, type CreateInput } from "./input";
+import { addressable, type CreateInput, type EditInput, type ReplacementInput } from "./input";
 import type { Result } from "./observation";
 const collection = "/bff/api/v1/applications";
 /** Bounds successful JSON before parsing and discards all remote error bodies, cookies and exception text. */
@@ -26,15 +26,30 @@ export function editorClient() {
   const client = createClient<paths>({ baseUrl: window.location.origin, fetch: bounded });
   const options = (signal: AbortSignal) => ({ credentials: "same-origin" as const, cache: "no-store" as const, redirect: "error" as const,
     signal: AbortSignal.any([signal, AbortSignal.timeout(10000)]) });
+  const target = (id: string) => {
+    if (!addressable(id)) throw new Error("Unsupported application identity");
+    return `${window.location.origin}${collection}/${encodeURIComponent(id).replace(/[!'()*]/g, character => `%${character.charCodeAt(0).toString(16).toUpperCase()}`)}`;
+  };
   return {
     async token(signal: AbortSignal): Promise<Result> {
       const { data, response } = await client.GET("/bff/api/v1/applications/antiforgery", options(signal));
       return { status: response.status, value: data };
     },
     async details(id: string, signal: AbortSignal): Promise<Result> {
-      if (!addressable(id)) throw new Error("Unsupported application identity");
-      const encoded = encodeURIComponent(id).replace(/[!'()*]/g, character => `%${character.charCodeAt(0).toString(16).toUpperCase()}`);
-      const { data, response } = await client.GET("/bff/api/v1/applications/{id}", { ...options(signal), params: { path: { id } }, pathSerializer: () => `${window.location.origin}${collection}/${encoded}` });
+      const path = target(id);
+      const { data, response } = await client.GET("/bff/api/v1/applications/{id}", { ...options(signal), params: { path: { id } }, pathSerializer: () => path });
+      return { status: response.status, value: data, etag: response.headers.get("etag") };
+    },
+    async edit(id: string, version: string, input: EditInput, token: string, signal: AbortSignal): Promise<Result> {
+      const path = target(id);
+      const { data, response } = await client.PUT("/bff/api/v1/applications/{id}", { ...options(signal),
+        params: { path: { id }, header: { "If-Match": version, "X-CSRF-TOKEN": token } }, pathSerializer: () => path, body: input });
+      return { status: response.status, value: data, etag: response.headers.get("etag") };
+    },
+    async replace(id: string, version: string, input: ReplacementInput, token: string, signal: AbortSignal): Promise<Result> {
+      const path = target(id) + "/secret-replacements";
+      const { data, response } = await client.POST("/bff/api/v1/applications/{id}/secret-replacements", { ...options(signal),
+        params: { path: { id }, header: { "If-Match": version, "X-CSRF-TOKEN": token } }, pathSerializer: () => path, body: input });
       return { status: response.status, value: data, etag: response.headers.get("etag") };
     },
     async create(input: CreateInput, token: string, signal: AbortSignal): Promise<Result> {

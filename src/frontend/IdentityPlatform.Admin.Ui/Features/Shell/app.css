@@ -132,3 +132,7 @@
   .editor-secret button { margin-top: 16px; }
   @media (max-width: 640px) { .editor-secret { padding: 14px; } .application-create-bar { align-items: flex-start; flex-direction: column; } }
 }
+
+.application-editor .editor-confirmation { display: flex; gap: 12px; align-items: center; min-height: 44px; margin-top: 16px; overflow-wrap: anywhere; }
+.application-editor .editor-confirmation input { width: 24px; min-height: 24px; flex: 0 0 24px; padding: 0; }
+.application-editor-form .application-client-id { overflow-wrap: anywhere; }

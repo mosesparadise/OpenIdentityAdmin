@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using OpenIddict.Abstractions;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
@@ -24,6 +26,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     private readonly string verifier = NativeCacheProfile.Random();
     private Dictionary<string, string>? initial;
     internal Dictionary<string, string> Resume { get; private set; } = [];
+    internal string RequestId { get; private set; } = string.Empty;
     internal string Nonce => initial![NonceField];
 
     /// <summary>Creates actual native caching and completes a fresh password/MFA/consent ceremony using native CSRF and replay state.</summary>
@@ -39,6 +42,14 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
         initial = NativeCacheFlow.Initial(verifier, test.ClientIdentifier, test.CallbackUri);
         using var cached = await test.SendAsync(initial);
         Resume = await test.ResumeAsync(cached);
+        await using var scope = test.Http.Scope();
+        var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictTokenManager>();
+        var reference = Resume[RequestUri];
+        var prefixed = reference.StartsWith(OpenIddictConstants.RequestUris.Prefixes.Generic, StringComparison.Ordinal);
+        Assert.True(prefixed);
+        var token = await manager.FindByReferenceIdAsync(reference[OpenIddictConstants.RequestUris.Prefixes.Generic.Length..], TestContext.Current.CancellationToken);
+        Assert.NotNull(token);
+        RequestId = (await manager.GetIdAsync(token, TestContext.Current.CancellationToken))!;
     }
 
     /// <summary>Completes fresh native password/MFA and the explicit chosen consent decision for the retained original request.</summary>

@@ -12,6 +12,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 /// <summary>Retains exact ordinary-rejection evidence without normalizing away native consumption, concurrency or replay effects.</summary>
 internal static class ManagedJourneyEvidence
 {
+    private const string AccessToken = "access_token";
     /// <summary>Hashes all clients' complete native token/authorization descriptors, policy, human state, audit and administrator authority.</summary>
     internal static async Task<string> DigestAsync(ManagedCacheTestContext test)
     {
@@ -65,15 +66,23 @@ internal static class ManagedJourneyEvidence
     }
 
     /// <summary>Proves the rightful client's actual Basic/S256 exchange, signatures, recipient, original nonce and native audit bindings.</summary>
-    internal static async Task ExchangeAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, string code)
+    internal static async Task ExchangeAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, string code, bool denyManagement = false)
     {
         using var response = await flow.ExchangeAsync(code);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.True(response.Headers.CacheControl?.NoStore == true);
         ManagedHumanHttp.NoAuthorityCookie(response);
         using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
-        var row = Assert.Single((await test.SnapshotAsync(applicationOnly: true)).Interactions);
-        await ManagedTokenOracle.ValidateAsync(test, flow, body.RootElement, row.UserId!, applicationOnly: true);
-        await ManagedTokenEvidence.IssuanceAuditAsync(test, applicationOnly: true);
+        var row = Assert.Single((await test.SnapshotAsync(applicationOnly: true)).Interactions, value => value.RequestId == flow.RequestId);
+        await ManagedTokenOracle.ValidateAsync(test, flow, body.RootElement, row.UserId!, applicationOnly: true, multipleFlows: denyManagement);
+        await ManagedTokenEvidence.IssuanceAuditAsync(test, applicationOnly: true, requestId: denyManagement ? flow.RequestId : null);
+        if (denyManagement)
+        {
+            using var allowed = await test.Http.DirectGetAsync(Applications.ApplicationHttpFixture.ApiCollection);
+            Assert.Equal(HttpStatusCode.OK, allowed.StatusCode);
+            using var denied = await test.Http.DirectGetAsync(Applications.ApplicationHttpFixture.ApiCollection,
+                credential: body.RootElement.GetProperty(AccessToken).GetString()!);
+            Assert.Equal(HttpStatusCode.Unauthorized, denied.StatusCode);
+        }
     }
 }

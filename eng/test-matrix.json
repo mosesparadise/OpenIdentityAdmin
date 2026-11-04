@@ -37,19 +37,19 @@
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1067
+      "Administrator": 1069
     },
     "SqlServer": {
       "Persistence": 19,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1172
+      "Administrator": 1174
     }
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 65
+    "Administrator": 66
   },
   "lifecycle_stories": {
     "Restart": {
@@ -123,15 +123,15 @@
       "SqlServer": 59
     },
     "ManagedApplications": {
-      "PostgreSql": 104,
-      "SqlServer": 104
+      "PostgreSql": 106,
+      "SqlServer": 106
     }
   },
   "administrator_browser_stories": {
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 30,
+    "BrowserProtection": 31,
     "BrowserLogin": 9
   },
   "issuer_http_groups": {

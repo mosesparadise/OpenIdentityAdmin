@@ -1132,7 +1132,10 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"PostgreSql\", direct: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"PostgreSql\", direct: True)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: False)",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: True)"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithCachedRequestAndCode_When_CallbackIsEditedOverHttps_Then_OldConfigurationFailsAndNewIdentityOnlyJourneySucceeds(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithIssuedCode_When_SecretIsReplacedOverHttps_Then_OldCodeAndSecretFailIndependentlyAndNewCredentialsSucceed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationEditorBrowserTests.Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2371,7 +2374,10 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"SqlServer\", direct: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"SqlServer\", direct: True)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: False)",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: True)"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithCachedRequestAndCode_When_CallbackIsEditedOverHttps_Then_OldConfigurationFailsAndNewIdentityOnlyJourneySucceeds(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithIssuedCode_When_SecretIsReplacedOverHttps_Then_OldCodeAndSecretFailIndependentlyAndNewCredentialsSucceed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationEditorBrowserTests.Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -50898,6 +50904,136 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithCachedRequestAndCode_When_CallbackIsEditedOverHttps_Then_OldConfigurationFailsAndNewIdentityOnlyJourneySucceeds(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUpdateJourneyTests",
+        "methodName": "Given_ManagedClientWithCachedRequestAndCode_When_CallbackIsEditedOverHttps_Then_OldConfigurationFailsAndNewIdentityOnlyJourneySucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithCachedRequestAndCode_When_CallbackIsEditedOverHttps_Then_OldConfigurationFailsAndNewIdentityOnlyJourneySucceeds(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUpdateJourneyTests",
+        "methodName": "Given_ManagedClientWithCachedRequestAndCode_When_CallbackIsEditedOverHttps_Then_OldConfigurationFailsAndNewIdentityOnlyJourneySucceeds",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithIssuedCode_When_SecretIsReplacedOverHttps_Then_OldCodeAndSecretFailIndependentlyAndNewCredentialsSucceed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUpdateJourneyTests",
+        "methodName": "Given_ManagedClientWithIssuedCode_When_SecretIsReplacedOverHttps_Then_OldCodeAndSecretFailIndependentlyAndNewCredentialsSucceed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUpdateJourneyTests.Given_ManagedClientWithIssuedCode_When_SecretIsReplacedOverHttps_Then_OldCodeAndSecretFailIndependentlyAndNewCredentialsSucceed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUpdateJourneyTests",
+        "methodName": "Given_ManagedClientWithIssuedCode_When_SecretIsReplacedOverHttps_Then_OldCodeAndSecretFailIndependentlyAndNewCredentialsSucceed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationEditorBrowserTests.Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationEditorBrowserTests",
+        "methodName": "Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationEditorBrowserTests.Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationEditorBrowserTests",
+        "methodName": "Given_AuthenticatedAdministrator_When_EditorCreationConflictAndReplacementRun_Then_RealMutationsAndBoundedAccessibleOutputAreObserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

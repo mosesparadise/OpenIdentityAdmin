@@ -116,12 +116,12 @@ internal static class ManagedTokenEvidence
     }
 
     /// <summary>Requires one exact sanitized accepted audit for each successful native issuance phase and the original managed correlation.</summary>
-    internal static async Task IssuanceAuditAsync(ManagedCacheTestContext test, bool applicationOnly = false)
+    internal static async Task IssuanceAuditAsync(ManagedCacheTestContext test, bool applicationOnly = false, string? requestId = null)
     {
-        var interaction = Assert.Single((await test.SnapshotAsync(applicationOnly)).Interactions);
+        var interaction = Assert.Single((await test.SnapshotAsync(applicationOnly)).Interactions, row => requestId == null || row.RequestId == requestId);
         await using var scope = test.Http.Scope();
         var audits = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<SecurityAuditIntent>().AsNoTracking()
-            .Where(row => (!applicationOnly || row.TargetId == test.Id) && (row.Event == CodeAudit || row.Event == TokenAudit)).ToArrayAsync(TestContext.Current.CancellationToken);
+            .Where(row => (!applicationOnly || row.TargetId == test.Id) && (requestId == null || row.CorrelationId == interaction.CorrelationId) && (row.Event == CodeAudit || row.Event == TokenAudit)).ToArrayAsync(TestContext.Current.CancellationToken);
         Assert.Single(audits, row => row.Event == CodeAudit);
         Assert.Single(audits, row => row.Event == TokenAudit);
         Assert.All(audits, row => Assert.True(row.ActorType == AccountActor && row.ActorId == interaction.UserId &&

@@ -27,12 +27,12 @@
 
 - [x] T015 [US2] Prove both-provider same-version edits/replacements and native-save/audit rollback in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/. FR-005–008/010. [Scoped provider evidence](update-atomicity.md) adds observed independent-node contention and complete rollback/recovery proofs. Global quality remains blocked by the unchanged expired feature009 bootstrap exception; no T022/full-delivery acceptance.
 - [x] T016 [US2] Implement If-Match PUT and explicit secret replacement in Admin.Api/Features/Applications/ and matching BFF endpoints; PUT cannot modify credential expiry, and replacement requires current credential permission/recent MFA. FR-005–011. [Local both-provider HTTP and contract evidence](update-http.md); full verification remains blocked by the unchanged expired quality exception and newly observed generator dependency advisory.
-- [ ] T017 [US2] Add editor/conflict/replacement forms in Admin.Ui/Features/Applications/ and verify new issuer configuration works while old code/configuration/secret is rejected. FR-001/007/010/012.
+- [x] T017 [US2] Add editor/conflict/replacement forms in Admin.Ui/Features/Applications/ and verify new issuer configuration works while old code/configuration/secret is rejected. FR-001/007/010/012. [Scoped UI and both-provider native journey evidence](editor-recovery.md); retained browser acceptance remains T019.
 
 ## US3 — Clear, accessible, bounded failure states
 
-- [ ] T018 [US3] Implement field errors, stale edit, ambiguous result, forbidden/expired, no-auto-retry and sensitive-output dismissal states under Admin.Ui/Features/Applications/; verify exact Node identities and bounded memory handling. FR-009/010/012.
-- [ ] T019 [US3] Run retained Chromium/WebKit create/edit/consent/secrecy/keyboard/themes/reflow/accessibility journeys on both providers under Administrator.Tests/Features/Browser/ and both native Aspire demos. FR-001–012.
+- [x] T018 [US3] Implement field errors, stale edit, ambiguous result, forbidden/expired, no-auto-retry and sensitive-output dismissal states under Admin.Ui/Features/Applications/; verify exact Node identities and bounded memory handling. FR-009/010/012. [Exact Node identities and bounded-output evidence](editor-recovery.md); all prior editor identities and module floors preserved.
+- [ ] T019 [US3] Run retained Chromium/WebKit create/edit/consent/secrecy/keyboard/themes/reflow/accessibility journeys on both providers under Administrator.Tests/Features/Browser/ and both native Aspire demos. FR-001–012. [Retained editor journey source](editor-recovery.md) is compiled and shared with both native demos; engines remain unavailable, execution and browser consent/history acceptance remain open. No blocked download is retried.
 
 ## Contracts and delivery
 

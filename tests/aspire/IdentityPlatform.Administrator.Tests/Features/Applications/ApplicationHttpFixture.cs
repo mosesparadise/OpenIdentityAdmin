@@ -155,12 +155,12 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     }
 
     /// <summary>Sends a direct genuine bearer details read without copying that credential into the BFF request surface.</summary>
-    internal async Task<HttpResponseMessage> DirectGetAsync(string path, bool authenticated = true)
+    internal async Task<HttpResponseMessage> DirectGetAsync(string path, bool authenticated = true, string? credential = null)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, path);
         if (authenticated)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, Access);
+            request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, credential ?? Access);
         }
         return await api.SendAsync(request, TestContext.Current.CancellationToken);
     }

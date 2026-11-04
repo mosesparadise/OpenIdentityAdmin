@@ -47,7 +47,11 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private string? seed;
 
     /// <summary>Exercises the actual API-backed list through the shipped React view without exposing its protected transport.</summary>
-    internal Task RequireApplicationsAsync() => LocalDemoApplications.RequireAsync(page);
+    internal async Task RequireApplicationsAsync()
+    {
+        await LocalDemoApplications.RequireAsync(page);
+        await IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationEditorJourney.RunAsync(page, new Uri(Client), DateTimeOffset.UtcNow);
+    }
 
     /// <summary>Retains sensitive browser state only in memory until the context closes.</summary>
     private LocalDemoBrowser(IPlaywright playwright, IBrowser browser, IBrowserContext context, IPage page)

@@ -1,7 +1,11 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
 export type CreateInput = components["schemas"]["ApplicationCreate"];
+export type EditInput = components["schemas"]["ApplicationEdit"];
+export type ReplacementInput = components["schemas"]["ApplicationSecretReplacement"];
+export type EditDraft = Pick<Draft, "displayName" | "redirectUris">;
+export type ReplacementDraft = { confirmed: boolean; credentialExpiresAt: string };
 export type Draft = { clientId: string; displayName: string; redirectUris: string; credentialExpiresAt: string };
-export type Errors = Partial<Record<keyof Draft, string>>;
+export type Errors = Partial<Record<keyof Draft | "confirmed", string>>;
 export const emptyDraft: Draft = { clientId: "", displayName: "", redirectUris: "", credentialExpiresAt: "" };
 const whitespace = /[\s\u0085]/u;
 const controls = /[\u0000-\u001f\u007f-\u009f]/u;
@@ -45,3 +49,22 @@ export function validate(draft: Draft, now: number): { input?: CreateInput; erro
 }
 /** Keeps the literal antiforgery endpoint and URL dot segments out of details navigation. */
 export function addressable(id: string): boolean { return text(id, 400) && id !== "." && id !== ".." && id.toLowerCase() !== "antiforgery"; }
+
+/** Validates only mutable presentation fields; neither identity nor credential lifecycle can enter PUT input. */
+export function validateEdit(draft: EditDraft): { input?: EditInput; errors: Errors } {
+  const errors: Errors = {};
+  if (!text(draft.displayName, 200)) errors.displayName = "Enter a name of 1–200 characters without control characters.";
+  const redirectUris = draft.redirectUris.split(/\r?\n/);
+  if (redirectUris.length > 10 || redirectUris.some(value => !callback(value)) || new Set(redirectUris).size !== redirectUris.length)
+    errors.redirectUris = "Enter 1–10 different, exact HTTPS callbacks, one per line, without spaces, credentials or fragments.";
+  const input = { displayName: draft.displayName, redirectUris };
+  if (new TextEncoder().encode(JSON.stringify(input)).length > 32768) errors.redirectUris = "The change exceeds the 32 KiB request limit.";
+  return Object.keys(errors).length ? { errors } : { errors, input };
+}
+/** Requires a fresh explicit confirmation and expiry, without accepting a previous or caller-selected secret. */
+export function validateReplacement(draft: ReplacementDraft, now: number): { input?: ReplacementInput; errors: Errors } {
+  const errors: Errors = {};
+  if (draft.confirmed !== true) errors.confirmed = "Confirm that the current secret will stop working immediately.";
+  if (!(utc(draft.credentialExpiresAt, true) > now)) errors.credentialExpiresAt = "Enter a future UTC date and time as YYYY-MM-DDTHH:mm:ssZ.";
+  return Object.keys(errors).length ? { errors } : { errors, input: { confirmed: true, credentialExpiresAt: draft.credentialExpiresAt } };
+}

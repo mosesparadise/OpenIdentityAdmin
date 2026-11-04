@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, text, callback, utc, addressable } from './input.mjs';
-import { observe, created, reason } from './observation.mjs';
+import { validate, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { observe, created, edited, replaced, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
 import { editorClient } from './client.mjs';
 import { bindLifecycle } from './lifecycle.mjs';
 import { focusList } from "./focus.mjs";
-import { CreateForm, CreateFields, DetailsView, ProblemView } from './views.mjs';
+import { CreateForm, CreateFields, UpdateForm, DetailsView, ProblemView } from './views.mjs';
 const now=Date.parse('2026-11-01T12:00:00Z');
 const draft={clientId:'example-web',displayName:'Example',redirectUris:'https://client.example/callback',credentialExpiresAt:'2030-01-01T00:00:00Z'};
 const input=validate(draft,now).input;
@@ -169,7 +169,7 @@ test('Given_hostile_transport_When_media_headers_redirect_or_size_changes_Then_n
 test('Given_rendered_forms_and_details_When_reviewed_Then_labels_safe_text_and_one_time_output_are_explicit',()=>{
  const form=renderToStaticMarkup(createElement(CreateForm,{submit:async()=>({}),cancel:()=>{}}));
  for(const name of ['clientId','displayName','redirectUris','credentialExpiresAt']){assert.ok(form.includes(`for="editor-${name}"`));assert.ok(form.includes(`id="editor-${name}-help"`));}
- assert.ok(form.includes('YYYY-MM-DDTHH:mm:ssZ'));assert.ok(form.includes('replacement is not yet available'));assert.equal(form.includes('value="2030'),false);
+ assert.ok(form.includes('YYYY-MM-DDTHH:mm:ssZ'));assert.ok(form.includes('explicitly replace a lost secret'));assert.equal(form.includes('value="2030'),false);
  const visible=renderToStaticMarkup(createElement(DetailsView,{details:{...details,displayName:'<img src=x onerror=evil()>'},secret,dismiss:()=>{}}));assert.ok(visible.includes(secret));assert.ok(visible.includes('&lt;img'));assert.equal(visible.includes('<img'),false);assert.equal(visible.includes('aria-live'),false);assert.match(visible, /readonly=""/i);
  const hidden=renderToStaticMarkup(createElement(DetailsView,{details,dismiss:()=>{}}));assert.equal(hidden.includes(secret),false);assert.ok(hidden.includes('Details never return'));
  const readonly=renderToStaticMarkup(createElement(DetailsView,{details:{...details,editable:false,credential:null,redirectUris:[],displayName:null},dismiss:()=>{}}));assert.ok(readonly.includes('Read-only registration'));assert.ok(readonly.includes('Unnamed application'));
@@ -249,4 +249,131 @@ test('Given_credential_expiring_during_preflight_When_native_proof_arrives_Then_
 test('Given_managed_metadata_When_names_or_whole_second_instants_are_invalid_Then_response_is_rejected',async()=>{
  for(const value of [{...details,clientId:'with space'},{...details,displayName:null},{...details,displayName:''},{...details,displayName:'control\u0000'},{...details,credential:{...details.credential,issuedAt:'2026-11-01T12:00:00.1Z'}},{...details,credential:{...details.credential,expiresAt:'2030-01-01T00:00:00.1Z'}}])assert.equal(await observe({...read,value},details.id,now),null);
  assert.ok(await observe({...read,value:{...details,credential:{issuedAt:'2026-11-01T12:00:00+00:00',expiresAt:'2030-01-01T00:00:00+00:00'}}},details.id,now));
+});
+
+const editDraft={displayName:'Changed name',redirectUris:'https://changed.example/callback'};
+const editInput=validateEdit(editDraft).input;
+const replacementDraft={confirmed:true,credentialExpiresAt:'2031-01-01T00:00:00Z'};
+const editResult={status:200,etag:read.etag.replace('-1"','-2"'),value:{...details,...editInput,expiresAt:'2026-11-01T12:02:00Z'}};
+const replacementResult={status:200,etag:editResult.etag,value:{application:{...details,credential:{issuedAt:details.credential.issuedAt,expiresAt:replacementDraft.credentialExpiresAt}},clientSecret:secret}};
+async function updateSetup(t,action,overrides={},clock=()=>now){
+ const sent=[];const item=setup(t,{edit:async(...args)=>{sent.push(args);return editResult},replace:async(...args)=>{sent.push(args);return replacementResult},...overrides},clock);
+ await item.owner.details(details.id);item.owner.open(action);return {...item,sent};
+}
+
+test('Given_edit_and_replacement_input_When_validated_Then_identity_is_immutable_and_confirmation_expiry_are_explicit',()=>{
+ assert.deepEqual(validateEdit({...editDraft,clientId:'injected',credentialExpiresAt:draft.credentialExpiresAt}).input,editInput);
+ for(const invalid of [{displayName:''},{displayName:'x'.repeat(201)},{redirectUris:''},{redirectUris:'http://bad.example/'},{redirectUris:Array(11).fill(draft.redirectUris).join('\n')},{redirectUris:draft.redirectUris+'\n'+draft.redirectUris},{redirectUris:'x'.repeat(32769)}])assert.ok(Object.keys(validateEdit({...editDraft,...invalid}).errors).length);
+ assert.equal(validateEdit({...editDraft,redirectUris:'https://z.example/\nhttps://a.example/'}).input.redirectUris.length,2);
+ assert.deepEqual(validateReplacement({...replacementDraft,clientSecret:'injected'},now),{errors:{},input:replacementDraft});
+ for(const confirmed of [false,undefined,'true',1])assert.ok(validateReplacement({...replacementDraft,confirmed},now).errors.confirmed);
+ for(const credentialExpiresAt of ['',details.credential.issuedAt,'2031-02-30T00:00:00Z','2031-01-01T00:00:00+00:00'])assert.ok(validateReplacement({...replacementDraft,credentialExpiresAt},now).errors.credentialExpiresAt);
+});
+
+test('Given_update_response_When_revision_identity_or_action_fields_drift_Then_no_successor_is_accepted',async()=>{
+ const base=await observe(read,details.id,now);
+ assert.ok(await edited(editResult,base,editInput,now));assert.equal((await replaced(replacementResult,base,replacementDraft,now)).secret,secret);
+ for(const changed of [{status:201},{etag:read.etag},{etag:read.etag.replace('-1"','-3"')},{etag:tag('other')},{value:null},{value:{...editResult.value,id:'other'}},{value:{...editResult.value,clientId:'other'}},{value:{...editResult.value,profile:'other'}},{value:{...editResult.value,editable:false,profile:null,credential:null,redirectUris:[]}},{value:{...editResult.value,displayName:'other'}},{value:{...editResult.value,redirectUris:details.redirectUris}},{value:{...editResult.value,credential:{...details.credential,issuedAt:'2026-10-01T00:00:00Z'}}},{value:{...editResult.value,credential:{...details.credential,expiresAt:'2032-01-01T00:00:00Z'}}}])assert.equal(await edited({...editResult,...changed},base,editInput,now),null);
+ for(const changed of [{expires:now},{etag:null},{etag:'invalid'},{details:{...details,editable:false}}])assert.equal(await edited(editResult,{...base,...changed},editInput,now),null);
+ const old={issuedAt:'2025-01-01T00:00:00Z',expiresAt:'2026-01-01T00:00:00Z'};
+ assert.ok(await edited({...editResult,value:{...editResult.value,credential:old}},{...base,details:{...details,credential:old}},editInput,now));
+ for(const value of [null,{}, {...replacementResult.value,extra:true},{...replacementResult.value,clientSecret:3},{...replacementResult.value,clientSecret:'short'},{...replacementResult.value,clientSecret:secret.slice(0,-2)+'B='}])assert.equal(await replaced({...replacementResult,value},base,replacementDraft,now),null);
+ assert.equal(await replaced(replacementResult,base,{...replacementDraft,confirmed:false},now),null);
+ for(const changed of [{displayName:'other'},{redirectUris:editInput.redirectUris},{credential:{...replacementResult.value.application.credential,expiresAt:draft.credentialExpiresAt}},{credential:{...replacementResult.value.application.credential,issuedAt:'2026-10-01T00:00:00Z'}}])assert.equal(await replaced({...replacementResult,value:{...replacementResult.value,application:{...replacementResult.value.application,...changed}}},base,replacementDraft,now),null);
+ const expired={...replacementDraft,credentialExpiresAt:'2026-11-01T11:59:59Z'};
+ assert.equal(await replaced({...replacementResult,value:{...replacementResult.value,application:{...details,credential:{issuedAt:'2025-01-01T00:00:00Z',expiresAt:expired.credentialExpiresAt}}}},{...base,details:{...details,credential:{...details.credential,issuedAt:'2025-01-01T00:00:00Z'}}},expired,now),null);
+ assert.ok(await replaced({...replacementResult,value:{...replacementResult.value,application:{...replacementResult.value.application,credential:{...replacementResult.value.application.credential,issuedAt:'2026-11-01T12:00:01Z'}}}},base,replacementDraft,now));
+ const huge=read.etag.replace('-1"','-9007199254740993"');
+ assert.ok(await edited({...editResult,etag:huge.replace('993"','994"')},{...base,etag:huge},editInput,now));
+});
+
+test('Given_explicit_update_forms_When_saved_or_cancelled_Then_secret_is_cleared_and_original_observation_is_not_renewed',async t=>{
+ for(const action of ['edit','replace']){
+  const item=await updateSetup(t,action);const {owner,states,sent}=item;
+  assert.equal(states.at(-1).kind,action==='edit'?'edit-form':'replacement-form');
+  owner.cancelForm();assert.equal(states.at(-1).kind,'details');owner.cancelForm();owner.open(action);
+  assert.ok(Object.keys(await owner[action](action==='edit'?{...editDraft,displayName:''}:{...replacementDraft,confirmed:false})).length);assert.equal(sent.length,0);
+  await owner[action](action==='edit'?editDraft:replacementDraft);assert.equal(sent.length,1);assert.equal(sent[0][0],details.id);assert.equal(sent[0][1],read.etag);assert.equal(sent[0][3],proof.value.requestToken);
+  assert.equal(states.at(-1).kind,action==='edit'?'updated':'replaced');assert.equal(states.at(-1).expires,now+60000);
+  await owner[action](action==='edit'?editDraft:replacementDraft);assert.equal(sent.length,1);
+  if(action==='replace'){owner.dismiss();assert.equal(states.at(-1).kind,'details');assert.equal('secret' in states.at(-1),false);}
+  owner.suspend();assert.equal(states.at(-1).outcome,action==='edit'?'updated':'replaced');owner.dispose();owner.open(action);await owner[action](action==='edit'?editDraft:replacementDraft);
+ }
+ const {owner,states}=setup(t);owner.open('edit');owner.cancelForm();owner.newForm();await owner.create(draft);owner.open('replace');assert.equal('secret' in states.at(-1),false);assert.equal(states.at(-1).expires,now+60000);owner.cancelForm();assert.equal('secret' in states.at(-1),false);
+ const ro=setup(t,{details:async()=>({status:200,value:{...details,editable:false,profile:null,credential:null,redirectUris:[]}})});await ro.owner.details(details.id);ro.owner.open('edit');assert.equal(ro.states.at(-1).kind,'details');
+});
+
+test('Given_update_preflight_or_dispatch_failure_When_reported_Then_action_and_uncertainty_are_bounded_without_retry',async t=>{
+ for(const action of ['edit','replace'])for(const phase of ['token',action])for(const failure of [{status:401},{status:403},{status:404},{status:400},{status:409},{status:412},{status:428},{status:503},{status:200,value:null},{status:200,value:{requestToken:3}},{status:200,value:{requestToken:'bad\n'}},'throw']){
+  let sends=0;const {owner,states}=await updateSetup(t,action,{[phase]:async()=>{sends++;if(failure==='throw')throw new Error(secret);return failure}});
+  await owner[action](action==='edit'?editDraft:replacementDraft);
+  assert.equal(states.at(-1).kind,'problem');assert.equal(states.at(-1).outcome,phase==='token'?'not-sent':'unknown');assert.deepEqual(states.at(-1).target,{id:details.id,action});
+  assert.equal(JSON.stringify(states.at(-1)).includes(secret),false);await owner[action](action==='edit'?editDraft:replacementDraft);assert.equal(sends,1);
+  if(failure.status===412||failure.status===428){assert.equal(states.at(-1).reason,'stale');await owner.details(details.id);assert.equal(states.at(-1).kind,'details');}
+  owner.dispose();
+ }
+});
+
+test('Given_update_in_flight_When_original_deadline_or_owner_changes_Then_no_late_mutation_or_secret_survives',async t=>{
+ for(const action of ['edit','replace'])for(const phase of ['token',action])for(const boundary of ['deadline','session','suspend','dispose','authority','list']){
+  let clock=now;const pending=deferred();const {owner,states,sent}=await updateSetup(t,action,{[phase]:()=>pending.promise},()=>clock);
+  const work=owner[action](action==='edit'?editDraft:replacementDraft);await Promise.resolve();
+  if(boundary==='deadline')clock=now+60000;else if(boundary==='session')clock=session.expires;else if(boundary==='authority')owner.authorize({kind:'anonymous'});else owner[boundary]();
+  const count=states.length;pending.resolve(phase==='token'?proof:action==='edit'?editResult:replacementResult);await work;
+  assert.equal('secret' in states.at(-1),false);if(!['deadline','session'].includes(boundary))assert.equal(states.length,count);else assert.equal(states.at(-1).reason,boundary==='deadline'?'display-expired':'expired');
+  if(phase==='token')assert.equal(sent.length,0);owner.dispose();
+ }
+ let clock=now;const item=await updateSetup(t,'replace',{},()=>clock);clock=now+60000;await item.owner.replace(replacementDraft);assert.equal(item.states.at(-1).reason,'display-expired');assert.equal(item.sent.length,0);
+});
+
+test('Given_replacement_expiry_and_crypto_wait_When_the_boundary_passes_Then_original_deadlines_still_control_output',async t=>{
+ let clock=now;const proofWait=deferred();const item=await updateSetup(t,'replace',{token:()=>proofWait.promise},()=>clock);
+ const work=item.owner.replace({confirmed:true,credentialExpiresAt:'2026-11-01T12:00:20Z'});clock=now+20000;proofWait.resolve(proof);await work;assert.equal(item.sent.length,0);assert.equal(item.states.at(-1).reason,'invalid');
+ for(const action of ['edit','replace']){
+  clock=now;const item=await updateSetup(t,action,{},()=>clock),original=crypto.subtle.digest,pending=deferred();let entered=false;
+  crypto.subtle.digest=function(...args){entered=true;return pending.promise.then(()=>original.apply(this,args))};
+  try{const work=item.owner[action](action==='edit'?editDraft:replacementDraft);while(!entered)await Promise.resolve();clock=now+60000;pending.resolve();await work;assert.equal(item.states.at(-1).reason,'display-expired');assert.equal(item.states.at(-1).outcome,'unknown');assert.equal('secret' in item.states.at(-1),false);}finally{crypto.subtle.digest=original;item.owner.dispose();}
+ }
+ clock=now;const short={...replacementDraft,credentialExpiresAt:'2026-11-01T12:00:20Z'};
+ const last=await updateSetup(t,'replace',{replace:async()=>({...replacementResult,value:{...replacementResult.value,application:{...details,credential:{...details.credential,expiresAt:short.credentialExpiresAt}}}})},()=>clock);
+ await last.owner.replace(short);assert.equal(last.states.at(-1).expires,now+20000);clock=now+20000;last.owner.checkDeadline();assert.equal(last.states.at(-1).outcome,'replaced');assert.equal('secret' in last.states.at(-1),false);
+});
+
+test('Given_generated_update_transport_When_dispatched_Then_opaque_target_strong_version_and_CSRF_are_exact',async()=>{
+ const original=globalThis.fetch;globalThis.window={location:{origin:'https://bff.example.test'}};const requests=[];
+ globalThis.fetch=async request=>{requests.push(request);return new Response(JSON.stringify(request.method==='PUT'?editResult.value:replacementResult.value),{status:200,headers:{...headers,etag:editResult.etag}})};
+ try{const client=editorClient(),signal=new AbortController().signal;
+  assert.deepEqual(await client.edit('opaque /?id',read.etag,editInput,proof.value.requestToken,signal),editResult);
+  assert.deepEqual(await client.replace('opaque /?id',read.etag,replacementDraft,proof.value.requestToken,signal),replacementResult);
+  assert.equal(new URL(requests[0].url).pathname,'/bff/api/v1/applications/opaque%20%2F%3Fid');assert.equal(requests[0].method,'PUT');assert.equal(new URL(requests[1].url).pathname,'/bff/api/v1/applications/opaque%20%2F%3Fid/secret-replacements');assert.equal(requests[1].method,'POST');
+  for(const request of requests){assert.equal(request.headers.get('If-Match'),read.etag);assert.equal(request.headers.get('X-CSRF-TOKEN'),proof.value.requestToken);assert.equal(request.credentials,'same-origin');assert.equal(request.redirect,'error');assert.equal(request.cache,'no-store');assert.equal(request.headers.has('authorization'),false);}
+  assert.deepEqual(await requests[0].json(),editInput);assert.deepEqual(await requests[1].json(),replacementDraft);
+  await assert.rejects(()=>client.edit('..',read.etag,editInput,'proof',signal));await assert.rejects(()=>client.replace('antiforgery',read.etag,replacementDraft,'proof',signal));assert.equal(requests.length,2);
+ }finally{globalThis.fetch=original;delete globalThis.window;}
+});
+
+test('Given_update_views_When_rendered_Then_confirmation_immutable_identity_and_explicit_recovery_are_accessible',()=>{
+ for(const action of ['edit','replace']){
+  const html=renderToStaticMarkup(createElement(UpdateForm,{details,action,edit:async()=>({}),replace:async()=>({}),cancel:()=>{}}));
+  assert.ok(html.includes('Client ID (cannot be changed)'));assert.equal(html.includes('id="editor-clientId"'),false);
+  assert.equal(html.includes('id="editor-displayName"'),action==='edit');assert.equal(html.includes('id="editor-credentialExpiresAt"'),action==='replace');
+  if(action==='replace'){assert.ok(html.includes('for="editor-confirmed"'));assert.ok(html.includes('type="checkbox"'));assert.equal(html.includes('checked=""'),false);assert.ok(html.includes('stop working immediately'));}
+  for(const outcome of ['not-sent','unknown','updated','replaced']){
+   const problem=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'stale',outcome,target:{id:details.id,action}},reload:()=>{}}));
+   assert.ok(problem.includes('Reload current details'));assert.ok(problem.includes('Your draft will not be reapplied'));assert.equal(problem.includes('may have been created'),false);assert.equal(problem.includes(secret),false);
+  }
+ }
+ const html=renderToStaticMarkup(createElement(DetailsView,{details,dismiss:()=>{},edit:()=>{},replace:()=>{}}));assert.ok(html.includes('Edit application'));assert.ok(html.includes('Replace secret'));assert.equal(html.includes('not yet available'),false);
+ const errors=validateReplacement({confirmed:false,credentialExpiresAt:''},now).errors;
+ const fields=renderToStaticMarkup(createElement(CreateFields,{draft,errors,mode:'replace',setDraft:()=>{},summary:{current:null}}));assert.ok(fields.includes('href="#editor-confirmed"'));assert.ok(fields.includes('Confirm replacement'));
+});
+
+
+test('Given_completed_replacement_When_secret_is_dismissed_then_page_hidden_Then_recovery_preserves_known_commit_and_recent_MFA_guidance',async t=>{
+ const {owner,states}=await updateSetup(t,'replace');await owner.replace(replacementDraft);owner.dismiss();owner.suspend();
+ assert.equal(states.at(-1).outcome,'replaced');assert.equal('secret' in states.at(-1),false);
+ const hidden=renderToStaticMarkup(createElement(ProblemView,{state:states.at(-1)}));assert.ok(hidden.includes('secret was replaced'));assert.equal(hidden.includes('No secret replacement request'),false);
+ const forbidden=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'forbidden',outcome:'unknown',target:{id:details.id,action:'replace'}}}));
+ assert.ok(forbidden.includes('current credential permission and a recent MFA sign-in'));assert.ok(forbidden.includes('href="/bff/login"'));assert.equal(forbidden.includes('Your current permissions do not allow'),false);
+ owner.newForm();owner.suspend();assert.equal(states.at(-1).outcome,'not-sent');
 });

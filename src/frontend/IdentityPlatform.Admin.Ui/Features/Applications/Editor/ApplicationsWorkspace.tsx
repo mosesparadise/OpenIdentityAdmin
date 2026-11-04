@@ -4,6 +4,7 @@ import type { SessionState } from "../../Session/observation";
 import { ApplicationsPanel } from "../ApplicationsPanel";
 import { focusList } from "./focus";
 import { useEditor } from "./useEditor";
+import { UpdateForm } from "./UpdateForm";
 import { CreateForm } from "./CreateForm";
 import { DetailsView } from "./DetailsView";
 import { ProblemView } from "./ProblemView";
@@ -28,14 +29,17 @@ export function ApplicationsWorkspace({ session }: { session: SessionState }) {
     <ApplicationsPanel onDetails={id => { void owner.current?.details(id); }} />
   </>;
   const title = state.kind === "form" ? "Create application" : state.kind === "created" ? "Application created"
-    : state.kind === "details" ? "Application details" : state.kind === "working" ? state.operation === "create" ? "Creating application…" : "Loading application details…" : "Review application status";
+     : state.kind === "edit-form" ? "Edit application" : state.kind === "replacement-form" ? "Replace secret" : state.kind === "updated" ? "Application updated" : state.kind === "replaced" ? "Secret replaced"
+    : state.kind === "details" ? "Application details" : state.kind === "working" ? state.operation === "create" ? "Creating application…" : state.operation === "edit" ? "Saving changes…" : state.operation === "replace" ? "Replacing secret…" : "Loading application details…" : "Review application status";
   return <section className="applications-card application-editor" aria-labelledby="editor-heading" aria-busy={state.kind === "working"}>
     <div role="status" aria-live="polite" aria-atomic="true"><h2 id="editor-heading" tabIndex={-1} ref={heading}>{title}</h2></div>
     {state.kind === "form" && <><p className="editor-help">Register a confidential web application for OpenID sign-in using authorization code and PKCE S256. Each sign-in requires fresh password/MFA and explicit consent.</p>
       <CreateForm submit={draft => owner.current?.create(draft) ?? Promise.resolve({})} cancel={back} /></>}
-    {state.kind === "working" && <p className="editor-help">{state.operation === "create" ? "Keep this page visible. Creation is sent once; an interrupted response may leave a created application without its one-time secret." : "Checking current access and reading sanitized metadata."}</p>}
-    {(state.kind === "details" || state.kind === "created") && <DetailsView details={state.details} secret={state.kind === "created" ? state.secret : undefined} dismiss={() => owner.current?.dismiss()} />}
-    {state.kind === "problem" && <ProblemView state={state} />}
-    {state.kind !== "form" && <div className="actions"><Button secondary onClick={back}>{state.kind === "working" ? "Stop waiting" : "Back to applications"}</Button></div>}
+    {(state.kind === "edit-form" || state.kind === "replacement-form") && <UpdateForm details={state.details} action={state.kind === "edit-form" ? "edit" : "replace"}
+      edit={draft => owner.current?.edit(draft) ?? Promise.resolve({})} replace={draft => owner.current?.replace(draft) ?? Promise.resolve({})} cancel={() => owner.current?.cancelForm()} />}
+    {state.kind === "working" && <p className="editor-help">{state.operation === "create" ? "Keep this page visible. Creation is sent once; an interrupted response may leave a created application without its one-time secret." : state.operation !== "read" ? "Keep this page visible. This change is sent once. An interrupted response may leave an unknown outcome; it will not be retried automatically." : "Checking current access and reading sanitized metadata."}</p>}
+    {(state.kind === "details" || state.kind === "created" || state.kind === "updated" || state.kind === "replaced") && <DetailsView details={state.details} secret={state.kind === "created" || state.kind === "replaced" ? state.secret : undefined} dismiss={() => owner.current?.dismiss()} edit={() => owner.current?.open("edit")} replace={() => owner.current?.open("replace")} />}
+    {state.kind === "problem" && <ProblemView state={state} reload={() => { if (state.target) void owner.current?.details(state.target.id); }} />}
+    {state.kind !== "form" && state.kind !== "edit-form" && state.kind !== "replacement-form" && <div className="actions"><Button secondary onClick={back}>{state.kind === "working" ? "Stop waiting" : "Back to applications"}</Button></div>}
   </section>;
 }
