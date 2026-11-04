@@ -370,3 +370,8 @@ The exact two native sanitizer controls pass2/2 with zero skips; TRX SHA256
 `02fa392a2ed85905bb7913227dba7ba689def6eea7f5c7d3663beb9403abccd7`.
 All2,385 administrator identities,71 browser cases/provider/engine and the full hosted
 obligations remain unchanged. Source gitleaks, instruction and diff checks pass. Corrected hosted acceptance is still required.
+
+Final control review removed duplicate terminal signals from the late duplicate-start
+and redirect-start calibrations: each now fails solely on its intended bad initiation
+after a valid completion, rather than also failing on an unrelated second terminal.
+The production ledger and hosted scenario behavior are unchanged.

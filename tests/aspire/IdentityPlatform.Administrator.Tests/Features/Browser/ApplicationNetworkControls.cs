@@ -67,13 +67,11 @@ internal static class ApplicationNetworkControls
         var duplicate = Started();
         duplicate.Ended(Request, false);
         duplicate.Started(Other, Frame, Loader, Target, Post, false);
-        duplicate.Ended(Request, false);
         Assert.False(duplicate.IsComplete);
         Assert.False(duplicate.Seal());
         var redirect = Started();
         redirect.Ended(Request, false);
         redirect.Started(Request, Frame, Loader, OtherTarget, Get, true);
-        redirect.Ended(Request, false);
         Assert.False(redirect.IsComplete);
         Assert.False(redirect.Seal());
         var closed = Started();
