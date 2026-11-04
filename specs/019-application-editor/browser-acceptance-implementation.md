@@ -44,9 +44,12 @@ Lifecycle cases use headed Chromium/WebKit under Xvfb in their dedicated CI cell
 Each engine uses the separately hash-pinned disposable driver copy documented in
 [browser corrections](browser-corrections.md), disabling only its automation-owned
 visibility override before requiring actual window-manager and DOM transitions.
-Chromium lifecycle events use a raw synchronous Runtime binding, avoiding the
-exposed-function execution-context lookup after unload; WebKit retains exposed
-functions. Both record only finite trusted main-document events. Pending navigation
+Only the dedicated lifecycle scenarios use synchronous bounded trusted-event
+counters under one random test-owned sessionStorage key. The exact validated and
+secret-scanned record/listeners are removed before the unchanged empty-storage
+assertion. Shared privacy observers remain free of storage instrumentation.
+Protocol-delivered counters failed to establish the required Chromium pagehide facts;
+the synchronous replacement still requires actual retained-engine verification. Pending navigation
 and visibility require no late output and joined browser/upstream completion;
 they do not equate browser abort with an immediate remote transport disconnect. There is no synthetic-event fallback or visibility skip. History checks
 record native persisted-page restoration counts; zero does not claim bfcache use.

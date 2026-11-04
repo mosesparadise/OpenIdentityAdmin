@@ -1,5 +1,39 @@
 # Hosted verification
 
+## Seventh candidate — protocol observation remained insufficient
+
+[Run41858361973](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41858361973)
+tests `d5a1e5aac6e5060819512204b5e2d99e1b3cc6a2` through merge
+`3fd6772eacada5da4d3a5e617bd93e8bcb4d01ac`, sharing tree
+`28b7cceb5a677223276c4c63d68de2e3197e039a`. It is rejected: both Chromium
+lifecycle cells still fail history observation. The new finite counters show hides0
+against baseline0, shows3 against baseline1 and hidden0. The raw CDP correction did
+not resolve capture; document destruction remains a hypothesis, not an established
+cause. Required native events and output-erasure assertions are not weakened.
+
+Both WebKit lifecycle jobs reach the unchanged660-second command deadline without a
+usable completed case result. Their exact point of suspension is unproven. Completed
+job-step/log evidence confirms these failures even while the run/jobs/check overview
+still reports stale in-progress states. No complete success count or acceptance is
+inferred from that inconsistent overview. Failed jobs are126673258723/126673258910
+(Chromium PostgreSQL/SQLServer) and126673258899/126673259196 (WebKit PostgreSQL/SQLServer).
+
+The next source replaces protocol-delivered lifecycle counters with synchronous
+trusted-event counters under one random test-owned sessionStorage key, restricted
+to the two lifecycle scenarios. Every event rereads the exact bounded record;
+missing/corrupt/overflow evidence fails and never resets. Validation and private
+secret scanning precede atomic removal of only that unchanged key/listeners, followed
+by the unchanged empty-session-storage assertion. Shared privacy observers for
+managed sign-in/recovery remain free of this instrumentation. A dispatched untrusted
+visibility event is a negative control and cannot increment native acceptance counts.
+
+A separate finite checkpoint records only scenario/boundary/operation/disposal-entry
+enums in a wrapper-owned temporary file. On failure or success the wrapper decodes
+at most64 bytes and prints fixed labels only. Filesystem/output failure cannot prevent
+original cleanup or replace its primary error. This records the last successful
+checkpoint write, not completion or proof of a timeout cause. The next run retains
+all original deadlines, inventories, floors, one-send and no-late-output requirements.
+
 ## Sixth candidate — native lifecycle observation
 
 [Run 41852108038](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41852108038)

@@ -23,6 +23,33 @@ PATCHES = {
                  b'this._client.send("Emulation.setFocusEmulationEnabled", { enabled: false })',
                  'a1822c4ef78eba42059e6fd7187f5387290ec6c5b456132ba1aaec68a0b9c439'),
 }
+PROGRESS_VARIABLE = 'IDENTITY_NATIVE_LIFECYCLE_PROGRESS'
+SCENARIOS = ('History', 'Visibility', 'Pending')
+BOUNDARIES = ('Navigation', 'Visibility', 'Session', 'OriginalDeadline')
+STAGES = ('Start', 'EnvironmentReady', 'BrowserReady', 'SignedIn', 'VisibilityReady',
+          'ObserverReady', 'Prepared', 'OutputReady', 'Boundary', 'BoundaryComplete',
+          'Release', 'RequestsJoined', 'ResultChecked', 'PrivacyChecked')
+DISPOSALS = ('None', 'Observation', 'Browser', 'Environment')
+
+
+def progress_summary(path: Path) -> str:
+    """Decode only a bounded finite checkpoint; arbitrary file content never enters logs."""
+    unavailable = 'Native lifecycle last checkpoint: unavailable'
+    try:
+        with path.open('rb') as stream:
+            content = stream.read(65)
+        if len(content) > 64:
+            return unavailable
+        values = json.loads(content)
+        choices = (SCENARIOS, BOUNDARIES, STAGES, DISPOSALS)
+        if not isinstance(values, list) or len(values) != len(choices) or any(
+                type(value) is not int or not 0 <= value < len(labels)
+                for value, labels in zip(values, choices)):
+            return unavailable
+        scenario, boundary, stage, disposal = [labels[value] for value, labels in zip(values, choices)]
+        return f'Native lifecycle last checkpoint: scenario={scenario}; boundary={boundary}; operation={stage}; disposal={disposal}'
+    except (OSError, ValueError, UnicodeError):
+        return unavailable
 
 
 def native_bundle(content: bytes, version: str, browser: str) -> bytes:
@@ -67,6 +94,8 @@ def run(provider: str, browser: str, desktop: bool) -> None:
         environment.pop('PLAYWRIGHT_DRIVER_SEARCH_PATH', None)
         prepare_driver(DRIVER, Path(directory), browser)
         environment['PLAYWRIGHT_DRIVER_SEARCH_PATH'] = directory
+        progress = Path(directory) / 'lifecycle-progress.json'
+        environment[PROGRESS_VARIABLE] = str(progress)
         manager = subprocess.Popen(['openbox', '--sm-disable'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         try:
             # The native property appears only after the WM claims this private display.
@@ -80,6 +109,10 @@ def run(provider: str, browser: str, desktop: bool) -> None:
                 time.sleep(.05)
             subprocess.run(command, cwd=ROOT, env=environment, check=True)
         finally:
+            try:
+                print(progress_summary(progress), flush=True)
+            except (OSError, ValueError):
+                pass  # Diagnostic output loss must not prevent cleanup or replace the test failure.
             manager.terminate()
             try:
                 manager.wait(timeout=3)

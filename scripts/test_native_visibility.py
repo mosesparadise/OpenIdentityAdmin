@@ -68,6 +68,19 @@ class NativeVisibilityTests(unittest.TestCase):
 
 
 class NativeVisibilityPipelineTests(unittest.TestCase):
+    def test_progress_accepts_only_finite_checkpoint_and_suppresses_private_or_corrupt_data(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'progress.json'
+            unavailable = 'Native lifecycle last checkpoint: unavailable'
+            self.assertEqual(target.progress_summary(path), unavailable)
+            path.write_text('[2,1,9,2]')
+            self.assertEqual(target.progress_summary(path),
+                'Native lifecycle last checkpoint: scenario=Pending; boundary=Visibility; operation=BoundaryComplete; disposal=Browser')
+            for invalid in ('private-canary', '[true,0,0,0]', '[3,0,0,0]', '[0,-1,0,0]', '[0,0,14,0]',
+                            '[0,0,0,4]', '[0,0,0,0,0]', '{"private":"canary"}', ' ' * 65, 'null'):
+                path.write_text(invalid)
+                self.assertEqual(target.progress_summary(path), unavailable)
+
     def test_engine_scope_and_exact_coverage_obligations(self):
         for browser in ('chromium', 'webkit'):
             with self.subTest(browser=browser), patch.dict(target.os.environ, {'PLAYWRIGHT_DRIVER_SEARCH_PATH': 'unreviewed'}), \
@@ -83,11 +96,19 @@ class NativeVisibilityPipelineTests(unittest.TestCase):
                 prepare.assert_called_once()
                 self.assertEqual(prepare.call_args.args[2], browser)
                 self.assertEqual(command.kwargs['env']['PLAYWRIGHT_DRIVER_SEARCH_PATH'], str(prepare.call_args.args[1]))
+                self.assertEqual(command.kwargs['env'][target.PROGRESS_VARIABLE], str(prepare.call_args.args[1] / 'lifecycle-progress.json'))
                 manager.return_value.terminate.assert_called_once()
                 manager.return_value.wait.assert_called_once_with(timeout=3)
 
     def test_child_failure_propagates_and_joins_window_manager(self):
         with patch.object(target, 'prepare_driver'), patch.object(target.subprocess, 'Popen') as manager, patch.object(target.subprocess, 'run') as run:
+            run.side_effect = [subprocess.CompletedProcess([], 0, stdout='window id # 0x123'), subprocess.CalledProcessError(1, 'bounded-test')]
+            with self.assertRaises(subprocess.CalledProcessError):
+                target.run('SqlServer', 'chromium', True)
+            manager.return_value.terminate.assert_called_once()
+            manager.return_value.wait.assert_called_once_with(timeout=3)
+        with patch.object(target, 'prepare_driver'), patch.object(target.subprocess, 'Popen') as manager, \
+                patch.object(target.subprocess, 'run') as run, patch('builtins.print', side_effect=BrokenPipeError):
             run.side_effect = [subprocess.CompletedProcess([], 0, stdout='window id # 0x123'), subprocess.CalledProcessError(1, 'bounded-test')]
             with self.assertRaises(subprocess.CalledProcessError):
                 target.run('SqlServer', 'chromium', True)

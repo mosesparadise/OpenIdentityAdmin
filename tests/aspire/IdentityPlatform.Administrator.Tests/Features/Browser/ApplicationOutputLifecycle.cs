@@ -18,15 +18,27 @@ internal static class ApplicationOutputLifecycle
     /// <summary>Uses a separate genuine account/provider fixture for each native lifecycle boundary and keeps actual secrets private.</summary>
     internal static async Task<string[]> RunAsync(BootstrapFixture fixture, string provider, bool history)
     {
+        var progress = new ApplicationLifecycleProgress(history ? ApplicationLifecycleScenario.History : ApplicationLifecycleScenario.Visibility);
+        progress.Mark(ApplicationLifecycleStage.Start);
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true);
+        using var environmentDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Environment);
+        progress.Mark(ApplicationLifecycleStage.EnvironmentReady);
         await using var browser = await BrowserSession.CreateHeadedAsync();
+        using var browserDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Browser);
+        progress.Mark(ApplicationLifecycleStage.BrowserReady);
         var page = await browser.Context.NewPageAsync();
         var access = await ApplicationAccessFixture.SignInAsync(environment, page);
+        progress.Mark(ApplicationLifecycleStage.SignedIn);
         var visibility = await ApplicationNativeVisibility.CreateAsync(page);
+        progress.Mark(ApplicationLifecycleStage.VisibilityReady);
         await page.Clock.SetFixedTimeAsync(environment.Issuer.Account.Journey.Clock.Now.UtcDateTime);
-        await using var observation = await ApplicationLifecycleObservation.CreateAsync(page);
+        await using var observation = await ApplicationLifecycleObservation.CreateAsync(page, nativeTransitions: true);
+        using var observationDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Observation);
+        progress.Mark(ApplicationLifecycleStage.ObserverReady);
         await ApplicationLifecycleUi.PrepareAsync(page, environment.Profile.ClientUri, environment.Issuer.Account.Journey.Clock.Now, ApplicationLifecycleUi.LongLifetimeSeconds);
+        progress.Mark(ApplicationLifecycleStage.Prepared);
         var secret = await ApplicationLifecycleUi.CreateAsync(page);
+        progress.Mark(ApplicationLifecycleStage.OutputReady);
         if (history)
         {
             await HistoryAsync(page, environment.Profile.ClientUri, observation);
@@ -39,15 +51,18 @@ internal static class ApplicationOutputLifecycle
             await HideAsync(page, visibility, observation);
         }
 
+        progress.Mark(ApplicationLifecycleStage.BoundaryComplete);
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
-        await BrowserSecretOracle.StorageAsync(page, [secret, access.Value]);
         await observation.RequireAsync([secret, access.Value]);
+        await BrowserSecretOracle.StorageAsync(page, [secret, access.Value]);
+        progress.Mark(ApplicationLifecycleStage.PrivacyChecked);
         return [secret, access.Value];
     }
 
     /// <summary>Navigates away and returns using native history; persisted pageshow is recorded but never manufactured or required.</summary>
     internal static async Task HistoryAsync(IPage page, Uri origin, ApplicationLifecycleObservation observation)
     {
+        await observation.RefreshAsync();
         var hides = observation.Hides;
         var shows = observation.Shows;
         await page.GotoAsync(new Uri(origin, Root).AbsoluteUri);
@@ -71,6 +86,7 @@ internal static class ApplicationOutputLifecycle
             Timeout = VisibilityMilliseconds,
             PollingInterval = PollingMilliseconds
         });
+        await observation.RefreshAsync();
         var hidden = observation.Hidden;
         await visibility.MinimizeAsync();
         await page.WaitForFunctionAsync(Hidden, options: new()

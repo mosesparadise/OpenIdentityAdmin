@@ -1,143 +1,154 @@
 using System.Text.Json;
-using IdentityPlatform.Issuer.Tests.Features.Browser;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
-/// <summary>Captures native lifecycle facts without resolving a document that may already have unloaded.</summary>
-internal sealed class ApplicationLifecycleEvents(Action<string, bool, bool> record, Action invalid) : IAsyncDisposable
+/// <summary>Records trusted native events synchronously across document destruction using one exact test-owned counter key.</summary>
+internal sealed class ApplicationLifecycleEvents(IPage page)
 {
-    private const string Chromium = "chromium";
-    private const string Binding = "recordApplicationLifecycle";
-    private const string BindingCalled = "Runtime.bindingCalled";
-    private const string Enable = "Runtime.enable";
-    private const string AddBinding = "Runtime.addBinding";
-    private const string Name = "name";
-    private const string Payload = "payload";
-    private const int MaximumPayload = 64;
-    private const int FieldCount = 3;
-    private const int TrustedIndex = 1;
-    private const int PersistedIndex = 2;
-    private const string Show = "show";
-    private const string Hide = "hide";
-    private const string Visible = "visible";
-    private const string Hidden = "hidden";
-    private const string NativeControl = "[\"hide\",true,false]";
-    private const string SyntheticControl = "[\"show\",false,true]";
+    private const string Prefix = "application-lifecycle-witness-";
+    private const string Placeholder = "__OWNED_KEY__";
+    private const string Seed = "key => { if(sessionStorage.getItem(key)!==null) return false; sessionStorage.setItem(key,'[0,0,0,0,0,0,0]'); return true; }";
+    private const string Read = "key => sessionStorage.getItem(key)";
+    private const string UntrustedControl = "() => document.dispatchEvent(new Event('visibilitychange'))";
+    private const string Remove = "encoded => { const [key,expected]=JSON.parse(encoded); if(sessionStorage.getItem(key)!==expected || typeof window[key]!=='function') return false; window[key](); delete window[key]; sessionStorage.removeItem(key); return sessionStorage.getItem(key)===null; }";
+    private const int MaximumPayload = 128;
+    private const int MaximumEvents = 256;
+    private const int FieldCount = 7;
+    private const int HiddenIndex = 1;
+    private const int HideIndex = 2;
+    private const int ShowIndex = 3;
+    private const int PersistedIndex = 4;
+    private const int UntrustedIndex = 5;
+    private const int FailureIndex = 6;
+    private const string EmptyControl = "[0,0,0,0,0,0,0]";
+    private const string NativeControl = "[7,1,2,3,1,1,0]";
     private const string Init = """
         (() => {
           if (window !== window.top) return;
-          const record = (kind, event) => window.recordApplicationLifecycle(JSON.stringify([kind, event.isTrusted, event.persisted === true]));
-          addEventListener('pageshow', e => record('show', e));
-          addEventListener('pagehide', e => record('hide', e));
-          document.addEventListener('visibilitychange', e => record(document.visibilityState, e));
+          const key = __OWNED_KEY__;
+          const read = () => {
+            const raw = sessionStorage.getItem(key);
+            if (raw === null || raw.length > 128) throw new Error('Invalid lifecycle counter record');
+            let value;
+            try { value = JSON.parse(raw); } catch { throw new Error('Invalid lifecycle counter record'); }
+            if (!Array.isArray(value) || value.length !== 7 || !value.every(n => Number.isInteger(n) && n >= 0 && n <= 256) ||
+                value[4] > value[3] || value[1]+value[2]+value[3]+value[5] > value[0] || value[6] !== 0)
+              throw new Error('Invalid lifecycle counter record');
+            return value;
+          };
+          const record = (kind, event) => {
+            const value = read();
+            if (value[0] === 256) value[6] = 1;
+            else {
+              value[0]++;
+              if (!event.isTrusted) value[5]++;
+              else if (kind === 'hidden') value[1]++;
+              else if (kind === 'hide') value[2]++;
+              else if (kind === 'show') { value[3]++; if (event.persisted === true) value[4]++; }
+            }
+            sessionStorage.setItem(key, JSON.stringify(value));
+          };
+          const show = e => record('show', e);
+          const hide = e => record('hide', e);
+          const visibility = e => record(document.visibilityState, e);
+          addEventListener('pageshow', show);
+          addEventListener('pagehide', hide);
+          document.addEventListener('visibilitychange', visibility);
+          Object.defineProperty(window, key, {configurable:true, value: () => {
+            removeEventListener('pageshow', show); removeEventListener('pagehide', hide);
+            document.removeEventListener('visibilitychange', visibility);
+          }});
         })();
         """;
-    private ICDPSession? session;
+    private readonly string key = Prefix + Guid.NewGuid().ToString("N");
+    private string last = EmptyControl;
 
-    /// <summary>Chromium forwards the raw synchronous binding event; WebKit retains its proven exposed-function transport.</summary>
-    internal async Task AttachAsync(IPage page)
+    /// <summary>Seeds once, installs a fresh-read recorder for every document and proves an untrusted event cannot increment native counters.</summary>
+    internal async Task AttachAsync()
     {
         RequireDecoderControls();
-        if (BrowserSession.Engine == Chromium)
-        {
-            session = await page.Context.NewCDPSessionAsync(page);
-            session.Event(BindingCalled).OnEvent += Called;
-            await session.SendAsync(Enable);
-            await session.SendAsync(AddBinding, new()
-            {
-                [Name] = Binding
-            });
-        }
-        else
-        {
-            await page.ExposeFunctionAsync(Binding, (string payload) => { Receive(payload); return true; });
-        }
-        await page.AddInitScriptAsync(Init);
+        Assert.True(await page.EvaluateAsync<bool>(Seed, key));
+        var script = Init.Replace(Placeholder, JsonSerializer.Serialize(key), StringComparison.Ordinal);
+        await page.AddInitScriptAsync(script);
+        await page.EvaluateAsync(script);
+        var before = await ReadAsync();
+        await page.EvaluateAsync(UntrustedControl);
+        var after = await ReadAsync();
+        Assert.True(after.Untrusted == before.Untrusted + 1);
+        Assert.True(after.Hidden == before.Hidden && after.Hides == before.Hides && after.Shows == before.Shows && after.Persisted == before.Persisted);
     }
 
-    /// <summary>Ignores unrelated bindings and never logs raw protocol payloads or execution-context identifiers.</summary>
-    private void Called(object? sender, JsonElement? message)
+    /// <summary>Rejects missing/corrupt/overflow evidence rather than resetting it after navigation or bfcache restoration.</summary>
+    internal async Task<ApplicationLifecycleCounters> ReadAsync()
     {
-        if (message is not { ValueKind: JsonValueKind.Object } value ||
-            !value.TryGetProperty(Name, out var name) || name.ValueKind != JsonValueKind.String)
-        {
-            invalid();
-            return;
-        }
-        if (name.GetString() != Binding)
-        {
-            return;
-        }
-        if (!value.TryGetProperty(Payload, out var payload) || payload.ValueKind != JsonValueKind.String)
-        {
-            invalid();
-            return;
-        }
-        Receive(payload.GetString()!);
+        var raw = await page.EvaluateAsync<string?>(Read, key);
+        Assert.True(raw is not null);
+        Assert.True(TryRead(raw!, out var counters));
+        last = raw!;
+        return counters;
     }
 
-    /// <summary>Accepts only a bounded finite kind and two actual Boolean fields; malformed capture cannot become a pass.</summary>
-    private void Receive(string payload)
+    /// <summary>Privately scans the validated record, then atomically detaches the current recorder and removes only that unchanged exact key.</summary>
+    internal async Task FinishAsync(string[] secrets)
     {
-        if (!TryRead(payload, out var kind, out var trusted, out var persisted))
-        {
-            invalid();
-            return;
-        }
-        record(kind, trusted, persisted);
+        await ReadAsync();
+        BrowserSecretOracle.RequireAbsent([last], secrets);
+        Assert.True(await page.EvaluateAsync<bool>(Remove, JsonSerializer.Serialize(new[] { key, last })));
     }
 
-    /// <summary>Decodes only the explicit synthetic observation schema, with no arbitrary retained values.</summary>
-    private static bool TryRead(string payload, out string kind, out bool trusted, out bool persisted)
+    /// <summary>Validates independently specified bounded integers and counter relationships before accepting any native observation.</summary>
+    private static bool TryRead(string raw, out ApplicationLifecycleCounters counters)
     {
-        kind = string.Empty;
-        trusted = persisted = false;
-        if (payload.Length > MaximumPayload)
+        counters = default;
+        if (raw.Length > MaximumPayload)
         {
             return false;
         }
         try
         {
-            using var document = JsonDocument.Parse(payload);
+            using var document = JsonDocument.Parse(raw);
             var value = document.RootElement;
-            if (value.ValueKind != JsonValueKind.Array || value.GetArrayLength() != FieldCount ||
-                value[0].ValueKind != JsonValueKind.String || value[TrustedIndex].ValueKind is not (JsonValueKind.True or JsonValueKind.False) ||
-                value[PersistedIndex].ValueKind is not (JsonValueKind.True or JsonValueKind.False))
+            if (value.ValueKind != JsonValueKind.Array || value.GetArrayLength() != FieldCount)
             {
                 return false;
             }
-            kind = value[0].GetString()!;
-            trusted = value[TrustedIndex].GetBoolean();
-            persisted = value[PersistedIndex].GetBoolean();
-            return kind is Show or Hide or Visible or Hidden;
+            var numbers = new int[FieldCount];
+            for (var index = 0; index < numbers.Length; index++)
+            {
+                if (value[index].ValueKind != JsonValueKind.Number || !value[index].TryGetInt32(out numbers[index]) || numbers[index] < 0 || numbers[index] > MaximumEvents)
+                {
+                    return false;
+                }
+            }
+            if (numbers[FailureIndex] != 0 || numbers[PersistedIndex] > numbers[ShowIndex] ||
+                numbers[HiddenIndex] + numbers[HideIndex] + numbers[ShowIndex] + numbers[UntrustedIndex] > numbers[0])
+            {
+                return false;
+            }
+            counters = new(numbers[HiddenIndex], numbers[HideIndex], numbers[ShowIndex], numbers[PersistedIndex], numbers[UntrustedIndex]);
+            return true;
         }
         catch (JsonException) { return false; }
     }
 
-    /// <summary>Runs independent finite positive and malformed/overflow controls before trusting native event capture.</summary>
+    /// <summary>Seeds missing, malformed, excess, negative, fractional and contradictory evidence before trusting actual browser observations.</summary>
     private static void RequireDecoderControls()
     {
-        Assert.True(TryRead(NativeControl, out var kind, out var trusted, out var persisted));
-        Assert.True(kind == Hide && trusted && !persisted);
-        Assert.True(TryRead(SyntheticControl, out kind, out trusted, out persisted));
-        Assert.True(kind == Show && !trusted && persisted);
+        Assert.True(TryRead(EmptyControl, out var empty) && empty == default);
+        Assert.True(TryRead(NativeControl, out var native));
+        Assert.True(native == ExpectedNative);
         foreach (var invalid in InvalidPayloads)
         {
-            Assert.False(TryRead(invalid, out _, out _, out _));
+            Assert.False(TryRead(invalid, out _));
         }
-        Assert.False(TryRead(new string(' ', MaximumPayload + 1), out _, out _, out _));
+        Assert.False(TryRead(new string(' ', MaximumPayload + 1), out _));
     }
 
-    private static readonly string[] InvalidPayloads = ["null", "{}", "[]", "[\"other\",true,false]", "[\"hide\",1,false]", "[\"hide\",true,null]", "[\"hide\",true,false,0]", "["];
-
-    /// <summary>Releases the owned event subscription and protocol session before the browser is disposed.</summary>
-    public async ValueTask DisposeAsync()
-    {
-        if (session is not null)
-        {
-            session.Event(BindingCalled).OnEvent -= Called;
-            await session.DetachAsync();
-        }
-    }
+    private static readonly ApplicationLifecycleCounters ExpectedNative = new(1, 2, 3, 1, 1);
+    private static readonly string[] InvalidPayloads = ["null", "{}", "[]", "[", "[0,0,0,0,0,0,0,0]", "[0,1,0,0,0,0,0]", "[2,0,0,1,2,0,0]",
+        "[1,0,0,0,0,0,1]", "[257,0,0,0,0,0,0]", "[-1,0,0,0,0,0,0]", "[0.5,0,0,0,0,0,0]", "[true,0,0,0,0,0,0]"];
 }
+
+/// <summary>Contains only validated finite native event counts, never page data or private credentials.</summary>
+internal readonly record struct ApplicationLifecycleCounters(int Hidden, int Hides, int Shows, int Persisted, int Untrusted);

@@ -12,6 +12,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 /// <summary>Separates UI lifecycle/output races from persistence acceptance with the existing explicitly response-only upstream probe.</summary>
 internal static class ApplicationPendingLifecycle
 {
+    private const string CleanupReport = "application-lifecycle cleanup requests={0} browser-completed={1} upstream-started={2} upstream-completed={3} response-present={4}";
     private const string Pause = "pause";
     private const string ReplaceSuffix = "/secret-replacements";
     private const string Api = "/api/v1/applications/";
@@ -50,33 +51,45 @@ internal static class ApplicationPendingLifecycle
     /// <summary>Starts one freshly authenticated fixture per boundary, so earlier cancellation cannot satisfy a later case.</summary>
     internal static async Task<string[]> RunAsync(BootstrapFixture fixture, string provider, ApplicationPendingBoundary boundary)
     {
+        var progress = new ApplicationLifecycleProgress(ApplicationLifecycleScenario.Pending, boundary);
+        progress.Mark(ApplicationLifecycleStage.Start);
         var probe = new ApplicationMutationProbe();
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true, mutationProbe: probe);
+        using var environmentDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Environment);
+        progress.Mark(ApplicationLifecycleStage.EnvironmentReady);
         await using var browser = await BrowserSession.CreateHeadedAsync();
+        using var browserDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Browser);
+        progress.Mark(ApplicationLifecycleStage.BrowserReady);
         var page = await browser.Context.NewPageAsync();
         var access = await ApplicationAccessFixture.SignInAsync(environment, page);
+        progress.Mark(ApplicationLifecycleStage.SignedIn);
         var visibility = await ApplicationNativeVisibility.CreateAsync(page);
+        progress.Mark(ApplicationLifecycleStage.VisibilityReady);
         var now = environment.Issuer.Account.Journey.Clock.Now;
         await page.Clock.SetFixedTimeAsync(now.UtcDateTime);
         probe.Access = access.Value;
         probe.Now = now;
-        await using var observation = await ApplicationLifecycleObservation.CreateAsync(page);
+        await using var observation = await ApplicationLifecycleObservation.CreateAsync(page, nativeTransitions: true);
+        using var observationDisposal = progress.BeforeDispose(ApplicationLifecycleDisposal.Observation);
+        progress.Mark(ApplicationLifecycleStage.ObserverReady);
         await ApplicationLifecycleUi.PrepareAsync(page, environment.Profile.ClientUri, now, ApplicationLifecycleUi.ShortLifetimeSeconds);
+        progress.Mark(ApplicationLifecycleStage.Prepared);
         var replacement = boundary == ApplicationPendingBoundary.OriginalDeadline;
         if (replacement)
         {
             await PrepareReplacementAsync(page, probe, now);
         }
 
-        await ExerciseAsync(page, visibility, environment, probe, observation, boundary, now);
+        await ExerciseAsync(page, visibility, environment, probe, observation, boundary, now, progress);
         var secret = Convert.ToBase64String(new byte[SecretBytes]);
         Assert.Equal(0, await page.Locator(ApplicationLifecycleUi.Secret).CountAsync());
-        await BrowserSecretOracle.StorageAsync(page, [secret, access.Value]);
         await observation.RequireAsync([secret, access.Value]);
+        await BrowserSecretOracle.StorageAsync(page, [secret, access.Value]);
         if (boundary == ApplicationPendingBoundary.OriginalDeadline)
         {
             await EditorRecoveryView.PresentationAsync(page);
         }
+        progress.Mark(ApplicationLifecycleStage.PrivacyChecked);
         return [secret, access.Value];
     }
 
@@ -97,7 +110,7 @@ internal static class ApplicationPendingLifecycle
 
     /// <summary>Requires an observed pending downstream send, applies one original boundary, and releases the gate on every exit.</summary>
     private static async Task ExerciseAsync(IPage page, ApplicationNativeVisibility visibility, BrowserHttpsFixture environment, ApplicationMutationProbe probe,
-        ApplicationLifecycleObservation observation, ApplicationPendingBoundary boundary, DateTimeOffset now)
+        ApplicationLifecycleObservation observation, ApplicationPendingBoundary boundary, DateTimeOffset now, ApplicationLifecycleProgress progress)
     {
         probe.Fault = Pause;
         var before = probe.Requests;
@@ -110,11 +123,15 @@ internal static class ApplicationPendingLifecycle
             await probe.Started.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
             Assert.Equal(before + MutationCount, probe.Requests);
             Assert.False(probe.Canceled.Task.IsCompleted);
+            progress.Mark(ApplicationLifecycleStage.Boundary);
             await BoundaryAsync(page, visibility, environment, probe, observation, boundary, now);
+            progress.Mark(ApplicationLifecycleStage.BoundaryComplete);
             Assert.True(Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(OriginalBudgetSeconds));
         }
         catch (Exception exception) { failure = exception; }
+        progress.Mark(ApplicationLifecycleStage.Release);
         await CompleteAsync(probe, write, failure);
+        progress.Mark(ApplicationLifecycleStage.RequestsJoined);
         Assert.Equal(MutationCount, write.Requests);
         if (boundary is ApplicationPendingBoundary.Session or ApplicationPendingBoundary.OriginalDeadline)
         {
@@ -140,6 +157,7 @@ internal static class ApplicationPendingLifecycle
         Assert.Equal(before + MutationCount, probe.Requests);
         Assert.True(probe.SafeRequest);
         Assert.Equal(0, probe.Redirects);
+        progress.Mark(ApplicationLifecycleStage.ResultChecked);
     }
 
     /// <summary>Releases once and joins native browser and upstream work under one cleanup budget without replacing a primary failure.</summary>
@@ -152,7 +170,11 @@ internal static class ApplicationPendingLifecycle
             var browser = write.Requests > 0 ? write.JoinAsync() : Task.CompletedTask;
             await Task.WhenAll(upstream, browser).WaitAsync(TimeSpan.FromSeconds(GateSeconds));
         }
-        catch (Exception cleanup) { failure = failure is null ? cleanup : new AggregateException(failure, cleanup); }
+        catch (Exception cleanup)
+        {
+            TestContext.Current.TestOutputHelper?.WriteLine(CleanupReport, write.Requests, write.IsCompleted, probe.Started.Task.IsCompleted, probe.Completed.Task.IsCompleted, write.Response is not null);
+            failure = failure is null ? cleanup : new AggregateException(failure, cleanup);
+        }
         if (failure is not null)
         {
             ExceptionDispatchInfo.Capture(failure).Throw();

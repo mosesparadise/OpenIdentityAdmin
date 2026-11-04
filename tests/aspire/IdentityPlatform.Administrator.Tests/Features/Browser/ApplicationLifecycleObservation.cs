@@ -14,9 +14,6 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
     private const int JoinSeconds = 5;
     private const int PollMilliseconds = 20;
     private const int Unrequested = -1;
-    private const string HiddenEvent = "hidden";
-    private const string HideEvent = "hide";
-    private const string ShowEvent = "show";
     private const string Report = "application-lifecycle native-hidden={0} pagehide={1} pageshow={2} bfcache-restores={3}";
     private const string TransitionFailure = "Required native lifecycle transition was not observed.";
     private const string TransitionReport = "application-lifecycle transition hidden={0}/{1} hides={2}/{3} shows={4}/{5}";
@@ -24,39 +21,38 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
     private const string State = "() => JSON.stringify({url:location.href,state:history.state})";
     private const string Seed = "value => console.debug(value, {nested:value})";
     private readonly IPage page;
-    private readonly ApplicationLifecycleEvents events;
+    private readonly ApplicationLifecycleEvents? events;
     private readonly ConcurrentQueue<string> values = [];
     private readonly ConcurrentBag<Task> pending = [];
     private int items;
     private int characters;
     private int failures;
-    private int nativeHidden;
-    private int nativeHides;
-    private int nativeShows;
-    private int persistedShows;
-    private int lifecycleEvents;
     private int consoleEvents;
-    internal int Hidden => Volatile.Read(ref nativeHidden);
-    internal int Hides => Volatile.Read(ref nativeHides);
-    internal int Shows => Volatile.Read(ref nativeShows);
+    private ApplicationLifecycleCounters counters;
+    internal int Hidden => counters.Hidden;
+    internal int Hides => counters.Hides;
+    internal int Shows => counters.Shows;
 
     /// <summary>Attaches before application work; callbacks never write captured strings to test output.</summary>
-    private ApplicationLifecycleObservation(IPage page)
+    private ApplicationLifecycleObservation(IPage page, bool nativeTransitions)
     {
         this.page = page;
-        events = new(Lifecycle, () => Interlocked.Increment(ref failures));
+        events = nativeTransitions ? new(page) : null;
         page.Console += Console;
         page.PageError += Error;
         page.FrameNavigated += Navigated;
     }
 
-    /// <summary>Records actual trusted browser lifecycle events without dispatching or altering any event.</summary>
-    internal static async Task<ApplicationLifecycleObservation> CreateAsync(IPage page)
+    /// <summary>Optionally enables dedicated native lifecycle counters; other privacy observers remain free of storage instrumentation.</summary>
+    internal static async Task<ApplicationLifecycleObservation> CreateAsync(IPage page, bool nativeTransitions = false)
     {
-        var observer = new ApplicationLifecycleObservation(page);
+        var observer = new ApplicationLifecycleObservation(page, nativeTransitions);
         try
         {
-            await observer.events.AttachAsync(page);
+            if (observer.events is not null)
+            {
+                await observer.events.AttachAsync();
+            }
             await page.EvaluateAsync(Seed, Canary);
             await observer.JoinAsync();
             Assert.Contains(observer.values, value => value.Contains(Canary, StringComparison.Ordinal));
@@ -65,36 +61,11 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
         catch { await observer.DisposeAsync(); throw; }
     }
 
-    /// <summary>Accepts only finite native facts and fails capture rather than silently dropping excess observations.</summary>
-    private void Lifecycle(string kind, bool trusted, bool persisted)
+    /// <summary>Reads the synchronous record before establishing a transition baseline, including after a restored document.</summary>
+    internal async Task RefreshAsync()
     {
-        if (Interlocked.Increment(ref lifecycleEvents) > MaximumItems)
-        {
-            Interlocked.Increment(ref failures);
-            return;
-        }
-        if (!trusted)
-        {
-            return;
-        }
-        if (kind == HiddenEvent)
-        {
-            Interlocked.Increment(ref nativeHidden);
-        }
-
-        if (kind == HideEvent)
-        {
-            Interlocked.Increment(ref nativeHides);
-        }
-
-        if (kind == ShowEvent)
-        {
-            Interlocked.Increment(ref nativeShows);
-            if (persisted)
-            {
-                Interlocked.Increment(ref persistedShows);
-            }
-        }
+        Assert.NotNull(events);
+        counters = await events.ReadAsync();
     }
 
     /// <summary>Captures committed main-frame URLs, including native back and forward restoration.</summary>
@@ -170,6 +141,7 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
     internal async Task RequireTransitionsAsync(int? previousHidden = null, int? previousHides = null, int? previousShows = null)
     {
         var started = Stopwatch.GetTimestamp();
+        await RefreshAsync();
         while (previousHidden is { } hidden && Hidden <= hidden || previousHides is { } hides && Hides <= hides || previousShows is { } shows && Shows <= shows)
         {
             if (Stopwatch.GetElapsedTime(started) >= TimeSpan.FromSeconds(JoinSeconds))
@@ -178,17 +150,26 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
                 Assert.Fail(TransitionFailure);
             }
             await Task.Delay(PollMilliseconds, TestContext.Current.CancellationToken);
+            await RefreshAsync();
         }
     }
 
     /// <summary>Checks observed URLs, current restored history state and console against actual private values; reports bfcache use without requiring it.</summary>
     internal async Task RequireAsync(string[] secrets)
     {
+        if (events is not null)
+        {
+            await RefreshAsync();
+        }
         Add(await page.EvaluateAsync<string>(State));
         await JoinAsync();
         Assert.Equal(0, Volatile.Read(ref failures));
         BrowserSecretOracle.RequireAbsent(values, secrets);
-        TestContext.Current.TestOutputHelper?.WriteLine(Report, Hidden, Hides, Shows, Volatile.Read(ref persistedShows));
+        if (events is not null)
+        {
+            await events.FinishAsync(secrets);
+            TestContext.Current.TestOutputHelper?.WriteLine(Report, Hidden, Hides, Shows, counters.Persisted);
+        }
     }
 
     /// <summary>Detaches synchronous handlers and joins outstanding private reads before releasing browser ownership.</summary>
@@ -197,7 +178,6 @@ internal sealed class ApplicationLifecycleObservation : IAsyncDisposable
         page.Console -= Console;
         page.PageError -= Error;
         page.FrameNavigated -= Navigated;
-        await events.DisposeAsync();
         await JoinAsync();
         while (values.TryDequeue(out _))
         {

@@ -10,6 +10,7 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     private readonly IPage page;
     private readonly TaskCompletionSource completed = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private IRequest? request;
+    internal bool IsCompleted => completed.Task.IsCompletedSuccessfully;
     internal IResponse? Response
     {
         get; private set;

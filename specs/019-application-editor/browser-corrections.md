@@ -226,3 +226,54 @@ source/test/security reviews pass; hosted acceptance remains required.
 | `t019-native-events-diagnostics/diagnostics.trx` | `fbd6c081bca474bb3fbebe6b09d561ccd6bd3264b9f584a6663f787e2276956f` |
 | `t019-native-events-PostgreSql/transport.trx` | `2a8fac7c24fce603ee20a2af8ac36a47319d3c21bbf546d5fd37cf42641954b3` |
 | `t019-native-events-SqlServer/transport.trx` | `91587cb20401b3d48ec721da7858d106eac7a1f719679f9c2584b500db38de56` |
+
+
+## Synchronous lifecycle witness and bounded progress
+
+[The seventh rejected candidate](hosted-verification.md#seventh-candidate--protocol-observation-remained-insufficient)
+shows that raw CDP still misses required Chromium pagehide observations; it does not
+prove why. WebKit's two lifecycle commands reach the original660s deadline without
+a usable case result. No timeout is extended or case skipped.
+
+Only `ApplicationOutputLifecycle` and `ApplicationPendingLifecycle` opt into the new
+counter. Their same-origin scenario seeds one unpredictable key once. Trusted
+main-document listeners synchronously reread/update a seven-integer record, bounded
+by128 characters and256 events. Missing/malformed/negative/fractional/overflow or
+contradictory evidence fails. Restored documents cannot overwrite newer counts from
+a stale closure. A real untrusted visibility event increments only the separate
+untrusted counter. Native history/minimization and secret-erasure assertions remain
+independent. Baselines refresh from storage before each actual transition.
+
+Before the ordinary storage assertion, the record is validated and scanned privately
+against actual secrets. One synchronous operation requires the exact unchanged
+record, detaches current listeners and removes only that exact key. It never clears
+storage or exempts a prefix. Cached listeners cannot recreate a missing record.
+The unchanged oracle then requires empty sessionStorage; this evidence explicitly
+follows removal of validated test instrumentation. Other sign-in/editor/privacy
+journeys neither seed a key nor install these listeners, including cross-origin flows.
+
+The optional checkpoint contains four integer enums and no arbitrary text, URLs,
+credentials or exception data. Atomic writes retain only the last successful phase;
+expected I/O failures disable recording. Cleanup markers do not own resources or
+change their disposal order. The private wrapper reader rejects malformed, oversized,
+out-of-range, Boolean and private-content substitutes, and diagnostic output failure
+cannot prevent window-manager cleanup. All11 prior driver/desktop controls remain;
+one additional finite-reader control makes12. Existing child-failure controls also
+inject broken stdout. Existing two native diagnostic identities add a real
+file/directory collision proving release markers are non-disruptive and disposal
+markers preserve the primary exception. No ordinary identity is added or removed.
+
+Independent test/security source review passes after isolating the shared observer
+and making progress output non-disruptive. The initial added regression used an
+ambiguous throw-only lambda, rejected by xUnit's obsolete async overload guard; an
+explicit synchronous Action corrects it. Initial enum formatting was also rejected
+and corrected. These failed local checks remain failures, without new allowances.
+The final local gate passes: complete solution build with zero warnings/errors,
+format/import checks, code-quality and its seeded enforcement controls, all12
+driver/desktop/progress controls, and both exact native diagnostic identities with
+zero failures/skips. The added identifier-format literal finding was named and
+corrected without an allowance. The native TRX SHA256 is
+`67816414f0e255a6bb816abbb2df0fbf0e3771e7ec78122f67778a73e3b37550`;
+its exact identities and result/definition/entry links are reconciled. Source
+gitleaks, instruction and diff checks pass. These local controls do not execute
+the retained browsers; corrected exact-head browser acceptance remains pending.

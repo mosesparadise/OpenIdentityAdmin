@@ -28,6 +28,7 @@ public sealed class BrowserEvidenceTests
     public async Task Given_SecretBearingBrowserFailures_When_DiagnosticsAreSanitized_Then_OnlyFixedCategoriesEscape(string provider)
     {
         Assert.False(string.IsNullOrWhiteSpace(provider));
+        RequireProgressFailureIsNonDisruptive();
         (Exception Error, string Expected)[] failures = [(new PlaywrightException(KnownMessage), KnownSafeMessage),
             (new PlaywrightException(SensitiveMessage), UnknownSafeMessage),
             (new TimeoutException(KnownMessage, new InvalidOperationException(SensitiveMessage)), KnownSafeMessage),
@@ -57,4 +58,32 @@ public sealed class BrowserEvidenceTests
         Assert.False(AdministratorHistory.IsNativeRejection(Firefox, new TimeoutException(CacheMiss), 0, 0));
         Assert.False(AdministratorHistory.IsNativeRejection(Firefox, new PlaywrightException(SensitiveMessage), 0, 0));
     }
+    /// <summary>A real file/directory collision cannot interrupt a release marker or replace the primary failure during resource disposal.</summary>
+    private static void RequireProgressFailureIsNonDisruptive()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), ProgressPrefix + Guid.NewGuid().ToString(ProgressIdentifierFormat));
+        var destination = Path.Combine(directory, ProgressDestination);
+        Directory.CreateDirectory(destination);
+        try
+        {
+            var progress = new ApplicationLifecycleProgress(ApplicationLifecycleScenario.Pending, checkpointPath: destination);
+            Assert.Null(Record.Exception(() => progress.Mark(ApplicationLifecycleStage.Release)));
+            var primary = new InvalidOperationException(SensitiveMessage);
+            Action action = () =>
+            {
+                var cleanup = new ApplicationLifecycleProgress(ApplicationLifecycleScenario.Pending, checkpointPath: destination);
+                using var marker = cleanup.BeforeDispose(ApplicationLifecycleDisposal.Environment);
+                throw primary;
+            };
+            var observed = Record.Exception(action);
+            Assert.True(ReferenceEquals(primary, observed));
+            Assert.True(Directory.Exists(destination));
+        }
+        finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    private const string ProgressPrefix = "lifecycle-progress-control-";
+    private const string ProgressIdentifierFormat = "N";
+    private const string ProgressDestination = "owned-directory";
+
 }
