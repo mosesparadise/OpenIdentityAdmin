@@ -42,6 +42,7 @@ internal static class ApplicationEditorAssertions
     /// <summary>Requires exact permission separation, native security, no-store, real DTOs, version semantics and browser CSRF metadata.</summary>
     internal static void Require(JsonNode document, bool browser)
     {
+        ApplicationUpdateAssertions.Require(document, browser);
         var path = browser ? BrowserPath : ApiPath;
         var create = document[Paths]![path]![Post]!;
         var details = document[Paths]![path + Details]![Get]!;

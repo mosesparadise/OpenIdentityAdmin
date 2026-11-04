@@ -182,9 +182,9 @@ public sealed class ApplicationHttpTests(BootstrapFixture fixture)
     });
 
     /// <summary>Reads a successful one-time output in memory only and independently checks secret shape and response safety.</summary>
-    internal static async Task<ApplicationCredentialOutput> CreatedAsync(HttpResponseMessage response)
+    internal static async Task<ApplicationCredentialOutput> CreatedAsync(HttpResponseMessage response, HttpStatusCode expected = HttpStatusCode.Created)
     {
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Equal(expected, response.StatusCode);
         Assert.True(response.Headers.CacheControl?.NoStore == true);
         var body = await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken);
         using var json = JsonDocument.Parse(body);

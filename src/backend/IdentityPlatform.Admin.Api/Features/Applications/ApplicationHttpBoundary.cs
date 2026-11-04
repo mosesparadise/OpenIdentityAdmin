@@ -21,6 +21,7 @@ internal static class ApplicationHttpBoundary
     private const string Forbidden = "Application access is forbidden.";
     private const string Missing = "Application not found.";
     private const string Conflict = "Application conflicts with current registration state.";
+    private const string Precondition = "Reload the application before submitting a new change.";
     private const string Unavailable = "The application result is unavailable. Do not automatically resubmit.";
     private const int AuthorizationCharacters = 16391;
 
@@ -103,6 +104,7 @@ internal static class ApplicationHttpBoundary
         StatusCodes.Status403Forbidden => Forbidden,
         StatusCodes.Status404NotFound => Missing,
         StatusCodes.Status409Conflict => Conflict,
+        StatusCodes.Status412PreconditionFailed or StatusCodes.Status428PreconditionRequired => Precondition,
         _ => Unavailable
     }, extensions: new Dictionary<string, object?> { [Correlation] = http.TraceIdentifier }).ExecuteAsync(http);
 }

@@ -26,7 +26,7 @@
 ## US2 — Safe edits and credential recovery
 
 - [x] T015 [US2] Prove both-provider same-version edits/replacements and native-save/audit rollback in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/. FR-005–008/010. [Scoped provider evidence](update-atomicity.md) adds observed independent-node contention and complete rollback/recovery proofs. Global quality remains blocked by the unchanged expired feature009 bootstrap exception; no T022/full-delivery acceptance.
-- [ ] T016 [US2] Implement If-Match PUT and explicit secret replacement in Admin.Api/Features/Applications/ and matching BFF endpoints; PUT cannot modify credential expiry, and replacement requires current credential permission/recent MFA. FR-005–011.
+- [x] T016 [US2] Implement If-Match PUT and explicit secret replacement in Admin.Api/Features/Applications/ and matching BFF endpoints; PUT cannot modify credential expiry, and replacement requires current credential permission/recent MFA. FR-005–011. [Local both-provider HTTP and contract evidence](update-http.md); full verification remains blocked by the unchanged expired quality exception and newly observed generator dependency advisory.
 - [ ] T017 [US2] Add editor/conflict/replacement forms in Admin.Ui/Features/Applications/ and verify new issuer configuration works while old code/configuration/secret is rejected. FR-001/007/010/012.
 
 ## US3 — Clear, accessible, bounded failure states
@@ -38,7 +38,7 @@
 
 - [ ] T020 Generate authoritative Admin API/BFF contracts and TypeScript client; extend contract inventory/compatibility/ETag/CSRF tests in tests/contracts/ and frontend Contracts. FR-007/009/011.
 - [ ] T021 Preserve exact prior native/Node inventories, add selected scenario lanes/coverage inputs and meaningful write/CSRF/audit/concurrency/credential/consent/claim mutation controls in eng/ and scripts/. FR-012.
-- [ ] T022 Resolve independent final source/security/test/UX reviews; run required exact-head full verification and reconcile failures without weaker gates in specs/019-application-editor/verification.md. FR-001–012.
+- [ ] T022 Resolve independent final source/security/test/UX reviews; run required exact-head full verification and reconcile failures without weaker gates in specs/019-application-editor/verification.md. FR-001–012. [Current full-gate blockers](update-http.md#verification-status-and-limits): expired feature009 BootstrapTests exception and generator-chain GHSA-g3hv-75wg-m249; neither is waived.
 - [ ] T023 Record actual evidence and limits, update quickstarts/docs/roadmap.md/docs/operations/new-task-handoff.md, and complete normal reviewed squash. FR-012.
 
 Dependencies: T001→T002; T003 precedes managed native integration; T004/T005/T006/T007 enable actual writes. T010/T011/T012 form the genuine issuer prerequisite for US1; no stored-row-only acceptance. US2 builds on the same aggregate authority/version and US1 native binding. T020 is maintained with each endpoint, not postponed until UI consumption. T019/T021/T022/T023 require all affected stories. Independent design reviews, contract checks and provider observations can run in parallel; root owns source edits/integration. No production deployment, refresh activation or external release is included.

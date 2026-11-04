@@ -1,7 +1,7 @@
 {
   "core": 44,
   "browser": 7,
-  "node": 38,
+  "node": 40,
   "browsers": [
     "chromium",
     "firefox",
@@ -45,6 +45,8 @@
     "Given dormant browser status When inventoried Then only the explicit public local read is admitted",
     "Given browser status When authentication or cache semantics drift Then validation rejects the contract",
     "Given browser status When a native route or extra verb is substituted Then no broad exception admits it",
-    "Given application token acquisition When identity cache or method changes Then the exact local boundary fails closed"
+    "Given application token acquisition When identity cache or method changes Then the exact local boundary fails closed",
+    "Given real application updates When native contracts are generated Then independent authority and finite update shapes remain explicit",
+    "Given application replacement When MFA or strong version semantics weaken Then compatibility fails closed"
   ]
 }

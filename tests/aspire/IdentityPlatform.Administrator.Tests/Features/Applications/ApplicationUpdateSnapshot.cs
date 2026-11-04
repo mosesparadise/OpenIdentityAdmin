@@ -11,7 +11,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 
 /// <summary>Observes every scalar native/policy/audit field; secret-bearing comparisons expose only digests to assertion diagnostics.</summary>
 internal sealed record ApplicationUpdateSnapshot(string Digest, string NativeDigest, string StableNativeDigest, string SecretDigest,
-    string? Stamp, string? Display, string[] Redirects, ApplicationPolicy Policy, SecurityAuditIntent[] Audits)
+    string? Stamp, string? ClientId, string? Display, string[] Redirects, ApplicationPolicy Policy, SecurityAuditIntent[] Audits)
 {
     private const string Target = "Application";
     private static readonly string[] MutableNative = ["DisplayName", "RedirectUris", "ClientSecret", "ConcurrencyToken"];
@@ -38,7 +38,7 @@ internal sealed record ApplicationUpdateSnapshot(string Digest, string NativeDig
             policy,
             audits
         }), Hash(fields), Hash(stable), Hash(native.ClientSecret), native.ConcurrencyToken,
-            native.DisplayName, JsonSerializer.Deserialize<string[]>(native.RedirectUris!)!, policy, audits);
+            native.ClientId, native.DisplayName, JsonSerializer.Deserialize<string[]>(native.RedirectUris!)!, policy, audits);
     }
 
     /// <summary>Hashes canonical in-process observations without logging native hashes or plaintext credentials.</summary>

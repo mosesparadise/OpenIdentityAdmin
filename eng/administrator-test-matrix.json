@@ -1117,7 +1117,22 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: False, denyAudit: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: False, denyAudit: True)",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: True)"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"PostgreSql\", removeWrite: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"PostgreSql\", removeWrite: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_GenuineBrowserSession_When_UpdateCsrfOrOriginIsInvalid_Then_AllAggregateFieldsRemainUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_OriginalNativeDeadline_When_MfaReachesEquality_Then_ApiAndBffRequireSignInWithoutMutation(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_RealRetainedCredentials_When_SourceSessionIsRevoked_Then_ApiAndBffUpdatesCannotCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: False, direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: False, direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: True, direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: True, direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"PostgreSql\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"PostgreSql\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"PostgreSql\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"PostgreSql\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2341,7 +2356,22 @@
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: False, denyAudit: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: False, denyAudit: True)",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: True)"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"SqlServer\", removeWrite: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"SqlServer\", removeWrite: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_GenuineBrowserSession_When_UpdateCsrfOrOriginIsInvalid_Then_AllAggregateFieldsRemainUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_OriginalNativeDeadline_When_MfaReachesEquality_Then_ApiAndBffRequireSignInWithoutMutation(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_RealRetainedCredentials_When_SourceSessionIsRevoked_Then_ApiAndBffUpdatesCannotCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: False, direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: False, direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: True, direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: True, direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"SqlServer\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"SqlServer\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"SqlServer\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"SqlServer\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -50262,6 +50292,608 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"PostgreSql\", removeWrite: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"PostgreSql\", removeWrite: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"SqlServer\", removeWrite: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit(provider: \"SqlServer\", removeWrite: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_CurrentBearer_When_OneActionGrantIsRemoved_Then_OnlyTheOtherActionCanCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_GenuineBrowserSession_When_UpdateCsrfOrOriginIsInvalid_Then_AllAggregateFieldsRemainUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_GenuineBrowserSession_When_UpdateCsrfOrOriginIsInvalid_Then_AllAggregateFieldsRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_GenuineBrowserSession_When_UpdateCsrfOrOriginIsInvalid_Then_AllAggregateFieldsRemainUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_GenuineBrowserSession_When_UpdateCsrfOrOriginIsInvalid_Then_AllAggregateFieldsRemainUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_OriginalNativeDeadline_When_MfaReachesEquality_Then_ApiAndBffRequireSignInWithoutMutation(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_OriginalNativeDeadline_When_MfaReachesEquality_Then_ApiAndBffRequireSignInWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_OriginalNativeDeadline_When_MfaReachesEquality_Then_ApiAndBffRequireSignInWithoutMutation(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_OriginalNativeDeadline_When_MfaReachesEquality_Then_ApiAndBffRequireSignInWithoutMutation",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_RealRetainedCredentials_When_SourceSessionIsRevoked_Then_ApiAndBffUpdatesCannotCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_RealRetainedCredentials_When_SourceSessionIsRevoked_Then_ApiAndBffUpdatesCannotCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateAuthorityTests.Given_RealRetainedCredentials_When_SourceSessionIsRevoked_Then_ApiAndBffUpdatesCannotCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateAuthorityTests",
+        "methodName": "Given_RealRetainedCredentials_When_SourceSessionIsRevoked_Then_ApiAndBffUpdatesCannotCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: False, direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: False, direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: True, direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"PostgreSql\", replacement: True, direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: False, direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: False, direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: True, direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateFailureTests.Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers(provider: \"SqlServer\", replacement: True, direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateFailureTests",
+        "methodName": "Given_ActualAuditPermissionDenial_When_HttpsUpdateRuns_Then_ExactAggregateRollsBackAndOriginalVersionRecovers",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"PostgreSql\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"PostgreSql\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"SqlServer\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable(provider: \"SqlServer\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_CurrentManagedAggregate_When_HttpPreconditionsAreInvalid_Then_NoActionMutatesAndOriginalVersionRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"PostgreSql\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"PostgreSql\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"SqlServer\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished(provider: \"SqlServer\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_ExpiredManagedCredential_When_HttpsEditThenReplacementRuns_Then_ExactNativeStateAndOneTimeRecoveryArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"PostgreSql\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationHttpUpdateTests.Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved(provider: \"SqlServer\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationHttpUpdateTests",
+        "methodName": "Given_HttpUpdates_When_InputOrTargetIsUnsupported_Then_ExactAggregateIsPreserved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
           "System.Boolean"
         ]
       },

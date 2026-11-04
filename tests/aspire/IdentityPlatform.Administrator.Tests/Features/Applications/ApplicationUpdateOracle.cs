@@ -36,13 +36,17 @@ internal static class ApplicationUpdateOracle
 
     /// <summary>Checks the actual requested field/hash/lifecycle effects, both inside the faulted transaction and after a successful commit.</summary>
     internal static void RequireState(ApplicationMutationFixture test, ApplicationUpdateSnapshot before, ApplicationUpdateSnapshot after, ApplicationMutationCommand command)
+        => RequireState(test.Clock.Now, before, after, command);
+
+    /// <summary>Shares the full detached field oracle with genuine HTTP journeys without requiring component authentication setup.</summary>
+    internal static void RequireState(DateTimeOffset now, ApplicationUpdateSnapshot before, ApplicationUpdateSnapshot after, ApplicationMutationCommand command)
     {
         Assert.Equal(before.Policy.Revision + 1, after.Policy.Revision);
         Assert.Equal(before.StableNativeDigest, after.StableNativeDigest);
         Assert.NotEqual(before.Stamp, after.Stamp);
         Assert.Equal(before.Policy.ApplicationId, after.Policy.ApplicationId);
         Assert.Equal(before.Policy.Profile, after.Policy.Profile);
-        Assert.Equal(test.Clock.Now.ToUnixTimeSeconds(), after.Policy.ObservedAt);
+        Assert.Equal(now.ToUnixTimeSeconds(), after.Policy.ObservedAt);
         if (command.Kind == ApplicationMutationKind.Edit)
         {
             Assert.Equal(command.DisplayName, after.Display);
@@ -58,7 +62,7 @@ internal static class ApplicationUpdateOracle
             Assert.Equal(before.Display, after.Display);
             Assert.Equal(before.Redirects, after.Redirects);
             Assert.Equal(before.Policy.CredentialRevision + 1, after.Policy.CredentialRevision);
-            Assert.Equal(test.Clock.Now.ToUnixTimeSeconds(), after.Policy.CredentialIssuedAt);
+            Assert.Equal(now.ToUnixTimeSeconds(), after.Policy.CredentialIssuedAt);
             Assert.Equal(command.CredentialExpiry!.Value.ToUnixTimeSeconds(), after.Policy.CredentialExpiresAt);
         }
     }

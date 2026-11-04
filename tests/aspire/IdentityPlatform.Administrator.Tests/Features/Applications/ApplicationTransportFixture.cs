@@ -142,7 +142,7 @@ internal sealed class ApplicationTransportStartup(Uri api) : IStartupFilter
     /// <summary>Installs the same token and mutation handlers ahead of the test host's ordinary terminal404.</summary>
     public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next) => app =>
     {
-        ApplicationClientSetup.Use(app, api, mutations: true);
+        ApplicationClientSetup.Use(app, api);
         next(app);
     };
 }

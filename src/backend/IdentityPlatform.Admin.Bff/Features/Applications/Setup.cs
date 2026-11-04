@@ -7,6 +7,11 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 internal static class Setup
 {
     private const string DetailsPath = "/applications/{id}";
+    private const string ReplacementPath = DetailsPath + "/secret-replacements";
+    private const string EditOperation = "EditBrowserApplication";
+    private const string ReplacementOperation = "ReplaceBrowserApplicationSecret";
+    private const string EditSummary = "Edit application presentation and callbacks using its current strong version";
+    private const string ReplacementSummary = "Replace a managed secret once with current credential permission and fresh MFA";
     private const string CreateOperation = "CreateBrowserApplication";
     private const string DetailsOperation = "GetBrowserApplication";
     private const string CreateSummary = "Create a managed application and return its generated secret once";
@@ -42,6 +47,25 @@ internal static class Setup
             .WithName(DetailsOperation).WithSummary(DetailsSummary).Produces<ApplicationDetails>()
             .ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status404NotFound).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        MapUpdates(endpoints);
         return endpoints;
+    }
+
+    /// <summary>Maps only the finite version-bound edit and credential actions with their complete public outcomes.</summary>
+    private static void MapUpdates(IEndpointRouteBuilder endpoints)
+    {
+        var edit = endpoints.MapManagementGroup().MapPut(DetailsPath, (HttpContext context, string id) =>
+            ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Edit, id))
+            .WithName(EditOperation).WithSummary(EditSummary).Accepts<ApplicationEdit>(JsonType).Produces<ApplicationDetails>();
+        var replace = endpoints.MapManagementGroup().MapPost(ReplacementPath, (HttpContext context, string id) =>
+            ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Replace, id))
+            .WithName(ReplacementOperation).WithSummary(ReplacementSummary).Accepts<ApplicationSecretReplacement>(JsonType).Produces<ApplicationCredentialOutput>();
+        foreach (var endpoint in new[] { edit, replace })
+        {
+            endpoint.ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized)
+                .ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status404NotFound)
+                .ProducesProblem(StatusCodes.Status409Conflict).ProducesProblem(StatusCodes.Status412PreconditionFailed)
+                .ProducesProblem(StatusCodes.Status428PreconditionRequired).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
+        }
     }
 }

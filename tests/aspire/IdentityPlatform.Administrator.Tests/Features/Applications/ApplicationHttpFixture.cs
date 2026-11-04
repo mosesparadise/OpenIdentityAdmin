@@ -33,6 +33,11 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     internal HttpClient Api => api;
     internal HttpClient IssuerClient => issuer;
     internal DateTimeOffset Now => environment.Issuer.Account.Journey.Clock.Now;
+    internal DateTimeOffset AccessExpiresAt
+    {
+        get; private set;
+    }
+    internal string SourceSession { get; private set; } = string.Empty;
     internal string Access { private get; set; } = string.Empty;
 
     /// <summary>Owns actual three-host TLS composition and runs the real ceremony before obtaining any protected API credential.</summary>
@@ -85,7 +90,10 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
         var row = await scope.ServiceProvider.GetRequiredService<AdminSessionDbContext>().Set<AdminSessionTicket>().AsNoTracking()
             .SingleAsync(value => value.RevokedAt == null, TestContext.Current.CancellationToken);
         var ticket = scope.ServiceProvider.GetRequiredService<SessionTicketCodec>().Unprotect(row)!;
-        Access = BrowserAccessCredential.Read(ticket.Properties, Now)!.Value;
+        SourceSession = ticket.Principal.FindFirst(BrowserSessionClaims.Session)!.Value;
+        var access = BrowserAccessCredential.Read(ticket.Properties, Now)!;
+        Access = access.Value;
+        AccessExpiresAt = access.ExpiresAt;
     }
 
     /// <summary>Acquires the actual native application-family proof through the authenticated BFF route.</summary>
@@ -112,6 +120,36 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
         {
             request.Headers.Add(Origin, environment.Profile.ClientUri.GetLeftPart(UriPartial.Authority));
             request.Headers.Add(Csrf, await TokenAsync());
+        }
+        return await (direct ? api : browser).SendAsync(request, TestContext.Current.CancellationToken);
+    }
+
+    /// <summary>Sends the finite mapped edit or replacement with actual bearer or native browser proof; explicit overrides exercise admission failures.</summary>
+    internal async Task<HttpResponseMessage> UpdateAsync(string id, string body, string? version, bool replacement = false,
+        bool direct = false, bool authenticated = true, string? origin = null, string? csrf = null)
+    {
+        const string separator = "/";
+        const string suffix = "/secret-replacements";
+        using var request = new HttpRequestMessage(replacement ? HttpMethod.Post : HttpMethod.Put,
+            (direct ? ApiCollection : Collection) + separator + Uri.EscapeDataString(id) + (replacement ? suffix : string.Empty))
+        {
+            Content = new StringContent(body, Encoding.UTF8, Media)
+        };
+        if (version is not null)
+        {
+            request.Headers.TryAddWithoutValidation(Microsoft.Net.Http.Headers.HeaderNames.IfMatch, version);
+        }
+        if (direct && authenticated)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, Access);
+        }
+        else if (!direct)
+        {
+            request.Headers.Add(Origin, origin ?? environment.Profile.ClientUri.GetLeftPart(UriPartial.Authority));
+            if (authenticated)
+            {
+                request.Headers.Add(Csrf, csrf ?? await TokenAsync());
+            }
         }
         return await (direct ? api : browser).SendAsync(request, TestContext.Current.CancellationToken);
     }

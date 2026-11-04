@@ -97,7 +97,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
                     new Uri(owner.Profile.ClientUri, CallbackPath).AbsoluteUri, applicationProbe, mutationProbe, configureApi);
             }
             owner.Client = await BrowserHttpsClient.CreateAsync(owner.database, owner.Issuer.Account.Journey.Clock,
-                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace, owner.Api?.Address, mutationProbe is not null);
+                owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace, owner.Api?.Address);
             return owner;
         }
         catch { await owner.DisposeAsync(); throw; }
