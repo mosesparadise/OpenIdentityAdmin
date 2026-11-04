@@ -1,0 +1,49 @@
+{
+  "source_base": "e7395c6c9bbe8ae98fc8acb91f694a9587da139f",
+  "scope": "T006 local owned mutation component checkpoint only; no signed-bearer HTTP, CSRF/BFF, managed issuer/browser, full CI, feature acceptance or merge",
+  "results": {
+    "PostgreSql": {
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0
+    },
+    "SqlServer": {
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0
+    },
+    "Host": {
+      "passed": 1697,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "preserved_native_records": 2065,
+  "added_native_records": 34,
+  "artifacts": {
+    "feature019-write-sql-final.trx": "2ef5af5be2a77ab32b044f5cd4d634c23309cfd772630c6619acea7897dad9f1",
+    "feature019-write-pg-final.trx": "29180be62084bcfb449851c474c2648234131df220388c4fd7461d51a3f1071e",
+    "feature019-write-host/host.trx": "1417cfac83b20dd38826f130cfcc3a0dce54bae989111aa95995447a51411d46",
+    "feature019-write-discovery.json": "cdc1e70de95c5e2c79a6de6bceff028850b067d90d29000d02c95425bc8e9147",
+    "feature019-write-source.json": "cc4f112646e354d61322e28f4b7e8cf7e11969b83dc4e4e9a4f58036faf44c2b",
+    "feature019-write-selection.log": "3e7b5e1022d552a5d3a32bbeaa400c6ba6d55ced12c7fb190e9fb3a8b905b366",
+    "feature019-write-fixture-build.log": "576743c24b4b2829938f96669ce6458da84e10cfb92c9cad9dbaf91063c5e9a0",
+    "feature019-write-host-build.log": "ea56ced10301cf343a12febe6d10265605aceb15b9748c38bda3b0ec7cc9a921",
+    "feature019-write-quality-final2.log": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+    "feature019-write-style.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "feature019-write-instructions.log": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def",
+    "feature019-write-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+    "feature019-write-sql-final.log": "c01885de1248bcfa72180d810c7af5ee73bead5959e8038783ed18d04fbfa16f",
+    "feature019-write-pg-final.log": "968eabd19a192af33b8b4177af4f54c5468117d67a4bbab64763a7c873cdc4f1",
+    "feature019-write-sql-first.trx": "08739ea72ccd44973b235b621aac4a103267fa599884e3633941a89faedaa990",
+    "feature019-write-sql.log": "9329690f4a4ebea8890067c5a2c2a957b878acfbcd6db647fd581b3d324d8a63",
+    "feature019-write-sql-smoke/write-smoke.trx": "970745f658c6bfe11d4721378299e2c995ea6f87bec473e6074fe3b4ac096e30",
+    "feature019-write-sql-smoke2/write-smoke.trx": "57a5c024744d38389cfa89ff864786083fd3eb0266ec1b1fb5e31ad3e27ecd99",
+    "feature019-loopback-probe.log": "7fc755fadc1b31a6696b8ed57c69d2bfc37f5457735c8fcfae31fcbd7bba97d5",
+    "feature019-loopback-probe-fixed.log": "a9ac0c3ac83c40e1b4c3416066d63d324ee9f8c144641dfeed72d140b6557245",
+    "feature019-devcert-trust.log": "51451e7eba7fcaba14cef17ed633169fc2e96b61fc622e091ad57cd508104371",
+    "feature019-write-quality-final.log": "ea01f49c0649746e92385c1927b2ea3563d489e9d5ee53d2ea0a6b02f772af0b",
+    "feature019-write-image-exchange.log": "e8bd81b3939270b87c0e79a4e25cecb12577f3f57f63b439e14a56e1a9686147",
+    "feature019-write-pg-image.log": "2846c72ae31cf1f1e7cf5b1ee2e35e68bf7d0e6ed42cc38b37b79a1bc0a1ad4e"
+  }
+}

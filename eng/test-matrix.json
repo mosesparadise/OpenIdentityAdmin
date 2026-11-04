@@ -28,28 +28,28 @@
   "profiles": {
     "unit": {
       "Core": 25,
-      "Host": 1644,
+      "Host": 1846,
       "Architecture": 5,
       "AppHost": 100
     },
     "PostgreSql": {
-      "Persistence": 15,
+      "Persistence": 19,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 911
+      "Administrator": 1069
     },
     "SqlServer": {
-      "Persistence": 15,
+      "Persistence": 19,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1016
+      "Administrator": 1174
     }
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 63
+    "Administrator": 71
   },
   "lifecycle_stories": {
     "Restart": {
@@ -119,16 +119,24 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 7,
-      "SqlServer": 7
+      "PostgreSql": 59,
+      "SqlServer": 59
+    },
+    "ManagedApplications": {
+      "PostgreSql": 106,
+      "SqlServer": 106
     }
   },
   "administrator_browser_stories": {
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 28,
-    "BrowserLogin": 9
+    "BrowserProtection": 31,
+    "BrowserLogin": 9,
+    "ApplicationEditor": 1,
+    "ApplicationAuthority": 1,
+    "ApplicationLifecycle": 2,
+    "ManagedConsent": 1
   },
   "issuer_http_groups": {
     "Flows": {
@@ -295,6 +303,53 @@
       "counts": {
         "PostgreSql": 57,
         "SqlServer": 57
+      }
+    }
+  },
+  "managed_application_groups": {
+    "Admission": {
+      "classes": [
+        "ManagedCacheBindingTests",
+        "ManagedCacheCapacityTests",
+        "ManagedCacheCleanupTests",
+        "ManagedCacheDependencyTests",
+        "ManagedCacheFailureTests",
+        "ManagedCacheHistoryTests",
+        "ManagedCacheHttpTests",
+        "ManagedCacheRaceTests",
+        "ManagedHumanAtomicityTests",
+        "ManagedHumanBudgetTests",
+        "ManagedHumanDriftTests",
+        "ManagedHumanHttpTests",
+        "ManagedHumanInputTests",
+        "ManagedHumanOwnershipTests",
+        "ManagedHumanPublicationTests",
+        "ManagedHumanRaceTests",
+        "ManagedPasswordUpgradeTests",
+        "NativeCacheTests"
+      ],
+      "counts": {
+        "PostgreSql": 50,
+        "SqlServer": 50
+      }
+    },
+    "Issuance": {
+      "classes": [
+        "ManagedJourneyTests",
+        "ManagedTokenAtomicityTests",
+        "ManagedTokenCapacityTests",
+        "ManagedTokenClaimTests",
+        "ManagedTokenDriftTests",
+        "ManagedTokenFailureTests",
+        "ManagedTokenHttpTests",
+        "ManagedTokenPublicationTests",
+        "ManagedTokenRaceTests",
+        "ManagedTokenReplayTests",
+        "ManagedUpdateJourneyTests"
+      ],
+      "counts": {
+        "PostgreSql": 56,
+        "SqlServer": 56
       }
     }
   }

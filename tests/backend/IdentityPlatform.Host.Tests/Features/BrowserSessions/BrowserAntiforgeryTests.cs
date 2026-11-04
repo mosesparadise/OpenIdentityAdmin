@@ -11,6 +11,8 @@ namespace IdentityPlatform.Host.Tests.Features.BrowserSessions;
 /// <summary>Exercises the native protected antiforgery token with independent browser/generation snapshots; cookie rotation alone is insufficient.</summary>
 public sealed class BrowserAntiforgeryTests
 {
+    private const string JsonMedia = "application/json";
+
     private const string CookieSeparator = "; ";
     private const string TokenHeader = "X-CSRF";
     private const int LifetimeSeconds = 300;
@@ -42,6 +44,82 @@ public sealed class BrowserAntiforgeryTests
             request.Request.Headers.Cookie = string.Join(CookieSeparator, issuance.Response.Headers.SetCookie.Select(value => value!.Split(';')[0]));
         }
         Assert.Equal(expected, await antiforgery.IsRequestValidAsync(request));
+    }
+
+    /// <summary>Native JSON protection remains generation-bound and cannot substitute application and login/logout purposes in either direction.</summary>
+    [Theory]
+    [InlineData(true, true, true)]
+    [InlineData(true, false, false)]
+    [InlineData(false, true, false)]
+    public async Task Given_NativePurposeToken_When_ApplicationAndFormBindingsAreSwapped_Then_OnlyItsOriginalFamilyPasses(bool issueApplication, bool validateApplication, bool expected)
+    {
+        await using var services = Services();
+        var browser = SessionHandle.Create().Digest;
+        var row = Row(browser, 1);
+        var application = BrowserRequestBinding.ForApplications(browser, 1, row, BffSessionFixture.Start)!;
+        var form = Binding(browser, 1);
+        var issuance = Context(services, issueApplication ? application : form);
+        var antiforgery = services.GetRequiredService<IAntiforgery>();
+        var tokens = antiforgery.GetAndStoreTokens(issuance);
+        var request = Context(services, validateApplication ? application : form);
+        request.Request.Method = HttpMethods.Post;
+        request.Request.ContentType = JsonMedia;
+        request.Request.Headers[TokenHeader] = tokens.RequestToken;
+        request.Request.Headers.Cookie = string.Join(CookieSeparator, issuance.Response.Headers.SetCookie.Select(value => value!.Split(';')[0]));
+        Assert.Equal(expected, await antiforgery.IsRequestValidAsync(request));
+    }
+
+    /// <summary>Actual application-purpose tokens retain native signature/cookie and durable-generation protection for JSON requests.</summary>
+    [Theory]
+    [InlineData(BrowserCsrfFault.None, true)]
+    [InlineData(BrowserCsrfFault.OtherBrowser, false)]
+    [InlineData(BrowserCsrfFault.NextGeneration, false)]
+    [InlineData(BrowserCsrfFault.MissingSnapshot, false)]
+    [InlineData(BrowserCsrfFault.MissingCookie, false)]
+    [InlineData(BrowserCsrfFault.MalformedToken, false)]
+    public async Task Given_ApplicationNativeToken_When_ProtectionOrGenerationChanges_Then_OnlyExactCurrentBindingPasses(BrowserCsrfFault fault, bool expected)
+    {
+        await using var services = Services();
+        var browser = SessionHandle.Create().Digest;
+        var binding = BrowserRequestBinding.ForApplications(browser, 1, Row(browser, 1), BffSessionFixture.Start)!;
+        var issuance = Context(services, binding);
+        var antiforgery = services.GetRequiredService<IAntiforgery>();
+        var tokens = antiforgery.GetAndStoreTokens(issuance);
+        var digest = fault == BrowserCsrfFault.OtherBrowser ? SessionHandle.Create().Digest : browser;
+        var generation = fault == BrowserCsrfFault.NextGeneration ? NextGeneration : 1;
+        var request = Context(services, fault == BrowserCsrfFault.MissingSnapshot ? null :
+            BrowserRequestBinding.ForApplications(digest, generation, Row(digest, generation), BffSessionFixture.Start));
+        request.Request.Method = HttpMethods.Post;
+        request.Request.ContentType = JsonMedia;
+        request.Request.Headers[TokenHeader] = fault == BrowserCsrfFault.MalformedToken ? SessionHandle.Create().Handle : tokens.RequestToken;
+        if (fault != BrowserCsrfFault.MissingCookie)
+        {
+            request.Request.Headers.Cookie = string.Join(CookieSeparator, issuance.Response.Headers.SetCookie.Select(value => value!.Split(';')[0]));
+        }
+        Assert.Equal(expected, await antiforgery.IsRequestValidAsync(request));
+    }
+
+    /// <summary>The native logout-reconciliation family never substitutes for application JSON authority, even with the exact same browser and original generation.</summary>
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Given_ReconciliationAndApplicationTokens_When_PurposesAreSwapped_Then_NativeValidationRejectsBothDirections(bool issueApplication)
+    {
+        await using var services = Services();
+        var now = BffSessionFixture.Start;
+        var proof = new BrowserGenerationProof(SessionHandle.Create().Handle, 1, now.UtcTicks, now.AddSeconds(LifetimeSeconds).UtcTicks);
+        var application = BrowserRequestBinding.ForApplications(proof.Digest, 1, Row(proof.Digest, 1), now)!;
+        var reconciliation = BrowserRequestBinding.FromLogoutReconciliation(proof, new BrowserLogoutResult(NextGeneration, false, now.UtcTicks, proof.Expires), now)!;
+        Assert.NotNull(reconciliation);
+        var issuance = Context(services, issueApplication ? application : reconciliation);
+        var antiforgery = services.GetRequiredService<IAntiforgery>();
+        var tokens = antiforgery.GetAndStoreTokens(issuance);
+        var request = Context(services, issueApplication ? reconciliation : application);
+        request.Request.Method = HttpMethods.Post;
+        request.Request.ContentType = JsonMedia;
+        request.Request.Headers[TokenHeader] = tokens.RequestToken;
+        request.Request.Headers.Cookie = string.Join(CookieSeparator, issuance.Response.Headers.SetCookie.Select(value => value!.Split(';')[0]));
+        Assert.False(await antiforgery.IsRequestValidAsync(request));
     }
 
     /// <summary>No durable read snapshot means no token issuance; missing later contexts and expired generations never become bootstrap generation zero.</summary>

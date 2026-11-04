@@ -44,11 +44,11 @@ class AdministratorSelectionTests(unittest.TestCase):
 
 class AdministratorStoryTests(unittest.TestCase):
     def setUp(self):
-        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications')},
-                       'profiles': {p: {'Administrator': 13} for p in ('PostgreSql', 'SqlServer')}}
+        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications')},
+                       'profiles': {p: {'Administrator': 14} for p in ('PostgreSql', 'SqlServer')}}
         self.catalogue = {p + s: (p + s, p, False, 'IdentityPlatform.Administrator.Tests.Features.' + s, None)
-                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications')}
-        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications')] for p in ('PostgreSql', 'SqlServer')}
+                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications')}
+        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications')] for p in ('PostgreSql', 'SqlServer')}
         self.selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
 
     def verify(self):
@@ -56,7 +56,7 @@ class AdministratorStoryTests(unittest.TestCase):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1), ('ProtocolAdmission', 1), ('BrowserSessions', 1), ('SessionRefresh', 1), ('Applications', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
+        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1), ('ProtocolAdmission', 1), ('BrowserSessions', 1), ('SessionRefresh', 1), ('Applications', 1), ('ManagedApplications', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
         self.assertEqual([('Factors', 1)], administrator_invocations(self.matrix, 'PostgreSql', 'Factors'))
         for story in ('Restart', 'Unknown'):
             with self.assertRaises(ValueError): administrator_invocations(self.matrix, 'PostgreSql', story)
@@ -76,7 +76,7 @@ class AdministratorStoryTests(unittest.TestCase):
                 elif change == 'balanced-drift':
                     stories['Factors']['SqlServer'] = 2
                     stories['Bootstrap']['SqlServer'] = 2
-                    self.matrix['profiles']['SqlServer']['Administrator'] = 14
+                    self.matrix['profiles']['SqlServer']['Administrator'] = 15
                 with self.assertRaises(ValueError): self.verify()
 
     def test_complete_inventory_and_exact_story_selection_remain_mandatory(self):
@@ -162,8 +162,8 @@ class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
 class AdministratorBrowserSelectionTests(AdministratorStoryTests):
     def setUp(self):
         super().setUp()
-        self.matrix['browser'] = {'Administrator': 5}
-        self.matrix['administrator_browser_stories'] = {'Accounts': 1, 'Security': 1, 'BrowserSessions': 1, 'BrowserLogin': 1, 'BrowserProtection': 1}
+        self.matrix['browser'] = {'Administrator': 9}
+        self.matrix['administrator_browser_stories'] = {'Accounts': 1, 'Security': 1, 'BrowserSessions': 1, 'BrowserLogin': 1, 'BrowserProtection': 1, 'ApplicationEditor': 1, 'ApplicationAuthority': 1, 'ApplicationLifecycle': 1, 'ManagedConsent': 1}
         for provider in ('PostgreSql', 'SqlServer'):
             name = provider + 'Browser'
             self.catalogue[name] = (name, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'Accounts')
@@ -174,7 +174,7 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
             sessions = provider + 'SessionsBrowser'
             self.catalogue[sessions] = (sessions, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', 'BrowserSessions')
             self.inventory[provider].append(sessions)
-            for story in ('BrowserLogin', 'BrowserProtection'):
+            for story in ('BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent'):
                 case = provider + story
                 self.catalogue[case] = (case, provider, True, 'IdentityPlatform.Administrator.Tests.Features.Browser', story)
                 self.inventory[provider].append(case)
@@ -186,7 +186,7 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual({'Administrator': 5}, select_projects(self.matrix, 'PostgreSql', 'webkit', 'administrator'))
+        self.assertEqual({'Administrator': 9}, select_projects(self.matrix, 'PostgreSql', 'webkit', 'administrator'))
 
     def test_browser_inventory_selection_and_category_fail_closed(self):
         for change in ('missing', 'substitute', 'ordinary', 'provider', 'count', 'bool', 'category', 'namespace', 'story'):
@@ -205,13 +205,13 @@ class AdministratorBrowserSelectionTests(AdministratorStoryTests):
 
     def test_Given_ExpandedBrowserStories_When_Selected_Then_AllFiveStayDisjointAndBothNewStoriesAreMandatory(self):
         from test_selection import administrator_browser_invocations, require_administrator_browser
-        expected = [('Accounts', 1), ('Security', 1), ('BrowserSessions', 1), ('BrowserLogin', 1), ('BrowserProtection', 1)]
+        expected = [('Accounts', 1), ('Security', 1), ('BrowserSessions', 1), ('BrowserLogin', 1), ('BrowserProtection', 1), ('ApplicationEditor', 1), ('ApplicationAuthority', 1), ('ApplicationLifecycle', 1), ('ManagedConsent', 1)]
         self.assertEqual(expected, administrator_browser_invocations(self.matrix))
         for provider in ('PostgreSql', 'SqlServer'):
             for story, _ in expected:
                 selected = {key: value for key, value in self.catalogue.items() if value[1] == provider and value[2] and value[4] == story}
                 require_administrator_browser(self.catalogue, selected, provider, self.matrix, self.inventory, story)
-        for story in ('BrowserLogin', 'BrowserProtection'):
+        for story in ('BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent'):
             self.setUp()
             del self.matrix['administrator_browser_stories'][story]
             with self.assertRaises(ValueError): administrator_browser_invocations(self.matrix)

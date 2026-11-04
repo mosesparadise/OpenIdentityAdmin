@@ -8,6 +8,7 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.Shared;
 /// <summary>Shares bounded request handling and secret-safe failures without coupling accounts to pilot handlers.</summary>
 internal static class AccountRequestGuard
 {
+    private const char Wildcard = '*';
     private const string SourceSeparator = " ";
     private const string TooLarge = "The sign-in request is too large.";
     private const string Invalid = "The sign-in request is invalid.";
@@ -86,11 +87,19 @@ internal static class AccountRequestGuard
     }
 
     /// <summary>Preserves the rendered script nonce and every default directive while allowing only the validated B3 return origin.</summary>
-    internal static void AllowBrowserFormReturn(HttpContext context, BrowserAccountProfile profile)
+    internal static void AllowBrowserFormReturn(HttpContext context, BrowserAccountProfile profile) => SetFormDestination(context, profile.Resume);
+
+    /// <summary>Preserves the exact original nonce/directives and adds only a separately validated HTTPS form-return origin; null restores the same-origin policy.</summary>
+    internal static void SetFormDestination(HttpContext context, Uri? destination)
     {
+        if (destination is not null && (!destination.IsAbsoluteUri || destination.Scheme != Uri.UriSchemeHttps ||
+            !string.IsNullOrEmpty(destination.UserInfo) || !string.IsNullOrEmpty(destination.Fragment) || destination.Host.Contains(Wildcard)))
+        {
+            throw new InvalidOperationException(Unavailable);
+        }
         var nonce = context.Items[AccountPolicy.NonceItem] as string ?? throw new InvalidOperationException(Unavailable);
         context.Response.Headers.ContentSecurityPolicy = string.Format(System.Globalization.CultureInfo.InvariantCulture, Csp, nonce) +
-            SourceSeparator + profile.Resume.GetLeftPart(UriPartial.Authority);
+            (destination is null ? string.Empty : SourceSeparator + destination.GetLeftPart(UriPartial.Authority));
     }
 
     /// <summary>Completes a classified response without writing request-derived values.</summary>

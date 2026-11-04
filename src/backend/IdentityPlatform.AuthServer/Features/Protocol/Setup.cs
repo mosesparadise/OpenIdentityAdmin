@@ -4,6 +4,7 @@ using IdentityPlatform.AuthServer.Features.Protocol.Authorize;
 using IdentityPlatform.AuthServer.Features.Protocol.ClientAssertions;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.AuthServer.Features.Protocol.Keys;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
@@ -14,6 +15,7 @@ namespace IdentityPlatform.AuthServer.Features.Protocol;
 
 internal static class Setup
 {
+    private const string ManagedConfigurationError = "Managed protocol requires the explicit owned administrator host graph.";
     /// <summary>Preserves the complete standalone pilot configuration.</summary>
     internal static IServiceCollection AddProtocol(this IServiceCollection services, IssuerCredentials credentials) =>
         services.AddProtocol(credentials, new ProtocolProfiles(true, null));
@@ -21,6 +23,10 @@ internal static class Setup
     /// <summary>Registers one native server using the explicitly enabled profile union and durable issuer keys.</summary>
     internal static IServiceCollection AddProtocol(this IServiceCollection services, IssuerCredentials credentials, ProtocolProfiles profiles)
     {
+        if (profiles.Managed && profiles.Administrator is null)
+        {
+            throw new InvalidOperationException(ManagedConfigurationError);
+        }
         services.AddSingleton(profiles);
         services.AddOpenIddict().AddServer(options =>
         {
@@ -37,7 +43,7 @@ internal static class Setup
             options.SetAccessTokenLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds));
             options.SetIdentityTokenLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds));
             options.AddFormExtractionProtection().AddTokenExtraction();
-            if (profiles.Pilot)
+            if (profiles.Pilot || profiles.Managed)
             {
                 options.EnableAuthorizationRequestCaching();
             }
@@ -47,6 +53,10 @@ internal static class Setup
                 options.SetPushedAuthorizationEndpointUris(ProtocolOptions.ParPath);
                 options.AddServerStoreSelection().AddAdministratorAssertions().AddAdministratorAccountIssuance();
                 options.AddProtocolHosting();
+                if (profiles.Managed)
+                {
+                    options.AddManagedApplications();
+                }
             }
             options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();
             options.Configure(configuration => ProtocolOptions.Configure(configuration, profiles));

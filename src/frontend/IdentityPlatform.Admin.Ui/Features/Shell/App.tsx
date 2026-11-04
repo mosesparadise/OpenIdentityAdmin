@@ -1,4 +1,4 @@
-import { ApplicationsPanel } from "../Applications/ApplicationsPanel";
+import { ApplicationsWorkspace } from "../Applications/Editor/ApplicationsWorkspace";
 import { useState } from "react";
 import { Icon } from "../../Components/Icon";
 import { ThemeControl } from "./ThemeControl";
@@ -30,8 +30,8 @@ export function App() {
       <header className="topbar"><div className="breadcrumb"><span>Workspace</span><span aria-hidden="true">/</span><strong>{page}</strong></div><ThemeControl /></header>
       <main id="main" tabIndex={-1}>
         <div className="page-heading"><p className="eyebrow">Your identity workspace</p><h1>{applications ? "Applications" : detail ? "Your session" : "Welcome to OpenIdentityAdmin"}</h1>
-          <p>{applications ? "Browse the applications registered with your identity provider." : detail ? "Review this browser’s session and choose when to sign out." : "Sign in to view your account and session details."}</p></div>
-        {applications ? <ApplicationsPanel /> : <SessionPanel state={state} check={check} detail={detail} />}
+          <p>{applications ? "Register applications and review their sign-in configuration." : detail ? "Review this browser’s session and choose when to sign out." : "Sign in to view your account and session details."}</p></div>
+        {applications ? <ApplicationsWorkspace session={state} /> : <SessionPanel state={state} check={check} detail={detail} />}
         {!detail && !applications && <div className="overview-grid"><section className="info-card"><span className="card-icon"><Icon name="shield" /></span><h2>A protected sign-in</h2><p>Use your password and authenticator whenever you start a new sign-in.</p><a className="text-link" href="/session">Review your session <Icon name="arrow" /></a></section>
           <section className="info-card"><span className="card-icon"><Icon name="clock" /></span><h2>Your session, at a glance</h2><p>See the latest checked status and when your local session is due to end.</p><p className="card-footnote">Checking status does not extend your session.</p></section></div>}
         {detail && <section className="quiet-note"><Icon name="clock" /><div><h2>Session checks are read-only</h2><p>Checking your session does not extend it. When it ends, sign in again. Signing out offers separate local and issuer options.</p></div></section>}

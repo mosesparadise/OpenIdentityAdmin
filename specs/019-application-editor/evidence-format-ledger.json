@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "operation": "ordered-map-to-path-sha256-records",
+  "original_commit": "ee90f407844117bca35d0a7885a9ac5e58f3419b",
+  "scope": "Representation only. Historical results and all recorded digest values remain unchanged. Prior whole-file references bind the original bytes at original_commit; entries below resolve their representation change.",
+  "files": [
+    {
+      "path": "specs/019-application-editor/managed-cache-evidence.json",
+      "original_sha256": "abb8916cf7b26f18fbb4c17bcc9881f5679e8e595cb6c5c0950f53fc0a40a1b9",
+      "current_sha256": "166ba3e78954088b8eee6ce82b2c6d505b5040de3204258ed30a718905ba58cf",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 51
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/created-client-journeys-evidence.json",
+      "original_sha256": "dd7a43e12280265e4b73fad8b51c6caa0cf14f5cd9be39ef4bda5d8ab6fa8d2f",
+      "current_sha256": "362781d9e50ef70bef982925bc3bf40ec9c4d50483620acc6ecd9a5833462fe6",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 12
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/editor-recovery-evidence.json",
+      "original_sha256": "b0b8c94ac564b0d95386b74f7c8512202b0ec0bb84ff371b121a88072226583a",
+      "current_sha256": "13334a044b29dc50d08cc09e30c30b76186a8dd2575d6f27f2581abda8152649",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 30
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/http-endpoints-evidence.json",
+      "original_sha256": "75cfbf69b4c978863a51d08f4f863910276f32dc3f155fc55d02035193ede17c",
+      "current_sha256": "8d363b49bd65ebe5d995227ce3b34bbc9ffabfe59515ed384c0c8076250da1b2",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 38
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/human-authentication-evidence.json",
+      "original_sha256": "2cd84259071a2208f29425ca87a6df7f574eb285002b9393f36ad2bb83f55308",
+      "current_sha256": "690b5d0dc002851b95526ff134e4ceb8d3df42ddfc961947c243abc563939052",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 50
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/update-http-evidence.json",
+      "original_sha256": "2db499ff2c950d3b5f1aa8c34ec63d6d03afa595ad83f925965976a949408437",
+      "current_sha256": "61ba34c06410665835f2d9d4ca33018c3965c77936a138f9ccbeefadce493d3d",
+      "converted": [
+        {
+          "pointer": "/binary_sha256",
+          "records": 5
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/json-transport-evidence.json",
+      "original_sha256": "5b1ed52e69fe7517d15e502cde4ebf5a5d5e7f42520c0d50ad270b17450eaaf6",
+      "current_sha256": "b573edc6141047af8a671c60265fbb4353c41c527f9fc7d1daa3b093c39b1259",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 36
+        }
+      ],
+      "ordered_round_trip_equal": true
+    },
+    {
+      "path": "specs/019-application-editor/native-issuance-evidence.json",
+      "original_sha256": "f91ab1da94c6c7ad71fea2174301bd85e3b847671774645634b8f31328074cd8",
+      "current_sha256": "9d358e90100fa4dae74b32ef053b6d8c1bcc8895a86137d55bffaecbb050bcd4",
+      "converted": [
+        {
+          "pointer": "/source_sha256",
+          "records": 67
+        },
+        {
+          "pointer": "/artifact_sha256",
+          "records": 86
+        }
+      ],
+      "ordered_round_trip_equal": true
+    }
+  ]
+}

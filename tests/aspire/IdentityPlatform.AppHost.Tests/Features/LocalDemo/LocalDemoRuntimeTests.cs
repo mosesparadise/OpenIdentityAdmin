@@ -9,6 +9,7 @@ public sealed class LocalDemoRuntimeTests
     private const string InitializationPhase = "stdin initialization";
     private const string EnrollmentPhase = "password and TOTP enrollment";
     private const string LoginPhase = "fresh browser login";
+    private const string ApplicationsPhase = "application list and editor journeys";
     private const string LocalLogoutPhase = "local logout and replay denial";
     private const string SecondLoginPhase = "fresh second ceremony";
     private const string IssuerPositivePhase = "issuer cookie positive control";
@@ -41,7 +42,7 @@ public sealed class LocalDemoRuntimeTests
         catch (Exception error)
         {
             // Native browser exceptions may contain private form values or protocol URLs.
-            var diagnostic = error is LocalDemoSignInFailure observed ? observed.Message : string.Empty;
+            var diagnostic = error is LocalDemoSignInFailure observed ? observed.Message : LocalDemoFailureEvidence.Describe(error);
             throw new InvalidOperationException(FailurePrefix + phase + FailureSuffix + diagnostic);
         }
     }
@@ -56,7 +57,8 @@ public sealed class LocalDemoRuntimeTests
         await browser.EnrollAsync(runtime);
         phase(LoginPhase);
         await browser.SignInAsync(runtime);
-        await browser.RequireApplicationsAsync();
+        phase(ApplicationsPhase);
+        await browser.RequireApplicationsAsync(runtime, phase);
         var cookies = await browser.CookiesAsync();
         phase(LocalLogoutPhase);
         await browser.LogoutAsync(issuer: false);

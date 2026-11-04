@@ -33,6 +33,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     internal BrowserHttpsClient Client { get; private set; } = null!;
     internal AdministratorProtocolScenario Issuer { get; private set; } = null!;
     internal NativeClientProfile Profile { get; private set; } = null!;
+    internal IServiceProvider IssuerServices => issuerHost!.Services;
     internal int ParRequests => issuerEndpoint.ParRequests;
     internal int TokenRequests => issuerEndpoint.TokenRequests;
     internal int EndSessionGets => issuerEndpoint.EndSessionGets;
@@ -59,6 +60,15 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
         return witness;
     }
 
+    /// <summary>Arms one exact browser mutation before dispatch; only the actual BFF pipeline and server completion can finish it.</summary>
+    internal ApplicationRequestCompletion ObserveApplicationRequest(string path)
+    {
+        Assert.Null(clientEndpoint.ApplicationCompletion);
+        var witness = new ApplicationRequestCompletion(path, () => clientEndpoint.ApplicationCompletion = null);
+        clientEndpoint.ApplicationCompletion = witness;
+        return witness;
+    }
+
     /// <summary>Stages an isolated response-only canary at the actual issuer TLS origin, returning to its already-staged document.</summary>
     internal Uri StageResponseProbe(string cookie, Uri target) => issuerEndpoint.StageResponseProbe(cookie, target);
 
@@ -74,7 +84,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
     internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
         Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false,
-        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null)
+        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null, ApplicationMutationProbe? mutationProbe = null, Action<IServiceCollection>? configureApi = null, bool managed = false)
     {
         var owner = new BrowserHttpsFixture(distinctSites);
         try
@@ -89,11 +99,11 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
                 BrowserUpgradeFixture.Operator, ordinary.Registration, 1)));
             owner.database = await fixture.LeaseSessionsAsync(provider);
             owner.issuerHost = await BrowserIssuerHost.CreateHttpsAsync(owner.Issuer.Account.Journey, provider,
-                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer, pilot);
+                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer, pilot, managed);
             if (applications)
             {
                 owner.Api = await ApplicationApiHost.CreateAsync(owner.Issuer.Account.Journey, provider, owner.Profile.Issuer,
-                    new Uri(owner.Profile.ClientUri, CallbackPath).AbsoluteUri, applicationProbe);
+                    new Uri(owner.Profile.ClientUri, CallbackPath).AbsoluteUri, applicationProbe, mutationProbe, configureApi);
             }
             owner.Client = await BrowserHttpsClient.CreateAsync(owner.database, owner.Issuer.Account.Journey.Clock,
                 owner.Profile, owner.keys, owner.protection, owner.clientEndpoint, configureClient, workspace, owner.Api?.Address);

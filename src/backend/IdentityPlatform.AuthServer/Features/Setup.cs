@@ -53,11 +53,11 @@ internal static class Setup
         if (startup.PilotEnabled || startup.AdministratorEnabled)
         {
             builder.Services.AddAccounts(startup.PilotEnabled, startup.AdministratorEnabled,
-                startup.LocalDemoEnabled ? new BrowserAccountProfile(LocalDemoProfile.Issuer, LocalDemoProfile.Client) : null);
+                startup.LocalDemoEnabled ? new BrowserAccountProfile(LocalDemoProfile.Issuer, LocalDemoProfile.Client) : null, startup.LocalDemoEnabled);
         }
         if (startup.PilotEnabled || startup.AdministratorProtocol is not null)
         {
-            builder.Services.AddProtocol(startup.Credentials!, new ProtocolProfiles(startup.PilotEnabled, startup.AdministratorProtocol));
+            builder.Services.AddProtocol(startup.Credentials!, new ProtocolProfiles(startup.PilotEnabled, startup.AdministratorProtocol, startup.LocalDemoEnabled));
         }
         if (startup.AdministratorEnabled)
         {

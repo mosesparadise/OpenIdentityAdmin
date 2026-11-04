@@ -37,7 +37,7 @@ internal static class Setup
             endpoints.MapPlatformHealthEndpoints();
             if (app.ApplicationServices.GetService<ApiResourceProfile>() is not null)
             {
-                endpoints.MapApplicationList();
+                endpoints.MapApplications();
             }
         });
         return app;
@@ -48,7 +48,7 @@ internal static class Setup
     {
         if (app.Services.GetService<ApiResourceProfile>() is not null)
         {
-            app.MapApplicationList();
+            app.MapApplications();
         }
         return app.MapPlatformHealthEndpoints();
     }

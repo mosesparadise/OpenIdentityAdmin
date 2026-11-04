@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../Components/Button";
+import { addressable } from "./Editor/input";
 import { useApplications } from "./useApplications";
 
 /** Presents actual registered applications and finite permission, expiry, empty and dependency states. */
-export function ApplicationsPanel() {
+export function ApplicationsPanel({ onDetails }: { onDetails?: (id: string) => void }) {
   const { state, check } = useApplications();
   const heading = useRef<HTMLHeadingElement>(null);
   const requested = useRef(false);
@@ -34,8 +35,8 @@ export function ApplicationsPanel() {
       <Button type="submit">Search</Button></form>
     {ready && state.items.length > 0 && <div className="application-table-scroll" tabIndex={0} role="region" aria-label="Registered applications table">
       <table className="application-table"><caption className="visually-hidden">Registered applications, page {state.page}</caption>
-        <thead><tr><th scope="col">Name</th><th scope="col">Client ID</th><th scope="col">Type</th></tr></thead>
-        <tbody>{state.items.map(item => <tr key={item.id}><td>{item.displayName || "Unnamed application"}</td><td className="application-client-id">{item.clientId}</td><td>{item.clientType || "Not specified"}</td></tr>)}</tbody>
+        <thead><tr><th scope="col">Name</th><th scope="col">Client ID</th><th scope="col">Type</th>{onDetails && <th scope="col">Details</th>}</tr></thead>
+        <tbody>{state.items.map(item => <tr key={item.id}><td>{item.displayName || "Unnamed application"}</td><td className="application-client-id">{item.clientId}</td><td>{item.clientType || "Not specified"}</td>{onDetails && <td>{addressable(item.id) ? <Button secondary onClick={() => onDetails(item.id)} aria-label={`View details for ${item.clientId}`}>View details</Button> : "Details unavailable"}</td>}</tr>)}</tbody>
       </table></div>}
     {ready && <div className="application-pagination"><p>Page {state.page} · {state.items.length} {state.items.length === 1 ? "application" : "applications"}</p><div className="actions">
       <Button secondary disabled={state.page === 1} onClick={() => reload({ search: applied, page: state.page - 1, pageSize: state.pageSize })}>Previous</Button>

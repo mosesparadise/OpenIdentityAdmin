@@ -19,5 +19,24 @@ public sealed class OracleTests
         {
             Assert.Equal(vector.Code, FactorOracle.Code(PublishedBase32Seed, vector.Time));
         }
+        RequireUnusedCurrentCounter();
+    }
+
+    /// <summary>Fixed independent values prove current-counter fallback, unchanged priority and rejection when every native-window value was consumed.</summary>
+    private static void RequireUnusedCurrentCounter()
+    {
+        const long ObservedAt = 1234567890;
+        const string Current = "005924";
+        const string FirstAdjacent = "590587";
+        const string PreviousCounter = "980357";
+        const string SecondNextCounter = "240500";
+        const string SecondPreviousCounter = "186057";
+        HashSet<string> accepted = new([FirstAdjacent, PreviousCounter, SecondNextCounter, SecondPreviousCounter], StringComparer.Ordinal);
+        var selected = FactorOracle.UnusedCode(PublishedBase32Seed, accepted, ObservedAt);
+        Assert.Equal(Current, selected);
+        Assert.DoesNotContain(selected, accepted);
+        accepted.Add(Current);
+        Assert.Throws<Xunit.Sdk.TrueException>(() => FactorOracle.UnusedCode(PublishedBase32Seed, accepted, ObservedAt));
+        Assert.Equal(FirstAdjacent, FactorOracle.UnusedCode(PublishedBase32Seed, new HashSet<string>(StringComparer.Ordinal), ObservedAt));
     }
 }

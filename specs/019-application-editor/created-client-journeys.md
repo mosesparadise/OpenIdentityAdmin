@@ -1,0 +1,27 @@
+# Created-client journeys — T013
+
+## Scope and source
+
+This test-only continuation starts at `ccfe3c3159a878fc12dfb11e0c1fc136bd9f5e23` on remote branch `123-application-editor`. Remote main remains `4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa`; the recovery worktree keeps its existing local branch `124-managed-token-issuance`. Existing work and history are preserved.
+
+**T013 is locally complete.** Final full affected selections pass 104 ManagedApplications and 35 Applications cases per provider (278 total), plus 67 selection controls, with zero failures/skips. Independent source and raw-evidence reviews pass; [source and receipt hashes](created-client-journeys-evidence.json) bind these results. Production code, database migrations, package versions and runtime configuration are unchanged. The accepted [T012 implementation and evidence](native-issuance.md) already prove the genuine API-created client → native cache → fresh password/MFA → explicit consent → code/Basic-S256 exchange, cryptographic identity-only output, bad-proof denial, current source drift, code replay and original request/code replay after later save or actual audit failure. T013 reuses that coverage and closes the three remaining managed-product boundaries without repeating issuer implementation.
+
+## Requirement and evidence map
+
+| Requirements | New actual HTTPS/provider scenario | Independent observation |
+| --- | --- | --- |
+| FR-002–004/012 | `ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged` | Fresh password/MFA and explicit cancellation leave one valid cached request, a terminal Denied interaction and no authorization. Retrying the retained original authorization request returns exact empty local 503 with no redirect/cookie; all observed persistence remains exact and no authentication form reopens. |
+| FR-002–004/012 | `ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid` | A real successful exchange is cryptographically checked first. Original cached-request replay returns native local 400 `invalid_token`; both issued credentials stay valid and native metadata, original deadlines, audit and administrator authority remain exact. |
+| FR-002–004/012 | `ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable` | Two protected API creates have independently asserted distinct client IDs, callbacks and secrets. Both directions of cached request/client substitution return native local 400 `invalid_token`. Both directions of valid foreign Basic authentication against the rightful code, unchanged verifier and callback return JSON 400 `invalid_grant`. Each rightful exchange then succeeds and independently verifies JWKS signature, audience/authorized party, nonce, access hash, native token/authorization links and expiry. |
+
+`ManagedJourneyEvidence.DigestAsync` retains all-client human/replay/session/audit rows and product policy, every native token/authorization scalar and actual application/authorization linkage, plus sessions, issuer grants and BFF tickets. It does not normalize redemption, concurrency or status and does not claim a full native application-descriptor snapshot. Success assertions use explicit per-application reads; pre-existing test callers retain their broad interaction/audit defaults. Generalized client/callback expectations are checked against submitted configuration before use. All secrets and protected values stay in memory; diagnostics expose only hashes or fixed expected error names.
+
+## Verification and corrected attempts
+
+The first build failed only the new helper's anonymous-object formatting; corrected builds pass without warnings/errors. Independent review required preserving old global snapshot/audit defaults and independently asserting returned registration identity/callback before using them as expectations. Both findings are resolved without production changes or weaker gates.
+
+The first focused PostgreSQL run passed cancellation and successful-request replay but failed the two-client case because its expected error was `invalid_request`. The managed durable binding guard checks the client before the later native presenter check and explicitly rejects `invalid_token`; the actual response was the native local 400 `invalid_token`. The corrected test requires that one exact result, retaining all state-equality and subsequent rightful-exchange assertions. Failed build/runtime receipts remain separate from final acceptance.
+
+## Remaining delivery
+
+T013 is complete locally. T014 is next: visible create/details/one-time-output screens using the existing generated BFF operations, real antiforgery endpoint and managed issuer. No new issuer implementation is needed for these three journeys. Existing T007 retained Chromium/WebKit execution remains pending after the documented CDN 403; no blocked browser download or Firefox execution is repeated. Full-feature review/CI and normal squash remain T022/T023. No new UI screen, full feature acceptance, refresh activation, merge, production correction or historical/human/Windows/A-009/vendor/public-release gate closure is claimed. All six historical findings stay open and all 345 assurance controls remain `not_assessed`.

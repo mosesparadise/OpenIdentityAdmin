@@ -16,7 +16,7 @@ internal static class ProtocolOptions
     /// <summary>Preserves the fixed S256/query/code profile and enables interactive prompts and Basic only for the pilot.</summary>
     internal static void Configure(OpenIddictServerOptions options, ProtocolProfiles profiles)
     {
-        options.RequestTokenLifetime = TimeSpan.FromSeconds(profiles.Pilot
+        options.RequestTokenLifetime = TimeSpan.FromSeconds(profiles.Pilot || profiles.Managed
             ? PilotProfile.InteractionSeconds : AdministratorRegistrationPolicy.ProofLifetimeSeconds);
         options.CodeChallengeMethods.Clear();
         options.CodeChallengeMethods.Add(OpenIddictConstants.CodeChallengeMethods.Sha256);
@@ -27,11 +27,14 @@ internal static class ProtocolOptions
         options.ClientAuthenticationMethods.Clear();
         options.Scopes.Clear();
         options.Scopes.Add(OpenIddictConstants.Scopes.OpenId);
-        if (profiles.Pilot)
+        if (profiles.Pilot || profiles.Managed)
         {
             options.PromptValues.Add(OpenIddictConstants.PromptValues.Login);
             options.ClientAuthenticationMethods.Add(OpenIddictConstants.ClientAuthenticationMethods.ClientSecretBasic);
-            options.Scopes.Add(PilotProfile.Scope);
+            if (profiles.Pilot)
+            {
+                options.Scopes.Add(PilotProfile.Scope);
+            }
         }
         if (profiles.Administrator is not null)
         {

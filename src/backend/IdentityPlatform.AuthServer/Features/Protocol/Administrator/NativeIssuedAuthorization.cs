@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
@@ -102,5 +103,6 @@ internal sealed class NativeAuthorizationCreation(OpenIddictServerHandlers.Attac
     /// <summary>Observes the concrete native handler only when an owned issuance proof is attached.</summary>
     public ValueTask HandleAsync(OpenIddictServerEvents.ProcessSignInContext context) =>
         NativeIssuanceProof.Find(context.Transaction) is { } proof
-            ? proof.AttachAuthorizationAsync(() => native.HandleAsync(context)) : native.HandleAsync(context);
+            ? proof.AttachAuthorizationAsync(() => native.HandleAsync(context)) : ManagedIssuanceProof.Find(context.Transaction) is { } managed
+                ? managed.AuthorizationAsync(() => native.HandleAsync(context)) : native.HandleAsync(context);
 }

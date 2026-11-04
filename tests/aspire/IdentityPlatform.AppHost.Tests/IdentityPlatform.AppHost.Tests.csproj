@@ -30,4 +30,19 @@
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
   <ItemGroup><Compile Include="../IdentityPlatform.Administrator.Tests/Fixtures/FactorOracle.cs" Link="Fixtures/FactorOracle.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorJourney.cs" Link="Features/LocalDemo/ApplicationEditorJourney.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorResponse.cs" Link="Features/LocalDemo/ApplicationEditorResponse.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/BrowserSecretOracle.cs" Link="Features/LocalDemo/BrowserSecretOracle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../shared/ManagedAuthorizationRequest.cs" Link="Fixtures/ManagedAuthorizationRequest.cs" />
+    <Compile Include="../../shared/ManagedIdentityTokenOracle.cs" Link="Fixtures/ManagedIdentityTokenOracle.cs" />
+    <Compile Include="../../shared/ManagedIdentityTokenEvidence.cs" Link="Fixtures/ManagedIdentityTokenEvidence.cs" />
+    <Compile Include="../../shared/ManagedTokenValidation.cs" Link="Fixtures/ManagedTokenValidation.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorRegistration.cs" Link="Features/LocalDemo/ApplicationEditorRegistration.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserFlow.cs" Link="Features/LocalDemo/ManagedBrowserFlow.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserRelyingParty.cs" Link="Features/LocalDemo/ManagedBrowserRelyingParty.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserJourney.cs" Link="Features/LocalDemo/ManagedBrowserJourney.cs" />
+  </ItemGroup>
 </Project>

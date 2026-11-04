@@ -105,3 +105,34 @@
   .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   @media (max-width: 640px) { .applications-card { padding: 20px; } .application-filters > div:first-child { width: 100%; } .application-filters input { width: 100%; } }
 }
+
+@layer components {
+  .application-create-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+  .application-create-bar p, .editor-help { color: var(--muted); font-size: 14px; }
+  .editor-help { margin-top: 16px; }
+  .application-editor-form { display: grid; gap: 24px; margin-top: 28px; max-width: 760px; }
+  .application-editor label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .application-editor label span { color: var(--muted); font-weight: 400; }
+  .application-editor input, .application-editor textarea { display: block; width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--input-border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; }
+  .application-editor textarea { resize: vertical; overflow-wrap: anywhere; }
+  .application-editor-form p, .editor-secret p { margin-top: 8px; color: var(--muted); font-size: 13px; }
+  .application-editor h3 { font-size: 15px; font-weight: 650; margin: 0; }
+  .application-editor-form .actions { margin-top: 0; }
+  .editor-notice { margin-top: 20px; padding: 18px; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 8px; overflow-wrap: anywhere; }
+  .editor-notice p + p { margin-top: 12px; }
+  .editor-notice ul, .application-detail-grid ul { list-style: disc; margin: 8px 0 0; padding-left: 22px; }
+  .editor-notice a { text-decoration: underline; text-underline-offset: 3px; }
+  .application-editor-form .field-error { color: var(--text); font-weight: 600; }
+  .application-editor [aria-invalid="true"] { border: 2px solid var(--text); }
+  .application-detail-grid { display: grid; gap: 22px; margin-top: 28px; }
+  .application-detail-grid dd { overflow-wrap: anywhere; }
+  .editor-secret { margin-top: 24px; padding: 22px; border: 2px solid var(--accent); border-radius: 10px; }
+  .editor-secret label { margin-top: 18px; }
+  .editor-secret textarea { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .editor-secret button { margin-top: 16px; }
+  @media (max-width: 640px) { .editor-secret { padding: 14px; } .application-create-bar { align-items: flex-start; flex-direction: column; } }
+}
+
+.application-editor .editor-confirmation { display: flex; gap: 12px; align-items: center; min-height: 44px; margin-top: 16px; overflow-wrap: anywhere; }
+.application-editor .editor-confirmation input { width: 24px; min-height: 24px; flex: 0 0 24px; padding: 0; }
+.application-editor-form .application-client-id { overflow-wrap: anywhere; }

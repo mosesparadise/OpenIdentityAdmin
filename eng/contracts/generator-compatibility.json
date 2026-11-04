@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "generatorVersion": "7.13.0",
+  "parserVersion": "1.34.23",
+  "matcherVersion": "11.0.4",
+  "target": "node_modules/openapi-typescript/node_modules/@redocly/openapi-core/lib/utils.js",
+  "upstreamIntegrity": "sha512-si5RAEgXylHljgfvUr5k3b+doRmLcWaF8X5RLtPmZSBt3paskSXauqJ6DDx7IChInlUnXz0SHQSXI/5xff61oA==",
+  "originalSha256": "896a9acce92e3e5905aa267e895985d57888a87f500d58c29da9c8f9d488ff1c",
+  "patchedSha256": "825736f13fb67dc4a1e2157bb51396209c7343cfd00376ed5d923e3e9ff82a18",
+  "before": "const minimatch = require(\"minimatch\");",
+  "after": "const { minimatch } = require(\"minimatch\");",
+  "scope": "Development-only generator parser compatibility. One import adaptation for fixed minimatch11; no validation, URL matching policy or audit suppression.",
+  "removeWhen": "A maintained openapi-typescript release supports a fixed matcher through its parser without this adaptation; regenerate and rerun all contract/security controls before removing the exact override/patch together."
+}

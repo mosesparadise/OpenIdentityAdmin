@@ -4,6 +4,7 @@ using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -13,6 +14,24 @@ namespace IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 /// <summary>Owns cancellation, ordered locks and atomic audit; disposing an uncommitted ceremony rolls it back.</summary>
 internal sealed class CeremonyTransaction : IAsyncDisposable
 {
+    private ManagedCeremonyLocks? borrowed;
+
+    /// <summary>Creates an execution-local native lease; only the protocol owner can commit or dispose the actual transaction.</summary>
+    internal static CeremonyTransaction BorrowManaged(ManagedCeremonyLocks locks, PlatformDbContext database, NativeOperation operation, CancellationToken token)
+    {
+        locks.Require(database);
+        var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+        try
+        {
+            return new(database, database.Database.CurrentTransaction!, operation.Enter(deadline.Token), deadline,
+                locks.Plan, new CeremonyConnection(database), CeremonyMode.Managed)
+            {
+                borrowed = locks
+            };
+        }
+        catch { deadline.Dispose(); throw; }
+    }
+
     private readonly PlatformDbContext database;
     private readonly IDbContextTransaction transaction;
     private readonly IDisposable native;
@@ -131,6 +150,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
         {
             throw new FactorUnavailableException();
         }
+        borrowed?.Require(database);
         Token.ThrowIfCancellationRequested();
     }
 
@@ -148,7 +168,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     internal void RequireCeremony()
     {
         RequireCurrent();
-        if (mode != CeremonyMode.Authentication)
+        if (mode is not (CeremonyMode.Authentication or CeremonyMode.Managed))
         {
             throw new FactorUnavailableException();
         }
@@ -158,7 +178,7 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
     internal void RequireAccountOperation()
     {
         RequireCurrent();
-        if (mode is not (CeremonyMode.Authentication or CeremonyMode.Governance))
+        if (mode is not (CeremonyMode.Authentication or CeremonyMode.Governance or CeremonyMode.Managed))
         {
             throw new FactorUnavailableException();
         }
@@ -263,6 +283,15 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
         }
         disposed = true;
         completed = true;
+        if (borrowed is not null)
+        {
+            try
+            {
+                native.Dispose();
+            }
+            finally { deadline.Dispose(); }
+            return;
+        }
         await ReleaseAsync(database, native, transaction, connection, deadline);
     }
 
@@ -301,5 +330,5 @@ internal sealed class CeremonyTransaction : IAsyncDisposable
 
 internal enum CeremonyMode
 {
-    Authentication, Maintenance, Governance, Continuation, ApiRead
+    Authentication, Maintenance, Governance, Continuation, ApiRead, Managed
 }

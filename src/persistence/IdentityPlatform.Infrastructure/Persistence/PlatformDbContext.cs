@@ -1,5 +1,7 @@
 using IdentityPlatform.Database;
+using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -20,6 +22,8 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         const string PlatformSchema = "platform";
         base.OnModelCreating(builder);
         builder.HasDefaultSchema(PlatformSchema);
+        ApplicationPolicyModel.Configure(builder, ProviderOptions.Provider(options).Model);
+        ManagedLoginModel.Configure(builder, ProviderOptions.Provider(options).Model);
         IssuerContinuationModel.Configure(builder, ProviderOptions.Provider(options).Model);
         LoginModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
         AdministratorModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);

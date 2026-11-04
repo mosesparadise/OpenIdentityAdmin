@@ -32,7 +32,7 @@ internal static class Setup
             options.Cookie.HttpOnly = true;
             options.Cookie.SameSite = SameSiteMode.Strict;
             options.FormFieldName = BrowserRequestPolicy.AntiforgeryField;
-            options.HeaderName = null;
+            options.HeaderName = BrowserRequestPolicy.JsonAntiforgeryHeader;
         });
         services.AddOpenIddict().AddClient().AddEventHandler<OpenIddictClientEvents.ProcessChallengeContext>(handler => handler
             .UseSingletonHandler<BrowserLoginChallenge>().SetOrder(OpenIddictClientHandlers.AttachResponseMode.Descriptor.Order + CaptureOffset));

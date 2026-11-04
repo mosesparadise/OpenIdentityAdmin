@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { inventory, ContractViolation } from '../tooling/contracts.mjs';
+import { inventory, securityCompatibility, ContractViolation } from '../tooling/contracts.mjs';
 import { validate } from '../tooling/validate.mjs';
 import { requireBaselineInventory } from '../tooling/baseline.mjs';
 import { compatibility, requireCleanDiff } from '../tooling/compatibility.mjs';
@@ -104,8 +104,8 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 2);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/session']);
+  assert.equal(inventory(browserStatus, 'bff').size, 7);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/session']);
   const management = browserStatus.paths['/bff/api/v1/applications'].get;
   assert.deepEqual(management.security, [{ BrowserSession: [] }]);
   assert.equal(management['x-required-permission'], 'applications.read');
@@ -123,4 +123,58 @@ test('Given browser status When authentication or cache semantics drift Then val
 test('Given browser status When a native route or extra verb is substituted Then no broad exception admits it', () => {
   assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/login/resume'] = doc.paths['/bff/session']; delete doc.paths['/bff/session']; }), 'bff'));
   assert.throws(() => inventory(statusChanged((op, doc) => { doc.paths['/bff/session'].post = structuredClone(op); }), 'bff'));
+});
+
+test('Given application token acquisition When identity cache or method changes Then the exact local boundary fails closed', () => {
+  for (const change of [op => { op.security = [{}]; }, op => { delete op.responses['401']; },
+    op => { op.responses['200'].headers['Cache-Control'].schema.const = 'public'; },
+    op => { op['x-downstream-api-version'] = 1; }, op => { op.operationId = 'GenericToken'; }]) {
+    const candidate = structuredClone(browserStatus);
+    change(candidate.paths['/bff/api/v1/applications/antiforgery'].get);
+    assert.throws(() => inventory(candidate, 'bff'));
+  }
+  const pathInput = structuredClone(browserStatus);
+  pathInput.paths['/bff/api/v1/applications/antiforgery'].parameters = [{ in: 'query', name: 'unexpected', required: false, schema: { type: 'string' } }];
+  assert.throws(() => inventory(pathInput, 'bff'));
+  const candidate = structuredClone(browserStatus);
+  candidate.paths['/bff/api/v1/applications/antiforgery'].post = structuredClone(candidate.paths['/bff/api/v1/applications/antiforgery'].get);
+  delete candidate.paths['/bff/api/v1/applications/antiforgery'].get;
+  assert.throws(() => inventory(candidate, 'bff'));
+});
+
+
+test('Given real application updates When native contracts are generated Then independent authority and finite update shapes remain explicit', () => {
+  const path = '/bff/api/v1/applications/{id}';
+  const edit = browserStatus.paths[path].put;
+  const replace = browserStatus.paths[path + '/secret-replacements'].post;
+  assert.equal(edit.operationId, 'EditBrowserApplication');
+  assert.equal(replace.operationId, 'ReplaceBrowserApplicationSecret');
+  assert.equal(edit['x-required-permission'], 'applications.write');
+  assert.equal(replace['x-required-permission'], 'applications.credentials');
+  assert.equal(replace['x-persisted-mfa-max-age-exclusive-seconds'], 300);
+  assert.equal(edit.responses['200'].content['application/json'].schema.$ref, '#/components/schemas/ApplicationDetails');
+  assert.equal(replace.responses['200'].content['application/json'].schema.$ref, '#/components/schemas/ApplicationCredentialOutput');
+  for (const operation of [edit, replace]) {
+    assert.deepEqual(Object.keys(operation.responses).sort(), ['200', '400', '401', '403', '404', '409', '412', '428', '503']);
+    assert.deepEqual(operation.security, [{ BrowserSession: [] }]);
+    assert.equal(operation.responses['200'].headers.ETag.required, true);
+    for (const name of ['If-Match', 'X-CSRF-TOKEN']) assert.equal(operation.parameters.find(p => p.name === name).required, true);
+  }
+  assert.deepEqual(Object.keys(browserStatus.components.schemas.ApplicationEdit.properties).sort(), ['displayName', 'redirectUris']);
+  assert.deepEqual(Object.keys(browserStatus.components.schemas.ApplicationSecretReplacement.properties).sort(), ['confirmed', 'credentialExpiresAt']);
+});
+
+
+test('Given application replacement When MFA or strong version semantics weaken Then compatibility fails closed', () => {
+  const path = '/bff/api/v1/applications/{id}/secret-replacements';
+  for (const mutate of [op => { delete op['x-persisted-mfa-max-age-exclusive-seconds']; },
+    op => { op['x-persisted-mfa-max-age-exclusive-seconds'] = 301; },
+    op => { op.parameters = op.parameters.filter(p => p.name !== 'If-Match'); }]) {
+    const changed = structuredClone(browserStatus);
+    mutate(changed.paths[path].post);
+    assert.throws(() => securityCompatibility(browserStatus, changed, 'bff'), ContractViolation);
+  }
+  const missing = structuredClone(browserStatus);
+  missing.paths[path].post.parameters = missing.paths[path].post.parameters.filter(p => p.name !== 'If-Match');
+  assert.throws(() => inventory(missing, 'bff'), ContractViolation);
 });

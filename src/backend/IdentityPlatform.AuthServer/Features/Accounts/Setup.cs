@@ -18,7 +18,7 @@ namespace IdentityPlatform.AuthServer.Features.Accounts;
 internal static class Setup
 {
     /// <summary>Registers common protections and only the requested authentication schemes and page families.</summary>
-    internal static IServiceCollection AddAccounts(this IServiceCollection services, bool pilot, bool administrator, BrowserAccountProfile? browser = null)
+    internal static IServiceCollection AddAccounts(this IServiceCollection services, bool pilot, bool administrator, BrowserAccountProfile? browser = null, bool managed = false)
     {
         services.AddIdentityCore<PlatformUser>().AddSignInManager();
         services.Configure<IdentityOptions>(AccountOptions.Identity);
@@ -30,7 +30,7 @@ internal static class Setup
         services.AddRazorPages(options =>
         {
             options.RootDirectory = AccountPolicy.PageRoot;
-            options.Conventions.Add(new AccountPageConvention(pilot, administrator, browser is not null));
+            options.Conventions.Add(new AccountPageConvention(pilot, administrator, browser is not null, managed));
         });
         if (pilot)
         {
@@ -49,6 +49,10 @@ internal static class Setup
             {
                 services.AddBrowserAccounts(browser);
             }
+        }
+        if (managed)
+        {
+            services.AddScoped<IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications.ManagedAuthentication>();
         }
         return services.AddAccountProtection();
     }

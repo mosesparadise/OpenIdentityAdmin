@@ -39,6 +39,10 @@ internal sealed class BrowserSessionReader(AdminSessionDbContext database, Brows
 /// <summary>Freezes an already authenticated read; later concurrent revocation does not promise cancellation of admitted reads.</summary>
 internal sealed class BrowserSessionRead(BrowserGenerationProof proof, BrowserContext browser, AdminSessionTicket ticket)
 {
+    /// <summary>Binds application antiforgery to the same authenticated browser/ticket observation used to release the server credential.</summary>
+    internal BrowserRequestBinding? ApplicationBinding(DateTimeOffset now) => Status(now).Authenticated
+        ? BrowserRequestBinding.ForApplications(proof.Digest, proof.Generation, browser, now) : null;
+
     /// <summary>Revalidates the original browser deadline and protected row before releasing a server-only credential for the fixed API.</summary>
     internal BrowserAccessCredential? Access(SessionTicketCodec codec, DateTimeOffset now) =>
         Status(now).Authenticated && codec.Unprotect(ticket) is { } native ? BrowserAccessCredential.Read(native.Properties, now) : null;

@@ -1,5 +1,6 @@
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
         Require(transaction, account.User.Id);
         if (!CeremonySecrets.IsIdentifier(budgetSecret) || !CeremonySecrets.IsIdentifier(browserSecret) || destinationGeneration <= 0 ||
             purpose is not (AdministratorPolicy.Enrollment or AdministratorPolicy.Login or AdministratorPolicy.Recovery or
-                AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration))
+                AdministratorPolicy.Replacement or AdministratorPolicy.Regeneration or ManagedAuthentication.Purpose))
         {
             return null;
         }
@@ -59,8 +60,20 @@ internal sealed class CeremonyAdmission(PlatformDbContext database, CeremonyCloc
             PasswordVerifiedAt = password.VerifiedAt,
             ExpiresAt = now + AdministratorPolicy.InteractionSeconds
         };
+        return await SaveAsync(transaction, interaction, purpose);
+    }
+
+    /// <summary>Freezes a newly admitted managed ceremony before native save callbacks can alter its binding.</summary>
+    private async Task<AdministratorInteraction> SaveAsync(CeremonyTransaction transaction, AdministratorInteraction interaction, string purpose)
+    {
+        var managedBinding = purpose == ManagedAuthentication.Purpose ? FactorBinding.Digest(interaction) : null;
         database.Add(interaction);
         await database.SaveChangesAsync(transaction.Token);
+        if (managedBinding is not null && (managedBinding != FactorBinding.Digest(interaction) || managedBinding != FactorBinding.Digest(
+            await database.Set<AdministratorInteraction>().AsNoTracking().SingleAsync(row => row.Id == interaction.Id, transaction.Token))))
+        {
+            throw new FactorUnavailableException();
+        }
         return interaction;
     }
 

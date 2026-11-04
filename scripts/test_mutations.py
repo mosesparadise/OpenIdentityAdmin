@@ -377,7 +377,7 @@ class FailureReceiptTests(unittest.TestCase):
                     receipt.write_text.side_effect = sink_error
                     token = verifier.RECEIPT.set((receipt, 'f' * 40, '1234'))
                     try:
-                        with patch.object(verifier, 'run', side_effect=primary), self.assertRaises(type(primary)) as caught:
+                        with patch.object(verifier, 'run', side_effect=primary), patch('builtins.print', side_effect=BrokenPipeError('private')), self.assertRaises(type(primary)) as caught:
                             with changed_source(source, 'original', 'mutant'):
                                 execute('private', {NAME}, base, {}, item={'marker': MARKER, 'method': METHOD})
                         self.assertIs(primary, caught.exception)
@@ -393,16 +393,22 @@ class FailureReceiptTests(unittest.TestCase):
             receipt = Path(directory) / 'failure-diagnostic.json'
             token = verifier.RECEIPT.set((receipt, 'secret-source', 'secret-run'))
             try:
+                output = io.StringIO()
                 with tempfile.TemporaryDirectory(dir=directory) as private:
                     def failed_run(*args, **kwargs):
                         root = report()
                         root.find('.//Message').text = 'UnknownFailure secret-message'
                         ET.ElementTree(root).write(Path(private) / 'result.trx')
                         return 2, 'secret-output'
-                    with patch.object(verifier, 'run', side_effect=failed_run), self.assertRaises(verifier.MutationError):
+                    with patch.object(verifier, 'run', side_effect=failed_run), redirect_stdout(output), self.assertRaises(verifier.MutationError):
                         verifier.perform('mutant', 'execution', execute, 'private', {NAME}, Path(private), {},
                                          item={'marker': MARKER, 'method': METHOD}, ordinal=2)
                 result = json.loads(receipt.read_text())
+                self.assertNotIn('secret', output.getvalue())
+                lines = output.getvalue().splitlines()
+                self.assertEqual(1, len(lines))
+                self.assertTrue(lines[0].startswith(verifier.REPORT_DIAGNOSTIC_PREFIX))
+                self.assertEqual(result, json.loads(lines[0].removeprefix(verifier.REPORT_DIAGNOSTIC_PREFIX)))
                 self.assertNotIn('secret', receipt.read_text())
                 self.assertEqual(('mutant', 'execution', 2), tuple(result[k] for k in ('role', 'operation', 'ordinal')))
                 self.assertTrue(result['diagnostic_only'])
@@ -411,6 +417,26 @@ class FailureReceiptTests(unittest.TestCase):
                 self.assertIsNone(result['run_id'])
             finally:
                 verifier.RECEIPT.reset(token)
+
+    def test_Given_BrokenFileSink_When_FailureIsRetained_Then_ConsoleStillReceivesOnlyFiniteObservation(self):
+        """An unavailable receipt file cannot suppress safe console evidence or change the primary failure."""
+        receipt = Mock()
+        receipt.write_text.side_effect = OSError('secret-file-error')
+        output = io.StringIO()
+        token = verifier.RECEIPT.set((receipt, 'secret-source', 'secret-run'))
+        try:
+            with tempfile.TemporaryDirectory() as directory, redirect_stdout(output):
+                verifier.retain_failure(Path(directory) / 'absent.trx', None, RuntimeError('secret-primary'))
+            self.assertNotIn('secret', output.getvalue())
+            lines = output.getvalue().splitlines()
+            self.assertEqual(1, len(lines))
+            self.assertTrue(lines[0].startswith(verifier.REPORT_DIAGNOSTIC_PREFIX))
+            value = json.loads(lines[0].removeprefix(verifier.REPORT_DIAGNOSTIC_PREFIX))
+            self.assertEqual('missing', value['report'])
+            self.assertTrue(value['diagnostic_only'])
+            self.assertEqual(json.loads(receipt.write_text.call_args.args[0]), value)
+        finally:
+            verifier.RECEIPT.reset(token)
 
 
 class MutationEvidenceTests(unittest.TestCase):
@@ -670,9 +696,29 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(6, len(manifest(ROOT, "governance")))
         self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
         self.assertEqual(8, len(manifest(ROOT, "browser-session")))
-        self.assertEqual(2, len(manifest(ROOT, "applications")))
+        self.assertEqual(8, len(manifest(ROOT, "applications")))
+        self.assertEqual(5, len(manifest(ROOT, "managed-applications")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
+
+    def test_Given_ApplicationManifests_When_InventoryOrBoundaryChanges_Then_GateRejectsDrift(self):
+        """New write/issuer controls cannot disappear or mutate adjacent unreviewed source."""
+        reader = Path.read_text
+        for suite, filename in (('applications', 'application-mutations.json'),
+                                ('managed-applications', 'managed-application-mutations.json')):
+            path = ROOT / 'eng' / filename
+            reviewed = json.loads(reader(path))
+            for defect in ('missing', 'duplicate', 'outside', 'anchor'):
+                candidate = json.loads(json.dumps(reviewed))
+                if defect == 'missing': candidate['mutations'].pop()
+                elif defect == 'duplicate': candidate['mutations'][1]['id'] = candidate['mutations'][0]['id']
+                elif defect == 'outside': candidate['mutations'][0]['path'] = 'src/backend/IdentityPlatform.AuthServer/Program.cs'
+                else: candidate['mutations'][0]['before'] = 'missing synthetic mutation anchor'
+                def substitute(current, *arguments, **keywords):
+                    """Replace only the reviewed manifest; actual source anchors remain independently read."""
+                    return json.dumps(candidate) if current == path else reader(current, *arguments, **keywords)
+                with self.subTest(suite=suite, defect=defect), patch.object(Path, 'read_text', substitute):
+                    with self.assertRaises(ValueError): manifest(ROOT, suite)
 
     def test_Given_GovernanceManifest_When_InventoryOrSourceBoundaryDrifts_Then_VerificationRejectsIt(self):
         """Keep all six targets and the sole witness-lock exception explicit without touching sources."""

@@ -6,6 +6,7 @@ namespace IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 internal static class BrowserRequestPolicy
 {
     internal const string AntiforgeryField = "__RequestVerificationToken";
+    internal const string JsonAntiforgeryHeader = "X-CSRF-TOKEN";
     internal const int BodyBytes = 8192;
     internal const int ValueLength = 4096;
     private const string FormMedia = "application/x-www-form-urlencoded";
@@ -17,6 +18,7 @@ internal static class BrowserRequestPolicy
     internal static bool Mutation(HttpRequest request, BrowserSessionDestinations destinations) =>
         HttpMethods.IsPost(request.Method) && request.IsHttps && request.Query.Count == 0 &&
         !request.Headers.ContainsKey(AuthorizationHeader) &&
+        !request.Headers.ContainsKey(JsonAntiforgeryHeader) &&
         request.Headers[OriginHeader] is { Count: 1 } origin && origin[0] == destinations.Origin &&
         request.ContentType is FormMedia or FormUtf8 && request.ContentLength is null or >= 0 and <= BodyBytes;
 

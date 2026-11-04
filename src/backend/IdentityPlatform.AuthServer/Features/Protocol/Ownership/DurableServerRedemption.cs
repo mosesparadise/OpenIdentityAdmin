@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -11,6 +12,11 @@ internal sealed class DurableServerRedemption(IServiceScopeFactory factory, Open
     /// <summary>Retains the original native transaction and principal while moving only durable consumption into a fresh child.</summary>
     public async ValueTask HandleAsync(OpenIddictServerEvents.ProcessSignInContext context)
     {
+        if (ManagedIssuance.Find(context.Transaction) is not null)
+        {
+            await ManagedConsumption.RedeemAsync(factory, context);
+            return;
+        }
         if (!string.Equals(context.ClientId, AdministratorProtocolIdentity.ClientId, StringComparison.Ordinal) ||
             (context.EndpointType != OpenIddictServerEndpointType.Authorization &&
                 !(context.EndpointType == OpenIddictServerEndpointType.Token && context.Request.IsAuthorizationCodeGrantType())))

@@ -52,7 +52,7 @@ def catalogue(raw, lifecycle=False, project=None):
         result[uid] = (name, providers[0], browser, test['type']['namespace']) if project != 'Issuer' else (name, providers[0], browser)
         if project == 'Administrator':
             stories = [trait['value'] for trait in traits if trait['key'] == 'BrowserStory']
-            if (browser and (len(stories) != 1 or stories[0] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection'))) or (not browser and stories):
+            if (browser and (len(stories) != 1 or stories[0] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent'))) or (not browser and stories):
                 raise ValueError('Administrator browser story trait is missing, ambiguous or inappropriate')
             result[uid] = (*result[uid], stories[0] if browser else None)
         names.add(name)
@@ -165,10 +165,10 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
         actual = [test[0] for test in all_tests.values() if test[1] == name]
         if count <= 0 or len(expected) != count + browser_count or len(set(expected)) != count + browser_count or sorted(actual) != sorted(expected):
             raise ValueError('Administrator catalogue differs from reviewed identities')
-    ordinary = {'IdentityPlatform.Administrator.Tests.Features.' + story for story in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications')}
+    ordinary = {'IdentityPlatform.Administrator.Tests.Features.' + story for story in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications')}
     browser_namespace = 'IdentityPlatform.Administrator.Tests.Features.Browser'
     if any(len(test) != 5 or (test[3] != browser_namespace if test[2] else test[3] not in ordinary) or
-           (test[4] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection') if test[2] else test[4] is not None) for test in all_tests.values()):
+           (test[4] not in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if test[2] else test[4] is not None) for test in all_tests.values()):
         raise ValueError('Administrator catalogue contains an unexpected namespace or category')
     if type(browser_count) is not int or browser_count < 0 or any(
             sum(test[1] == p and test[2] for test in all_tests.values()) != browser_count for p in counts):
@@ -179,7 +179,7 @@ def require_administrator_partition(all_tests, selected, provider, counts, expec
 
 def administrator_invocations(matrix, profile, story=None):
     stories = matrix['administrator_stories']
-    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications'}:
+    if profile not in ('PostgreSql', 'SqlServer') or set(stories) != {'Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications'}:
         raise ValueError('Administrator stories and provider must be explicitly reviewed')
     if story is not None and story not in stories:
         raise ValueError('Unknown administrator story')
@@ -233,7 +233,7 @@ def require_administrator_browser(all_tests, selected, provider, matrix, invento
 def administrator_browser_invocations(matrix, story=None):
     """Keep all reviewed browser stories exhaustive and independently bounded by the unchanged invocation deadline."""
     stories = matrix.get('administrator_browser_stories', {})
-    if set(stories) != {'Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection'} or any(type(count) is not int or count <= 0 for count in stories.values()):
+    if set(stories) != {'Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent'} or any(type(count) is not int or count <= 0 for count in stories.values()):
         raise ValueError('Administrator browser stories must be explicitly reviewed')
     if sum(stories.values()) != matrix['browser']['Administrator'] or (story is not None and story not in stories):
         raise ValueError('Administrator browser stories do not exhaust their reviewed inventory')

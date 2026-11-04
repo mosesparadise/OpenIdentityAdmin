@@ -1,5 +1,6 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using OpenIddict.Server;
@@ -15,7 +16,12 @@ internal static class ProtocolHosting
         var endpoint = await ProtocolEndpoint.ResolveAsync(http);
         var profiles = http.RequestServices.GetRequiredService<ProtocolProfiles>();
         var request = http.RequestServices.GetRequiredService<ProtocolHostRequest>();
-        if (endpoint == OpenIddictServerEndpointType.Unknown)
+        if (endpoint == OpenIddictServerEndpointType.Unknown && profiles.Managed && http.GetEndpoint()?.Metadata.GetMetadata<
+            IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications.ManagedAccountEndpoint>() is not null)
+        {
+            await IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications.ManagedAccountBoundary.RunAsync(http, next);
+        }
+        else if (endpoint == OpenIddictServerEndpointType.Unknown)
         {
             var account = profiles.Pilot && http.GetEndpoint()?.Metadata.GetMetadata<PilotAccountEndpoint>() is not null;
             request.Bind(http, endpoint, account ? ProtocolHostMode.PilotAccount : ProtocolHostMode.Unknown);
@@ -70,6 +76,18 @@ internal static class ProtocolHosting
         if (endpoint == OpenIddictServerEndpointType.EndSession && IssuerLogoutFlow.Find(outer.Transaction) is { } logout)
         {
             return logout.Claim(outer);
+        }
+        if (ManagedIssuanceCoordinator.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.Committed;
+        }
+        if (ManagedEntryPublication.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.Committed;
+        }
+        if (ManagedCacheCoordinator.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.Committed;
         }
         if (NativeErrorCoordinator.Claim(http, outer))
         {

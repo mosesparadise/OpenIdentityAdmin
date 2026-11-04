@@ -1,0 +1,385 @@
+{
+  "source_base": "3177b350d26aa38accc9c2ac39221112639015e1",
+  "remote_main": "4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa",
+  "branch": "123-application-editor",
+  "local_worktree_branch": "124-managed-token-issuance",
+  "scope": "T017/T018 edit/conflict/replacement UI, finite failure states and genuine native issuer update journeys; T019 retained browser/demo source added and compiled, execution remains blocked.",
+  "results": {
+    "PostgreSql": {
+      "passed": 107,
+      "failed": 0,
+      "skipped": 0,
+      "selection": "106 ManagedApplications plus1 actual HTTPS shipped-asset witness",
+      "report": "t017-pg-final/Editor.trx",
+      "sha256": "ac318b992a3b676fb6d4e881dadacbbb2e942b753353baf1f81af2ef3e94dfbf",
+      "exact_identity_reconciliation": true,
+      "build_scope": "Complete107 report precedes diagnostic-only assertion correction; final3 report uses final DLL; no extra unique identities counted.",
+      "final_diagnostic_recheck": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "report": "t017-pg-private-diagnostics/Editor.trx",
+        "sha256": "42443fb3e6387bc5c3410ed389269c0157d41563eb6634026a400a0225e5473a",
+        "exact_identity_reconciliation": true
+      }
+    },
+    "SqlServer": {
+      "passed": 107,
+      "failed": 0,
+      "skipped": 0,
+      "selection": "106 ManagedApplications plus1 actual HTTPS shipped-asset witness",
+      "report": "t017-sql-final/Editor.trx",
+      "sha256": "8429e09c81319918aabd727107ae13a24d54b2f7561a3e1a6a9382b4aaf3f8c3",
+      "exact_identity_reconciliation": true,
+      "build_scope": "Complete107 report precedes diagnostic-only assertion correction; final3 report uses final DLL; no extra unique identities counted.",
+      "final_diagnostic_recheck": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0,
+        "report": "t017-sql-private-diagnostics/Editor.trx",
+        "sha256": "33aed0cdca63578735847c5140baf1a1ee1c31fa8977ea58af32028f2a32ef42",
+        "exact_identity_reconciliation": true
+      }
+    },
+    "session": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/admin-ui/session.xml",
+      "sha256": "0557003537ac923868a744e0a6de0c086b36573300884ee1fe2b3c3ec73e6832",
+      "prior_identities_preserved": 11
+    },
+    "applications": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/admin-ui/applications.xml",
+      "sha256": "d7c144923eeb9438ef5a3eeb40cdd010c11e9aaf677d3a32408e434114d0a5c1",
+      "prior_identities_preserved": 9
+    },
+    "editor": {
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/admin-ui/editor.xml",
+      "sha256": "15f7a354d34a827dd4ff68f55ecb67d0204c701fb3fdec39035cf62e044e3835",
+      "prior_identities_preserved": 26
+    }
+  },
+  "selection_controls": {
+    "ordinary": 67,
+    "browser_stories": 16
+  },
+  "ui_gate": "PASS: TypeScript, six deterministic assets, exact55 Node identities, six unchanged95/90/100 critical-module floors,104 locked dependency entries and zero UI advisories",
+  "toolchain": {
+    "sdk": "10.0.403",
+    "runtime": "10.0.14",
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "packages": "unchanged reviewed locked graphs",
+    "build": "serial Administrator and AppHost builds; zero errors/warnings; native/UI source input hashes captured before complete107/provider runs; two selection-test expected-total corrections separately hashed and rerun; final diagnostic-only native test assertion correction followed by3/provider on final DLL"
+  },
+  "preserved_native_records": 2369,
+  "added_native_records": 6,
+  "current_native_records": 2375,
+  "prior_metadata_and_provider_order_preserved": true,
+  "browser_availability": {
+    "downloadAttempted": false,
+    "browsers": [
+      {
+        "engine": "chromium",
+        "path": "/home/agent/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome",
+        "exists": false
+      },
+      {
+        "engine": "webkit",
+        "path": "/home/agent/.cache/ms-playwright/webkit-2359/pw_run.sh",
+        "exists": false
+      }
+    ]
+  },
+  "quality_gate": {
+    "status": "FAILED",
+    "reason": "unchanged BootstrapTests CQ008 exception expired2026-11-02",
+    "all1695_finding_identities_unchanged": true,
+    "new_or_rebound_allowances": 0
+  },
+  "contract_full_gate": {
+    "status": "UNRESOLVED prior failure; not rerun in this UI checkpoint",
+    "reason": "unchanged generator dependency advisory GHSA-g3hv-75wg-m249",
+    "package_override_or_suppression": false
+  },
+  "rejected_runs": [
+    {
+      "report": "t017-editor-first.log",
+      "passed": 33,
+      "failed": 1,
+      "reason": "old SSR assertion still expected replacement unavailable copy; updated to require explicit recovery guidance"
+    },
+    {
+      "report": "t017-selection-accepted.log",
+      "passed": 66,
+      "failed": 1,
+      "reason": "second independent overall provider total assertion also retained1441/1546; corrected1443/1548; filename does not denote acceptance"
+    },
+    {
+      "report": "t017-selection-final.log",
+      "passed": 64,
+      "failed": 3,
+      "reason": "three exact total assertions still used prior2369/1067/1172 totals after inventory gained6 records; corrected explicit2375/1069/1174 and rerun67 pass"
+    },
+    {
+      "report": "t017-pg/ManagedApplications.trx",
+      "passed": 105,
+      "failed": 1,
+      "reason": "new cached-old-callback assertion incorrectly expected503; native returned400"
+    },
+    {
+      "report": "t017-pg-corrected/Editor.trx",
+      "passed": 2,
+      "failed": 1,
+      "reason": "new assertion incorrectly expectedinvalid_request for cached callback; exact native response is400invalid_token"
+    }
+  ],
+  "superseded_passes": [
+    {
+      "report": "t017-pg-verified/Editor.trx",
+      "passed": 3,
+      "failed": 0,
+      "reason": "focused corrected journeys and shipped-asset witness; final complete107/provider reports govern acceptance"
+    }
+  ],
+  "review_dispositions": {
+    "architecture_security": "PASS original deadlines, exact successor versions, single dispatch and erasure; removed undocumented browser/issuer clock comparison",
+    "test_source": "PASS after preserving prior whole-application token/audit uniqueness; exact native error expectation corrected by runtime evidence",
+    "ux_source": "PASS after recent-MFA recovery guidance and retained known replacement outcome on dismiss/hide; browser acceptance not claimed",
+    "raw_evidence": "PASS independent report/definition/entry/identity reconciliation for both107-case reports and final3-case subsets, all55 UI identities,2375 native metadata records, source/artifact/binary hashes and exact diagnostic/selection corrections; global and browser gates remain open"
+  },
+  "ui_audit_sha256": "1fd3400202b6c9c3866b369747461e9aa74d4083efca1ea28f5ea5b22a539177",
+  "ui_inventory_sha256": "48738e1d60a941209acae441bc75f082119eb7329b9e731a41c7ab9123aadd78",
+  "binary_sha256": {
+    "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.Administrator.Tests.dll": "32ef592a782dd2505b1d499d14b3efd74515ecd06220c5fb61c8a2e9922614a5",
+    "tests/aspire/IdentityPlatform.AppHost.Tests/bin/Debug/net10.0/IdentityPlatform.AppHost.Tests.dll": "e25f9e212711d90373bdf2005999ac7dc3b9bac60008835dfe950199fbf4e6c1",
+    "src/backend/IdentityPlatform.Admin.Bff/bin/Debug/net10.0/IdentityPlatform.Admin.Bff.dll": "694a63d5ab73a4964a6022f9934b793af0e0f24925a48ad148b4a9f78512ce4f"
+  },
+  "source_sha256": [
+    {
+      "path": "eng/admin-ui/editor-test-identities.json",
+      "sha256": "9cce0919a74e15b420a1310ebe2887ffe7ba05b32be3d213f00eee73f32127c5"
+    },
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "eb49f07d2b4b1cfd9e53c3d8ac63ef71fa3c8ce3b508c13f5e801fccf4b0b8c6"
+    },
+    {
+      "path": "eng/test-matrix.json",
+      "sha256": "6fee535302f985960b7eac88bdb848689b5abe940307fd64a505a38dbcc9251d"
+    },
+    {
+      "path": "scripts/test_browser_session_selection.py",
+      "sha256": "adad76904943507d670c100bb1c008ac79e405a44d9f5f0a80170d82709f3662"
+    },
+    {
+      "path": "scripts/test_lifecycle_selection.py",
+      "sha256": "f0e7c075780d9d90c6e13bd0a5b4febcdd5fe45efbf6a64fbe5b650a70219c58"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ApplicationsWorkspace.tsx",
+      "sha256": "cd3421d18de3abc046f2bc50cfb26fac56bc695cd2797d097e59b2bdc96c2135"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/CreateForm.tsx",
+      "sha256": "20d0befeb841b69fb39d3d7a7ce1db16f6fe8e3a0828cbeca3c9e611fc3c6bd9"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/DetailsView.tsx",
+      "sha256": "f5d0cf2d403b02a81875bed292085971960ef04381f1988049586b55f37d0964"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ProblemView.tsx",
+      "sha256": "6a6b0b72ae0333f07411522db0e9a32ea075dc279b9701a5a95090232dfb771f"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/UpdateForm.tsx",
+      "sha256": "6d4c73f42e90e84dc0984af894492c2c2890e69c6a2db661598d372ff79a118a"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/client.ts",
+      "sha256": "c6554378f4439815782dd16f63b03efeeb588117fe7cfbba1b8932ad1c0be5a6"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/controller.ts",
+      "sha256": "aa9d80f5641b0b0c76994dc4dc4f76252d90d412bcdb3a9c52f5fbd6cdf09c48"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/input.ts",
+      "sha256": "1eebb27a81313a8743da918262031bff43e5a4bcd3a187d4904e02a929ddbe2e"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/observation.ts",
+      "sha256": "d3c6ff0dd6cb2ad178da201f906e25411105bad39a5dc1f03965c72981bc2587"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/Features/Shell/app.css",
+      "sha256": "84a59bb3d2e3faf92dcd43d2f5b7a239032b5d4c21541eb4c90e962311b89d51"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/generated/app.css",
+      "sha256": "a2f9417f57511b9bc2343e6652e24d5a91c05cfe2a4620c1f9d97e60a36a2fc0"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/generated/app.js",
+      "sha256": "bfd22fcac7b7226c443a658376faac65f720fa27720fa5b0d87f1c53c102b730"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/tests/editor.test.mjs",
+      "sha256": "ba7078f6300b11b2b954a480409b13776cfb54a0d7e0f5eee1e47637e58be512"
+    },
+    {
+      "path": "src/frontend/IdentityPlatform.Admin.Ui/tooling/test-editor.mjs",
+      "sha256": "bb9c659ddcad000cc344862a01ba7656288539b59c07e080dcf1c00daa68c999"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpFixture.cs",
+      "sha256": "22ffa8571f07f412539fc3b8beea5c21349c02e3de4d43fed3da8f79e8ae3c86"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/AdministratorBrowserEvidence.cs",
+      "sha256": "9672c9356f945c3de7f3d94cf23a6da2d54f79eb57f94697747de26784471b2c"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorBrowserTests.cs",
+      "sha256": "b9b2d05f7b301305b418b9b54af036e4471b0c7b4228d7bcfdfa1f60e6b7438a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorJourney.cs",
+      "sha256": "5851d1ea5d5fdf690464929fdbdadfae61d41fcb00e53d5c3d469e5d89cbde7b"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedJourneyEvidence.cs",
+      "sha256": "c99d69275b4407d4da51aa664bae48aae220b0915f179b2b4239ca2dd64ada95"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenEvidence.cs",
+      "sha256": "0149a780ed7a285af3bc87ed0ec5bdb591a43387d112c4c867a48dbfb9952949"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs",
+      "sha256": "66c0b47cb9dec7bfba359b80fc935bd580a762b05c67674db7d23007be6cfe52"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenOracle.cs",
+      "sha256": "50504a0407a252af61a5c3af15677e96e3db449557a63f331e2c64940929dbb9"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedUpdateJourneyTests.cs",
+      "sha256": "d75918eb8ca4444c16181cfebfe74ecc24db3fe544bd06f203ff083c9c73555d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalDemoBrowser.cs",
+      "sha256": "c27d8da49107cb5b05cd5485330095723faac2388550e1d7f276870a3868195d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.AppHost.Tests/IdentityPlatform.AppHost.Tests.csproj",
+      "sha256": "9231ad7e2cd06fed21f08c3c667070c52db764d582ba22c93f7e5733d6314ee1"
+    }
+  ],
+  "artifact_sha256": {
+    "t017-apphost-build.log": "1bb59a65f91ab75bfaf1e0714900ca7df1b969d5bbfe06dd3003b79bc3a67aec",
+    "t017-apphost-restore.log": "d291bad2fb2bdc52d274934e0e009513f525990a165f207799b379dc76c48217",
+    "t017-browser-availability.json": "814f12fc5b1040118da7d0d33de565c3bcad081982545ce4d4e732fb96adb9ca",
+    "t017-browser-selection.log": "ebd7850d88cee2a4a37cacd13b1fcd49ec03f632fa0eb34ca89592877f8ceffa",
+    "t017-build-accepted.log": "d061c5642a67a3c5c3b1dfc5d7a2f91153fbea1c3c7bba77fefdfc7f1f44d26d",
+    "t017-build-final.log": "33616fcb96d06663813e316067749fed1031efe6759aa5fbdd5b8d135f8f8924",
+    "t017-build-fourth.log": "9fd69ebac17060d781f577df0805c0166e37702a76120bcba1f6c5c57b3666d9",
+    "t017-build-private-diagnostics.log": "86e44eabafc83392b71ae5b2d1385d809ff81ee4e015d5e853ce83c4c9c23fbb",
+    "t017-build-second.log": "fedbfe97deb5f2a85bc3c5abe7bb0113eda855ea625133650486da6a759f5e53",
+    "t017-build-third.log": "82d321e024f69fe8d6693a744aa5aee119be83d1b207fa3757a2d10352d82ac4",
+    "t017-build.log": "e05a28ddf3ff0c1a01a61d0091807e8eeac5a9af60fea73f94cfcda6765aa786",
+    "t017-diagnostic-correction.json": "161f491db7f7796de6d1172510f9ad0e5387bdfce08cbf4d09a33a7fcd65080d",
+    "t017-discovery-final.json": "fc8145ebec132b46cf8c8050cc0dde1725bf7359d8dc8ab854d253a87dca9b7f",
+    "t017-discovery.json": "c043c49712f881c1120d75b3c3ccf31e7cc1f77295e3ad47de7f73b5043300fa",
+    "t017-editor-first.log": "cb4a1b5735d8b49baac965cb806b1aee82aef7b10f3060d0ea68eea451d24a95",
+    "t017-final-inputs.json": "b5780d87e671a12fb315ea9c1327a39810233fac8fc6702e037d91386b4ce1f3",
+    "t017-format-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "t017-format.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "t017-pg-corrected.log": "b3324ce197d50f35e850474057d379ff4eda9fd883de04f07f1fd960fe035834",
+    "t017-pg-final.log": "50a481ecfa57659de62249c885a2321fa59c34f0b66afc11773eef37ca0ad175",
+    "t017-pg-private-diagnostics.log": "b6387a2887e8dcaef6e7e5ee1b18badbd38bae0e7d8cf9f9a523c4720e8fab24",
+    "t017-pg-verified.log": "54c0388d890cf889aec20e91f77e5baeea30443202ee074f9cdb6dc47f3de445",
+    "t017-pg.log": "d90fa6c4d3f2e668700d8e2e83213b4f1a1372daca0aafcaed239a75e9f33eae",
+    "t017-quality-corrected.json": "59b450f59468e54ee8840fd0345f748979e4efc7d49e35b4941331f940a30478",
+    "t017-quality-final.json": "59b450f59468e54ee8840fd0345f748979e4efc7d49e35b4941331f940a30478",
+    "t017-quality-gate.log": "92fea21491403b3a22f02cabeb3a53f1beeae25d1170921a7bfb6274e430034f",
+    "t017-quality-initial.json": "ee397f04e3332293b117a4ee8f076ab9115a660c310cde078a7842f723f133c1",
+    "t017-selection-accepted.log": "1f1b0a5c5ccd2a112766e6b95159a05d521e3aa3100cea3954fb150eca26537c",
+    "t017-selection-final.log": "09a342d15795a45a0529f834b050f4d49269217819f8d07e3ea9085a80aee216",
+    "t017-selection-input-corrections.json": "31bfe80ced27b0057c901e84d529e090279d1f691e99494d0089ac5c3e96cf98",
+    "t017-selection-verified.log": "7d15a057994219269b54fd95a772cb194af242588adfd38f9335848bfcdb4096",
+    "t017-selection.log": "81f8a64de55fffe896fac800fc36c5731b2a891f7fb9e25c0581d2811b2177d3",
+    "t017-sql-final.log": "36514c3ef318b0a7a1b8e8f446e262734137769b808191bf49e4ac2b706f98c6",
+    "t017-sql-private-diagnostics.log": "3113fdcecfff890a70dec0d3657e2ffdee38d9b8b9abf8bb573b2ce93542c791",
+    "t017-ui-build-final.log": "bb7d8aef7b3597ea9fc879a6a6f3bf6e4759d271efafa40d2b777714e65e1fdc",
+    "t017-ui-build.log": "bb7d8aef7b3597ea9fc879a6a6f3bf6e4759d271efafa40d2b777714e65e1fdc",
+    "t017-ui-check.log": "6bdd9b877f87fa8690cdfe07e3486c27bab857b94eef839dd00d63fbeab94361",
+    "t017-ui-final.log": "e24d3aacbee5c275cd9e243bdd7fab68a40e880e379aaf49f3a0838187e32685",
+    "t017-ui-gate-final.log": "4c746e7115d16371fe09e67121dc63d48db019f07b7dce7358caf54d266b29a8",
+    "t017-ui-gate.log": "d67232536b532aa45d97ffe7e6575bec4121726990ba54454c042b001c1b265d",
+    "t017-ui-tests.log": "1065eae79a6ad48e024e1c089692c258b75d3ddeb6a1e83db92a0db255667cae",
+    "t017-pg/ManagedApplications.trx": "89d347ca93c34024d74c1017abe76d75feba41c2b15afe7d756fe2d5be2bf1a2",
+    "t017-pg-corrected/Editor.trx": "214ae63e936daa6d4bef4597f0b7529e340c6c777524ee03c9a95d9e7d24defd",
+    "t017-pg-verified/Editor.trx": "cc5e9079a0aaac066e005abaa1f9a5d8c1eae16cea3e9b5236fe4a5650ac9d05",
+    "t017-pg-final/Editor.trx": "ac318b992a3b676fb6d4e881dadacbbb2e942b753353baf1f81af2ef3e94dfbf",
+    "t017-sql-final/Editor.trx": "8429e09c81319918aabd727107ae13a24d54b2f7561a3e1a6a9382b4aaf3f8c3",
+    "t017-pg-private-diagnostics/Editor.trx": "42443fb3e6387bc5c3410ed389269c0157d41563eb6634026a400a0225e5473a",
+    "t017-sql-private-diagnostics/Editor.trx": "33aed0cdca63578735847c5140baf1a1ee1c31fa8977ea58af32028f2a32ef42"
+  },
+  "final_input_sha256": "b5780d87e671a12fb315ea9c1327a39810233fac8fc6702e037d91386b4ce1f3",
+  "selection_input_corrections": {
+    "scripts/test_browser_session_selection.py": {
+      "before": "3c952cbdd6811ba5d4fb6a84b929151d46e2fe81628796d024182c8c9856b1d6",
+      "after": "adad76904943507d670c100bb1c008ac79e405a44d9f5f0a80170d82709f3662",
+      "reason": "Exact native discovery adds2 ordinary/provider and1 browser/provider; preserve hardcoded independent totals."
+    },
+    "scripts/test_lifecycle_selection.py": {
+      "before": "0ba0e925d73e83a75cc02f5418b6191d5e2bd57330a2328516e1b289e235f00e",
+      "after": "f0e7c075780d9d90c6e13bd0a5b4febcdd5fe45efbf6a64fbe5b650a70219c58",
+      "reason": "Exact native discovery adds2 ordinary/provider and1 browser/provider; preserve hardcoded independent totals."
+    }
+  },
+  "diagnostic_only_correction": {
+    "source": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedTokenFlow.cs",
+    "before": "4e23c435f162f23266ba5d72f2397314c8fc29e8ee11ede95aa8d37257300ea9",
+    "after": "66c0b47cb9dec7bfba359b80fc935bd580a762b05c67674db7d23007be6cfe52",
+    "binary": "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.Administrator.Tests.dll",
+    "binary_before": "4a098a48282e5df2a3d1679ec826c7664a74c07ffe77e9d4e2ca458dff6cef00",
+    "reason": "Identical ordinal prefix predicate; boolean assertion cannot format the private native request reference on failure.",
+    "binary_after": "32ef592a782dd2505b1d499d14b3efd74515ecd06220c5fb61c8a2e9922614a5",
+    "source_before_file": "t017-ManagedTokenFlow-before.cs"
+  },
+  "reconciliation_helper": {
+    "path": "reconcile_t017.py",
+    "sha256": "368e984eaad92735a75f3cd5daaa3c4706af26699bbb7ed9f4c4e9b39a3e078b"
+  },
+  "commands": [
+    "npm test/build/check (UI)",
+    "python scripts/verify_admin_ui.py",
+    "dotnet build Administrator.Tests --no-restore -m:1 -nodeReuse:false",
+    "dotnet restore AppHost.Tests --locked-mode and serial build --no-restore",
+    "dotnet run Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json",
+    "dotnet test Administrator.Tests --no-build --no-restore --no-progress --report-trx --pre-enumerate-theories on --filter Provider=<provider>&(FullyQualifiedName~Features.ManagedApplications|FullyQualifiedName~ApplicationWorkspaceTests)",
+    "python scripts/check_code_quality.py (FAILED unchanged expired exception)",
+    "dotnet run CodeQuality --no-build -- --inventory /workspace/application-editor",
+    "python -m unittest discover -s scripts -p test_*selection.py",
+    "python -m unittest discover -s scripts -p test_administrator_browser_stories.py",
+    "read-only Playwright executablePath/fs.existsSync inspection; no download",
+    "git diff --check"
+  ],
+  "limits": [
+    "T007/T014/T019 retained Chromium/WebKit execution and native Aspire demo acceptance remain open; actual browser consent/history/retained-artifact acceptance still required. Firefox excluded.",
+    "No new full feature CI, contract verifier, Host suite, mutation campaign or coverage-input campaign; prior evidence is not relabelled as a new pass.",
+    "No PR/merge, production corrections/deployment or refresh activation. All six historical findings and human/Windows/A-009/vendor/public-release gates remain open.",
+    "Global quality and contract-generator advisory gates remain unresolved; no waiver or unsafe downgrade.",
+    "Raw reports are local artifacts; hashes do not imply hosted upload."
+  ]
+}

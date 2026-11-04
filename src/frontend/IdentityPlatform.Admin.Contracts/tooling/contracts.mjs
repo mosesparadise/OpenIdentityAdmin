@@ -45,12 +45,18 @@ export function inventory(document, surface, allowEmpty = false) {
         operations.set(`${method} ${route}`, op);
         continue;
       }
+      if (surface === 'bff' && route === '/bff/api/v1/applications/antiforgery') {
+        requireApplicationToken(op, method, item);
+        operations.set(`${method} ${route}`, op);
+        continue;
+      }
       const scheme = surface === 'bff' ? 'BrowserSession' : 'AdminBearer';
       if (!isDeepStrictEqual(op.security, [{ [scheme]: [] }])) throw new ContractViolation('Missing or weakened authentication requirement');
       if (typeof op['x-required-permission'] !== 'string' || !op['x-required-permission']) throw new ContractViolation('Missing permission');
       if (surface === 'bff' && op['x-downstream-api-version'] !== 1) throw new ContractViolation('Missing explicit downstream mapping');
       if (['put', 'patch', 'delete', 'post'].includes(method)) {
-        const names = method === 'post' ? [] : ['If-Match'];
+        const replacement = route === prefix + 'applications/{id}/secret-replacements';
+        const names = method === 'post' && !replacement ? [] : ['If-Match'];
         if (surface === 'bff') names.push('X-CSRF-TOKEN');
         for (const name of names) {
           if (!op.parameters?.some(p => p.in === 'header' && p.name.toLowerCase() === name.toLowerCase() && p.required === true)) throw new ContractViolation('Missing concurrency/antiforgery precondition');
@@ -75,7 +81,7 @@ export function securityCompatibility(previous, current, surface, allowEmpty = f
   for (const [key, old] of before) {
     const next = after.get(key);
     if (!next) throw new ContractViolation('Removed operation');
-    for (const property of ['operationId', 'security', 'x-required-permission', 'x-downstream-api-version', 'x-browser-session-status']) {
+    for (const property of ['operationId', 'security', 'x-required-permission', 'x-downstream-api-version', 'x-browser-session-status', 'x-persisted-mfa-max-age-exclusive-seconds']) {
       if (!isDeepStrictEqual(old[property], next[property])) throw new ContractViolation(`Changed ${property}`);
     }
     // Header semantics need explicit review even where generic schema diff calls a relaxation additive.
@@ -98,5 +104,21 @@ function requireBrowserStatus(op, method) {
   if (Object.keys(op.responses ?? {}).sort().join() !== '200,400,503') throw new ContractViolation('Missing status failure outcomes');
   for (const response of Object.values(op.responses)) {
     if (response.headers?.['Cache-Control']?.schema?.const !== 'no-store') throw new ContractViolation('Status response can be cached');
+  }
+}
+
+// One authenticated local token GET; it confers no downstream permission or mutation authority.
+function requireApplicationToken(op, method, item) {
+  if (item.parameters?.length || method !== 'get' || op.operationId !== 'GetApplicationAntiforgeryToken' ||
+      !isDeepStrictEqual(op.security, [{ BrowserSession: [] }]) || op.requestBody || op.parameters?.length ||
+      op['x-required-permission'] !== undefined || op['x-downstream-api-version'] !== undefined ||
+      Object.keys(op.responses ?? {}).sort().join() !== '200,400,401,503') {
+    throw new ContractViolation('Invalid application antiforgery acquisition boundary');
+  }
+  for (const response of Object.values(op.responses)) {
+    if (response.headers?.['Cache-Control']?.schema?.const !== 'no-store') throw new ContractViolation('Cacheable native request token');
+  }
+  if (op.responses['200'].content?.['application/json']?.schema?.$ref !== '#/components/schemas/ApplicationAntiforgeryToken') {
+    throw new ContractViolation('Unexpected application antiforgery response');
   }
 }

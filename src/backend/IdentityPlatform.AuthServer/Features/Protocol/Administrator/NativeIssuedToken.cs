@@ -13,6 +13,7 @@ internal sealed class NativeIssuedToken
     private readonly OpenIddictServerEvents.GenerateTokenContext context;
     private readonly ClaimsPrincipal principal;
     private readonly string type;
+    private readonly string clientId;
     private readonly bool reference;
     private readonly string preparedClaims;
     private readonly ProtocolTokenPreparation preparation;
@@ -23,9 +24,10 @@ internal sealed class NativeIssuedToken
     private bool payload;
 
     /// <summary>Requires real storage and the fixed profile's native JWT/reference policy before any handler can create output.</summary>
-    internal NativeIssuedToken(OpenIddictServerEvents.GenerateTokenContext context)
+    internal NativeIssuedToken(OpenIddictServerEvents.GenerateTokenContext context, string clientId = AdministratorProtocolIdentity.ClientId)
     {
         this.context = context;
+        this.clientId = clientId;
         principal = context.Principal;
         type = context.TokenType;
         preparedClaims = ProtocolTokenDescriptorSnapshot.Claims(principal, omitIdentifier: true);
@@ -33,7 +35,7 @@ internal sealed class NativeIssuedToken
         preparation = new(context.SecurityTokenDescriptor, context.Options.JsonWebTokenHandler, typeof(JsonWebTokenHandler), reference,
             context.Options.SigningCredentials, context.Options.EncryptionCredentials);
         if (!context.CreateTokenEntry || context.IsReferenceToken != reference || context.PersistTokenPayload != reference ||
-            context.TokenFormat != OpenIddictConstants.TokenFormats.Private.JsonWebToken || context.ClientId != AdministratorProtocolIdentity.ClientId ||
+            context.TokenFormat != OpenIddictConstants.TokenFormats.Private.JsonWebToken || context.ClientId != clientId ||
             !string.IsNullOrEmpty(context.Token) || !string.IsNullOrEmpty(principal.GetTokenId()))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -45,7 +47,7 @@ internal sealed class NativeIssuedToken
     {
         preparation.RequireCurrent(current.SecurityTokenDescriptor, current.SecurityTokenHandler);
         if (preparedClaims != ProtocolTokenDescriptorSnapshot.Claims(principal, omitIdentifier: true) || !ReferenceEquals(context, current) || !ReferenceEquals(principal, current.Principal) || current.TokenType != type ||
-            current.ClientId != AdministratorProtocolIdentity.ClientId || !current.CreateTokenEntry || current.PersistTokenPayload != reference ||
+            current.ClientId != clientId || !current.CreateTokenEntry || current.PersistTokenPayload != reference ||
             current.IsReferenceToken != reference || current.TokenFormat != OpenIddictConstants.TokenFormats.Private.JsonWebToken ||
             current.IsRejected || current.IsRequestHandled || current.IsRequestSkipped)
         {

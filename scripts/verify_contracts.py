@@ -75,7 +75,7 @@ def main():
         run(['node', str(PACKAGE / 'tooling/baseline.mjs')])
         node_report = output / 'node.xml'
         with node_report.open('w') as stream:
-            run(['node', '--test', '--test-reporter=junit', str(PACKAGE / 'tests/compatibility.test.mjs')], stdout=stream)
+            run(['node', '--test', '--test-reporter=junit', str(PACKAGE / 'tests/compatibility.test.mjs'), str(PACKAGE / 'tests/generator-compatibility.test.mjs')], stdout=stream)
         if len(MATRIX['nodeIdentities']) != MATRIX['node']:
             raise ValueError('Node identity manifest count differs')
         require_node_report(node_report, MATRIX['nodeIdentities'])

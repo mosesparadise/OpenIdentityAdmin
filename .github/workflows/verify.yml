@@ -167,6 +167,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Policy, label: administrator-SqlServer-governance-policy }
           - { profile: SqlServer, partition: administrator, story: Governance.Commands, label: administrator-SqlServer-governance-commands }
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
+          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-PostgreSql-managedapplications-admission }
+          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-PostgreSql-managedapplications-issuance }
+          - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-SqlServer-managedapplications-admission }
+          - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-SqlServer-managedapplications-issuance }
           - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
           - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }
@@ -209,6 +213,7 @@ jobs:
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
+      - run: python3 scripts/test_managed_application_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
@@ -238,7 +243,7 @@ jobs:
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }} ${{ matrix.managed_application_group && format('--managed-application-group {0}', matrix.managed_application_group) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -281,6 +286,7 @@ jobs:
       - run: python3 scripts/test_apphost_selection.py
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
+      - run: python3 scripts/test_managed_application_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
@@ -304,6 +310,8 @@ jobs:
           # WebKit uses the ephemeral runner's OS bundle; trust only this public synthetic leaf.
           sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
           sudo update-ca-certificates
+          # Playwright route.fetch uses Node TLS independently of OS/NSS browser trust.
+          echo "NODE_EXTRA_CA_CERTS=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
           echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
           # Chromium uses NSS peer trust. Firefox imports the exact leaf as an explicit anchor in its private profile.
           mkdir -p "$HOME/.pki/nssdb"
@@ -313,7 +321,16 @@ jobs:
       - name: Compare fixed isolated and startup-overlap history observations
         if: matrix.partition == 'administrator' && matrix.browser == 'firefox' && matrix.browser_story == 'Accounts'
         run: python3 scripts/verify_history_experiment.py ${{ matrix.provider }}
+      - name: Provision isolated native visibility desktop
+        if: matrix.browser_story == 'ApplicationLifecycle'
+        run: sudo apt-get install -y openbox xdotool x11-utils
+      - name: Validate pinned native visibility instrumentation
+        run: python3 scripts/test_native_visibility.py
+      - name: Test native window lifecycle with child-process coverage
+        if: matrix.browser_story == 'ApplicationLifecycle'
+        run: python3 scripts/run_native_visibility.py ${{ matrix.provider }} ${{ matrix.browser }}
       - name: Test with child-process coverage
+        if: matrix.browser_story != 'ApplicationLifecycle'
         run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
       - name: Retain synthetic test and coverage evidence
         if: always()
@@ -564,6 +581,47 @@ jobs:
           path: artifacts/mutations/applications-${{ matrix.provider }}/evidence.json
           retention-days: 7
           if-no-files-found: error
+  managed-application-mutations:
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    name: Managed application mutations ${{ matrix.provider }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [PostgreSql, SqlServer]
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet restore --locked-mode
+      - run: python3 scripts/test_mutations.py
+      - name: Prepare pinned native database image
+        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}
+      - name: Trust local HTTPS certificate
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/identity-https-trust"
+          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
+          openssl rehash "$RUNNER_TEMP/identity-https-trust"
+          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - name: Verify isolated critical-decision mutants
+        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite managed-applications --disposable-checkout
+      - name: Retain only sanitized mutation evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: managed-application-mutations-${{ matrix.provider }}
+          path: artifacts/mutations/managed-applications-${{ matrix.provider }}/evidence.json
+          retention-days: 7
+          if-no-files-found: error
   browser-session-mutations:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
@@ -632,6 +690,7 @@ jobs:
           node-version: '24.19.0'
       - run: npm install --global npm@11.9.0
       - run: npm ci --prefix src/frontend/IdentityPlatform.Admin.Contracts --ignore-scripts --strict-peer-deps
+      - run: npm run prepare:generator --prefix src/frontend/IdentityPlatform.Admin.Contracts
       - run: npm run bundle --prefix src/frontend/IdentityPlatform.Admin.Contracts
       - run: dotnet tool restore
       - run: dotnet restore --locked-mode
@@ -735,7 +794,7 @@ jobs:
   acceptance:
     name: Verification acceptance
     if: always()
-    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, administrator-protocol-mutations, browser-session-mutations, application-mutations, contracts, admin-ui, coverage]
+    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, administrator-protocol-mutations, browser-session-mutations, application-mutations, managed-application-mutations, contracts, admin-ui, coverage]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

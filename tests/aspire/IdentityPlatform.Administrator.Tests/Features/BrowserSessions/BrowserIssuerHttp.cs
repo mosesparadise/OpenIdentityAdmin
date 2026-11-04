@@ -38,7 +38,7 @@ internal static class BrowserIssuerHttp
         });
 
     /// <summary>Reads only the fixed admitted MFA locator, rejecting arbitrary cross-origin server redirects in the fixture.</summary>
-    internal static async Task<Dictionary<string, string>> FactorAsync(HttpClient browser, HttpResponseMessage password)
+    internal static async Task<Dictionary<string, string>> FactorAsync(HttpClient browser, HttpResponseMessage password, Uri? client = null)
     {
         Assert.Equal(HttpStatusCode.Redirect, password.StatusCode);
         BrowserFormHeaders.Referrer(password);
@@ -46,7 +46,7 @@ internal static class BrowserIssuerHttp
         Assert.True(location is { IsAbsoluteUri: false } && location.OriginalString.StartsWith(Mfa, StringComparison.Ordinal));
         using var page = await browser.GetAsync(location, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
-        await BrowserFormHeaders.AccountAsync(page, mfa: true);
+        await BrowserFormHeaders.AccountAsync(page, mfa: true, client: client);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         return new(StringComparer.Ordinal)
         {

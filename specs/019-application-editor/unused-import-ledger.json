@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "scope": "Remove exactly 17 namespace imports identified by SDK IDE0005/formatter across 9 files; no namespace/declaration/method body change. Full build and static checks remain required.",
+  "files": [
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPrincipal.cs",
+      "before_sha256": "8e3bcb0b49d77da64f1ed1684dc5b63f1d6b579299a737205b514e5ae192149b",
+      "after_sha256": "d37ecc6770089df57c979a8e7489086aa59b41579330fe07c0221f6235d152a6",
+      "removed_unused_directives": [
+        "using IdentityPlatform.Infrastructure.Features.ProtocolStorage;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/Setup.cs",
+      "before_sha256": "b5dbd7c232fdc67f0ffeb52a654953041f881e44fcfc8f228eeb19ce3b552cc6",
+      "after_sha256": "fd38925397f72960cf21be3568b43a8509e3c4f09726ecc16fe4bad6ee3426e1",
+      "removed_unused_directives": [
+        "using IdentityPlatform.Infrastructure.Features.ProtocolStorage;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateAuthorityTests.cs",
+      "before_sha256": "8b8e49ddf6170962682a9773b13ee2995bed89a12ae2376e6bab520fa794e649",
+      "after_sha256": "0ec16bce77ac77619f7a0e061bc215b97085be5740524364558aed36c3e47b82",
+      "removed_unused_directives": [
+        "using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;",
+        "using IdentityPlatform.Core.Features.Applications;",
+        "using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateFailureTests.cs",
+      "before_sha256": "ebe20f054617b5aa77197b9f565c57f5a2c782d99c22ae4e1b72ae595d46e7cb",
+      "after_sha256": "856e72d62ecbfaa7c88f402adbaedccdb6af8a1d5e068dc1bb9fc2f5a41e182f",
+      "removed_unused_directives": [
+        "using IdentityPlatform.Core.Features.Applications;",
+        "using IdentityPlatform.Infrastructure.Features.Identity.Persistence;",
+        "using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;",
+        "using IdentityPlatform.Infrastructure.Persistence;",
+        "using Microsoft.EntityFrameworkCore;",
+        "using Microsoft.Extensions.DependencyInjection;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationHttpUpdateTests.cs",
+      "before_sha256": "7c8c4efcd1f2e33a21abaaa1350b4b5ba37e4934326f55d087f0b3648101a15b",
+      "after_sha256": "0ecae2f58c7ba94f80ef29299be4ca07ef99dbdfd7df218e09a5cd0c24af6d24",
+      "removed_unused_directives": [
+        "using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;",
+        "using IdentityPlatform.Infrastructure.Features.Identity.Persistence;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationMutationProbe.cs",
+      "before_sha256": "d451ed77a2c6b96cead87b2b8c8b69ecb000f2a0e279e727d1828653b4eac02a",
+      "after_sha256": "b98a213c7d900c9512ca5e12915b78fa9f4e582e2e33e90b9402326006c6caea",
+      "removed_unused_directives": [
+        "using System.Text.Json.Nodes;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheCapacityTests.cs",
+      "before_sha256": "98de8bafde9bc7efbd4a2e9ee103b652a4e6cd1a7deacc41417644b55297218b",
+      "after_sha256": "74c1f2cf42a016ba8a2f0ab45a68c847d37d03554ddffd3781f4883b29fe8efd",
+      "removed_unused_directives": [
+        "using System.Net;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/ManagedCacheCleanupTests.cs",
+      "before_sha256": "58c59e9e77f3b6d6e279bd4c14076d84193afc270ac0ea13ae22bb1ec2599b31",
+      "after_sha256": "bfbc39b3a75a9552d0ea47a90668e89a83bdb5e48e3151bddc4d353e3a76be05",
+      "removed_unused_directives": [
+        "using Microsoft.EntityFrameworkCore;"
+      ],
+      "namespace_and_body_unchanged": true
+    },
+    {
+      "path": "tests/backend/IdentityPlatform.Host.Tests/Features/ManagedApplications/ManagedProfileTests.cs",
+      "before_sha256": "8b7eeab6e2a43540e51c1910ddd2bb531bf0eb939bf8b1d00955690acac4e501",
+      "after_sha256": "c5a975f7025cb151bad3940ac4a3955fc223eb0de68abcae384ed8496f42fea2",
+      "removed_unused_directives": [
+        "using IdentityPlatform.Infrastructure.Features.ProtocolTransport;"
+      ],
+      "namespace_and_body_unchanged": true
+    }
+  ]
+}

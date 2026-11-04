@@ -20,6 +20,7 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
     private ProtocolResponseOutput? logoutOutput;
     private int active;
     private int faulted;
+    private long publicationDeadline = DateTimeOffset.MaxValue.UtcTicks;
     internal TimeProvider Clock => clock;
     internal CancellationToken Token => token;
     internal TimeSpan Remaining => ProtocolStorageLifetime.RequestLimit - clock.GetElapsedTime(started);
@@ -186,12 +187,26 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         }
     }
 
+    /// <summary>Can only shorten publication authority; every final transport admission rechecks this bound after actual cleanup.</summary>
+    internal void RestrictPublication(DateTimeOffset deadline)
+    {
+        RequireCurrent();
+        lock (sync)
+        {
+            publicationDeadline = Math.Min(publicationDeadline, deadline.UtcTicks);
+        }
+    }
+
     /// <summary>Separates read-only responses, committed writes and native errors without treating rollback as success.</summary>
     internal void RequirePublication(ProtocolResponseOutcome outcome)
     {
         RequireCurrent();
         try
         {
+            if (clock.GetUtcNow().UtcTicks >= Volatile.Read(ref publicationDeadline))
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
             publicationGuard?.Invoke();
         }
         catch { Fail(); throw; }

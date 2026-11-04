@@ -52,6 +52,32 @@ def inventory_toolchain(package=None, policy=None):
     return result
 
 
+
+def require_generator_compatibility(package=None, policy=None):
+    """Independently bind installed adapted bytes and upstream archive/version provenance."""
+    package = PACKAGE if package is None else package
+    policy = POLICY if policy is None else policy
+    review = json.loads((policy / 'generator-compatibility.json').read_text())
+    parser = 'node_modules/openapi-typescript/node_modules/@redocly/openapi-core'
+    target = parser + '/lib/utils.js'
+    if review.get('schemaVersion') != 1 or review.get('target') != target:
+        raise ValueError('Unreviewed generator compatibility target')
+    lock = json.loads((package / 'package-lock.json').read_text())['packages']
+    expected = {parser: review['parserVersion'], 'node_modules/openapi-typescript': review['generatorVersion'],
+                'node_modules/minimatch': review['matcherVersion']}
+    for location, version in expected.items():
+        if lock[location]['version'] != version or json.loads((package / location / 'package.json').read_text())['version'] != version:
+            raise ValueError('Generator compatibility version differs')
+    if lock[parser]['integrity'] != review['upstreamIntegrity']:
+        raise ValueError('Generator parser archive differs from review')
+    source = (package / target).read_bytes()
+    if hashlib.sha256(source).hexdigest() != review['patchedSha256']:
+        raise ValueError('Generator compatibility patch is missing or changed')
+    before, after = review['before'].encode(), review['after'].encode()
+    if source.count(after) != 1 or hashlib.sha256(source.replace(after, before)).hexdigest() != review['originalSha256']:
+        raise ValueError('Generator compatibility patch is not the reviewed single import adaptation')
+
+
 def verify_renderers():
     versions = {node.get('Include'): node.get('Version') for node in ET.parse(ROOT / 'Directory.Packages.props').findall('.//PackageVersion')}
     cache = Path(os.environ.get('NUGET_PACKAGES', str(Path.home() / '.nuget/packages')))
@@ -104,6 +130,7 @@ def check_viewer_advisories():
 def main():
     install_cancellation_handler()
     inventory = inventory_toolchain()
+    require_generator_compatibility()
     verify_renderers()
     viewer_advisories = check_viewer_advisories()
     # A nonzero audit exit, acquisition error, absent report or any advisory fails this gate.

@@ -2,6 +2,7 @@ using IdentityPlatform.AuthServer.Features.Accounts.Login;
 using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Authorize;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.AuthServer.Features.Protocol.Policy;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -18,6 +19,11 @@ internal static class ProtocolDecisions
     /// <summary>Routes only the actual skipped native request associated with its immutable transport selection.</summary>
     internal static Task<IResult> AuthorizeAsync(HttpContext http)
     {
+        if (http.RequestServices.GetRequiredService<ProtocolProfiles>().Managed && ManagedAdmission.Find(
+            http.Features.Get<OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreFeature>()!.Transaction!) is { } managed)
+        {
+            return ManagedDecision.AuthorizeAsync(http, managed);
+        }
         var pilot = IsPilot(http, OpenIddictServerEndpointType.Authorization);
         return pilot ? AuthorizeEndpoint.HandleAsync(http, http.RequestServices.GetRequiredService<LoginInteractions>(),
             http.RequestServices.GetRequiredService<PilotEligibility>(), http.RequestServices.GetRequiredService<TimeProvider>()) :
@@ -27,6 +33,11 @@ internal static class ProtocolDecisions
     /// <summary>Keeps pilot eligibility and authorization-manager resolution out of administrator exchanges.</summary>
     internal static Task<IResult> ExchangeAsync(HttpContext http)
     {
+        if (http.RequestServices.GetRequiredService<ProtocolProfiles>().Managed && ManagedTokenAdmission.Find(
+            http.Features.Get<OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreFeature>()!.Transaction!) is { } managed && managed.Current())
+        {
+            return ManagedEndpointDecision.ExchangeAsync(http);
+        }
         var pilot = IsPilot(http, OpenIddictServerEndpointType.Token);
         return pilot ? TokenEndpoint.HandleAsync(http, http.RequestServices.GetRequiredService<PilotEligibility>(),
             http.RequestServices.GetRequiredService<IOpenIddictAuthorizationManager>()) : AdministratorDecision.ExchangeAsync(http);

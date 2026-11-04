@@ -10,7 +10,7 @@ using OpenIddict.Server;
 namespace IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 
 /// <summary>Requires the actual selected native formatter and detects any response mutation before issuance commit.</summary>
-internal sealed class NativeResponseCompletion(OpenIddictServerEvents.ProcessSignInContext signIn, string callback)
+internal sealed class NativeResponseCompletion(OpenIddictServerEvents.ProcessSignInContext signIn, string callback, Func<OpenIddictServerEvents.ProcessSignInContext, bool>? allows = null)
 {
     private OpenIddictServerEvents.BaseRequestContext? completed;
     private ProtocolResponseCapture? capture;
@@ -24,7 +24,7 @@ internal sealed class NativeResponseCompletion(OpenIddictServerEvents.ProcessSig
         var original = ProtocolStorageAmbient.Current?.Request ?? throw ProtocolStorageOwner.Unavailable();
         if (completed is not null || context.IsRequestHandled || context.IsRequestSkipped ||
             !ReferenceEquals(context.Transaction, signIn.Transaction) || !Expected(context) ||
-            !NativeAccountResponse.Allows(signIn) || http.Features.Get<IHttpResponseFeature>() is not ProtocolResponseCapture current ||
+            !(allows ?? NativeAccountResponse.Allows)(signIn) || http.Features.Get<IHttpResponseFeature>() is not ProtocolResponseCapture current ||
             !current.BelongsTo(original) || current.HasStarted || !current.Bytes.IsEmpty)
         {
             throw ProtocolStorageOwner.Unavailable();
