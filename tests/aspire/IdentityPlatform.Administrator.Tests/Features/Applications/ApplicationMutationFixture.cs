@@ -11,6 +11,7 @@ using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Persistence.Tests.Features.ProtocolStorage;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenIddict.Abstractions;
@@ -32,7 +33,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     internal CancellationToken Token { get; } = TestContext.Current.CancellationToken;
 
     /// <summary>Owns only the existing real provider/journey fixture and an independent API root without issuer private keys or factor codecs.</summary>
-    internal static async Task<ApplicationMutationFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+    internal static async Task<ApplicationMutationFixture> CreateAsync(BootstrapFixture fixture, string provider, SaveChangesInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
     {
         var material = new NativeAssertionMaterial(browser: true);
         AdministratorProtocolScenario? scenario = null;
@@ -40,15 +41,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
         try
         {
             scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider, material.Policy);
-            var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders())
-                .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Account.Journey.Lease.RuntimeConnection)
-                .AddSingleton<TimeProvider>(scenario.Account.Journey.Clock).AddApplicationReads(scenario.Issuer, material.Policy.RedirectUri);
-            if (fault is not null)
-            {
-                services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(fault));
-            }
-            cleanup?.Configure(services);
-            api = services.BuildServiceProvider(validateScopes: true);
+            api = BuildApi(scenario, material, provider, fault, cleanup);
             var result = new ApplicationMutationFixture(material, scenario, api);
             await result.SeedNativeAsync();
             return result;
@@ -99,6 +92,24 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
         Identity = new(scenario.Account.ActorId, scenario.Account.Grant.SessionId, (await tokens.GetIdAsync(token, Token))!, authorizationId, expiry);
     }
 
+    /// <summary>Builds an independent API service root sharing only the actual database and immutable identity profile, without reseeding authority.</summary>
+    internal ServiceProvider Peer(string provider) => BuildApi(scenario, material, provider);
+
+    /// <summary>Uses identical production registrations for every independent root; test faults remain scoped to the requested node.</summary>
+    private static ServiceProvider BuildApi(AdministratorProtocolScenario scenario, NativeAssertionMaterial material, string provider,
+        SaveChangesInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+    {
+        var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders())
+            .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Account.Journey.Lease.RuntimeConnection)
+            .AddSingleton<TimeProvider>(scenario.Account.Journey.Clock).AddApplicationReads(scenario.Issuer, material.Policy.RedirectUri);
+        if (fault is not null)
+        {
+            services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(fault));
+        }
+        cleanup?.Configure(services);
+        return services.BuildServiceProvider(validateScopes: true);
+    }
+
     /// <summary>Creates a deliberately ordinary setup/observation scope; production commands always acquire their own Owned child.</summary>
     internal AsyncServiceScope Scope()
     {
@@ -119,12 +130,16 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     internal Task<ApplicationMutationResult> ExecuteAsync(ApplicationMutationCommand command) => ExecuteWithCancellationAsync(command, Token);
 
     /// <summary>Combines explicit fault cancellation with the original test token rather than replacing test ownership.</summary>
-    internal async Task<ApplicationMutationResult> ExecuteWithCancellationAsync(ApplicationMutationCommand command, CancellationToken cancellation)
+    internal Task<ApplicationMutationResult> ExecuteWithCancellationAsync(ApplicationMutationCommand command, CancellationToken cancellation) =>
+        ExecuteOnAsync(api, command, Guid.NewGuid(), cancellation);
+
+    /// <summary>Runs a single command on the selected independent node with a caller-known audit correlation and unchanged production budget.</summary>
+    internal async Task<ApplicationMutationResult> ExecuteOnAsync(ServiceProvider node, ApplicationMutationCommand command, Guid correlation, CancellationToken cancellation)
     {
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(Token, cancellation);
         using var budget = new ApplicationReadBudget(Clock, linked.Token);
-        return await ApplicationMutationOperation.ExecuteAsync(api.GetRequiredService<IServiceScopeFactory>(), Identity, command,
-            api.GetRequiredService<ApiResourceProfile>(), Clock, budget, Guid.NewGuid());
+        return await ApplicationMutationOperation.ExecuteAsync(node.GetRequiredService<IServiceScopeFactory>(), Identity, command,
+            node.GetRequiredService<ApiResourceProfile>(), Clock, budget, correlation);
     }
 
     /// <summary>Compares actual native hash acceptance without disclosing either generated plaintext in assertion diagnostics.</summary>

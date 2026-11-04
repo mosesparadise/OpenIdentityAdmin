@@ -1109,7 +1109,15 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: False, secondReplacement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: True, secondReplacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: False, secondReplacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: True, secondReplacement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: False, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: False, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2325,7 +2333,15 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_ExplicitlyCancelledManagedConsent_When_OriginalAuthorizationRequestIsRetried_Then_TerminalStateAndAllAuthorityRemainUnchanged(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_CompletedManagedCodeAndTokenIssuance_When_OriginalCachedRequestIsReplayed_Then_OnlyLocalRejectionOccursAndIssuedCredentialsRemainValid(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedJourneyTests.Given_TwoGenuinelyCreatedManagedClients_When_CachedRequestsAndAuthenticatedCodesAreSubstituted_Then_BothOriginalClientBindingsRemainUsable(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationWorkspaceTests.Given_AuthenticatedWorkspace_When_EditorAssetsAndCreateDetailsAreRequested_Then_ReviewedBytesAndOneTimeContractAreServed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: False, secondReplacement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: True, secondReplacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: False, secondReplacement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: True, secondReplacement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: False, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: False, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -49911,6 +49927,342 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: False, secondReplacement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: True, secondReplacement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: False, secondReplacement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"PostgreSql\", firstReplacement: True, secondReplacement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: False, secondReplacement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: True, secondReplacement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: False, secondReplacement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit(provider: \"SqlServer\", firstReplacement: True, secondReplacement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_DistinctUpdatesActuallyContend_Then_OnlyWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: False, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: False, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"PostgreSql\", replacement: True, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: False, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: False, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationUpdateTests.Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks(provider: \"SqlServer\", replacement: True, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationUpdateTests",
+        "methodName": "Given_PersistedNativeUpdate_When_SaveOrAuditFails_Then_ExactAggregateRollsBackAndOriginalVersionStillWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
         ]
       },
       "traits": [

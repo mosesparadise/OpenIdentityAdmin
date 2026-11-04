@@ -25,7 +25,7 @@
 
 ## US2 — Safe edits and credential recovery
 
-- [ ] T015 [US2] Prove both-provider same-version edits/replacements and native-save/audit rollback in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/. FR-005–008/010.
+- [x] T015 [US2] Prove both-provider same-version edits/replacements and native-save/audit rollback in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/. FR-005–008/010. [Scoped provider evidence](update-atomicity.md) adds observed independent-node contention and complete rollback/recovery proofs. Global quality remains blocked by the unchanged expired feature009 bootstrap exception; no T022/full-delivery acceptance.
 - [ ] T016 [US2] Implement If-Match PUT and explicit secret replacement in Admin.Api/Features/Applications/ and matching BFF endpoints; PUT cannot modify credential expiry, and replacement requires current credential permission/recent MFA. FR-005–011.
 - [ ] T017 [US2] Add editor/conflict/replacement forms in Admin.Ui/Features/Applications/ and verify new issuer configuration works while old code/configuration/secret is rejected. FR-001/007/010/012.
 

@@ -1,0 +1,126 @@
+{
+  "source_base": "c8f4eaee9257d71f024fae5fb13a64978869d90b",
+  "remote_main": "4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa",
+  "branch": "123-application-editor",
+  "scope": "T015 component/provider test completion for existing native mutation coordinator. No production implementation, HTTP endpoint, UI, browser, full CI or merge acceptance.",
+  "toolchain": {
+    "sdk": "10.0.403",
+    "runtime": "10.0.14",
+    "packages": "existing locked graph restored",
+    "build": "t015-build-final, serial MSBuild with node reuse disabled; no later C# edits"
+  },
+  "results": {
+    "PostgreSql": {
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "report": "t015-pg-accepted/Applications.trx",
+      "sha256": "6293bf349d164c8bac61217606e901b3007b968e07ecff90732ce19899914ed3",
+      "exact_identity_reconciliation": true
+    },
+    "SqlServer": {
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "report": "t015-sql-accepted/Applications.trx",
+      "sha256": "8b4e7105eb44672b64fbee393933d9bddfe919bd1748ea271d11bf3a94cf3067",
+      "exact_identity_reconciliation": true
+    }
+  },
+  "selection_controls": 67,
+  "prior_native_records_preserved": 2323,
+  "added_native_records": 16,
+  "current_native_records": 2339,
+  "prior_metadata_and_order_preserved": true,
+  "source_sha256": {
+    "eng/administrator-test-matrix.json": "9b0ba62327759b0140e54aa4b42e6c4f4ccf48468494c67bd4d68dbc005deb5c",
+    "eng/test-matrix.json": "f57cdbb71ce9a3ab2f0f7a64a937ccc336aa1392561cb164f6b6005d39259ead",
+    "scripts/test_browser_session_selection.py": "34bd215d67a047932075cc1ac0a58a9cf7980d72c8afdaafa2e40a9a1fce4e46",
+    "scripts/test_lifecycle_selection.py": "bd141d59de138813b3d13959e31c69f2bc5c2711d3a7534c893a785d938166b8",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationMutationFixture.cs": "3d5d3103e8f04e276b8595c57aaa41b9174be36ffdf802ffb67e67fddefcb4f6",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationUpdateFault.cs": "dd7b255175f271028ddf67b465d2973aa7bb6a3ad548fd4377cbc44730cb8b8d",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationUpdateOracle.cs": "4ed7e773de25172ac7e135b05fa8ac02a27c03a3a31d2db5f499be13d5d20748",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationUpdateSnapshot.cs": "308a07379e55f0222a366dfad63cfeb5149d2db09eea8546e38e3fa1863ce347",
+    "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationUpdateTests.cs": "c6925d94ac86eef97a523ac0b53e9af75d25d2224e87b5be2dd92d08abd906df"
+  },
+  "artifact_sha256": {
+    "t015-assurance.log": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+    "t015-build-final.log": "7f6c361452a520164f2939e033649f263512b93ff13a844e0602e68f2592ba4b",
+    "t015-build1.log": "20fc9624673cd3148546faabe5ef283b67a125a993542a62a3ca40029993a960",
+    "t015-build2.log": "66e0c40e80114dcffe6e5a048a3a08bc88e65d61ec084fa47207fd538b36d15c",
+    "t015-build3.log": "855b36368002ee4751edb003742001160f78c1d6ce10d1ffef72a1c42d7afcc4",
+    "t015-build4.log": "42acbb509998123a907547f67893f7f13787d644738b56b7c30bda3e098aa142",
+    "t015-cert.log": "5f918692cb0fa57725f1e50a4cb415d56d71ed20410716b608b4fb200449d18a",
+    "t015-discovery.json": "8ba4163cfbf3591895752700a86c128a36dd81f505e6737fbb9403eca3ad8ab0",
+    "t015-instructions.log": "40abf00856fec7170054b4e5fb4d0b43e500899bbda7e2fa4716eb9e6cfe7def",
+    "t015-pg-accepted/Applications.trx": "6293bf349d164c8bac61217606e901b3007b968e07ecff90732ce19899914ed3",
+    "t015-pg-accepted.log": "d290fac257945f0b8236ee9b981ce7257df855fd838e41db168c9f281b6b146e",
+    "t015-pg-focused/Updates.trx": "f4dd019b63d3028ee4c7473dd7cd5ffeaf61b2fc9f9b5f63423973280ca548f3",
+    "t015-pg-focused.log": "d486b8b1589998b203a940a57a2a9e8b462d216f8655ad4242b5567df7cc7de4",
+    "t015-quality-disposition.json": "16a7950384a087ccb092b9414c0d758921a74a4a9a79927aef9f1daaf67c60e5",
+    "t015-quality-inventory.json": "59b450f59468e54ee8840fd0345f748979e4efc7d49e35b4941331f940a30478",
+    "t015-quality1.log": "92fea21491403b3a22f02cabeb3a53f1beeae25d1170921a7bfb6274e430034f",
+    "t015-quality2.log": "92fea21491403b3a22f02cabeb3a53f1beeae25d1170921a7bfb6274e430034f",
+    "t015-restore.log": "b08fe358a5c31c35ec850db4476f901ca4db98eafad970e5c3cf1cafa022e814",
+    "t015-selection.log": "312f8aed56a24b25a971f52bcfd6315b8eba6110ce93b166edef05a039cb1efb",
+    "t015-source.json": "510044a21729315ad16e456313a29603d563046f8ae211c7f5d831af2213ebc5",
+    "t015-sql-accepted/Applications.trx": "8b4e7105eb44672b64fbee393933d9bddfe919bd1748ea271d11bf3a94cf3067",
+    "t015-sql-accepted.log": "de5fc00ea3625a1a810a4c878130aaf457b1a1e7927f649c65d9bcbd26453b33"
+  },
+  "reconciliation_helper": {
+    "path": "reconcile_t015.py",
+    "sha256": "869b9847e690f04cbd701bf234c9c50956e5132cda58e5361fa28db2806a7e25"
+  },
+  "quality_gate": {
+    "gate": "failed",
+    "reason": "unchanged exception expired",
+    "as_of": "2026-11-04",
+    "new_or_changed_findings": 0,
+    "all_finding_identities_unchanged": true,
+    "expired": [
+      {
+        "Finding": {
+          "Rule": "CQ008",
+          "Path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Bootstrap/BootstrapTests.cs",
+          "Symbol": "IdentityPlatform.Administrator.Tests.Features.Bootstrap.BootstrapTests",
+          "Fingerprint": "A9576A63490DB84121681C00BFF8D2D74486DE40A9227220A3ABFC5B069C6B20"
+        },
+        "Task": "T015",
+        "Owner": "Implementation lead",
+        "Reason": "Architecture-reviewed 26 October 2026: existing four-part bootstrap test class changes only historical audit projection; no new partial split or test identity. Feature 009 engineering T015 owns consolidation; broad consolidation is separate from the additive migration correction.",
+        "Expires": "2026-11-02"
+      }
+    ],
+    "allowance_sha256": "8e7236145c68c8326b0510179b23463a3b0db7f14cf1d8d3067ea1a117c02bb2"
+  },
+  "review_dispositions": {
+    "architecture_security": "Pass on corrected source: actual two-runtime-waiter contention, independent warmed peer, exact state/audit attribution, requested native effects witnessed before failure, exact injected exception and bounded independent audit restoration. Mixed winner order remains nondeterministic.",
+    "test_source": "Pass on corrected source: complete scalar native/hash/policy/audit snapshots, exact submitted changes and native secret behavior, losing-output suppression, stale replay, original-version recovery and preserved identities.",
+    "raw_evidence": "Qualified pass: independent review verifies both exact44-case provider reports, full execution linkage and zero failures/skips;9 source hashes,22 artifacts, helper and2 reused evidence hashes;2323 prior metadata records/order plus16 additions;67 selection controls. Global quality remains FAILED for the unchanged expired BootstrapTests CQ008 exception. Scope is component/provider completion only, not full verification or merge acceptance."
+  },
+  "reused_evidence": {
+    "specs/019-application-editor/mutation-evidence.json": "2baa20475ead2dbc46fae2ae20e6f8136177576734031b575f2f7f5c77a34584",
+    "specs/019-application-editor/create-details-ui-evidence.json": "50477592859ed75a12042be1b9fc8795e13dbf294c99f8de1d1a7ec7f8788955"
+  },
+  "commands": [
+    "dotnet restore tests/aspire/IdentityPlatform.Administrator.Tests --locked-mode -m:1 -nodeReuse:false",
+    "dotnet build tests/aspire/IdentityPlatform.Administrator.Tests --no-restore -m:1 -nodeReuse:false",
+    "dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore --no-progress --filter FullyQualifiedName~Features.Applications.&Provider=<provider> --report-trx",
+    "python3 scripts/check_code_quality.py",
+    "python3 -m unittest discover -s scripts -p 'test_*selection.py'",
+    "python3 scripts/check-ai-instructions.py",
+    "python3 scripts/check_assurance.py",
+    "git diff --check"
+  ],
+  "failure_provenance": "SDK temporary installation/cache from the prior environment was absent; same10.0.403 SDK and locked graph restored. Builds1/2/3 failed repository formatting and one xUnit analyzer expectation; build4 passed and focused PostgreSQL8 passed. Builds3/4 briefly overlapped; only the later successful serial final build establishes final full-selection provenance. Quality attempts fail due to the unchanged BootstrapTests CQ008 allowance expiring2026-11-02, not new findings. This failed gate remains open; no allowance was renewed and no pass is claimed.",
+  "limits": [
+    "Component fixture seeds real account/session/native authority rows and directly constructs ApiIdentity; actual PUT/replacement HTTP/CSRF is T016, forms/issuer-change journeys T017.",
+    "Races prove overlapping admissions and single aggregate winner, not forced mixed winner order or independent OS processes.",
+    "No Host, frontend, browser, full native AppHost demo, C# coverage measurement or dedicated mutation run repeated for this test-only checkpoint.",
+    "T007/T014 browser/native acceptance remains pending; no blocked browser download or Firefox execution.",
+    "Global code-quality gate remains failed on the unchanged expired bootstrap partial-class exception; full T022 verification/merge cannot be accepted.",
+    "No full CI, PR, merge, refresh activation or closure of historical/human/Windows/A-009/vendor/production/public-release gates. All345 assurance controls remain not_assessed.",
+    "Raw artifacts are local; repository hashes do not establish hosted upload."
+  ]
+}
