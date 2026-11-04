@@ -282,3 +282,37 @@ aggregate coverage is skipped. Failures are the PostgreSQL demo, all four lifecy
 cells and final acceptance. All other ordinary jobs, including SQL demo3/3 and all
 consent/editor-recovery/authority cells, pass on this candidate. These results do not
 accept the next source. PR120 stays draft/unmerged; no rejected run is rewritten.
+
+
+## Ninth candidate — native completion and presentation remain open
+
+Candidate `77b6799f66d219e1414dfb9ca381155f4d1e9260`, tested merge
+`7aa9d431926073fb795fdd59273e9be44bfa9a34`, share tree
+`babc4c23882fdba6d42fe24df05a1f609387c89a` over unchanged main `4c9fb24`.
+[Run504](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41872632765),
+attempt1, is rejected by four actual lifecycle failures. Both ordinary native demos
+pass3/3; the prior PostgreSQL demo failure remains cause-unproven.
+
+Chromium PostgreSQL job `126723778435` and SQL job `126723778657` each pass the
+output/history/native-visibility case and fail pending navigation, with zero skips.
+The exact original request is seen once; both page and context completion are false,
+upstream started/completed are true and no response is present. The finite checkpoint
+is Pending/Navigation/Release/disposalEnvironment. Context-level observation did not
+resolve the missing native terminal evidence. The original three-second join fails;
+upstream completion is not accepted as browser completion.
+
+SQL WebKit job `126723778510` reaches the unchanged660s command deadline at17:23:41UTC;
+PostgreSQL job `126723778897` does so at17:28:20UTC. Both last record
+Pending/OriginalDeadline/PresentationStarted, followed by disposalObservation and
+disposalBrowser respectively. Privacy/storage milestones completed and presentation
+began before unwinding. This does not identify the failed or stalled presentation
+operation or establish the cleanup cause. No completed lifecycle report is accepted.
+
+Normal and attempt-specific paginated job APIs independently retain stale parent
+metadata:115 successes, two Chromium failures, three in-progress jobs, queued acceptance
+and skipped coverage. All three in-progress jobs have completed steps: both WebKit
+lifecycle commands failed, while the standard SQL WebKit job has no failed step.
+Do not infer terminal totals from these inconsistent views. The independent safe
+snapshot SHA256 is `401b9f8fdd14db41df33ee201072ec4aab117553803f12e49c8facca34216f1a`.
+The next source requires fresh exact-head acceptance; none of these failed observations
+is relabelled. PR120 remains draft/unmerged.

@@ -122,3 +122,14 @@ security timeout changed.
 The fourth hosted attempt and subsequent product/fixture corrections are recorded
 in [browser corrections](browser-corrections.md). Its instrumented native-visibility
 lane supersedes the earlier BringToFront preflight; actual acceptance remains open.
+
+
+### Pending lifecycle topology follow-up
+
+Navigation and Visibility retain headed contexts and real native-window transitions.
+Pending Session and OriginalDeadline now use headless contexts with the same
+instrumented pinned driver; they retain genuine logout/original expiry and every
+request, privacy, no-late-output and presentation assertion. Chromium adds an exact
+raw native terminal witness before Playwright request lookup. See the
+[reviewed correction and limits](browser-corrections.md#native-terminal-correlation-and-non-window-boundary-topology).
+Prior failed headed observations remain rejected; this source needs fresh hosted acceptance.

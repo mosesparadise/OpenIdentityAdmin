@@ -323,3 +323,50 @@ Independent review confirms check and disposal ordering. The final complete solu
 build, style/imports, quality and seeded rejection gates pass with zero warnings/errors;
 final source gitleaks and diff checks pass. No browser pass is inferred from these
 local controls.
+
+
+## Native terminal correlation and non-window boundary topology
+
+[Run504](hosted-verification.md#ninth-candidate--native-completion-and-presentation-remain-open)
+rejects both Chromium context-terminal joins and both WebKit lifecycle commands.
+Chromium now observes the same native Network terminal signal before Playwright's
+request lookup, while independently retaining the original Playwright request.
+Pinned1.63.0 source can discard a terminal event when its request lookup is absent:
+[finish](https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L469)
+and [failure](https://github.com/microsoft/playwright/blob/v1.63.0/packages/playwright-core/src/server/chromium/crNetworkManager.ts#L491).
+This supports the observation point; it does not prove the hosted failure's cause.
+
+One owned observation-only CDP session attaches before submission. It correlates the
+exact HTTPS URL, POST, original main frame and loader to one bounded native request ID.
+Only that ID's native finish/failure completes the witness. Wrong IDs, missing events,
+duplicate requests/terminals, redirects, wrong provenance, malformed IDs and unexpected
+session closure cannot pass. Mutable evidence is serialized; subscriptions are frozen
+before final sealing, which rejects late invalidation. Only correlation fields are
+read; headers, bodies, raw payloads and native error text are not retained. No
+interception, cache or network policy changes. The same three-second browser/upstream
+join remains, with no sequential fallback. Separate bounded session detach always
+runs and preserves both primary and cleanup failures. Pre-trigger assertions reject
+any already-observed browser terminal event. Native navigation and visibility are
+still independently required; neither can substitute for network completion.
+
+Pending Navigation/Visibility remain headed and require the genuine native window.
+Session/OriginalDeadline use a headless context because these boundaries exercise
+logout and expiry rather than native window transitions. They still use the same
+instrumented pinned driver, not an ordinary unmodified driver. Real logout, original
+expiry, single-send, response/header, no-late-output, privacy/storage, theme/width and
+accessibility checks remain. Earlier failed headed observations are retained; this
+new topology requires its own exact-head execution and does not establish their cause.
+No test identity, timeout, retry, production behavior, security assertion or coverage
+floor changes.
+
+Independent test and security reviews pass the correlation, final sealing and topology
+scope; the final pre-trigger guard strengthens their reviewed source. Complete solution
+build, formatting/imports, quality and seeded analysis controls pass with zero build
+warnings/errors. All12 driver controls pass. Synthetic ledger calibration covers native
+finish/abort and invalid/missing/late evidence, including completion followed by late
+invalidation; it passes through the actual compiled control method and is also required
+before each Chromium observation. This local calibration is not native browser execution.
+The exact two native sanitizer controls pass2/2 with zero skips; TRX SHA256
+`02fa392a2ed85905bb7913227dba7ba689def6eea7f5c7d3663beb9403abccd7`.
+All2,385 administrator identities,71 browser cases/provider/engine and the full hosted
+obligations remain unchanged. Source gitleaks, instruction and diff checks pass. Corrected hosted acceptance is still required.
