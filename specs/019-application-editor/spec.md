@@ -2,7 +2,7 @@
 
 **Feature Branch**: `123-application-editor`
 **Created**: 2026-10-29
-**Status**: Initial-slice choices accepted; design and implementation in progress
+**Status**: Internally delivered in PR120; human/platform/public-release gates remain separate
 **Input**: After PRs #118/#119 delivered the protected Applications list, the user requested “Please proceed with the next item.” The authorized visible-first sequence continues with application creation/editing and required dependencies.
 
 ## User Scenarios & Testing
