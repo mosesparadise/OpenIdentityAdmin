@@ -48,7 +48,8 @@ internal sealed class ApplicationNetworkLedger(string frame, string loader, stri
             }
         }
     }
-    private bool Complete => !invalid && requests == 1 && request is not null && terminal;
+    private bool Initiated => !invalid && requests == 1 && request is not null;
+    private bool Complete => Initiated && terminal;
 
     /// <summary>Rejects duplicate dispatch, redirect reuse and wrong document provenance before accepting the unique request identifier.</summary>
     internal void Started(string? id, string? actualFrame, string? actualLoader, string? url, string? method, bool redirected)
@@ -122,7 +123,7 @@ internal sealed class ApplicationNetworkLedger(string frame, string loader, stri
     }
 
     /// <summary>Rechecks all late evidence after the owner freezes subscriptions; a second seal cannot create another acceptance.</summary>
-    internal bool Seal()
+    internal bool Seal(bool requireTerminal = true)
     {
         lock (gate)
         {
@@ -131,7 +132,7 @@ internal sealed class ApplicationNetworkLedger(string frame, string loader, stri
                 invalid = true;
             }
             sealedObservation = true;
-            return Complete;
+            return requireTerminal ? Complete : Initiated;
         }
     }
 

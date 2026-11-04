@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using IdentityPlatform.Administrator.Tests.Features.Applications;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets;
@@ -36,6 +37,10 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
     private AttackerDocument? attacker;
     private ResponseProbe? responseProbe;
     internal BrowserResponseWitness? ResponseWitness
+    {
+        get; set;
+    }
+    internal ApplicationRequestCompletion? ApplicationCompletion
     {
         get; set;
     }
@@ -83,6 +88,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
         var id = Interlocked.Increment(ref requests);
         var completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         Assert.True(pending.TryAdd(id, completion));
+        var applicationAttempt = ApplicationCompletion?.Enter(http);
         try
         {
             if (http.Request.Path == ParPath)
@@ -119,6 +125,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
         }
         finally
         {
+            applicationAttempt?.PipelineEnded(http.Response.StatusCode, http.Response.HasStarted, http.RequestAborted.IsCancellationRequested);
             Assert.True(pending.TryRemove(id, out _));
             completion.TrySetResult();
         }

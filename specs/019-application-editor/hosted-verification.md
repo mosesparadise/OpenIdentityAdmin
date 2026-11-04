@@ -316,3 +316,69 @@ Do not infer terminal totals from these inconsistent views. The independent safe
 snapshot SHA256 is `401b9f8fdd14db41df33ee201072ec4aab117553803f12e49c8facca34216f1a`.
 The next source requires fresh exact-head acceptance; none of these failed observations
 is relabelled. PR120 remains draft/unmerged.
+
+## Tenth candidate — mutation and demo failures remain rejected
+
+Candidate `b541af5fbfa655c4268bf489d86210d9e9293e9e`, tested merge
+`a8dda93e987a6bce049e240456e2bdbba1c1c26e`, share tree
+`693f74e769b046646608339e04007407c87b54e8` over unchanged main `4c9fb24`.
+[Run506](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41880081621),
+attempt1, is rejected by actual failures. Superseded intermediate source `c0322eb`
+removed masked negative controls before this candidate; it supplies no acceptance.
+Terminal metadata is verified:122 jobs,113 successful, eight failed and aggregate
+coverage skipped. Failures are both managed-mutation lanes, both ordinary demos,
+both Chromium lifecycle cells, PostgreSQL WebKit lifecycle and final acceptance.
+
+SQL managed-mutation job `126750968734` passes all five baseline cases. The first
+explicit-consent mutant returns native test-failure exit2 after54.469s, but strict
+validation rejects it outside the exact demonstrated bypass assertion. PostgreSQL
+managed-mutation job `126750968723` passes all five baseline cases and detects all
+five exact mutants; restored-source execution returns exit2 after62.851s and fails
+required counters. Neither lane produces accepted mutation evidence. The verifier only attempts to retain safe report
+categories in runner-local failure receipts; none were retrieved or printed, and
+the success-only artifact step was skipped. No specific assertion or cause is known.
+
+PostgreSQL ordinary demo job `126750970234` and SQL job `126750970897` each pass
+two cases and fail the runtime journey. Both fixed diagnostics identify fresh browser login, CodeSelection,
+Assertion, Factor location, password302, factor0, callback0, no visible error and
+NotSelected. This localizes failure before MFA submission. The test helper excludes
+the current TOTP counter even if its numeric code is unused; that incomplete candidate
+set is a confirmed source defect. Whether that omitted code was actually unused in
+this hosted failure was not observed. Existing failure remains rejected.
+
+One isolated local SQL diagnostic on exact `b541af5` tests only the explicit-consent
+case: baseline1/1 passes, the mutant fails at its exact required bypass marker, and
+restored1/1 passes, with zero skips. Source restoration is byte-for-byte and independent
+raw TRX review checks identical test/definition/entry bindings and no extra errors.
+This narrower diagnostic does not accept either failed hosted suite or prove its cause.
+
+| Local diagnostic receipt | SHA256 |
+| --- | --- |
+| Finite diagnostic summary | `2a78e79e02f7c13544949ab91cdda78a780fe7bdafea73e5cd4882cc7c91483f` |
+| SQL baseline TRX | `8b6443abc8f7ffabb9770e03ab7bb4fca6106723202be64a461b36830b5ae6a0` |
+| SQL exact-mutant TRX | `6f9e8c20b8a31792e8326fe89b6a8e8bee28c26d3e428de6d22cdf5e051d7fcb` |
+| SQL restored TRX | `bf48de1f27ecc9cdc81fe2043381772816a410827f3d54ae2175a29f7cad90c0` |
+| Independent diagnostic review | `c85814628ad3411f570eee7dd2cc08efce0ea0696491abdbc1fd00ab2840cc4a` |
+
+All prior failures, raw-artifact transfer limits and historical/human/external gates
+remain. PR120 is draft/unmerged; no accepted run or merge is claimed.
+
+
+Both Chromium lifecycle cells pass output/history/native visibility and fail pending
+Navigation: one pass/one failure each, zero skips. Each sees exactly one native and
+one Playwright request, upstream completion, but no raw/context/page terminal signal
+within the original three-second join. This rejects a merely optional-page-association
+explanation; the underlying native-network cause remains unknown.
+
+SQL WebKit job `126751065261` passes both lifecycle cases, including final
+Pending/OriginalDeadline/PrivacyChecked. PostgreSQL WebKit job `126751065197` passes
+the pending case through the same final milestone but fails the output case in
+`ApplicationNativeWindow.MinimizeAsync` during native preflight, before an output
+journey. The immediate WM_STATE assertion can race asynchronous state publication;
+the exact hosted timing cause is not proven. Each cell executes exactly two cases
+with zero skips. The next source requires its own complete execution.
+
+The retained rejected-run snapshot binds all122 jobs,113 successful decoded receipts,
+source/merge/tree and terminal metadata; SHA256
+`9b2fc81509bd80bfe9f26bdbd2441430b1d37f6bf88cc5fec8e41151755a81dd`.
+No strict acceptance reconciliation is run for this rejected candidate.

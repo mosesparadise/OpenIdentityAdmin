@@ -60,6 +60,15 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
         return witness;
     }
 
+    /// <summary>Arms one exact browser mutation before dispatch; only the actual BFF pipeline and server completion can finish it.</summary>
+    internal ApplicationRequestCompletion ObserveApplicationRequest(string path)
+    {
+        Assert.Null(clientEndpoint.ApplicationCompletion);
+        var witness = new ApplicationRequestCompletion(path, () => clientEndpoint.ApplicationCompletion = null);
+        clientEndpoint.ApplicationCompletion = witness;
+        return witness;
+    }
+
     /// <summary>Stages an isolated response-only canary at the actual issuer TLS origin, returning to its already-staged document.</summary>
     internal Uri StageResponseProbe(string cookie, Uri target) => issuerEndpoint.StageResponseProbe(cookie, target);
 

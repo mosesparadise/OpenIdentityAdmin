@@ -133,3 +133,14 @@ request, privacy, no-late-output and presentation assertion. Chromium adds an ex
 raw native terminal witness before Playwright request lookup. See the
 [reviewed correction and limits](browser-corrections.md#native-terminal-correlation-and-non-window-boundary-topology).
 Prior failed headed observations remain rejected; this source needs fresh hosted acceptance.
+
+
+### Chromium navigation ownership qualification
+
+The current navigation-only Chromium witness additionally verifies the running
+BFCache-disabled configuration, explicit original context-epoch loss, a different
+current default-context identity and returned main-frame loader before response
+release. Both actual BFF pipeline return and server response completion join the API
+work under the unchanged cleanup budget. This is an ownership/no-resurrection proof,
+not a network-terminal or preserved-BFCache claim. WebKit and same-document boundaries
+retain actual request-terminal observation. See the [source review and limits](browser-corrections.md#navigation-ownership-and-asynchronous-native-window-state).

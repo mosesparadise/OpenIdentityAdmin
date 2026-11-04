@@ -12,7 +12,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 /// <summary>Separates UI lifecycle/output races from persistence acceptance with the existing explicitly response-only upstream probe.</summary>
 internal static class ApplicationPendingLifecycle
 {
-    private const string CleanupReport = "application-lifecycle cleanup requests={0} context-completed={1} page-completed={2} upstream-started={3} upstream-completed={4} response-present={5} native-dispatches={6} native-completed={7} native-failed={8}";
+    private const string CleanupReport = "application-lifecycle cleanup requests={0} context-completed={1} page-completed={2} upstream-started={3} upstream-completed={4} response-present={5} native-dispatches={6} native-completed={7} native-failed={8} document-end={9} bff-requests={10} bff-pipeline={11} bff-response={12} bff-status={13} bff-started={14} bff-aborted={15} upstream-written={16} upstream-aborted={17}";
     private const string BffPrefix = "/bff";
     private const string Pause = "pause";
     private const string ReplaceSuffix = "/secret-replacements";
@@ -131,7 +131,10 @@ internal static class ApplicationPendingLifecycle
     {
         probe.Fault = Pause;
         var before = probe.Requests;
-        using var write = await ApplicationLifecycleWrite.CreateAsync(page, new Uri(environment.Profile.ClientUri, BffPrefix + probe.ExpectedPath));
+        ApplicationRequestCompletionControls.Require();
+        using var downstream = environment.ObserveApplicationRequest(BffPrefix + probe.ExpectedPath);
+        using var write = await ApplicationLifecycleWrite.CreateAsync(page, new Uri(environment.Profile.ClientUri, BffPrefix + probe.ExpectedPath),
+            navigation: boundary == ApplicationPendingBoundary.Navigation);
         var started = Stopwatch.GetTimestamp();
         Exception? failure = null;
         try
@@ -139,15 +142,25 @@ internal static class ApplicationPendingLifecycle
             await ApplicationLifecycleUi.Button(page, boundary == ApplicationPendingBoundary.OriginalDeadline ? ApplicationLifecycleUi.Replace : ApplicationLifecycleUi.Create).ClickAsync();
             await probe.Started.Task.WaitAsync(TimeSpan.FromSeconds(GateSeconds), TestContext.Current.CancellationToken);
             RequirePendingObservation(probe, write, before);
+            Assert.True(downstream.Requests == 1 && !downstream.PipelineCompleted && !downstream.ResponseCompleted);
+            write.RequireOriginalOwner();
             progress.Mark(ApplicationLifecycleStage.Boundary);
             await BoundaryAsync(page, visibility, environment, probe, observation, boundary, now);
+            await write.RequireNavigationAsync(TimeSpan.FromSeconds(OriginalBudgetSeconds) - Stopwatch.GetElapsedTime(started));
             progress.Mark(ApplicationLifecycleStage.BoundaryComplete);
             Assert.True(Stopwatch.GetElapsedTime(started) < TimeSpan.FromSeconds(OriginalBudgetSeconds));
         }
         catch (Exception exception) { failure = exception; }
         progress.Mark(ApplicationLifecycleStage.Release);
-        await CompleteAsync(probe, write, failure);
+        await CompleteAsync(probe, write, downstream, failure);
         progress.Mark(ApplicationLifecycleStage.RequestsJoined);
+        await RequireFinishedAsync(page, probe, write, boundary, now, before, progress);
+    }
+
+    /// <summary>Checks the final returned UI and exact send counts only after all owned server and browser work has joined.</summary>
+    private static async Task RequireFinishedAsync(IPage page, ApplicationMutationProbe probe, ApplicationLifecycleWrite write,
+        ApplicationPendingBoundary boundary, DateTimeOffset now, int before, ApplicationLifecycleProgress progress)
+    {
         Assert.Equal(MutationCount, write.Requests);
         if (boundary is ApplicationPendingBoundary.Session or ApplicationPendingBoundary.OriginalDeadline)
         {
@@ -185,23 +198,30 @@ internal static class ApplicationPendingLifecycle
     }
 
     /// <summary>Releases once and joins native browser and upstream work under one cleanup budget without replacing a primary failure.</summary>
-    private static async Task CompleteAsync(ApplicationMutationProbe probe, ApplicationLifecycleWrite write, Exception? failure)
+    private static async Task CompleteAsync(ApplicationMutationProbe probe, ApplicationLifecycleWrite write, ApplicationRequestCompletion downstream, Exception? failure)
     {
         probe.Release.TrySetResult();
         try
         {
             var upstream = probe.Started.Task.IsCompleted ? probe.Completed.Task : Task.CompletedTask;
             var browser = write.Requests > 0 ? write.JoinAsync() : Task.CompletedTask;
-            await Task.WhenAll(upstream, browser).WaitAsync(TimeSpan.FromSeconds(GateSeconds));
+            await Task.WhenAll(upstream, browser, downstream.Completion).WaitAsync(TimeSpan.FromSeconds(GateSeconds));
+            Assert.True(probe.ResponseWritten || probe.Canceled.Task.IsCompletedSuccessfully);
         }
         catch (Exception cleanup)
         {
-            TestContext.Current.TestOutputHelper?.WriteLine(CleanupReport, write.Requests, write.IsCompleted, write.IsPageCompleted, probe.Started.Task.IsCompleted, probe.Completed.Task.IsCompleted, write.Response is not null, write.NativeRequests, write.NativeCompleted, write.NativeFailed);
+            TestContext.Current.TestOutputHelper?.WriteLine(CleanupReport, write.Requests, write.IsCompleted, write.IsPageCompleted, probe.Started.Task.IsCompleted, probe.Completed.Task.IsCompleted, write.Response is not null, write.NativeRequests, write.NativeCompleted, write.NativeFailed,
+                write.DocumentEnd, downstream.Requests, downstream.PipelineCompleted, downstream.ResponseCompleted, downstream.Status, downstream.ResponseStarted, downstream.RequestAborted, probe.ResponseWritten, probe.Canceled.Task.IsCompletedSuccessfully);
             failure = failure is null ? cleanup : new AggregateException(failure, cleanup);
         }
         try
         {
             await write.ReleaseNativeAsync();
+        }
+        catch (Exception cleanup) { failure = failure is null ? cleanup : new AggregateException(failure, cleanup); }
+        try
+        {
+            Assert.True(downstream.Seal());
         }
         catch (Exception cleanup) { failure = failure is null ? cleanup : new AggregateException(failure, cleanup); }
         if (failure is not null)

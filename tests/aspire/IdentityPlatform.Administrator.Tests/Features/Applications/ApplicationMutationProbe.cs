@@ -80,11 +80,18 @@ internal sealed class ApplicationMutationProbe
     {
         get; private set;
     }
-    internal bool SafeRequest { get; private set; } = true;
+    internal bool SafeRequest
+    {
+        get; private set;
+    } = true;
     internal TaskCompletionSource Started { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Canceled { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Release { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Completed { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    internal bool ResponseWritten
+    {
+        get; private set;
+    }
 
     /// <summary>Requires the genuine retained credential and finite forwarding surface, without recording sensitive values.</summary>
     internal async Task InvokeAsync(HttpContext http, RequestDelegate next)
@@ -117,6 +124,10 @@ internal sealed class ApplicationMutationProbe
         {
             if (paused)
             {
+                if (http.RequestAborted.IsCancellationRequested)
+                {
+                    Canceled.TrySetResult();
+                }
                 Completed.TrySetResult();
             }
         }
@@ -165,6 +176,10 @@ internal sealed class ApplicationMutationProbe
         http.Response.Headers[CookieResponse] = UpstreamCookie;
         http.Response.Headers[PrivateHeader] = Canary;
         await http.Response.WriteAsync(body, http.RequestAborted);
+        if (Fault == Pause)
+        {
+            ResponseWritten = true;
+        }
     }
 
     /// <summary>Builds independently expected finite responses from the received wire command and deliberately substitutes selected fields.</summary>

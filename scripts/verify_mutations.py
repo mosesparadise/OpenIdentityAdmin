@@ -24,6 +24,7 @@ FAILURE_DIAGNOSTIC = "Exit code indicates failure: '2'. Please refer to https://
 
 MAXIMUM_MUTATION_ORDINAL = 8
 DIAGNOSTIC_PREFIX = 'mutation-diagnostic '
+REPORT_DIAGNOSTIC_PREFIX = 'mutation-report-diagnostic '
 PHASE = ContextVar('mutation_phase', default=('control', 'command', 0))
 ROLES = frozenset(('control', 'baseline', 'mutant', 'restored'))
 OPERATIONS = frozenset(('command', 'checkout', 'commit', 'build', 'discovery', 'execution'))
@@ -123,7 +124,7 @@ def report_observation(path, item):
 
 
 def retain_failure(report, item, error):
-    """Best-effort local receipt never replaces a primary error or creates acceptance evidence."""
+    """Independent finite file/console receipts never replace a primary error or create acceptance evidence."""
     context = RECEIPT.get()
     if context is None:
         return
@@ -134,10 +135,16 @@ def retain_failure(report, item, error):
                  'run_id': run_id if re.fullmatch(r'[0-9]{1,20}', run_id) else None,
                  'role': role, 'operation': operation, 'ordinal': ordinal, 'failure': failure_category(error),
                  **report_observation(report, item)}
-        path.write_text(json.dumps(value, sort_keys=True) + '\n')
+        encoded = json.dumps(value, sort_keys=True)
     except BaseException:
-        # A second cancellation or failed local sink must not replace the original exception.
-        pass
+        return
+    for sink in (lambda: path.write_text(encoded + '\n'),
+                 lambda: print(REPORT_DIAGNOSTIC_PREFIX + encoded, flush=True)):
+        try:
+            sink()
+        except BaseException:
+            # Either sink may fail or receive cancellation; preserve the original failure.
+            pass
 
 
 def perform(role, operation, action, *arguments, ordinal=0, **keywords):

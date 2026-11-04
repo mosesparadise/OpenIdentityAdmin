@@ -24,6 +24,7 @@ internal sealed class ApplicationNativeWindow(string id)
     private const string Iconic = "Iconic";
     private const string Normal = "Normal";
     private const int Limit = 1024;
+    private const int PollingMilliseconds = 50;
     private static readonly TimeSpan Budget = TimeSpan.FromSeconds(3);
 
     /// <summary>Temporarily labels the actual page, requires one visible native window, then restores the original document title privately.</summary>
@@ -34,7 +35,7 @@ internal sealed class ApplicationNativeWindow(string id)
         var original = await page.EvaluateAsync<string>(Title, marker);
         try
         {
-            var result = await CommandAsync(Tool, Search, Sync, OnlyVisible, Name, marker);
+            var result = await CommandAsync(Budget, Tool, Search, Sync, OnlyVisible, Name, marker);
             var ids = result.Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             Assert.True(ids.Length == 1 && ulong.TryParse(ids[0], NumberStyles.None, CultureInfo.InvariantCulture, out var value) && value != 0);
             return new(ids[0]);
@@ -45,22 +46,44 @@ internal sealed class ApplicationNativeWindow(string id)
     /// <summary>Asks the window manager to minimize the identified native window and requires its real iconic state.</summary>
     internal async Task MinimizeAsync()
     {
-        await CommandAsync(Tool, Minimize, Sync, id);
-        var state = await CommandAsync(Properties, Identifier, id, State);
-        Assert.True(state.Contains(Iconic, StringComparison.Ordinal));
+        var started = Stopwatch.GetTimestamp();
+        await CommandAsync(Remaining(started), Tool, Minimize, Sync, id);
+        await RequireStateAsync(Iconic, started);
     }
 
     /// <summary>Maps and activates the same owned window; it never substitutes another page or supplies a visibility value.</summary>
     internal async Task RestoreAsync()
     {
-        await CommandAsync(Tool, Map, Sync, id);
-        await CommandAsync(Tool, Activate, Sync, id);
-        var state = await CommandAsync(Properties, Identifier, id, State);
-        Assert.True(state.Contains(Normal, StringComparison.Ordinal));
+        var started = Stopwatch.GetTimestamp();
+        await CommandAsync(Remaining(started), Tool, Map, Sync, id);
+        await CommandAsync(Remaining(started), Tool, Activate, Sync, id);
+        await RequireStateAsync(Normal, started);
+    }
+
+    /// <summary>Observes asynchronous window-manager state publication under the original transition budget without repeating the native action.</summary>
+    private async Task RequireStateAsync(string expected, long started)
+    {
+        while (true)
+        {
+            var state = await CommandAsync(Remaining(started), Properties, Identifier, id, State);
+            _ = Remaining(started);
+            if (state.Contains(expected, StringComparison.Ordinal))
+            {
+                return;
+            }
+            await Task.Delay(TimeSpan.FromMilliseconds(PollingMilliseconds), TestContext.Current.CancellationToken).WaitAsync(Remaining(started));
+        }
+    }
+
+    /// <summary>Shares one monotonic deadline across native action and state observation; successful reads cannot restart it.</summary>
+    private static TimeSpan Remaining(long started)
+    {
+        var remaining = Budget - Stopwatch.GetElapsedTime(started);
+        return remaining > TimeSpan.Zero ? remaining : throw new TimeoutException();
     }
 
     /// <summary>Bounds fixed native utilities and their output, joins failures, and never publishes arbitrary process diagnostics.</summary>
-    private static async Task<string> CommandAsync(string command, params string[] arguments)
+    private static async Task<string> CommandAsync(TimeSpan budget, string command, params string[] arguments)
     {
         using var process = new Process { StartInfo = new(command) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true } };
         foreach (var argument in arguments)
@@ -74,7 +97,7 @@ internal sealed class ApplicationNativeWindow(string id)
         var joined = Task.WhenAll(exit, output, error);
         try
         {
-            await joined.WaitAsync(Budget, TestContext.Current.CancellationToken);
+            await joined.WaitAsync(budget, TestContext.Current.CancellationToken);
             Assert.Equal(0, process.ExitCode);
             return await output;
         }

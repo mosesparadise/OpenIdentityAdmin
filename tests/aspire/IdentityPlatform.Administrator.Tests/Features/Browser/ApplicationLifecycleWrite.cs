@@ -20,6 +20,7 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     internal int NativeRequests => native?.Ledger.Requests ?? -1;
     internal bool NativeCompleted => native?.Ledger.IsComplete == true;
     internal bool NativeFailed => native?.Ledger.Failed == true;
+    internal ApplicationDocumentEnd DocumentEnd => native?.Document?.Ledger.EndKind ?? ApplicationDocumentEnd.None;
     internal bool IsPageCompleted
     {
         get; private set;
@@ -49,11 +50,25 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     }
 
     /// <summary>Arms Chromium's raw native observation before submission while retaining the original Playwright request and context events.</summary>
-    internal static async Task<ApplicationLifecycleWrite> CreateAsync(IPage page, Uri target)
+    internal static async Task<ApplicationLifecycleWrite> CreateAsync(IPage page, Uri target, bool navigation)
     {
         Assert.True(target.Scheme == Uri.UriSchemeHttps && target.Query.Length == 0 && target.AbsolutePath.StartsWith(ApplicationLifecycleUi.Collection, StringComparison.Ordinal));
-        var native = BrowserSession.Engine == Chromium ? await ApplicationNativeNetwork.CreateAsync(page, target) : null;
+        var native = BrowserSession.Engine == Chromium ? await ApplicationNativeNetwork.CreateAsync(page, target, navigation) : null;
         return new(page, target, native);
+    }
+
+    /// <summary>Requires the captured original context to remain live immediately before the genuine navigation trigger.</summary>
+    internal void RequireOriginalOwner() => native?.Document?.Ledger.RequireLive();
+
+    /// <summary>Requires native context-epoch loss and a different returned owner before releasing the late response, within the original interaction budget.</summary>
+    internal async Task RequireNavigationAsync(TimeSpan remaining)
+    {
+        if (native?.Document is null)
+        {
+            return;
+        }
+        Assert.True(remaining > TimeSpan.Zero);
+        await native.RequireNavigationAsync(remaining);
     }
 
     /// <summary>Retains the first actual browser request identity and counts every additional dispatch as a separate attempt.</summary>
@@ -99,8 +114,8 @@ internal sealed class ApplicationLifecycleWrite : IDisposable
     /// <summary>Waits under an independent bounded cleanup budget for the original browser request.</summary>
     internal async Task JoinAsync()
     {
-        await (native?.Ledger.Completion ?? completed.Task).WaitAsync(TimeSpan.FromSeconds(JoinSeconds));
-        Assert.True(native?.Ledger.IsComplete ?? IsCompleted);
+        await (native?.Document?.Ledger.Destroyed ?? native?.Ledger.Completion ?? completed.Task).WaitAsync(TimeSpan.FromSeconds(JoinSeconds));
+        Assert.True(native?.Document?.Ledger.IsDestroyed ?? native?.Ledger.IsComplete ?? IsCompleted);
         Assert.True(matched && request is not null && Requests == 1);
     }
 

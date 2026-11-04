@@ -375,3 +375,105 @@ Final control review removed duplicate terminal signals from the late duplicate-
 and redirect-start calibrations: each now fails solely on its intended bad initiation
 after a valid completion, rather than also failing on an unrelated second terminal.
 The production ledger and hosted scenario behavior are unchanged.
+
+## Complete native factor candidates and safe mutation failure receipts
+
+[Run506](hosted-verification.md#tenth-candidate--mutation-and-demo-failures-remain-rejected)
+localizes the PostgreSQL demo failure to code selection before MFA submission.
+The independent test oracle considered only the four adjacent counters, excluding a
+possibly unused current value. It now appends the current counter after those four,
+preserving their priority and excluding every already accepted numeric value. All
+five are already inside the native acceptance window; full exhaustion still fails.
+No wait, authentication retry, production factor change or deadline extension is added.
+An explicit observation-time overload supports deterministic controls only; ordinary
+callers still sample the real clock once. The existing two RFC-vector cases additionally
+prove current-only fallback using independently fixed values, unchanged priority and
+full-exhaustion rejection. Five ceremonies alone do not prove the hosted failure's
+cause: enrollment consumes the current code, and clock movement/collisions change
+which values are available. Corrected runtime evidence remains required.
+
+Both hosted managed-mutation lanes also fail without usable retained failure categories.
+The existing bounded report projection now goes to an independently guarded console
+sink as well as its local file, prefixed `mutation-report-diagnostic `. It contains
+only fixed categories/checkpoints, bounded counters, public source/run identities and
+marker/stack match booleans. No raw XML, exception, command, filter, marker text or
+credential payload is printed. Either sink may fail without replacing the primary
+error or interfering with source restoration. Strict native TRX acceptance and all
+mutation targets remain unchanged; this diagnostic prefix cannot count as a pass.
+All60 Python controls pass, including private-canary suppression, exact finite JSON
+agreement, broken-pipe preservation and continued console output after file failure.
+Independent test/security reviews pass both corrections and preserve the stated
+causality limits. All native case identities and hosted acceptance counts are unchanged.
+
+
+## Navigation ownership and asynchronous native window state
+
+The tenth run still rejects Chromium pending Navigation after observing the exact
+raw native request start. Another terminal-event observation layer is not justified.
+Product lifecycle handling synchronously invalidates the editor generation and
+aborts its signal; late results independently check that generation. The requirement
+is that an old operation cannot republish into the returned UI, rather than an
+assumption that Chromium must deliver a network-terminal event within three seconds.
+
+The navigation-only Chromium witness now uses the existing owned session to capture
+the original main/default context's frame, numeric ID and unique ID before submission.
+It verifies the running browser's exact `--disable-back-forward-cache` switch, enables
+Runtime once, requires the original context still live immediately before navigation,
+and observes either exact individual destruction or explicit clearing of the captured
+context epoch. Individual and epoch observations remain distinct finite categories.
+Actual native history must complete, a different live default-context unique ID must
+be observed, and the returned main frame must retain its identity with a different,
+nonempty loader ID. All of this occurs before response release within the original
+five-second interaction budget. Missing/pre-arm events, session loss, original-ID
+reappearance, and destruction of the replacement owner prevent acceptance. No new
+loader or pagehide signal alone can satisfy the witness.
+
+Pinned Chromium153 uses V8 commit `0b60d2b01800d7ba2c6eeb5e51ecd95f6dab44c7`.
+The [protocol defines both native events](https://github.com/v8/v8/blob/0b60d2b01800d7ba2c6eeb5e51ecd95f6dab44c7/include/js_protocol.pdl#L1804);
+[context-group reset](https://github.com/v8/v8/blob/0b60d2b01800d7ba2c6eeb5e51ecd95f6dab44c7/src/inspector/v8-inspector-impl.cc#L352)
+and [runtime reset](https://github.com/v8/v8/blob/0b60d2b01800d7ba2c6eeb5e51ecd95f6dab44c7/src/inspector/v8-runtime-agent-impl.cc#L1179)
+produce clearing. [Runtime restoration can also emit it](https://github.com/v8/v8/blob/0b60d2b01800d7ba2c6eeb5e51ecd95f6dab44c7/src/inspector/v8-runtime-agent-impl.cc#L1107),
+which is why same-session continuity, original-ID rejection, real history and the
+new-loader observation are mandatory. The claim is an observed context-epoch change
+under this verified configuration, not generic physical realm destruction, preserved
+BFCache acceptance, browser receipt, network completion or cancellation. WebKit and
+same-document boundaries retain their actual native terminal-event requirement.
+
+The existing outer BFF endpoint additionally arms one exact query-free POST attempt.
+A private attempt record separately observes pipeline-finally and the server's real
+Response.OnCompleted callback, without retaining HttpContext, headers or bodies.
+Callbacks only signal; neither is manually invoked in a browser journey. Both signals
+and upstream middleware completion join under the original three-second cleanup cap.
+Final sealing rejects duplicate admission/callbacks or incomplete evidence, including
+late observations during native-session cleanup. Original/cleanup failures remain
+aggregated. One browser request, one native initiation, one BFF admission and one API
+send are independently required. The probe separately records completed response
+writes and observed request cancellation; a canceled-only path is not evidence that a
+successful late response was delivered. Existing response/header, returned-DOM,
+no-late-output, native history, privacy/storage, theme and accessibility assertions remain.
+
+Native minimization/restoration now issues each original window action once and polls
+actual WM_STATE until it matches under one shared monotonic three-second budget.
+Action and observation cannot restart that budget; each process still has bounded
+cleanup. This observes asynchronous state publication without synthesizing visibility,
+repeating native actions or extending timing. The prior failed preflight remains
+rejected until the corrected source completes real native transitions.
+
+Permanent synthetic calibrations cover both context-event forms, mismatched/missing
+identity, pre-arm clearing, restored/lost replacement owners, late sealing, and exact
+BFF admission with separate required completion signals. Initiation-only network sealing
+is permitted only alongside the navigation context witness; default sealing still
+requires an actual terminal. Missing, duplicate and invalid initiation fail either
+mode. Synthetic callbacks are not native execution or additional ordinary test cases.
+
+Final architecture/security/test reviews pass after adding returned-loader corroboration,
+invalidating destruction of the replacement context, and ensuring launch-policy failure
+assertions cannot print browser arguments. Complete solution build, style/imports,
+quality and seeded rejection gates pass; the final privacy-only assertion change is
+separately rebuilt with zero warnings/errors. All three compiled synthetic calibration
+groups pass. The final exact two sanitizer and two factor-oracle identities pass4/4
+with zero skips; strict native TRX SHA256 `61abb1cecd0470c4a44d887275ba185e1f1fb581af504bdb9f73fb0311775901`.
+Source gitleaks, instruction and diff checks pass. An initial method-size finding was
+resolved by an awaited final-view helper, and formatting/named-expectation findings
+were corrected without any new allowance. These local checks do not execute retained
+browsers or accept the rejected hosted candidate.

@@ -35,10 +35,28 @@ internal static class ApplicationNetworkControls
         Assert.False(pending.IsComplete);
         RequireBadStarts();
         RequireReuse();
+        RequireInitiationSealing();
         var sealedValue = Started();
         sealedValue.Ended(Request, false);
         Assert.True(sealedValue.Seal());
         Assert.False(sealedValue.Seal());
+    }
+
+    /// <summary>Only explicit navigation ownership proof may consume initiation-only sealing; missing, duplicate or invalid starts still fail.</summary>
+    private static void RequireInitiationSealing()
+    {
+        Assert.False(Started().Seal());
+        Assert.True(Started().Seal(requireTerminal: false));
+        Assert.False(new ApplicationNetworkLedger(Frame, Loader, Target).Seal(requireTerminal: false));
+        var duplicate = Started();
+        duplicate.Started(Other, Frame, Loader, Target, Post, false);
+        Assert.False(duplicate.Seal(requireTerminal: false));
+        var invalid = Started();
+        invalid.Invalidate();
+        Assert.False(invalid.Seal(requireTerminal: false));
+        var wrong = new ApplicationNetworkLedger(Frame, Loader, Target);
+        wrong.Started(Request, Other, Loader, Target, Post, false);
+        Assert.False(wrong.Seal(requireTerminal: false));
     }
 
     /// <summary>Rejects provenance mismatches and malformed identifiers while ignoring unrelated native traffic.</summary>
