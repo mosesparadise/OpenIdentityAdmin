@@ -1,8 +1,8 @@
 # Try application creation and editing locally
 
-The create/details/edit/secret-replacement UI is implemented on **`123-application-editor`**. Merged `main` still has the read-only Applications list. Browser/native Aspire acceptance for this new UI remains pending; [current evidence and limits](editor-recovery.md) distinguish delivered source from unperformed testing.
+The create/details/edit/secret-replacement UI is delivered on **main** through [PR #120](https://github.com/mosesparadise/OpenIdentityAdmin/pull/120). [Accepted automated evidence and limits](verification.md#accepted-internal-delivery--4-november-2026) cover both real providers, retained browsers and ordinary native Aspire demos.
 
-Check out the feature branch in a clean checkout, then set **IdentityPlatform.AppHost** as the IDE startup project, select **local-demo** and run. Alternatively, from the repository root:
+Update a clean checkout to main, then set **IdentityPlatform.AppHost** as the IDE startup project, select **local-demo** and run. Alternatively, from the repository root:
 
 ```text
 dotnet tool restore
@@ -24,4 +24,4 @@ Follow the [native Aspire local guide](../014-local-b3-demo/quickstart.md) to in
 
 The integrating client must use discovery, confidential code flow, Basic client authentication, PKCE S256, nonce/state and only `openid`. Every new sign-in requires fresh password/MFA and explicit consent. The resulting client has no management scopes, audience or roles. [T012](native-issuance.md) and [T013](created-client-journeys.md) record genuine created-client issuer verification on both providers.
 
-This disposable demo loses accounts/databases/keys when the whole graph is restarted. Actual Windows, browser/manual accessibility, all six historical findings and release gates remain open. Refresh, ordinary API scopes, other profiles and ordinary-user onboarding remain outside this increment.
+This disposable demo loses accounts/databases/keys when the whole graph is restarted. Actual Windows, qualified manual accessibility, Firefox/A-009, all six historical findings and release gates remain open. Refresh, ordinary API scopes, other profiles and ordinary-user onboarding remain outside this increment.

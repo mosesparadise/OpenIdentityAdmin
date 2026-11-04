@@ -1,5 +1,7 @@
 # T020–T022 contract and verification work
 
+**Accepted internal delivery — 4 November 2026:** [Final evidence](verification.md#accepted-internal-delivery--4-november-2026) supersedes the pending or missing-scenario wording below. T007/T014/T019/T020/T021/T022 are complete internally; historical failed runs and evidence limits remain applicable.
+
 4 November 2026. This increment reuses the implemented creation, details, editing,
 secret replacement and managed issuer paths. FR-001–012. The visible feature is on
 `123-application-editor`; use the ordinary Aspire [local-demo quickstart](quickstart.md).

@@ -1,5 +1,7 @@
 # Browser acceptance implementation
 
+**Accepted internal delivery — 4 November 2026:** [Final evidence](verification.md#accepted-internal-delivery--4-november-2026) supersedes the pending or missing-scenario wording below. T007/T014/T019/T020/T021/T022 are complete internally; historical failed runs and evidence limits remain applicable.
+
 4 November 2026. Source implementation checkpoint; required retained-engine execution
 and exact-head full acceptance are still pending. This completes missing scenario
 source identified in [the gap review](browser-acceptance-gaps.md), not T019/T022

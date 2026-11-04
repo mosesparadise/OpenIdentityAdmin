@@ -1,5 +1,7 @@
 # Remaining browser acceptance
 
+**Accepted internal delivery — 4 November 2026:** [Final evidence](verification.md#accepted-internal-delivery--4-november-2026) supersedes the pending or missing-scenario wording below. T007/T014/T019/T020/T021/T022 are complete internally; historical failed runs and evidence limits remain applicable.
+
 Historical source-gap review, 4 November 2026. [The subsequent implementation](browser-acceptance-implementation.md) adds the missing scenario source; runtime acceptance remains pending. This source review distinguishes implemented test coverage from the
 remaining feature 019 FR-012, SC-001/SC-005 and T019 obligations. A green current matrix
 would not, by itself, complete T019 or T022. Existing Firefox/A-009 and human/Windows

@@ -1,5 +1,139 @@
 # Application editor verification
 
+## Accepted internal delivery — 4 November 2026
+
+[PR #120](https://github.com/mosesparadise/OpenIdentityAdmin/pull/120) is squash-merged as `74e186078c8b98aec3fff0e8e6fb7300dcf8eafa`. The native Aspire workspace now
+supports application creation, sanitized details, concurrency-safe editing and explicit
+one-time secret replacement. The same UI-created and edited registration completes
+fresh password/MFA, explicit OpenID consent and real server-side code/S256 exchange.
+Use the [local quickstart](quickstart.md) from main; no custom PowerShell or separate
+frontend server/build is required.
+
+Source `5f1413e8c616be4a6bfc21abd88534d073b3f3ab`, tested merge `0c826c0e7003e8087784bece74f109b7ce0e43e8` and the squash share tree `111687129f2ad27ddba90fc9a2a8e30f8a4d1478`.
+Base was `4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa`. [Run 41896318614](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41896318614),
+attempt1, satisfies all122 exact-head job obligations. Every job's initial checkout,
+head and attempt is bound to the tested merge. The reconciliation binds all45 reviewed
+source/configuration inputs; remote main and the squash tree were
+verified after merge. Twelve earlier failed tested candidates remain rejected in
+[hosted verification](hosted-verification.md); this acceptance uses no retained result
+from those runs and claims no earlier failed run became successful. Intermediate
+`c0322ebcd0ed568f73c1c105bbb22170badd9106` was superseded to remove masked negative
+controls; it is not accepted evidence and is not counted as another rejected tested candidate.
+
+| Verified boundary | Accepted evidence |
+| --- | --- |
+| Ordinary execution | 101 strict-verifier report obligations /5,427 required native passes, zero failures/skips |
+| Identity preservation | 2,385 Administrator native identities; prior2,375 retained with documented bootstrap rename mapping and ten additive browser records |
+| Host/provider behavior | 1,846 Host cases; genuine PostgreSQL and SQL Server mutation, audit rollback, concurrency, current authority, expiry and native issuer cases |
+| Native Aspire | Both ordinary local demos pass3/3, including the actual UI-created registration and browser sign-in ceremony |
+| Retained browsers | All40 provider/engine cells pass; Administrator's nine stories total71 cases per provider per engine |
+| Browser journey and recovery | Same-registration fresh password/MFA/consent/code flow; denial; real permission removal/expiry; bounded error presentation; committed lost-output recovery and one-send checks |
+| Native lifecycle | Eight lifecycle executions across both providers/engines include headed history/native visibility and headless pending logout/original expiry, with joined pending work and no late secret restoration |
+| Contracts and UI | 44 native core and seven cases per retained browser; separate44 exact Node contract controls and55 exact UI cases; deterministic generated/shipped bytes |
+| Coverage | All98 required coverage inputs and15 unchanged module floors pass |
+| Mutations | 90 behavioral kills in14 lanes, with passing baseline/restored controls and exact source restoration |
+| Artifact bindings | All116 accepted upload-log/API identities and SHA-256 values match; [manifest](accepted-artifacts.md) |
+
+Lifecycle execution uses the explicitly instrumented Playwright1.63.0 driver copies
+documented in [browser corrections](browser-corrections.md). All40 browser jobs run
+the12 mandatory instrumentation controls; each of the four actual lifecycle wrapper
+steps separately proves its selected engine/version/original/copy hashes. Ordinary
+browser lanes use the unmodified driver. These controls are separate from ordinary
+native totals. Actual window-manager/DOM transitions and trusted main-document events
+are required; no synthetic event satisfies them. Only the two lifecycle helpers seed
+one exact unpredictable test-owned counter key. Its bounded integer record is
+validated, privately scanned and atomically removed before unchanged empty-storage
+assertions; unrelated browser journeys carry no such instrumentation. Finite progress
+checkpoints are diagnostic only and cannot replace acceptance evidence. History tests record bfcache use
+when observed; a zero count does not establish bfcache restoration or browser-wide
+compatibility. No cache/security header is weakened. Pending Navigation/Visibility
+retain headed contexts and genuine window transitions. Session/OriginalDeadline use
+headless contexts with the same explicitly instrumented pinned driver; their earlier
+failed headed observations remain rejected and cause-unproven. No headed logout/expiry
+acceptance is inferred from this new topology.
+
+Only pending Navigation on Chromium explicitly adds `--enable-automation`, enabling
+the native command-line observation prerequisite while retaining the actual
+BFCache-disabled launch-policy assertion. Other launches receive no added argument,
+and non-Chromium opt-in is rejected. This flag can affect browser chrome; results
+apply to this explicitly configured fixture, not an ordinary unmodified launch.
+Earlier unflagged failures remain rejected. Pinned source establishes the prerequisite;
+it does not recover the suppressed hosted exception text.
+
+Navigation-only Chromium proves original UI ownership loss rather than network
+termination. It verifies the running BFCache-disabled configuration, explicit loss
+of the original captured context epoch, a different live default-context identity,
+real history and the returned main-frame identity with a new loader before response
+release. This is not generic physical realm destruction, preserved-BFCache acceptance,
+browser receipt, network completion or remote cancellation. Initiation-only network
+sealing is permitted only with this independently validated navigation witness.
+WebKit and same-document boundaries retain actual native request-terminal observation;
+original Playwright request identity and one-send guards remain mandatory.
+
+The exact admitted BFF request separately requires both pipeline return and the real
+server Response.OnCompleted callback, joined with API work under the original
+three-second cleanup budget and sealed after native-session cleanup. Completed server
+response writes and observed request cancellation are recorded as different outcomes.
+A cancellation-only path does not prove a successful late response was delivered to
+the browser. Returned-UI/no-late-output checks remain required; no browser receipt or
+immediate remote cancellation claim is inferred from server completion. Synthetic
+ledger/callback controls calibrate missing, invalid, duplicate and late evidence;
+they are not native browser execution. Separate genuine transport-disconnect controls
+remain required and pass.
+
+Creation-body observation captures and parses the same exact201 response once before
+DOM/focus/input waits, preserving the original body/display equality and application-ID
+checks. It adds no retry, refetch, interception or background body task. Permanent
+sanitizer controls restrict failure diagnostics to a bounded closed category and six
+booleans, preserving the original exception without exposing body, URL, headers or
+failure text. This observation change and its accepted execution do not establish the
+cause of either earlier demo failure; those failed runs remain rejected.
+
+Private-output observation covers bounded actual URLs/current history state,
+console/errors, DOM/storage, successful post-cleanup xUnit output and sanitizer
+controls. It does not enumerate arbitrary browser memory, complete private history,
+later process/TRX output or uploaded ZIP contents. Raw artifact transfer remains
+blocked by enforced network policy. Reconciliation uses exact committed verifiers,
+decoded finite logs and upload/API metadata; no local ZIP hashing or raw report reparse
+is claimed. The hosted coverage checker enforces exact floors; the table below retains
+its rounded log percentages.
+
+| Module | Lines | Branches |
+| --- | ---: | ---: |
+| IdentityPlatform.Core | 99.7% | 96.4% |
+| IdentityPlatform.Infrastructure | 93.3% | 96.4% |
+| IdentityPlatform.ServiceDefaults | 100.0% | 100.0% |
+| IdentityPlatform.Migrator | 98.7% | 100.0% |
+| IdentityPlatform.AuthServer | 94.2% | 98.6% |
+| IdentityPlatform.Admin.Api | 93.4% | 96.8% |
+| IdentityPlatform.Admin.Bff | 94.4% | 96.4% |
+| IdentityPlatform.Worker | 100.0% | 100.0% |
+| IdentityPlatform.AppHost | 97.1% | 99.0% |
+| IdentityPlatform.Database.Abstractions | 99.1% | 100.0% |
+| IdentityPlatform.Database.PostgreSql | 100.0% | 100.0% |
+| IdentityPlatform.Database.SqlServer | 100.0% | 100.0% |
+| IdentityPlatform.Database.Hosting | 95.5% | 100.0% |
+| IdentityPlatform.Database.PostgreSql.Hosting | 100.0% | 100.0% |
+| IdentityPlatform.Database.SqlServer.Hosting | 100.0% | 100.0% |
+
+Independent architecture/security, test/CI and UX source reviews pass within their
+recorded scope. The final requirement review finds no remaining source/design gap for
+T007/T014/T019/T022; hosted evidence review separately reconciles the accepted results.
+T001–T022 are complete for this internal slice. The coherent documentation followup
+records T023's reviewed squash and local instructions. Earlier pending/missing-scenario
+wording below and in linked checkpoints is historical and superseded by this acceptance.
+
+The selected scope remains one confidential web code/S256 profile, a generated
+expiring shared secret and OpenID-only identity from existing administrator accounts.
+It grants no administrator role or management authority. Other profiles, ordinary-user
+onboarding, scope/audience/claim catalogues, clone/disable/delete and asymmetric
+credentials remain roadmap work. Refresh remains disabled. Actual Windows Docker Desktop, qualified manual accessibility, Firefox and the precise A-009 certificate deferrals, all six historical findings, human/vendor/production/public-release gates remain open.
+
+## Historical implementation and verification record
+
+The following checkpoints retain their original results and source bindings.
+
+
 Starting main: `4c9fb24f003ecfdeb4b4b4d438ce7c847f3780fa`. Planning checkpoint `cbe39a2f116702c85edca1879203c05c5955f41f` preserved. User's “all recommended” response resolves the three initial-slice choices; selected scope is recorded in spec/research/approval.
 
 Independent architecture, credential-journey, provider/ownership and test research identifies separate native managed-client admission/publication, no administrator completion grant, atomic manager/policy/audit writes, exact aggregate concurrency, cross-family CSRF/replay and real issuer tests. Initial T004 implementation is in progress; no end-to-end feature delivery is claimed.
