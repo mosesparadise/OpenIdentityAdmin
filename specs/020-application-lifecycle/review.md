@@ -22,11 +22,14 @@
 | Final architecture review | Quiescing only during incompatible downgrade is insufficient | Data model requires traffic remain blocked until compatible enforcement or separately approved recovery |
 | Final architecture review | Existing cleanup does not implement audit retention deletion | Data model now records retained audits and cascade only for separately authorized future deletion |
 | Security | SQL Server string equality can admit trailing-space reason aliases despite a finite IN constraint | Store a constrained numeric reason code behind exact wire strings; T003 requires both-provider alias/invalid-code controls |
+| Security | Strict BFF JSON rejects new API fields; additive DTO is not automatically rolling-compatible | Contract/data model/T007 require coordinated quiesced API/BFF/UI switch and real proxy probes; online bridge remains separate |
 
 ## Packet review status
 
 Architecture and test reviewers verified the corrected packet. CHK001–CHK006 are satisfied for
-requirements quality; CHK007 remains open. A separate narrow security review is pending.
+requirements quality; CHK007 remains open. The independent security reviewer also passes the
+proposed issuance-only design after the reason-storage and coordinated-deployment corrections.
+These are design dispositions, not new runtime evidence or acceptance of the unanswered scope option.
 Requirements and custom checklists track document quality separately from the seventeen
 unstarted implementation tasks. One optional product-scope question has been asked and no answer
 has been recorded. No recommendation has been relabeled as user approval.
@@ -41,5 +44,12 @@ Local documentation validation passes: seven CI-scope controls, eight skill/revi
 checks, assurance snapshot integrity for 345 still-unassessed controls and 27 assurance controls.
 Packet local links, 17 sequential unchecked tasks, all 19 traceability mappings and whitespace
 checks pass. These are documentation checks, not product tests or compliance acceptance.
+
+The packet is published as draft [PR #122](https://github.com/mosesparadise/OpenIdentityAdmin/pull/122).
+Its initial source `81fa6e36e518454ffffa24aba773f4b3b2684265` passes documentation-only
+[run514](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41935503974): four required
+jobs succeed; sixteen full-scope jobs are intentionally unselected, not passes. Later packet
+corrections require their own exact-head check; consult the PR for that result. No full application
+CI, SQL experiment, migration, production correction or merge was performed for this packet.
 
 The packet is useful for reviewing the next increment; it does not close M04-A or M04-E.

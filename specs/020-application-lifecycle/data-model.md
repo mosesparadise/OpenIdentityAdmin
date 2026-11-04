@@ -59,3 +59,10 @@ Do not silently drop state or advertise a safe online downgrade. Test the additi
 document backup/restore and mixed-version deployment ordering. Deploy lifecycle writes only after
 every issuer instance enforces Enabled; a mixed fleet containing old issuers cannot satisfy the
 five-second contract.
+
+The new details field also requires a coordinated API/BFF contract switch. Existing
+`ApplicationJson.Options` rejects unmapped JSON members and the BFF uses it for details parsing;
+an old BFF cannot be assumed to accept a new API's `enabled` field. Quiesce management traffic
+while switching API, BFF and their generated UI assets to the matching contract, then probe the
+actual details/mutation paths before reopening traffic. An online mixed-version rollout is out
+of scope unless an explicit compatibility bridge is implemented and independently tested.

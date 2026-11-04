@@ -50,6 +50,12 @@ then regenerate TypeScript/browser schema using the repository's existing genera
 compatibility assertions. Preserve protocol contracts and existing editor/credential response
 semantics. Direct-call negative tests remain required even if UI hides an action.
 
+Adding a field is not automatically wire-compatible: current BFF deserialization rejects
+unmapped members. Deploy matching API/BFF/generated UI contracts under quiesced management
+traffic and verify real proxy details/mutation parsing before reopening it. Do not advertise
+rolling mixed-version compatibility without a separately tested bridge. Issuer-first lifecycle
+enforcement remains a separate prerequisite before enabling writes.
+
 The grant-revocation preference remains pending. If included, specify a separately authorized
 durable job with 202/status/progress/idempotent processing and failure semantics; do not treat
 `applications.disable` as `grants.revoke` or silently add a synchronous scan.
