@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text.Json;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
@@ -118,10 +117,10 @@ internal static class ApplicationEditorJourney
         var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(EnterKey),
             item => item.Request.Method == Post && item.Url == new Uri(origin, CollectionPath).AbsoluteUri);
         Assert.Equal(CreatedStatus, response.Status);
+        using var body = await ApplicationEditorResponse.ReadAsync(page, response, new Uri(origin, Applications));
         await HeadingAsync(page, CreatedTitle);
         var output = await page.Locator(Secret).InputValueAsync();
         Assert.True(output.Length == SecretLength);
-        using var body = JsonDocument.Parse(await response.TextAsync());
         Assert.True(body.RootElement.GetProperty(SecretField).GetString() == output);
         return new(body.RootElement.GetProperty(ApplicationField).GetProperty(IdField).GetString()!, Client, Callback, output, output);
     }

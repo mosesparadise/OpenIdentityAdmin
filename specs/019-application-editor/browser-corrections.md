@@ -514,3 +514,57 @@ used. The new exact-head hosted execution must verify this configured browser.
 | Solution build | `2991778bdac3bacb0cb54d5cd3af4eefb5f1f1342ec7fadde3c82e473fb042a2` |
 | Quality gate | `7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6` |
 | Compiled synthetic calibration | `39b197284812a9d22e9707d145bee80f91c2a9aaf46eb8e236b15cd7b23af9c4` |
+
+## Immediate creation-response observation
+
+Run508 rejects both ordinary native Aspire demos at the same creation-body read:
+`ApplicationEditorJourney.cs:124`, after status201, the Created heading and expected
+secret length already passed. Each demo reports2/3 passes, one failure and zero skips.
+The safe category is Browser. No raw exception, response body or command output is
+available, and no specific browser cache, detachment or navigation cause is inferred.
+
+Pinned Playwright1.63.0 reads response content lazily: its `Response.internalBody`
+creates the cached body promise only when called, waits for completion, then invokes
+Chromium's `Network.getResponseBody` callback. That callback cannot refetch this POST.
+The generic navigation warning is appended to protocol errors and is not proof that
+navigation occurred. The inspected creation path prevents native form navigation and
+updates React state; there is no explicit test navigation between receipt and the old
+body read. Successful UI output establishes application-side consumption, not later
+availability of the inspector's copy.
+
+The candidate captures and parses the same exact201 response immediately, before
+heading/focus/input waits. All original status, DOM, focus, secret-length,
+body-secret/display equality and application-ID bindings remain. There is one body
+read, no retry/refetch/interception, no background task and no timeout change. Parsed
+secret-bearing content remains in a scoped private JsonDocument. This reduces the
+body-observation delay but is not a proven explanation or acceptance of the failed run.
+
+A new shared helper is explicitly source-linked into the native-demo project. On a
+Playwright body-read failure it best-effort emits only a closed category and six
+booleans: page closed, browser connected, exact expected-location match, service-worker
+response, redirect presence and request-failure presence. It never emits response
+content, URLs, headers, request failure text or exception text. Category matching
+inspects at most4096 message characters; unknown and generic navigation-hint messages
+remain Unknown. Classification is diagnostic, not proof of causation. Diagnostic
+observation or sink failure cannot replace the original failure.
+
+The two existing provider-independent BrowserEvidenceTests identities retain their
+original checks and add exact category/boolean expectations, secret-canary and
+exception-data suppression, overlong/unknown/navigation-hint cases, successful output
+and throwing observer/sink controls. No ordinary test identity, required count or
+browser/provider obligation is removed or renamed. Architecture/security source
+reviews pass after adding the explicit AppHost source link; runtime acceptance remains
+required. No raw private browser content is exposed to improve diagnostics.
+
+The final complete solution build passes with zero warnings/errors, and whitespace,
+imports, quality, instruction, diff and source-secret checks pass. Focused native
+sanitizer execution passes2/2 with zero skips; repository strict counter/name and
+result/definition/entry validators pass. Initial compile/formatting and unnamed-test
+literal findings were corrected without allowances. These checks do not establish
+native browser body-read acceptance.
+
+| Local correction receipt | SHA256 |
+| --- | --- |
+| Final solution build | `459b4f67a0098806292420d461033481aca8d55611b5fe26355e5a278d62831c` |
+| Final quality gate | `7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6` |
+| Exact focused sanitizer TRX | `55abae3b67697023fe337cfbf33898e713004537bd1095433a4023352dbcbd35` |

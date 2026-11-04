@@ -29,6 +29,7 @@ public sealed class BrowserEvidenceTests
     {
         Assert.False(string.IsNullOrWhiteSpace(provider));
         RequireProgressFailureIsNonDisruptive();
+        RequireResponseFailureIsPrivate();
         (Exception Error, string Expected)[] failures = [(new PlaywrightException(KnownMessage), KnownSafeMessage),
             (new PlaywrightException(SensitiveMessage), UnknownSafeMessage),
             (new TimeoutException(KnownMessage, new InvalidOperationException(SensitiveMessage)), KnownSafeMessage),
@@ -80,6 +81,58 @@ public sealed class BrowserEvidenceTests
             Assert.True(Directory.Exists(destination));
         }
         finally { Directory.Delete(directory, recursive: true); }
+    }
+
+    /// <summary>Known, unknown and navigation-hint body failures produce exact closed diagnostics and cannot publish canaries or disrupt the primary error.</summary>
+    private static void RequireResponseFailureIsPrivate()
+    {
+        const int PrefixLimit = 4096;
+        const char Padding = 'x';
+        const string Unknown = "Unknown";
+        const string Unavailable = "Unavailable";
+        const string MissingResource = "MissingResource";
+        const string MissingData = "MissingData";
+        const string Evicted = "Evicted";
+        const string UnavailableMessage = "Response body is unavailable";
+        const string MissingResourceMessage = "No resource with given identifier found";
+        const string MissingDataMessage = "No data found for resource with given identifier";
+        const string EvictedMessage = "Request content was evicted from inspector cache";
+        const string NavigationHint = "Response body is not available for a response that was navigated away from.";
+        (string Message, string Category)[] cases = [(SensitiveMessage, Unknown),
+            (UnavailableMessage, Unavailable), (MissingResourceMessage, MissingResource),
+            (MissingDataMessage, MissingData), (EvictedMessage, Evicted), (NavigationHint, Unknown),
+            (new string(Padding, PrefixLimit) + UnavailableMessage, Unknown)];
+        foreach (var item in cases)
+        {
+            var error = new PlaywrightException(item.Message + SensitiveMessage);
+            error.Data[DataKey] = Canary;
+            RequireResponseDiagnostic(error, item.Category);
+        }
+        var primary = new PlaywrightException(SensitiveMessage);
+        Action action = () =>
+        {
+            ApplicationEditorResponse.Report(() => throw new InvalidOperationException(SensitiveMessage), _ => throw new IOException(SensitiveMessage));
+            ApplicationEditorResponse.Report(() => SensitiveMessage, _ => throw new IOException(SensitiveMessage));
+            throw primary;
+        };
+        var observed = Record.Exception(action);
+        Assert.True(ReferenceEquals(primary, observed));
+    }
+
+    /// <summary>Checks independent complete expectations for both primitive state extremes, including successful diagnostic publication.</summary>
+    private static void RequireResponseDiagnostic(PlaywrightException error, string category)
+    {
+        const string Prefix = "application-editor response-body category=";
+        const string Inactive = " page-closed=False browser-connected=False expected-location=False service-worker=False redirected=False request-failed=False";
+        const string Active = " page-closed=True browser-connected=True expected-location=True service-worker=True redirected=True request-failed=True";
+        Assert.True(ApplicationEditorResponse.Describe(error, default) == Prefix + category + Inactive, Missing);
+        var expected = Prefix + category + Active;
+        var actual = ApplicationEditorResponse.Describe(error, new(true, true, true, true, true, true));
+        Assert.True(actual == expected, Missing);
+        string? published = null;
+        ApplicationEditorResponse.Report(() => actual, value => published = value);
+        Assert.True(published == expected, Missing);
+        Assert.False(actual.Contains(Canary, StringComparison.Ordinal), Missing);
     }
 
     private const string ProgressPrefix = "lifecycle-progress-control-";

@@ -419,3 +419,44 @@ The retained rejected snapshot binds terminal run/source/merge/tree, all122 jobs
 118 successful decoded receipts; SHA256
 `b60e7fae03f615c8e4364b4da3e7f5325d3f653a27c97ee232afeb39b9d044a1`.
 No strict acceptance reconciliation is run for this rejected candidate.
+
+## Twelfth candidate — lifecycle passes and demo body reads remain rejected
+
+Candidate `731dee09a17b9892bc00aa93f20e445448ea6320` and tested merge
+`e2546c5ac032484aacd82780fe31a9e606065cec` share tree
+`b6ce4bf0c20ff72df6e692821ed6fe7cfc3e3cc8` over unchanged main `4c9fb24`.
+[Run508](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41891559205),
+attempt1, completes122 jobs:118 successful, three failed and one skipped. Both
+ordinary native demos and final acceptance fail; aggregate coverage is skipped.
+All other required jobs pass, but this run remains rejected.
+
+All four lifecycle cells pass2/2 with zero failures/skips: SQL Chromium
+`126790204290`, PostgreSQL Chromium `126790204328`, PostgreSQL WebKit
+`126790204371` and SQL WebKit `126790204407`. Matching strict verifier receipts and
+final Pending/OriginalDeadline/PrivacyChecked milestones are independently reviewed.
+The scoped Chromium launch prerequisite is now exercised successfully, including its
+original-context/new-loader and real BFF-completion witness. This remains observed
+context ownership under the documented automation/BFCache-disabled configuration,
+not browser receipt, raw native request-terminal or preserved-BFCache evidence.
+
+PostgreSQL native demo job `126790098677` and SQL Server native demo job
+`126790098592` each pass2/3, fail1/3 and skip zero. Both fail at
+`ApplicationEditorJourney.cs:124`, the Playwright response-body read after status201,
+Created-heading and expected secret-length checks passed. The safe category is
+Browser; raw exception, URL and response content remain suppressed. The exact browser
+failure is unknown. No mutation failure, response status failure or absent UI output
+is inferred from this observation.
+
+The [immediate body-observation candidate](browser-corrections.md#immediate-creation-response-observation)
+reads the same creation response before DOM waits, retains every exact response/UI
+assertion and adds finite private diagnostics with permanent canary/primary-failure
+controls. It has not yet received hosted acceptance and is not treated as a proven
+cause/fix of this failed run. PR120 remains draft/unmerged; main and all external
+release boundaries are unchanged.
+
+The terminal rejected snapshot binds all122 jobs,118 successful decoded receipts,
+source/merge/tree and the failed run; SHA256
+`099fab167ee41ba8c23c72f8ef6eb84caf84185f7b8ea3840d806e0c8098107f`.
+It corroborates fresh paginated terminal metadata after an earlier snapshot retained
+a cached in-progress last-job record. The run completed before the successor push;
+no cancellation or final success is inferred. No acceptance reconciliation is run.
