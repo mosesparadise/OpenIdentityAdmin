@@ -19,12 +19,30 @@ internal sealed class ManagedRedemptionWitness : DbTransactionInterceptor
     private DbTransaction? transaction;
     private Guid transactionId;
     private object? database;
-    internal string? Identifier { get; set; }
-    internal Func<Task<string?>>? ReadStatus { get; set; }
-    internal bool FailBeforeRedemption { get; set; }
-    internal bool EarlyFailed { get; private set; }
-    internal bool Observed { get; private set; }
-    internal bool InputRemainedValid { get; private set; }
+    internal string? Identifier
+    {
+        get; set;
+    }
+    internal Func<Task<string?>>? ReadStatus
+    {
+        get; set;
+    }
+    internal bool FailBeforeRedemption
+    {
+        get; set;
+    }
+    internal bool EarlyFailed
+    {
+        get; private set;
+    }
+    internal bool Observed
+    {
+        get; private set;
+    }
+    internal bool InputRemainedValid
+    {
+        get; private set;
+    }
 
     /// <summary>Adds passive actual-commit observation and a separately armed early-failure control without replacing native handlers or stores.</summary>
     internal void Configure(IServiceCollection services)

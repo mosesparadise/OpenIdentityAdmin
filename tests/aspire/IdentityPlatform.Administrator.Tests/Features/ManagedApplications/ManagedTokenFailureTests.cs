@@ -41,7 +41,7 @@ public sealed class ManagedTokenFailureTests(BootstrapFixture fixture)
         var code = exchange ? await flow.CodeAsync() : null;
         var row = Assert.Single((await test.SnapshotAsync()).Interactions);
         witness.Identifier = (exchange ? row.CodeId : row.RequestId)!;
-        witness.ReadStatus = () => ReadStatusAsync(test, witness.Identifier);
+        witness.ReadStatus = () => ReadStatusAsync(test, witness.Identifier!);
         var before = await ManagedTokenEvidence.RollbackDigestAsync(test);
         await RequireEarlyFailureAsync(test, flow, code, witness);
         Assert.Equal(before, await ManagedTokenEvidence.RollbackDigestAsync(test));
