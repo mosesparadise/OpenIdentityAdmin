@@ -7,8 +7,10 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 internal static class LifecycleUpgradeWitness
 {
     private const string Postgres = "PostgreSql";
-    private const string PostgresMigration = "20261105000917_ApplicationLifecycle";
-    private const string SqlMigration = "20261105000920_ApplicationLifecycle";
+    internal const string PostgresMigration = "20261105000917_ApplicationLifecycle";
+    internal const string SqlMigration = "20261105000920_ApplicationLifecycle";
+    internal static readonly (string Schema, string Table)[] Tables = [("platform", "ApplicationLifecycleAuditDetail")];
+    internal static readonly string[] Queries = [AuditQuery];
     private const string EnabledValue = "True";
     private const string TablePrefix = "SELECT * FROM \"";
     private const string Schema = "platform";
@@ -69,6 +71,13 @@ internal static class LifecycleUpgradeWitness
                 Assert.All(additions, row => RequireOwner(query, row));
             }
         }
+        RequireColumns(provider, after[DatabaseSnapshot.Columns]);
+    }
+
+    /// <summary>Checks lifecycle additions on a frozen pre-managed database without allowing automatic audit adoption or an invalid policy default.</summary>
+    internal static void RequireFresh(string provider, Dictionary<string, string[]> after)
+    {
+        Assert.Empty(after[AuditQuery]);
         RequireColumns(provider, after[DatabaseSnapshot.Columns]);
     }
 

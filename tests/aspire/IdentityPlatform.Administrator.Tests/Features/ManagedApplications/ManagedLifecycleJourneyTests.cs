@@ -20,7 +20,7 @@ public sealed class ManagedLifecycleJourneyTests(BootstrapFixture fixture)
     private const string InvalidGrant = "invalid_grant";
 
     /// <summary>Disabling affects only the target; re-enable permits fresh proof but never revives its old cached request or authorization code.</summary>
-    [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests)), Trait("CriticalDecision", "application-lifecycle-enforcement")]
+    [Theory, MemberData(nameof(StoreTests.Providers), MemberType = typeof(StoreTests))]
     public async Task Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork(string provider)
     {
         await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);

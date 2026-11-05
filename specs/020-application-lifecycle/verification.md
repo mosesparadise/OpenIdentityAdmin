@@ -31,18 +31,21 @@ suites are serialized. No operation timeout, MFA window, retry policy or coverag
 | Persistence `ManagedSchemaTests` and `LifecycleSchemaTests`, each provider | 6 passed/provider, no skips. Fresh/populated upgrade, exact historical data/history, idempotence, physical default and finite reason/FK constraints. |
 | Administrator lifecycle namespaces, PostgreSQL | Final33 application and11 managed cases passed (44 total), no skips. Includes native expiry, finite reasons, permission/MFA/waits/failures, independent peer, old artifacts, issuance races and delayed committed publication. |
 | Administrator lifecycle namespaces, SQL Server | Final33 application and11 managed cases passed (44 total), no skips, including accepted finite audit reasons, reason drift and expired-credential enable denial. |
+| Corrective AppHost Harness | 102 passed, zero skips, including deterministic MFA exhaustion and private-safe managed callback diagnostics. |
+| Full corrected Persistence | PostgreSQL21/21; SQL21/21 with serial execution. Earlier SQL20/21 container-startup failure is retained in the hosted correction record. |
+| Focused managed admission | One genuine BFF/issuer case per provider passed; full journey body remains unchanged. |
 | Host Applications tests | 235 passed, no skips, before final schema metadata refinement. |
 | Core/native contracts | Final core partition44 passed, no skips, including exact finite reason and true-only confirmation schemas. |
 | Native API/BFF export, generated browser types, UI build/check | Final native export, core browser-contract generation, deterministic regeneration, TypeScript and six UI assets pass. |
 | Frontend tests | All suites passed, including42 editor cases; critical editor modules retain their existing coverage floors. Generated contract/tooling controls44/44 pass. |
 | Selection tooling | 74 passed after regeneration from actual native discovery. |
-| Mutation tooling controls | 60 passed; the four new behavioral mutants themselves remain unexecuted. |
+| Mutation tooling controls | 60 passed. Original four lifecycle witnesses demonstrated kills on both providers; receipts and subsequent focused-witness limitation are recorded in [evidence](evidence/README.md). |
 | Source quality | Build, staged-source secret scan, whitespace and final source rule checks pass without expanding legacy allowances. |
 
-Actual discovery contains2,473 portable cases and preserves every2,385 pre-feature identity.
-The six changed existing-within-feature metadata entries only add reviewed CriticalDecision traits.
-Non-browser Administrator counts are1,113 PostgreSQL/1,218 SQL Server: Applications92/provider,
-ManagedApplications117/provider (Admission53, Issuance64). Persistence21/provider. The native
+Current actual discovery contains2,475 portable cases and preserves every2,385 pre-feature identity.
+The original comprehensive journey remains required; its two CriticalDecision traits move to the new focused admission cases.
+Non-browser Administrator counts are1,114 PostgreSQL/1,219 SQL Server: Applications92/provider,
+ManagedApplications118/provider (Admission54, Issuance64). Persistence21/provider. The native
 inventory validator checks complete names, type metadata and traits; no path-dependent UID is pinned.
 
 An initial broad contract invocation included seven viewer cases before the local generated consumer
@@ -56,9 +59,12 @@ The feature's four new mutation controls target disabled admission, exact lifecy
 aggregate version advance and independently verified persisted reason. The existing isolated runner
 requires one exact tagged case/provider, unchanged baseline/restored passes, the expected marked
 behavioral failure, identical discovery and source restoration. Both provider workflow lanes include
-the new suite without raising existing time budgets. Defining controls is not a behavioral-kill claim.
+the new suite without raising existing time budgets. Original controls have both-provider receipts; the new focused admission control still needs its own strict mutation execution.
 
 ## Hosted correction checkpoint
+
+[Run517](hosted-verification.md#second-candidate--integrated-checks-remain-rejected) is rejected:113 successful/eight failed/one skipped jobs. Narrow upgrade-witness corrections pass21 persistence tests/provider locally; focused admission passes once/provider. Demo proof preparation and finite WebKit completion diagnostics address the remaining evidence gaps without changing product policy. Full corrected hosted acceptance remains required.
+
 
 [Run516 and its corrections](hosted-verification.md) retain the first implementation candidate's
 missing persistence catalogue entries and four unused imports. Full actual persistence discovery

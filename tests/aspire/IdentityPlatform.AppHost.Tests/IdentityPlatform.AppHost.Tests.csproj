@@ -43,6 +43,7 @@
     <Compile Include="../../shared/ManagedTokenValidation.cs" Link="Fixtures/ManagedTokenValidation.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorRegistration.cs" Link="Features/LocalDemo/ApplicationEditorRegistration.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserFlow.cs" Link="Features/LocalDemo/ManagedBrowserFlow.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserDiagnostic.cs" Link="Features/LocalDemo/ManagedBrowserDiagnostic.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserRelyingParty.cs" Link="Features/LocalDemo/ManagedBrowserRelyingParty.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserJourney.cs" Link="Features/LocalDemo/ManagedBrowserJourney.cs" />
   </ItemGroup>

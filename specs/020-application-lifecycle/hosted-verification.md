@@ -32,3 +32,58 @@ metadata through the approved GitHub connector. Direct shell API access remains 
 artifact downloads are unavailable and were not retried. Partial successes or locally passing
 feature suites do not replace corrected exact-head hosted acceptance. Later candidate results must
 record their own source/tested merge, complete jobs, summaries and evidence-access limits.
+
+## Second candidate — integrated checks remain rejected
+
+[Run517](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41947123873), source
+`2f852e2dff9230d93a94f0df00f654542097929f`, tested merge
+`a9f61e2411f038a5faf12dd6e78368e2db6b43d8`, tree
+`f4ea34b7da5ddc759e5834dd3c4e8be94ce7d3f5`, completed with 122 jobs: 113 successful,
+eight failed and one skipped. The independent paginated API review retained 114 nonexpired artifact
+metadata records. Combined SQL application mutation evidence and merged coverage are absent.
+Raw artifact ZIPs were not downloaded or reparsed. Final acceptance failed and coverage was skipped.
+
+Four failure categories remain explicit:
+
+1. Both foundation jobs ran 21 persistence cases: 19 passed and two failed. Historical integrated
+   upgrade witnesses omitted the new lifecycle migration/table/query from exact latest-schema
+   expectations. The correction appends only those exact additions, requires the default Enabled
+   column and empty new audit-detail table, and preserves historical row fingerprints and all
+   duplicate-sensitive catalogue checks. The immutable producer and ManagedApplicationUpgradeWitness
+   are unchanged. Local full PostgreSQL now passes 21/21. The first local SQL run had 20/21 passes:
+   one container startup could not locate sqlcmd, before schema assertions. A changed-condition
+   execution with `--parallel none` passes all 21/21 without skips; the earlier startup failure's
+   cause is not established and remains recorded. Hosted default execution is still required.
+2. The SQL application mutation job passed all eight existing controls and four lifecycle baselines,
+   then the lifecycle enforcement mutant failed outside its expected behavioral marker. The strict
+   runner rejected it (`stack_match=true`, `marker_match=false`); no kill is claimed and the original
+   cause is unknown. PostgreSQL passed both mutation suites. A new genuine BFF-disable/first-issuer-
+   request witness isolates disabled admission, verifies committed state/audit/reason and unchanged
+   credentials, then checks exact local denial and no state change. Only the CriticalDecision trait
+   and manifest target move; the comprehensive old-cache/code/peer/re-enable journey stays required
+   unchanged. New focused ordinary executions pass once per real provider. New mutation receipts
+   remain required; [original local receipts](evidence/README.md) are not substituted for them.
+3. Both native Aspire demo jobs passed two of three cases; their complete runtime journey failed
+   during fresh-login code selection, before factor submission. Adding the second managed journey
+   makes six accepted MFA ceremonies possible within a five-counter native window. Test-only
+   preparation now checks for unused material before opening a new administrator sign-in, permits
+   one cancellable wait to the next actual counter boundary, then requires fresh material. It neither
+   submits authentication nor caches a code, clears replay history, widens the native window or changes
+   authentication/navigation budgets. A deterministic Harness regression covers exhaustion, original
+   priority, unchanged replay set and independent expected rollover digits. The final sign-in now has
+   a distinct finite phase label. Successful hosted demos remain required.
+4. Both WebKit BrowserProtection jobs passed 30/31 cases, failing the second managed ceremony after
+   re-enable at the completion URL wait after consent. Both Chromium cells passed. The source trace
+   establishes the wait location, not whether consent, correlation, exchange or validation failed.
+   No speculative security/browser change is made. Finite per-flow diagnostics now distinguish
+   callback arrival/rejected correlation, exchange status, token-shape/identity validation and
+   completion; output contains only closed categories, bounded counters and known route categories.
+   They emit on first and repeated journeys, preserve original failures and deadlines, and never
+   retain URLs, token bodies or exception messages. A private-canary Harness regression protects
+   the diagnostic output. Corrected exact-head browser acceptance remains open.
+
+The corrective inventory preserves every earlier test identity, adds two focused provider cases,
+and moves only the original journey's two mutation-selection traits. Administrator portable discovery
+is 2,475; ordinary provider totals are 1,114/1,219, ManagedApplications 118/provider (Admission 54,
+Issuance 64). AppHost Harness now expects 102 cases. All coverage floors, browser engines retained
+for this phase, strict selection/skip rules and production policies remain unchanged. PR122 stays draft.

@@ -12,6 +12,7 @@ public sealed class LocalDemoRuntimeTests
     private const string ApplicationsPhase = "application list and editor journeys";
     private const string LocalLogoutPhase = "local logout and replay denial";
     private const string SecondLoginPhase = "fresh second ceremony";
+    private const string FinalLoginPhase = "fresh post-logout ceremony";
     private const string IssuerPositivePhase = "issuer cookie positive control";
     private const string IssuerLogoutPhase = "issuer logout confirmation and return";
     private const string IssuerDeniedPhase = "old issuer cookie denial";
@@ -72,7 +73,7 @@ public sealed class LocalDemoRuntimeTests
         await browser.LogoutAsync(issuer: true);
         phase(IssuerDeniedPhase);
         await browser.RequireIssuerReplayAsync(cookies, false);
-        phase(LoginPhase);
+        phase(FinalLoginPhase);
         await browser.SignInAsync(runtime);
         await browser.RequireStatusAsync(true);
         var live = await browser.CookiesAsync();

@@ -134,6 +134,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     /// <summary>Every explicit login must render a new password and MFA form, including when an issuer cookie already exists.</summary>
     internal async Task SignInAsync(LocalDemoRuntime runtime)
     {
+        await FactorOracle.PrepareUnusedCodeAsync(seed!, usedCodes, TestContext.Current.CancellationToken);
         var evidence = new LocalDemoSignInEvidence();
         page.Response += evidence.Observe;
         try

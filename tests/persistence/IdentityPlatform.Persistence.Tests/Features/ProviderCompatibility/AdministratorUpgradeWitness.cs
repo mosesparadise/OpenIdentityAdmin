@@ -13,9 +13,9 @@ internal static class AdministratorUpgradeWitness
     private const int ContinuationIndex = 3;
     private static readonly string[] InitialBudget = ["1", "0"];
     private static readonly (string Schema, string Table)[] AddedTables = [("platform", "AdministratorProtocolProfile"),
-        ("platform", "AdministratorClientAssertionUse"), ("bff", "AdministratorClientStateBudget"), ("platform", "AdministratorIssuerContinuation"), .. BrowserCoordinationUpgradeWitness.Tables, .. ManagedApplicationUpgradeWitness.Tables];
+        ("platform", "AdministratorClientAssertionUse"), ("bff", "AdministratorClientStateBudget"), ("platform", "AdministratorIssuerContinuation"), .. BrowserCoordinationUpgradeWitness.Tables, .. ManagedApplicationUpgradeWitness.Tables, .. LifecycleUpgradeWitness.Tables];
     private static readonly string[] AddedQueries = ["SELECT * FROM \"platform\".\"AdministratorProtocolProfile\"",
-        "SELECT * FROM \"platform\".\"AdministratorClientAssertionUse\"", "SELECT * FROM \"bff\".\"AdministratorClientStateBudget\"", IssuerContinuationUpgradeWitness.ContinuationQuery, .. BrowserCoordinationUpgradeWitness.Queries, .. ManagedApplicationUpgradeWitness.Queries];
+        "SELECT * FROM \"platform\".\"AdministratorClientAssertionUse\"", "SELECT * FROM \"bff\".\"AdministratorClientStateBudget\"", IssuerContinuationUpgradeWitness.ContinuationQuery, .. BrowserCoordinationUpgradeWitness.Queries, .. ManagedApplicationUpgradeWitness.Queries, .. LifecycleUpgradeWitness.Queries];
 
     /// <summary>Checks all old objects and data, exact new history rows and inert initialization rather than refreshing the frozen producer.</summary>
     internal static void Require(IRelationalDatabaseProvider provider, Dictionary<string, string[]> before, Dictionary<string, string[]> after)
@@ -51,6 +51,7 @@ internal static class AdministratorUpgradeWitness
         }
         BrowserCoordinationUpgradeWitness.RequireSeeds(after);
         ManagedApplicationUpgradeWitness.RequireEmpty(after);
+        LifecycleUpgradeWitness.RequireFresh(provider.Id, after);
         Assert.Empty(after[AddedQueries[0]]);
         Assert.Empty(after[AddedQueries[1]]);
         Assert.Empty(after[AddedQueries[ContinuationIndex]]);

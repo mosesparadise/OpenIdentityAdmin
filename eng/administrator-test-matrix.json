@@ -1184,7 +1184,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2475,7 +2476,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -51630,10 +51632,6 @@
       },
       "traits": [
         {
-          "key": "CriticalDecision",
-          "value": "application-lifecycle-enforcement"
-        },
-        {
           "key": "Provider",
           "value": "PostgreSql"
         }
@@ -51652,10 +51650,6 @@
         ]
       },
       "traits": [
-        {
-          "key": "CriticalDecision",
-          "value": "application-lifecycle-enforcement"
-        },
         {
           "key": "Provider",
           "value": "SqlServer"
@@ -53306,6 +53300,52 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleAdmissionTests",
+        "methodName": "Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-enforcement"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleAdmissionTests",
+        "methodName": "Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-enforcement"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

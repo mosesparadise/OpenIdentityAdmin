@@ -72,3 +72,21 @@ committed-response-loss seam followed by explicit reload and exact persisted sta
 checks. The existing editor journey shares its original cookie-copy helper; no visibility clearing
 or retry behavior is bypassed. The final UX source review passes. Hosted retained-engine execution
 and native demos remain required; see [verification](verification.md).
+
+## Integrated verification corrections — 5 November 2026
+
+- Architecture review accepts only exact lifecycle additions to the historical latest-schema witnesses;
+  immutable predecessor production and existing row/catalogue preservation remain intact.
+- Test review accepts an additive first-request disabled-admission witness while preserving the full
+  old-artifact/peer/re-enable journey. It requires independent committed state/audit/reason checks,
+  strict marker-based mutation kills and both-provider baseline/restored evidence. Original local
+  mutation receipts do not substitute for the new witness or erase the hosted SQL unknown failure.
+- Test review accepts one real counter-boundary wait before opening a fresh demo sign-in. Input
+  selection remains pure, retains every accepted code, resamples at the actual MFA form and fails if
+  no distinct value exists after that single wait. Its finding that the new regression needed the
+  Harness trait was fixed; the ordinary unit inventory includes it.
+- Browser/UX review finds no proven cause for the WebKit second completion timeout. It accepts finite
+  diagnostic stages, safe status/counters and exact known-location categories without behavior or
+  deadline changes. The private-canary test exercises the actual producer. `failure=None` means no
+  recorded RP exception; it does not establish browser success. Observations are concurrent snapshots,
+  not proof that pending work has terminated. Corrected hosted execution remains required.
