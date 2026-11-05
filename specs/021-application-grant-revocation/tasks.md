@@ -45,6 +45,15 @@ remaining scope and complete without silent revival or duplicate work.
 - [ ] T017 Exercise actual Worker through ordinary Aspire local-demo on both providers and retained Chromium/WebKit; extend tests/aspire native demo/browser fixtures, eng test inventories and behavioral mutation/coverage controls without losing prior identities or lowering floors.
 - [ ] T018 Run full applicable exact-head checks, reconcile native reports/artifacts/coverage, resolve independent architecture/security/test/API/UX/Aspire findings, and record actual evidence in specs/021-application-grant-revocation/verification.md; update docs/roadmap.md and docs/operations/new-task-handoff.md before reviewed squash delivery.
 
+## Current boundary verification
+
+Run530 confirms alternate approver, factor-generation and replay-expiry cases on both
+providers. Its missing-lock setup failed real restrictive foreign keys; the corrected
+fixture preserves those constraints and awaits runtime. Four T009 admission/re-enable
+cases now compile with independent source review and exact discovery, but both-provider
+runtime and separate issuance races remain required. No T009 completion is claimed.
+See [hosted verification](hosted-verification.md) for the retained failed attempts.
+
 ## Dependencies and execution
 
 T001 precedes code; T002–T004 establish shared storage. T005 specifies cases before

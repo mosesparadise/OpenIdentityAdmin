@@ -65,9 +65,11 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-Alternate effective approver, retained-key expiry under fresh current authority and missing
-actor-lock/factor-generation cases now compile and are in the exact native inventory;
-their provider execution remains pending. Ordered issuance/re-enable/admission races, broader
+Run530 verifies alternate effective approver, retained-key expiry under fresh current
+authority and mismatched factor generation on both providers. The missing-lock fixture
+failed foreign-key setup and is corrected, with runtime still pending. Four new ordered
+admission/re-enable cases compile and are independently reviewed but await provider
+execution. Ordered issuance races, broader
 BFF downstream/generation failures, genuine cross-instance native entry-validation
 proof, complete module coverage and full applicable exact-head CI remain open. Run528
 provides verified both-provider native-demo/retained-engine grant execution and12new

@@ -93,7 +93,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     }
 
     /// <summary>Builds an independent API service root sharing only the actual database and immutable identity profile, without reseeding authority.</summary>
-    internal ServiceProvider Peer(string provider) => BuildApi(scenario, material, provider);
+    internal ServiceProvider Peer(string provider, IInterceptor? fault = null) => BuildApi(scenario, material, provider, fault);
 
     /// <summary>Uses identical production registrations for every independent root; test faults remain scoped to the requested node.</summary>
     private static ServiceProvider BuildApi(AdministratorProtocolScenario scenario, NativeAssertionMaterial material, string provider,

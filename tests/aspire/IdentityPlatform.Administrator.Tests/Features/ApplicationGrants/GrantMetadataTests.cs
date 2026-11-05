@@ -40,7 +40,7 @@ public sealed class GrantMetadataTests(BootstrapFixture fixture)
         Assert.False(await test.BatchAsync(accepted.Id));
     }
 
-    /// <summary>Keeps allocation consistent while leaving the existing factor at its old generation, or deletes the actual actor-lock row.</summary>
+    /// <summary>Keeps allocation consistent while leaving the factor at its old generation, or removes actor-lock metadata with its restrictive dependents.</summary>
     private static async Task ChangeAsync(GrantTestContext test, string change)
     {
         await using var scope = test.Fixture.Scope();
@@ -48,7 +48,7 @@ public sealed class GrantMetadataTests(BootstrapFixture fixture)
         var actor = test.Fixture.Identity.Subject;
         if (change == MissingLock)
         {
-            Assert.Equal(1, await database.Set<AdministratorAuthentication>().Where(row => row.UserId == actor).ExecuteDeleteAsync(test.Token));
+            await RemoveAuthenticationAsync(database, actor, test.Token);
             return;
         }
         Assert.Equal(WrongGeneration, change);
@@ -57,5 +57,19 @@ public sealed class GrantMetadataTests(BootstrapFixture fixture)
         enrollment.FactorGeneration++;
         authentication.LastAllocatedFactorGeneration = enrollment.FactorGeneration;
         await database.SaveChangesAsync(test.Token);
+    }
+
+    /// <summary>Preserves real foreign keys by deleting only this actor's dependent ceremony material before its lock row in one fixture transaction.</summary>
+    private static async Task RemoveAuthenticationAsync(PlatformDbContext database, string actor, CancellationToken token)
+    {
+        await using var transaction = await database.Database.BeginTransactionAsync(token);
+        await database.Set<AdministratorInteraction>().Where(row => row.UserId == actor).ExecuteDeleteAsync(token);
+        await database.Set<AdministratorReplay>().Where(row => row.UserId == actor).ExecuteDeleteAsync(token);
+        await database.Set<AdministratorRecoveryCode>().Where(row => row.UserId == actor).ExecuteDeleteAsync(token);
+        Assert.Equal(1, await database.Set<AdministratorFactor>().Where(row => row.UserId == actor).ExecuteDeleteAsync(token));
+        Assert.True(await database.Set<AdministratorSession>().Where(row => row.UserId == actor).ExecuteDeleteAsync(token) > 0);
+        Assert.Equal(1, await database.Set<AdministratorAuthentication>().Where(row => row.UserId == actor).ExecuteDeleteAsync(token));
+        await transaction.CommitAsync(token);
+        Assert.False(await database.Set<AdministratorAuthentication>().AnyAsync(row => row.UserId == actor, token));
     }
 }

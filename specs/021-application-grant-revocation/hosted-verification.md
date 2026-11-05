@@ -1,5 +1,41 @@
 # Grant-revocation hosted verification
 
+## Ordered lifecycle acceptance and metadata fixture correction — 5 November 2026
+
+[Run530](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42121786444)
+at `5a288d2569be7b70d8c049f9a58df197cb6382a6` gets beyond the corrected selection gate.
+Both ordinary grant lanes execute 48 cases: 47 pass and one fails. Downloaded ZIP digests
+match GitHub metadata; native TRX outcomes are retained in [run530-grant-evidence.json](run530-grant-evidence.json).
+The alternate effective approver, wrong factor generation and retained-key expiry cases
+pass on both providers. Each missing-lock case fails during fixture setup at a restrictive
+foreign key, before exercising the worker. The run cannot satisfy acceptance. Its remaining work is superseded by the corrected
+candidate under the existing cancel-on-new-head workflow; no full-run pass is claimed.
+
+The corrected fixture removes only the actor's interaction, replay, recovery-code,
+factor and session dependents before deleting authentication metadata in one real
+transaction. All foreign keys remain enforced. Native grants and immutable approval/audit
+history remain untouched. Independent review confirms all five actual dependents are
+covered and missing-lock acquisition is classified as Storage. Corrected runtime remains required.
+
+Four new T009 cases order admission versus re-enable on independent API roots, in both
+commit orders on both providers. A commit interceptor pauses the winner after its real
+checks/writes, captures the loser's exact provider session and requires the native lock
+wait graph before releasing the winner. Successful provider callbacks must show one winner
+commit and no loser commit. Admission first requires enable409, unchanged native/policy
+state and one queued approval/audit. Enable first requires admission412, exact lifecycle
+state/audit and no leftover job/approval/grant audit. Shared cleanup releases and joins all
+operations. These are current-authority component tests, not HTTP issuance proof.
+
+Independent architecture/security/test review found no blocking source defects. The
+Administrator project builds with zero warnings/errors after formatting corrections;
+code-quality checks and all 74 selection, 16 browser-story, 8 evidence and 3 coverage
+controls pass. Actual discovery preserves all 2,573 prior portable records/order and adds
+four cases (2,577 total; 50 grant cases/provider). Updated independent selection expectations
+remain explicit. No local provider retry was attempted with the shared filesystem nearly
+full; corrected fixture and race execution require hosted runners. Issuance races, genuine
+cross-instance native validation and broader boundary/full acceptance remain open. T009
+is not complete, PR124 remains draft and all historical/manual/release gates persist.
+
 ## Inventory gate correction — 5 November 2026
 
 [Run529](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42107559474)

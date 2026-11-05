@@ -1,5 +1,15 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant-revocation boundary progress — 5 November 2026:** run530 executes 47/48 grant
+cases successfully on each provider, including alternate approver, factor generation and
+24-hour replay expiry. The missing-lock fixture fails restrictive FK setup; its correction
+preserves all constraints and now removes the actor's dependent ceremony material first.
+Four additional admission/re-enable cases cover both ordered commits with native lock-wait
+observation; build, source review and all 74 selection controls pass. Corrected provider
+execution remains pending. Next: verify these cases, finish issuance/cross-instance and
+remaining boundary acceptance. PR124 stays draft; historical/manual/release gates persist.
+
+
 **Grant-revocation inventory correction — 5 November 2026:** run529 passes the UI fix
 but stops96native/browser jobs at stale selection-control counts; one further job fails
 NuGet restore. The corrected three control suites preserve all prior identities and pass

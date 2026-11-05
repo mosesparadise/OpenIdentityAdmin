@@ -1234,7 +1234,9 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"missing-lock\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"wrong-generation\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2575,7 +2577,9 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"missing-lock\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"wrong-generation\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -55439,6 +55443,86 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantLifecycleRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantLifecycleRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantLifecycleRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantLifecycleRaceTests",
+        "methodName": "Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
         ]
       },
       "traits": [
