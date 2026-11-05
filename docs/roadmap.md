@@ -1,5 +1,20 @@
 # Delivery roadmap and task register
 
+**Managed application lifecycle delivered — 5 November 2026:**
+[PR #122](https://github.com/mosesparadise/OpenIdentityAdmin/pull/122) is squash-merged as
+`0ce00a22f4534847bb7ae5731ae20bf6b6c3064f`. Main now offers Disable/Re-enable in application details through the ordinary
+Aspire `local-demo` profile. Disable stops new sign-ins/token issuance; re-enable requires
+fresh issuer proof, preserves credential expiry and cannot revive old artifacts. Existing
+grants are retained; bulk revocation is separate. [Accepted evidence](../specs/020-application-lifecycle/verification.md#accepted-internal-delivery--5-november-2026)
+records 122 successful jobs,5,531 ordinary native passes,62 UI/44 Node controls, both real
+providers/retained browsers/native demos,98 coverage inputs/15 unchanged floors and 98
+behavioral mutation kills. Feature020 T001–T017 is complete internally.
+**Next:** exercise the local walkthrough from main, then define the separate grant-revocation
+slice, including durable jobs and current authority; do not repeat accepted lifecycle work.
+Refresh remains disabled. Actual Windows/manual accessibility, Firefox/A-009, all six historical
+findings and human/vendor/production/public-release gates remain open. Earlier notices below
+retain their historical checkpoints and are superseded by this delivery.
+
 **Lifecycle deadline observation correction — 5 November 2026:** Run521 passes both native demos, both persistence suites, all four protection browser cells and all98 mutation controls, but remains rejected for one older direct browser-body read in the pending OriginalDeadline fixture. The reviewed correction uses actual UI expiry and an opt-in final BFF write witness, retaining original deadlines, completion, single-send and secret-suppression assertions. Corrected local/hosted acceptance remains pending; PR122 stays draft. [Evidence](../specs/020-application-lifecycle/hosted-verification.md#original-deadline-publication-observation-correction). All historical/manual/public-release gates remain open.
 
 **Passive browser observation correction — 5 November 2026:** Run519 passes both WebKit protection suites31/provider, all98 mutation controls and both persistence suites21/provider, but is rejected for SQL demo and PostgreSQL Chromium inspector-body failures. The reviewed correction requires actual UI consumption, exact request/version binding, native authentication of the original displayed credential before replacement, and existing privacy checks without fetch interception or mutation retry. Harness106 and the exact native credential pair pass locally on both providers. Required corrected hosted acceptance remains open; PR122 stays draft. All historical/manual/public-release gates remain unchanged. See [evidence](../specs/020-application-lifecycle/hosted-verification.md).
@@ -324,11 +339,11 @@ Prerequisites: milestones 002–003 and the actual protocol capabilities being o
 
 | Task | Deliverable and acceptance |
 | --- | --- |
-| M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit delivered in PR120 with immutable IDs, current permission, atomic audit and concurrency. Clone/disable/delete and their reference/revocation semantics remain open. |
+| M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. Clone/delete and separate bulk grant revocation remain open. |
 | M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit OpenID-only consent. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
 | M04-C | PR120 delivers manager-hashed one-time shared secrets, enforced expiry, immediate explicit replacement and lost-output recovery with no plaintext reread. Asymmetric public-key registration and remaining credential lifecycle remain open. |
-| M04-D | PR118/PR120 deliver versioned application list/details/write Admin API/BFF contracts, native preconditions/CSRF, generated TypeScript and compatibility checks. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
-| M04-E | PR120 verifies the same UI-created/edited/replaced registration through real browser password/MFA/consent and server-side native token exchange and explicit browser approval/denial on both providers. Separate native/HTTP cases prove replay and current-policy negatives. Client-disable behavior and remaining lifecycle acceptance stay open. |
+| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
+| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success across both providers, retained browsers and ordinary Aspire demos, plus old-artifact, race/failure and current-authority controls. Broader client profiles, clone/delete/revocation and manual/external acceptance remain open. |
 
 ## Milestone 005 — Accounts and strong authentication (planned)
 
@@ -395,7 +410,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 
 | Requirement | Owning tasks | Current product status |
 | --- | --- | --- |
-| FR-01 applications | M04-A/E | Partial: protected catalogue/search/paging in PR118 and managed details/create/edit in PR120; clone/disable/delete remain open |
+| FR-01 applications | M04-A/E | Partial: catalogue/search/paging in PR118, managed details/create/edit in PR120 and disable/re-enable with issuer enforcement in PR122; clone/delete and separate grant revocation remain open |
 | FR-02 client profiles | M01-D, M02-B, M04-B/E, M07-A/B/D | Partial: fixed pilot plus managed confidential web code/S256 profile in PR120; other profiles remain planned |
 | FR-03 credentials | M04-C/E, M07-A | Partial: native-hashed expiring one-time shared secrets and explicit replacement in PR120; asymmetric and broader lifecycle remain open |
 | FR-04 scopes/audiences/claims | M01-D, M03-A/B/C, M06-A/B | Partial: one pilot resource/scope and deliberate claims; management planned |

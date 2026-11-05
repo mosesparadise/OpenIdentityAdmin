@@ -1,5 +1,12 @@
 # Local lifecycle mutation receipts
 
+## Subsequent hosted acceptance
+
+[Accepted hosted reconciliation](hosted-acceptance.md) binds source `966d93f16ccfb0a2f8097ce208b965a621c2df04`
+to run 522, all 98 exact mutation controls and the other required gates. The local receipts
+below retain their original source bindings; they are not relabeled as executions of the
+[accepted implementation](../verification.md#accepted-internal-delivery--5-november-2026).
+
 These sanitized runner receipts record the original comprehensive journey as the disabled-admission
 mutation witness. PostgreSQL ran at `b7886ff6cf87d0cab541ecdc2e8412b8f4b8ea80`; SQL Server ran at
 `2f852e2dff9230d93a94f0df00f654542097929f`. Each records four baseline passes, four demonstrated

@@ -1,5 +1,13 @@
 # Hosted lifecycle verification
 
+## Accepted final candidate — run 522
+
+Source `966d93f16ccfb0a2f8097ce208b965a621c2df04` passes all 122 jobs in [run 522](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41962624583), attempt1.
+[Accepted delivery](verification.md#accepted-internal-delivery--5-november-2026) records exact
+source/tested-merge/squash binding,101 strict reports/5,531 ordinary passes,98 mutation kills,
+coverage and 116 artifact metadata bindings. Earlier runs below remain rejected/superseded;
+no historical failure is relabeled as a pass or assigned an unproved cause.
+
 ## First implementation candidate — 5 November 2026
 
 Source `b7886ff6cf87d0cab541ecdc2e8412b8f4b8ea80` was submitted as tested merge

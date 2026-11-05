@@ -1,5 +1,20 @@
 # OpenIdentityAdmin new-task handoff
 
+**Managed application lifecycle delivered — 5 November 2026:**
+[PR #122](https://github.com/mosesparadise/OpenIdentityAdmin/pull/122) is squash-merged as
+`0ce00a22f4534847bb7ae5731ae20bf6b6c3064f`. Main now offers Disable/Re-enable in application details through the ordinary
+Aspire `local-demo` profile. Disable stops new sign-ins/token issuance; re-enable requires
+fresh issuer proof, preserves credential expiry and cannot revive old artifacts. Existing
+grants are retained; bulk revocation is separate. [Accepted evidence](../../specs/020-application-lifecycle/verification.md#accepted-internal-delivery--5-november-2026)
+records 122 successful jobs,5,531 ordinary native passes,62 UI/44 Node controls, both real
+providers/retained browsers/native demos,98 coverage inputs/15 unchanged floors and 98
+behavioral mutation kills. Feature020 T001–T017 is complete internally.
+**Next:** exercise the local walkthrough from main, then define the separate grant-revocation
+slice, including durable jobs and current authority; do not repeat accepted lifecycle work.
+Refresh remains disabled. Actual Windows/manual accessibility, Firefox/A-009, all six historical
+findings and human/vendor/production/public-release gates remain open. Earlier notices below
+retain their historical checkpoints and are superseded by this delivery.
+
 **Lifecycle deadline observation correction — 5 November 2026:** Run521 passes both native demos, both persistence suites, all four protection browser cells and all98 mutation controls, but remains rejected for one older direct browser-body read in the pending OriginalDeadline fixture. The reviewed correction uses actual UI expiry and an opt-in final BFF write witness, retaining original deadlines, completion, single-send and secret-suppression assertions. Corrected local/hosted acceptance remains pending; PR122 stays draft. [Evidence](../../specs/020-application-lifecycle/hosted-verification.md#original-deadline-publication-observation-correction). All historical/manual/public-release gates remain open.
 
 **Passive browser observation correction — 5 November 2026:** Run519 passes both WebKit protection suites31/provider, all98 mutation controls and both persistence suites21/provider, but is rejected for SQL demo and PostgreSQL Chromium inspector-body failures. The reviewed correction requires actual UI consumption, exact request/version binding, native authentication of the original displayed credential before replacement, and existing privacy checks without fetch interception or mutation retry. Harness106 and the exact native credential pair pass locally on both providers. Required corrected hosted acceptance remains open; PR122 stays draft. All historical/manual/public-release gates remain unchanged. See [evidence](../../specs/020-application-lifecycle/hosted-verification.md).

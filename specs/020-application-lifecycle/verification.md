@@ -1,8 +1,72 @@
 # Application lifecycle implementation verification
 
+## Accepted internal delivery — 5 November 2026
+
+[PR #122](https://github.com/mosesparadise/OpenIdentityAdmin/pull/122) is squash-merged as
+`0ce00a22f4534847bb7ae5731ae20bf6b6c3064f`. Managed application details now offer Disable and Re-enable through ordinary
+Aspire. Disable stops new sign-ins and token issuance; re-enable requires fresh issuer proof
+and cannot revive old requests/codes or extend credential expiry. Existing grants remain
+intact; bulk grant revocation is separate, as selected by the user.
+
+Source `966d93f16ccfb0a2f8097ce208b965a621c2df04`, tested merge `700991071391a1964d57aee1feab77656ee4951d` and the squash share tree `23a62b9dea82ad3ccd9d3635fc5ee193211c0c5d`.
+Base was `b27669f04ad5992ae829c1250bd13f90e8c72446`.
+[Run 522](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41962624583), attempt 1,
+passes all 122 exact-head jobs. The finite reconciliation binds every job's checkout,
+strict report summaries, mutation steps and artifact upload/API metadata to this run.
+No result from rejected/superseded runs516–519 or521 supplies acceptance. Their failures and unknown
+causes remain recorded in [hosted verification](hosted-verification.md).
+
+| Verified boundary | Accepted evidence |
+| --- | --- |
+| Ordinary execution | 101 strict report obligations; 5,531 required native passes, no failures/skips |
+| Identity preservation | 2,475 Administrator identities; all 2,385 pre-feature identities preserved |
+| Application and issuer | Applications 92/provider and ManagedApplications 118/provider, including genuine enforcement, peer isolation, old-artifact rejection, races and failure persistence |
+| Upgrade | Persistence 21/provider with real PostgreSQL and SQL Server, additive schema and historical preservation |
+| Native Aspire | Both ordinary local demos 3/3, including create → sign in → disable → denial → enable → fresh success |
+| Retained browsers | All40 provider/engine cells pass; Chromium/WebKit protection 31 per cell and all existing lifecycle/consent stories |
+| Harness | 110 cases, including clock, credential binding and private diagnostic controls |
+| Contracts/UI | Native core 44, viewer 7 per retained engine; separate UI 62 and Node 44 exact controls |
+| Coverage | All98 required inputs and 15 unchanged module floors pass |
+| Mutations | 98 exact behavioral kills in 16 suites across 14 jobs, with baseline/restored controls and source restoration |
+| Artifacts | All116 upload-log/API identities and SHA-256 values match; [manifest](accepted-artifacts.md) |
+
+Actual UI completion, one mutation request, independent resource/version binding and native
+authentication of the original displayed credential replace Playwright inspector-body/DOM
+equality. No fetch interception, response cloning, automatic mutation retry or security-timeout
+extension is used. The invalid-code credential pair proves authentication before replacement;
+it does not itself prove PKCE or mint a code/token/grant. The later real relying-party journey
+proves the replacement credential's complete code/S256 exchange. The managed browser fixture
+selects a shared live clock before enrollment; frozen boundary tests remain frozen and native
+lifetimes/expiry clamps remain unchanged. The OriginalDeadline fixture now reads initial expiry
+from actual UI and verifies the final BFF's longer timestamps through an opt-in, bounded,
+single-write observer bound to the same sealed request and both completion signals. Its
+unchanged expired-display/no-secret assertions prove rejection behavior; final server
+publication does not claim browser consumption of intentionally suppressed JSON.
+
+The inherited [native visibility evidence limits](../019-application-editor/verification.md#accepted-internal-delivery--4-november-2026)
+still apply. All40 browser jobs pass the12 separate pinned-driver instrumentation controls;
+all four actual lifecycle wrapper steps bind the selected copy/version/hashes. These controls
+are additional to the ordinary native total. Configured headed/headless topologies and explicit
+Chromium automation prerequisites do not imply an ordinary unmodified-browser result.
+
+Independent architecture/security/API/UX and test reviews pass the implemented boundaries;
+the final scoped architecture/test review also passes the passive observation correction.
+The [sanitized acceptance receipt](evidence/hosted-acceptance.md) records reconciliation
+hashes and limits. Review used decoded verifier logs and upload/API metadata. Raw uploaded
+ZIPs were not independently downloaded/reparsed, and local browser binaries were unavailable.
+Rounded coverage log percentages are not independently recomputed coverage; the hosted checker
+enforced exact thresholds. No unsupported local browser or actual Windows pass is claimed.
+
+T001–T017 are complete for this bounded internal slice. Use the [local walkthrough](quickstart.md)
+from main. Strict API/BFF JSON requires a coordinated/quiesced compatible switch; see
+[deployment and recovery](data-model.md). Actual Windows Docker Desktop, qualified manual
+accessibility, Firefox and precise A-009 deferrals, all six historical findings, human/vendor,
+production and public-release gates remain open. Refresh remains disabled. The dated candidate
+records below retain their historical state and are superseded by this delivery.
+
 ## Candidate and scope
 
-**5 November 2026 — implementation in progress, not accepted or merged.**
+**Historical checkpoint, 5 November 2026 — implementation was in progress, not yet accepted or merged.**
 The user selected issuance-only disable/re-enable, with bulk grant revocation separate.
 PR122 is the implementation PR on `126-application-lifecycle`; remote main was reverified as
 `b27669f04ad5992ae829c1250bd13f90e8c72446`. The previous planning checkpoint is
