@@ -42,6 +42,7 @@ internal static class ApplicationHttpBoundary
         {
             http.RequestAborted = original;
             http.Response.Headers.Remove(VersionHeader);
+            http.Response.Headers.Location = Microsoft.Extensions.Primitives.StringValues.Empty;
             http.Response.ContentLength = null;
             await ProblemAsync(http, error is ApplicationHttpRejected rejected ? rejected.Status : StatusCodes.Status503ServiceUnavailable);
         }

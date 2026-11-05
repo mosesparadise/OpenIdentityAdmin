@@ -1,6 +1,7 @@
 using IdentityPlatform.Admin.Bff.Features.AdminUi;
 using IdentityPlatform.Admin.Bff.Features.ApiContracts;
 using IdentityPlatform.Admin.Bff.Features.Applications;
+using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Admin.Bff.Features.Documentation;
 using IdentityPlatform.Admin.Bff.Features.LocalDemo;
@@ -32,7 +33,7 @@ internal static class Setup
             endpoints.MapPlatformHealthEndpoints();
             if (startup.Enabled)
             {
-                endpoints.MapApplicationProxy();
+                endpoints.MapApplicationProxy().MapGrantProxy();
             }
         });
         return app;

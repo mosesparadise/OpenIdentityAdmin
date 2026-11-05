@@ -1702,26 +1702,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.Worker/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.Worker.Features.Setup.AddFeatures(thisWebApplicationBuilder)",
-        "Fingerprint": "CD58E77384F557C10ADC319D5445425337C897F96622E0348C9CF94B3DCC69C0"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.Worker/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.Worker.Features.Setup.MapFeaturesEndpoints(thisWebApplication)",
-        "Fingerprint": "4B0AB198BA10FB37FA5A8672A19DB1EB8DBA1C763026E0F2439B08406A8DE8C4"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ003",
         "Path": "src/core/IdentityPlatform.Core/Features/Configuration/IssuerUri.cs",
         "Symbol": "IdentityPlatform.Core.Features.Configuration.IssuerUri",

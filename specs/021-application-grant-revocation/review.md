@@ -49,3 +49,27 @@ product decision, not an extra generic permission gate. Preserve the existing pe
 question. After its answer, finalize GR-004, run the installed plan/tasks/analyze workflow,
 record the concrete approved scope and implement the visible revocation journey with its
 required verification. Do not repeat accepted feature020 or renew expired diagnostics.
+
+
+## Scope selection and design analysis — 5 November 2026
+
+The user selected the recommendation: the application must be disabled and remain disabled
+until successful revocation. GR-004 is resolved and docs/approval.md records implementation
+authority. The earlier draft-only conclusions below remain historical.
+
+The installed Spec Kit plan/tasks/analyze workflow produced plan, data model, contracts,
+quickstart and18tasks. Cross-artifact analysis maps all15 GRs to tasks and explicitly orders
+T012 current authority before executable T007 batches. No constitution exception is needed.
+Requirements checklist16/16 is complete for design readiness, not runtime acceptance.
+
+Independent architecture review required same-approval late-failure stopping even after
+progress advanced, and idempotency-only ReplayUntil semantics. Both are corrected and the
+reviewer passes scoped design. Test review identified the actual contracts project path,
+lossless Int64 progress and concrete framing/depth limits; all are corrected. Its final
+follow-up failed for capacity, so no final test-plan pass is claimed. Security research
+supports existing ordered ownership and metadata-only current account/grant checks without
+worker factor keys; metadata presence is not a claim of cryptographic factor decryptability.
+
+Implementation has started. Required tests, security/source review and complete runtime
+acceptance remain open and are tracked in tasks.md. Historical pending-choice text is
+superseded by this explicit selection; no question is being reopened.

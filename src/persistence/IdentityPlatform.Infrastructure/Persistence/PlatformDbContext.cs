@@ -1,4 +1,5 @@
 using IdentityPlatform.Database;
+using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
@@ -24,6 +25,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         builder.HasDefaultSchema(PlatformSchema);
         ApplicationPolicyModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationLifecycleAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
+        ApplicationGrantModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ManagedLoginModel.Configure(builder, ProviderOptions.Provider(options).Model);
         IssuerContinuationModel.Configure(builder, ProviderOptions.Provider(options).Model);
         LoginModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);

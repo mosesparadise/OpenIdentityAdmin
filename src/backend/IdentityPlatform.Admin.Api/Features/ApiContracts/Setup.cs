@@ -43,6 +43,7 @@ internal static class Setup
             options.Document.AddDocumentTransformer<MetadataTransformer>();
             options.Document.AddDocumentTransformer<Applications.ApplicationListContract>();
             options.Document.AddDocumentTransformer<Applications.ApplicationEditorContract>();
+            options.Document.AddDocumentTransformer<ApplicationGrants.GrantContractTransformer>();
         });
         return services;
     }

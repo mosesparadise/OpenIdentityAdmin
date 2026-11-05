@@ -6,11 +6,12 @@
 
 **Created**: 2026-11-05
 
-**Status**: Draft; one lifecycle choice remains unanswered. No implementation acceptance.
+**Status**: Scope approved on 2026-11-05; implementation pending verification.
 
 **Input**: User requested the next task after application disable/re-enable delivery,
 then selected: “Continue under recorded approval; recheck account and permission.”
-This is the separate grant-revocation follow-on, not a repetition of feature020.
+The user then selected “Follow your recommendation”: require disabled state until
+revocation succeeds. This is the separate grant-revocation follow-on, not a repetition of feature020.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -39,7 +40,10 @@ second application's records and the target's configuration remain unchanged.
 4. **Given** completion, **When** the administrator reads the result, **Then** all
    eligible records in the selected scope are revoked, unrelated records are unchanged,
    and limits concerning offline tokens and sessions in other applications are visible.
-5. **Given** a lost submission response and still-current access, **When** the same actor retries the same request identity,
+5. **Given** an enabled application, **When** revocation is requested, **Then** it is
+   rejected; an unfinished or stopped job likewise prevents re-enable until successful
+   explicit recovery and reconciliation. Completion leaves the application disabled.
+6. **Given** a lost submission response and still-current access, **When** the same actor retries the same request identity,
    **Then** the existing job is returned; changed intent conflicts instead of retargeting it.
 
 ### User Story 2 - Continue approved work without an open browser (Priority: P1)
@@ -106,9 +110,10 @@ result, and exercise a freshly authorized continuation of the same fixed scope.
   current `grants.revoke` and fresh MFA. No other application permission implies revocation.
 - **GR-003**: The system MUST protect administrator/pilot and unmanaged applications by
   durable identity as well as reserved names; expired credentials alone MUST NOT exclude cleanup.
-- **GR-004**: [NEEDS CLARIFICATION: Must the application be disabled and remain disabled
-  until revocation succeeds, or may it remain enabled while only a precisely bounded
-  pre-existing set is revoked? The existing question is pending; neither option is approved.]
+- **GR-004**: Submission MUST require an already disabled application. It MUST remain
+  disabled while any revocation job is incomplete, including stopped/failed work.
+  Only successful reconciliation permits a separate explicit re-enable; completion
+  MUST NOT automatically enable it. No submission implicitly exercises disable permission.
 - **GR-005**: The selected scope MUST include eligible stored authorizations and tokens
   independently, including tokens without an authorization link. Already invalid records
   MUST NOT become valid. Other applications and target credentials/configuration are preserved.
@@ -132,10 +137,13 @@ result, and exercise a freshly authorized continuation of the same fixed scope.
 - **GR-011**: Status MUST show committed authorization/token counts, pending/completed/stopped
   state and bounded safe errors. Unknown totals MUST NOT be shown as exact percentages.
   Reads MUST require current `applications.read` and `grants.revoke`, not identifier possession.
-- **GR-012**: Authority-denied or failed work MUST require explicit fresh confirmation to
+- **GR-012**: Durably stopped authority-denied or failed work MUST require explicit fresh confirmation to
   continue its fixed remaining scope; no silent revival after authority restoration. Recovery
   MUST preserve approval history, completed batches and target restrictions. Process restart
   alone is not an authority failure and may resume work still eligible under GR-007.
+  If storage prevents recording a stop, report unavailable/unknown rather than claiming
+  it stopped. Late failure recording stops incomplete work under the same approval even
+  when progress advanced, but never overwrites a later approval or terminal success.
 - **GR-013**: The UI MUST distinguish acceptance from completion and explain that revoking
   stored authority cannot erase offline tokens or sessions owned by other applications.
 - **GR-014**: Committed-entry revocation enforcement MUST meet the existing five-second
@@ -174,7 +182,7 @@ result, and exercise a freshly authorized continuation of the same fixed scope.
 
 ## Assumptions and dependencies
 
-This draft makes no selection for GR-004. Explicit recovery with fresh approval and
+The user selected disabled-until-success for GR-004 on 2026-11-05. Explicit recovery with fresh approval and
 current read-plus-revoke status access are proposed conservative rules for this slice,
 not additional user answers. They remain subject to the packet's design review.
 

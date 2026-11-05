@@ -7,5 +7,7 @@
     <ProjectReference Include="../../persistence/IdentityPlatform.Database.SqlServer/IdentityPlatform.Database.SqlServer.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
   </ItemGroup>
 </Project>

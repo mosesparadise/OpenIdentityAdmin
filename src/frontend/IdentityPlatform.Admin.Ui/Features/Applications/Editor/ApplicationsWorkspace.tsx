@@ -9,6 +9,7 @@ import { UpdateForm } from "./UpdateForm";
 import { CreateForm } from "./CreateForm";
 import { DetailsView } from "./DetailsView";
 import { ProblemView } from "./ProblemView";
+import { GrantPanel } from "./Grants/GrantPanel";
 
 /** Keeps create/details navigation in ephemeral memory on the existing native Aspire Applications route. */
 export function ApplicationsWorkspace({ session }: { session: SessionState }) {
@@ -45,6 +46,7 @@ export function ApplicationsWorkspace({ session }: { session: SessionState }) {
       submit={input => owner.current?.lifecycle(input) ?? Promise.resolve({})} cancel={() => owner.current?.cancelForm()} />}
     {state.kind === "working" && <p className="editor-help">{state.operation === "create" ? "Keep this page visible. Creation is sent once; an interrupted response may leave a created application without its one-time secret." : state.operation !== "read" ? "Keep this page visible. This change is sent once. An interrupted response may leave an unknown outcome; it will not be retried automatically." : "Checking current access and reading sanitized metadata."}</p>}
     {(state.kind === "details" || state.kind === "created" || state.kind === "updated" || state.kind === "replaced") && <DetailsView details={state.details} secret={state.kind === "created" || state.kind === "replaced" ? state.secret : undefined} dismiss={() => owner.current?.dismiss()} edit={() => owner.current?.open("edit")} replace={() => owner.current?.open("replace")} lifecycleRef={lifecycleButton} lifecycle={() => owner.current?.open(state.details.enabled ? "disable" : "enable")} />}
+    {(state.kind === "details" || state.kind === "updated") && state.details.editable && <GrantPanel key={`${state.details.id}:${state.etag}:${state.expires}`} base={state} />}
     {state.kind === "problem" && <ProblemView state={state} reload={() => { if (state.target) void owner.current?.details(state.target.id); }} />}
     {state.kind !== "form" && state.kind !== "edit-form" && state.kind !== "replacement-form" && state.kind !== "disable-form" && state.kind !== "enable-form" && <div className="actions"><Button secondary onClick={back}>{state.kind === "working" ? "Stop waiting" : "Back to applications"}</Button></div>}
   </section>;

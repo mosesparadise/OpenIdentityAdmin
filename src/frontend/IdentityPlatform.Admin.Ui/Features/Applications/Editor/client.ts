@@ -4,10 +4,10 @@ import { addressable, type CreateInput, type EditInput, type ReplacementInput, t
 import type { Result } from "./observation";
 const collection = "/bff/api/v1/applications";
 /** Bounds successful JSON before parsing and discards all remote error bodies, cookies and exception text. */
-async function bounded(request: Request): Promise<Response> {
+export async function bounded(request: Request): Promise<Response> {
   const response = await fetch(request);
   if (response.redirected) { await response.body?.cancel(); throw new Error("Application response rejected"); }
-  if (response.status !== 200 && response.status !== 201) { await response.body?.cancel(); return new Response(null, { status: response.status }); }
+  if (![200, 201, 202].includes(response.status)) { await response.body?.cancel(); return new Response(null, { status: response.status }); }
   if (response.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json" ||
       !response.headers.get("cache-control")?.split(",").some(value => value.trim().toLowerCase() === "no-store") ||
       response.headers.get("x-content-type-options") !== "nosniff" || !response.body) {

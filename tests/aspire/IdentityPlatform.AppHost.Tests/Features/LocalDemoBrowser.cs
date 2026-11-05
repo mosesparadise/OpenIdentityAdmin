@@ -70,6 +70,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
             ManagedFactorAsync, subject);
         await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: false);
         await ApplicationStateJourney.RequireDeniedAsync(page, new Uri(Issuer), registration);
+        await ApplicationGrantJourney.RunAsync(page, new Uri(Client), registration);
         await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: true);
         await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
             ManagedFactorAsync, subject);

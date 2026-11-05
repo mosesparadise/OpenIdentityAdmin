@@ -2,6 +2,8 @@ using System.Net;
 using System.Net.Http.Headers;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Core.Features.ApplicationGrants;
+using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Admin.Bff.Features.Applications;
@@ -121,4 +123,37 @@ internal sealed class ApplicationProxyTransport : IDisposable
 
     /// <summary>Disposes pooled transport when the owning host stops; response/request owners are joined by each awaited read.</summary>
     public void Dispose() => client.Dispose();
+
+    /// <summary>Sends a closed parsed grant operation once, validating finite status, framing and response identity without forwarding arbitrary headers.</summary>
+    internal async Task<GrantProxyResult> GrantsAsync(BrowserAccessCredential access, GrantProxyRequest input, CancellationToken token)
+    {
+        using var request = new HttpRequestMessage(input.Mutation ? HttpMethod.Post : HttpMethod.Get, new Uri(target, input.Path));
+        request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, access.Value);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(JsonType));
+        if (input.Mutation)
+        {
+            request.Headers.TryAddWithoutValidation(IfMatchHeader, input.Version);
+            request.Headers.TryAddWithoutValidation(GrantRevocationRules.KeyHeader, input.Key);
+            request.Content = new ReadOnlyMemoryContent(input.Body);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonType);
+        }
+        using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
+        if (response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.NotFound or
+            HttpStatusCode.Conflict or HttpStatusCode.PreconditionFailed or HttpStatusCode.PreconditionRequired)
+        {
+            return new((int)response.StatusCode);
+        }
+        if (response.StatusCode != (input.Mutation ? HttpStatusCode.Accepted : HttpStatusCode.OK) || response.Content.Headers.ContentType?.MediaType != JsonType ||
+            response.Content.Headers.ContentEncoding.Count != 0 || response.Content.Headers.ContentLength > ApplicationProjection.MaximumResponseBytes)
+        {
+            return new(StatusCodes.Status503ServiceUnavailable);
+        }
+        await using var stream = await response.Content.ReadAsStreamAsync(token);
+        var bytes = await ApplicationJson.ReadAsync(stream, ApplicationProjection.MaximumResponseBytes, token);
+        if (response.Content.Headers.ContentLength is { } length && bytes.Length != length)
+        {
+            throw new InvalidDataException();
+        }
+        return GrantProxyResult.Parse(bytes, input, response.Headers.ETag?.ToString(), response.Headers.Location?.OriginalString);
+    }
 }

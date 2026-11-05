@@ -104,8 +104,8 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 9);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/session']);
+  assert.equal(inventory(browserStatus, 'bff').size, 13);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/session']);
   const management = browserStatus.paths['/bff/api/v1/applications'].get;
   assert.deepEqual(management.security, [{ BrowserSession: [] }]);
   assert.equal(management['x-required-permission'], 'applications.read');

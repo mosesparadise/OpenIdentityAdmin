@@ -169,6 +169,40 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
         return await api.SendAsync(request, TestContext.Current.CancellationToken);
     }
 
+    /// <summary>Sends a single explicit grant operation through genuine HTTPS bearer or browser proof, allowing finite negative input overrides.</summary>
+    internal async Task<HttpResponseMessage> GrantAsync(string id, string body, string? version, string? key, bool direct = false,
+        string? jobId = null, bool authenticated = true, string? csrf = null, string? origin = null)
+    {
+        const string separator = "/";
+        const string suffix = "/grant-revocations";
+        const string continuation = "/continue";
+        const string requestKey = "Idempotency-Key";
+        var path = (direct ? ApiCollection : Collection) + separator + Uri.EscapeDataString(id) + suffix +
+            (jobId is null ? string.Empty : separator + jobId + continuation);
+        using var request = new HttpRequestMessage(HttpMethod.Post, path) { Content = new StringContent(body, Encoding.UTF8, Media) };
+        if (version is not null)
+        {
+            request.Headers.TryAddWithoutValidation(Microsoft.Net.Http.Headers.HeaderNames.IfMatch, version);
+        }
+        if (key is not null)
+        {
+            request.Headers.TryAddWithoutValidation(requestKey, key);
+        }
+        if (direct && authenticated)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, Access);
+        }
+        else if (!direct)
+        {
+            request.Headers.Add(Origin, origin ?? environment.Profile.ClientUri.GetLeftPart(UriPartial.Authority));
+            if (authenticated)
+            {
+                request.Headers.Add(Csrf, csrf ?? await TokenAsync());
+            }
+        }
+        return await (direct ? api : browser).SendAsync(request, TestContext.Current.CancellationToken);
+    }
+
     /// <summary>Observes persisted state through a separate ordinary test scope; production endpoints retain their own owned/read-only children.</summary>
     internal AsyncServiceScope Scope()
     {

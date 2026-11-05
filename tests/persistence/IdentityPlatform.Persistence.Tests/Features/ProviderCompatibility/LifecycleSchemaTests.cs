@@ -41,11 +41,11 @@ public sealed class LifecycleSchemaTests
         await SeedAsync(fixture, secret);
         var before = await fixture.SnapshotAsync(provider);
         await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token);
-        var after = await fixture.SnapshotAsync(provider);
+        var after = GrantUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider));
         LifecycleUpgradeWitness.Require(provider, before, after);
         LifecycleUpgradeWitness.RejectDefects(provider, before, after);
         await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token);
-        LifecycleUpgradeWitness.Require(provider, before, await fixture.SnapshotAsync(provider));
+        LifecycleUpgradeWitness.Require(provider, before, GrantUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider)));
         await using var scope = fixture.Scope();
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
         var application = await manager.FindByClientIdAsync(Client, fixture.Token);

@@ -20,6 +20,7 @@ internal static class AdministratorUpgradeWitness
     /// <summary>Checks all old objects and data, exact new history rows and inert initialization rather than refreshing the frozen producer.</summary>
     internal static void Require(IRelationalDatabaseProvider provider, Dictionary<string, string[]> before, Dictionary<string, string[]> after)
     {
+        after = GrantUpgradeWitness.Predecessor(provider.Id, after);
         Assert.Equal(AddedQueries.Order(StringComparer.Ordinal), after.Keys.Except(before.Keys).Order(StringComparer.Ordinal));
         Assert.Empty(before.Keys.Except(after.Keys));
         foreach (var (query, rows) in before)

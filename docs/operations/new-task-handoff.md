@@ -1,18 +1,19 @@
 # OpenIdentityAdmin new-task handoff
 
-**Grant-revocation requirements checkpoint — 5 November 2026:**
-[Feature021](../../specs/021-application-grant-revocation/spec.md) on
-`128-application-grant-revocation` follows delivered feature020. The user explicitly
-selected continuation after sign-out/MFA expiry under recorded approval, with current
-account and revocation-permission checks for every batch. The existing question about
-requiring the application to stay disabled until success versus allowing enabled
-applications remains unanswered (GR-004). [Research/review](../../specs/021-application-grant-revocation/review.md)
-defines the durable-worker prerequisite, native authorization/token coverage, atomic
-progress/audit and required evidence. This is a draft requirements checkpoint, not
-implementation or runtime acceptance. Next: resolve that existing lifecycle choice,
-finalize plan/tasks and implement the visible action/status/recovery journey. Do not
-repeat accepted lifecycle work. Main baseline is `dce682f9812d228b41ae7fad1dcb1f6636f40d38`;
-all historical/manual/Firefox/A-009/vendor/production/public-release gates remain open.
+**Grant-revocation implementation in progress — 5 November 2026:**
+[Feature021](../../specs/021-application-grant-revocation/spec.md) on `128-application-grant-revocation` implements the selected
+policy: applications must be disabled and remain disabled until revocation succeeds.
+Accepted jobs continue after logout/MFA expiry with current effective-account/permission
+checks. Neither decision remains pending. Additive migrations, native batches, audit,
+worker, API/BFF contracts and the confirmation/progress/recovery UI are implemented in
+the worktree. [Partial verification](../../specs/021-application-grant-revocation/verification.md) records44 grant cases on each real provider, both-provider Worker restart/contention,
+4 native contract cases,44 Node contract controls and83 UI cases. The shared actual
+browser/native Aspire grant journey is implemented and compiled. Hosted browser execution,
+remaining authority/race edge cases, behavioral mutants and full exact-head acceptance
+remain open. PR124 remains draft; main is `dce682f9812d228b41ae7fad1dcb1f6636f40d38`.
+**Next:** finish the required boundary/integrated evidence and reviewed delivery; do not
+repeat feature020. All historical/manual/Firefox/A-009/vendor/production/public-release
+gates remain open. This supersedes the earlier requirements-only checkpoint.
 
 
 **Managed application lifecycle delivered — 5 November 2026:**

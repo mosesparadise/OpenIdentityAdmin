@@ -1,4 +1,5 @@
 using IdentityPlatform.Admin.Bff.Features.Applications;
+using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +42,6 @@ internal static class ApplicationClientSetup
             return;
         }
         app.UseRouting();
-        app.UseEndpoints(routes => routes.MapApplicationProxy());
+        app.UseEndpoints(routes => routes.MapApplicationProxy().MapGrantProxy());
     }
 }

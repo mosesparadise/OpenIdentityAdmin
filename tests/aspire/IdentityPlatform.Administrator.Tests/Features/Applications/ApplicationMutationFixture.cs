@@ -33,7 +33,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     internal CancellationToken Token { get; } = TestContext.Current.CancellationToken;
 
     /// <summary>Owns only the existing real provider/journey fixture and an independent API root without issuer private keys or factor codecs.</summary>
-    internal static async Task<ApplicationMutationFixture> CreateAsync(BootstrapFixture fixture, string provider, SaveChangesInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+    internal static async Task<ApplicationMutationFixture> CreateAsync(BootstrapFixture fixture, string provider, IInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
     {
         var material = new NativeAssertionMaterial(browser: true);
         AdministratorProtocolScenario? scenario = null;
@@ -97,7 +97,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
 
     /// <summary>Uses identical production registrations for every independent root; test faults remain scoped to the requested node.</summary>
     private static ServiceProvider BuildApi(AdministratorProtocolScenario scenario, NativeAssertionMaterial material, string provider,
-        SaveChangesInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+        IInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
     {
         var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders())
             .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Account.Journey.Lease.RuntimeConnection)

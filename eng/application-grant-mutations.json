@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "grant-enable-conflict",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "before": "if (command.Kind == ApplicationMutationKind.Enable && await scope.Owner.RunAsync(async current =>",
+      "after": "if (command.Kind == ApplicationMutationKind.Disable && await scope.Owner.RunAsync(async current =>",
+      "marker": "grant-enable-conflict-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable"
+    },
+    {
+      "id": "grant-current-permission",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs",
+      "before": "return grants.Permissions(ownership.UserId).Contains(GrantRevocationRules.Permission);",
+      "after": "return grants.Permissions(ownership.UserId).Count >= 0;",
+      "marker": "grant-current-permission-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes"
+    },
+    {
+      "id": "grant-batch-limit",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs",
+      "before": "internal const int FamilyLimit = 8;",
+      "after": "internal const int FamilyLimit = 9;",
+      "marker": "grant-batch-limit-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion"
+    },
+    {
+      "id": "grant-inactive-token",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs",
+      "before": "(row.Status == OpenIddictConstants.Statuses.Valid || row.Status == OpenIddictConstants.Statuses.Inactive))\n            .OrderBy(row => row.Id)",
+      "after": "(row.Status == OpenIddictConstants.Statuses.Valid))\n            .OrderBy(row => row.Id)",
+      "marker": "grant-inactive-token-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted"
+    },
+    {
+      "id": "grant-effective-approval",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs",
+      "before": "if (pair is null || pair.Approval.Id != attempt.ApprovalId)",
+      "after": "if (pair is null)",
+      "marker": "grant-effective-approval-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive"
+    },
+    {
+      "id": "grant-frozen-output",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs",
+      "before": "if (JsonSerializer.Serialize(localJob) != job || JsonSerializer.Serialize(localApproval) != approval ||",
+      "after": "if (JsonSerializer.Serialize(localApproval) != approval ||",
+      "marker": "grant-frozen-output-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+[
+  "Given wire aliases When validated Then UUIDs and Int64 counts remain exact",
+  "Given hostile progress When observed Then exact identity state chronology and expiry are required",
+  "Given recent jobs When observed Then bounded unique exact-expiry pages are required",
+  "Given acceptance When observed Then key target job ETag and Location must all match",
+  "Given current permission When explicitly confirmed Then one mutation carries original preconditions",
+  "Given enabled target or missing version When confirmed Then no mutation is sent",
+  "Given an incomplete job When recovery is confirmed Then only the stopped exact job can continue",
+  "Given lost acceptance When explicitly checked Then the same key and immutable intent are sent again",
+  "Given an unresolved original acceptance When recovery is denied Then original uncertainty survives",
+  "Given fresh or ambiguous intent When CSRF fails Then no send occurs and prior uncertainty is retained",
+  "Given actual read failures When checked Then permissions are hidden and raw data is never published",
+  "Given a pending request When hidden expired or disposed Then late acceptance cannot restore output",
+  "Given overlapping status reads When an older response arrives Then only the current observation is published",
+  "Given malformed acceptance When submitted Then no progress is invented and recovery stays explicit",
+  "Given generated transport When used Then routes headers cookies and single sends remain bounded",
+  "Given polling When queued progress changes Then automatic work remains read-only",
+  "Given accepted progress When polling runs Then no mutation is repeated",
+  "Given original display deadline When either timer expires Then progress and pending keys are cleared",
+  "Given terminal recovered acceptance When status is reauthorized Then continuation or a new request is actionable",
+  "Given default key generation When confirmed Then a fresh canonical UUID binds acceptance",
+  "Given an encoded opaque application When accepted Then transport and observation agree on its exact segment"
+]

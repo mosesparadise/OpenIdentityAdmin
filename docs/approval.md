@@ -1,5 +1,16 @@
 # Documentation approval
 
+**Application grant-revocation scope selection (5 November 2026):** the user selected
+“Continue under recorded approval; recheck account and permission” and then “Follow your
+recommendation” to require the application to remain disabled until revocation succeeds.
+This authorizes [feature021](../specs/021-application-grant-revocation/spec.md), its durable
+job/approval/progress/audit storage, current batch authority, explicit recovery, API/BFF/UI,
+ordinary Aspire worker integration, both-provider migrations and required verification,
+and normal reviewed squash delivery once exact-head checks pass. Completion does not
+re-enable automatically. Existing offline-token/external-session limits and all historical,
+manual, production and public-release gates remain unchanged.
+
+
 **Application lifecycle scope selection (5 November 2026):** the user selected “Stop new issuance; add grant revocation separately” for [feature020](../specs/020-application-lifecycle/spec.md). This authorizes the reviewed disable/re-enable slice, its required issuer enforcement, atomic state/version/audit, UI/contracts, both-provider migrations and verification, and normal reviewed squash delivery. Bulk grant revocation remains a separate follow-on; no existing offline token/session or historical/manual/release gate is waived.
 
 **Application editor scope selection (29 October 2026):** the user answered “all recommended” to feature 019’s three questions: confidential web authorization code/PKCE with a generated one-time shared secret; OpenID-only stable-subject sign-in with explicit consent; existing administrator accounts with fresh password/MFA and no administrator claims. This authorizes the selected usable create/edit journey and its required issuer/authentication/consent, write/audit/concurrency, contract/UI, provider/browser verification and reviewed squash dependencies. Ordinary API catalogue, other client profiles, ordinary-user onboarding, refresh activation and all existing external gates remain separate. The earlier pending-choice checkpoint below is superseded.

@@ -38,6 +38,7 @@ internal static class ApplicationMutationBoundary
         {
             http.RequestAborted = original;
             http.Response.Headers.Remove(VersionHeader);
+            http.Response.Headers.Location = Microsoft.Extensions.Primitives.StringValues.Empty;
             http.Response.Headers.Remove(CookieHeader);
             http.Response.ContentLength = null;
             var status = error is ApplicationProxyRejected rejected ? rejected.Status : error is AntiforgeryValidationException ?

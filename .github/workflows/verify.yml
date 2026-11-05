@@ -171,6 +171,8 @@ jobs:
           - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-PostgreSql-managedapplications-issuance }
           - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-SqlServer-managedapplications-admission }
           - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-SqlServer-managedapplications-issuance }
+          - { profile: PostgreSql, partition: administrator, story: ApplicationGrants, label: administrator-PostgreSql-applicationgrants }
+          - { profile: SqlServer, partition: administrator, story: ApplicationGrants, label: administrator-SqlServer-applicationgrants }
           - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
           - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }
@@ -545,7 +547,7 @@ jobs:
     if: needs.scope.outputs.scope == 'full'
     name: Application mutations ${{ matrix.provider }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -574,6 +576,8 @@ jobs:
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Verify isolated critical-decision mutants
         run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite applications --disposable-checkout
+      - name: Verify isolated grant critical-decision mutants
+        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite application-grants --disposable-checkout
       - name: Verify isolated lifecycle critical-decision mutants
         run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite application-lifecycle --disposable-checkout
       - name: Retain only sanitized mutation evidence
@@ -583,6 +587,7 @@ jobs:
           path: |
             artifacts/mutations/applications-${{ matrix.provider }}/evidence.json
             artifacts/mutations/application-lifecycle-${{ matrix.provider }}/evidence.json
+            artifacts/mutations/application-grants-${{ matrix.provider }}/evidence.json
           retention-days: 7
           if-no-files-found: error
   managed-application-mutations:

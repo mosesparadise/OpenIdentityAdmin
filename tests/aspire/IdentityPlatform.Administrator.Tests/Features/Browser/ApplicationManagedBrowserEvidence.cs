@@ -25,7 +25,7 @@ internal static class ApplicationManagedBrowserEvidence
     private const string ApplicationsPath = "/applications";
 
     /// <summary>Creates no alternate registration or HTTP login; one native administrator browser owns the editor and subsequent managed ceremony.</summary>
-    internal static async Task<string[]> RunAsync(BootstrapFixture fixture, string provider, bool approve)
+    internal static async Task<string[]> RunAsync(BootstrapFixture fixture, string provider, bool approve, bool revoke = false)
     {
         var clock = new FactorClock(TimeProvider.System);
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true, managed: true, clock: clock);
@@ -50,7 +50,7 @@ internal static class ApplicationManagedBrowserEvidence
             environment.Issuer.Account.ActorId, approve, PresentationAsync);
         Assert.Equal(authority, await ManagedHumanEvidence.AuthorityAsync(evidence));
         await VerifyAsync(evidence, flow, approve);
-        var secrets = approve ? await LifecycleAsync(page, relyingParty, evidence, registration, flow.Secrets) : flow.Secrets;
+        var secrets = approve ? await LifecycleAsync(page, relyingParty, evidence, registration, flow.Secrets, revoke, provider) : flow.Secrets;
         await page.GotoAsync(new Uri(environment.Profile.ClientUri, ApplicationsPath).AbsoluteUri);
         await BrowserSecretOracle.StorageAsync(page, secrets);
         await observation.RequireAsync(secrets);
@@ -70,12 +70,17 @@ internal static class ApplicationManagedBrowserEvidence
 
     /// <summary>Disables through React, observes genuine independent issuer denial, then re-enables and completes entirely fresh human/native proof.</summary>
     private static async Task<string[]> LifecycleAsync(IPage page, ManagedBrowserRelyingParty relyingParty, ManagedTokenEvidenceContext evidence,
-        ApplicationEditorRegistration registration, string[] priorSecrets)
+        ApplicationEditorRegistration registration, string[] priorSecrets, bool revoke, string provider)
     {
         var environment = evidence.Environment;
         var prior = Assert.Single((await evidence.SnapshotAsync(applicationOnly: true)).Interactions).RequestId;
         await ApplicationStateJourney.ChangeAsync(page, environment.Profile.ClientUri, registration, enabled: false, WorkspacePresentation.RequireStateAsync);
         await ApplicationStateJourney.RequireDeniedAsync(page, environment.Profile.Issuer, registration);
+        if (revoke)
+        {
+            await ApplicationGrantBrowserEvidence.RunAsync(page, environment, registration, provider);
+            return priorSecrets;
+        }
         await ApplicationStateJourney.ChangeAsync(page, environment.Profile.ClientUri, registration, enabled: true, WorkspacePresentation.RequireStateAsync);
         var flow = await ManagedBrowserJourney.RunAsync(page, relyingParty, registration,
             environment.Issuer.Account.Journey.Lease.Username, environment.Issuer.Account.Journey.Lease.Password,

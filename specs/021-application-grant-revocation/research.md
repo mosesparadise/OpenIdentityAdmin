@@ -9,10 +9,9 @@ not repeat that work or revive any expired diagnostic approval.
 ## Product decisions
 
 The user explicitly selected continuation under recorded approval with current account
-and permission checks after sign-out/MFA expiry. The disabled-until-success versus
-still-enabled/pre-existing-set question remains unanswered. No draft recommendation
-constitutes that answer. GR-004 blocks lifecycle-dependent implementation and final
-plan/tasks; independent inspection and this draft are useful authorized preparation.
+and permission checks after sign-out/MFA expiry. The user subsequently selected the recommendation: disabled until success. GR-004 is
+resolved; implementation and its required dependencies/tests proceed under the recorded
+scope in docs/approval.md.
 
 Proposed recovery: an authority-denied or failed job stops until a currently eligible
 administrator explicitly confirms the same remaining scope with fresh MFA. Keep both
@@ -31,7 +30,7 @@ These are reviewable conservative design rules, not fabricated user choices.
 | Serialization | `ManagedRegistration.LockAsync`, `ManagedDurableToken`, `ManagedIssuance`, `ProtocolAdmissionOwnership` | Reuse existing governance lock ordering at admission and each batch, not across the entire job. |
 | Current request authority | `ApiMutationAuthority`, `ApplicationMutationOperation` | Preserve independent API admission and original request deadlines; introduce distinct durable approval/current worker authority instead of renewing a live receipt. |
 | Current grants | `GovernanceGrants.ReadCoreAsync` | Read persisted role membership and exact permissions; missing stored grants never fall back to bootstrap defaults. |
-| Account eligibility | `CeremonyAccount.IsActive`, `CeremonyBudget.IsAvailable`, `CeremonyClock.TryRead`, `GovernanceUsability.IsEligibleAsync` | Define session-independent eligibility including lockout and usable factor state without casually adding factor-secret access to Worker. Do not reuse session predicates wholesale. |
+| Account eligibility | `CeremonyAccount.IsActive`, `CeremonyBudget.IsAvailable`, `CeremonyClock.TryRead`, `GovernanceUsability.IsEligibleAsync` | Check active account, lockout, current enrollment/factor generation and exactly one nonempty protected-factor record without loading its ciphertext; this proves metadata eligibility, not cryptographic decryptability. Do not reuse session predicates wholesale. |
 | Protected target | `ApplicationMutationWriter.RequireMutableAsync`, administrator profile and pilot manifest | Protect persisted IDs and case-insensitive reserved names, including name drift. Use cleanup-specific eligibility: normal managed registration admission rejects disabled/expired targets. |
 | Worker composition | Worker `Features/Setup.cs`, `Features/Storage/Setup.cs` | Worker currently has storage/readiness, not a durable processor. Add feature composition and test startup/disposal through ordinary Aspire. |
 | HTTP/browser | Approved04 management conventions | Durable `202` job ID/status URL, scoped idempotency, bounded errors; separate versioned API/BFF contracts and generated browser types. Preserve current cookies/CSRF and independent API authority. |
@@ -50,9 +49,9 @@ already-invalid states; count committed transitions truthfully and distinguish a
 ineligible entries. Reconcile unknown commits in a new owned scope, preserving existing
 cleanup/quarantine discipline. Do not add blanket security-mutation retries.
 
-## Consequences of the pending lifecycle choice
+## Selected lifecycle and rejected alternative
 
-**Require disabled until success (recommended, not selected):** governance-serialized
+**Require disabled until success (selected):** governance-serialized
 disable gives a finite target set. Admission and every batch enforce disabled state;
 re-enable rejects outstanding incomplete work, including stopped/failed jobs, until
 successful reconciliation. Explicit recovery prevents an undocumented permanent dead end.
@@ -60,7 +59,7 @@ Completion never automatically enables the application. Existing disable permiss
 separate: revoking an already disabled application needs `grants.revoke`; automatically
 disabling as part of submission would require both permissions and is not proposed.
 
-**Allow while enabled:** define durable membership/generation for the pre-existing set
+**Allow while enabled (rejected for this slice):** define durable membership/generation for the pre-existing set
 and descendants created from selected grants. Native GUID order or second-resolution
 creation timestamps alone do not establish a safe cutoff. Equal times, clock rollback,
 concurrent issuance and finite completion need additional issuer design and tests. Do not
