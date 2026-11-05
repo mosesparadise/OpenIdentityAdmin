@@ -1,5 +1,13 @@
 # Delivery roadmap and task register
 
+**Grant-revocation inventory correction — 5 November 2026:** run529 passes the UI fix
+but stops96native/browser jobs at stale selection-control counts; one further job fails
+NuGet restore. The corrected three control suites preserve all prior identities and pass
+all74selection controls after four reproduced failures. Eight new authority/replay cases
+still require hosted execution. Next: verify the corrected candidate and finish ordered
+races/native cross-instance acceptance. PR124 remains draft; all existing release gates persist.
+
+
 **Grant-revocation integrated progress — 5 November 2026:** run528 at `a2f1595`
 confirms the Worker correction: both native Aspire demos pass3/3; grant suites pass44
 and persistence24 on each real provider; all four protection-browser cells pass32;

@@ -1,5 +1,27 @@
 # Grant-revocation hosted verification
 
+## Inventory gate correction — 5 November 2026
+
+[Run529](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42107559474)
+at `fab66f16a49b1937c2fb5cf0da8c80bd31812b7b` finishes25successful,98failed
+and one skipped jobs. The UI correction passes its hosted job. Of the failures,96
+stop at the lifecycle selection control before native execution, one fails locked NuGet
+restore with a connection reset, and final acceptance fails. No new provider result
+is inferred from these jobs.
+
+The three related selection-control suites retained pre-expansion counts despite the
+updated native inventory. Full local selection discovery reproduced four failures out
+of74 controls. Corrected expectations now match the independently reviewed eight additions:
+2,573administrator cases;1,162/1,267ordinary administrator cases and1,541/1,646complete
+provider cases for PostgreSQL/SQL Server. All2,565prior portable records and their order
+are unchanged. No selector, partition, identity assertion or execution gate is removed.
+
+All74selection controls now pass, as do16browser-story,8evidence and3coverage controls
+and instruction integrity. Independent test review reproduced the74passes and verified
+the exact count changes and preservation. The earlier local check omitted these related
+selection suites; future inventory updates must run the complete selection-control family.
+The corrected hosted provider execution and remaining feature acceptance are still required.
+
 ## Worker correction and expanded acceptance — 5 November 2026
 
 [Run528](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42095693143)
