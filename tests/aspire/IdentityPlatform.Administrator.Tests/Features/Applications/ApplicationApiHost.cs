@@ -1,5 +1,5 @@
-using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.ApplicationGrants;
+using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.Authentication;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;

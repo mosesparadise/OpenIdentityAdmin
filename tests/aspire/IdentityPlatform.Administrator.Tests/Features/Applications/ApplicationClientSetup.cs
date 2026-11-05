@@ -1,5 +1,5 @@
-using IdentityPlatform.Admin.Bff.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
+using IdentityPlatform.Admin.Bff.Features.Applications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

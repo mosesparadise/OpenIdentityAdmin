@@ -1,6 +1,5 @@
 using IdentityPlatform.Admin.Bff.Features.Applications;
 using IdentityPlatform.Core.Features.ApplicationGrants;
-using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore.Antiforgery;
 
 namespace IdentityPlatform.Admin.Bff.Features.ApplicationGrants;

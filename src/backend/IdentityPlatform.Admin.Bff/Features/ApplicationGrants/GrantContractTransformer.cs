@@ -1,6 +1,6 @@
+using IdentityPlatform.Management.Features.ApplicationGrants;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
-using IdentityPlatform.Management.Features.ApplicationGrants;
 
 namespace IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 

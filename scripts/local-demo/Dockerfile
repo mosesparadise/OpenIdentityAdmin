@@ -4,6 +4,7 @@ COPY . .
 RUN dotnet publish src/backend/IdentityPlatform.AuthServer/IdentityPlatform.AuthServer.csproj -c Release -o /publish/issuer -p:RestoreLockedMode=true
 RUN dotnet publish src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj -c Release -o /publish/bff -p:RestoreLockedMode=true
 RUN dotnet publish src/backend/IdentityPlatform.Admin.Api/IdentityPlatform.Admin.Api.csproj -c Release -o /publish/api -p:RestoreLockedMode=true
+RUN dotnet publish src/backend/IdentityPlatform.Worker/IdentityPlatform.Worker.csproj -c Release -o /publish/worker -p:RestoreLockedMode=true
 RUN dotnet publish src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj -c Release -o /publish/migrator -p:RestoreLockedMode=true
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0.14@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee AS issuer
@@ -23,6 +24,12 @@ WORKDIR /app
 COPY --from=build /publish/api .
 USER $APP_UID
 ENTRYPOINT ["dotnet", "IdentityPlatform.Admin.Api.dll"]
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.14@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee AS worker
+WORKDIR /app
+COPY --from=build /publish/worker .
+USER $APP_UID
+ENTRYPOINT ["dotnet", "IdentityPlatform.Worker.dll"]
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0.14@sha256:de0ee358cdd672f7017a003bed21e9ac9ed48a27c922a59b18175b6e82fa7fee AS migrator
 WORKDIR /app

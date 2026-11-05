@@ -1,8 +1,8 @@
 using IdentityPlatform.Admin.Api.Features.Authentication;
-using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.ApplicationGrants;
-using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
+using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.ProtocolAdmission;

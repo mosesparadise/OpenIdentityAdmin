@@ -7,6 +7,10 @@ Use synthetic disposable local-demo data and the existing runtime prerequisites.
 dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-demo
 ```
 
+The profile includes a run-owned `worker` container after migration completion. It uses
+only Platform runtime access, exposes no host endpoint and requires no issuer protection
+keys. Confirm that it is running in the dashboard before expecting job progress.
+
 1. Use the ordinary Aspire dashboard initialization and real administrator password/MFA.
 2. Create a managed application and complete a genuine managed sign-in. Retain a second
    application's fixture as the unaffected control. Disable the target in application details.

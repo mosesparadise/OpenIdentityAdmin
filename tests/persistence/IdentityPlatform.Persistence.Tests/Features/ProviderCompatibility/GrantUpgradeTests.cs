@@ -1,7 +1,5 @@
-using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 

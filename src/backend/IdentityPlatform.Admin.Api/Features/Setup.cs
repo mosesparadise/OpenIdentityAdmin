@@ -1,6 +1,6 @@
 using IdentityPlatform.Admin.Api.Features.ApiContracts;
-using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.ApplicationGrants;
+using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.Authentication;
 using IdentityPlatform.Admin.Api.Features.Storage;
 using IdentityPlatform.Core.Features.Configuration;

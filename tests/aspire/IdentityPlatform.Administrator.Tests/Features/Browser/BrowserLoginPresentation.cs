@@ -49,7 +49,7 @@ internal static class BrowserLoginPresentation
     internal static async Task ErrorAsync(IPage page, params string[] fields)
     {
         await page.Locator(Error).WaitForAsync();
-        Assert.True(await page.EvaluateAsync<bool>(Focus, Error));
+        await Assertions.Expect(page.Locator(Error)).ToBeFocusedAsync();
         await FocusAsync(page, Error);
         Assert.True((await page.Locator(Error).InnerTextAsync()).Trim() == Denied);
         foreach (var field in fields)

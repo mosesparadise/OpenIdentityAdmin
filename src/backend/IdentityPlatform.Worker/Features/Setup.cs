@@ -1,6 +1,6 @@
 using IdentityPlatform.ServiceDefaults;
-using IdentityPlatform.Worker.Features.Storage;
 using IdentityPlatform.Worker.Features.ApplicationGrants;
+using IdentityPlatform.Worker.Features.Storage;
 
 namespace IdentityPlatform.Worker.Features;
 

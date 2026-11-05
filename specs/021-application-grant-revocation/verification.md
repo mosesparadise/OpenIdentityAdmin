@@ -4,9 +4,10 @@
 
 Feature021 is in progress on `128-application-grant-revocation`; draft PR124 is not
 accepted or merged. Remote main was reverified as
-`dce682f9812d228b41ae7fad1dcb1f6636f40d38`; the initial published draft head remains
-`a0665f7309a69d314556f1db15bd5a91ce0980d2` at this checkpoint. Implementation changes
-are being verified in the existing worktree. This document records partial evidence,
+`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Implementation is published at
+`a1b809cb4e0c075dd1475d6a048560fc7481f8d4`, superseding the requirements-only
+`a0665f7309a69d314556f1db15bd5a91ce0980d2` checkpoint. [Hosted run527 and its bounded
+corrections](hosted-verification.md) remain incomplete acceptance. This document records partial evidence,
 not a final exact-head acceptance receipt.
 
 The user selected disabled-until-success. Accepted work continues after logout/MFA

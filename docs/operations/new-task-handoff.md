@@ -1,5 +1,19 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant-revocation hosted verification — 5 November 2026:** implementation is published
+at `a1b809cb4e0c075dd1475d6a048560fc7481f8d4` in draft PR124. Run527 passes both
+ordinary grant lanes and PostgreSQL persistence, but is not accepted. Confirmed corrections
+cover imports, the mutation-job timeout assertion and a stale noncompiling permission
+mutant. The local-demo graph omitted Worker; it now composes the processor after migrations
+with Platform-only access. Both-provider graph cases fail before and pass after this fix.
+A prior browser focus check now waits for required focus; NuGet resets remain separate.
+Run527 finishes109successful/14failed/one skipped; corrected full acceptance remains open.
+See [hosted evidence](../../specs/021-application-grant-revocation/hosted-verification.md).
+**Next:** corrected hosted execution plus the remaining feature021 authority/race and
+integrated acceptance cases. Main, draft status and all historical/manual/release gates
+remain unchanged; do not repeat delivered feature020.
+
+
 **Grant-revocation implementation in progress — 5 November 2026:**
 [Feature021](../../specs/021-application-grant-revocation/spec.md) on `128-application-grant-revocation` implements the selected
 policy: applications must be disabled and remain disabled until revocation succeeds.

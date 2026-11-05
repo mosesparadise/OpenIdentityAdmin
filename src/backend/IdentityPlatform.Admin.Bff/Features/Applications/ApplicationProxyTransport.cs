@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Headers;
-using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
-using IdentityPlatform.Core.Features.Applications;
-using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
+using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Core.Features.ApplicationGrants;
+using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace IdentityPlatform.Admin.Bff.Features.Applications;
