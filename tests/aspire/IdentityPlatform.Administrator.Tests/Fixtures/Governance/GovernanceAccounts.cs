@@ -118,7 +118,7 @@ internal static class GovernanceAccounts
         LoginAsync(scenario.CreateScope, Password(scenario), userId);
 
     /// <summary>Runs real native password/TOTP login using the same existing scope owner and explicit synthetic witness credential.</summary>
-    internal static async Task<JourneySessionCandidate> LoginAsync(Func<AsyncServiceScope> createScope, string password, string userId)
+    internal static async Task<JourneySessionCandidate> LoginAsync(Func<AsyncServiceScope> createScope, string password, string userId, string? code = null)
     {
         await using var scope = createScope();
         var services = scope.ServiceProvider;
@@ -130,7 +130,7 @@ internal static class GovernanceAccounts
             CeremonySecrets.Create(), correlation, token);
         Assert.NotNull(pending.Interaction);
         var grant = await services.GetRequiredService<JourneyCompletion>().CompleteAsync(pending.Interaction, correlation, Login,
-            FactorOracle.Code(DateTimeOffset.UtcNow.ToUnixTimeSeconds()), token);
+            code ?? FactorOracle.Code(DateTimeOffset.UtcNow.ToUnixTimeSeconds()), token);
         Assert.NotNull(grant);
         return new JourneySessionCandidate(grant.UserId, grant.SessionId);
     }

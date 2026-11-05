@@ -1,5 +1,18 @@
 # Delivery roadmap and task register
 
+**Grant-revocation integrated progress — 5 November 2026:** run528 at `a2f1595`
+confirms the Worker correction: both native Aspire demos pass3/3; grant suites pass44
+and persistence24 on each real provider; all four protection-browser cells pass32;
+all12new grant behavioral mutants are killed. Feature021 T004 migration verification
+is complete. [Raw artifact reconciliation](../specs/021-application-grant-revocation/hosted-verification.md) retains the rejected
+119success/four-failure/one-skipped run. The UI polling test now waits for actual async
+publication; two WebKit jobs failed NuGet restore. Eight additional authority/replay
+cases compile and preserve all2,565prior test identities; execution remains pending.
+**Next:** verify the corrected candidate, then finish the remaining ordered races,
+cross-instance native enforcement and boundary acceptance. PR124 remains draft; main
+and all historical/manual/public-release gates remain unchanged.
+
+
 **Grant-revocation hosted verification — 5 November 2026:** implementation is published
 at `a1b809cb4e0c075dd1475d6a048560fc7481f8d4` in draft PR124. Run527 passes both
 ordinary grant lanes and PostgreSQL persistence, but is not accepted. Confirmed corrections

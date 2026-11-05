@@ -15,11 +15,11 @@ const recent = jobs => ({ status: 200, value: { items: jobs, expiresAt: projecti
 const acceptance = value => ({ status: 202, value: { job: value, requestKey }, etag: value.version, location: `/bff/api/v1/applications/${target}/grant-revocations/${jobId}` });
 const proof = { status: 200, value: { requestToken: 'synthetic-proof' } };
 const base = { details: { id: target, clientId: 'synthetic-client', enabled: false, editable: true }, etag: tag(target), expires: now + 60000 };
-function setup(t, overrides = {}, changed = {}) {
+function setup(t, overrides = {}, changed = {}, observe = () => {}) {
   let clock = now;
   const states = [], sends = [];
   const client = { recent: async () => recent([]), token: async () => proof, submit: async (...args) => { sends.push(args); return acceptance(projection); }, ...overrides };
-  const owner = new GrantController(client, { ...base, ...changed }, value => states.push(value), () => clock, () => requestKey);
+  const owner = new GrantController(client, { ...base, ...changed }, value => { states.push(value); observe(value); }, () => clock, () => requestKey);
   t.after(() => owner.dispose());
   return { owner, states, sends, client, advance: value => { clock = value; } };
 }
@@ -137,20 +137,29 @@ test('Given generated transport When used Then routes headers cookies and single
   await assert.rejects(() => client.recent('..', signal)); await assert.rejects(() => client.submit(target, base.etag, 'bad', {}, 'csrf', signal));
 });
 
-test('Given polling When queued progress changes Then automatic work remains read-only', async t => {
+test('Given polling When queued progress changes Then automatic work remains read-only', { timeout: 5000 }, async t => {
   t.mock.timers.enable({ apis: ['setTimeout'] });
   let reads = 0;
   const completed = { ...projection, state: 'succeeded' };
-  const x = setup(t, { recent: async () => recent([++reads === 1 ? projection : completed]) });
-  await x.owner.refresh(); t.mock.timers.tick(2000);
-  for (let index = 0; index < 20; index++) await new Promise(resolve => setImmediate(resolve));
+  const published = deferred(), hashing = deferred(), digestEntered = deferred(); let watching = false;
+  const x = setup(t, { recent: async () => recent([++reads === 1 ? projection : completed]) }, {}, value => {
+    if (watching && value.kind !== 'loading') published.resolve(value);
+  });
+  await x.owner.refresh(); watching = true;
+  const digest = crypto.subtle.digest.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'digest', async (...args) => { digestEntered.resolve(); await hashing.promise; return digest(...args); });
+  t.mock.timers.tick(2000); await digestEntered.promise;
+  assert.equal(x.states.at(-1).kind, 'loading'); assert.equal(x.sends.length, 0);
+  hashing.resolve(); assert.equal((await published.promise).kind, 'ready');
   assert.equal(reads, 2); assert.equal(x.states.at(-1).jobs[0].state, 'succeeded'); assert.equal(x.sends.length, 0);
   t.mock.timers.tick(2000); assert.equal(reads, 2);
 });
-test('Given accepted progress When polling runs Then no mutation is repeated', async t => {
+test('Given accepted progress When polling runs Then no mutation is repeated', { timeout: 5000 }, async t => {
   t.mock.timers.enable({ apis: ['setTimeout'] });
-  const x = setup(t); await x.owner.refresh(); await x.owner.submit('security', true); t.mock.timers.tick(2000);
-  for (let index = 0; index < 20; index++) await new Promise(resolve => setImmediate(resolve));
+  const published = deferred(); let watching = false;
+  const x = setup(t, {}, {}, value => { if (watching && value.kind !== 'loading') published.resolve(value); });
+  await x.owner.refresh(); await x.owner.submit('security', true); watching = true; t.mock.timers.tick(2000);
+  assert.equal((await published.promise).kind, 'ready');
   assert.equal(x.sends.length, 1); assert.equal(x.states.at(-1).kind, 'ready');
 });
 test('Given original display deadline When either timer expires Then progress and pending keys are cleared', async t => {

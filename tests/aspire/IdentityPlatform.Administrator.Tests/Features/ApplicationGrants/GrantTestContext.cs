@@ -53,10 +53,10 @@ internal sealed class GrantTestContext(ApplicationMutationFixture fixture, Appli
     internal Task<GrantJobView> AdmitAsync(GrantIntent intent) => AdmitOnAsync(fixture.Api, intent);
 
     /// <summary>Runs the same current authorization on an independent API root for provider-observed idempotency races.</summary>
-    internal async Task<GrantJobView> AdmitOnAsync(ServiceProvider node, GrantIntent intent)
+    internal async Task<GrantJobView> AdmitOnAsync(ServiceProvider node, GrantIntent intent, ApiIdentity? identity = null)
     {
         using var budget = new ApplicationReadBudget(fixture.Clock, Token);
-        return await GrantAdmissionOperation.ExecuteAsync(node.GetRequiredService<IServiceScopeFactory>(), fixture.Identity, intent,
+        return await GrantAdmissionOperation.ExecuteAsync(node.GetRequiredService<IServiceScopeFactory>(), identity ?? fixture.Identity, intent,
             node.GetRequiredService<ApiResourceProfile>(), fixture.Clock, budget, Guid.NewGuid());
     }
 

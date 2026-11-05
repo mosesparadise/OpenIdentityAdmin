@@ -1,5 +1,54 @@
 # Grant-revocation hosted verification
 
+## Worker correction and expanded acceptance — 5 November 2026
+
+[Run528](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42095693143)
+at head `a2f159580ae9ca9752b43912e597ea534484fae9` finishes119successful/four failed/one
+skipped jobs. It remains rejected. Downloaded ZIP digests and native reports were
+independently reconciled in [run528-evidence.json](run528-evidence.json):
+
+- Both real-provider grant suites:44passed each.
+- Complete persistence suites:24passed each, including fresh/populated migration and
+  frozen-producer preservation; feature021 T004 is complete.
+- Ordinary Aspire local-demo:3passed each, including actual browser grant submission,
+  real Worker completion, re-enable/fresh sign-in and native lifecycle cleanup.
+- All four retained Chromium/WebKit protection cells:32passed each, including the new
+  genuine grant browser journey and the corrected prior login-focus case.
+- Six new grant behavioral mutants killed on each provider, with clean baseline/restored
+  receipts and source hashes matching this head. This is12actual kills, not compile failures.
+
+Remaining CI failures: one UI polling test observes `loading` before native WebCrypto
+hash validation completes; two unrelated SQL WebKit jobs fail locked NuGet restore with
+connection resets; final acceptance fails and aggregate coverage is skipped. The UI test
+previously assumed20event-loop turns completed the operation. It now awaits the actual
+published terminal observation with a bounded test deadline. A deterministic digest
+entry/release barrier proves pending work remains loading and cannot send a mutation.
+Independent review caught an initially unarmed hash barrier; the corrected test now
+awaits entry into the native digest mock before releasing it. Both polling tests retain
+their original read-only/single-send assertions. All83UI cases
+pass locally after correction, without product timing or security changes.
+
+Eight additional provider cases compile: an independently enrolled and genuinely
+password/MFA-authenticated approver continues while the original account remains disabled,
+then loses its own persisted role authority; a missing actor-lock row; a mismatched current
+factor generation; and a retained key exactly at24hours with genuinely renewed password/MFA
+authority. Original approval/native-state oracles are preserved. The shared fixture still
+creates native API entries at a documented component seam; this is not signed bearer or
+browser acceptance. All2,565prior portable discovery records/order remain unchanged, with
+eight additions (2,573total;48ordinary grant cases/provider).
+
+Independent security/test review also corrected the replay case to assert the coordinator’s translated ApplicationHttpRejected401/409 rather than its internal exception types.
+The initial expanded build lacked an import and was corrected. Final builds and quality
+checks pass. A focused PostgreSQL attempt could not start its database when the shared
+filesystem filled; all three selected cases failed fixture setup and none counts as a
+behavioral result. Docker cleanup restored the prior small free space. No additional local
+container retry is claimed; hosted execution is required for these new cases. The later
+replay-expiry pair has not run locally. No new task completion is inferred from compilation.
+
+Ordered issuance/re-enable/admission races, genuine cross-instance native entry validation,
+remaining API/BFF failure boundaries and complete exact-head coverage/acceptance remain open.
+PR124 stays draft/unmerged. Existing historical/manual/Firefox/A-009 and release gates persist.
+
 ## First implementation candidate — 5 November 2026
 
 [Run527](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42090760689)

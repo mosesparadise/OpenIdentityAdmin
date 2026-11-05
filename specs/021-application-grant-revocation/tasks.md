@@ -8,7 +8,7 @@
 
 - [x] T002 Add finite input/state/failure/version rules in src/core/IdentityPlatform.Core/Features/ApplicationGrants/ and test strict canonical validation in tests/core/IdentityPlatform.Core.Tests/Features/ApplicationGrants/; preserve existing identifiers and finite reasons.
 - [x] T003 Add job/approval/audit entities and relational mappings in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/: positive revisions, nonnegative counts, ordered UTC timestamps, finite state/failure/action/reason, actor max450, application max existing identifier limit, request hash64, scope digest64 unique key and required restricted FKs per data-model.md.
-- [ ] T004 Generate additive Platform migrations in src/migrations/IdentityPlatform.Migrations.PostgreSql/Platform/ and src/migrations/IdentityPlatform.Migrations.SqlServer/Platform/; prove fresh/populated history/data preservation and actual relational constraints in tests/persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/.
+- [x] T004 Generate additive Platform migrations in src/migrations/IdentityPlatform.Migrations.PostgreSql/Platform/ and src/migrations/IdentityPlatform.Migrations.SqlServer/Platform/; prove fresh/populated history/data preservation and actual relational constraints in tests/persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/.
 
 ## Phase 3: US1 explicit revocation and visible progress (P1)
 

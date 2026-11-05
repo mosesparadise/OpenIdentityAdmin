@@ -65,11 +65,14 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-Alternate effective approver, retained-key expiry under fresh current authority, missing
-actor-lock/factor-generation cases, ordered issuance/re-enable/admission races, broader
+Alternate effective approver, retained-key expiry under fresh current authority and missing
+actor-lock/factor-generation cases now compile and are in the exact native inventory;
+their provider execution remains pending. Ordered issuance/re-enable/admission races, broader
 BFF downstream/generation failures, genuine cross-instance native entry-validation
-proof, hosted retained-engine UI/native Aspire execution, actual behavioral mutants,
-complete module coverage and full applicable exact-head CI remain open. The current
+proof, complete module coverage and full applicable exact-head CI remain open. Run528
+provides verified both-provider native-demo/retained-engine grant execution and12new
+behavioral mutation kills, recorded in [hosted evidence](hosted-verification.md); it is
+rejected for a UI polling test and two unrelated package-restore failures. The current
 HTTPS and provider component passes do not close these broader obligations. See [tasks](tasks.md).
 The six new mutation controls and shared browser journeys are scheduled in ordinary full CI. All100 coverage-report inputs and15 module floors remain mandatory. No task is complete merely because its implementation exists. All historical findings,
 manual Windows/accessibility work, Firefox/A-009, vendor, production and public-release
