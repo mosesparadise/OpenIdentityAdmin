@@ -34,10 +34,14 @@ internal sealed class ApplicationMutationCommand
     {
         get;
     }
+    internal ApplicationLifecycleReason? Reason
+    {
+        get;
+    }
 
     /// <summary>Captures only already validated immutable values; no caller-supplied permissions or plaintext credentials are accepted.</summary>
     private ApplicationMutationCommand(ApplicationMutationKind kind, string? id, string? version, string? clientId,
-        string? displayName, IEnumerable<string> redirects, DateTimeOffset? expiry)
+        string? displayName, IEnumerable<string> redirects, DateTimeOffset? expiry, ApplicationLifecycleReason? reason = null)
     {
         Kind = kind;
         ApplicationId = id;
@@ -46,6 +50,7 @@ internal sealed class ApplicationMutationCommand
         DisplayName = displayName;
         Redirects = redirects.ToImmutableArray();
         CredentialExpiry = expiry;
+        Reason = reason;
     }
 
     /// <summary>Copies the collection before validation and preserves the operator's exact future UTC expiry.</summary>
@@ -77,11 +82,16 @@ internal sealed class ApplicationMutationCommand
 
     /// <summary>Rejects unsupported resource identifiers and precondition aliases before persistence.</summary>
     private static bool Target(string id, string version) => ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) && ApplicationVersion.IsCanonical(version);
+
+    /// <summary>Binds an exact target/version to a confirmed lifecycle action and finite reason; no credential or grant mutation is included.</summary>
+    internal static ApplicationMutationCommand? Lifecycle(string id, string version, ApplicationLifecycle input, bool enabled) =>
+        Target(id, version) && ApplicationLifecycleRules.Reason(input) is { } reason
+            ? new(enabled ? ApplicationMutationKind.Enable : ApplicationMutationKind.Disable, id, version, null, null, [], null, reason) : null;
 }
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace
+    Create, Edit, Replace, Disable, Enable
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>
@@ -92,5 +102,5 @@ internal sealed class ApplicationMutationRejected(ApplicationMutationFailure fai
 
 internal enum ApplicationMutationFailure
 {
-    Forbidden, Missing, Duplicate, Stale, Expired, Unsupported
+    Forbidden, Missing, Duplicate, Stale, Expired, Unsupported, SameState
 }

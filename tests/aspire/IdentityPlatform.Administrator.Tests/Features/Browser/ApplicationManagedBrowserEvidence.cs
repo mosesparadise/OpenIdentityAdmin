@@ -20,6 +20,7 @@ internal static class ApplicationManagedBrowserEvidence
     private const int Unauthorized = 401;
     private const int ConsumedInputCount = 2;
     private const int IssuedTokenCount = 4;
+    private const int RepeatedJourneys = 2;
     private const string AccessField = "access_token";
     private const string ApplicationsPath = "/applications";
 
@@ -47,10 +48,28 @@ internal static class ApplicationManagedBrowserEvidence
             environment.Issuer.Account.ActorId, approve, PresentationAsync);
         Assert.Equal(authority, await ManagedHumanEvidence.AuthorityAsync(evidence));
         await VerifyAsync(evidence, flow, approve);
+        var secrets = approve ? await LifecycleAsync(page, relyingParty, evidence, registration, flow.Secrets) : flow.Secrets;
         await page.GotoAsync(new Uri(environment.Profile.ClientUri, ApplicationsPath).AbsoluteUri);
-        await BrowserSecretOracle.StorageAsync(page, flow.Secrets);
-        await observation.RequireAsync(flow.Secrets);
-        return flow.Secrets;
+        await BrowserSecretOracle.StorageAsync(page, secrets);
+        await observation.RequireAsync(secrets);
+        return secrets;
+    }
+
+    /// <summary>Disables through React, observes genuine independent issuer denial, then re-enables and completes entirely fresh human/native proof.</summary>
+    private static async Task<string[]> LifecycleAsync(IPage page, ManagedBrowserRelyingParty relyingParty, ManagedTokenEvidenceContext evidence,
+        ApplicationEditorRegistration registration, string[] priorSecrets)
+    {
+        var environment = evidence.Environment;
+        var prior = Assert.Single((await evidence.SnapshotAsync(applicationOnly: true)).Interactions).RequestId;
+        await ApplicationStateJourney.ChangeAsync(page, environment.Profile.ClientUri, registration, enabled: false, WorkspacePresentation.RequireStateAsync);
+        await ApplicationStateJourney.RequireDeniedAsync(page, environment.Profile.Issuer, registration);
+        await ApplicationStateJourney.ChangeAsync(page, environment.Profile.ClientUri, registration, enabled: true, WorkspacePresentation.RequireStateAsync);
+        var flow = await ManagedBrowserJourney.RunAsync(page, relyingParty, registration,
+            environment.Issuer.Account.Journey.Lease.Username, environment.Issuer.Account.Journey.Lease.Password,
+            () => IssuerContinuationProviderFixture.UnusedCodeAsync(environment.Issuer.Account.Journey),
+            environment.Issuer.Account.ActorId, presentation: PresentationAsync);
+        await VerifyAsync(evidence, flow, approve: true, prior);
+        return priorSecrets.Concat(flow.Secrets).Distinct(StringComparer.Ordinal).ToArray();
     }
 
     /// <summary>Binds independently persisted ordinal native identity to the actual create-response ID and visible client ID.</summary>
@@ -64,10 +83,12 @@ internal static class ApplicationManagedBrowserEvidence
     }
 
     /// <summary>Requires exact native interaction, code/token and authority outcomes, then verifies genuine managed credentials cannot call the Admin API.</summary>
-    private static async Task VerifyAsync(ManagedTokenEvidenceContext evidence, ManagedBrowserFlow flow, bool approve)
+    private static async Task VerifyAsync(ManagedTokenEvidenceContext evidence, ManagedBrowserFlow flow, bool approve, string? priorRequest = null)
     {
         var snapshot = await evidence.SnapshotAsync(applicationOnly: true);
-        var interaction = Assert.Single(snapshot.Interactions);
+        var journeys = priorRequest is null ? 1 : RepeatedJourneys;
+        Assert.Equal(journeys, snapshot.Interactions.Length);
+        var interaction = Assert.Single(snapshot.Interactions, row => row.RequestId != priorRequest);
         Assert.True(interaction.ApplicationId == flow.Registration.Id && interaction.UserId == evidence.Environment.Issuer.Account.ActorId &&
             interaction.PasswordVerifiedAt is not null && interaction.MfaVerifiedAt is not null);
         if (!approve)
@@ -82,12 +103,12 @@ internal static class ApplicationManagedBrowserEvidence
         }
         Assert.Equal(ManagedLoginState.Consumed, interaction.State);
         Assert.NotNull(interaction.ConsentVerifiedAt);
-        Assert.Equal(IssuedTokenCount, snapshot.Tokens.Length);
-        Assert.Equal(1, snapshot.Authorizations);
+        Assert.Equal(IssuedTokenCount * journeys, snapshot.Tokens.Length);
+        Assert.Equal(journeys, snapshot.Authorizations);
         var consumed = snapshot.Tokens.Where(row => row.Id == interaction.RequestId || row.Id == interaction.CodeId).ToArray();
         Assert.Equal(ConsumedInputCount, consumed.Length);
         Assert.All(consumed, row => Assert.True(row.Status == OpenIddictConstants.Statuses.Redeemed));
-        await ManagedTokenOracle.ValidateAsync(evidence, flow.Nonce, interaction.RequestId!, flow.Body, interaction.UserId!, applicationOnly: true);
+        await ManagedTokenOracle.ValidateAsync(evidence, flow.Nonce, interaction.RequestId!, flow.Body, interaction.UserId!, applicationOnly: true, multipleFlows: priorRequest is not null);
         await ManagedTokenEvidence.IssuanceAuditAsync(evidence, applicationOnly: true, requestId: interaction.RequestId);
         await ApplicationAccessFixture.RequireAsync(evidence.Environment.Api!.Address, flow.Body.GetProperty(AccessField).GetString(), Unauthorized);
     }

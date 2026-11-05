@@ -2,7 +2,7 @@
 
 **Feature Branch**: `126-application-lifecycle`
 **Created**: 2026-11-04
-**Status**: Planning; no lifecycle implementation or acceptance claimed.
+**Status**: Scope selected; implementation in progress, acceptance unclaimed.
 **Input**: Continue the next task from the delivered application-editor handoff: plan the next visible application lifecycle slice.
 
 ## Authority and scope
@@ -14,9 +14,17 @@ NFR-05, NFR-08, NFR-11–NFR-14 govern this slice. See
 and the delivered [feature019](../019-application-editor/spec.md).
 Ordinary work within that approved scope is already authorized.
 
-This packet proposes disable/re-enable for registrations created by the existing managed
+This packet specifies disable/re-enable for registrations created by the existing managed
 confidential-web profile. It does not claim that the controls are available on main.
 Clone, delete, other client profiles, bulk grant revocation and dormant refresh remain separate work.
+
+## Clarifications
+
+### Session 2026-11-05
+
+- Q: Should this slice stop new issuance or also include existing grant revocation? → A: The user
+  selected “Stop new issuance; add grant revocation separately.” The reviewed issuance-only scope
+  is selected; implementation and required tests may proceed under the existing delivery authority.
 
 ## User Scenarios & Testing
 
@@ -155,9 +163,7 @@ then inspect persisted state and audit independently.
   it is never a general editor field. Explicit confirmation applies to both actions.
 - Reasons are a closed selection (maintenance, security, configuration), not free text that could
   contain credentials or personal data. The wire/audit design is detailed in the contract.
-- The async scope question about including bulk grant revocation is **unanswered** as of this
-  draft. The recommendation is to deliver issuance disable/re-enable first. FR-010 describes
-  that proposed scope, not a recorded user choice. If revocation is selected, expand the packet
-  before affected implementation; approved contracts require durable jobs, separate grant authority,
-  bounded progress, restart/concurrency behavior and partial-failure acceptance.
+- The user selected issuance disable/re-enable on 5 November 2026. Bulk grant revocation remains
+  a separate follow-on requiring durable jobs, separate grant authority, bounded progress,
+  restart/concurrency behavior and partial-failure acceptance.
 - Accepted feature019 remains the regression baseline; no accepted implementation is restarted.

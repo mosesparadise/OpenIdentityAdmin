@@ -28,40 +28,56 @@ internal static class ManagedJourneyEvidence
     }
 
     /// <summary>Includes every native token/authorization scalar and actual foreign-key binding across both clients; no redemption field is omitted.</summary>
-    private static async Task<string> NativeAsync(PlatformDbContext database)
+    private static async Task<string> NativeAsync(PlatformDbContext database, string? applicationId = null)
     {
-        var tokens = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(row => row.Id).Select(row => new
-        {
-            row.Id,
-            Application = row.Application == null ? null : row.Application.Id,
-            Authorization = row.Authorization == null ? null : row.Authorization.Id,
-            row.ConcurrencyToken,
-            row.CreationDate,
-            row.ExpirationDate,
-            row.Payload,
-            row.Properties,
-            row.RedemptionDate,
-            row.ReferenceId,
-            row.Status,
-            row.Subject,
-            row.Type
-        }).ToArrayAsync(TestContext.Current.CancellationToken);
-        var authorizations = await database.Set<OpenIddictEntityFrameworkCoreAuthorization>().AsNoTracking().OrderBy(row => row.Id).Select(row => new
-        {
-            row.Id,
-            Application = row.Application == null ? null : row.Application.Id,
-            row.ConcurrencyToken,
-            row.CreationDate,
-            row.Properties,
-            row.Scopes,
-            row.Status,
-            row.Subject,
-            row.Type
-        }).ToArrayAsync(TestContext.Current.CancellationToken);
+        var tokens = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking()
+            .Where(row => applicationId == null || row.Application!.Id == applicationId).OrderBy(row => row.Id).Select(row => new
+            {
+                row.Id,
+                Application = row.Application == null ? null : row.Application.Id,
+                Authorization = row.Authorization == null ? null : row.Authorization.Id,
+                row.ConcurrencyToken,
+                row.CreationDate,
+                row.ExpirationDate,
+                row.Payload,
+                row.Properties,
+                row.RedemptionDate,
+                row.ReferenceId,
+                row.Status,
+                row.Subject,
+                row.Type
+            }).ToArrayAsync(TestContext.Current.CancellationToken);
+        var authorizations = await database.Set<OpenIddictEntityFrameworkCoreAuthorization>().AsNoTracking()
+            .Where(row => applicationId == null || row.Application!.Id == applicationId).OrderBy(row => row.Id).Select(row => new
+            {
+                row.Id,
+                Application = row.Application == null ? null : row.Application.Id,
+                row.ConcurrencyToken,
+                row.CreationDate,
+                row.Properties,
+                row.Scopes,
+                row.Status,
+                row.Subject,
+                row.Type
+            }).ToArrayAsync(TestContext.Current.CancellationToken);
         return FactorBinding.Digest(new
         {
             Tokens = tokens,
             Authorizations = authorizations
+        });
+    }
+
+    /// <summary>Fingerprints one independent registration's complete native configuration, policy and grants before another application's lifecycle write.</summary>
+    internal static async Task<string> RegistrationAsync(ManagedCacheTestContext test)
+    {
+        await using var scope = test.Http.Scope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var snapshot = await Applications.ApplicationUpdateSnapshot.ReadAsync(database, test.Id, TestContext.Current.CancellationToken);
+        return FactorBinding.Digest(new
+        {
+            snapshot.NativeDigest,
+            snapshot.Policy,
+            Grants = await NativeAsync(database, test.Id)
         });
     }
 

@@ -59,6 +59,7 @@ internal static class ApplicationMutationOperation
         ApplicationMutationFailure.Stale => StatusCodes.Status412PreconditionFailed,
         ApplicationMutationFailure.Expired => StatusCodes.Status400BadRequest,
         ApplicationMutationFailure.Unsupported => StatusCodes.Status409Conflict,
+        ApplicationMutationFailure.SameState => StatusCodes.Status409Conflict,
         _ => throw ProtocolStorageOwner.Unavailable()
     };
 

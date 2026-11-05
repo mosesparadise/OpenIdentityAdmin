@@ -17,9 +17,11 @@ open `https://bff.dev.localhost:17444/applications`. The demo is disposable per 
 PowerShell launcher or separate frontend server is required. Full setup and existing walkthrough:
 [feature019 quickstart](../019-application-editor/quickstart.md).
 
-## Planned acceptance after implementation
+## Implementation branch walkthrough
 
-Disable/Re-enable controls are **not implemented by this packet**. Once implemented:
+Disable/Re-enable controls are implemented on `126-application-lifecycle` in draft PR122.
+They are not yet accepted or merged to main. Use the same Aspire command above from that
+branch to exercise the following flow with disposable data:
 
 1. Create a managed confidential web application and prove its fresh-password/MFA/consent sign-in.
 2. Open its details, record status/expiry, select Disable, choose a reason and confirm.
@@ -35,4 +37,6 @@ Disable/Re-enable controls are **not implemented by this packet**. Once implemen
 Run the acceptance journey on both real providers and retained Chromium/WebKit configurations.
 Automated checks do not replace an actual Windows Docker Desktop walkthrough or qualified manual
 accessibility review. Firefox, precise A-009 certificate deferrals and all external release gates
-remain open. This planning session did not run a new local browser walkthrough.
+remain open. No new browser walkthrough has passed in this environment; the pinned browser executable
+is unavailable. Hosted Chromium/WebKit and both native provider demos remain required.
+See [current verification](verification.md) for the tested scope and remaining gates.

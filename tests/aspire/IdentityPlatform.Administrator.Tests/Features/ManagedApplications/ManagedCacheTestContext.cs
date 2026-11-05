@@ -33,9 +33,9 @@ internal sealed class ManagedCacheTestContext(ApplicationHttpFixture http, Appli
 
     /// <summary>Enables the real managed profile while preserving genuine administrator password/MFA and native credential exchange.</summary>
     internal static async Task<ManagedCacheTestContext> CreateAsync(BootstrapFixture fixture, string provider,
-        Action<IServiceCollection>? configure = null, bool enabled = true)
+        Action<IServiceCollection>? configure = null, bool enabled = true, Action<IServiceCollection>? configureApi = null)
     {
-        var http = await ApplicationHttpFixture.CreateAsync(fixture, provider, managed: enabled, configureIssuer: configure);
+        var http = await ApplicationHttpFixture.CreateAsync(fixture, provider, managed: enabled, configureIssuer: configure, configureApi: configureApi);
         try
         {
             using var response = await http.CreateAsync(ApplicationHttpTests.Input(http.Now, Client));

@@ -29,6 +29,7 @@ public sealed class EditorRecoveryBrowserTests(BootstrapFixture fixture)
             await EditorRecoveryFailures.FiniteAsync(environment, page, id);
             await EditorRecoveryWorking.RequireAsync(environment, page, id);
             var lost = await EditorRecoveryFailures.LostOutputAsync(environment, page, id, secrets);
+            await LifecycleRecoveryBrowser.RequireAsync(environment, page, id);
             await observation.RequireAsync([.. secrets, lost]);
             return [.. secrets, lost];
         });

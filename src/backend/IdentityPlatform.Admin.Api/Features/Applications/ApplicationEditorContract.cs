@@ -8,9 +8,20 @@ namespace IdentityPlatform.Admin.Api.Features.Applications;
 /// <summary>Describes implemented application editor operations, their exact authority and noncacheable credential-safe projections.</summary>
 internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
 {
+    private const string Lifecycle = "ApplicationLifecycle";
+    private const string Reason = "reason";
+    private const string Confirm = "confirm";
+    private const string Maintenance = "maintenance";
+    private const string Security = "security";
+    private const string Configuration = "configuration";
     private const string Collection = "/api/v1/applications";
     private const string Details = Collection + "/{id}";
     private const string Replacement = Details + "/secret-replacements";
+    private const string Disable = Details + ApplicationLifecycleRules.DisableSuffix;
+    private const string Enable = Details + ApplicationLifecycleRules.EnableSuffix;
+    private const string LifecyclePermission = "applications.disable";
+    private const string DisableOperation = "DisableApplication";
+    private const string EnableOperation = "EnableApplication";
     private const string EditOperation = "EditApplication";
     private const string ReplacementOperation = "ReplaceApplicationSecret";
     private const string Credentials = "applications.credentials";
@@ -43,7 +54,26 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Details, HttpMethod.Get, DetailsOperation);
         Apply(document, Details, HttpMethod.Put, EditOperation);
         Apply(document, Replacement, HttpMethod.Post, ReplacementOperation);
+        Apply(document, Disable, HttpMethod.Post, DisableOperation);
+        Apply(document, Enable, HttpMethod.Post, EnableOperation);
+        LifecycleInput(document);
         return Task.CompletedTask;
+    }
+
+    /// <summary>Publishes the exact finite wire vocabulary and true-only confirmation shared by the actual lifecycle routes.</summary>
+    private static void LifecycleInput(OpenApiDocument document)
+    {
+        if (document.Components?.Schemas?.TryGetValue(Lifecycle, out var value) == true && value is OpenApiSchema schema)
+        {
+            schema.Properties![Reason] = new OpenApiSchema
+            {
+                Type = JsonSchemaType.String,
+                MaxLength = ApplicationLifecycleRules.MaximumReasonLength,
+                Enum = [JsonValue.Create(Maintenance), JsonValue.Create(Security), JsonValue.Create(Configuration)]
+            };
+            schema.Properties[Confirm] = new OpenApiSchema { Type = JsonSchemaType.Boolean, Enum = [JsonValue.Create(true)] };
+            schema.Required = new HashSet<string> { Reason, Confirm };
+        }
     }
 
     /// <summary>Publishes authentication, permission, exact input and success-version metadata without granting authority through documentation.</summary>
@@ -58,8 +88,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         var read = method == HttpMethod.Get;
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();
-        operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path == Replacement ? Credentials : read ? Read : Write));
-        if (path == Replacement)
+        operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : path == Replacement ? Credentials : read ? Read : Write));
+        if (path is Replacement or Disable or Enable)
         {
             operation.Extensions[FreshMfa] = new JsonNodeExtension(JsonValue.Create(MfaSeconds));
         }

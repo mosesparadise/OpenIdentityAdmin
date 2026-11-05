@@ -23,6 +23,22 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
+                {
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ReasonCode")
+                        .HasColumnType("integer");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("ApplicationLifecycleAuditDetail", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationLifecycleAuditDetail_Reason", "\"ReasonCode\" IN (1, 2, 3)");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", b =>
                 {
                     b.Property<string>("ApplicationId")
@@ -38,6 +54,12 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.Property<long>("CredentialRevision")
                         .IsConcurrencyToken()
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("Enabled")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
 
                     b.Property<long>("ObservedAt")
                         .IsConcurrencyToken()
@@ -1458,6 +1480,15 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
                     b.ToTable("OpenIddictTokens", "platform");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", "AuditId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAuthentication", b =>

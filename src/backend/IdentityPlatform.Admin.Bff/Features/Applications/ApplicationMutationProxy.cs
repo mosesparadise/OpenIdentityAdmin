@@ -6,7 +6,7 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 /// <summary>Validates one browser action before dispatch and suppresses output when its original session generation no longer matches.</summary>
 internal static class ApplicationMutationProxy
 {
-    /// <summary>Provides the reviewed transport boundary for explicit create/edit/replacement routes; the API owns mutation authorization and commit.</summary>
+    /// <summary>Provides the reviewed transport boundary for explicit create/edit/replacement/lifecycle routes; the API owns mutation authorization and commit.</summary>
     internal static Task HandleAsync(HttpContext http, ApplicationProxyAction action, string? id = null) =>
         ApplicationMutationBoundary.RunAsync(http, async (budget, clock) =>
         {

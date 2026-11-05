@@ -100,7 +100,12 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
     /// <summary>Binds exactly the client and current secret returned by the actual editor; it never creates a replacement registration.</summary>
     internal ManagedBrowserFlow Prepare(ApplicationEditorRegistration registration, string subject)
     {
-        Assert.Null(flow);
+        if (flow is not null)
+        {
+            Assert.True(flow.Completion.Task.IsCompletedSuccessfully && flow.Completion.Task.Result);
+            Assert.Equal(1, flow.Callbacks);
+            Assert.Equal(1, flow.Exchanges);
+        }
         Assert.True(registration.Callback == Callback);
         flow = new(registration, subject);
         flow.Initialize();

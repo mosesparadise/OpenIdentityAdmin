@@ -1,27 +1,28 @@
 # Tasks: Managed application lifecycle
 
-**Status**: Implementation has not started. This packet completes the handoff's planning work;
-checkboxes below track delivery work, not document creation. The single user scope preference
-in [spec.md](spec.md) remains pending. Do not infer an answer from elapsed time.
+**Status**: Implementation in progress. The user selected issuance-only scope on 5 November
+2026; bulk grant revocation is separate. T002–T013 have implementation and focused local evidence; integrated T014–T017 remain open.
+Checkboxes do not substitute for the exact-head hosted acceptance and squash gate in T017.
+See [verification](verification.md) for actual tests and limits.
 
 ## Phase 1 — Resolve the bounded scope
 
-- [ ] T001 Record the grant-revocation scope answer and close independent requirements review in `specs/020-application-lifecycle/spec.md`, `review.md` and `checklists/lifecycle.md`; expand affected design/tasks before code if durable bulk revocation is selected.
+- [x] T001 Record the grant-revocation scope answer and close independent requirements review in `specs/020-application-lifecycle/spec.md`, `review.md` and `checklists/lifecycle.md`; expand affected design/tasks before code if durable bulk revocation is selected.
 
 ## Phase 2 — Shared prerequisites
 
-- [ ] T002 Add lifecycle state and finite linked audit-reason model in `src/persistence/IdentityPlatform.Infrastructure/Features/Applications/`; generate additive migrations in both provider `Platform/` directories; prove fresh/populated upgrade and unchanged prior data/history in `tests/persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/`. Cover rollback/mixed-version operating limits.
-- [ ] T003 Add finite lifecycle input/state DTOs and immutable command construction in `src/core/IdentityPlatform.Core/Features/Applications/` and Infrastructure `ApplicationMutationCommand.cs`; retain exact version, confirmation, reason and unknown-field rejection. Reject reason case/whitespace aliases on both providers and independently prove the database rejects codes outside the closed reason enum.
-- [ ] T004 Replace implicit action fallbacks with closed dispatch in `ApplicationMutationWriter.cs` and `src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs`; bind lifecycle permission and original fresh-MFA deadline, preserve existing action behavior and reject unknown actions.
+- [x] T002 Add lifecycle state and finite linked audit-reason model in `src/persistence/IdentityPlatform.Infrastructure/Features/Applications/`; generate additive migrations in both provider `Platform/` directories; prove fresh/populated upgrade and unchanged prior data/history in `tests/persistence/IdentityPlatform.Persistence.Tests/Features/ProviderCompatibility/`. Cover rollback/mixed-version operating limits.
+- [x] T003 Add finite lifecycle input/state DTOs and immutable command construction in `src/core/IdentityPlatform.Core/Features/Applications/` and Infrastructure `ApplicationMutationCommand.cs`; retain exact version, confirmation, reason and unknown-field rejection. Reject reason case/whitespace aliases on both providers and independently prove the database rejects codes outside the closed reason enum.
+- [x] T004 Replace implicit action fallbacks with closed dispatch in `ApplicationMutationWriter.cs` and `src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs`; bind lifecycle permission and original fresh-MFA deadline, preserve existing action behavior and reject unknown actions.
 
 ## Phase 3 — US1: Disable
 
 Goal: one authorized, audited state transition stops genuine further issuance.
 
-- [ ] T005 [US1] Implement disable through `ApplicationMutationOperation.cs`, `ApplicationMutationWriter.cs`, `ApplicationWriteState.cs` and the linked reason model; fresh persisted state/audit/reason checks precede the one commit and actual cleanup. Add rollback, same-state, protected-target, wrong-permission and stale-version cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`.
-- [ ] T006 [US1] Enforce Enabled throughout `ManagedRegistration.cs` and review every managed cache/human/consumption/issuance boundary; extend `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/` for fresh admission, each pending human phase, code issuance/exchange and durable-consumption-before-denial. While the target is disabled, a second independent registration must still complete a genuine fresh password/MFA/consent/exchange journey; verify no lifecycle mutation changed its policy, credentials or existing grants.
-- [ ] T007 [US1] Add versioned disable route/projection and protected fixed BFF proxy in both hosts' `Features/Applications/`; update authoritative contract metadata, `tests/contracts/IdentityPlatform.Api.Contracts.Tests/`, host endpoint tests and generated `src/frontend/IdentityPlatform.Admin.Contracts/` outputs. Prove matching real API/BFF parsing and record the coordinated/quiesced switch required by strict unmapped-member rejection; do not claim untested mixed-version compatibility.
-- [ ] T008 [US1] Add status, reason/confirmation and effect text to `src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/`, with generated input and current-authority lifecycle handling; add meaningful UI state/transport tests without automatic resubmission.
+- [x] T005 [US1] Implement disable through `ApplicationMutationOperation.cs`, `ApplicationMutationWriter.cs`, `ApplicationWriteState.cs` and the linked reason model; fresh persisted state/audit/reason checks precede the one commit and actual cleanup. Add rollback, same-state, protected-target, wrong-permission and stale-version cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`.
+- [x] T006 [US1] Enforce Enabled throughout `ManagedRegistration.cs` and review every managed cache/human/consumption/issuance boundary; extend `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/` for fresh admission, each pending human phase, code issuance/exchange and durable-consumption-before-denial. While the target is disabled, a second independent registration must still complete a genuine fresh password/MFA/consent/exchange journey; verify no lifecycle mutation changed its policy, credentials or existing grants.
+- [x] T007 [US1] Add versioned disable route/projection and protected fixed BFF proxy in both hosts' `Features/Applications/`; update authoritative contract metadata, `tests/contracts/IdentityPlatform.Api.Contracts.Tests/`, host endpoint tests and generated `src/frontend/IdentityPlatform.Admin.Contracts/` outputs. Prove matching real API/BFF parsing and record the coordinated/quiesced switch required by strict unmapped-member rejection; do not claim untested mixed-version compatibility.
+- [x] T008 [US1] Add status, reason/confirmation and effect text to `src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/`, with generated input and current-authority lifecycle handling; add meaningful UI state/transport tests without automatic resubmission.
 
 Independent acceptance: actual UI disable plus genuine independent issuer denial on both providers.
 
@@ -29,9 +30,9 @@ Independent acceptance: actual UI disable plus genuine independent issuer denial
 
 Goal: a new sign-in can succeed, while all pre-transition authority remains unusable.
 
-- [ ] T009 [US2] Add explicit enable action through the same command/authority/transaction and host/contract paths; advance only aggregate revision, retain reason/audit atomicity and preserve credentials. Cover current same-state and stale requests in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`.
-- [ ] T010 [US2] Prove old cached request, every pending human phase and old code still fail after re-enable, while a fresh real journey succeeds, in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/`; prove expired credentials remain expired and edit/replacement preserve Disabled.
-- [ ] T011 [US2] Integrate re-enable confirmation, expiry distinction and accessible focus/recovery in `src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/`; update generated browser contract assertions and UI tests.
+- [x] T009 [US2] Add explicit enable action through the same command/authority/transaction and host/contract paths; advance only aggregate revision, retain reason/audit atomicity and preserve credentials. Cover current same-state and stale requests in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`.
+- [x] T010 [US2] Prove old cached request, every pending human phase and old code still fail after re-enable, while a fresh real journey succeeds, in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/`; prove expired credentials remain expired and edit/replacement preserve Disabled.
+- [x] T011 [US2] Integrate re-enable confirmation, expiry distinction and accessible focus/recovery in `src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/`; update generated browser contract assertions and UI tests.
 
 Independent acceptance: real disabled → enabled fresh-flow success, with old artifacts denied and no credential renewal.
 
@@ -39,8 +40,8 @@ Independent acceptance: real disabled → enabled fresh-flow success, with old a
 
 Goal: failures and races have one explainable outcome and the UI recovers deliberately.
 
-- [ ] T012 [US3] Add independent-root, provider-observed lock-wait tests in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/` and `Features/ManagedApplications/`: duplicate transitions, disable versus edit/replacement, opposite state transitions, and both issuance/exchange commit orders. Include a sealed response whose issuance commits before disable but arrives afterward; classify it as prior issuance, not an enforcement failure. Keep exact loser-state/audit assertions and five-second enforcement observation.
-- [ ] T013 [US3] Extend actual audit INSERT denial, post-save failure, current permission/MFA expiry after waits, cancellation/deadline/clock rollback, commit ambiguity and publication cases in the same application/managed fixtures; independently inspect persisted state/reason/audit and require no retries. Attribute isolated MFA-expiry 403 to the component authority seam; genuine HTTPS must prove its earlier native bearer/continuation deadline without lengthening that lifetime.
+- [x] T012 [US3] Add independent-root, provider-observed lock-wait tests in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/` and `Features/ManagedApplications/`: duplicate transitions, disable versus edit/replacement, opposite state transitions, and both issuance/exchange commit orders. Include a sealed response whose issuance commits before disable but arrives afterward; classify it as prior issuance, not an enforcement failure. Keep exact loser-state/audit assertions and five-second enforcement observation.
+- [x] T013 [US3] Extend actual audit INSERT denial, post-save failure, current permission/MFA expiry after waits, cancellation/deadline/clock rollback, commit ambiguity and publication cases in the same application/managed fixtures; independently inspect persisted state/reason/audit and require no retries. Attribute isolated MFA-expiry 403 to the component authority seam; genuine HTTPS must prove its earlier native bearer/continuation deadline without lengthening that lifetime.
 - [ ] T014 [US3] Extend BFF/direct HTTP and UI cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`, `Features/Browser/` and `src/frontend/IdentityPlatform.Admin.Ui/`: origin/CSRF/generation, malformed preconditions/body, lost permission, stale screen, uncertain result, logout/navigation/expiry and late-response suppression.
 
 Independent acceptance: winner/loser persistence is exact; a lost response produces a deliberate reload, not a duplicate action.
@@ -89,4 +90,5 @@ required by the environment; no parallel marker promises independent writes to s
 | SC-004 | T014–T017 | Retained browser and candidate-bound verification |
 | SC-005 | T015, T017 | Ordinary Aspire and accurate manual/external limits |
 
-This table maps planned work; it is not a claim that new tests exist or pass.
+This table maps requirements to tasks; the linked verification record distinguishes passed local
+evidence from unexecuted hosted/browser/mutation acceptance.

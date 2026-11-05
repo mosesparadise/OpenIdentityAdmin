@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Applications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
@@ -93,7 +94,7 @@ public sealed class ApplicationUpdateEndpointTests
         await using var output = new MemoryStream();
         http.Response.Body = output;
         change(http);
-        await ApplicationUpdateEndpoint.HandleAsync(http, Id, replacement);
+        await ApplicationUpdateEndpoint.HandleAsync(http, Id, replacement ? ApplicationMutationKind.Replace : ApplicationMutationKind.Edit);
         Assert.Equal(expected, http.Response.StatusCode);
         Assert.Equal(NoStore, http.Response.Headers.CacheControl);
         Assert.Equal(NoSniff, http.Response.Headers.XContentTypeOptions);

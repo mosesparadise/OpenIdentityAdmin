@@ -38,7 +38,7 @@ public sealed class ApplicationHttpTests(BootstrapFixture fixture)
     private const string NoSniffHeader = "X-Content-Type-Options";
     private const string NoSniff = "nosniff";
     private const string JsonType = "application/json";
-    private static readonly string[] DetailFields = ["clientId", "credential", "displayName", "editable", "expiresAt", "id", "profile", "redirectUris"];
+    private static readonly string[] DetailFields = ["clientId", "credential", "displayName", "editable", "enabled", "expiresAt", "id", "profile", "redirectUris"];
     private static readonly string[] ProblemTitles = ["Invalid application request.", "Sign in required.", "Sign in again to manage applications.",
         "Application access is forbidden.", "Application not found.", "Application conflicts with current registration state.",
         "Reload the application before submitting a new change.", "The application result is unavailable. Do not automatically resubmit."];

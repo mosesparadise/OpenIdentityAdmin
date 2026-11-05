@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Json;
 using IdentityPlatform.AuthServer.Features.Issuer.Credentials;
 using IdentityPlatform.Infrastructure.Features.Applications;
@@ -28,6 +29,7 @@ internal static class ManagedTokenOracle
     private const string IssuedAt = "iat";
     private const string ExpiresAt = "exp";
     private const string Valid = "valid";
+    private static readonly CompositeFormat Cardinality = CompositeFormat.Parse("Current authorization token counts: identity={0}, access={1}; all tokens={2}; all authorizations={3}; interactions={4}.");
     private static readonly string[] AccessClaims = ["iss", Subject, "iat", "exp", "nbf", "jti", ClientId, Scope, AuthorizationId, TokenId, Presenter];
 
 
@@ -52,9 +54,14 @@ internal static class ManagedTokenOracle
         Assert.True(principal.GetClaim(Presenter) == test.ClientIdentifier);
         var all = await test.SnapshotAsync(applicationOnly);
         var interaction = Assert.Single(all.Interactions, row => row.RequestId == requestId);
+        Assert.NotNull(interaction.AuthorizationId);
         var snapshot = multipleFlows
-            ? new ManagedCacheSnapshot([interaction], all.Tokens, all.Authorizations, all.Sessions)
+            ? new ManagedCacheSnapshot([interaction], all.Tokens.Where(row => row.Authorization?.Id == interaction.AuthorizationId).ToArray(), all.Authorizations, all.Sessions)
             : all;
+        var identities = snapshot.Tokens.Count(value => value.Type == StoredIdentityType);
+        var accesses = snapshot.Tokens.Count(value => value.Type == StoredAccessType);
+        Assert.True(identities == 1 && accesses == 1, string.Format(CultureInfo.InvariantCulture, Cardinality,
+            identities, accesses, all.Tokens.Length, all.Authorizations, all.Interactions.Length));
         Assert.True(identity.GetClaim(TokenId) == snapshot.Tokens.Single(value => value.Type == StoredIdentityType).Id);
         Assert.True(principal.GetClaim(TokenId) == snapshot.Tokens.Single(value => value.Type == StoredAccessType).Id);
         var authorization = Assert.Single(snapshot.Interactions).AuthorizationId;

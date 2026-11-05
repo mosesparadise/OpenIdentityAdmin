@@ -9,7 +9,8 @@ public sealed record ApplicationDetails(
     [property: MinLength(1), MaxLength(ApplicationProjection.ClientIdentifierLength)] string ClientId,
     [property: MaxLength(ApplicationProjection.DisplayNameLength)] string? DisplayName,
     [property: MaxLength(ApplicationEditorRules.MaximumRedirects)] IReadOnlyList<string> RedirectUris,
-    string? Profile, bool Editable, ApplicationCredentialMetadata? Credential, DateTimeOffset ExpiresAt);
+    string? Profile, bool Editable, ApplicationCredentialMetadata? Credential, DateTimeOffset ExpiresAt,
+    [property: System.Text.Json.Serialization.JsonRequired] bool? Enabled = null);
 
 /// <summary>Exposes credential lifecycle metadata without the native hash, generated plaintext or arbitrary native properties.</summary>
 /// <example><code>var metadata = new ApplicationCredentialMetadata(issuedAt, expiresAt);</code></example>

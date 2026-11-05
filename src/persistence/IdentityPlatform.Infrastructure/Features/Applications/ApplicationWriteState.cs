@@ -20,6 +20,7 @@ internal sealed class ApplicationWriteState
     private readonly long issuedAt;
     private readonly long expiresAt;
     private readonly long observedAt;
+    private readonly bool enabled;
     private readonly string? secret;
     private readonly string? originalHash;
     internal string Id
@@ -41,6 +42,7 @@ internal sealed class ApplicationWriteState
         issuedAt = policy.CredentialIssuedAt;
         expiresAt = policy.CredentialExpiresAt;
         observedAt = policy.ObservedAt;
+        enabled = policy.Enabled;
         this.secret = secret;
         originalHash = secret is null ? descriptor.ClientSecret : null;
     }
@@ -66,7 +68,7 @@ internal sealed class ApplicationWriteState
         await ApplicationMutationWriter.RequireMutableAsync(scope, Id, clientId, token);
         var row = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(value => value.ApplicationId == Id, current), token);
-        if (row is null || row.Profile != ApplicationEditorRules.Profile || row.Revision != revision || row.CredentialRevision != credentialRevision ||
+        if (row is null || row.Enabled != enabled || row.Profile != ApplicationEditorRules.Profile || row.Revision != revision || row.CredentialRevision != credentialRevision ||
             row.CredentialIssuedAt != issuedAt || row.CredentialExpiresAt != expiresAt || row.ObservedAt != observedAt)
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -75,7 +77,7 @@ internal sealed class ApplicationWriteState
 
     /// <summary>Builds only the fixed safe projection; callers publish it only after commit and real child cleanup.</summary>
     internal ApplicationDetails Details(DateTimeOffset authorityExpiry) => new(Id, clientId, displayName, redirects, ApplicationEditorRules.Profile,
-        true, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), authorityExpiry);
+        true, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), authorityExpiry, enabled);
 
     /// <summary>Returns the new credential only in the immediate successful response; no reusable plaintext receipt is persisted.</summary>
     internal ApplicationCredentialOutput? Credential(ApplicationDetails details) => secret is null ? null : new(details, secret);

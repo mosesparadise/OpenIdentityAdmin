@@ -14,10 +14,10 @@ not that implementation exists or passed. Implementation must not change these m
 - [x] CHK004 Are populated upgrades, mixed-version deployment and incompatible rollback limits specified for both providers?
 - [x] CHK005 Are UI failure/recovery, late response, keyboard/focus and theme requirements measurable?
 - [x] CHK006 Are genuine issuer, provider contention, audit failure, contracts and exact candidate evidence distinguished from inherited passes?
-- [ ] CHK007 Are the user-selected bulk-revocation scope and any required durable-job dependencies resolved?
+- [x] CHK007 Are the user-selected bulk-revocation scope and any required durable-job dependencies resolved?
 
 ## Notes
 
 Review against spec, plan, data-model, contracts, tasks and quickstart together.
-CHK007 remains pending until the actual scope answer is available. Do not record a recommendation
-as a user decision. Existing Windows/accessibility/Firefox/A-009/historical/release gates remain open.
+CHK007 passed reviewer assessment on 5 November 2026 after the user selected issuance-only
+scope. Existing Windows/accessibility/Firefox/A-009/historical/release gates remain open.

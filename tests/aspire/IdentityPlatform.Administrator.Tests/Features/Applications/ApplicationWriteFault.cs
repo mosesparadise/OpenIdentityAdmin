@@ -46,7 +46,7 @@ internal sealed class ApplicationWriteFault(ApplicationWriteDefect defect) : Sav
     {
         var database = eventData.Context!;
         if (!Armed || Fired || defect is ApplicationWriteDefect.AuditFailure or ApplicationWriteDefect.TrackedCredentialDrift || !database.ChangeTracker.Entries<ApplicationPolicy>().Any() ||
-            (defect == ApplicationWriteDefect.AuditDeleted && !HasAudit(database)))
+            (defect is ApplicationWriteDefect.AuditDeleted or ApplicationWriteDefect.ReasonChanged && !HasAudit(database)))
         {
             return result;
         }
@@ -66,6 +66,9 @@ internal sealed class ApplicationWriteFault(ApplicationWriteDefect defect) : Sav
             case ApplicationWriteDefect.AuditDeleted:
                 await database.Set<SecurityAuditIntent>().Where(row => row.TargetType == AuditTarget).ExecuteDeleteAsync(cancellationToken);
                 break;
+            case ApplicationWriteDefect.ReasonChanged:
+                await database.Set<ApplicationLifecycleAuditDetail>().ExecuteUpdateAsync(update => update.SetProperty(row => row.ReasonCode, Core.Features.Applications.ApplicationLifecycleReason.Security), cancellationToken);
+                break;
             case ApplicationWriteDefect.PolicyChanged:
                 await database.Set<ApplicationPolicy>().ExecuteUpdateAsync(update => update.SetProperty(row => row.Revision, row => row.Revision + 1), cancellationToken);
                 break;
@@ -83,5 +86,5 @@ internal sealed class ApplicationWriteFault(ApplicationWriteDefect defect) : Sav
 
 public enum ApplicationWriteDefect
 {
-    AuditFailure, TokenRevoked, SourceRevoked, AuditDeleted, PolicyChanged, CredentialExpired, TrackedCredentialDrift, SourceRebound, Cancelled
+    AuditFailure, TokenRevoked, SourceRevoked, AuditDeleted, PolicyChanged, CredentialExpired, TrackedCredentialDrift, SourceRebound, Cancelled, ReasonChanged
 }

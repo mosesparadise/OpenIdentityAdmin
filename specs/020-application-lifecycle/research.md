@@ -15,7 +15,7 @@ Existing worktrees and delivery branches were preserved.
 | Explicit action/permission dispatch | `ApplicationMutationWriter.UpdateAsync` defaults non-Replace to edit; `ApiMutationAuthority` defaults non-Replace to write permission | Merely extending the enum would risk field loss and wrong authorization. Closed action switches must reject unknown values. |
 | Finite private audit reason | `SecurityAuditIntent` has action/actor/target/time/correlation but no reason | Add an application-owned one-to-one audit detail, atomically linked and verified; avoid arbitrary text in general logs. |
 | Lifecycle independent of credentials | `ManagedRegistration.ReadAsync` already rejects expired credentials | Re-enable does not extend expiry; repair/edit/replacement remain separate permissions and cannot enable a disabled application. |
-| Bulk revocation separate in recommendation | Approved API contracts require durable 202 jobs for bulk work | A synchronous authorization/token loop violates that contract. The user preference is pending, not inferred approval. |
+| Bulk revocation separate in recommendation | Approved API contracts require durable 202 jobs for bulk work | A synchronous authorization/token loop violates that contract. The user selected issuance-only scope on 5 November 2026. |
 
 ## Read-only independent review
 

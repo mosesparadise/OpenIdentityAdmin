@@ -60,18 +60,7 @@ internal static class ApplicationEditorJourney
         await Button(page, Hide).ClickAsync();
         await HeadingAsync(page, DetailsTitle);
         await BrowserSecretOracle.StorageAsync(page, [output]);
-        await using var concurrent = await page.Context.Browser!.NewContextAsync();
-        await concurrent.AddCookiesAsync((await page.Context.CookiesAsync()).Select(cookie => new Cookie
-        {
-            Name = cookie.Name,
-            Value = cookie.Value,
-            Domain = cookie.Domain,
-            Path = cookie.Path,
-            Expires = cookie.Expires,
-            HttpOnly = cookie.HttpOnly,
-            Secure = cookie.Secure,
-            SameSite = cookie.SameSite
-        }));
+        await using var concurrent = await ConcurrentAsync(page);
         var other = await concurrent.NewPageAsync();
         try
         {
@@ -97,6 +86,28 @@ internal static class ApplicationEditorJourney
         finally { await other.CloseAsync(); }
         var replacement = await ReplaceAsync(page, now, output, presentation);
         return new(created.Id, Client, callback ?? UpdatedCallback, replacement, output);
+    }
+
+    /// <summary>Copies only the existing authenticated cookie jar to an independent context, preserving visibility-driven clearing in the original tab.</summary>
+    internal static async Task<IBrowserContext> ConcurrentAsync(IPage page)
+    {
+        var concurrent = await page.Context.Browser!.NewContextAsync();
+        try
+        {
+            await concurrent.AddCookiesAsync((await page.Context.CookiesAsync()).Select(cookie => new Cookie
+            {
+                Name = cookie.Name,
+                Value = cookie.Value,
+                Domain = cookie.Domain,
+                Path = cookie.Path,
+                Expires = cookie.Expires,
+                HttpOnly = cookie.HttpOnly,
+                Secure = cookie.Secure,
+                SameSite = cookie.SameSite
+            }));
+            return concurrent;
+        }
+        catch { await concurrent.DisposeAsync(); throw; }
     }
 
     /// <summary>Requires local linked validation and a genuinely generated one-time secret without recording its value in diagnostics.</summary>

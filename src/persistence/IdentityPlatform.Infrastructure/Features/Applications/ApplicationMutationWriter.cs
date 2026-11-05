@@ -21,6 +21,8 @@ internal static class ApplicationMutationWriter
     private const string Created = "ApplicationCreated";
     private const string Edited = "ApplicationEdited";
     private const string Replaced = "ApplicationSecretReplaced";
+    private const string Disabled = "ApplicationDisabled";
+    private const string Enabled = "ApplicationEnabled";
 
     /// <summary>Uses real managers for all native writes and leaves version/policy persistence inside the same original transaction.</summary>
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
@@ -101,6 +103,10 @@ internal static class ApplicationMutationWriter
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Expired);
         }
+        if (command.Kind is ApplicationMutationKind.Disable or ApplicationMutationKind.Enable)
+        {
+            return ChangeLifecycle(application, descriptor, policy, command, now);
+        }
         string? secret = null;
         policy.Revision = checked(policy.Revision + 1);
         policy.ObservedAt = now;
@@ -112,15 +118,38 @@ internal static class ApplicationMutationWriter
             policy.CredentialIssuedAt = now;
             policy.CredentialExpiresAt = command.CredentialExpiry!.Value.ToUnixTimeSeconds();
         }
-        else
+        else if (command.Kind == ApplicationMutationKind.Edit)
         {
             descriptor.DisplayName = command.DisplayName;
             descriptor.RedirectUris.Clear();
             descriptor.RedirectUris.UnionWith(command.Redirects.Select(value => new Uri(value)));
         }
+        else
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
         var expected = new ApplicationWriteState(application, descriptor, policy, secret);
         await manager.UpdateAsync(application, descriptor, token);
         return expected;
+    }
+
+    /// <summary>Advances product authority without touching any native credential/configuration; same-state requests never create audit noise.</summary>
+    private static ApplicationWriteState ChangeLifecycle(object application, OpenIddictApplicationDescriptor descriptor,
+        ApplicationPolicy policy, ApplicationMutationCommand command, long now)
+    {
+        var enabled = command.Kind == ApplicationMutationKind.Enable;
+        if (command.Reason is not { } reason || !Enum.IsDefined(reason))
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
+        if (policy.Enabled == enabled)
+        {
+            throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);
+        }
+        policy.Enabled = enabled;
+        policy.Revision = checked(policy.Revision + 1);
+        policy.ObservedAt = now;
+        return new(application, descriptor, policy, null);
     }
 
     /// <summary>Rechecks the exact operator-provided expiry under locks; no default or retry can silently extend it.</summary>
@@ -174,6 +203,10 @@ internal static class ApplicationMutationWriter
             CorrelationId = stamp.Correlation,
             OccurredAt = stamp.At
         });
+        if (command.Reason is { } reason)
+        {
+            scope.Owner.Database.Add(new ApplicationLifecycleAuditDetail { AuditId = stamp.Id, ReasonCode = reason });
+        }
         await scope.Owner.Database.SaveChangesAsync(current);
         return stamp;
     }, token, write: true);
@@ -188,6 +221,14 @@ internal static class ApplicationMutationWriter
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        if (command.Reason is { } reason)
+        {
+            var detail = await scope.Owner.Database.Set<ApplicationLifecycleAuditDetail>().AsNoTracking().SingleOrDefaultAsync(value => value.AuditId == stamp.Id, current);
+            if (detail is null || detail.ReasonCode != reason)
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
+        }
     }, token);
 
     /// <summary>Maps only the closed mutation action set to an audit name owned by this feature.</summary>
@@ -196,6 +237,8 @@ internal static class ApplicationMutationWriter
         ApplicationMutationKind.Create => Created,
         ApplicationMutationKind.Edit => Edited,
         ApplicationMutationKind.Replace => Replaced,
+        ApplicationMutationKind.Disable => Disabled,
+        ApplicationMutationKind.Enable => Enabled,
         _ => throw ProtocolStorageOwner.Unavailable()
     };
 }

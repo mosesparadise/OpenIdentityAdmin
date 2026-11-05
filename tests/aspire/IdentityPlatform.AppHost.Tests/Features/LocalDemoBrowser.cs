@@ -68,6 +68,11 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         phase(ManagedPhase);
         await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
             ManagedFactorAsync, subject);
+        await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: false);
+        await ApplicationStateJourney.RequireDeniedAsync(page, new Uri(Issuer), registration);
+        await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: true);
+        await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
+            ManagedFactorAsync, subject);
     }
 
     /// <summary>Uses the same real enrollment seed and replay set for the additional managed-client MFA ceremony.</summary>

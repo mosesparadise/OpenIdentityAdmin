@@ -20,6 +20,10 @@ internal sealed class ManagedCacheCompletionFault(bool cleanup, bool issuance = 
     {
         get; set;
     }
+    internal Func<CancellationToken, Task>? AfterCommit
+    {
+        get; set;
+    }
     internal int Commits
     {
         get; private set;
@@ -68,19 +72,22 @@ internal sealed class ManagedCacheCompletionFault(bool cleanup, bool issuance = 
     }
 
     /// <summary>Rejects acknowledgement only after the exact provider transaction committed; resulting rows must remain despite withheld output.</summary>
-    public override Task TransactionCommittedAsync(DbTransaction transaction, TransactionEndEventData eventData, CancellationToken cancellationToken = default)
+    public override async Task TransactionCommittedAsync(DbTransaction transaction, TransactionEndEventData eventData, CancellationToken cancellationToken = default)
     {
         if (ReferenceEquals(eventData.Context, database))
         {
             Assert.Equal(transactionId, eventData.TransactionId);
             Commits++;
-            if (!cleanup && Advance is null)
+            if (AfterCommit is not null)
+            {
+                await AfterCommit(cancellationToken);
+            }
+            if (!cleanup && Advance is null && AfterCommit is null)
             {
                 Faults++;
                 throw new InvalidOperationException(Failure);
             }
         }
-        return Task.CompletedTask;
     }
 
     /// <summary>Proves real disposal before the cleanup fault, with no detached work or synthetic cleanup receipt.</summary>

@@ -20,6 +20,7 @@ internal static class ApplicationPolicyModel
     {
         var row = builder.Entity<ApplicationPolicy>();
         row.HasKey(value => value.ApplicationId);
+        row.Property(value => value.Enabled).HasDefaultValue(true).IsConcurrencyToken();
         row.Property(value => value.ApplicationId).HasMaxLength(ApplicationProjection.IdentifierLength);
         row.Property(value => value.Profile).HasMaxLength(ApplicationEditorRules.Profile.Length);
         row.Property(value => value.Revision).IsConcurrencyToken();

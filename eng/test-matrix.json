@@ -33,18 +33,18 @@
       "AppHost": 100
     },
     "PostgreSql": {
-      "Persistence": 19,
+      "Persistence": 21,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1069
+      "Administrator": 1113
     },
     "SqlServer": {
-      "Persistence": 19,
+      "Persistence": 21,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1174
+      "Administrator": 1218
     }
   },
   "browser": {
@@ -119,12 +119,12 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 59,
-      "SqlServer": 59
+      "PostgreSql": 92,
+      "SqlServer": 92
     },
     "ManagedApplications": {
-      "PostgreSql": 106,
-      "SqlServer": 106
+      "PostgreSql": 117,
+      "SqlServer": 117
     }
   },
   "administrator_browser_stories": {
@@ -325,17 +325,22 @@
         "ManagedHumanOwnershipTests",
         "ManagedHumanPublicationTests",
         "ManagedHumanRaceTests",
+        "ManagedLifecycleHumanTests",
         "ManagedPasswordUpgradeTests",
         "NativeCacheTests"
       ],
       "counts": {
-        "PostgreSql": 50,
-        "SqlServer": 50
+        "PostgreSql": 53,
+        "SqlServer": 53
       }
     },
     "Issuance": {
       "classes": [
         "ManagedJourneyTests",
+        "ManagedLifecycleCredentialTests",
+        "ManagedLifecycleJourneyTests",
+        "ManagedLifecyclePublicationTests",
+        "ManagedLifecycleRaceTests",
         "ManagedTokenAtomicityTests",
         "ManagedTokenCapacityTests",
         "ManagedTokenClaimTests",
@@ -348,8 +353,8 @@
         "ManagedUpdateJourneyTests"
       ],
       "counts": {
-        "PostgreSql": 56,
-        "SqlServer": 56
+        "PostgreSql": 64,
+        "SqlServer": 64
       }
     }
   }

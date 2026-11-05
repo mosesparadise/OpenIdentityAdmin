@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../../../Components/Button";
 import { emptyDraft, type Draft, type Errors } from "./input";
-const labels: Record<keyof Errors, string> = { confirmed: "Confirm replacement", clientId: "Client ID", displayName: "Display name", redirectUris: "HTTPS callbacks", credentialExpiresAt: "Secret expiry (UTC)" };
+const labels: Record<keyof Errors, string> = { reason: "Reason", confirmed: "Confirm replacement", clientId: "Client ID", displayName: "Display name", redirectUris: "HTTPS callbacks", credentialExpiresAt: "Secret expiry (UTC)" };
 /** Presents explicit, bounded registration choices with linked errors and no default credential lifetime. */
 export function CreateForm({ submit, cancel }: { submit: (draft: Draft) => Promise<Errors>; cancel: () => void }) {
   const [draft, setDraft] = useState<Draft>({ ...emptyDraft });

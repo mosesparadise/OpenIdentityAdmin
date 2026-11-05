@@ -111,7 +111,7 @@ public sealed class ApplicationUpdateTests(BootstrapFixture fixture)
         : ApplicationMutationCommand.Edit(created.Application!.Id, created.Version!, new(second ? SecondDisplay : FirstDisplay, [second ? SecondCallback : FirstCallback]))!;
 
     /// <summary>Requires the exact provider permission error and restores only the disposable lease's audit grant before recovery.</summary>
-    private static async Task FailAsync(ApplicationMutationFixture test, ApplicationMutationCommand command, bool denyAudit, ApplicationUpdateFault fault)
+    internal static async Task FailAsync(ApplicationMutationFixture test, ApplicationMutationCommand command, bool denyAudit, ApplicationUpdateFault fault)
     {
         if (!denyAudit)
         {
@@ -135,7 +135,7 @@ public sealed class ApplicationUpdateTests(BootstrapFixture fixture)
     }
 
     /// <summary>Always releases the blocker and drains both operations, preserving primary wait-graph failures instead of leaving background writers alive.</summary>
-    private static async Task<ApplicationMutationResult[]> ReleaseAndJoinAsync(GovernanceLock held, Func<Task> observe, params Task<ApplicationMutationResult>[] requests)
+    internal static async Task<ApplicationMutationResult[]> ReleaseAndJoinAsync(GovernanceLock held, Func<Task> observe, params Task<ApplicationMutationResult>[] requests)
     {
         List<Exception> failures = [];
         try

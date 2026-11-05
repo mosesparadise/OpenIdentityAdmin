@@ -11,7 +11,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 
 /// <summary>Observes every scalar native/policy/audit field; secret-bearing comparisons expose only digests to assertion diagnostics.</summary>
 internal sealed record ApplicationUpdateSnapshot(string Digest, string NativeDigest, string StableNativeDigest, string SecretDigest,
-    string? Stamp, string? ClientId, string? Display, string[] Redirects, ApplicationPolicy Policy, SecurityAuditIntent[] Audits)
+    string? Stamp, string? ClientId, string? Display, string[] Redirects, ApplicationPolicy Policy, SecurityAuditIntent[] Audits, ApplicationLifecycleAuditDetail[] LifecycleAudits)
 {
     private const string Target = "Application";
     private static readonly string[] MutableNative = ["DisplayName", "RedirectUris", "ClientSecret", "ConcurrencyToken"];
@@ -29,6 +29,7 @@ internal sealed record ApplicationUpdateSnapshot(string Digest, string NativeDig
         var native = await database.Set<OpenIddictEntityFrameworkCoreApplication>().AsNoTracking().SingleAsync(row => row.Id == id, token);
         var policy = await database.Set<ApplicationPolicy>().AsNoTracking().SingleAsync(row => row.ApplicationId == id, token);
         var audits = await database.Set<SecurityAuditIntent>().AsNoTracking().Where(row => row.TargetType == Target).OrderBy(row => row.Id).ToArrayAsync(token);
+        var lifecycle = await database.Set<ApplicationLifecycleAuditDetail>().AsNoTracking().OrderBy(row => row.AuditId).ToArrayAsync(token);
         var fields = database.Entry(native).Properties.OrderBy(value => value.Metadata.Name, StringComparer.Ordinal)
             .ToDictionary(value => value.Metadata.Name, value => value.CurrentValue);
         var stable = fields.Where(value => !MutableNative.Contains(value.Key, StringComparer.Ordinal)).ToDictionary();
@@ -36,9 +37,10 @@ internal sealed record ApplicationUpdateSnapshot(string Digest, string NativeDig
         {
             fields,
             policy,
-            audits
+            audits,
+            lifecycle
         }), Hash(fields), Hash(stable), Hash(native.ClientSecret), native.ConcurrencyToken,
-            native.ClientId, native.DisplayName, JsonSerializer.Deserialize<string[]>(native.RedirectUris!)!, policy, audits);
+            native.ClientId, native.DisplayName, JsonSerializer.Deserialize<string[]>(native.RedirectUris!)!, policy, audits, lifecycle);
     }
 
     /// <summary>Hashes canonical in-process observations without logging native hashes or plaintext credentials.</summary>

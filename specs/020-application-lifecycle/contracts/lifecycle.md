@@ -56,6 +56,6 @@ traffic and verify real proxy details/mutation parsing before reopening it. Do n
 rolling mixed-version compatibility without a separately tested bridge. Issuer-first lifecycle
 enforcement remains a separate prerequisite before enabling writes.
 
-The grant-revocation preference remains pending. If included, specify a separately authorized
+The user selected issuance-only scope on 5 November 2026. The grant-revocation follow-on needs a separately authorized
 durable job with 202/status/progress/idempotent processing and failure semantics; do not treat
 `applications.disable` as `grants.revoke` or silently add a synchronous scan.

@@ -5,8 +5,8 @@
 ## Summary
 
 Add explicit versioned disable/re-enable to existing application details. Reuse current mutation
-ownership and managed issuer revision bindings. The code remains unimplemented. The outstanding
-scope preference is recorded in the spec; this plan describes the recommended issuance-only slice.
+ownership and managed issuer revision bindings. The user selected issuance-only scope on 5 November 2026. Implementation follows the
+reviewed design; bulk grant revocation remains separate.
 
 ## Technical Context
 
@@ -31,8 +31,7 @@ browser/UX evidence and independent architecture/test/security reviews. Principl
 and proportionate fail-closed verification. No exception or release claim is proposed.
 
 Pre-design review identified missing lifecycle storage/reason persistence and unsafe default
-dispatch branches; the design below addresses them. Post-design review must close the custom
-requirements checklist and the scope decision before affected code starts. Reviewing this packet
+dispatch branches; the design below addresses them. Post-design architecture/test/security reviews passed; the user has resolved the scope decision. Reviewing this packet
 does not mark the implementation or outstanding release gates complete.
 
 ## Project Structure

@@ -1,5 +1,6 @@
 using IdentityPlatform.Admin.Api.Features.ApiContracts;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Applications;
 
 namespace IdentityPlatform.Admin.Api.Features.Applications;
 
@@ -8,6 +9,10 @@ internal static class Setup
 {
     private const string DetailsPath = "/applications/{id}";
     private const string ReplacementPath = DetailsPath + "/secret-replacements";
+    private const string DisableOperation = "DisableApplication";
+    private const string EnableOperation = "EnableApplication";
+    private const string DisableSummary = "Disable new sign-ins and issuance without revoking existing grants";
+    private const string EnableSummary = "Re-enable fresh sign-ins without restoring old attempts or extending credentials";
     private const string EditOperation = "EditApplication";
     private const string ReplacementOperation = "ReplaceApplicationSecret";
     private const string EditSummary = "Edit application presentation and callbacks using its current strong version";
@@ -44,12 +49,20 @@ internal static class Setup
     private static void MapUpdates(IEndpointRouteBuilder endpoints)
     {
         var edit = endpoints.MapManagementGroup().MapPut(DetailsPath, (HttpContext context, string id) =>
-            ApplicationUpdateEndpoint.HandleAsync(context, id, replacement: false))
+            ApplicationUpdateEndpoint.HandleAsync(context, id, ApplicationMutationKind.Edit))
             .WithName(EditOperation).WithSummary(EditSummary).Accepts<ApplicationEdit>(JsonType).Produces<ApplicationDetails>();
         var replace = endpoints.MapManagementGroup().MapPost(ReplacementPath, (HttpContext context, string id) =>
-            ApplicationUpdateEndpoint.HandleAsync(context, id, replacement: true))
+            ApplicationUpdateEndpoint.HandleAsync(context, id, ApplicationMutationKind.Replace))
             .WithName(ReplacementOperation).WithSummary(ReplacementSummary).Accepts<ApplicationSecretReplacement>(JsonType).Produces<ApplicationCredentialOutput>();
-        foreach (var endpoint in new[] { edit, replace })
+        var disable = endpoints.MapManagementGroup().MapPost(DetailsPath + ApplicationLifecycleRules.DisableSuffix, (HttpContext context, string id) =>
+            ApplicationUpdateEndpoint.HandleAsync(context, id, ApplicationMutationKind.Disable))
+            .WithName(DisableOperation).WithSummary(DisableSummary)
+            .Accepts<ApplicationLifecycle>(JsonType).Produces<ApplicationDetails>();
+        var enable = endpoints.MapManagementGroup().MapPost(DetailsPath + ApplicationLifecycleRules.EnableSuffix, (HttpContext context, string id) =>
+            ApplicationUpdateEndpoint.HandleAsync(context, id, ApplicationMutationKind.Enable))
+            .WithName(EnableOperation).WithSummary(EnableSummary)
+            .Accepts<ApplicationLifecycle>(JsonType).Produces<ApplicationDetails>();
+        foreach (var endpoint in new[] { edit, replace, disable, enable })
         {
             endpoint.ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized)
                 .ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status404NotFound)

@@ -27,7 +27,7 @@ internal sealed class ManagedSchemaFixture(IContainer container, ServiceProvider
     internal CancellationToken Token => deadline.Token;
 
     /// <summary>Uses actual pinned engines and independently pinned previous Platform migrations; no SQLite or in-memory replacement is involved.</summary>
-    internal static async Task<ManagedSchemaFixture> CreateAsync(string provider, bool prior = false)
+    internal static async Task<ManagedSchemaFixture> CreateAsync(string provider, bool prior = false, string? target = null)
     {
         var deadline = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
         deadline.CancelAfter(TimeSpan.FromMinutes(DeadlineMinutes));
@@ -41,7 +41,7 @@ internal sealed class ManagedSchemaFixture(IContainer container, ServiceProvider
             services = new ServiceCollection().AddLogging(options => options.ClearProviders())
                 .AddPlatformPersistence(TestDatabaseProviders.Resolve(provider), connection, connection).BuildServiceProvider(validateScopes: true);
             var result = new ManagedSchemaFixture(container, services, deadline);
-            await result.MigrateAsync(prior ? provider == Postgres ? PriorPostgres : PriorSql : null);
+            await result.MigrateAsync(target ?? (prior ? provider == Postgres ? PriorPostgres : PriorSql : null));
             return result;
         }
         catch
@@ -57,7 +57,7 @@ internal sealed class ManagedSchemaFixture(IContainer container, ServiceProvider
     }
 
     /// <summary>Targets native migrations only, retaining the unchanged Sessions history while exercising the requested Platform predecessor.</summary>
-    private async Task MigrateAsync(string? target)
+    internal async Task MigrateAsync(string? target)
     {
         await using var scope = services.CreateAsyncScope();
         await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().GetService<IMigrator>().MigrateAsync(target, Token);

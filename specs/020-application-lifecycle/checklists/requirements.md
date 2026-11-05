@@ -10,8 +10,8 @@
 - [x] Scope and dependencies distinguish current delivery from proposed functionality.
 - [x] Technical details are separated into plan/data-model/contracts.
 - [x] Both providers, retained browser evidence and external limitations are stated.
-- [ ] The optional bulk grant-revocation scope preference has been answered.
-- [ ] All affected implementation is ready to start without an outstanding scope decision.
+- [x] The optional bulk grant-revocation scope preference has been answered.
+- [x] All affected implementation is ready to start without an outstanding scope decision.
 
-Six of eight requirements-quality criteria are satisfied. The two open items represent the same
-pending scope answer; this is not a new request for permission to perform already approved work.
+All eight requirements-quality criteria are satisfied after the user selected issuance-only
+scope on 5 November 2026. This is requirements readiness, not runtime acceptance.

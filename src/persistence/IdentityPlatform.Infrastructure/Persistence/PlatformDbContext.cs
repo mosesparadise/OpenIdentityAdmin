@@ -23,6 +23,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         base.OnModelCreating(builder);
         builder.HasDefaultSchema(PlatformSchema);
         ApplicationPolicyModel.Configure(builder, ProviderOptions.Provider(options).Model);
+        ApplicationLifecycleAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ManagedLoginModel.Configure(builder, ProviderOptions.Provider(options).Model);
         IssuerContinuationModel.Configure(builder, ProviderOptions.Provider(options).Model);
         LoginModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);

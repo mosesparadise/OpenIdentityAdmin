@@ -1,14 +1,15 @@
 import type { SessionState } from "../../Session/observation";
 import type { EditorClient } from "./client";
-import { validate, type Draft, type Errors, type EditDraft, type ReplacementDraft, validateEdit, validateReplacement, utc } from "./input";
-import { created, edited, replaced, object, observe, reason, type Observed, type Reason } from "./observation";
+import { validate, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
+import { created, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
+export type EditorAction = "edit" | "replace" | "disable" | "enable";
 export type Outcome = "not-sent" | "unknown" | "created" | "updated" | "replaced";
 export type EditorState =
   | { kind: "list" | "form" }
-  | { kind: "working"; operation: "read" | "create" | "edit" | "replace" }
-  | ({ kind: "details" | "edit-form" | "replacement-form" | "updated" } & Observed)
+  | { kind: "working"; operation: "read" | "create" | EditorAction }
+  | ({ kind: "details" | "edit-form" | "replacement-form" | "disable-form" | "enable-form" | "updated" } & Observed)
   | ({ kind: "created" | "replaced"; secret: string } & Observed)
-  | { kind: "problem"; reason: Reason; outcome: Outcome; target?: { id: string; action: "edit" | "replace" } };
+  | { kind: "problem"; reason: Reason; outcome: Outcome; target?: { id: string; action: EditorAction } };
 
 /** Owns one ephemeral editor operation and never retries a mutation or retains a credential-bearing wire DTO. */
 export class EditorController {
@@ -21,7 +22,7 @@ export class EditorController {
   private dispatched = false;
   private deadline?: number;
   private completed?: Outcome;
-  private target?: { id: string; action: "edit" | "replace" };
+  private target?: { id: string; action: EditorAction };
   constructor(private readonly client: EditorClient, private readonly publish: (state: EditorState) => void, private readonly now = Date.now) {}
 
   /** Binds the editor to the actual session observation; the BFF independently owns and verifies its durable browser generation. */
@@ -48,19 +49,21 @@ export class EditorController {
   async details(id: string): Promise<void> {
     if (this.stopped) return;
     if (this.dispatched) { this.fail("cleared", "unknown"); return; }
-    this.cancel(); this.target = undefined; this.completed = undefined;
-    if (!this.currentSession()) { this.emit({ kind: "problem", reason: "expired", outcome: "not-sent" }); return; }
+    const recovery = this.target?.id === id ? { target: this.target, outcome: this.outcome() } : undefined;
+    this.cancel(); this.target = recovery?.target; this.completed = recovery?.outcome;
+    if (!this.currentSession()) { this.fail("expired", this.outcome()); return; }
     const operation = this.begin("read");
     try {
       const result = await this.client.details(id, operation.signal);
       if (!this.live(operation.version)) return;
-      if (result.status !== 200) { this.fail(reason(result.status), "not-sent"); return; }
+      if (result.status !== 200) { this.fail(reason(result.status), this.outcome()); return; }
       const value = await observe(result, id, this.now());
       if (!this.live(operation.version)) return;
-      if (!value || value.expires <= this.now()) { this.fail("unavailable", "not-sent"); return; }
+      if (!value || value.expires <= this.now()) { this.fail("unavailable", this.outcome()); return; }
       const expires = Math.min(value.expires, this.session!.expires);
+      this.target = undefined; this.completed = undefined;
       this.emit({ ...value, expires, kind: "details" }); this.arm(expires);
-    } catch { if (this.live(operation.version)) this.fail("unavailable", "not-sent"); }
+    } catch { if (this.live(operation.version)) this.fail("unavailable", this.outcome()); }
   }
   /** Sets the single-send fence before token acquisition; any post-dispatch non-success remains potentially committed. */
   async create(draft: Draft): Promise<Errors> {
@@ -90,17 +93,17 @@ export class EditorController {
     return {};
   }
   /** Opens an explicit mutation form while dropping secret output and preserving original observation authority. */
-  open(action: "edit" | "replace"): void {
+  open(action: EditorAction): void {
     this.checkDeadline();
     if (this.stopped || !["details", "created", "updated", "replaced"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
     const { details, expires, etag } = this.state;
     this.cancel(); this.completed = undefined; this.target = { id: details.id, action };
-    this.emit({ kind: action === "edit" ? "edit-form" : "replacement-form", details: structuredClone(details), expires, etag }); this.arm(expires);
+    this.emit({ kind: action === "edit" ? "edit-form" : action === "replace" ? "replacement-form" : action === "disable" ? "disable-form" : "enable-form", details: structuredClone(details), expires, etag }); this.arm(expires);
   }
   /** Cancels a draft without another read or restoring a previously displayed secret. */
   cancelForm(): void {
     this.checkDeadline();
-    if (this.state.kind !== "edit-form" && this.state.kind !== "replacement-form") return;
+    if (this.state.kind !== "edit-form" && this.state.kind !== "replacement-form" && this.state.kind !== "disable-form" && this.state.kind !== "enable-form") return;
     const { details, expires, etag } = this.state;
     this.emit({ kind: "details", details, expires, etag });
   }
@@ -122,8 +125,19 @@ export class EditorController {
     return this.mutate(base, "replace", (token, signal) => this.client.replace(base.details.id, base.etag!, input, token, signal),
       result => replaced(result, base, input, this.now()), utc(input.credentialExpiresAt, true));
   }
+  /** Sends one explicit lifecycle command; neither a stale result nor an ambiguous outcome can trigger a retry. */
+  async lifecycle(input: LifecycleDraft): Promise<Errors> {
+    if (this.stopped || this.state.kind !== "disable-form" && this.state.kind !== "enable-form") return {};
+    if (input.confirm !== true) return { confirmed: "Confirm the lifecycle change before continuing." };
+    if (input.reason !== "maintenance" && input.reason !== "security" && input.reason !== "configuration") return { reason: "Choose a listed reason." };
+    const frozen: LifecycleInput = { reason: input.reason, confirm: true };
+    const base = this.state, enabled = base.kind === "enable-form";
+    return this.mutate(base, enabled ? "enable" : "disable",
+      (token, signal) => this.client.lifecycle(base.details.id, base.etag!, frozen, enabled, token, signal),
+      result => lifecycleChanged(result, base, enabled, this.now()));
+  }
   /** Owns a single update dispatch, binding every asynchronous boundary to the unchanged base deadline. */
-  private async mutate(base: Observed, action: "edit" | "replace",
+  private async mutate(base: Observed, action: EditorAction,
     send: (token: string, signal: AbortSignal) => Promise<import("./observation").Result>,
     inspect: (result: import("./observation").Result) => Promise<(Observed & { secret?: string }) | null>, secretExpiry?: number): Promise<Errors> {
     this.checkDeadline();
@@ -172,7 +186,7 @@ export class EditorController {
   /** Ends ownership permanently and drops all references without a network request. */
   dispose(): void { this.cancel(); this.session = undefined; this.target = undefined; this.completed = undefined; this.state = { kind: "list" }; this.stopped = true; }
   /** Captures the original authority deadline before any awaited operation. */
-  private begin(operation: "read" | "create" | "edit" | "replace", deadline = this.session!.expires) {
+  private begin(operation: "read" | "create" | EditorAction, deadline = this.session!.expires) {
     this.cancel(); this.deadline = deadline; this.abort = new AbortController(); this.emit({ kind: "working", operation }); this.arm(deadline);
     return { version: this.generation, signal: this.abort.signal };
   }

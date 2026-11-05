@@ -32,6 +32,7 @@
   <ItemGroup><Compile Include="../IdentityPlatform.Administrator.Tests/Fixtures/FactorOracle.cs" Link="Fixtures/FactorOracle.cs" /></ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorJourney.cs" Link="Features/LocalDemo/ApplicationEditorJourney.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationStateJourney.cs" Link="Features/LocalDemo/ApplicationStateJourney.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorResponse.cs" Link="Features/LocalDemo/ApplicationEditorResponse.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/BrowserSecretOracle.cs" Link="Features/LocalDemo/BrowserSecretOracle.cs" />
   </ItemGroup>

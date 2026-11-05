@@ -28,7 +28,7 @@ public sealed class ApplicationDetailsHttpTests(BootstrapFixture fixture)
     private const int CreateOffsetMinutes = -20;
     private const int CredentialSeconds = 5;
     private const int AdvanceSeconds = 10;
-    private static readonly string[] DetailFields = ["clientId", "credential", "displayName", "editable", "expiresAt", "id", "profile", "redirectUris"];
+    private static readonly string[] DetailFields = ["clientId", "credential", "displayName", "editable", "enabled", "expiresAt", "id", "profile", "redirectUris"];
 
     /// <summary>Unmanaged and system rows expose only bounded read-only metadata; provider case/padding aliases never retrieve another exact identity.</summary>
     [Theory]
@@ -58,6 +58,7 @@ public sealed class ApplicationDetailsHttpTests(BootstrapFixture fixture)
             var details = await ReadAsync(response);
             Assert.Null(response.Headers.ETag);
             Assert.False(details.Editable);
+            Assert.Null(details.Enabled);
             Assert.Null(details.Profile);
             Assert.Null(details.Credential);
             Assert.Empty(details.RedirectUris);
