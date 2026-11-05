@@ -4,7 +4,7 @@ export type Details = components["schemas"]["ApplicationDetails"];
 export type Result = { status: number; value?: unknown; etag?: string | null };
 export type Observed = { details: Details; expires: number; etag: string | null };
 export type Reason = "expired" | "forbidden" | "missing" | "invalid" | "conflict" | "stale" | "unavailable" | "cleared" | "display-expired";
-const fields = ["id", "clientId", "displayName", "redirectUris", "profile", "editable", "credential", "expiresAt"];
+const fields = ["id", "clientId", "displayName", "redirectUris", "profile", "editable", "credential", "expiresAt", "enabled"];
 /** Requires exact JSON members before copying a sanitized projection into UI state. */
 export function object(value: unknown, keys: string[]): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
@@ -32,18 +32,18 @@ export async function observe(result: Result, id: string | null, now: number, in
   if (!(expires > now && expires <= now + 300000)) return null;
   let credential: Details["credential"] = null;
   if (dto.editable) {
-    if (!text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || dto.profile !== "managed-web-v1" || dto.redirectUris.length < 1 || dto.redirectUris.length > 10 ||
+    if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || dto.profile !== "managed-web-v1" || dto.redirectUris.length < 1 || dto.redirectUris.length > 10 ||
         !dto.redirectUris.every(callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
         !object(dto.credential, ["issuedAt", "expiresAt"]) || !(wholeUtc(dto.credential.issuedAt) < wholeUtc(dto.credential.expiresAt)) ||
         !await version(result.etag, dto.id, !!input)) return null;
     credential = { issuedAt: dto.credential.issuedAt as string, expiresAt: dto.credential.expiresAt as string };
-  } else if (input || dto.profile !== null || dto.credential !== null || dto.redirectUris.length || result.etag != null) return null;
-  if (input && (dto.clientId !== input.clientId || dto.displayName !== input.displayName ||
+  } else if (dto.enabled !== null || input || dto.profile !== null || dto.credential !== null || dto.redirectUris.length || result.etag != null) return null;
+  if (input && (dto.enabled !== true || dto.clientId !== input.clientId || dto.displayName !== input.displayName ||
       JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...input.redirectUris].sort()) || utc(credential!.expiresAt) !== utc(input.credentialExpiresAt, true) ||
       !(utc(credential!.expiresAt) > now))) return null;
   return { details: { id: dto.id, clientId: dto.clientId, displayName: dto.displayName as string | null,
     redirectUris: [...dto.redirectUris] as string[], profile: dto.profile as string | null, editable: dto.editable,
-    credential, expiresAt: dto.expiresAt as string }, expires, etag: result.etag ?? null };
+    credential, enabled: dto.enabled as boolean | null, expiresAt: dto.expiresAt as string }, expires, etag: result.etag ?? null };
 }
 /** Accepts only the native one-time secret shape and exact creation response, independently of generated static types. */
 export async function created(result: Result, input: CreateInput, now: number): Promise<(Observed & { secret: string }) | null> {
@@ -71,7 +71,7 @@ async function successor(result: Result, base: Observed, now: number): Promise<O
 /** PUT changes exactly the submitted presentation/callback set and never changes credential dates, even when already expired. */
 export async function edited(result: Result, base: Observed, input: EditInput, now: number): Promise<Observed | null> {
   const next = await successor(result, base, now);
-  return next && next.details.displayName === input.displayName && sameCallbacks(next.details.redirectUris, input.redirectUris) &&
+  return next && next.details.enabled === base.details.enabled && next.details.displayName === input.displayName && sameCallbacks(next.details.redirectUris, input.redirectUris) &&
     utc(next.details.credential!.issuedAt) === utc(base.details.credential!.issuedAt) &&
     utc(next.details.credential!.expiresAt) === utc(base.details.credential!.expiresAt) ? next : null;
 }
@@ -82,10 +82,19 @@ export async function replaced(result: Result, base: Observed, input: Replacemen
   const secret = result.value.clientSecret;
   if (btoa(atob(secret)) !== secret || atob(secret).length !== 32) return null;
   const next = await successor({ ...result, value: result.value.application }, base, now);
-  return next && next.details.displayName === base.details.displayName && sameCallbacks(next.details.redirectUris, base.details.redirectUris) &&
+  return next && next.details.enabled === base.details.enabled && next.details.displayName === base.details.displayName && sameCallbacks(next.details.redirectUris, base.details.redirectUris) &&
     utc(next.details.credential!.expiresAt) === utc(input.credentialExpiresAt, true) && utc(input.credentialExpiresAt, true) > now &&
     utc(next.details.credential!.issuedAt) >= utc(base.details.credential!.issuedAt)
     ? { ...next, secret } : null;
 }
 /** Callback ordering is not authority; exact membership is preserved without normalization. */
 function sameCallbacks(left: readonly string[], right: readonly string[]): boolean { return JSON.stringify([...left].sort()) === JSON.stringify([...right].sort()); }
+
+/** Accepts only the requested opposite lifecycle state while preserving every non-lifecycle field and credential deadline. */
+export async function lifecycleChanged(result: Result, base: Observed, enabled: boolean, now: number): Promise<Observed | null> {
+  const next = await successor(result, base, now);
+  return next && base.details.enabled === !enabled && next.details.enabled === enabled &&
+    next.details.displayName === base.details.displayName && sameCallbacks(next.details.redirectUris, base.details.redirectUris) &&
+    utc(next.details.credential!.issuedAt) === utc(base.details.credential!.issuedAt) &&
+    utc(next.details.credential!.expiresAt) === utc(base.details.credential!.expiresAt) ? next : null;
+}

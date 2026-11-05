@@ -14,6 +14,7 @@ internal sealed class ApiMutationAuthority
 {
     private const string WritePermission = "applications.write";
     private const string CredentialPermission = "applications.credentials";
+    private const string LifecyclePermission = "applications.disable";
     private readonly ProtocolStorageScope scope;
     private readonly ProtocolAdmissionOwnership ownership;
     private readonly ApiIdentity identity;
@@ -67,12 +68,12 @@ internal sealed class ApiMutationAuthority
         {
             throw new ApiMutationDenied(StatusCodes.Status401Unauthorized);
         }
-        var permission = command.Kind == ApplicationMutationKind.Replace ? CredentialPermission : WritePermission;
+        var permission = Permission(command.Kind);
         if (!grants.Permissions(identity.Subject).Contains(permission))
         {
             throw new ApiMutationDenied(StatusCodes.Status403Forbidden);
         }
-        if (command.Kind == ApplicationMutationKind.Replace)
+        if (command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable)
         {
             var mfaDeadline = DateTimeOffset.FromUnixTimeSeconds(checked(source.FactorVerifiedAt + AdministratorPolicy.FreshnessSeconds));
             if (mfaDeadline <= now)
@@ -83,6 +84,15 @@ internal sealed class ApiMutationAuthority
         }
         return (source, deadline);
     }
+
+    /// <summary>Selects only the named action's persisted grant; unknown actions cannot fall through to ordinary write permission.</summary>
+    private static string Permission(ApplicationMutationKind kind) => kind switch
+    {
+        ApplicationMutationKind.Create or ApplicationMutationKind.Edit => WritePermission,
+        ApplicationMutationKind.Replace => CredentialPermission,
+        ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => LifecyclePermission,
+        _ => throw ProtocolStorageOwner.Unavailable()
+    };
 
     /// <summary>Rechecks fresh persisted authority after native saves and audit, shortening but never renewing its original useful lifetime.</summary>
     internal async Task VerifyAsync(ProtocolStorageScope current, ApplicationMutationCommand intent, CancellationToken token)

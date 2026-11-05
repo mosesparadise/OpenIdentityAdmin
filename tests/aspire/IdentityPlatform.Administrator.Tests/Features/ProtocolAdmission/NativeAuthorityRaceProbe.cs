@@ -1,5 +1,6 @@
 using System.Data.Common;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
+using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
@@ -10,7 +11,7 @@ using OpenIddict.Server;
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
 /// <summary>Observes exact issuance and mutation contexts at native lock/commit boundaries without replacing provider execution.</summary>
-internal sealed class NativeAuthorityRaceProbe(bool issuanceFirst, string lockTable) : DbCommandInterceptor, IDbTransactionInterceptor
+internal sealed class NativeAuthorityRaceProbe(bool issuanceFirst, string lockTable, bool managed = false) : DbCommandInterceptor, IDbTransactionInterceptor
 {
     private const int BeforeAdmission = 250;
     private const string Update = "UPDATE";
@@ -41,8 +42,12 @@ internal sealed class NativeAuthorityRaceProbe(bool issuanceFirst, string lockTa
     {
         services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(this));
         services.AddOpenIddict().AddServer().AddEventHandler<OpenIddictServerEvents.ProcessSignInContext>(builder => builder
-            .SetOrder(OpenIddictServerHandlers.RestoreInternalClaims.Descriptor.Order + BeforeAdmission).UseInlineHandler(CaptureAsync));
+            .SetOrder(OpenIddictServerHandlers.RestoreInternalClaims.Descriptor.Order + (managed ? -1 : BeforeAdmission)).UseInlineHandler(CaptureAsync));
     }
+
+    /// <summary>Observes the actual API mutation context at its first governance command; setup and reads remain unarmed.</summary>
+    internal void ConfigureApi(IServiceCollection services) => services.AddDbContext<PlatformDbContext>((_, options) =>
+        options.AddInterceptors(new MutationCapture(this, lockTable), this));
 
     /// <summary>Targets the independently scoped authoritative mutation before it begins any database work.</summary>
     internal void ArmMutation(PlatformDbContext database) => mutation = database;
@@ -55,7 +60,14 @@ internal sealed class NativeAuthorityRaceProbe(bool issuanceFirst, string lockTa
             return;
         }
         Assert.Null(issuance);
-        Assert.NotNull(AdministratorIssuance.Find(context.Transaction));
+        if (managed)
+        {
+            Assert.NotNull(ManagedIssuance.Find(context.Transaction));
+        }
+        else
+        {
+            Assert.NotNull(AdministratorIssuance.Find(context.Transaction));
+        }
         var owner = ProtocolStorageAmbient.Current!.Scope.Owner;
         Assert.Null(owner.Transaction);
         issuance = Assert.IsType<PlatformDbContext>(owner.Database);
@@ -131,6 +143,26 @@ internal sealed class NativeAuthorityRaceProbe(bool issuanceFirst, string lockTa
         else
         {
             Assert.Null(IssuanceTransaction);
+        }
+    }
+
+    /// <summary>Binds one real API context before the shared observer records its exact provider session and commit.</summary>
+    private sealed class MutationCapture(NativeAuthorityRaceProbe owner, string table) : DbCommandInterceptor
+    {
+        /// <summary>Captures only the named governance UPDATE on the isolated armed API node.</summary>
+        public override ValueTask<InterceptionResult<int>> NonQueryExecutingAsync(DbCommand command, CommandEventData data,
+            InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        {
+            if (owner.Endpoint is not null && command.CommandText.TrimStart().StartsWith(Update, StringComparison.OrdinalIgnoreCase) &&
+                command.CommandText.Contains(table, StringComparison.Ordinal))
+            {
+                if (owner.mutation is not null)
+                {
+                    Assert.Same(owner.mutation, data.Context);
+                }
+                owner.ArmMutation(Assert.IsType<PlatformDbContext>(data.Context));
+            }
+            return ValueTask.FromResult(result);
         }
     }
 }

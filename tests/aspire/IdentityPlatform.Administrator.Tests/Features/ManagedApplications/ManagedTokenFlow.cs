@@ -100,6 +100,12 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     internal async Task<string> CodeAsync()
     {
         using var response = await test.SendAsync(Resume);
+        return await ReadCodeAsync(response);
+    }
+
+    /// <summary>Verifies an already received code response against this flow's exact original state, issuer and callback without issuing another request.</summary>
+    internal async Task<string> ReadCodeAsync(HttpResponseMessage response)
+    {
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
         BrowserFormHeaders.Referrer(response);
         Assert.True(response.Headers.Location?.GetLeftPart(UriPartial.Path) == test.CallbackUri && string.IsNullOrEmpty(response.Headers.Location.Fragment));

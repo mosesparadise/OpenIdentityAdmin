@@ -3,7 +3,6 @@ using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
-using IdentityPlatform.Migrator.Features.Database.Upgrade;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +13,7 @@ namespace IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 /// <summary>Proves additive upgrade, finite state constraints and portable optimistic concurrency against both actual relational engines.</summary>
 public sealed class ManagedSchemaTests
 {
+    private const string Postgres = "PostgreSql";
     private const string ExistingClient = "synthetic-preexisting-client";
     private const string ExistingUser = "synthetic-preexisting-user";
     private const int SecretBytes = 32;
@@ -29,18 +29,18 @@ public sealed class ManagedSchemaTests
         var secret = Convert.ToBase64String(RandomNumberGenerator.GetBytes(SecretBytes));
         await SeedAsync(fixture, secret);
         var before = await fixture.SnapshotAsync(provider);
-        Assert.Equal(0, await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token));
+        await fixture.MigrateAsync(provider == Postgres ? ManagedApplicationUpgradeWitness.PostgresMigration : ManagedApplicationUpgradeWitness.SqlMigration);
         var after = await fixture.SnapshotAsync(provider);
         ManagedApplicationUpgradeWitness.Require(provider, before, after);
         ManagedApplicationUpgradeWitness.RejectDefects(provider, before, after);
-        Assert.Equal(0, await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token));
+        await fixture.MigrateAsync(provider == Postgres ? ManagedApplicationUpgradeWitness.PostgresMigration : ManagedApplicationUpgradeWitness.SqlMigration);
         ManagedApplicationUpgradeWitness.Require(provider, before, await fixture.SnapshotAsync(provider));
         await using var scope = fixture.Scope();
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
         var application = await manager.FindByClientIdAsync(ExistingClient, fixture.Token);
         Assert.NotNull(application);
         Assert.True(await manager.ValidateClientSecretAsync(application, secret, fixture.Token));
-        Assert.Empty(await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationPolicy>().ToArrayAsync(fixture.Token));
+        Assert.False(await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationPolicy>().AnyAsync(fixture.Token));
     }
 
     /// <summary>Uses native managers for preexisting credentials and account rows; schema snapshots compare their complete stored representations without printing values.</summary>
@@ -80,7 +80,7 @@ public sealed class ManagedSchemaTests
         database.ChangeTracker.Clear();
         var policy = await database.Set<ApplicationPolicy>().SingleAsync(fixture.Token);
         Assert.True(policy.ObservedAt > policy.CredentialExpiresAt);
-        ManagedSchemaColumns.Require(provider, (await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns]);
+        ManagedSchemaColumns.Require(provider, (await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         await ManagedSchemaNegatives.RequireAsync(fixture);
     }
 

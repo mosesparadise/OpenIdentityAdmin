@@ -61,10 +61,10 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     }
 
     /// <summary>Arms one exact browser mutation before dispatch; only the actual BFF pipeline and server completion can finish it.</summary>
-    internal ApplicationRequestCompletion ObserveApplicationRequest(string path)
+    internal ApplicationRequestCompletion ObserveApplicationRequest(string path, bool observeDates = false)
     {
         Assert.Null(clientEndpoint.ApplicationCompletion);
-        var witness = new ApplicationRequestCompletion(path, () => clientEndpoint.ApplicationCompletion = null);
+        var witness = new ApplicationRequestCompletion(path, () => clientEndpoint.ApplicationCompletion = null, observeDates);
         clientEndpoint.ApplicationCompletion = witness;
         return witness;
     }
@@ -84,7 +84,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
     internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
         Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false,
-        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null, ApplicationMutationProbe? mutationProbe = null, Action<IServiceCollection>? configureApi = null, bool managed = false)
+        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null, ApplicationMutationProbe? mutationProbe = null, Action<IServiceCollection>? configureApi = null, bool managed = false, FactorClock? clock = null)
     {
         var owner = new BrowserHttpsFixture(distinctSites);
         try
@@ -94,7 +94,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
             var ordinary = NativeClientProfile.Create(owner.issuerEndpoint.Address.AbsoluteUri, owner.clientEndpoint.Address.AbsoluteUri,
                 new Uri(owner.clientEndpoint.Address, CallbackPath).AbsoluteUri, KeyId, owner.keys);
             owner.Profile = ordinary.ForBrowserSessions();
-            owner.Issuer = await AdministratorProtocolScenario.CreateAsync(fixture, provider, ordinary.Registration, owner.Profile.Issuer);
+            owner.Issuer = await AdministratorProtocolScenario.CreateAsync(fixture, provider, ordinary.Registration, owner.Profile.Issuer, clock: clock);
             Assert.True(await BrowserUpgradeFixture.UpgradeAsync(owner.Issuer, new AdministratorRegistrationInput(Guid.NewGuid(),
                 BrowserUpgradeFixture.Operator, ordinary.Registration, 1)));
             owner.database = await fixture.LeaseSessionsAsync(provider);

@@ -100,9 +100,14 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
     /// <summary>Binds exactly the client and current secret returned by the actual editor; it never creates a replacement registration.</summary>
     internal ManagedBrowserFlow Prepare(ApplicationEditorRegistration registration, string subject)
     {
-        Assert.Null(flow);
+        if (flow is not null)
+        {
+            Assert.True(flow.Completion.Task.IsCompletedSuccessfully && flow.Completion.Task.Result);
+            Assert.Equal(1, flow.Callbacks);
+            Assert.Equal(1, flow.Exchanges);
+        }
         Assert.True(registration.Callback == Callback);
-        flow = new(registration, subject);
+        flow = new(registration, subject, repeated: flow is not null);
         flow.Initialize();
         return flow;
     }
@@ -114,6 +119,7 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
         {
             return Results.BadRequest(Invalid);
         }
+        flow.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.Started;
         context.Response.Cookies.Append(CookieName, flow.BrowserSecret, CookieOptions());
         return Results.Redirect(QueryHelpers.AddQueryString(new Uri(Issuer, AuthorizePath).AbsoluteUri,
             flow.Initial.Select(pair => new KeyValuePair<string, string?>(pair.Key, pair.Value))));
@@ -136,26 +142,41 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
     private async Task<IResult> CallbackAsync(HttpContext context)
     {
         var current = flow;
+        if (current is not null)
+        {
+            current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.CallbackReceived;
+        }
         if (current is null || !Correlated(context, current) || !current.TryCallback())
         {
+            if (current is not null)
+            {
+                current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.CorrelationRejected;
+            }
             return Results.BadRequest(Invalid);
         }
+        current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.CorrelationAccepted;
         var cookie = CookieOptions();
         cookie.MaxAge = null;
         context.Response.Cookies.Delete(CookieName, cookie);
         try
         {
             using var response = await ExchangeAsync(current, context.Request.Query[CodeField].ToString(), context.RequestAborted);
+            current.Diagnostic.Response((int)response.StatusCode);
+            current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.TokenResponseReceived;
             Assert.True(response.StatusCode == HttpStatusCode.OK && response.Headers.CacheControl?.NoStore == true &&
                 response.Content.Headers.ContentType?.MediaType == JsonMediaType && !response.Headers.Contains(SetCookie));
             using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(context.RequestAborted));
             RequireResponse(body.RootElement);
+            current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.TokenShapeAccepted;
             await ManagedIdentityTokenOracle.ValidateAsync(transport, Issuer, current.Registration.ClientId, current.Nonce, current.Subject, body.RootElement);
+            current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.IdentityValidated;
             current.Complete(body.RootElement);
+            current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.Completed;
             return Results.Redirect(CompletePath);
         }
-        catch (Exception)
+        catch (Exception error)
         {
+            current.Diagnostic.Failed(error);
             return Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: Unavailable);
         }
         finally { current.Completion.TrySetResult(false); }
@@ -165,6 +186,7 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
     private Task<HttpResponseMessage> ExchangeAsync(ManagedBrowserFlow current, string code, CancellationToken token)
     {
         current.Exchange();
+        current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.ExchangeStarted;
         return SendAsync(current, code, token);
     }
 

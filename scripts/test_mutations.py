@@ -698,6 +698,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(8, len(manifest(ROOT, "browser-session")))
         self.assertEqual(8, len(manifest(ROOT, "applications")))
         self.assertEqual(5, len(manifest(ROOT, "managed-applications")))
+        self.assertEqual(4, len(manifest(ROOT, "application-lifecycle")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 
@@ -705,7 +706,8 @@ class MutationEvidenceTests(unittest.TestCase):
         """New write/issuer controls cannot disappear or mutate adjacent unreviewed source."""
         reader = Path.read_text
         for suite, filename in (('applications', 'application-mutations.json'),
-                                ('managed-applications', 'managed-application-mutations.json')):
+                                ('managed-applications', 'managed-application-mutations.json'),
+                                ('application-lifecycle', 'application-lifecycle-mutations.json')):
             path = ROOT / 'eng' / filename
             reviewed = json.loads(reader(path))
             for defect in ('missing', 'duplicate', 'outside', 'anchor'):

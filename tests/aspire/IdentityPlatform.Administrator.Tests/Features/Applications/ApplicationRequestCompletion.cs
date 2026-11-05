@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Http;
 namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 
 /// <summary>Separately witnesses one real BFF pipeline return and its server response completion without retaining request content.</summary>
-internal sealed class ApplicationRequestCompletion(string path, Action detach) : IDisposable
+internal sealed class ApplicationRequestCompletion(string path, Action detach, bool observeDates = false) : IDisposable
 {
     private const int DuplicateCount = 2;
+    private const int Success = 200;
     private readonly object gate = new();
     private readonly TaskCompletionSource pipeline = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource response = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -13,6 +14,7 @@ internal sealed class ApplicationRequestCompletion(string path, Action detach) :
     private bool invalid;
     private bool sealedObservation;
     private Attempt? original;
+    private bool ObserveDates => observeDates;
     internal Task Completion => Task.WhenAll(pipeline.Task, response.Task);
     internal bool PipelineCompleted => pipeline.Task.IsCompletedSuccessfully;
     internal bool ResponseCompleted => response.Task.IsCompletedSuccessfully;
@@ -84,9 +86,22 @@ internal sealed class ApplicationRequestCompletion(string path, Action detach) :
     /// <summary>Detaches only this observation; it cannot finish either server operation.</summary>
     public void Dispose() => detach();
 
+    /// <summary>Credits final response dates only after the exact attempt was sealed with both independent completion signals.</summary>
+    internal bool HasLaterExpiries(DateTimeOffset deadline)
+    {
+        lock (gate)
+        {
+            return sealedObservation && !invalid && requests == 1 && PipelineCompleted && ResponseCompleted &&
+            Status == Success && ResponseStarted && !RequestAborted && original?.Dates?.LaterThan(deadline) == true;
+        }
+    }
+
     /// <summary>Contains no HTTP context or payload and cannot transfer completion between attempts.</summary>
     internal sealed class Attempt(ApplicationRequestCompletion owner)
     {
+        internal ApplicationResponseDates? Dates { get; } = owner.ObserveDates ? new() : null;
+        /// <summary>Installs the optional date witness only on this exact admitted request; ordinary completion observations remain unchanged.</summary>
+        internal IDisposable? ObserveBody(HttpContext http) => Dates is null ? null : new ApplicationResponseWrite(http, Dates);
         /// <summary>Called only by the actual outer pipeline finally.</summary>
         internal void PipelineEnded(int status, bool started, bool aborted) => owner.End(this, responseEnded: false, status, started, aborted);
         /// <summary>Called only by the server's registered response-completion callback.</summary>

@@ -103,6 +103,12 @@
           "editable": {
             "type": "boolean"
           },
+          "enabled": {
+            "type": [
+              "null",
+              "boolean"
+            ]
+          },
           "expiresAt": {
             "format": "date-time",
             "type": "string"
@@ -134,7 +140,8 @@
           "profile",
           "editable",
           "credential",
-          "expiresAt"
+          "expiresAt",
+          "enabled"
         ],
         "type": "object"
       },
@@ -157,6 +164,30 @@
         "required": [
           "displayName",
           "redirectUris"
+        ],
+        "type": "object"
+      },
+      "ApplicationLifecycle": {
+        "properties": {
+          "confirm": {
+            "enum": [
+              true
+            ],
+            "type": "boolean"
+          },
+          "reason": {
+            "enum": [
+              "maintenance",
+              "security",
+              "configuration"
+            ],
+            "maxLength": 16,
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason",
+          "confirm"
         ],
         "type": "object"
       },
@@ -1120,6 +1151,490 @@
         ],
         "x-downstream-api-version": 1,
         "x-required-permission": "applications.write"
+      }
+    },
+    "/bff/api/v1/applications/{id}/disable": {
+      "post": {
+        "operationId": "DisableBrowserApplication",
+        "parameters": [
+          {
+            "description": "Exact native application identity; the BFF reserves antiforgery for its token endpoint.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "maxLength": 400,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "description": "One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412.",
+            "in": "header",
+            "name": "If-Match",
+            "required": true,
+            "schema": {
+              "maxLength": 86,
+              "minLength": 68,
+              "type": "string"
+            }
+          },
+          {
+            "description": "Native token bound to this browser generation and application mutation purpose.",
+            "in": "header",
+            "name": "X-CSRF-TOKEN",
+            "required": true,
+            "schema": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationLifecycle"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDetails"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "description": "Exact strong aggregate version; absent for protected or unmanaged registrations.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Forbidden",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Conflict",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Precondition Failed",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "428": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Precondition Required",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BrowserSession": []
+          }
+        ],
+        "summary": "Disable new sign-ins and issuance without revoking existing grants",
+        "tags": [
+          "IdentityPlatform.Api.Contracts.Tests"
+        ],
+        "x-downstream-api-version": 1,
+        "x-persisted-mfa-max-age-exclusive-seconds": 300,
+        "x-required-permission": "applications.disable"
+      }
+    },
+    "/bff/api/v1/applications/{id}/enable": {
+      "post": {
+        "operationId": "EnableBrowserApplication",
+        "parameters": [
+          {
+            "description": "Exact native application identity; the BFF reserves antiforgery for its token endpoint.",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "maxLength": 400,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          {
+            "description": "One canonical strong resource-bound ETag from the latest read or mutation; missing is 428, malformed or stale is 412.",
+            "in": "header",
+            "name": "If-Match",
+            "required": true,
+            "schema": {
+              "maxLength": 86,
+              "minLength": 68,
+              "type": "string"
+            }
+          },
+          {
+            "description": "Native token bound to this browser generation and application mutation purpose.",
+            "in": "header",
+            "name": "X-CSRF-TOKEN",
+            "required": true,
+            "schema": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationLifecycle"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationDetails"
+                }
+              }
+            },
+            "description": "OK",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "description": "Exact strong aggregate version; absent for protected or unmanaged registrations.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Bad Request",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Unauthorized",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Forbidden",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Not Found",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Conflict",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Precondition Failed",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "428": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Precondition Required",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            },
+            "description": "Service Unavailable",
+            "headers": {
+              "Cache-Control": {
+                "description": "Application data and generated credentials must not be cached.",
+                "schema": {
+                  "const": "no-store",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BrowserSession": []
+          }
+        ],
+        "summary": "Re-enable fresh sign-ins without restoring old attempts or extending credentials",
+        "tags": [
+          "IdentityPlatform.Api.Contracts.Tests"
+        ],
+        "x-downstream-api-version": 1,
+        "x-persisted-mfa-max-age-exclusive-seconds": 300,
+        "x-required-permission": "applications.disable"
       }
     },
     "/bff/api/v1/applications/{id}/secret-replacements": {

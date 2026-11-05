@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 
 /// <summary>Fails actual child cleanup only after a confirmed native commit, independently proving output withholding without a production seam.</summary>
-internal sealed class ApplicationMutationCleanupFault : DbTransactionInterceptor
+internal sealed class ApplicationMutationCleanupFault(bool acknowledgement = false) : DbTransactionInterceptor
 {
     private const string Message = "Synthetic application child cleanup failure.";
     internal Exception Failure { get; } = new InvalidOperationException(Message);
@@ -46,6 +46,10 @@ internal sealed class ApplicationMutationCleanupFault : DbTransactionInterceptor
             Commits++;
             var database = eventData.Context;
             ProtocolStorageAmbient.Current!.Scope.Services.GetRequiredService<NativeClientCreationCleanup>().Complete = () => AfterDisposal(database);
+            if (acknowledgement)
+            {
+                throw Failure;
+            }
         }
         return Task.CompletedTask;
     }
@@ -56,7 +60,10 @@ internal sealed class ApplicationMutationCleanupFault : DbTransactionInterceptor
         Assert.IsType<ObjectDisposedException>(Record.Exception(() => _ = database.Model));
         Assert.Equal(1, Commits);
         Disposals++;
-        throw Failure;
+        if (!acknowledgement)
+        {
+            throw Failure;
+        }
     }
 
     /// <summary>Rejects unrelated exceptions rather than accepting any failure as evidence for the injected cleanup fault.</summary>

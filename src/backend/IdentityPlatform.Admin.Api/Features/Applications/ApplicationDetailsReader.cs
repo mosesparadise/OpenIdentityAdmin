@@ -55,7 +55,7 @@ internal static class ApplicationDetailsReader
             throw new InvalidDataException();
         }
         return (new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
-            policy.Profile, true, new(DateTimeOffset.FromUnixTimeSeconds(policy.CredentialIssuedAt), DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt)), expiry),
+            policy.Profile, true, new(DateTimeOffset.FromUnixTimeSeconds(policy.CredentialIssuedAt), DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt)), expiry, policy.Enabled),
             ApplicationVersion.Create(row.Id, policy.Revision));
     }
 

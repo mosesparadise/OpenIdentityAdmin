@@ -38,7 +38,7 @@ internal sealed class JourneyScenario : IAsyncDisposable
 
     /// <summary>Initializes the real protected bootstrap operation, then registers isolated journey dependencies.</summary>
     internal static async Task<JourneyScenario> CreateAsync(BootstrapFixture fixture, string provider,
-        Action<IServiceCollection>? configure = null, Uri? issuer = null)
+        Action<IServiceCollection>? configure = null, Uri? issuer = null, FactorClock? clock = null)
     {
         SetupDiagnostics.Write(SetupStage.JourneyLease);
         var lease = await fixture.LeaseAsync(provider);
@@ -47,7 +47,7 @@ internal sealed class JourneyScenario : IAsyncDisposable
         {
             material.Settings[IssuerSetting] = issuer.AbsoluteUri;
         }
-        var clock = new FactorClock(DateTimeOffset.UtcNow);
+        clock ??= new FactorClock(DateTimeOffset.UtcNow);
         FactorServices? services = null;
         try
         {

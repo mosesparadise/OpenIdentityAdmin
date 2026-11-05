@@ -20,6 +20,8 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
 {
     internal const string Collection = "/bff/api/v1/applications";
     internal const string ApiCollection = "/api/v1/applications";
+    private const string EnableSuffix = "/enable";
+    private const string DisableSuffix = "/disable";
     private const string TokenPath = Collection + "/antiforgery";
     private const string LoginPath = "/bff/login";
     private const string FactorCode = "Code";
@@ -41,7 +43,8 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     internal string Access { private get; set; } = string.Empty;
 
     /// <summary>Owns actual three-host TLS composition and runs the real ceremony before obtaining any protected API credential.</summary>
-    internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, bool managed = false, Action<IServiceCollection>? configureIssuer = null, bool workspace = false)
+    internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, bool managed = false,
+        Action<IServiceCollection>? configureIssuer = null, bool workspace = false, Action<IServiceCollection>? configureApi = null)
     {
         var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: workspace, applications: true, managed: managed, configureIssuer: configureIssuer, configureApi: services =>
         {
@@ -49,6 +52,7 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
             {
                 services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(fault));
             }
+            configureApi?.Invoke(services);
         });
         var cookies = new CookieContainer();
         var browser = Client(environment.Profile.ClientUri, cookies);
@@ -126,12 +130,12 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
 
     /// <summary>Sends the finite mapped edit or replacement with actual bearer or native browser proof; explicit overrides exercise admission failures.</summary>
     internal async Task<HttpResponseMessage> UpdateAsync(string id, string body, string? version, bool replacement = false,
-        bool direct = false, bool authenticated = true, string? origin = null, string? csrf = null)
+        bool direct = false, bool authenticated = true, string? origin = null, string? csrf = null, bool? enabled = null)
     {
         const string separator = "/";
         const string suffix = "/secret-replacements";
-        using var request = new HttpRequestMessage(replacement ? HttpMethod.Post : HttpMethod.Put,
-            (direct ? ApiCollection : Collection) + separator + Uri.EscapeDataString(id) + (replacement ? suffix : string.Empty))
+        using var request = new HttpRequestMessage(replacement || enabled is not null ? HttpMethod.Post : HttpMethod.Put,
+            (direct ? ApiCollection : Collection) + separator + Uri.EscapeDataString(id) + (enabled is { } state ? state ? EnableSuffix : DisableSuffix : replacement ? suffix : string.Empty))
         {
             Content = new StringContent(body, Encoding.UTF8, Media)
         };

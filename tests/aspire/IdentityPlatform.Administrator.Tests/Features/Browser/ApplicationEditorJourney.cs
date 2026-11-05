@@ -9,10 +9,11 @@ internal static class ApplicationEditorJourney
     private const string Applications = "/applications";
     private const string CollectionPath = "/bff/api/v1/applications";
     private const string Post = "POST";
-    private const string ApplicationField = "application";
-    private const string IdField = "id";
-    private const string SecretField = "clientSecret";
+    private const string Put = "PUT";
+    private const string Precondition = "if-match";
+    private const string ItemSeparator = "/";
     private const int CreatedStatus = 201;
+    private const int UpdatedStatus = 200;
     private const string Client = "browser-managed-editor";
     private const string Display = "Browser managed application";
     private const string Updated = "Updated browser application";
@@ -53,32 +54,31 @@ internal static class ApplicationEditorJourney
     private const string ConfirmationLabel = "Confirm replacement";
     private const string SpaceKey = "Space";
     /// <summary>Uses two independent browser contexts sharing the authenticated cookie to produce a real stale version, then replaces and synchronously clears output.</summary>
-    internal static async Task<ApplicationEditorRegistration> RunAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null, string? callback = null)
+    internal static async Task<ApplicationEditorRegistration> RunAsync(IPage page, Uri origin, Uri issuer, DateTimeOffset now, Func<IPage, Task>? presentation = null, string? callback = null)
+    {
+        using var submissions = new ApplicationSubmission(page, Post, new Uri(origin, CollectionPath).AbsoluteUri);
+        var result = await RunCoreAsync(page, origin, issuer, now, presentation, callback);
+        submissions.RequireOnce();
+        return result;
+    }
+
+    /// <summary>Retains actual creation, conflict and replacement UI while proving the original displayed credential before it is superseded.</summary>
+    private static async Task<ApplicationEditorRegistration> RunCoreAsync(IPage page, Uri origin, Uri issuer, DateTimeOffset now, Func<IPage, Task>? presentation, string? callback)
     {
         var created = await CreateAsync(page, origin, now, presentation);
         var output = created.Secret;
+        string id;
         await Button(page, Hide).ClickAsync();
         await HeadingAsync(page, DetailsTitle);
         await BrowserSecretOracle.StorageAsync(page, [output]);
-        await using var concurrent = await page.Context.Browser!.NewContextAsync();
-        await concurrent.AddCookiesAsync((await page.Context.CookiesAsync()).Select(cookie => new Cookie
-        {
-            Name = cookie.Name,
-            Value = cookie.Value,
-            Domain = cookie.Domain,
-            Path = cookie.Path,
-            Expires = cookie.Expires,
-            HttpOnly = cookie.HttpOnly,
-            Secure = cookie.Secure,
-            SameSite = cookie.SameSite
-        }));
+        await using var concurrent = await ConcurrentAsync(page);
         var other = await concurrent.NewPageAsync();
         try
         {
             await OpenAsync(other, origin);
             await Button(other, EditAction).ClickAsync();
             await HeadingAsync(other, EditAction);
-            await EditAsync(page, presentation, callback ?? UpdatedCallback);
+            id = await EditAsync(page, origin, created.Version, presentation, callback ?? UpdatedCallback);
             await other.Locator(DisplayField).FillAsync(StaleDraft);
             await Button(other, SaveAction).ClickAsync();
             await HeadingAsync(other, ProblemTitle);
@@ -95,12 +95,35 @@ internal static class ApplicationEditorJourney
             await BrowserSecretOracle.StorageAsync(other, [output]);
         }
         finally { await other.CloseAsync(); }
+        await ApplicationCredentialEvidence.RequireAsync(issuer, Client, output, callback ?? UpdatedCallback);
         var replacement = await ReplaceAsync(page, now, output, presentation);
-        return new(created.Id, Client, callback ?? UpdatedCallback, replacement, output);
+        return new(id, Client, callback ?? UpdatedCallback, replacement, output);
+    }
+
+    /// <summary>Copies only the existing authenticated cookie jar to an independent context, preserving visibility-driven clearing in the original tab.</summary>
+    internal static async Task<IBrowserContext> ConcurrentAsync(IPage page)
+    {
+        var concurrent = await page.Context.Browser!.NewContextAsync();
+        try
+        {
+            await concurrent.AddCookiesAsync((await page.Context.CookiesAsync()).Select(cookie => new Cookie
+            {
+                Name = cookie.Name,
+                Value = cookie.Value,
+                Domain = cookie.Domain,
+                Path = cookie.Path,
+                Expires = cookie.Expires,
+                HttpOnly = cookie.HttpOnly,
+                Secure = cookie.Secure,
+                SameSite = cookie.SameSite
+            }));
+            return concurrent;
+        }
+        catch { await concurrent.DisposeAsync(); throw; }
     }
 
     /// <summary>Requires local linked validation and a genuinely generated one-time secret without recording its value in diagnostics.</summary>
-    private static async Task<ApplicationEditorRegistration> CreateAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null)
+    private static async Task<(string Secret, string Version)> CreateAsync(IPage page, Uri origin, DateTimeOffset now, Func<IPage, Task>? presentation = null)
     {
         await page.GotoAsync(new Uri(origin, Applications).AbsoluteUri);
         await Button(page, CreateAction).ClickAsync();
@@ -117,12 +140,11 @@ internal static class ApplicationEditorJourney
         var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(EnterKey),
             item => item.Request.Method == Post && item.Url == new Uri(origin, CollectionPath).AbsoluteUri);
         Assert.Equal(CreatedStatus, response.Status);
-        using var body = await ApplicationEditorResponse.ReadAsync(page, response, new Uri(origin, Applications));
+        var version = await ApplicationEditorBinding.HeadersAsync(response);
         await HeadingAsync(page, CreatedTitle);
         var output = await page.Locator(Secret).InputValueAsync();
-        Assert.True(output.Length == SecretLength);
-        Assert.True(body.RootElement.GetProperty(SecretField).GetString() == output);
-        return new(body.RootElement.GetProperty(ApplicationField).GetProperty(IdField).GetString()!, Client, Callback, output, output);
+        ApplicationEditorBinding.Secret(output);
+        return (output, version);
     }
 
     /// <summary>Opens the exact newly registered client through its actual protected list projection.</summary>
@@ -134,7 +156,7 @@ internal static class ApplicationEditorJourney
     }
 
     /// <summary>Edits only mutable fields using the keyboard and verifies actual saved safe metadata.</summary>
-    private static async Task EditAsync(IPage page, Func<IPage, Task>? presentation, string callback)
+    private static async Task<string> EditAsync(IPage page, Uri origin, string createdVersion, Func<IPage, Task>? presentation, string callback)
     {
         await Button(page, EditAction).ClickAsync();
         await HeadingAsync(page, EditAction);
@@ -143,12 +165,17 @@ internal static class ApplicationEditorJourney
         await page.Locator(DisplayField).FillAsync(Updated);
         await page.Locator(CallbacksField).FillAsync(callback);
         await Button(page, SaveAction).FocusAsync();
-        await page.Keyboard.PressAsync(EnterKey);
+        var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(EnterKey),
+            item => item.Request.Method == Put && item.Url.StartsWith(new Uri(origin, CollectionPath).AbsoluteUri + ItemSeparator, StringComparison.Ordinal));
+        Assert.Equal(UpdatedStatus, response.Status);
+        var id = ApplicationEditorBinding.CreatedIdentity(origin, response.Url, createdVersion,
+            await response.Request.HeaderValueAsync(Precondition), await ApplicationEditorBinding.HeadersAsync(response));
         await HeadingAsync(page, UpdatedTitle);
         Assert.True(await page.GetByText(callback, new()
         {
             Exact = true
         }).IsVisibleAsync());
+        return id;
     }
 
     /// <summary>Requires unchecked confirmation, independent output and synchronous pagehide erasure, then verifies no browser persistence.</summary>

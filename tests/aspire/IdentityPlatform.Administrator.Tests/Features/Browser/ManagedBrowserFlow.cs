@@ -3,7 +3,7 @@ using System.Text.Json;
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
 /// <summary>Owns one test relying-party ceremony without serializing private proof or credential values in diagnostics.</summary>
-internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registration, string subject)
+internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registration, string subject, bool repeated = false)
 {
     private const string MissingExchange = "The managed browser exchange did not complete.";
     private const string StateField = "state";
@@ -17,6 +17,7 @@ internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registrat
     private JsonElement? body;
     internal ApplicationEditorRegistration Registration => registration;
     internal string Subject => subject;
+    internal ManagedBrowserDiagnostic Diagnostic { get; } = new() { Repeated = repeated };
     internal string Verifier { get; } = ManagedAuthorizationRequest.Random();
     internal string BrowserSecret { get; } = ManagedAuthorizationRequest.Random();
     internal Dictionary<string, string> Initial { get; private set; } = [];

@@ -34,9 +34,19 @@ internal static class ManagedBrowserJourney
     {
         var authority = await AuthorityAsync(page);
         var flow = relyingParty.Prepare(registration, subject);
-        await page.GotoAsync(relyingParty.Start.AbsoluteUri);
-        await CredentialsAsync(page, relyingParty.Issuer, username, password, factor, presentation);
-        await DecisionAsync(page, flow, relyingParty, approve, presentation);
+        try
+        {
+            await page.GotoAsync(relyingParty.Start.AbsoluteUri);
+            await CredentialsAsync(page, relyingParty.Issuer, username, password, factor, presentation);
+            await DecisionAsync(page, flow, relyingParty, approve, presentation);
+        }
+        finally
+        {
+            ApplicationEditorResponse.Report(() => flow.Diagnostic.Describe(page.IsClosed ? null : page.Url,
+                relyingParty.Issuer, relyingParty.Origin, flow.Callbacks, flow.Exchanges,
+                flow.Completion.Task.IsCompletedSuccessfully ? flow.Completion.Task.Result : null),
+                value => TestContext.Current.TestOutputHelper?.WriteLine(value));
+        }
         var currentAuthority = await AuthorityAsync(page);
         Assert.True(authority.SequenceEqual(currentAuthority));
         await BrowserSecretOracle.StorageAsync(page, flow.Secrets);

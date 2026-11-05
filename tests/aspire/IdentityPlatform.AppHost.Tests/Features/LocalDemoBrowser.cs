@@ -62,10 +62,15 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         await using var relyingParty = new ManagedBrowserRelyingParty();
         await relyingParty.StartAsync(new Uri(Issuer));
         phase(EditorPhase);
-        var registration = await ApplicationEditorJourney.RunAsync(page, new Uri(Client), DateTimeOffset.UtcNow, callback: relyingParty.Callback);
+        var registration = await ApplicationEditorJourney.RunAsync(page, new Uri(Client), new Uri(Issuer), DateTimeOffset.UtcNow, callback: relyingParty.Callback);
         phase(SubjectPhase);
         var subject = await page.EvaluateAsync<string>(ReadSubject);
         phase(ManagedPhase);
+        await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
+            ManagedFactorAsync, subject);
+        await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: false);
+        await ApplicationStateJourney.RequireDeniedAsync(page, new Uri(Issuer), registration);
+        await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: true);
         await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
             ManagedFactorAsync, subject);
     }
@@ -129,6 +134,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     /// <summary>Every explicit login must render a new password and MFA form, including when an issuer cookie already exists.</summary>
     internal async Task SignInAsync(LocalDemoRuntime runtime)
     {
+        await FactorOracle.PrepareUnusedCodeAsync(seed!, usedCodes, TestContext.Current.CancellationToken);
         var evidence = new LocalDemoSignInEvidence();
         page.Response += evidence.Observe;
         try

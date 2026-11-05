@@ -726,6 +726,82 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "LifecycleSchemaTests",
+        "methodName": "Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "LifecycleSchemaTests",
+        "methodName": "Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "LifecycleSchemaTests",
+        "methodName": "Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "LifecycleSchemaTests",
+        "methodName": "Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -747,7 +823,9 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains(provider: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -768,6 +846,8 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_ManagedSchema_When_PhaseBoundsAndBindingsAreExercised_Then_OnlyValidPortableRowsPersist(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_PopulatedImmediatePriorSchema_When_ManagedTablesAreAdded_Then_AllOldRowsAndHistoryRemainWithoutAutomaticAdoption(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoInteractionWriters_When_RevisionOrObservationChanges_Then_StaleWritesFailAndDeadlineRemains(provider: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedSchemaTests.Given_TwoTrackedWriters_When_AggregateOrWatermarkChanges_Then_StalePersistenceFailsWithoutRenewingVersion(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"SqlServer\")"
   ]
 }

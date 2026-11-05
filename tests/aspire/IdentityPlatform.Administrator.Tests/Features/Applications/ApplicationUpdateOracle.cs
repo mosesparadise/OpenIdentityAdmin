@@ -46,6 +46,8 @@ internal static class ApplicationUpdateOracle
         Assert.NotEqual(before.Stamp, after.Stamp);
         Assert.Equal(before.Policy.ApplicationId, after.Policy.ApplicationId);
         Assert.Equal(before.Policy.Profile, after.Policy.Profile);
+        Assert.Equal(before.Policy.Enabled, after.Policy.Enabled);
+        Assert.Equal(ApplicationUpdateSnapshot.Hash(before.LifecycleAudits), ApplicationUpdateSnapshot.Hash(after.LifecycleAudits));
         Assert.Equal(now.ToUnixTimeSeconds(), after.Policy.ObservedAt);
         if (command.Kind == ApplicationMutationKind.Edit)
         {

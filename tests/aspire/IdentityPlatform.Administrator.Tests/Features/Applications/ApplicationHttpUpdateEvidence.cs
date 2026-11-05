@@ -26,7 +26,7 @@ internal static class ApplicationHttpUpdateEvidence
     private const string Replaced = "ApplicationSecretReplaced";
     private const string Application = "application";
     private const string Credential = "credential";
-    private static readonly string[] Fields = ["clientId", "credential", "displayName", "editable", "expiresAt", "id", "profile", "redirectUris"];
+    private static readonly string[] Fields = ["clientId", "credential", "displayName", "editable", "enabled", "expiresAt", "id", "profile", "redirectUris"];
     private static readonly string[] CredentialFields = ["expiresAt", "issuedAt"];
     private const string NoSniff = "nosniff";
     private const string NoSniffHeader = "X-Content-Type-Options";
@@ -113,6 +113,7 @@ internal static class ApplicationHttpUpdateEvidence
         Assert.Equal(state.Redirects.Order(StringComparer.Ordinal), details.RedirectUris.Order(StringComparer.Ordinal));
         Assert.Equal(state.Policy.Profile, details.Profile);
         Assert.True(details.Editable);
+        Assert.Equal(state.Policy.Enabled, details.Enabled);
         Assert.Equal(state.Policy.CredentialIssuedAt, details.Credential!.IssuedAt.ToUnixTimeSeconds());
         Assert.Equal(state.Policy.CredentialExpiresAt, details.Credential.ExpiresAt.ToUnixTimeSeconds());
         Assert.True(details.ExpiresAt > test.Now);

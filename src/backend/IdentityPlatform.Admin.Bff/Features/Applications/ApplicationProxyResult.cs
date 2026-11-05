@@ -16,7 +16,7 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
     internal static ApplicationProxyResult Parse(byte[] bytes, string tag, ApplicationMutationRequest mutation, int status)
     {
         ApplicationCredentialOutput? credential = null;
-        var details = mutation.Action == ApplicationProxyAction.Edit ? ApplicationJson.Parse<ApplicationDetails>(bytes) :
+        var details = mutation.Action is ApplicationProxyAction.Edit or ApplicationProxyAction.Disable or ApplicationProxyAction.Enable ? ApplicationJson.Parse<ApplicationDetails>(bytes) :
             (credential = ApplicationJson.Parse<ApplicationCredentialOutput>(bytes)).Application;
         var revision = long.Parse(tag.AsSpan(RevisionStart, tag.Length - RevisionStart - 1), System.Globalization.CultureInfo.InvariantCulture);
         if (!Valid(details) || !ApplicationVersion.Matches(tag, details.Id, revision) || !mutation.Matches(details, revision) ||
@@ -48,7 +48,7 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
             }
         }
         else if (!ApplicationProjection.IsValid(new(details.Id, details.ClientId, details.DisplayName, null)) ||
-            details.RedirectUris is not { Count: 0 } || details.Profile is not null || details.Credential is not null || tag is not null)
+            details.RedirectUris is not { Count: 0 } || details.Profile is not null || details.Credential is not null || details.Enabled is not null || tag is not null)
         {
             throw new InvalidDataException();
         }
@@ -58,7 +58,7 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
     /// <summary>Requires the selected managed profile and exact finite lifecycle/presentation fields, excluding native protected state.</summary>
     private static bool Valid(ApplicationDetails details) => ApplicationEditorRules.IsText(details.Id, ApplicationProjection.IdentifierLength) &&
         ApplicationEditorRules.IsClientId(details.ClientId) && ApplicationEditorRules.Validate(new ApplicationEdit(details.DisplayName!, details.RedirectUris)).Count == 0 &&
-        details.Profile == ApplicationEditorRules.Profile && details.Editable && details.ExpiresAt.Offset == TimeSpan.Zero &&
+        details.Profile == ApplicationEditorRules.Profile && details.Enabled is not null && details.Editable && details.ExpiresAt.Offset == TimeSpan.Zero &&
         details.Credential is { } dates && dates.IssuedAt.Offset == TimeSpan.Zero && dates.ExpiresAt.Offset == TimeSpan.Zero &&
         dates.IssuedAt.Ticks % TimeSpan.TicksPerSecond == 0 && dates.ExpiresAt.Ticks % TimeSpan.TicksPerSecond == 0 && dates.ExpiresAt > dates.IssuedAt;
 

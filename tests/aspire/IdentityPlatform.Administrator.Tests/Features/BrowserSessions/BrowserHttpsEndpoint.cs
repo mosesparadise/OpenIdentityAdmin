@@ -91,6 +91,7 @@ internal sealed class BrowserHttpsEndpoint : IDisposable
         var applicationAttempt = ApplicationCompletion?.Enter(http);
         try
         {
+            using var observedBody = applicationAttempt?.ObserveBody(http);
             if (http.Request.Path == ParPath)
             {
                 Interlocked.Increment(ref par);

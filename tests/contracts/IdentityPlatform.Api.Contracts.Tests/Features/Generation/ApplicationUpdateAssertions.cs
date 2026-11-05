@@ -5,8 +5,20 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 /// <summary>Checks endpoint-generated update schemas and independent per-action authority/precondition expectations on both HTTP surfaces.</summary>
 internal static class ApplicationUpdateAssertions
 {
+    private const string Components = "components";
+    private const string Schemas = "schemas";
+    private const string Lifecycle = "ApplicationLifecycle";
+    private const string Properties = "properties";
+    private const string Reason = "reason";
+    private const string Confirm = "confirm";
+    private const string Enumeration = "enum";
+    private static readonly string[] Reasons = ["maintenance", "security", "configuration"];
     private const string Api = "/api/v1/applications/{id}";
     private const string Browser = "/bff/api/v1/applications/{id}";
+    private const string Disable = "/disable";
+    private const string Enable = "/enable";
+    private const string LifecyclePermission = "applications.disable";
+    private const string LifecycleSchema = "#/components/schemas/ApplicationLifecycle";
     private const string Replacement = "/secret-replacements";
     private const string Paths = "paths";
     private const string Permission = "x-required-permission";
@@ -59,6 +71,10 @@ internal static class ApplicationUpdateAssertions
     /// <summary>Requires real PUT and explicit replacement operations without allowing one permission or output schema to substitute for the other.</summary>
     internal static void Require(JsonNode document, bool browser)
     {
+        var input = document[Components]![Schemas]![Lifecycle]!;
+        Assert.Equal(Reasons, input[Properties]![Reason]![Enumeration]!.AsArray().Select(value => value!.GetValue<string>()));
+        Assert.True(Assert.Single(input[Properties]![Confirm]![Enumeration]!.AsArray())!.GetValue<bool>());
+        Assert.Equal(new[] { Confirm, Reason }, input[Required]!.AsArray().Select(value => value!.GetValue<string>()).Order());
         var path = browser ? Browser : Api;
         var edit = document[Paths]![path]![Put]!;
         var replace = document[Paths]![path + Replacement]![Post]!;
@@ -70,6 +86,13 @@ internal static class ApplicationUpdateAssertions
         Assert.Equal(MfaSeconds, replace[FreshMfa]!.GetValue<int>());
         RequireOperation(edit, browser, EditSchema, DetailsSchema);
         RequireOperation(replace, browser, ReplacementSchema, CredentialSchema);
+        foreach (var suffix in new[] { Disable, Enable })
+        {
+            var lifecycle = document[Paths]![(browser ? Browser : Api) + suffix]![Post]!;
+            Assert.Equal(LifecyclePermission, lifecycle[Permission]!.GetValue<string>());
+            Assert.Equal(MfaSeconds, lifecycle[FreshMfa]!.GetValue<int>());
+            RequireOperation(lifecycle, browser, LifecycleSchema, DetailsSchema);
+        }
     }
 
     /// <summary>Checks bounded mandatory identity/version/CSRF inputs, noncacheable complete outcomes and required committed response ETag.</summary>

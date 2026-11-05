@@ -9,6 +9,9 @@ internal static class ManagedSchemaColumns
     private const string Policy = "ApplicationPolicy";
     private const string Interaction = "ManagedLoginInteraction";
     private const string Schema = "platform";
+    private const string PostgresBoolean = "boolean";
+    private const string SqlBoolean = "bit";
+    private const string EnabledColumn = "Enabled";
     private const string Postgres = "PostgreSql";
     private const string Nullable = "YES";
     private const string Required = "NO";
@@ -28,13 +31,17 @@ internal static class ManagedSchemaColumns
     ];
 
     /// <summary>Requires exact independently enumerated column sets and provider-native facets, rejecting missing or unreviewed new fields.</summary>
-    internal static void Require(string provider, string[] rows)
+    internal static void Require(string provider, string[] rows, bool lifecycle = false)
     {
         foreach (var table in new[] { Policy, Interaction })
         {
             var actual = rows.Select(row => JsonSerializer.Deserialize<string?[]>(row)!)
                 .Where(values => values[0] == Schema && values[1] == table).ToDictionary(values => values[NameIndex]!, StringComparer.Ordinal);
             var expected = Expected(provider, table);
+            if (lifecycle && table == Policy)
+            {
+                expected.Add(EnabledColumn, (provider == Postgres ? PostgresBoolean : SqlBoolean, false, null));
+            }
             Assert.Equal(expected.Keys.Order(StringComparer.Ordinal), actual.Keys.Order(StringComparer.Ordinal));
             foreach (var (name, facets) in expected)
             {

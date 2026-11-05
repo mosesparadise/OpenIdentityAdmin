@@ -105,12 +105,31 @@ internal static class FactorOracle
     internal static string UnusedCode(string seed, IReadOnlySet<string> accepted, long now)
     {
         const string NoUnusedCode = "The native window contained no distinct independent code.";
+        var selected = AvailableCode(seed, accepted, now);
+        Assert.True(selected is not null, NoUnusedCode);
+        return selected!;
+    }
+
+    /// <summary>Reports exhausted native proof material without submitting authentication or reusing a previously accepted numeric value.</summary>
+    internal static string? AvailableCode(string seed, IReadOnlySet<string> accepted, long now)
+    {
         const int NativeWindowSteps = 2;
         int[] offsets = [StepSeconds, -StepSeconds, StepSeconds * NativeWindowSteps, -StepSeconds * NativeWindowSteps, 0];
         var codes = offsets.Select(offset => Code(seed, now + offset));
-        var selected = codes.FirstOrDefault(code => !accepted.Contains(code));
-        Assert.True(selected is not null, NoUnusedCode);
-        return selected!;
+        return codes.FirstOrDefault(code => !accepted.Contains(code));
+    }
+
+    /// <summary>Prepares a new ceremony before its protocol deadline starts, allowing at most one real counter rollover when proof is exhausted.</summary>
+    internal static async Task PrepareUnusedCodeAsync(string seed, IReadOnlySet<string> accepted, CancellationToken token)
+    {
+        const int BoundaryMarginSeconds = 1;
+        var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        if (AvailableCode(seed, accepted, now) is not null)
+        {
+            return;
+        }
+        await Task.Delay(TimeSpan.FromSeconds(StepSeconds - now % StepSeconds + BoundaryMarginSeconds), token);
+        _ = UnusedCode(seed, accepted);
     }
 
     /// <summary>Builds the documented wire representation independently of the production incremental hash implementation.</summary>

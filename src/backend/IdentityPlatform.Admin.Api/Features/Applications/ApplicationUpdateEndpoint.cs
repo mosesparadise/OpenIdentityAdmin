@@ -14,9 +14,10 @@ internal static class ApplicationUpdateEndpoint
     private const string Replacement = "/secret-replacements";
 
     /// <summary>Retains the original deadline through current native authority, atomic persistence, disposal and finite output publication.</summary>
-    internal static Task HandleAsync(HttpContext http, string id, bool replacement) => ApplicationHttpBoundary.RunAsync(http, async (budget, clock) =>
+    internal static Task HandleAsync(HttpContext http, string id, ApplicationMutationKind kind) => ApplicationHttpBoundary.RunAsync(http, async (budget, clock) =>
     {
-        var command = await ReadAsync(http, id, replacement, clock);
+        var replacement = kind == ApplicationMutationKind.Replace;
+        var command = await ReadAsync(http, id, kind, clock);
         var identity = await ApplicationHttpBoundary.AuthenticateAsync(http, budget, clock);
         var result = await ApplicationMutationOperation.ExecuteAsync(http.RequestServices.GetRequiredService<IServiceScopeFactory>(), identity, command,
             http.RequestServices.GetRequiredService<ApiResourceProfile>(), clock, budget, Guid.NewGuid());
@@ -32,19 +33,31 @@ internal static class ApplicationUpdateEndpoint
     });
 
     /// <summary>Separates framing/precondition errors from malformed immutable-field/confirmation input before native authentication or storage.</summary>
-    private static async Task<ApplicationMutationCommand> ReadAsync(HttpContext http, string id, bool replacement, TimeProvider clock)
+    private static async Task<ApplicationMutationCommand> ReadAsync(HttpContext http, string id, ApplicationMutationKind kind, TimeProvider clock)
     {
         if (!ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) || id is Current or Parent)
         {
             throw new ApplicationHttpRejected(StatusCodes.Status400BadRequest);
         }
-        var path = ApplicationListEndpoint.Path + Separator + Uri.EscapeDataString(id) + (replacement ? Replacement : string.Empty);
+        var suffix = kind switch
+        {
+            ApplicationMutationKind.Edit => string.Empty,
+            ApplicationMutationKind.Replace => Replacement,
+            ApplicationMutationKind.Disable => ApplicationLifecycleRules.DisableSuffix,
+            ApplicationMutationKind.Enable => ApplicationLifecycleRules.EnableSuffix,
+            _ => throw new ApplicationHttpRejected(StatusCodes.Status400BadRequest)
+        };
+        var path = ApplicationListEndpoint.Path + Separator + Uri.EscapeDataString(id) + suffix;
         try
         {
-            var (bytes, version) = await ApplicationMutationInput.ReadAsync(http, path, replacement ? HttpMethods.Post : HttpMethods.Put, precondition: true);
-            return (replacement
-                ? ApplicationMutationCommand.Replace(id, version!, ApplicationJson.Parse<ApplicationSecretReplacement>(bytes), clock.GetUtcNow())
-                : ApplicationMutationCommand.Edit(id, version!, ApplicationJson.Parse<ApplicationEdit>(bytes))) ?? throw new InvalidDataException();
+            var (bytes, version) = await ApplicationMutationInput.ReadAsync(http, path, kind == ApplicationMutationKind.Edit ? HttpMethods.Put : HttpMethods.Post, precondition: true);
+            return (kind switch
+            {
+                ApplicationMutationKind.Replace => ApplicationMutationCommand.Replace(id, version!, ApplicationJson.Parse<ApplicationSecretReplacement>(bytes), clock.GetUtcNow()),
+                ApplicationMutationKind.Edit => ApplicationMutationCommand.Edit(id, version!, ApplicationJson.Parse<ApplicationEdit>(bytes)),
+                ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => ApplicationMutationCommand.Lifecycle(id, version!, ApplicationJson.Parse<ApplicationLifecycle>(bytes), kind == ApplicationMutationKind.Enable),
+                _ => null
+            }) ?? throw new InvalidDataException();
         }
         catch (Exception error) when (error is JsonException or InvalidDataException or ArgumentException)
         {

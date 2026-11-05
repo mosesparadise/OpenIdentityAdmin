@@ -4,16 +4,16 @@ import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { validate, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
-import { observe, created, edited, replaced, reason } from './observation.mjs';
+import { observe, created, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
 import { editorClient } from './client.mjs';
 import { bindLifecycle } from './lifecycle.mjs';
 import { focusList } from "./focus.mjs";
-import { CreateForm, CreateFields, UpdateForm, DetailsView, ProblemView } from './views.mjs';
+import { CreateForm, CreateFields, UpdateForm, LifecycleForm, DetailsView, ProblemView } from './views.mjs';
 const now=Date.parse('2026-11-01T12:00:00Z');
 const draft={clientId:'example-web',displayName:'Example',redirectUris:'https://client.example/callback',credentialExpiresAt:'2030-01-01T00:00:00Z'};
 const input=validate(draft,now).input;
-const details={id:'opaque-id',clientId:input.clientId,displayName:input.displayName,redirectUris:input.redirectUris,profile:'managed-web-v1',editable:true,credential:{issuedAt:'2026-11-01T12:00:00Z',expiresAt:input.credentialExpiresAt},expiresAt:'2026-11-01T12:01:00Z'};
+const details={id:'opaque-id',clientId:input.clientId,displayName:input.displayName,redirectUris:input.redirectUris,profile:'managed-web-v1',editable:true,enabled:true,credential:{issuedAt:'2026-11-01T12:00:00Z',expiresAt:input.credentialExpiresAt},expiresAt:'2026-11-01T12:01:00Z'};
 const tag=id=>`"${createHash('sha256').update(id).digest('hex')}-1"`;
 const secret=Buffer.alloc(32,91).toString('base64');
 const read={status:200,value:details,etag:tag(details.id)};
@@ -43,7 +43,7 @@ test('Given_explicit_creation_fields_When_validated_Then_exact_values_and_UTC_ar
 
 test('Given_managed_and_readonly_details_When_observed_Then_only_exact_sanitized_projections_survive',async()=>{
  const value=await observe(read,details.id,now);assert.deepEqual(value,{details,expires:now+60000,etag:read.etag});assert.notEqual(value.details,details);
- const readonly={...details,editable:false,profile:null,credential:null,redirectUris:[],displayName:null};
+ const readonly={...details,editable:false,enabled:null,profile:null,credential:null,redirectUris:[],displayName:null};
  assert.deepEqual((await observe({status:200,value:readonly},details.id,now)).details,readonly);
  assert.ok(await observe({...read,etag:read.etag.replace('-1"','-2"')},details.id,now));
  assert.ok(await observe({...read,value:{...details,credential:{...details.credential,expiresAt:'2026-01-01T00:00:00Z',issuedAt:'2025-01-01T00:00:00Z'}}},details.id,now));
@@ -54,7 +54,7 @@ test('Given_untrusted_details_When_shape_binding_or_deadline_is_invalid_Then_no_
  const variants=[null,[],{}, {...details,extra:secret}, {...details,id:''}, {...details,id:'other'}, {...details,clientId:''},{...details,displayName:3},{...details,displayName:'x'.repeat(201)},{...details,editable:'true'},{...details,redirectUris:null},{...details,profile:'other'},{...details,redirectUris:[]},{...details,redirectUris:Array(11).fill(draft.redirectUris)},{...details,redirectUris:[draft.redirectUris,draft.redirectUris]},{...details,redirectUris:['http://bad.example/']},{...details,credential:null},{...details,credential:{...details.credential,extra:true}},{...details,credential:{...details.credential,issuedAt:input.credentialExpiresAt}},{...details,expiresAt:'invalid'},{...details,expiresAt:'2026-11-01T12:00:00Z'},{...details,expiresAt:'2026-11-01T12:06:00Z'}];
  for(const value of variants)assert.equal(await observe({...read,value},details.id,now),null);
  for(const etag of [undefined,'','W/'+read.etag,'"'+'A'.repeat(64)+'-1"',tag('foreign'),'"'+'a'.repeat(64)+'-9223372036854775808"'])assert.equal(await observe({...read,etag},details.id,now),null);
- const readonly={...details,editable:false,profile:null,credential:null,redirectUris:[]};
+ const readonly={...details,editable:false,enabled:null,profile:null,credential:null,redirectUris:[]};
  for(const value of [{...readonly,profile:'managed-web-v1'},{...readonly,credential:details.credential},{...readonly,redirectUris:details.redirectUris}])assert.equal(await observe({status:200,value},details.id,now),null);
  assert.equal(await observe({status:200,value:readonly,etag:read.etag},details.id,now),null);
 });
@@ -63,7 +63,7 @@ test('Given_created_output_When_checked_Then_secret_and_requested_configuration_
  assert.equal((await created(success,input,now)).secret,secret);
  for(const value of [null,{}, {...success.value,extra:true},{...success.value,clientSecret:'short'},{...success.value,clientSecret:secret.slice(0,-2)+'B='}])assert.equal(await created({...success,value},input,now),null);
  assert.equal(await created({...success,status:200},input,now),null);
- for(const application of [{...details,clientId:'other'},{...details,displayName:'other'},{...details,redirectUris:['https://other.example/callback']},{...details,credential:{...details.credential,expiresAt:'2031-01-01T00:00:00Z'}},{...details,editable:false,profile:null,credential:null,redirectUris:[]}])assert.equal(await created({...success,value:{...success.value,application}},input,now),null);
+ for(const application of [{...details,clientId:'other'},{...details,displayName:'other'},{...details,redirectUris:['https://other.example/callback']},{...details,credential:{...details.credential,expiresAt:'2031-01-01T00:00:00Z'}},{...details,editable:false,enabled:null,profile:null,credential:null,redirectUris:[]}])assert.equal(await created({...success,value:{...success.value,application}},input,now),null);
  assert.equal(await created({...success,etag:read.etag.replace('-1"','-2"')},input,now),null);
  const expiredInput={...input,credentialExpiresAt:'2026-11-01T11:59:59Z'};
  assert.equal(await created({...success,value:{...success.value,application:{...details,credential:{issuedAt:'2026-11-01T11:00:00Z',expiresAt:expiredInput.credentialExpiresAt}}}},expiredInput,now),null);
@@ -273,7 +273,7 @@ test('Given_edit_and_replacement_input_When_validated_Then_identity_is_immutable
 test('Given_update_response_When_revision_identity_or_action_fields_drift_Then_no_successor_is_accepted',async()=>{
  const base=await observe(read,details.id,now);
  assert.ok(await edited(editResult,base,editInput,now));assert.equal((await replaced(replacementResult,base,replacementDraft,now)).secret,secret);
- for(const changed of [{status:201},{etag:read.etag},{etag:read.etag.replace('-1"','-3"')},{etag:tag('other')},{value:null},{value:{...editResult.value,id:'other'}},{value:{...editResult.value,clientId:'other'}},{value:{...editResult.value,profile:'other'}},{value:{...editResult.value,editable:false,profile:null,credential:null,redirectUris:[]}},{value:{...editResult.value,displayName:'other'}},{value:{...editResult.value,redirectUris:details.redirectUris}},{value:{...editResult.value,credential:{...details.credential,issuedAt:'2026-10-01T00:00:00Z'}}},{value:{...editResult.value,credential:{...details.credential,expiresAt:'2032-01-01T00:00:00Z'}}}])assert.equal(await edited({...editResult,...changed},base,editInput,now),null);
+ for(const changed of [{status:201},{etag:read.etag},{etag:read.etag.replace('-1"','-3"')},{etag:tag('other')},{value:null},{value:{...editResult.value,id:'other'}},{value:{...editResult.value,clientId:'other'}},{value:{...editResult.value,profile:'other'}},{value:{...editResult.value,editable:false,enabled:null,profile:null,credential:null,redirectUris:[]}},{value:{...editResult.value,displayName:'other'}},{value:{...editResult.value,redirectUris:details.redirectUris}},{value:{...editResult.value,credential:{...details.credential,issuedAt:'2026-10-01T00:00:00Z'}}},{value:{...editResult.value,credential:{...details.credential,expiresAt:'2032-01-01T00:00:00Z'}}}])assert.equal(await edited({...editResult,...changed},base,editInput,now),null);
  for(const changed of [{expires:now},{etag:null},{etag:'invalid'},{details:{...details,editable:false}}])assert.equal(await edited(editResult,{...base,...changed},editInput,now),null);
  const old={issuedAt:'2025-01-01T00:00:00Z',expiresAt:'2026-01-01T00:00:00Z'};
  assert.ok(await edited({...editResult,value:{...editResult.value,credential:old}},{...base,details:{...details,credential:old}},editInput,now));
@@ -300,7 +300,7 @@ test('Given_explicit_update_forms_When_saved_or_cancelled_Then_secret_is_cleared
   owner.suspend();assert.equal(states.at(-1).outcome,action==='edit'?'updated':'replaced');owner.dispose();owner.open(action);await owner[action](action==='edit'?editDraft:replacementDraft);
  }
  const {owner,states}=setup(t);owner.open('edit');owner.cancelForm();owner.newForm();await owner.create(draft);owner.open('replace');assert.equal('secret' in states.at(-1),false);assert.equal(states.at(-1).expires,now+60000);owner.cancelForm();assert.equal('secret' in states.at(-1),false);
- const ro=setup(t,{details:async()=>({status:200,value:{...details,editable:false,profile:null,credential:null,redirectUris:[]}})});await ro.owner.details(details.id);ro.owner.open('edit');assert.equal(ro.states.at(-1).kind,'details');
+ const ro=setup(t,{details:async()=>({status:200,value:{...details,editable:false,enabled:null,profile:null,credential:null,redirectUris:[]}})});await ro.owner.details(details.id);ro.owner.open('edit');assert.equal(ro.states.at(-1).kind,'details');
 });
 
 test('Given_update_preflight_or_dispatch_failure_When_reported_Then_action_and_uncertainty_are_bounded_without_retry',async t=>{
@@ -376,4 +376,97 @@ test('Given_completed_replacement_When_secret_is_dismissed_then_page_hidden_Then
  const forbidden=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'forbidden',outcome:'unknown',target:{id:details.id,action:'replace'}}}));
  assert.ok(forbidden.includes('current credential permission and a recent MFA sign-in'));assert.ok(forbidden.includes('href="/bff/login"'));assert.equal(forbidden.includes('Your current permissions do not allow'),false);
  owner.newForm();owner.suspend();assert.equal(states.at(-1).outcome,'not-sent');
+});
+
+const lifecycleInput={reason:'maintenance',confirm:true};
+const lifecycleResult=enabled=>({status:200,value:{...details,enabled},etag:read.etag.replace('-1"','-2"')});
+async function lifecycleSetup(t,enabled=false,overrides={},clock=()=>now){
+ const sent=[];const item=setup(t,{details:async()=>({...read,value:{...details,enabled:!enabled}}),lifecycle:async(...args)=>{sent.push(args);return lifecycleResult(enabled)},...overrides},clock);
+ await item.owner.details(details.id);item.owner.open(enabled?'enable':'disable');return {...item,sent};
+}
+
+test('Given_lifecycle_response_When_state_version_or_preserved_fields_drift_Then_only_exact_successor_is_accepted',async()=>{
+ for(const enabled of [false,true]){
+  const base=await observe({...read,value:{...details,enabled:!enabled}},details.id,now),result=lifecycleResult(enabled);
+  assert.ok(await lifecycleChanged(result,base,enabled,now));
+  for(const changed of [{status:503},{etag:read.etag},{value:{...result.value,enabled:!enabled}},{value:{...result.value,enabled:null}},{value:{...result.value,displayName:'changed'}},{value:{...result.value,redirectUris:['https://other.example/callback']}},{value:{...result.value,credential:{...details.credential,issuedAt:'2026-10-01T00:00:00Z'}}},{value:{...result.value,credential:{...details.credential,expiresAt:'2031-01-01T00:00:00Z'}}}])assert.equal(await lifecycleChanged({...result,...changed},base,enabled,now),null);
+  assert.equal(await lifecycleChanged(result,{...base,details:{...base.details,enabled}},enabled,now),null);
+ }
+ for(const enabled of [null,undefined,'true',1])assert.equal(await observe({...read,value:{...details,enabled}},details.id,now),null);
+ assert.equal(await created({...success,value:{...success.value,application:{...details,enabled:false}}},input,now),null);
+ const base=await observe(read,details.id,now);
+ assert.equal(await edited({...editResult,value:{...editResult.value,enabled:false}},base,editInput,now),null);
+ assert.equal(await replaced({...replacementResult,value:{...replacementResult.value,application:{...replacementResult.value.application,enabled:false}}},base,replacementDraft,now),null);
+});
+
+test('Given_lifecycle_form_When_confirmation_or_reason_is_invalid_Then_no_request_is_sent_and_cancel_preserves_original_details',async t=>{
+ for(const enabled of [false,true]){
+  const {owner,states,calls,sent}=await lifecycleSetup(t,enabled);
+  assert.equal(states.at(-1).kind,enabled?'enable-form':'disable-form');
+  for(const confirm of [false,undefined,1,'true'])assert.ok((await owner.lifecycle({...lifecycleInput,confirm})).confirmed);
+  for(const reason of ['','Maintenance',' maintenance','maintenance ','unexpected'])assert.ok((await owner.lifecycle({...lifecycleInput,reason})).reason);
+  assert.equal(calls.token,0);assert.equal(sent.length,0);owner.cancelForm();assert.equal(states.at(-1).kind,'details');assert.equal(states.at(-1).details.enabled,!enabled);assert.equal(states.at(-1).expires,now+60000);
+  await owner.lifecycle(lifecycleInput);assert.equal(sent.length,0);owner.dispose();await owner.lifecycle(lifecycleInput);
+ }
+});
+
+test('Given_confirmed_lifecycle_change_When_submitted_twice_Then_one_frozen_request_and_no_secret_are_published',async t=>{
+ for(const enabled of [false,true])for(const reason of ['maintenance','security','configuration']){
+  const delayed=deferred();const {owner,states,sent}=await lifecycleSetup(t,enabled,{token:()=>delayed.promise});
+  const input={reason,confirm:true};const work=owner.lifecycle(input);input.reason='tampered';await owner.lifecycle(lifecycleInput);delayed.resolve(proof);await work;
+  assert.equal(sent.length,1);assert.deepEqual(sent[0].slice(0,5),[details.id,read.etag,{reason,confirm:true},enabled,proof.value.requestToken]);
+  assert.equal(states.at(-1).kind,'updated');assert.equal(states.at(-1).details.enabled,enabled);assert.equal(states.at(-1).expires,now+60000);assert.equal('secret' in states.at(-1),false);
+  await owner.lifecycle(lifecycleInput);assert.equal(sent.length,1);
+ }
+});
+
+test('Given_uncertain_lifecycle_result_When_reload_fails_then_succeeds_Then_uncertainty_survives_without_resubmitting',async t=>{
+ for(const enabled of [false,true])for(const failure of ['status','throw','shape']){
+  let reads=0,sends=0;
+  const {owner,states}=await lifecycleSetup(t,enabled,{lifecycle:async()=>{sends++;return {status:503}},details:async()=>{
+   reads++;if(reads===2){if(failure==='throw')throw new Error('private failure');return failure==='status'?{status:503}:{status:200,value:{}};}
+   return {...read,value:{...details,enabled:reads===1?!enabled:enabled}};
+  }});
+  await owner.lifecycle(lifecycleInput);assert.equal(states.at(-1).outcome,'unknown');await owner.details(details.id);
+  assert.equal(states.at(-1).outcome,'unknown');assert.deepEqual(states.at(-1).target,{id:details.id,action:enabled?'enable':'disable'});
+  const html=renderToStaticMarkup(createElement(ProblemView,{state:states.at(-1)}));assert.ok(html.includes('application status may have changed'));assert.ok(html.includes('Reload current details'));assert.equal(html.includes('No creation request'),false);
+  await owner.lifecycle(lifecycleInput);await owner.details(details.id);assert.equal(states.at(-1).kind,'details');assert.equal(states.at(-1).details.enabled,enabled);assert.equal(sends,1);assert.equal(reads,3);
+ }
+});
+
+test('Given_lifecycle_wait_When_original_deadline_or_session_changes_Then_late_output_cannot_restore_authority',async t=>{
+ for(const enabled of [false,true])for(const phase of ['token','lifecycle'])for(const boundary of ['deadline','session','suspend','dispose','authority','list']){
+  let clock=now;const pending=deferred();const {owner,states,sent}=await lifecycleSetup(t,enabled,{[phase]:()=>pending.promise},()=>clock);
+  const work=owner.lifecycle(lifecycleInput);await Promise.resolve();
+  if(boundary==='deadline')clock=now+60000;else if(boundary==='session')clock=session.expires;else if(boundary==='authority')owner.authorize({kind:'anonymous'});else owner[boundary]();
+  const count=states.length;pending.resolve(phase==='token'?proof:lifecycleResult(enabled));await work;
+  assert.equal('details' in states.at(-1),false);if(['deadline','session'].includes(boundary))assert.equal(states.at(-1).reason,boundary==='deadline'?'display-expired':'expired');else assert.equal(states.length,count);
+  if(phase==='token')assert.equal(sent.length,0);owner.dispose();
+ }
+});
+
+test('Given_generated_lifecycle_transport_When_dispatched_Then_both_fixed_POST_routes_keep_exact_version_and_native_CSRF',async()=>{
+ const original=globalThis.fetch;globalThis.window={location:{origin:'https://bff.example.test'}};const requests=[];
+ globalThis.fetch=async request=>{requests.push(request);return new Response(JSON.stringify(lifecycleResult(request.url.endsWith('/enable')).value),{status:200,headers:{...headers,etag:lifecycleResult(false).etag}})};
+ try{const client=editorClient(),signal=new AbortController().signal;
+  for(const enabled of [false,true]){
+   assert.deepEqual(await client.lifecycle('opaque /?id',read.etag,lifecycleInput,enabled,proof.value.requestToken,signal),lifecycleResult(enabled));
+   const request=requests.at(-1);assert.equal(new URL(request.url).pathname,`/bff/api/v1/applications/opaque%20%2F%3Fid/${enabled?'enable':'disable'}`);assert.equal(request.method,'POST');
+   assert.equal(request.headers.get('If-Match'),read.etag);assert.equal(request.headers.get('X-CSRF-TOKEN'),proof.value.requestToken);assert.equal(request.headers.has('authorization'),false);assert.equal(request.credentials,'same-origin');assert.equal(request.redirect,'error');assert.equal(request.cache,'no-store');assert.deepEqual(await request.json(),lifecycleInput);
+  }
+  await assert.rejects(()=>client.lifecycle('..',read.etag,lifecycleInput,false,'proof',signal));assert.equal(requests.length,2);
+ }finally{globalThis.fetch=original;delete globalThis.window;}
+});
+
+test('Given_lifecycle_views_When_rendered_Then_state_expiry_effects_confirmation_and_MFA_recovery_are_explicit',()=>{
+ for(const enabled of [false,true]){
+  const html=renderToStaticMarkup(createElement(LifecycleForm,{details,enabled,submit:async()=>({}),cancel:()=>{}}));
+  assert.ok(html.includes('for="lifecycle-reason"'));assert.ok(html.includes('for="lifecycle-confirm"'));assert.ok(html.includes('type="checkbox"'));assert.equal(html.includes('checked=""'),false);assert.equal((html.match(/<option /g)||[]).length,3);assert.equal(html.includes('textarea'),false);
+  assert.ok(html.includes(enabled?'does not extend the secret’s expiry':'Existing grants are not revoked'));
+  const view=renderToStaticMarkup(createElement(DetailsView,{details:{...details,enabled},dismiss:()=>{}}));assert.ok(view.includes(enabled?'Disable application':'Re-enable application'));assert.ok(view.includes(enabled?'<dd>Enabled</dd>':'<dd>Disabled</dd>'));
+  for(const outcome of ['not-sent','unknown']){
+   const problem=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'forbidden',outcome,target:{id:details.id,action:enabled?'enable':'disable'}}}));
+   assert.ok(problem.includes('current lifecycle permission and a recent MFA sign-in'));assert.ok(problem.includes('href="/bff/login"'));assert.equal(problem.includes('undisplayed secret'),false);assert.ok(problem.includes(outcome==='unknown'?'application status may have changed':'No lifecycle request'));
+  }
+ }
 });

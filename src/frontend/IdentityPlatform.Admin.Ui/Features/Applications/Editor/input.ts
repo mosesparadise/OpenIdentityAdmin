@@ -1,11 +1,13 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
 export type CreateInput = components["schemas"]["ApplicationCreate"];
 export type EditInput = components["schemas"]["ApplicationEdit"];
+export type LifecycleDraft = { reason: string; confirm: boolean };
+export type LifecycleInput = components["schemas"]["ApplicationLifecycle"];
 export type ReplacementInput = components["schemas"]["ApplicationSecretReplacement"];
 export type EditDraft = Pick<Draft, "displayName" | "redirectUris">;
 export type ReplacementDraft = { confirmed: boolean; credentialExpiresAt: string };
 export type Draft = { clientId: string; displayName: string; redirectUris: string; credentialExpiresAt: string };
-export type Errors = Partial<Record<keyof Draft | "confirmed", string>>;
+export type Errors = Partial<Record<keyof Draft | "confirmed" | "reason", string>>;
 export const emptyDraft: Draft = { clientId: "", displayName: "", redirectUris: "", credentialExpiresAt: "" };
 const whitespace = /[\s\u0085]/u;
 const controls = /[\u0000-\u001f\u007f-\u009f]/u;

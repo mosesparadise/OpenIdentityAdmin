@@ -104,8 +104,8 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 7);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/session']);
+  assert.equal(inventory(browserStatus, 'bff').size, 9);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/session']);
   const management = browserStatus.paths['/bff/api/v1/applications'].get;
   assert.deepEqual(management.security, [{ BrowserSession: [] }]);
   assert.equal(management['x-required-permission'], 'applications.read');
@@ -154,7 +154,17 @@ test('Given real application updates When native contracts are generated Then in
   assert.equal(replace['x-persisted-mfa-max-age-exclusive-seconds'], 300);
   assert.equal(edit.responses['200'].content['application/json'].schema.$ref, '#/components/schemas/ApplicationDetails');
   assert.equal(replace.responses['200'].content['application/json'].schema.$ref, '#/components/schemas/ApplicationCredentialOutput');
-  for (const operation of [edit, replace]) {
+  const lifecycle = ['/disable', '/enable'].map(suffix => browserStatus.paths[path + suffix].post);
+  for (const operation of lifecycle) {
+    assert.equal(operation['x-required-permission'], 'applications.disable');
+    assert.equal(operation['x-persisted-mfa-max-age-exclusive-seconds'], 300);
+    assert.equal(operation.responses['200'].content['application/json'].schema.$ref, '#/components/schemas/ApplicationDetails');
+  }
+  const input = browserStatus.components.schemas.ApplicationLifecycle;
+  assert.deepEqual(input.properties.reason.enum, ['maintenance', 'security', 'configuration']);
+  assert.deepEqual(input.properties.confirm.enum, [true]);
+  assert.deepEqual(input.required.slice().sort(), ['confirm', 'reason']);
+  for (const operation of [edit, replace, ...lifecycle]) {
     assert.deepEqual(Object.keys(operation.responses).sort(), ['200', '400', '401', '403', '404', '409', '412', '428', '503']);
     assert.deepEqual(operation.security, [{ BrowserSession: [] }]);
     assert.equal(operation.responses['200'].headers.ETag.required, true);

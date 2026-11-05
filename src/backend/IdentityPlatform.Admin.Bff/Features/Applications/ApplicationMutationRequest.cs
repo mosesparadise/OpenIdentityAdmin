@@ -127,11 +127,20 @@ internal sealed class ApplicationMutationRequest
             value = input;
             errors = ApplicationEditorRules.Validate(input);
         }
-        else
+        else if (action == ApplicationProxyAction.Replace)
         {
             var input = ApplicationJson.Parse<ApplicationSecretReplacement>(bytes);
             value = input;
             errors = ApplicationEditorRules.Validate(input, now);
+        }
+        else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable)
+        {
+            var input = ApplicationJson.Parse<ApplicationLifecycle>(bytes);
+            return ApplicationLifecycleRules.Reason(input) is not null ? input : throw new InvalidDataException();
+        }
+        else
+        {
+            throw new InvalidDataException();
         }
         if (errors.Count != 0)
         {
@@ -154,9 +163,10 @@ internal sealed class ApplicationMutationRequest
         return input switch
         {
             ApplicationCreate create => revision == 1 && details.ClientId == create.ClientId && details.DisplayName == create.DisplayName &&
-                SameRedirects(details, create.RedirectUris) && SameExpiry(details, create.CredentialExpiresAt),
+                SameRedirects(details, create.RedirectUris) && SameExpiry(details, create.CredentialExpiresAt) && details.Enabled == true,
             ApplicationEdit edit => details.DisplayName == edit.DisplayName && SameRedirects(details, edit.RedirectUris),
             ApplicationSecretReplacement replacement => SameExpiry(details, replacement.CredentialExpiresAt),
+            ApplicationLifecycle => details.Enabled == (Action == ApplicationProxyAction.Enable),
             _ => false
         };
     }
@@ -171,13 +181,20 @@ internal sealed class ApplicationMutationRequest
 
     /// <summary>Encodes one opaque ID as a path segment; operation suffixes are code-owned.</summary>
     private static string ResourcePath(ApplicationProxyAction action, string? id) => action == ApplicationProxyAction.Create ? string.Empty :
-        PathSeparator + Uri.EscapeDataString(id!) + (action == ApplicationProxyAction.Replace ? ReplacementSuffix : string.Empty);
+        PathSeparator + Uri.EscapeDataString(id!) + (action switch
+        {
+            ApplicationProxyAction.Edit => string.Empty,
+            ApplicationProxyAction.Replace => ReplacementSuffix,
+            ApplicationProxyAction.Disable => ApplicationLifecycleRules.DisableSuffix,
+            ApplicationProxyAction.Enable => ApplicationLifecycleRules.EnableSuffix,
+            _ => throw new InvalidDataException()
+        });
 }
 
 /// <summary>Closes the writable transport surface to the three reviewed application actions.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace
+    Create, Edit, Replace, Disable, Enable
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

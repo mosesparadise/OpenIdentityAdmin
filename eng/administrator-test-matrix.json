@@ -1140,7 +1140,52 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationLifecycleBrowserTests.Given_OneTimeApplicationOutput_When_HistoryOrVisibilityChanges_Then_SecretIsErasedWithoutPersistence(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationLifecycleBrowserTests.Given_PendingApplicationWrite_When_LifecycleSessionOrOriginalDeadlineEnds_Then_LateOutputCannotReturn(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.EditorRecoveryBrowserTests.Given_RealManagedEditor_When_RecoveryAndWorkingStatesArePresented_Then_ExplicitActionsPreserveVersionAndSecretBoundaries(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.EditorRecoveryBrowserTests.Given_AuthenticatedEditor_When_CurrentPermissionsOrOriginalAuthorityExpire_Then_NoMutationCommitsAndRecoveryIsAccessible(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.EditorRecoveryBrowserTests.Given_AuthenticatedEditor_When_CurrentPermissionsOrOriginalAuthorityExpire_Then_NoMutationCommitsAndRecoveryIsAccessible(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"PostgreSql\", phase: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"PostgreSql\", phase: 1)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"PostgreSql\", phase: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleJourneyTests.Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: True, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: True, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_OnlyLifecycleGrant_When_DisableAndEnableRequested_Then_BothWorkWithoutGrantingOtherMutations(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: False, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: False, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: True, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: True, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"PostgreSql\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"PostgreSql\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineSession_When_LifecycleCsrfOriginBearerOrPermissionIsMissing_Then_AllStateRemainsUnchanged(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"disable\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"enable\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"edit\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"replace\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"opposite\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_DisabledApplication_When_EditedAndCredentialReplaced_Then_ItStaysDisabledAndOnlyRequestedFieldsChange(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: False, acknowledgement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: False, acknowledgement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: True, acknowledgement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: True, acknowledgement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"PostgreSql\", rollback: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"PostgreSql\", rollback: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: False, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: False, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: True, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: True, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"PostgreSql\", enabled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"PostgreSql\", enabled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineNativeDeadline_When_ItExpiresAfterLastSecondDisable_Then_EnableAndDisableRequireNewSignIn(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleCredentialTests.Given_CredentialExpiresWhileDisabled_When_Reenabled_Then_StateChangesButOriginalExpiryStillPreventsAdmission(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"PostgreSql\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"PostgreSql\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2387,7 +2432,52 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationLifecycleBrowserTests.Given_OneTimeApplicationOutput_When_HistoryOrVisibilityChanges_Then_SecretIsErasedWithoutPersistence(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationLifecycleBrowserTests.Given_PendingApplicationWrite_When_LifecycleSessionOrOriginalDeadlineEnds_Then_LateOutputCannotReturn(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.EditorRecoveryBrowserTests.Given_RealManagedEditor_When_RecoveryAndWorkingStatesArePresented_Then_ExplicitActionsPreserveVersionAndSecretBoundaries(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.EditorRecoveryBrowserTests.Given_AuthenticatedEditor_When_CurrentPermissionsOrOriginalAuthorityExpire_Then_NoMutationCommitsAndRecoveryIsAccessible(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.EditorRecoveryBrowserTests.Given_AuthenticatedEditor_When_CurrentPermissionsOrOriginalAuthorityExpire_Then_NoMutationCommitsAndRecoveryIsAccessible(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"SqlServer\", phase: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"SqlServer\", phase: 1)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"SqlServer\", phase: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleJourneyTests.Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: True, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: True, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_OnlyLifecycleGrant_When_DisableAndEnableRequested_Then_BothWorkWithoutGrantingOtherMutations(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: False, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: False, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: True, denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: True, denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"SqlServer\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"SqlServer\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineSession_When_LifecycleCsrfOriginBearerOrPermissionIsMissing_Then_AllStateRemainsUnchanged(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"disable\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"enable\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"edit\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"replace\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"opposite\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_DisabledApplication_When_EditedAndCredentialReplaced_Then_ItStaysDisabledAndOnlyRequestedFieldsChange(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: False, acknowledgement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: False, acknowledgement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: True, acknowledgement: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: True, acknowledgement: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"SqlServer\", rollback: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"SqlServer\", rollback: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: False, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: False, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: True, expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: True, expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"SqlServer\", enabled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"SqlServer\", enabled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineNativeDeadline_When_ItExpiresAfterLastSecondDisable_Then_EnableAndDisableRequireNewSignIn(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleCredentialTests.Given_CredentialExpiresWhileDisabled_When_Reenabled_Then_StateChangesButOriginalExpiryStillPreventsAdmission(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"SqlServer\", exchange: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"SqlServer\", exchange: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -51401,6 +51491,1860 @@
         {
           "key": "Category",
           "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"PostgreSql\", phase: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleHumanTests",
+        "methodName": "Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"PostgreSql\", phase: 1)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleHumanTests",
+        "methodName": "Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"PostgreSql\", phase: 2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleHumanTests",
+        "methodName": "Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"SqlServer\", phase: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleHumanTests",
+        "methodName": "Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"SqlServer\", phase: 1)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleHumanTests",
+        "methodName": "Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleHumanTests.Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority(provider: \"SqlServer\", phase: 2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleHumanTests",
+        "methodName": "Given_PendingHumanPhase_When_DisabledThenEnabled_Then_OriginalFormNeverRegainsAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleJourneyTests.Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleJourneyTests",
+        "methodName": "Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleJourneyTests.Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleJourneyTests",
+        "methodName": "Given_PendingCacheAndIssuedCode_When_DisabledThenEnabled_Then_OldArtifactsStayInvalidAndIndependentFreshJourneysWork",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-permission"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: True, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: True, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-permission"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: True, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: True, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_OnlyLifecycleGrant_When_DisableAndEnableRequested_Then_BothWorkWithoutGrantingOtherMutations(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_OnlyLifecycleGrant_When_DisableAndEnableRequested_Then_BothWorkWithoutGrantingOtherMutations",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_OnlyLifecycleGrant_When_DisableAndEnableRequested_Then_BothWorkWithoutGrantingOtherMutations(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleAuthorityTests",
+        "methodName": "Given_OnlyLifecycleGrant_When_DisableAndEnableRequested_Then_BothWorkWithoutGrantingOtherMutations",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: False, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: False, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: True, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"PostgreSql\", enabled: True, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: False, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: False, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: True, denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether(provider: \"SqlServer\", enabled: True, denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_LifecycleWrite_When_PostSaveOrAuditInsertFails_Then_StateVersionReasonAndAuditRollBackTogether",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"PostgreSql\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"PostgreSql\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"SqlServer\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery(provider: \"SqlServer\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_ProtectedLifecycleRoutes_When_InputVersionOrTargetIsInvalid_Then_NoMutationPrecedesExplicitValidRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineSession_When_LifecycleCsrfOriginBearerOrPermissionIsMissing_Then_AllStateRemainsUnchanged(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_GenuineSession_When_LifecycleCsrfOriginBearerOrPermissionIsMissing_Then_AllStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineSession_When_LifecycleCsrfOriginBearerOrPermissionIsMissing_Then_AllStateRemainsUnchanged(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_GenuineSession_When_LifecycleCsrfOriginBearerOrPermissionIsMissing_Then_AllStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"disable\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"enable\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"edit\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"replace\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"PostgreSql\", contender: \"opposite\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"disable\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"enable\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"edit\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"replace\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleRaceTests.Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit(provider: \"SqlServer\", contender: \"opposite\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleRaceTests",
+        "methodName": "Given_IndependentApiRoots_When_LifecycleAndUpdateCommandsActuallyContend_Then_OnlyExactWinnerStateAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleTests",
+        "methodName": "Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-revision"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleTests",
+        "methodName": "Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-revision"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_DisabledApplication_When_EditedAndCredentialReplaced_Then_ItStaysDisabledAndOnlyRequestedFieldsChange(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleTests",
+        "methodName": "Given_DisabledApplication_When_EditedAndCredentialReplaced_Then_ItStaysDisabledAndOnlyRequestedFieldsChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_DisabledApplication_When_EditedAndCredentialReplaced_Then_ItStaysDisabledAndOnlyRequestedFieldsChange(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleTests",
+        "methodName": "Given_DisabledApplication_When_EditedAndCredentialReplaced_Then_ItStaysDisabledAndOnlyRequestedFieldsChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: False, acknowledgement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: False, acknowledgement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: True, acknowledgement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"PostgreSql\", enabled: True, acknowledgement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: False, acknowledgement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: False, acknowledgement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: True, acknowledgement: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput(provider: \"SqlServer\", enabled: True, acknowledgement: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_CommittedLifecycleWrite_When_AcknowledgementOrCleanupFails_Then_OneDurableMutationRemainsWithoutSuccessOutput",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"PostgreSql\", rollback: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"PostgreSql\", rollback: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"SqlServer\", rollback: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit(provider: \"SqlServer\", rollback: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleSavedBeforeCommit_When_ClockRollsBackOrBudgetExpires_Then_OriginalBoundsPreventCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: False, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: False, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: True, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"PostgreSql\", enabled: True, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: False, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: False, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: True, expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits(provider: \"SqlServer\", enabled: True, expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_LifecycleWaitingOnGovernance_When_CurrentGrantOrMfaEnds_Then_NoStateReasonOrAuditCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"PostgreSql\", enabled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"PostgreSql\", enabled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"SqlServer\", enabled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleBoundaryTests.Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication(provider: \"SqlServer\", enabled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleBoundaryTests",
+        "methodName": "Given_PersistedLifecycleWrite_When_CallerCancels_Then_ExactStateRollsBackWithoutPublication",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-reason"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleFailureTests",
+        "methodName": "Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-reason"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineNativeDeadline_When_ItExpiresAfterLastSecondDisable_Then_EnableAndDisableRequireNewSignIn(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_GenuineNativeDeadline_When_ItExpiresAfterLastSecondDisable_Then_EnableAndDisableRequireNewSignIn",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleHttpTests.Given_GenuineNativeDeadline_When_ItExpiresAfterLastSecondDisable_Then_EnableAndDisableRequireNewSignIn(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationLifecycleHttpTests",
+        "methodName": "Given_GenuineNativeDeadline_When_ItExpiresAfterLastSecondDisable_Then_EnableAndDisableRequireNewSignIn",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleCredentialTests.Given_CredentialExpiresWhileDisabled_When_Reenabled_Then_StateChangesButOriginalExpiryStillPreventsAdmission(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleCredentialTests",
+        "methodName": "Given_CredentialExpiresWhileDisabled_When_Reenabled_Then_StateChangesButOriginalExpiryStillPreventsAdmission",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleCredentialTests.Given_CredentialExpiresWhileDisabled_When_Reenabled_Then_StateChangesButOriginalExpiryStillPreventsAdmission(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleCredentialTests",
+        "methodName": "Given_CredentialExpiresWhileDisabled_When_Reenabled_Then_StateChangesButOriginalExpiryStillPreventsAdmission",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"PostgreSql\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecyclePublicationTests",
+        "methodName": "Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"PostgreSql\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecyclePublicationTests",
+        "methodName": "Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"SqlServer\", exchange: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecyclePublicationTests",
+        "methodName": "Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecyclePublicationTests.Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority(provider: \"SqlServer\", exchange: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecyclePublicationTests",
+        "methodName": "Given_SealedCommittedIssuance_When_ResponseArrivesAfterDisable_Then_ItRemainsPriorIssuanceWithoutNewAuthority",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleRaceTests",
+        "methodName": "Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleAdmissionTests",
+        "methodName": "Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-enforcement"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedLifecycleAdmissionTests",
+        "methodName": "Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "application-lifecycle-enforcement"
         },
         {
           "key": "Provider",

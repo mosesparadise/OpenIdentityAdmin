@@ -16,7 +16,7 @@ public sealed class ApplicationProjectionTests
     private const string Callback = "https://client.example/callback";
     private const string Profile = "managed-web-v1";
     private static readonly DateTimeOffset Issued = new(2030, 1, 1, 0, 0, 0, TimeSpan.Zero);
-    private static readonly string[] DetailFields = ["clientId", "credential", "displayName", "editable", "expiresAt", "id", "profile", "redirectUris"];
+    private static readonly string[] DetailFields = ["clientId", "credential", "displayName", "editable", "enabled", "expiresAt", "id", "profile", "redirectUris"];
     private static readonly string[] CredentialFields = ["expiresAt", "issuedAt"];
     private static readonly string[] OutputFields = ["application", "clientSecret"];
 

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "application-lifecycle-enforcement",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+      "before": "if (policy is null || !policy.Enabled || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile ||\n            policy.Revision <= 0 || policy.CredentialRevision <= 0 || policy.CredentialIssuedAt > policy.ObservedAt ||\n            policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt))\n        {\n            return null;\n        }\n        var descriptor = new OpenIddictApplicationDescriptor();\n        await manager.PopulateAsync(descriptor, application, token);\n        return ManagedApplicationProfile.Matches(descriptor) && !string.IsNullOrEmpty(descriptor.ClientSecret)\n            ? new(id!, clientId, policy.Revision, policy.CredentialRevision, policy.CredentialExpiresAt, policy.ObservedAt,\n                descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray()) : null;\n    }\n\n    /// <summary>Persists a nondecreasing shared authority watermark under governance without advancing the public aggregate version.</summary>\n    internal async ValueTask<ManagedRegistration> ObserveAsync(ProtocolStorageScope scope, CancellationToken token)\n    {\n        var now = ManagedLoginRules.Observe(scope.Owner.Clock, ObservedAt);\n        var changed = await scope.Owner.RunAsync(current => new ValueTask<int>(scope.Owner.Database.Set<ApplicationPolicy>()\n            .Where(row => row.ApplicationId == ApplicationId && row.Enabled && row.Revision == Revision && row.CredentialRevision == CredentialRevision &&\n                row.ObservedAt == ObservedAt && row.CredentialExpiresAt == ExpiresAt)\n            .ExecuteUpdateAsync(setters => setters.SetProperty(row => row.ObservedAt, now), current)), token, write: true);\n        ",
+      "after": "if (policy is null || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile ||\n            policy.Revision <= 0 || policy.CredentialRevision <= 0 || policy.CredentialIssuedAt > policy.ObservedAt ||\n            policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt))\n        {\n            return null;\n        }\n        var descriptor = new OpenIddictApplicationDescriptor();\n        await manager.PopulateAsync(descriptor, application, token);\n        return ManagedApplicationProfile.Matches(descriptor) && !string.IsNullOrEmpty(descriptor.ClientSecret)\n            ? new(id!, clientId, policy.Revision, policy.CredentialRevision, policy.CredentialExpiresAt, policy.ObservedAt,\n                descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray()) : null;\n    }\n\n    /// <summary>Persists a nondecreasing shared authority watermark under governance without advancing the public aggregate version.</summary>\n    internal async ValueTask<ManagedRegistration> ObserveAsync(ProtocolStorageScope scope, CancellationToken token)\n    {\n        var now = ManagedLoginRules.Observe(scope.Owner.Clock, ObservedAt);\n        var changed = await scope.Owner.RunAsync(current => new ValueTask<int>(scope.Owner.Database.Set<ApplicationPolicy>()\n            .Where(row => row.ApplicationId == ApplicationId && row.Revision == Revision && row.CredentialRevision == CredentialRevision &&\n                row.ObservedAt == ObservedAt && row.CredentialExpiresAt == ExpiresAt)\n            .ExecuteUpdateAsync(setters => setters.SetProperty(row => row.ObservedAt, now), current)), token, write: true);\n        ",
+      "marker": "application-lifecycle-enforcement-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges"
+    },
+    {
+      "id": "application-lifecycle-permission",
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+      "before": "ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => LifecyclePermission,",
+      "after": "ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => WritePermission,",
+      "marker": "application-lifecycle-permission-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks"
+    },
+    {
+      "id": "application-lifecycle-revision",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "before": "policy.Enabled = enabled;\n        policy.Revision = checked(policy.Revision + 1);",
+      "after": "policy.Enabled = enabled;",
+      "marker": "application-lifecycle-revision-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges"
+    },
+    {
+      "id": "application-lifecycle-reason",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "before": "if (detail is null || detail.ReasonCode != reason)",
+      "after": "if (detail is null)",
+      "marker": "application-lifecycle-reason-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack"
+    }
+  ]
+}

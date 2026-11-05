@@ -34,14 +34,14 @@ internal sealed class AdministratorProtocolScenario(GovernanceScenario account, 
 
     /// <summary>Initializes actual manager-backed registration and obtains a cookie only from the completed production enrollment grant.</summary>
     internal static async Task<AdministratorProtocolScenario> CreateAsync(BootstrapFixture fixture, string provider,
-        AdministratorRegistrationPolicy? policy = null, Uri? issuer = null, Action<IServiceCollection>? configure = null)
+        AdministratorRegistrationPolicy? policy = null, Uri? issuer = null, Action<IServiceCollection>? configure = null, FactorClock? clock = null)
     {
         var material = policy is null ? new NativeAssertionMaterial() : null;
         policy ??= material!.Policy;
         GovernanceScenario? account = null;
         try
         {
-            account = await GovernanceScenario.CreateAsync(fixture, provider, services => { Configure(services, policy); configure?.Invoke(services); }, issuer);
+            account = await GovernanceScenario.CreateAsync(fixture, provider, services => { Configure(services, policy); configure?.Invoke(services); }, issuer, clock);
             var scenario = new AdministratorProtocolScenario(account, material);
             Assert.True(await AdministratorRegistrationInitializer.RunAsync(scenario.Services, policy, Operator, Guid.NewGuid(), TestContext.Current.CancellationToken));
             await scenario.IssueCookieAsync();

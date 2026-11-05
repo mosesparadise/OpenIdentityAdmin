@@ -196,7 +196,7 @@ internal sealed class ApplicationMutationProbe
         var details = new ApplicationDetails(Id, create ? input.GetProperty(ClientField).GetString()! : ClientName,
             edit || create ? input.GetProperty(DisplayField).GetString()! : DisplayName,
             edit || create ? input.GetProperty(RedirectsField).EnumerateArray().Select(row => row.GetString()!).ToArray() : [Callback],
-            Profile, true, new(issued, expiry), Now.AddMinutes(ResponseMinutes));
+            Profile, true, new(issued, expiry), Now.AddMinutes(ResponseMinutes), true);
         if (Fault == ClientFault)
         {
             details = details with

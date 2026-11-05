@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "suite": "application-lifecycle",
+  "commit": "a87a96d3f7669fc6322e90827028c81dd2dc7508",
+  "provider": "SqlServer",
+  "source_sha256": {
+    "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "dbb05aa0f4a584a9fa1f739efeba33ba858847337f26a77fc16c1b20c4b25f6f",
+    "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "4c7e39ed6abf8059f2ed5bfd3861ee5d07f9dea2369db8aac7d2bae53c0ed1d8",
+    "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+  },
+  "mutations": [
+    {
+      "id": "application-lifecycle-enforcement",
+      "mutant_sha256": "34a09c17595bae6deaaee34a5dfadb7d92f5be6303478f2dd60964b6d697bafd",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 58.831,
+      "tests": [
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
+      ]
+    },
+    {
+      "id": "application-lifecycle-permission",
+      "mutant_sha256": "9435ef181aaef01ca324c496b50307747e4938709390a0dc85a692be6bf7da82",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 53.078,
+      "tests": [
+        "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)"
+      ]
+    },
+    {
+      "id": "application-lifecycle-revision",
+      "mutant_sha256": "84e428ee2e1cb2e53537f5032a77aee3323b6b0c4052c96f29802342e43d7b42",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 53.166,
+      "tests": [
+        "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")"
+      ]
+    },
+    {
+      "id": "application-lifecycle-reason",
+      "mutant_sha256": "204b9612d2007e95db5cbb03c3ca9a7d28b7001a29fc895ba03f4adc989a5c58",
+      "verdict": "killed_by_demonstrated_bypass",
+      "total": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 58.171,
+      "tests": [
+        "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")"
+      ]
+    }
+  ],
+  "baseline": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 68.357,
+    "tests": [
+      "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)",
+      "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
+    ]
+  },
+  "restored": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 81.807,
+    "tests": [
+      "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)",
+      "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
+    ]
+  },
+  "source_restored": true
+}
