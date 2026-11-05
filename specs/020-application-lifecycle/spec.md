@@ -2,7 +2,7 @@
 
 **Feature Branch**: `126-application-lifecycle`
 **Created**: 2026-11-04
-**Status**: Scope selected; implementation in progress, acceptance unclaimed.
+**Status**: Internally delivered through PR122; [accepted evidence](verification.md#accepted-internal-delivery--5-november-2026). External gates remain open.
 **Input**: Continue the next task from the delivered application-editor handoff: plan the next visible application lifecycle slice.
 
 ## Authority and scope
@@ -15,7 +15,7 @@ and the delivered [feature019](../019-application-editor/spec.md).
 Ordinary work within that approved scope is already authorized.
 
 This packet specifies disable/re-enable for registrations created by the existing managed
-confidential-web profile. It does not claim that the controls are available on main.
+confidential-web profile. These controls are now available on main through ordinary Aspire.
 Clone, delete, other client profiles, bulk grant revocation and dormant refresh remain separate work.
 
 ## Clarifications

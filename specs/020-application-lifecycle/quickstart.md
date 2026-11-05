@@ -2,7 +2,8 @@
 
 ## Available now on main
 
-Creation, details, editing and explicit secret replacement were delivered in PR120. Use Windows
+Creation, details, editing and explicit secret replacement were delivered in PR120. PR122
+adds managed application Disable/Re-enable. Use Windows
 with Docker Desktop in Linux-container mode and a current .NET 10 SDK. From the repository:
 
 ```sh
@@ -17,11 +18,12 @@ open `https://bff.dev.localhost:17444/applications`. The demo is disposable per 
 PowerShell launcher or separate frontend server is required. Full setup and existing walkthrough:
 [feature019 quickstart](../019-application-editor/quickstart.md).
 
-## Implementation branch walkthrough
+## Lifecycle walkthrough from main
 
-Disable/Re-enable controls are implemented on `126-application-lifecycle` in draft PR122.
-They are not yet accepted or merged to main. Use the same Aspire command above from that
-branch to exercise the following flow with disposable data:
+Disable/Re-enable controls are delivered on main through PR122. Use the same Aspire command
+above and disposable data to exercise the following flow. Disabling prevents new issuance; it
+does not erase existing offline tokens or sessions in other applications, and existing grants
+are not bulk-revoked:
 
 1. Create a managed confidential web application and prove its fresh-password/MFA/consent sign-in.
 2. Open its details, record status/expiry, select Disable, choose a reason and confirm.
@@ -37,6 +39,7 @@ branch to exercise the following flow with disposable data:
 Run the acceptance journey on both real providers and retained Chromium/WebKit configurations.
 Automated checks do not replace an actual Windows Docker Desktop walkthrough or qualified manual
 accessibility review. Firefox, precise A-009 certificate deferrals and all external release gates
-remain open. No new browser walkthrough has passed in this environment; the pinned browser executable
-is unavailable. Hosted Chromium/WebKit and both native provider demos remain required.
+remain open. Hosted Chromium/WebKit and both native provider demos pass in the accepted run.
+No local browser or actual Windows walkthrough is claimed: the pinned local browser executable
+was unavailable.
 See [current verification](verification.md) for the tested scope and remaining gates.

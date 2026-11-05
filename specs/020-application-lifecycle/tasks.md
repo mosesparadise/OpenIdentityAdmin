@@ -1,9 +1,9 @@
 # Tasks: Managed application lifecycle
 
-**Status**: Implementation in progress. The user selected issuance-only scope on 5 November
-2026; bulk grant revocation is separate. T002–T013 have implementation and focused local evidence; integrated T014–T017 remain open.
-Checkboxes do not substitute for the exact-head hosted acceptance and squash gate in T017.
-See [verification](verification.md) for actual tests and limits.
+**Status**: T001–T017 complete for the selected issuance-only internal slice. PR122 is
+squash-merged; [accepted verification](verification.md#accepted-internal-delivery--5-november-2026)
+binds the final source, tests and delivery. Bulk grant revocation and every named manual/external
+gate remain separate. Checkboxes do not imply production or public-release acceptance.
 
 ## Phase 1 — Resolve the bounded scope
 
@@ -42,15 +42,15 @@ Goal: failures and races have one explainable outcome and the UI recovers delibe
 
 - [x] T012 [US3] Add independent-root, provider-observed lock-wait tests in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/` and `Features/ManagedApplications/`: duplicate transitions, disable versus edit/replacement, opposite state transitions, and both issuance/exchange commit orders. Include a sealed response whose issuance commits before disable but arrives afterward; classify it as prior issuance, not an enforcement failure. Keep exact loser-state/audit assertions and five-second enforcement observation.
 - [x] T013 [US3] Extend actual audit INSERT denial, post-save failure, current permission/MFA expiry after waits, cancellation/deadline/clock rollback, commit ambiguity and publication cases in the same application/managed fixtures; independently inspect persisted state/reason/audit and require no retries. Attribute isolated MFA-expiry 403 to the component authority seam; genuine HTTPS must prove its earlier native bearer/continuation deadline without lengthening that lifetime.
-- [ ] T014 [US3] Extend BFF/direct HTTP and UI cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`, `Features/Browser/` and `src/frontend/IdentityPlatform.Admin.Ui/`: origin/CSRF/generation, malformed preconditions/body, lost permission, stale screen, uncertain result, logout/navigation/expiry and late-response suppression.
+- [x] T014 [US3] Extend BFF/direct HTTP and UI cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/`, `Features/Browser/` and `src/frontend/IdentityPlatform.Admin.Ui/`: origin/CSRF/generation, malformed preconditions/body, lost permission, stale screen, uncertain result, logout/navigation/expiry and late-response suppression.
 
 Independent acceptance: winner/loser persistence is exact; a lost response produces a deliberate reload, not a duplicate action.
 
 ## Phase 6 — Integrated delivery
 
-- [ ] T015 Extend retained Chromium/WebKit stories and both native Aspire demos in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/` and `tests/aspire/IdentityPlatform.AppHost.Tests/`: create → sign in → disable → denial → enable → fresh success. Retain keyboard/focus, responsive light/dark and accessibility checks plus explicit manual deferrals.
+- [x] T015 Extend retained Chromium/WebKit stories and both native Aspire demos in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/` and `tests/aspire/IdentityPlatform.AppHost.Tests/`: create → sign in → disable → denial → enable → fresh success. Retain keyboard/focus, responsive light/dark and accessibility checks plus explicit manual deferrals.
 - [x] T016 Update actual discovery/inventories in `eng/administrator-test-matrix.json`, `eng/test-matrix.json` and affected contract/Node inventories; place new managed cases in existing Admission/Issuance partitions, preserve every prior case, and add decisive lifecycle/current-authority/revision/audit mutation controls without lowering module coverage floors.
-- [ ] T017 Complete independent architecture/security/API/UX/test reviews, exact-head applicable hosted verification and source/tested-merge reconciliation in `specs/020-application-lifecycle/verification.md`; update `docs/roadmap.md`, this task list and `docs/operations/new-task-handoff.md`, then deliver through reviewed squash. Document actual scope and evidence limits.
+- [x] T017 Complete independent architecture/security/API/UX/test reviews, exact-head applicable hosted verification and source/tested-merge reconciliation in `specs/020-application-lifecycle/verification.md`; update `docs/roadmap.md`, this task list and `docs/operations/new-task-handoff.md`, then deliver through reviewed squash. Document actual scope and evidence limits.
 
 ## Dependencies and execution strategy
 
@@ -90,7 +90,7 @@ required by the environment; no parallel marker promises independent writes to s
 | SC-004 | T014–T017 | Retained browser and candidate-bound verification |
 | SC-005 | T015, T017 | Ordinary Aspire and accurate manual/external limits |
 
-This table maps requirements to tasks; the linked verification record distinguishes passed local
-evidence from unexecuted hosted/browser/mutation acceptance.
+This table maps requirements to tasks; the linked verification record distinguishes accepted
+exact-head hosted evidence from historical local checkpoints and remaining external gates.
 
-T016 evidence: exact native inventory and selection controls preserve every prior identity; original and focused lifecycle mutation suites each have strict both-provider baseline/kill/restored receipts. Current AppHost Harness110/110 includes clock, diagnostic, passive binding and final-publication regressions. Receipt source bindings and remaining exact-head browser/coverage acceptance are recorded in [verification](verification.md); T014/T015/T017 remain open.
+T016 evidence: exact native inventory and selection controls preserve every prior identity; original and focused lifecycle mutation suites each have strict both-provider baseline/kill/restored receipts. Accepted AppHost Harness110/110 includes clock, diagnostic, passive binding and final-publication regressions. Final hosted acceptance at `966d93f` covers all 98 mutation controls, browsers and coverage; [verification](verification.md) records exact bindings and limits.
