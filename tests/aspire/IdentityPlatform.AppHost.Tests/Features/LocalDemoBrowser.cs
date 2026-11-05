@@ -62,7 +62,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         await using var relyingParty = new ManagedBrowserRelyingParty();
         await relyingParty.StartAsync(new Uri(Issuer));
         phase(EditorPhase);
-        var registration = await ApplicationEditorJourney.RunAsync(page, new Uri(Client), DateTimeOffset.UtcNow, callback: relyingParty.Callback);
+        var registration = await ApplicationEditorJourney.RunAsync(page, new Uri(Client), new Uri(Issuer), DateTimeOffset.UtcNow, callback: relyingParty.Callback);
         phase(SubjectPhase);
         var subject = await page.EvaluateAsync<string>(ReadSubject);
         phase(ManagedPhase);

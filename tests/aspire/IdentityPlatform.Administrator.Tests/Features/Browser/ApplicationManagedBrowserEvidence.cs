@@ -36,7 +36,7 @@ internal static class ApplicationManagedBrowserEvidence
         var page = await browser.Context.NewPageAsync();
         await ApplicationAccessFixture.SignInAsync(environment, page);
         await using var observation = await ApplicationLifecycleObservation.CreateAsync(page);
-        var registration = await ApplicationEditorJourney.RunAsync(page, environment.Profile.ClientUri,
+        var registration = await ApplicationEditorJourney.RunAsync(page, environment.Profile.ClientUri, environment.Profile.Issuer,
             environment.Issuer.Account.Journey.Clock.Now, WorkspacePresentation.RequireStateAsync, relyingParty.Callback);
         using var transport = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false })
         {

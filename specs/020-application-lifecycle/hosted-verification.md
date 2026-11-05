@@ -122,3 +122,76 @@ unchanged. Two deterministic Harness controls prove forwarding, preserved frozen
 original absolute deadlines and new observations without renewing old authority. They are fixture
 controls, not a claim of native issuance or historical-cause reproduction. Required actual hosted
 browser journeys and existing native lifetime oracles remain the integration evidence.
+
+## Third candidate terminal disposition
+
+Run518 completed cancelled after supersession:122 jobs,113 successful/eight cancelled/one failed
+final acceptance;114 artifact API records. Both cancelled WebKit protection jobs had already
+failed their editor case before cancellation. Retained finite diagnostics show first flow
+Completed/None/200/one callback and exchange/Success/RpComplete, then repeated flow
+TokenShapeAccepted/Assertion/200/one callback and exchange/Failure/RpCallback. This locates failure
+after token-shape validation and before identity validation completes. It is consistent with the
+independently established fixture clock mismatch but does not uniquely prove expiry. No complete
+31-case summary was produced for those cancelled jobs; no full acceptance is claimed.
+
+## Fourth candidate — live-clock browser passes; body observation rejected
+
+[Run519](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41953885155), source
+`3aede5c9c7d8fe10cc01a1e9464ec61dcd867ccd`, tested merge
+`d4cb0e2b5ca33b0e770a04eb9983ac48b99f9913`, tree
+`f5b75b107691943c5fe71783f6768771bed48779`, completed with122 jobs:118 successful,
+three failed and one skipped. The failures are SQL native demo, PostgreSQL Chromium protection
+and final acceptance; merged coverage was skipped. There are115 nonexpired artifact API records,
+including both original failed reports. The independent reviewer retained121 finite job log receipts
+and the skipped coverage metadata. Raw artifact ZIPs were not downloaded or reparsed.
+
+Both WebKit protection lanes pass31/31, SQL Chromium protection31/31 and all four managed-consent
+lanes1/1. Both persistence suites pass21/provider, PostgreSQL native demo3/3, all98 named mutation
+kills with strict baseline/restored/source restoration, and the current104-case AppHost Harness
+pass. These establish corrected-source results, not unique causation of older failures.
+
+SQL demo job127004644765 passes2/3, failing creation-body capture after201 headers and before the
+Created screen or displayed secret were verified. PostgreSQL Chromium job127004706092 passes30/31,
+failing the lifecycle-disable body capture after its first managed flow completed successfully.
+Both report finite MissingData with page open, browser connected, expected location true, no service
+worker or redirect, and request-failed true. A missing inspector body is not proof that application-side
+consumption succeeded. Unlike the older feature019 run508, these failures had not yet established
+successful consumption of their respective mutation bodies. Their exact causes remain unproved.
+
+## Passive UI/native observation correction
+
+The user previously authorized documenting and bypassing Playwright issues. The reviewed correction
+removes the browser inspector body-cache dependency from these journeys, without intercepting fetch,
+cloning/teeing responses, replaying a POST, changing production code or extending any existing budget.
+It adopts one explicit observation strategy on every run, rather than catching a failure and passing.
+
+Creation still requires exactly one original protected POST,201 and exact security headers, actual
+Created heading/focus, canonical native32-byte secret output, and subsequent secret erasure/storage
+checks. Its original ETag is independently bound to the opaque ID observed in the already-required
+UI PUT: canonical same-origin item URL, original resource SHA256/revision1, identical actual If-Match,
+and revision2 response. No additional read or write is introduced to discover the ID.
+
+Before replacement, a separate trusted HTTPS native credential check varies only the secret across
+two requests with the same never-issued code, verifier, callback and client. A guaranteed distinct
+wrong secret must produce401/invalid_client; the original UI-displayed secret must produce
+400/invalid_grant. One shared12-second budget covers both requests and bounded4KiB error-body reads;
+normal TLS is retained, cookies and redirects are disabled, no retries occur, and no code/token/grant
+is obtained. This proves native client authentication of the original displayed credential, not PKCE
+success or literal response-body/DOM byte equality. The existing ManagedTokenHttpTests on both real
+providers now characterize this exact pair, require unchanged complete application/native/human/
+administrator state, then retain their genuine successful code exchange and cryptographic checks.
+Both focused provider executions pass with zero skips.
+
+Lifecycle transitions similarly retain one exact POST, security headers, resource-bound versions
+3→4→5, actual Updated heading/focus and visible Enabled/Disabled state, absent one-time secret output,
+theme/privacy checks and the subsequent genuine fresh managed journey. A real UI transport/body
+failure still fails those required visible-success assertions. Existing native HTTP body/schema/hash
+checks and frontend strict response-decoder/mapping tests remain required. The direct inspector
+body-to-DOM equality assertion is explicitly replaced, not claimed as still observed.
+
+Two new Harness controls reject resource/version drift and noncanonical or malformed secret output
+without exposing values. Current Harness106/106 passes; native Administrator inventory remains2475
+with unchanged names and metadata. Expected ordinary count becomes5527; the122-job,116-artifact,
+101-report,98-coverage-input/15-floor and98-mutation-kill obligations remain unchanged. Independent
+architecture and test reviews pass this scoped source correction; exact-head hosted acceptance is
+still required. No failed prior case or unavailable artifact inspection is counted as a pass.

@@ -31,7 +31,7 @@ suites are serialized. No operation timeout, MFA window, retry policy or coverag
 | Persistence `ManagedSchemaTests` and `LifecycleSchemaTests`, each provider | 6 passed/provider, no skips. Fresh/populated upgrade, exact historical data/history, idempotence, physical default and finite reason/FK constraints. |
 | Administrator lifecycle namespaces, PostgreSQL | Final33 application and11 managed cases passed (44 total), no skips. Includes native expiry, finite reasons, permission/MFA/waits/failures, independent peer, old artifacts, issuance races and delayed committed publication. |
 | Administrator lifecycle namespaces, SQL Server | Final33 application and11 managed cases passed (44 total), no skips, including accepted finite audit reasons, reason drift and expired-credential enable denial. |
-| Corrective AppHost Harness | 104 passed, zero skips, including deterministic MFA exhaustion, private-safe managed callback diagnostics and source-backed clock controls. |
+| Corrective AppHost Harness | 106 passed, zero skips, including deterministic MFA exhaustion, private-safe managed callback diagnostics source-backed clock controls and passive resource/credential binding controls. |
 | Full corrected Persistence | PostgreSQL21/21; SQL21/21 with serial execution. Earlier SQL20/21 container-startup failure is retained in the hosted correction record. |
 | Focused managed admission | One genuine BFF/issuer case per provider passed; full journey body remains unchanged. |
 | Host Applications tests | 235 passed, no skips, before final schema metadata refinement. |
@@ -73,6 +73,8 @@ the complete IDE0005 style verification pass. These are verification bookkeeping
 not relaxed gates. Corrected exact-head hosted acceptance remains required.
 
 The live-clock correction builds, passes104 Harness cases, full source quality/IDE0005 checks and complete unchanged2475-case Administrator discovery. Both focused mutation suites passed at a87a96d; run518 also passes both persistence21/provider and both native demos3/provider. Required corrected WebKit and final exact-head acceptance remain open.
+
+Run519 passes both live-clock WebKit protection suites31/provider and all98 mutation controls, but remains rejected for two inspector-body observation failures. The reviewed passive correction passes106 Harness cases and the exact paired native credential characterization on both providers. It replaces inspector body/DOM equality with actual UI consumption, independent request/version binding and original-credential native authentication; no fetch interception or mutation retry is used. See [bounded evidence](hosted-verification.md#passive-uinative-observation-correction).
 
 ## Reviews and remaining acceptance
 

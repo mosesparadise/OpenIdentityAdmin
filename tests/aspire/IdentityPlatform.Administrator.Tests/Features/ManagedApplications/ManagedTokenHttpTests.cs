@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
+using IdentityPlatform.Administrator.Tests.Features.Browser;
 using IdentityPlatform.Administrator.Tests.Features.Factors;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
@@ -27,6 +28,7 @@ public sealed class ManagedTokenHttpTests(BootstrapFixture fixture)
     public async Task Given_CreatedManagedClientAndFreshConsent_When_RealCodeAndBasicPkceExchangeComplete_Then_OnlyIdentityCredentialsAreIssued(string provider)
     {
         await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
+        await RequireOriginalCredentialAsync(test);
         var authority = await ManagedHumanEvidence.AuthorityAsync(test);
         var flow = new ManagedTokenFlow(test);
         await flow.ApproveAsync();
@@ -57,5 +59,15 @@ public sealed class ManagedTokenHttpTests(BootstrapFixture fixture)
         test.Http.Access = body.GetProperty(Access).GetString()!;
         using var denied = await test.Http.DirectGetAsync(ApplicationHttpFixture.ApiCollection);
         Assert.Equal(HttpStatusCode.Unauthorized, denied.StatusCode);
+    }
+
+    /// <summary>Characterizes the exact invalid-code credential pair on each real provider and proves it creates no native, human or administrator state.</summary>
+    private static async Task RequireOriginalCredentialAsync(ManagedCacheTestContext test)
+    {
+        var before = await ManagedJourneyEvidence.DigestAsync(test);
+        var application = await ApplicationHttpUpdateEvidence.SnapshotAsync(test.Http, test.Id);
+        await ApplicationCredentialEvidence.RequireAsync(test.Http.Environment.Profile.Issuer, test.ClientIdentifier, test.Secret, test.CallbackUri);
+        Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+        Assert.Equal(application.Digest, (await ApplicationHttpUpdateEvidence.SnapshotAsync(test.Http, test.Id)).Digest);
     }
 }

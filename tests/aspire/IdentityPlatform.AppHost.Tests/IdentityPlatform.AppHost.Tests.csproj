@@ -33,6 +33,9 @@
   <ItemGroup><Compile Include="../IdentityPlatform.Administrator.Tests/Fixtures/FactorClock.cs" Link="Fixtures/FactorClock.cs" /></ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorJourney.cs" Link="Features/LocalDemo/ApplicationEditorJourney.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorBinding.cs" Link="Features/LocalDemo/ApplicationEditorBinding.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationCredentialEvidence.cs" Link="Features/LocalDemo/ApplicationCredentialEvidence.cs" />
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationSubmission.cs" Link="Features/LocalDemo/ApplicationSubmission.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationStateJourney.cs" Link="Features/LocalDemo/ApplicationStateJourney.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorResponse.cs" Link="Features/LocalDemo/ApplicationEditorResponse.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/BrowserSecretOracle.cs" Link="Features/LocalDemo/BrowserSecretOracle.cs" />

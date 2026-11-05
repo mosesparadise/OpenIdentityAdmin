@@ -1,11 +1,10 @@
 using System.Globalization;
 using System.Text;
-using System.Text.Json;
 using Microsoft.Playwright;
 
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
-/// <summary>Captures one exact creation response before UI waits and reports only finite metadata if its body cannot be read.</summary>
+/// <summary>Retains finite diagnostic classification for historical inspector failures and a protected diagnostic sink.</summary>
 internal static class ApplicationEditorResponse
 {
     private const int MaximumMessageCharacters = 4096;
@@ -15,23 +14,6 @@ internal static class ApplicationEditorResponse
     private const string Evicted = "Request content was evicted from inspector cache";
     private static readonly CompositeFormat Summary = CompositeFormat.Parse(
         "application-editor response-body category={0} page-closed={1} browser-connected={2} expected-location={3} service-worker={4} redirected={5} request-failed={6}");
-
-    /// <summary>Reads the original response once without interception, retry, refetch or a background body task.</summary>
-    internal static async Task<JsonDocument> ReadAsync(IPage page, IResponse response, Uri expectedLocation)
-    {
-        try
-        {
-            return JsonDocument.Parse(await response.TextAsync());
-        }
-        catch (PlaywrightException error)
-        {
-            Report(() => Describe(error, new(page.IsClosed, page.Context.Browser?.IsConnected == true,
-                page.Url == expectedLocation.AbsoluteUri, response.FromServiceWorker,
-                response.Request.RedirectedFrom is not null, response.Request.Failure is not null)),
-                value => TestContext.Current.TestOutputHelper?.WriteLine(value));
-            throw;
-        }
-    }
 
     /// <summary>Diagnostic observation or sink failure cannot replace the original body-read failure.</summary>
     internal static void Report(Func<string> describe, Action<string> write)

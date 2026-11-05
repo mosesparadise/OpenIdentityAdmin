@@ -99,3 +99,12 @@ and native demos remain required; see [verification](verification.md).
 - Independent test review verified both focused mutation receipts at a87a96d, including actual
   method/trait selections, all four substitutions and restored source hashes. It explicitly does
   not claim the later clock fixture head has already passed hosted verification.
+
+- Architecture and test reviewers prefer passive UI/request binding over cloning the native fetch
+  response, because a tee changes cancellation/backpressure. The implemented creation/PUT ETag binding,
+  exact POST observer, canonical visible secret and lifecycle version/status checks pass source review.
+  Original displayed-secret authenticity is independently checked before replacement through the
+  paired invalid-code native requests; both-provider characterization requires unchanged full state.
+  Literal inspector-body/DOM equality is explicitly replaced, not preserved. No test fallback can
+  accept a failed real UI consumption. New binding controls are included in Harness106; actual
+  corrected hosted browser/demo verification remains required.

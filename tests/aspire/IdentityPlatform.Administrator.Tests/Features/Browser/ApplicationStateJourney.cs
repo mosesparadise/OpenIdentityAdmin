@@ -27,9 +27,15 @@ internal static class ApplicationStateJourney
     private const string Space = "Space";
     private const string Focused = "node => node === document.activeElement";
     private const string Post = "POST";
-    private const string EnabledField = "enabled";
-    private const string CredentialField = "credential";
-    private const string SecretField = "clientSecret";
+    private const string Precondition = "if-match";
+    private const string StatusLabel = "Application status";
+    private const string StatusRows = ".application-detail-grid > div";
+    private const string DescriptionValue = "dd";
+    private const string EnabledStatus = "Enabled";
+    private const string DisabledStatus = "Disabled";
+    private const string Secret = "#created-client-secret";
+    private const long BeforeDisableRevision = 3;
+    private const long BeforeEnableRevision = 4;
     private const string NoStore = "no-store";
     private const string CacheControl = "cache-control";
     private const string Password = "#password";
@@ -67,17 +73,27 @@ internal static class ApplicationStateJourney
         await page.Keyboard.PressAsync(Space);
         await Button(page, action).FocusAsync();
         var url = new Uri(origin, Collection + Uri.EscapeDataString(registration.Id) + (enabled ? EnableSuffix : DisableSuffix)).AbsoluteUri;
+        using var submissions = new ApplicationSubmission(page, Post, url);
         var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(Enter), item => item.Request.Method == Post && item.Url == url);
         Assert.Equal(Success, response.Status);
-        using var body = await ApplicationEditorResponse.ReadAsync(page, response, new Uri(origin, Applications));
-        Assert.Equal(enabled, body.RootElement.GetProperty(EnabledField).GetBoolean());
-        Assert.False(body.RootElement.TryGetProperty(SecretField, out _));
-        Assert.Equal(System.Text.Json.JsonValueKind.Object, body.RootElement.GetProperty(CredentialField).ValueKind);
+        var previous = enabled ? BeforeEnableRevision : BeforeDisableRevision;
+        Assert.True(await response.Request.HeaderValueAsync(Precondition) == ApplicationEditorBinding.Version(registration.Id, previous));
+        Assert.True(await ApplicationEditorBinding.HeadersAsync(response) == ApplicationEditorBinding.Version(registration.Id, previous + 1));
         await HeadingAsync(page, UpdatedTitle);
         Assert.True(await page.Locator(EditorHeading).EvaluateAsync<bool>(Focused));
+        var state = page.Locator(StatusRows).Filter(new()
+        {
+            Has = page.GetByText(StatusLabel, new()
+            {
+                Exact = true
+            })
+        }).Locator(DescriptionValue);
+        Assert.Equal(enabled ? EnabledStatus : DisabledStatus, await state.InnerTextAsync());
+        Assert.Equal(0, await page.Locator(Secret).CountAsync());
         await PresentationAsync(page, presentation);
         Assert.True(await Button(page, enabled ? Disable : Enable).IsVisibleAsync());
         await BrowserSecretOracle.StorageAsync(page, registration.Secrets);
+        submissions.RequireOnce();
     }
 
     /// <summary>Inspects each requested lifecycle state in both actual shell themes; callers without presentation retain their native demo scope.</summary>

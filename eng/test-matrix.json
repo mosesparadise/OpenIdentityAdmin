@@ -30,7 +30,7 @@
       "Core": 25,
       "Host": 1846,
       "Architecture": 5,
-      "AppHost": 104
+      "AppHost": 106
     },
     "PostgreSql": {
       "Persistence": 21,
