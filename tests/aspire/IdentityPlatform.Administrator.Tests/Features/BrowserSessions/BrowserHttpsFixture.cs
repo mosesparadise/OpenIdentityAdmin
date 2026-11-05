@@ -61,10 +61,10 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     }
 
     /// <summary>Arms one exact browser mutation before dispatch; only the actual BFF pipeline and server completion can finish it.</summary>
-    internal ApplicationRequestCompletion ObserveApplicationRequest(string path)
+    internal ApplicationRequestCompletion ObserveApplicationRequest(string path, bool observeDates = false)
     {
         Assert.Null(clientEndpoint.ApplicationCompletion);
-        var witness = new ApplicationRequestCompletion(path, () => clientEndpoint.ApplicationCompletion = null);
+        var witness = new ApplicationRequestCompletion(path, () => clientEndpoint.ApplicationCompletion = null, observeDates);
         clientEndpoint.ApplicationCompletion = witness;
         return witness;
     }

@@ -93,4 +93,4 @@ required by the environment; no parallel marker promises independent writes to s
 This table maps requirements to tasks; the linked verification record distinguishes passed local
 evidence from unexecuted hosted/browser/mutation acceptance.
 
-T016 evidence: exact native inventory and selection controls preserve every prior identity; original and focused lifecycle mutation suites each have strict both-provider baseline/kill/restored receipts. Current AppHost Harness104/104 includes clock and diagnostic regressions. Receipt source bindings and remaining exact-head browser/coverage acceptance are recorded in [verification](verification.md); T014/T015/T017 remain open.
+T016 evidence: exact native inventory and selection controls preserve every prior identity; original and focused lifecycle mutation suites each have strict both-provider baseline/kill/restored receipts. Current AppHost Harness110/110 includes clock, diagnostic, passive binding and final-publication regressions. Receipt source bindings and remaining exact-head browser/coverage acceptance are recorded in [verification](verification.md); T014/T015/T017 remain open.

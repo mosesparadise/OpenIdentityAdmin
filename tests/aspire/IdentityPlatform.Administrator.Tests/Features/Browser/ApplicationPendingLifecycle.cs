@@ -1,6 +1,6 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.ExceptionServices;
-using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;
@@ -31,9 +31,10 @@ internal static class ApplicationPendingLifecycle
     private const string ExpiredDisplay = "This display has expired.";
     private const string ExpiredSession = "Your session observation has ended.";
     private const string SessionCookie = "__Host-identity-admin-session";
-    private const string ApplicationField = "application";
-    private const string CredentialField = "credential";
-    private const string ExpiresField = "expiresAt";
+    private const string SecretExpiry = "Secret expires (UTC)";
+    private const string Parent = "..";
+    private const string Time = "time";
+    private const string DateTimeAttribute = "datetime";
     private const string SessionCeiling = "async minimum => { const r=await fetch('/bff/session',{cache:'no-store',redirect:'error'}); const s=await r.json(); return r.status===200 && s.authenticated===true && Date.parse(s.expiresAt)>minimum; }";
     private const string Logout = """
         async () => {
@@ -118,9 +119,12 @@ internal static class ApplicationPendingLifecycle
         var response = await page.RunAndWaitForResponseAsync(() => ApplicationLifecycleUi.CreateAsync(page),
             value => new Uri(value.Url).AbsolutePath == ApplicationLifecycleUi.Collection && value.Request.Method == Post);
         Assert.True(response.Headers.TryGetValue(Tag, out var version));
-        using var body = JsonDocument.Parse(await response.TextAsync());
         var original = DateTimeOffset.FromUnixTimeSeconds(now.ToUnixTimeSeconds() + ApplicationLifecycleUi.ShortLifetimeSeconds);
-        Assert.True(body.RootElement.GetProperty(ApplicationField).GetProperty(CredentialField).GetProperty(ExpiresField).GetDateTimeOffset() == original);
+        var displayed = await page.GetByText(SecretExpiry, new()
+        {
+            Exact = true
+        }).Locator(Parent).Locator(Time).GetAttributeAsync(DateTimeAttribute);
+        Assert.True(DateTimeOffset.TryParse(displayed, CultureInfo.InvariantCulture, DateTimeStyles.None, out var expiry) && expiry == original);
         Assert.True(await page.EvaluateAsync<bool>(SessionCeiling, original.ToUnixTimeMilliseconds()));
         probe.ExpectedPath = Api + ApplicationMutationProbe.Id + ReplaceSuffix;
         probe.ExpectedVersion = version;
@@ -134,7 +138,8 @@ internal static class ApplicationPendingLifecycle
         probe.Fault = Pause;
         var before = probe.Requests;
         ApplicationRequestCompletionControls.Require();
-        using var downstream = environment.ObserveApplicationRequest(BffPrefix + probe.ExpectedPath);
+        using var downstream = environment.ObserveApplicationRequest(BffPrefix + probe.ExpectedPath,
+            observeDates: boundary == ApplicationPendingBoundary.OriginalDeadline);
         using var write = await ApplicationLifecycleWrite.CreateAsync(page, new Uri(environment.Profile.ClientUri, BffPrefix + probe.ExpectedPath),
             navigation: boundary == ApplicationPendingBoundary.Navigation);
         var started = Stopwatch.GetTimestamp();
@@ -156,19 +161,19 @@ internal static class ApplicationPendingLifecycle
         progress.Mark(ApplicationLifecycleStage.Release);
         await CompleteAsync(probe, write, downstream, failure);
         progress.Mark(ApplicationLifecycleStage.RequestsJoined);
-        await RequireFinishedAsync(page, probe, write, boundary, now, before, progress);
+        if (boundary is ApplicationPendingBoundary.Session or ApplicationPendingBoundary.OriginalDeadline)
+        {
+            Assert.NotNull(write.Response);
+            RequireResult(write.Response, downstream, boundary, now);
+        }
+        await RequireFinishedAsync(page, probe, write, boundary, before, progress);
     }
 
     /// <summary>Checks the final returned UI and exact send counts only after all owned server and browser work has joined.</summary>
     private static async Task RequireFinishedAsync(IPage page, ApplicationMutationProbe probe, ApplicationLifecycleWrite write,
-        ApplicationPendingBoundary boundary, DateTimeOffset now, int before, ApplicationLifecycleProgress progress)
+        ApplicationPendingBoundary boundary, int before, ApplicationLifecycleProgress progress)
     {
         Assert.Equal(MutationCount, write.Requests);
-        if (boundary is ApplicationPendingBoundary.Session or ApplicationPendingBoundary.OriginalDeadline)
-        {
-            Assert.NotNull(write.Response);
-            await RequireResultAsync(write.Response, boundary, now);
-        }
         if (boundary != ApplicationPendingBoundary.Navigation)
         {
             await ApplicationLifecycleUi.HeadingAsync(page, ApplicationLifecycleUi.Problem);
@@ -233,17 +238,14 @@ internal static class ApplicationPendingLifecycle
     }
 
     /// <summary>Separates actual BFF session denial from a successful still-current response rejected solely by the older browser display ceiling.</summary>
-    private static async Task RequireResultAsync(IResponse response, ApplicationPendingBoundary boundary, DateTimeOffset now)
+    private static void RequireResult(IResponse response, ApplicationRequestCompletion downstream, ApplicationPendingBoundary boundary, DateTimeOffset now)
     {
         ApplicationLifecycleUi.RequireNoStore(response);
         Assert.Equal(boundary == ApplicationPendingBoundary.Session ? Unauthorized : Success, response.Status);
         if (boundary == ApplicationPendingBoundary.OriginalDeadline)
         {
-            using var body = JsonDocument.Parse(await response.TextAsync());
-            var details = body.RootElement.GetProperty(ApplicationField);
             var original = DateTimeOffset.FromUnixTimeSeconds(now.ToUnixTimeSeconds() + ApplicationLifecycleUi.ShortLifetimeSeconds);
-            Assert.True(details.GetProperty(ExpiresField).GetDateTimeOffset() > original);
-            Assert.True(details.GetProperty(CredentialField).GetProperty(ExpiresField).GetDateTimeOffset() > original);
+            Assert.True(downstream.HasLaterExpiries(original));
         }
     }
 

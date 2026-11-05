@@ -108,3 +108,15 @@ and native demos remain required; see [verification](verification.md).
   Literal inspector-body/DOM equality is explicitly replaced, not preserved. No test fallback can
   accept a failed real UI consumption. New binding controls are included in Harness106; actual
   corrected hosted browser/demo verification remains required.
+
+
+- Final deadline-observation architecture review passes the narrow final-BFF single-write witness,
+  exact attempt/seal/completion binding, feature restoration and DOM original-expiry comparison.
+  Test review finds no false-credit implementation defect but requires real canceled-token and
+  valid-first/failed-second calibration in addition to metadata, duplicate and forwarding controls.
+  Both inspector reads are replaced explicitly; server publication does not imply browser
+  consumption of intentionally suppressed JSON. Corrected runtime acceptance remains pending.
+
+- Final test re-review passes the added valid-first/failed-second and genuinely canceled-token
+  controls, including exact exception/token, unchanged bytes, feature restoration and stream
+  ownership. No scoped source blocker remains; hosted execution is still required.

@@ -31,7 +31,7 @@ suites are serialized. No operation timeout, MFA window, retry policy or coverag
 | Persistence `ManagedSchemaTests` and `LifecycleSchemaTests`, each provider | 6 passed/provider, no skips. Fresh/populated upgrade, exact historical data/history, idempotence, physical default and finite reason/FK constraints. |
 | Administrator lifecycle namespaces, PostgreSQL | Final33 application and11 managed cases passed (44 total), no skips. Includes native expiry, finite reasons, permission/MFA/waits/failures, independent peer, old artifacts, issuance races and delayed committed publication. |
 | Administrator lifecycle namespaces, SQL Server | Final33 application and11 managed cases passed (44 total), no skips, including accepted finite audit reasons, reason drift and expired-credential enable denial. |
-| Corrective AppHost Harness | 106 passed, zero skips, including deterministic MFA exhaustion, private-safe managed callback diagnostics source-backed clock controls and passive resource/credential binding controls. |
+| Corrective AppHost Harness | 110 passed, zero skips, including deterministic MFA exhaustion, private-safe diagnostics, clock/binding controls and four final-publication observation controls. |
 | Full corrected Persistence | PostgreSQL21/21; SQL21/21 with serial execution. Earlier SQL20/21 container-startup failure is retained in the hosted correction record. |
 | Focused managed admission | One genuine BFF/issuer case per provider passed; full journey body remains unchanged. |
 | Host Applications tests | 235 passed, no skips, before final schema metadata refinement. |
@@ -102,3 +102,5 @@ any eventual hosted receipt must state the actual evidence source and its limits
 
 Actual Windows Docker Desktop, qualified manual accessibility, precise A-009 certificate deferrals,
 Firefox deferral, six historical findings and human/vendor/production/public-release gates remain open.
+
+The OriginalDeadline correction builds both test projects with zero warnings/errors and passes110 Harness cases,74 selection controls, unchanged complete2475-case Administrator metadata and source quality without allowance growth. A preceding multi-node Administrator build lost three MSBuild workers without retained diagnostics; subsequent serial builds pass. The exact hosted lifecycle failure and correction limits remain in [hosted verification](hosted-verification.md#original-deadline-publication-observation-correction). Corrected hosted acceptance remains open.

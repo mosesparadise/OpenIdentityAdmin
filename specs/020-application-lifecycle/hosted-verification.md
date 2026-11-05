@@ -195,3 +195,62 @@ with unchanged names and metadata. Expected ordinary count becomes5527; the122-j
 101-report,98-coverage-input/15-floor and98-mutation-kill obligations remain unchanged. Independent
 architecture and test reviews pass this scoped source correction; exact-head hosted acceptance is
 still required. No failed prior case or unavailable artifact inspection is counted as a pass.
+
+
+## Fifth executed candidate — run521 remains rejected
+
+Source `a3ab349c9cd975c4cbb1c574035b6097c054fa0c`, tested merge
+`c2060d32f7bf9599bae2ddcb855c463e6ecd410a`, shared tree
+`330ca751ae4620a8682ddbe6e39b6f7099a7bffc`, unchanged main
+`b27669f04ad5992ae829c1250bd13f90e8c72446`.
+[Run521](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41958063555),
+attempt1, finished122 jobs:119 successful, two failed and one skipped. Both native demos3/3,
+both persistence suites21/21, all four BrowserProtection cells31/31 and all98 exact mutation
+controls pass. Those partial successes do not accept this candidate. Coverage is skipped;
+final acceptance fails because PostgreSQL Chromium ApplicationLifecycle passes only1/2 cases.
+
+The pending-write case fails after26.400 seconds at `ApplicationPendingLifecycle.PrepareReplacementAsync`
+line121: the older direct `response.TextAsync()`/parse statement, after actual successful
+creation UI/secret observation and ETag capture, before expiry/body/session-ceiling checks and
+before the paused OriginalDeadline exercise. Navigation/Visibility/Session boundaries returned
+before this failure. The sanitized category is `unclassified`; the sanitizer catches native
+Playwright/timeout failures, but no MissingData-specific diagnostic exists here. Exact transport
+cause remains unproved. Do not relabel it as the earlier known-category failure or claim that
+the unexecuted deadline assertion passed.
+
+Terminal review SHA256 `a33502600aaf9bf2bc833ba87d9f4e3c129c079dc6c2b10b5ecb428c0700d6dd`
+binds121 finite job logs and115 nonexpired artifact API records. Failure receipt SHA256
+`19ab81aab28dc609a4020b19af0d8cf5d9a374428850ac53c90695f658c78e08` retains source mapping.
+Failed artifact13384793152 has upload/API digest
+`2171400728ffcc001fec507780b4177783c4c6741425c77177a0060e0b4a9fb8` (265942 bytes).
+No raw artifact was downloaded or independently reparsed. No acceptance receipt was created.
+
+## Original-deadline publication observation correction
+
+The initial short credential expiry is now read from the successfully rendered
+`Secret expires (UTC)` time element and compared exactly to the independently computed deadline.
+The later replacement response is intentionally rejected by the expired UI, so that response's
+longer timestamps cannot be inferred from displayed output or from the upstream probe: the BFF
+may clamp the final observation expiry after upstream handling.
+
+For this one OriginalDeadline replacement only, the existing exact-request completion fixture
+installs a bounded write-through observer around the final BFF response stream. It forwards the
+same write and cancellation token once, then parses the actual successfully written bytes and
+retains only the two expiry timestamps. It restores the exact response-body feature before
+pipeline completion and never closes the server-owned stream. Missing, duplicate, malformed,
+oversized, failed or unsupported writes invalidate evidence without changing the response.
+Only the sealed original query-free POST, successful200/started/non-aborted response and both
+pipeline/OnCompleted signals can credit dates. Both final timestamps must strictly exceed the
+original deadline. Existing browser response identity/status/no-store, single-send, unknown
+outcome, expired-display, no-secret/privacy and unchanged5s/3s budgets remain required.
+
+This replaces the two remaining inspector-body comparisons in this deadline fixture with actual
+UI metadata and final server-publication evidence. It does not claim the browser consumed the
+suppressed JSON. No fetch interception/clone, retry, production change or lifetime extension is
+introduced. Four additional Harness cases calibrate actual byte/token forwarding and restoration,
+malformed/duplicate/missing/equal timestamps, original write failures, real cancellation and
+exact attempt/completion/seal ownership. Architecture and test reviewers accept this bounded
+design; test review additionally requires successful-first/failed-second and genuinely canceled
+token controls. Local builds pass with zero warnings/errors; all110 Harness cases,74 selection controls, full unchanged2475-case Administrator metadata and source quality pass. The initial multi-node build worker failure retains unknown cause; final serial builds pass. Corrected exact-head hosted acceptance remains pending.
+Expected ordinary total becomes5,531 across the same101 reports; Harness110, other inventories,
+122 jobs,98 coverage inputs/15 floors,98 mutation controls and116 artifacts remain unchanged.
