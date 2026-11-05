@@ -2,19 +2,22 @@
 
 ## Current checkpoint — 5 November 2026
 
-Feature021 is in progress on `128-application-grant-revocation`; draft PR124 is not
-accepted or merged. Remote main was reverified as
-`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Implementation is published at
-`a1b809cb4e0c075dd1475d6a048560fc7481f8d4`, superseding the requirements-only
-`a0665f7309a69d314556f1db15bd5a91ce0980d2` checkpoint. [Hosted run527 and its bounded
-corrections](hosted-verification.md) remain incomplete acceptance. This document records partial evidence,
-not a final exact-head acceptance receipt.
+Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is
+`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run531 at `0a5fc76` passes all 124 jobs.
+[Independent raw receipts](run531-evidence.json) reconcile 50 grant cases/provider, full
+persistence, native demos, retained protection browsers, 110 mutation kills and all 15
+unchanged module floors. T007/T011/T013/T017 now join T001–T004 as complete. Full feature
+acceptance remains open for the specific gaps in [tasks.md](tasks.md).
 
-The user selected disabled-until-success. Accepted work continues after logout/MFA
-expiry under recorded approval, with current effective-account and persisted permission
-checks for each batch. Neither decision remains pending. The UI adds explicit
-confirmation, durable reference/status/counts and same-key recovery for uncertain
-acceptance. Browser interaction and integrated acceptance remain unverified.
+Accepted jobs continue after logout/MFA expiry under recorded approval and current
+account/permission checks; disabled targets remain disabled until success and a separate
+re-enable. Both choices remain settled. Actual browser confirmation/progress/completion
+is verified; stopped-job browser recovery remains a separate outstanding obligation.
+
+Current additions extend the genuine issuance/disable races through revocation and add
+commit-timed cross-instance native entry validation with real peer exchange controls.
+They build and pass independent source review; hosted runtime remains pending. The
+historical local evidence below retains its original scope and limitations.
 
 ## Executed local evidence
 
@@ -65,17 +68,10 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-Run530 verifies alternate effective approver, retained-key expiry under fresh current
-authority and mismatched factor generation on both providers. The missing-lock fixture
-failed foreign-key setup and is corrected, with runtime still pending. Four new ordered
-admission/re-enable cases compile and are independently reviewed but await provider
-execution. Ordered issuance races, broader
-BFF downstream/generation failures, genuine cross-instance native entry-validation
-proof, complete module coverage and full applicable exact-head CI remain open. Run528
-provides verified both-provider native-demo/retained-engine grant execution and12new
-behavioral mutation kills, recorded in [hosted evidence](hosted-verification.md); it is
-rejected for a UI polling test and two unrelated package-restore failures. The current
-HTTPS and provider component passes do not close these broader obligations. See [tasks](tasks.md).
-The six new mutation controls and shared browser journeys are scheduled in ordinary full CI. All100 coverage-report inputs and15 module floors remain mandatory. No task is complete merely because its implementation exists. All historical findings,
-manual Windows/accessibility work, Firefox/A-009, vendor, production and public-release
-gates remain open. Refresh stays disabled.
+The exact remaining cases are listed by task in [tasks.md](tasks.md). Current issuer
+ordering/cross-instance additions await both-provider execution. Target and current-authority
+negatives, API/BFF deadline/cleanup/downstream/generation boundaries, actual ordered late
+failure capture and browser recovery remain open. Full CI success does not replace these
+unimplemented acceptance cases. All 100 coverage inputs and 15 unchanged floors remain
+mandatory for final delivery. Historical findings, manual Windows/accessibility work,
+Firefox/A-009, vendor, production and public-release gates remain open. Refresh stays disabled.

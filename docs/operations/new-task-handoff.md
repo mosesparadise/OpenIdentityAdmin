@@ -1,5 +1,15 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant-revocation verified progress — 5 November 2026:** run531 at `0a5fc76` passes all
+124 jobs. Raw evidence confirms 50 grant and 24 persistence cases/provider, both native
+demos, all four retained protection-browser cells, 110 mutation kills and all 15 coverage
+floors. Independent review closes feature021 T007/T011/T013/T017; T001–T004 were already
+complete. New issuance-race extensions and two commit-timed cross-instance cases build
+and pass source review, with hosted execution pending. Next: verify those additions,
+then complete the specific target/authority/API/BFF/browser-recovery gaps in feature021
+[tasks](../../specs/021-application-grant-revocation/tasks.md). PR124 remains draft; main and historical/manual/release gates stay unchanged.
+
+
 **Grant-revocation boundary progress — 5 November 2026:** run530 executes 47/48 grant
 cases successfully on each provider, including alternate approver, factor generation and
 24-hour replay expiry. The missing-lock fixture fails restrictive FK setup; its correction

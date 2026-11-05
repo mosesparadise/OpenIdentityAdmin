@@ -1,5 +1,45 @@
 # Grant-revocation hosted verification
 
+## Successful integrated checkpoint and issuer acceptance additions — 5 November 2026
+
+[Run531](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42123227146)
+at `0a5fc764cd5ea66feb5e8275089d7e8329c35f1d` finishes all 124 jobs successfully,
+with zero failures/skips. Independent [raw evidence reconciliation](run531-evidence.json)
+verifies 25 ZIP digests against GitHub metadata and 282 selected native passes: 50 grant
+and 24 persistence cases/provider, 32 in each retained protection-browser cell and three
+ordinary local-demo cases/provider. All 110 behavioral mutants are killed with clean
+baseline/restored runs and source hashes matching this exact head. The mutation merge
+ref has the expected main/head parents. The merged report passes all 15 modules at the
+unchanged 90% line/80% branch floors. Hosted gate/merge logs account for all 100 required
+coverage inputs; the reviewer did not separately download all 100 inputs. This is a
+successful CI checkpoint, not complete-spec acceptance or a public-release decision.
+
+Independent task review closes T007, T011, T013 and T017 against these receipts. It keeps
+all other unchecked tasks open for the concrete boundary gaps listed in tasks.md. The
+previous missing-lock fixture and all four admission/re-enable race cases now pass on
+both providers; their earlier pending-runtime statements below are superseded.
+
+Current additions preserve all 2,577 prior portable test records and ordering. The eight
+existing genuine issuance/disable race identities now continue through actual HTTPS grant
+admission, bounded batch completion, exact valid/inactive eligibility and preserved redeemed
+rows. Two new cross-instance cases use separate real HTTPS issuer hosts, independently
+invoke native token and authorization checks in owned requests, retain unrelated valid
+controls, and measure one five-second elapsed bound from the actual progress-commit callback.
+Peer exchange validates genuine signatures/issuer/nonce/lifetimes; old-code HTTP denial is
+explicitly separate from the causal entry oracle. Completion precedes re-enable and fresh
+password/MFA/consent. No production endpoint or audience was added.
+
+Source review found a missing Owned selection before resolving native managers in the
+new test harness; it is fixed. Initial compilation found a private token-type constant,
+nullable native identifiers and formatting errors, all corrected. Final build has zero
+warnings/errors, explicit-file format verification and code-quality checks pass, and all
+74 selection, 16 browser-story, eight evidence and three coverage controls pass. New native
+discovery totals are 2,579 cases, with 51 ordinary grant cases/provider. No local container
+retry is claimed with the shared filesystem nearly full. Corrected hosted execution of
+these new issuer cases is required before closing T009/T014. PR124 remains draft; historical,
+manual, Firefox/A-009 and production/public-release gates remain open.
+
+
 ## Ordered lifecycle acceptance and metadata fixture correction — 5 November 2026
 
 [Run530](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42121786444)

@@ -1,0 +1,2740 @@
+{
+  "run": 42123227146,
+  "head": "0a5fc764cd5ea66feb5e8275089d7e8329c35f1d",
+  "scope": "Raw selected reports and all mutation receipts; coverage input count reconciled from hosted gate/merge log, not re-downloaded all 100 inputs.",
+  "artifacts": [
+    {
+      "id": 13461630870,
+      "name": "foundation-administrator-SqlServer-chromium-browserprotection",
+      "sha256": "2017a7343ca8de2c50210b05404bf01bd0d2744ed473a3b0efd606dd737bf750",
+      "reports": [
+        {
+          "path": "tests/administrator-SqlServer-chromium-browserprotection/Administrator.trx",
+          "sha256": "0717beb36838eaade4aa929832fe5179cde30a1b3a135d4ce283e8694e7bdd6e",
+          "passed": 32,
+          "test_names_sha256": "70223bcc60c5aa383a6aba0ae16428e32455791cba929ab13c872e5b77350d10",
+          "grant_cases": [
+            "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"SqlServer\")"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13461487985,
+      "name": "foundation-administrator-SqlServer-webkit-browserprotection",
+      "sha256": "4787f2a4b87a42e6ffda7a34f88700aa22a623bfef8ae9fff3c1a9e66cdc812b",
+      "reports": [
+        {
+          "path": "tests/administrator-SqlServer-webkit-browserprotection/Administrator.trx",
+          "sha256": "b7dd0d9504e2fbb39f0ad651d267f12019a56dbc848fd703560a7477a7754ed6",
+          "passed": 32,
+          "test_names_sha256": "70223bcc60c5aa383a6aba0ae16428e32455791cba929ab13c872e5b77350d10",
+          "grant_cases": [
+            "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"SqlServer\")"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13460960526,
+      "name": "critical-mutations-SqlServer",
+      "sha256": "5089322d60a0a1207aa3f6caa335cb639a4a7b60887eed25e1d367030c8779c2",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "issuer",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562",
+            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs": "73be9b42e2f6003801a963763c77940c8f65e71bed947ed1aaf2c04c8522da3a",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs": "d1efa035784292c2e57981f6b5f6ec2dbc3dcf448c3e5bb11dcace0083100d18"
+          },
+          "mutations": [
+            {
+              "id": "pkce-syntax",
+              "mutant_sha256": "6dc6a0e10e64c8bc23d1fed7f53befa8ad427f95019f05116f952e95688876f6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.461,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "pkce-proof",
+              "mutant_sha256": "d68a2222cdd8e50078bd340649f8fb2dcc0ee5752eaaaab3ec436477d75db25c",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.218,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"SqlServer\", failure: \"wrong-verifier\")"
+              ]
+            },
+            {
+              "id": "browser-binding",
+              "mutant_sha256": "b9df8c9ebf425f0804a0d24efc66c4c33531647afcd8edc4d0f2a0bdaa83e1ad",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.392,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"SqlServer\", wrongCookie: True)"
+              ]
+            },
+            {
+              "id": "completed-session",
+              "mutant_sha256": "80bd203c177c25938d5a2c88c3a2dbd8d8e9bcb3ceac0abea95a6abd2c031794",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.592,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "account-eligibility",
+              "mutant_sha256": "f5b190ca1025e5e9271a64f8bb89fe1f9d75d3c095f2ced94802799ba5b419ae",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 51.079,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"SqlServer\", mutation: \"disabled\")"
+              ]
+            },
+            {
+              "id": "session-eligibility",
+              "mutant_sha256": "2e1dddafc47d25ff06bc36d8f3426236998c52f5c3b07440306d855b66afefc6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 51.158,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"SqlServer\", mutation: \"session-revoked\")"
+              ]
+            },
+            {
+              "id": "native-replay",
+              "mutant_sha256": "01551dce8a96ee58b00416a1a9d4581c114374b926271a65fde5f581322deb23",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 48.849,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"SqlServer\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 98.989,
+            "tests": [
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"SqlServer\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"SqlServer\", mutation: \"disabled\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"SqlServer\", mutation: \"session-revoked\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"SqlServer\", failure: \"wrong-verifier\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"SqlServer\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"SqlServer\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"SqlServer\", wrongCookie: True)"
+            ]
+          },
+          "restored": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 96.26,
+            "tests": [
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"SqlServer\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"SqlServer\", mutation: \"disabled\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"SqlServer\", mutation: \"session-revoked\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"SqlServer\", failure: \"wrong-verifier\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"SqlServer\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"SqlServer\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"SqlServer\", wrongCookie: True)"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460835830,
+      "name": "foundation-PostgreSql-apphost-localdemo",
+      "sha256": "741b4f00c6ef8a28ef56ddee3ffe094a1e667bbefcf73ca82e6fde5091fb448b",
+      "reports": [
+        {
+          "path": "tests/PostgreSql-apphost-localdemo/AppHost.trx",
+          "sha256": "3c1553b58241ec978360de19f03fe2d6be6120175e3228975c384b89834882eb",
+          "passed": 3,
+          "test_names_sha256": "4944710d27d0a00fdf109996f5446ad5ed2bf1d3b9f9a750a589189b7b50238b",
+          "grant_cases": []
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13460798450,
+      "name": "foundation-administrator-PostgreSql-webkit-browserprotection",
+      "sha256": "f3d73dd12ad2d7f6eac3881304a9402fc241c895d66de22a20fc12d4fee7d938",
+      "reports": [
+        {
+          "path": "tests/administrator-PostgreSql-webkit-browserprotection/Administrator.trx",
+          "sha256": "42007a11c9c9cd9a476265f1c7f503a5b40fd71c4fb6c64f4074b25bc7eefc53",
+          "passed": 32,
+          "test_names_sha256": "04a1a9e8e1937e452ed31dbb7c630681afc2f1bfbcb5a11bf770b675b686b020",
+          "grant_cases": [
+            "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"PostgreSql\")"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13460645188,
+      "name": "critical-mutations-PostgreSql",
+      "sha256": "3bdb982942b9139ae3f10b285c32acbd06d607a3181e5ef6d3dae3752a436e72",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "issuer",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562",
+            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs": "73be9b42e2f6003801a963763c77940c8f65e71bed947ed1aaf2c04c8522da3a",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs": "d1efa035784292c2e57981f6b5f6ec2dbc3dcf448c3e5bb11dcace0083100d18"
+          },
+          "mutations": [
+            {
+              "id": "pkce-syntax",
+              "mutant_sha256": "6dc6a0e10e64c8bc23d1fed7f53befa8ad427f95019f05116f952e95688876f6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 29.823,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "pkce-proof",
+              "mutant_sha256": "d68a2222cdd8e50078bd340649f8fb2dcc0ee5752eaaaab3ec436477d75db25c",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 28.567,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"PostgreSql\", failure: \"wrong-verifier\")"
+              ]
+            },
+            {
+              "id": "browser-binding",
+              "mutant_sha256": "b9df8c9ebf425f0804a0d24efc66c4c33531647afcd8edc4d0f2a0bdaa83e1ad",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 28.473,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"PostgreSql\", wrongCookie: True)"
+              ]
+            },
+            {
+              "id": "completed-session",
+              "mutant_sha256": "80bd203c177c25938d5a2c88c3a2dbd8d8e9bcb3ceac0abea95a6abd2c031794",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 28.219,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "account-eligibility",
+              "mutant_sha256": "f5b190ca1025e5e9271a64f8bb89fe1f9d75d3c095f2ced94802799ba5b419ae",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 30.622,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"disabled\")"
+              ]
+            },
+            {
+              "id": "session-eligibility",
+              "mutant_sha256": "2e1dddafc47d25ff06bc36d8f3426236998c52f5c3b07440306d855b66afefc6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 28.894,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"session-revoked\")"
+              ]
+            },
+            {
+              "id": "native-replay",
+              "mutant_sha256": "01551dce8a96ee58b00416a1a9d4581c114374b926271a65fde5f581322deb23",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 28.783,
+              "tests": [
+                "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"PostgreSql\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 60.413,
+            "tests": [
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"PostgreSql\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"disabled\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"session-revoked\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"PostgreSql\", failure: \"wrong-verifier\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"PostgreSql\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"PostgreSql\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"PostgreSql\", wrongCookie: True)"
+            ]
+          },
+          "restored": {
+            "total": 7,
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 57.408,
+            "tests": [
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(provider: \"PostgreSql\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"disabled\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Exchange_rechecks_current_state_even_without_scope_parameter(provider: \"PostgreSql\", mutation: \"session-revoked\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Code_exchange_rejects_incorrect_proof_and_client_bindings(provider: \"PostgreSql\", failure: \"wrong-verifier\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.DenialTests.Matching_sha256_does_not_allow_a_short_verifier(provider: \"PostgreSql\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.InteractionRaceTests.Completed_interaction_consumption_requires_its_exact_new_session(provider: \"PostgreSql\")",
+              "IdentityPlatform.Issuer.Tests.Features.Protocol.RequestBindingTests.Another_browsers_valid_antiforgery_cannot_replace_correlation_binding(provider: \"PostgreSql\", wrongCookie: True)"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460620351,
+      "name": "managed-application-mutations-PostgreSql",
+      "sha256": "c70c6753976c00a8eb36f67109f84adad5722486e5fc5d595219a0986f9fd1d8",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "managed-applications",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs": "02363ef3ca8c223f6cac8aa0397fd2a425352dba4fed272aaf512e83fb2324d7",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs": "69fcd8452d05d78089db8ec5ac47561816dfb4305023243828936add8fc7e744",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs": "337c7bb49a51571473e0475a632a0a6ec68a02feca110d9c3bb9f3aadd5a1268",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+          },
+          "mutations": [
+            {
+              "id": "managed-explicit-consent",
+              "mutant_sha256": "d94a757da6dd19ba39ae6d6fbe9a9176ae3718d66ba7bb0894264ebfc2e2d065",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 41.207,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: False)"
+              ]
+            },
+            {
+              "id": "managed-claim-isolation",
+              "mutant_sha256": "301289a6cbc468a9280063ed56c022612ef4e544b747eade530fb891583dbda2",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 48.104,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"access\")"
+              ]
+            },
+            {
+              "id": "managed-request-consumption",
+              "mutant_sha256": "88610ae677e2a21c955f555c20cb7fce66fe11c4e555fd4b4350e287a0f2995f",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 52.145,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: False)"
+              ]
+            },
+            {
+              "id": "managed-code-consumption",
+              "mutant_sha256": "730b7f714adcb2713a6b250af2eb4e806177f60c27f4c725a3bbd4806d61f513",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 40.878,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: True)"
+              ]
+            },
+            {
+              "id": "managed-current-credential",
+              "mutant_sha256": "d38cd7c6a6a19f0d32a1f695e79555e16e32810de6a89c05d360ac16075920d2",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 43.07,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Credential)"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 86.543,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"access\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Credential)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: True)"
+            ]
+          },
+          "restored": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 80.17,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"PostgreSql\", approve: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"PostgreSql\", target: \"access\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"PostgreSql\", exchange: True, defect: Credential)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"PostgreSql\", exchange: True)"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460433355,
+      "name": "foundation-coverage",
+      "sha256": "4f787694891136dd14c1d7dafe41bd78a9a6a5dcee18efb6c6977a94b567163f",
+      "reports": [],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13460423354,
+      "name": "foundation-administrator-PostgreSql-chromium-browserprotection",
+      "sha256": "fa575a6326010d2c2f070898c4345ce7d7aba56d2d0739db7adba2dadc382aef",
+      "reports": [
+        {
+          "path": "tests/administrator-PostgreSql-chromium-browserprotection/Administrator.trx",
+          "sha256": "fe058762f0d1c685f318c969a83d22ecf041d96472fabfde986c8d550d81ec88",
+          "passed": 32,
+          "test_names_sha256": "04a1a9e8e1937e452ed31dbb7c630681afc2f1bfbcb5a11bf770b675b686b020",
+          "grant_cases": [
+            "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"PostgreSql\")"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13460353280,
+      "name": "application-mutations-PostgreSql",
+      "sha256": "43a65f774befc951a094819ebf21e450d56f2dfdc88021f813ee71f1ca8ebf44",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "applications",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
+            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs": "9c68c03ce4e2530fdd977f75248a84c34de8a9db0e83af5a6d7dafe369c40d95",
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
+            "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs": "01980ffa7577ba024785eb93244642e9c659092679846829bcc4bbc4043a8610",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+          },
+          "mutations": [
+            {
+              "id": "application-read-commit",
+              "mutant_sha256": "106087a7248e7f8f31be52cd1a8a5bd6d27f6fc90ec1725a1bda2bd08403dd56",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.807,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-projection-overflow",
+              "mutant_sha256": "fcefa77f6705b4003421d6acad01a2c0a86a31df5b820a04e8abfde833bc93c9",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 31.902,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-write-permission",
+              "mutant_sha256": "9f287f5d626fc14103c534c843547386a6bfc87c2424178d015319171d7427eb",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.475,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-strong-version",
+              "mutant_sha256": "1ee0def1fcf5812641330bf230c4e716aaff759c0735bf83035d3adf7d76065a",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.986,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-recent-mfa",
+              "mutant_sha256": "589927e8eb96338d82d6d410aaf42c71c73d670afafd33a6419c8c3f200f1a4f",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.377,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-json-csrf",
+              "mutant_sha256": "1a8290ea5666665a0aeb8be87dc1e7caef11527fdf63b2658cb7e45180acd5dd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 36.057,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-audit-atomicity",
+              "mutant_sha256": "6dde1938666a919bd0f54edb947f7f3ef20a96af8bef2d88314e36aadbf8e8fb",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 36.739,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditDeleted)"
+              ]
+            },
+            {
+              "id": "application-credential-expiry",
+              "mutant_sha256": "721c8360f8e8a5a11e667d55bd607738d7a2231348e0f6768f1516120c213c69",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 36.144,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: CredentialExpired)"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 55.171,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditDeleted)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: CredentialExpired)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 50.462,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: AuditDeleted)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"PostgreSql\", defect: CredentialExpired)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        },
+        {
+          "version": 1,
+          "suite": "application-lifecycle",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+          },
+          "mutations": [
+            {
+              "id": "application-lifecycle-enforcement",
+              "mutant_sha256": "34a09c17595bae6deaaee34a5dfadb7d92f5be6303478f2dd60964b6d697bafd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 42.087,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-lifecycle-permission",
+              "mutant_sha256": "69070b669c7bf7358192940415b53f8367dc6143df86fd671ac7de8bff08d71d",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.598,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: False)"
+              ]
+            },
+            {
+              "id": "application-lifecycle-revision",
+              "mutant_sha256": "1f9b2e66bc199fa962be1f5f00f89c6d4bb5d102cb9ec08725310241504da1cd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 32.495,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "application-lifecycle-reason",
+              "mutant_sha256": "e8ce7bb495e9b2a609c6794196eb97fafaae899cf03c4b6331adcd5fa2ae7297",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.411,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"PostgreSql\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 43.331,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: False)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 46.893,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"PostgreSql\", enabled: False, expireMfa: False)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        },
+        {
+          "version": 1,
+          "suite": "application-grants",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs": "720ddc67bc697ca9056a44b5f6216dd60d347be55ca86f840f40701731df7549",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs": "abd7e08725b9da10027abe8c9454253f2eacc9379ffbff044aecf8ee074643b9",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs": "ec630534d0a4e74c87b5c89e0875b337a27c8f80bafa44b4b07f84101ff6b9e4",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs": "6ea1f936b9abd40014b277043ed51d8d36e727042531f6f539885c19d72d9603",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+          },
+          "mutations": [
+            {
+              "id": "grant-enable-conflict",
+              "mutant_sha256": "8d94ac189af0d266c2a0cc8ef406bcc1e3c48879e377e464afc8e0582b5793c9",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.341,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "grant-current-permission",
+              "mutant_sha256": "4266d13697e24578ce3022daa58124756eddfe97059fa592a773eb089199f4da",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.289,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "grant-batch-limit",
+              "mutant_sha256": "016366812046d5bc13ae634bcad398ade0c21f5df357ff0cff990119b650380c",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.301,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 1)"
+              ]
+            },
+            {
+              "id": "grant-inactive-token",
+              "mutant_sha256": "3d17c704c107f71fe3e7d195591b53750fe7323c3dcfc7c13b7954edb0977e35",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.638,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "grant-effective-approval",
+              "mutant_sha256": "d7c3d1eb30b85ff88896bbb13f844b71ba0d5a6aae02e5ab050bfd2d79b2e803",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.555,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "grant-frozen-output",
+              "mutant_sha256": "b1980192eae737740e6c925e78dd84000364ab9aa2f6300454812a0323036d43",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.597,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: MemoryOutput)"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 52.434,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: MemoryOutput)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 1)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 52.322,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: MemoryOutput)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 1)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460299721,
+      "name": "application-mutations-SqlServer",
+      "sha256": "431a7aeadf73fdd02f5d2c0a8a000cacbcc30cf28cad397e4fa1277caed81c24",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "applications",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
+            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs": "9c68c03ce4e2530fdd977f75248a84c34de8a9db0e83af5a6d7dafe369c40d95",
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
+            "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs": "01980ffa7577ba024785eb93244642e9c659092679846829bcc4bbc4043a8610",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+          },
+          "mutations": [
+            {
+              "id": "application-read-commit",
+              "mutant_sha256": "106087a7248e7f8f31be52cd1a8a5bd6d27f6fc90ec1725a1bda2bd08403dd56",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.672,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-projection-overflow",
+              "mutant_sha256": "fcefa77f6705b4003421d6acad01a2c0a86a31df5b820a04e8abfde833bc93c9",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 48.14,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-write-permission",
+              "mutant_sha256": "9f287f5d626fc14103c534c843547386a6bfc87c2424178d015319171d7427eb",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.108,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-strong-version",
+              "mutant_sha256": "1ee0def1fcf5812641330bf230c4e716aaff759c0735bf83035d3adf7d76065a",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 52.455,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-recent-mfa",
+              "mutant_sha256": "589927e8eb96338d82d6d410aaf42c71c73d670afafd33a6419c8c3f200f1a4f",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 54.149,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-json-csrf",
+              "mutant_sha256": "1a8290ea5666665a0aeb8be87dc1e7caef11527fdf63b2658cb7e45180acd5dd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 59.165,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-audit-atomicity",
+              "mutant_sha256": "6dde1938666a919bd0f54edb947f7f3ef20a96af8bef2d88314e36aadbf8e8fb",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.113,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditDeleted)"
+              ]
+            },
+            {
+              "id": "application-credential-expiry",
+              "mutant_sha256": "721c8360f8e8a5a11e667d55bd607738d7a2231348e0f6768f1516120c213c69",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.398,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: CredentialExpired)"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 82.695,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditDeleted)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: CredentialExpired)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 78.074,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: AuditDeleted)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationFailureTests.Given_PostSaveFailure_When_CreateRuns_Then_AllNativePolicyAndAuditChangesRollBack(provider: \"SqlServer\", defect: CredentialExpired)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ConcurrentCommands_When_ClientOrVersionMatches_Then_OnlyOneMutationAndAuditCommit(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_ExpiredRecentMfa_When_ReplacementIsRequested_Then_CredentialIsPreservedAndOrdinaryEditStillWorks(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReadOwnershipTests.Given_ApiReadMode_When_AnyCommitPathIsAttempted_Then_AllWritesRemainUncommitted(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationReaderTests.Given_OverlongLookaheadMetadata_When_PageRead_Then_ProjectionFailsClosed(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationTransportTests.Given_DurableGeneration_When_JsonProofIsForeignOrStale_Then_NoUpstreamMutationIsSent(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        },
+        {
+          "version": 1,
+          "suite": "application-lifecycle",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+          },
+          "mutations": [
+            {
+              "id": "application-lifecycle-enforcement",
+              "mutant_sha256": "34a09c17595bae6deaaee34a5dfadb7d92f5be6303478f2dd60964b6d697bafd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 60.682,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-lifecycle-permission",
+              "mutant_sha256": "69070b669c7bf7358192940415b53f8367dc6143df86fd671ac7de8bff08d71d",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 54.231,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)"
+              ]
+            },
+            {
+              "id": "application-lifecycle-revision",
+              "mutant_sha256": "1f9b2e66bc199fa962be1f5f00f89c6d4bb5d102cb9ec08725310241504da1cd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 55.035,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "application-lifecycle-reason",
+              "mutant_sha256": "e8ce7bb495e9b2a609c6794196eb97fafaae899cf03c4b6331adcd5fa2ae7297",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.511,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 70.628,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 4,
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 71.271,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleAuthorityTests.Given_MissingLifecycleGrantOrExpiredMfa_When_TransitionRequested_Then_DeniedWithoutMutationWhileOrdinaryEditWorks(provider: \"SqlServer\", enabled: False, expireMfa: False)",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleFailureTests.Given_PersistedLifecycleReasonChanged_When_VerifiedBeforeCommit_Then_ExactStateRollsBack(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationLifecycleTests.Given_ManagedRegistration_When_DisabledAndEnabled_Then_VersionsAdvanceWithoutCredentialOrNativeChanges(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleAdmissionTests.Given_DisabledRegistration_When_FirstIssuerRequestArrives_Then_AdmissionIsUnavailableWithoutStateChanges(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        },
+        {
+          "version": 1,
+          "suite": "application-grants",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs": "720ddc67bc697ca9056a44b5f6216dd60d347be55ca86f840f40701731df7549",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs": "abd7e08725b9da10027abe8c9454253f2eacc9379ffbff044aecf8ee074643b9",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs": "ec630534d0a4e74c87b5c89e0875b337a27c8f80bafa44b4b07f84101ff6b9e4",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs": "6ea1f936b9abd40014b277043ed51d8d36e727042531f6f539885c19d72d9603",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+          },
+          "mutations": [
+            {
+              "id": "grant-enable-conflict",
+              "mutant_sha256": "8d94ac189af0d266c2a0cc8ef406bcc1e3c48879e377e464afc8e0582b5793c9",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 55.71,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "grant-current-permission",
+              "mutant_sha256": "4266d13697e24578ce3022daa58124756eddfe97059fa592a773eb089199f4da",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 54.824,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "grant-batch-limit",
+              "mutant_sha256": "016366812046d5bc13ae634bcad398ade0c21f5df357ff0cff990119b650380c",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 54.861,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 1)"
+              ]
+            },
+            {
+              "id": "grant-inactive-token",
+              "mutant_sha256": "3d17c704c107f71fe3e7d195591b53750fe7323c3dcfc7c13b7954edb0977e35",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.772,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "grant-effective-approval",
+              "mutant_sha256": "d7c3d1eb30b85ff88896bbb13f844b71ba0d5a6aae02e5ab050bfd2d79b2e803",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.949,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "grant-frozen-output",
+              "mutant_sha256": "b1980192eae737740e6c925e78dd84000364ab9aa2f6300454812a0323036d43",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 52.648,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: MemoryOutput)"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 72.824,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: MemoryOutput)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 1)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 71.602,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: MemoryOutput)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 1)",
+              "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460224868,
+      "name": "browser-session-mutations-SqlServer",
+      "sha256": "be48768596378a35ea2f587ad1302be14f763c63af75312a28ec88012fe52e3f",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "browser-session",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs": "57d538dffa7c9ead05958d1767be580657118c9ae96d217353c8cbac2ab0db64",
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs": "ea6a18aef60b54d35a2275fa752c28e754e2a7dfcc5f45deb3af95b22f1f5523",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs": "b40755ea963bfd22ccb5666b35a380002ae854b76d7245ccc9d26da5e2d82b04",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs": "298c8bbd56afb54059977c580330742828ad31a1e89732111be79e58ee6e34a9",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs": "8b4038a3c04858739500284a67aee6c4248dc621fffcd808f974c01a96f6ebea"
+          },
+          "mutations": [
+            {
+              "id": "browser-intent-binding",
+              "mutant_sha256": "781c6fa4688f03bc10188ef4311c2066712b69c119469278dd75b68b01dc6cbc",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 52.717,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-source-deadline",
+              "mutant_sha256": "7f4af9a22b76f3ff30ec1121fcbbce963b2c02411db45551249c4a7b8b19c02e",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 52.698,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-generation-binding",
+              "mutant_sha256": "7dba1c0bdd0be2d973cb00d5ab9edab5acba74f4ab6edee43608378e9f176740",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 51.554,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-antiforgery-binding",
+              "mutant_sha256": "74927313544f2ccf7202ef67b1167aa2dbb2eaa9e0e0d2dcb6762823caab6e75",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 47.977,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-local-revocation",
+              "mutant_sha256": "4ca294163a1d036f7a4bf8a52388b51a8993165136a169cc64af3dce4a4aa35b",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 48.814,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-issuer-source",
+              "mutant_sha256": "bf97cf41e172f1be34d60103bb3aeffe4962ebba360726174477dae79e537ce6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 51.236,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-return-once",
+              "mutant_sha256": "ca5c4b2a221541495c17779fe613c822ff4f156b0d0ad9d19afa63c00eadeb6d",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 51.96,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "browser-logout-publication",
+              "mutant_sha256": "9f102e0a968560e7514834679b751ae46a3a45a6424e1f8ac780d9d01368903c",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 49.202,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"SqlServer\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 87.961,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 85.91,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460113977,
+      "name": "administrator-protocol-mutations-PostgreSql",
+      "sha256": "ea76a944daeb1162e6253ea2d9da4cc7c419ed2d4e2e45488695d3f60ecee626",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "administrator-protocol",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs": "15693c40294cc1d52857a61d2d97e88a872456331a942a1d05039ba810d54cca",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs": "5f76c9ce20016a0b434fb0860acf0c49c8fb7bebdef001e31e0c3eb517130387",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs": "d553f07a6fd6192bb8715db57ec4fa82a4796eba43d7c68f60bb6a1342236bd8"
+          },
+          "mutations": [
+            {
+              "id": "protocol-current-authority",
+              "mutant_sha256": "3daa707a60a6ebe2fc15c283ce2d9633d85823e4cab3ce29425addf9e5d8caed",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 30.799,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "protocol-assertion-replay",
+              "mutant_sha256": "a46fd046a4d6c98661b56c9037cd752594f17956637debcee73734b5ad07a88a",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 32.136,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "protocol-profile-binding",
+              "mutant_sha256": "82f9eebc60e572a8ebe0bdce2f3d65469a557ca9e4b59c1a3cfe25df44bf60d6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 31.515,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 43.21,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 37.987,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13460099699,
+      "name": "governance-mutations-SqlServer",
+      "sha256": "bb96402917195e63c67b7ff3805cf80eb4f8eb7a6b1094b314abbfa1e51c7a65",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "governance",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs": "8d5c2fb1ec4253cf7da69f4b7496834e862b8c5ac0350b8798d3ed723a2cd13a",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs": "084b6cb33e893b0b69849b435ac9c119bcdee325bf6c1408fcb465dec7c9288e",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs": "89bdcc8a7c9eb1552579d94dd4a59c0f13c89bb0b54cae73de911cce22aa99bd",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs": "fe08c62c9ba7a4f89e394801b2f00281dd3612f3d224cb940c097b652c83756e",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs": "d2383e37ab2b116567b8f98738f8977f1783fa0164ce668b6ef4e078ec6a066f",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs": "e14876521f59f8114cf01dcbb15cb561ba9c5f41623641d4b30c8a66fedd32e4"
+          },
+          "mutations": [
+            {
+              "id": "governance-current-grants",
+              "mutant_sha256": "b8d4359d59c56222cf6d3b40bcfb1b5970c78bf3d11430b2120feb1ce80609a4",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 42.83,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies(provider: \"SqlServer\", permission: \"administrators.assign\")"
+              ]
+            },
+            {
+              "id": "omitted-witness-lock",
+              "mutant_sha256": "d5f94ffb638eba5bb2e3c532acd42d8298c998796034606dde6fa5c70b712df9",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.768,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "governance-audit",
+              "mutant_sha256": "b413677c2d4230f0799d2f9c59759b69f78848d315ec8d6335f7d5469fe39d37",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 43.186,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack(provider: \"SqlServer\", condition: \"audit-insert-denied\")"
+              ]
+            },
+            {
+              "id": "governance-last-administrator",
+              "mutant_sha256": "8f9d1619728a002ef9efc8086afd2434e5033525281993a909efde28d61caf8a",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 42.653,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies(provider: \"SqlServer\", variant: \"remove-membership\")"
+              ]
+            },
+            {
+              "id": "governance-stale-proof",
+              "mutant_sha256": "3d4c22b56df33c41bc9a5409dc54caf5f194713db0d4cf2b4784ed4a1c35b791",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 43.264,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies(provider: \"SqlServer\", condition: \"proof-expires\")"
+              ]
+            },
+            {
+              "id": "governance-version",
+              "mutant_sha256": "5a1ef66c510f84ec5d87a07e20c858312563cf1fb8e6cb7fb28822cfd5d2a7f3",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 42.862,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt(provider: \"SqlServer\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 61.614,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies(provider: \"SqlServer\", permission: \"administrators.assign\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies(provider: \"SqlServer\", variant: \"remove-membership\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack(provider: \"SqlServer\", condition: \"audit-insert-denied\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies(provider: \"SqlServer\", condition: \"proof-expires\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 58.354,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies(provider: \"SqlServer\", permission: \"administrators.assign\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies(provider: \"SqlServer\", variant: \"remove-membership\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack(provider: \"SqlServer\", condition: \"audit-insert-denied\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies(provider: \"SqlServer\", condition: \"proof-expires\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13459878665,
+      "name": "governance-mutations-PostgreSql",
+      "sha256": "99270f8bc75f643c876da09d0d0243c10ff1bf3fa653d31569483efa59df6f15",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "governance",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs": "8d5c2fb1ec4253cf7da69f4b7496834e862b8c5ac0350b8798d3ed723a2cd13a",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs": "084b6cb33e893b0b69849b435ac9c119bcdee325bf6c1408fcb465dec7c9288e",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs": "89bdcc8a7c9eb1552579d94dd4a59c0f13c89bb0b54cae73de911cce22aa99bd",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs": "fe08c62c9ba7a4f89e394801b2f00281dd3612f3d224cb940c097b652c83756e",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs": "d2383e37ab2b116567b8f98738f8977f1783fa0164ce668b6ef4e078ec6a066f",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs": "e14876521f59f8114cf01dcbb15cb561ba9c5f41623641d4b30c8a66fedd32e4"
+          },
+          "mutations": [
+            {
+              "id": "governance-current-grants",
+              "mutant_sha256": "b8d4359d59c56222cf6d3b40bcfb1b5970c78bf3d11430b2120feb1ce80609a4",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 36.772,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies(provider: \"PostgreSql\", permission: \"administrators.assign\")"
+              ]
+            },
+            {
+              "id": "omitted-witness-lock",
+              "mutant_sha256": "d5f94ffb638eba5bb2e3c532acd42d8298c998796034606dde6fa5c70b712df9",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 39.447,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "governance-audit",
+              "mutant_sha256": "b413677c2d4230f0799d2f9c59759b69f78848d315ec8d6335f7d5469fe39d37",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 37.036,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack(provider: \"PostgreSql\", condition: \"audit-insert-denied\")"
+              ]
+            },
+            {
+              "id": "governance-last-administrator",
+              "mutant_sha256": "8f9d1619728a002ef9efc8086afd2434e5033525281993a909efde28d61caf8a",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.4,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies(provider: \"PostgreSql\", variant: \"remove-membership\")"
+              ]
+            },
+            {
+              "id": "governance-stale-proof",
+              "mutant_sha256": "3d4c22b56df33c41bc9a5409dc54caf5f194713db0d4cf2b4784ed4a1c35b791",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.75,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies(provider: \"PostgreSql\", condition: \"proof-expires\")"
+              ]
+            },
+            {
+              "id": "governance-version",
+              "mutant_sha256": "5a1ef66c510f84ec5d87a07e20c858312563cf1fb8e6cb7fb28822cfd5d2a7f3",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.371,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt(provider: \"PostgreSql\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 52.612,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies(provider: \"PostgreSql\", permission: \"administrators.assign\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies(provider: \"PostgreSql\", variant: \"remove-membership\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack(provider: \"PostgreSql\", condition: \"audit-insert-denied\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies(provider: \"PostgreSql\", condition: \"proof-expires\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 49.903,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.ActorTests.Given_OtherwiseCurrentActor_When_RequiredPermissionIsMissing_Then_CommandDenies(provider: \"PostgreSql\", permission: \"administrators.assign\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.CommandTests.Given_LastUsableAdministrator_When_VoluntaryAuthorityIsDestroyed_Then_CommandDenies(provider: \"PostgreSql\", variant: \"remove-membership\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Commands.VersionTests.Given_StableAuthorityVersion_When_ActivityAndGovernedChangesOccur_Then_OnlyCommittedAuthorityChangesAdvanceIt(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.AtomicityTests.Given_NativeWritesBeforeCommit_When_OperationFails_Then_AllGovernedStateRollsBack(provider: \"PostgreSql\", condition: \"audit-insert-denied\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.BoundaryTests.Given_InitiallyValidProof_When_TimeChangesBeforeProtectedWrite_Then_CommitDenies(provider: \"PostgreSql\", condition: \"proof-expires\")",
+              "IdentityPlatform.Administrator.Tests.Features.Governance.Failures.WitnessOrderingTests.Given_FinalWitnessObservation_When_MandatoryLockoutRacesNativeCommit_Then_WitnessLockSerializesTheCommit(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13459564730,
+      "name": "administrator-mutations-SqlServer",
+      "sha256": "30f350cc59206ead33bbf780e880cbd8b7a42b98899ed312d55d2eb37cc70a1b",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "administrator",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs": "3eb3aa0ca5246acb25418021841510cfae415a8bc1affcc97c6edaed0d0e921d",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs": "09361a786cec60640f3aaeda62f2329db2f47184122e15eea3e5c37d711df118",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs": "6ebc82c66bfadfc904abfeafdd7525d0d9b0db50ad8f24dfca10218ada66f530",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs": "656b42d498aafe0d202c95ade60a8ff2d24db06028366034c42eac70b7c22eb3",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs": "af2fc191f6e3f920cd9019c466fcabfeddb023e6630b181ff7eae273b78fafdc",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs": "a7d428921609fc63d168873d3601d87e8e0d9e729d2e80249c6923a6bb2a99fc",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs": "7701c6318bd5b963178b8f7bcef23d77713c04c5285a977442b8dd330c5f098c"
+          },
+          "mutations": [
+            {
+              "id": "administrator-replay",
+              "mutant_sha256": "3d2ea0d2f8d2c6d1ebd8284cf4288be9ad45b64ce150f071d06a84fcab1eddd4",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 47.462,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-password-budget",
+              "mutant_sha256": "3676eaba3e4b36ddb409e488bdbafd420aa768d6bcaa1400cc71ca83ec8ae43b",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 46.571,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-clock-fence",
+              "mutant_sha256": "b5cb3ea7a256ed799cf6f23aab45896f6433fb106171d7317a292655f099a126",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 46.111,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-audit",
+              "mutant_sha256": "efdd077cd3e61a6b75c5537be7dede3e49fc8b4511f76ae660efb922cbd77bfd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 46.75,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-recovery-rollback",
+              "mutant_sha256": "fa80dd390e8b9a8ced166cb0f66bed3070a4af883de868d6982ce3268a837efa",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 47.609,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-logout-revocation",
+              "mutant_sha256": "28fa355ef765de251bf0153efd30ee1db29afd99774941d965e131ee871b4208",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 46.431,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-precommit-cookie",
+              "mutant_sha256": "f53e96cb5a898511c70b434344fdbcfa5c615b7b1f6ec2cc6695b1af9db75bda",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 63.83,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "administrator-recovery-cookie",
+              "mutant_sha256": "353b8033e56908c55c6c6db511e03ce4f74d15259f5630ee39d59eb41f2c2c79",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 65.944,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(provider: \"SqlServer\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 101.123,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 95.89,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13459264040,
+      "name": "administrator-protocol-mutations-SqlServer",
+      "sha256": "444f8be8e8f14ec0590f78d40cdff353304b07dbeb0b27de1d55bb10a25fea29",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "administrator-protocol",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs": "15693c40294cc1d52857a61d2d97e88a872456331a942a1d05039ba810d54cca",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs": "5f76c9ce20016a0b434fb0860acf0c49c8fb7bebdef001e31e0c3eb517130387",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs": "d553f07a6fd6192bb8715db57ec4fa82a4796eba43d7c68f60bb6a1342236bd8"
+          },
+          "mutations": [
+            {
+              "id": "protocol-current-authority",
+              "mutant_sha256": "3daa707a60a6ebe2fc15c283ce2d9633d85823e4cab3ce29425addf9e5d8caed",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 49.638,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "protocol-assertion-replay",
+              "mutant_sha256": "a46fd046a4d6c98661b56c9037cd752594f17956637debcee73734b5ad07a88a",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.177,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"SqlServer\")"
+              ]
+            },
+            {
+              "id": "protocol-profile-binding",
+              "mutant_sha256": "82f9eebc60e572a8ebe0bdce2f3d65469a557ca9e4b59c1a3cfe25df44bf60d6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 51.958,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 62.747,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"SqlServer\")"
+            ]
+          },
+          "restored": {
+            "total": 3,
+            "passed": 3,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 55.59,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CodeBoundToOriginalProfile_When_RevisionChangesBeforeExchange_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_ConsumedParAssertion_When_RealCodeExchangeReusesIt_Then_NoCredentialIsIssued(provider: \"SqlServer\")",
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.NativeProtocolMutationTests.Given_CurrentProof_When_PersistedPermissionIsRemovedBeforeFinalRead_Then_ProofAndClaimsDeny(provider: \"SqlServer\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13459114868,
+      "name": "managed-application-mutations-SqlServer",
+      "sha256": "639e05baffc680290479502653b58ad2c7066a943ae18fd6df2ecf40e68bf492",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "managed-applications",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "SqlServer",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs": "02363ef3ca8c223f6cac8aa0397fd2a425352dba4fed272aaf512e83fb2324d7",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs": "69fcd8452d05d78089db8ec5ac47561816dfb4305023243828936add8fc7e744",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs": "337c7bb49a51571473e0475a632a0a6ec68a02feca110d9c3bb9f3aadd5a1268",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+          },
+          "mutations": [
+            {
+              "id": "managed-explicit-consent",
+              "mutant_sha256": "d94a757da6dd19ba39ae6d6fbe9a9176ae3718d66ba7bb0894264ebfc2e2d065",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 55.766,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: False)"
+              ]
+            },
+            {
+              "id": "managed-claim-isolation",
+              "mutant_sha256": "301289a6cbc468a9280063ed56c022612ef4e544b747eade530fb891583dbda2",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 54.999,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"access\")"
+              ]
+            },
+            {
+              "id": "managed-request-consumption",
+              "mutant_sha256": "88610ae677e2a21c955f555c20cb7fce66fe11c4e555fd4b4350e287a0f2995f",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 57.738,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: False)"
+              ]
+            },
+            {
+              "id": "managed-code-consumption",
+              "mutant_sha256": "730b7f714adcb2713a6b250af2eb4e806177f60c27f4c725a3bbd4806d61f513",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 54.501,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: True)"
+              ]
+            },
+            {
+              "id": "managed-current-credential",
+              "mutant_sha256": "d38cd7c6a6a19f0d32a1f695e79555e16e32810de6a89c05d360ac16075920d2",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 53.895,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Credential)"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 83.374,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"access\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Credential)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: True)"
+            ]
+          },
+          "restored": {
+            "total": 5,
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 82.502,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedHumanHttpTests.Given_RealManagedCacheAndExistingIssuerCookie_When_FreshPasswordMfaAndExplicitDecisionRun_Then_OnlyManagedConsentCommits(provider: \"SqlServer\", approve: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenClaimTests.Given_RealPreparedManagedToken_When_AdministratorClaimIsInjectedBeforeSigning_Then_IssuanceRollsBackWithoutAuthority(provider: \"SqlServer\", target: \"access\")",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish(provider: \"SqlServer\", exchange: True, defect: Credential)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: False)",
+              "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenFailureTests.Given_RealManagedIssuance_When_ProviderAuditPermissionIsDenied_Then_CredentialsRollBackAndOriginalInputStaysSpent(provider: \"SqlServer\", exchange: True)"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13458904473,
+      "name": "administrator-mutations-PostgreSql",
+      "sha256": "680c743138deb1f6b4635fa7f856b744eba1c9a4a7874eac3c2594501c6906f6",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "administrator",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs": "3eb3aa0ca5246acb25418021841510cfae415a8bc1affcc97c6edaed0d0e921d",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs": "09361a786cec60640f3aaeda62f2329db2f47184122e15eea3e5c37d711df118",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs": "6ebc82c66bfadfc904abfeafdd7525d0d9b0db50ad8f24dfca10218ada66f530",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs": "656b42d498aafe0d202c95ade60a8ff2d24db06028366034c42eac70b7c22eb3",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs": "af2fc191f6e3f920cd9019c466fcabfeddb023e6630b181ff7eae273b78fafdc",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs": "a7d428921609fc63d168873d3601d87e8e0d9e729d2e80249c6923a6bb2a99fc",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs": "7701c6318bd5b963178b8f7bcef23d77713c04c5285a977442b8dd330c5f098c"
+          },
+          "mutations": [
+            {
+              "id": "administrator-replay",
+              "mutant_sha256": "3d2ea0d2f8d2c6d1ebd8284cf4288be9ad45b64ce150f071d06a84fcab1eddd4",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.544,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-password-budget",
+              "mutant_sha256": "3676eaba3e4b36ddb409e488bdbafd420aa768d6bcaa1400cc71ca83ec8ae43b",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.374,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-clock-fence",
+              "mutant_sha256": "b5cb3ea7a256ed799cf6f23aab45896f6433fb106171d7317a292655f099a126",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.77,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-audit",
+              "mutant_sha256": "efdd077cd3e61a6b75c5537be7dede3e49fc8b4511f76ae660efb922cbd77bfd",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 33.822,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-recovery-rollback",
+              "mutant_sha256": "fa80dd390e8b9a8ced166cb0f66bed3070a4af883de868d6982ce3268a837efa",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 32.666,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-logout-revocation",
+              "mutant_sha256": "28fa355ef765de251bf0153efd30ee1db29afd99774941d965e131ee871b4208",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.237,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-precommit-cookie",
+              "mutant_sha256": "f53e96cb5a898511c70b434344fdbcfa5c615b7b1f6ec2cc6695b1af9db75bda",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 49.499,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "administrator-recovery-cookie",
+              "mutant_sha256": "353b8033e56908c55c6c6db511e03ce4f74d15259f5630ee39d59eb41f2c2c79",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 50.943,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(provider: \"PostgreSql\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 87.246,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 81.7,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.Accounts.EnrollmentTests.Given_PendingBootstrap_When_RandomAuthenticatorIsConfirmed_Then_CommittedSessionWorksAcrossNodes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_FactorFailures_When_CorrectPasswordsIntervene_Then_FifthFailureLocksAcrossScopes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.BudgetTests.Given_LastFailedAttempt_When_AuditInsertIsDenied_Then_AllNativeAndProductWritesRollBack(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ProofRegressionTests.Given_ForwardObservation_When_NewScopeRollsBack_Then_DurableFenceSurvivesRestart(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Ceremonies.ReplayTests.Given_NativeValidCode_When_ProofIsRepeated_Then_OnlyOneProtectedReservationCommits(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryAtomicityTests.Given_ClaimedRecoveryVerifier_When_NativeUserUpdateFails_Then_EntireClaimAndAuthorityRollBack(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Recovery.RecoveryHttpTests.Given_EnrolledBrowser_When_RecoveryCompletesAcrossNodes_Then_RestrictedEntryPrecedesNewSessionAndOneTimeCodes(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.Security.SecurityFlowTests.Given_TwoCurrentSessions_When_OneSessionLogsOut_Then_OnlyItsStoredAuthorityIsRevoked(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13458744480,
+      "name": "foundation-SqlServer-apphost-localdemo",
+      "sha256": "8795329564e7465cbc8c3c57e7275dfa1fb2e2f05892bdbb0ee74043cc4a308d",
+      "reports": [
+        {
+          "path": "tests/SqlServer-apphost-localdemo/AppHost.trx",
+          "sha256": "fc57b8e34cb10e1564482a42d5c511fc8b89670696bd15e10bd39c1c91355ec4",
+          "passed": 3,
+          "test_names_sha256": "c929d57cd54422c517882bbc7790202e3c9747b8fea08a7ed8ed644a1b607ffd",
+          "grant_cases": []
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13458664381,
+      "name": "browser-session-mutations-PostgreSql",
+      "sha256": "402a9ceb4cc24aa77634be2e5eebede205d6935936498cc97819ac3df8f3d43f",
+      "reports": [],
+      "mutation_receipts": [
+        {
+          "version": 1,
+          "suite": "browser-session",
+          "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+          "provider": "PostgreSql",
+          "source_sha256": {
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs": "57d538dffa7c9ead05958d1767be580657118c9ae96d217353c8cbac2ab0db64",
+            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs": "ea6a18aef60b54d35a2275fa752c28e754e2a7dfcc5f45deb3af95b22f1f5523",
+            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs": "b40755ea963bfd22ccb5666b35a380002ae854b76d7245ccc9d26da5e2d82b04",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs": "298c8bbd56afb54059977c580330742828ad31a1e89732111be79e58ee6e34a9",
+            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs": "8b4038a3c04858739500284a67aee6c4248dc621fffcd808f974c01a96f6ebea"
+          },
+          "mutations": [
+            {
+              "id": "browser-intent-binding",
+              "mutant_sha256": "781c6fa4688f03bc10188ef4311c2066712b69c119469278dd75b68b01dc6cbc",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 43.311,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-source-deadline",
+              "mutant_sha256": "7f4af9a22b76f3ff30ec1121fcbbce963b2c02411db45551249c4a7b8b19c02e",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 37.382,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-generation-binding",
+              "mutant_sha256": "7dba1c0bdd0be2d973cb00d5ab9edab5acba74f4ab6edee43608378e9f176740",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 35.041,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-antiforgery-binding",
+              "mutant_sha256": "74927313544f2ccf7202ef67b1167aa2dbb2eaa9e0e0d2dcb6762823caab6e75",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.931,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-local-revocation",
+              "mutant_sha256": "4ca294163a1d036f7a4bf8a52388b51a8993165136a169cc64af3dce4a4aa35b",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.458,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-issuer-source",
+              "mutant_sha256": "bf97cf41e172f1be34d60103bb3aeffe4962ebba360726174477dae79e537ce6",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 36.574,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-return-once",
+              "mutant_sha256": "ca5c4b2a221541495c17779fe613c822ff4f156b0d0ad9d19afa63c00eadeb6d",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.185,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"PostgreSql\")"
+              ]
+            },
+            {
+              "id": "browser-logout-publication",
+              "mutant_sha256": "9f102e0a968560e7514834679b751ae46a3a45a6424e1f8ac780d9d01368903c",
+              "verdict": "killed_by_demonstrated_bypass",
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 0,
+              "seconds": 34.399,
+              "tests": [
+                "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"PostgreSql\")"
+              ]
+            }
+          ],
+          "baseline": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 79.225,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")"
+            ]
+          },
+          "restored": {
+            "total": 8,
+            "passed": 8,
+            "failed": 0,
+            "skipped": 0,
+            "seconds": 73.102,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_CurrentReplacementTicket_When_GenuineOlderGenerationIsSubstituted_Then_StatusRejectsOnlyThatBinding(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserBindingMutationTests.Given_ValidOriginalAntiforgery_When_StartAlreadyAdvancedGeneration_Then_OldTokenCannotCommitAnotherIntent(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedIntentDiffers_Then_AuthenticationRejectsThatExactBinding(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserIdentityMutationTests.Given_RealNativeCallback_When_OnlySignedSourceDeadlineEqualsNow_Then_AuthenticationRejectsExpiredSource(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_ConsumedAuthenticReturn_When_OriginalCookiesReplay_Then_NoSecondReturnCommits(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_GenuineAuthenticatedSession_When_LocalLogoutCommits_Then_ExactTicketAndRevokeAuditAreInvalidated(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.BrowserLogoutMutationTests.Given_OriginalProofExpiresDuringCleanup_When_RemoteCommitIsKnown_Then_NoPositiveCookieOrLinkIsPublished(provider: \"PostgreSql\")",
+              "IdentityPlatform.Administrator.Tests.Features.BrowserSessions.IssuerLogoutMutationTests.Given_TwoGenuineIssuerSources_When_CookieAndHintDisagreeBeforeConfirmation_Then_NeitherWrongSourceRevokes(provider: \"PostgreSql\")"
+            ]
+          },
+          "source_restored": true
+        }
+      ]
+    },
+    {
+      "id": 13458769538,
+      "name": "foundation-administrator-PostgreSql-applicationgrants",
+      "sha256": "b2eca50f3550793e077d5c4bdb28938f24fef2b4f0b285004a2716f4934ed04e",
+      "reports": [
+        {
+          "path": "tests/administrator-PostgreSql-applicationgrants/Administrator.trx",
+          "sha256": "b6c57b8134394e9a431567a048d0b3a2792e9890e612dc6ef9c4e9a2c473f9c1",
+          "passed": 50,
+          "test_names_sha256": "25b893214ec8d4d2ee383c1b34ecc1cdd2a52f762db56db9e79b905738e34725",
+          "grant_cases": [
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_OldAttemptUnderCurrentApproval_When_LaterBatchCommitted_Then_StopPreservesCommittedProgress(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_SuccessfulReconciliation_When_OldFailureArrives_Then_SuccessAndAuditRemainTerminal(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_TwoHostedWorkers_When_BothActuallyWaitOnGovernance_Then_OnlyDisjointNativeTransitionsAreCounted(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_AcceptedJob_When_WorkerRestartsAfterPartialProgress_Then_DurableRemainingWorkCompletes(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpRecoveryTests.Given_PermissionStoppedJob_When_FreshContinuationAndReplayCrossHttpsSurfaces_Then_OneNewApprovalResumesOriginalJob(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeConcurrencyFailure_When_ManagerCannotRevoke_Then_AllNativeChangesRollBackAndJobStops(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeSave_When_OwnedBatchIsCancelled_Then_NoPartialProgressOrFalseStopIsRecorded(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_ActualAuditInsertDenial_When_BatchAndFailureRecordingFail_Then_OriginalQueuedStateAndNativeEntriesSurvive(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"PostgreSql\", after: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"PostgreSql\", after: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_SameKeyRecoversExactlyOneDurableApproval(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 0)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 1)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 0, tokens: 0)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 8, tokens: 8)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 0, tokens: 9)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 1, tokens: 9)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"missing-lock\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"wrong-generation\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"factor-missing\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"locked\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"password-missing\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"factor-disabled\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"suspended\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"disabled\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"stamp-missing\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"PostgreSql\", permission: \"applications.read\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"PostgreSql\", permission: \"grants.revoke\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineAdministrator_When_GrantAcceptanceIsReplayedThroughBothSurfaces_Then_OneJobAndApprovalAreDurable(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: MemoryOutput)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: Enabled)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Counter)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Approval)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Credential)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Revision)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Clock)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_AcceptedJob_When_SessionRevokedAndMoreThanOneDayPasses_Then_CurrentAccountCanFinishWithoutFreshMfa(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"PostgreSql\", authorization: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"PostgreSql\", authorization: True)"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13461335583,
+      "name": "foundation-administrator-SqlServer-applicationgrants",
+      "sha256": "be72870d85c56515b4d2b28d80c2d8ce8ce0ac7412a2a95e367b1972dca3743a",
+      "reports": [
+        {
+          "path": "tests/administrator-SqlServer-applicationgrants/Administrator.trx",
+          "sha256": "3ff941ce04801b21ed37b7840fcbe3fb0e5f78d7c1aa25242f1efe9af0463dc8",
+          "passed": 50,
+          "test_names_sha256": "606181b7ab3707e5f8f4aebfea0369bd2f4694acacb37b56b05920a4323e8b13",
+          "grant_cases": [
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_OldAttemptUnderCurrentApproval_When_LaterBatchCommitted_Then_StopPreservesCommittedProgress(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_SuccessfulReconciliation_When_OldFailureArrives_Then_SuccessAndAuditRemainTerminal(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_TwoHostedWorkers_When_BothActuallyWaitOnGovernance_Then_OnlyDisjointNativeTransitionsAreCounted(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_AcceptedJob_When_WorkerRestartsAfterPartialProgress_Then_DurableRemainingWorkCompletes(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpRecoveryTests.Given_PermissionStoppedJob_When_FreshContinuationAndReplayCrossHttpsSurfaces_Then_OneNewApprovalResumesOriginalJob(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeConcurrencyFailure_When_ManagerCannotRevoke_Then_AllNativeChangesRollBackAndJobStops(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeSave_When_OwnedBatchIsCancelled_Then_NoPartialProgressOrFalseStopIsRecorded(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_ActualAuditInsertDenial_When_BatchAndFailureRecordingFail_Then_OriginalQueuedStateAndNativeEntriesSurvive(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"SqlServer\", after: False)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"SqlServer\", after: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_SameKeyRecoversExactlyOneDurableApproval(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 0, tokens: 9)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 1)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 0, tokens: 0)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 1, tokens: 9)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 0)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 8, tokens: 8)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"missing-lock\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"wrong-generation\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"stamp-missing\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"factor-missing\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"suspended\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"factor-disabled\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"password-missing\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"disabled\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"locked\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"SqlServer\", permission: \"grants.revoke\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"SqlServer\", permission: \"applications.read\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineAdministrator_When_GrantAcceptanceIsReplayedThroughBothSurfaces_Then_OneJobAndApprovalAreDurable(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: Enabled)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: MemoryOutput)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Credential)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Approval)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Revision)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Clock)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Counter)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_AcceptedJob_When_SessionRevokedAndMoreThanOneDayPasses_Then_CurrentAccountCanFinishWithoutFreshMfa(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"SqlServer\", authorization: True)",
+            "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"SqlServer\", authorization: False)"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13461010144,
+      "name": "foundation-PostgreSql",
+      "sha256": "2d55026ec5276b78e052baff7c74e8aaeb7cbaa610cdeb7d900f225300cd186f",
+      "reports": [
+        {
+          "path": "tests/PostgreSql/Persistence.trx",
+          "sha256": "3592a74262a1dc18dc703040df9b5f2278ac6a97ffe7062cd161bc13a5a397dd",
+          "passed": 24,
+          "test_names_sha256": "24ff6dc20894c7a9699e03ac2195c4ab06ae5d9a01443bd1f2924cb7f464e2ff",
+          "grant_cases": [
+            "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"PostgreSql\")",
+            "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"PostgreSql\")",
+            "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"PostgreSql\")"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    },
+    {
+      "id": 13459183365,
+      "name": "foundation-SqlServer",
+      "sha256": "d71b92d2f291c279e92b198ce9e2b204f927107b68d6351155e3d4f98e5ff998",
+      "reports": [
+        {
+          "path": "tests/SqlServer/Persistence.trx",
+          "sha256": "affba80ae04c856f4cb68adb524b7ee44f4b367af6cb2150afcbc2f248c2fe0d",
+          "passed": 24,
+          "test_names_sha256": "4bb764edf578ae85fd6254e0df1c02b8af43ba98f89a971e7005f91069b55c43",
+          "grant_cases": [
+            "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"SqlServer\")",
+            "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"SqlServer\")",
+            "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"SqlServer\")"
+          ]
+        }
+      ],
+      "mutation_receipts": []
+    }
+  ],
+  "coverage": {
+    "sha256": "41ce81aaa641636ce626c98a1420e1cbe59d374ab78406f82a8ce1d6d357ac96",
+    "minimumLine": 0.9,
+    "minimumBranch": 0.8,
+    "modules": {
+      "IdentityPlatform.Core": {
+        "line": 0.9970845481049563,
+        "branch": 0.9583333333333334
+      },
+      "IdentityPlatform.Infrastructure": {
+        "line": 0.932630410654828,
+        "branch": 0.9681440443213296
+      },
+      "IdentityPlatform.ServiceDefaults": {
+        "line": 1.0,
+        "branch": 1.0
+      },
+      "IdentityPlatform.Migrator": {
+        "line": 0.987012987012987,
+        "branch": 1.0
+      },
+      "IdentityPlatform.AuthServer": {
+        "line": 0.9420918749064792,
+        "branch": 0.9870967741935484
+      },
+      "IdentityPlatform.Admin.Api": {
+        "line": 0.9293563579277865,
+        "branch": 0.9468085106382979
+      },
+      "IdentityPlatform.Admin.Bff": {
+        "line": 0.9415067852129153,
+        "branch": 0.9512635379061372
+      },
+      "IdentityPlatform.Worker": {
+        "line": 0.9836065573770492,
+        "branch": 1.0
+      },
+      "IdentityPlatform.AppHost": {
+        "line": 0.9707495429616088,
+        "branch": 0.9821428571428571
+      },
+      "IdentityPlatform.Database.Abstractions": {
+        "line": 0.9910714285714286,
+        "branch": 1.0
+      },
+      "IdentityPlatform.Database.PostgreSql": {
+        "line": 1.0,
+        "branch": 1.0
+      },
+      "IdentityPlatform.Database.SqlServer": {
+        "line": 1.0,
+        "branch": 1.0
+      },
+      "IdentityPlatform.Database.Hosting": {
+        "line": 0.9545454545454546,
+        "branch": 1.0
+      },
+      "IdentityPlatform.Database.PostgreSql.Hosting": {
+        "line": 1.0,
+        "branch": 1.0
+      },
+      "IdentityPlatform.Database.SqlServer.Hosting": {
+        "line": 1.0,
+        "branch": 1.0
+      }
+    },
+    "inputCountFromHostedGate": 100
+  },
+  "selected_native_passes": 282,
+  "behavioral_mutation_kills": 110,
+  "job_totals": {
+    "success": 124,
+    "failure": 0,
+    "skipped": 0
+  },
+  "merge_ref": {
+    "sha": "f09aa04561473239a29ee6ed64af70c0736c26c9",
+    "parents": [
+      "dce682f9812d228b41ae7fad1dcb1f6636f40d38",
+      "0a5fc764cd5ea66feb5e8275089d7e8329c35f1d"
+    ]
+  }
+}

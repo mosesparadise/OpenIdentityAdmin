@@ -17,11 +17,11 @@ read truthful protected status and verify peer/configuration isolation.
 
 - [ ] T005 [US1] Add both-provider admission/selection/atomicity cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ for independent native authorization/token families, empty/eight/nine sets, invalid states, protected IDs and target/version errors.
 - [ ] T006 [US1] Implement target, job admission and audit staging in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; exact actor/action/target key/hash binding for24hours, disabled/non-system target, one incomplete job, fresh persisted verification and no automatic re-enable.
-- [ ] T007 [US1] Implement bounded native batch selection/revocation and atomic job progress in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; at most8authorizations and8tokens, false native result aborts, fresh native verification, current authority before commit and empty-set completion audit.
+- [x] T007 [US1] Implement bounded native batch selection/revocation and atomic job progress in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; at most8authorizations and8tokens, false native result aborts, fresh native verification, current authority before commit and empty-set completion audit.
 - [ ] T008 [US1] Add independent current permission/MFA admission, protected status/latest10reads and versioned contracts in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/; preserve original request/publication deadlines and native cleanup.
 - [ ] T009 [US1] Enforce incomplete-job re-enable conflict in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs; test both issuance/re-enable/acceptance commit orders and actual provider lock waits in Administrator ApplicationGrants tests.
 - [ ] T010 [US1] Add exact BFF routes/CSRF/key forwarding and generated strict contracts in src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and frontend generated contracts; verify actual HTTP negatives, secrecy and compatibility in tests/contracts/IdentityPlatform.Api.Contracts.Tests/ and Administrator tests.
-- [ ] T011 [US1] Add confirmation/progress/finite-error UI in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ with current permission visibility, explicit offline limits, read-only polling/navigation cancellation, light/dark/focus and UI tests.
+- [x] T011 [US1] Add confirmation/progress/finite-error UI in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ with current permission visibility, explicit offline limits, read-only polling/navigation cancellation, light/dark/focus and UI tests.
 
 ## Phase 4: US2 durable continuation (P1)
 
@@ -29,7 +29,7 @@ Independent test: accepted multi-batch job continues after logout/MFA expiry and
 worker restart; lost current authority stops the next batch with ordered races.
 
 - [ ] T012 [US2] Implement metadata-only current actor/permission eligibility and post-save rereads in Infrastructure Features/ApplicationGrants/; test logout/MFA continuation and disabled/deleted/suspended/locked/factor-generation/permission loss in Administrator ApplicationGrants tests.
-- [ ] T013 [US2] Compose bounded worker polling and safe telemetry in src/backend/IdentityPlatform.Worker/Features/ApplicationGrants/ and Features/Setup.cs; use native owned store lifetime, no factor keys, actual two-worker contention/restart and startup/shutdown coverage in Host/Administrator tests.
+- [x] T013 [US2] Compose bounded worker polling and safe telemetry in src/backend/IdentityPlatform.Worker/Features/ApplicationGrants/ and Features/Setup.cs; use native owned store lifetime, no factor keys, actual two-worker contention/restart and startup/shutdown coverage in Host/Administrator tests.
 - [ ] T014 [US2] Prove actual native entry validation separately from revision/wrong-audience denial in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ and genuine cross-instance issuer flows with unaffected controls, measured from each committed batch.
 
 ## Phase 5: US3 explicit recovery (P2)
@@ -42,17 +42,35 @@ remaining scope and complete without silent revival or duplicate work.
 
 ## Phase 6: Integrated acceptance and delivery
 
-- [ ] T017 Exercise actual Worker through ordinary Aspire local-demo on both providers and retained Chromium/WebKit; extend tests/aspire native demo/browser fixtures, eng test inventories and behavioral mutation/coverage controls without losing prior identities or lowering floors.
+- [x] T017 Exercise actual Worker through ordinary Aspire local-demo on both providers and retained Chromium/WebKit; extend tests/aspire native demo/browser fixtures, eng test inventories and behavioral mutation/coverage controls without losing prior identities or lowering floors.
 - [ ] T018 Run full applicable exact-head checks, reconcile native reports/artifacts/coverage, resolve independent architecture/security/test/API/UX/Aspire findings, and record actual evidence in specs/021-application-grant-revocation/verification.md; update docs/roadmap.md and docs/operations/new-task-handoff.md before reviewed squash delivery.
 
 ## Current boundary verification
 
-Run530 confirms alternate approver, factor-generation and replay-expiry cases on both
-providers. Its missing-lock setup failed real restrictive foreign keys; the corrected
-fixture preserves those constraints and awaits runtime. Four T009 admission/re-enable
-cases now compile with independent source review and exact discovery, but both-provider
-runtime and separate issuance races remain required. No T009 completion is claimed.
-See [hosted verification](hosted-verification.md) for the retained failed attempts.
+[Run531 receipts](run531-evidence.json) at `0a5fc76` reconcile all 124 successful jobs,
+50 grant cases per provider, both native demos and four retained protection-browser cells,
+110 mutation kills and all 15 unchanged coverage floors. Independent task review closes
+T007 (native batches), T011 (confirmation/progress UI), T013 (Worker) and T017 (integrated
+Aspire/browser/mutation/coverage execution). T001–T004 were already complete.
+
+T009's ordered admission/re-enable cases now pass both providers. Eight existing genuine
+issuance/disable race cases are extended through HTTPS revocation and exact native/audit
+reconciliation. Two new T014 cases isolate native token/authorization checks on two real
+issuer roots within five seconds of the actual batch commit, with unaffected controls,
+peer HTTPS exchange and fresh post-completion sign-in. Build and source review pass;
+these additions still require hosted execution. Neither task is closed yet.
+
+Implemented work is not repeated. Remaining acceptance evidence is specific:
+
+- T005/T006: protected persisted ID/name drift, missing/unmanaged target and version denial.
+- T008: fresh MFA/permission admission, original publication/deadline/cleanup, latest-ten ordering.
+- T010: downstream malformed/failed/late responses and changed durable browser generation.
+- T012: deleted actor and ordered permission loss/final authority change versus batch commit.
+- T015: elapsed request/transaction deadlines and actual ordered late-failure capture.
+- T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.
+- T018: complete-spec final review and exact-head delivery after those obligations.
+
+See [hosted verification](hosted-verification.md) for prior failed attempts and review dispositions.
 
 ## Dependencies and execution
 
