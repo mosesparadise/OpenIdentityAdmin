@@ -1,5 +1,20 @@
 # Delivery roadmap and task register
 
+**Grant-revocation requirements checkpoint — 5 November 2026:**
+[Feature021](../specs/021-application-grant-revocation/spec.md) on
+`128-application-grant-revocation` follows delivered feature020. The user explicitly
+selected continuation after sign-out/MFA expiry under recorded approval, with current
+account and revocation-permission checks for every batch. The existing question about
+requiring the application to stay disabled until success versus allowing enabled
+applications remains unanswered (GR-004). [Research/review](../specs/021-application-grant-revocation/review.md)
+defines the durable-worker prerequisite, native authorization/token coverage, atomic
+progress/audit and required evidence. This is a draft requirements checkpoint, not
+implementation or runtime acceptance. Next: resolve that existing lifecycle choice,
+finalize plan/tasks and implement the visible action/status/recovery journey. Do not
+repeat accepted lifecycle work. Main baseline is `dce682f9812d228b41ae7fad1dcb1f6636f40d38`;
+all historical/manual/Firefox/A-009/vendor/production/public-release gates remain open.
+
+
 **Managed application lifecycle delivered — 5 November 2026:**
 [PR #122](https://github.com/mosesparadise/OpenIdentityAdmin/pull/122) is squash-merged as
 `0ce00a22f4534847bb7ae5731ae20bf6b6c3064f`. Main now offers Disable/Re-enable in application details through the ordinary
