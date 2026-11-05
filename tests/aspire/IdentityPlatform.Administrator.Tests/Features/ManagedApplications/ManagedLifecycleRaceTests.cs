@@ -5,7 +5,6 @@ using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
-using Microsoft.AspNetCore.WebUtilities;
 using OpenIddict.Server;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;

@@ -1,4 +1,3 @@
-using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Applications;

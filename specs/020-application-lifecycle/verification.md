@@ -58,6 +58,14 @@ requires one exact tagged case/provider, unchanged baseline/restored passes, the
 behavioral failure, identical discovery and source restoration. Both provider workflow lanes include
 the new suite without raising existing time budgets. Defining controls is not a behavioral-kill claim.
 
+## Hosted correction checkpoint
+
+[Run516 and its corrections](hosted-verification.md) retain the first implementation candidate's
+missing persistence catalogue entries and four unused imports. Full actual persistence discovery
+now preserves38prior identities and appends4new cases,21/provider; all74 selection controls and
+the complete IDE0005 style verification pass. These are verification bookkeeping/style corrections,
+not relaxed gates. Corrected exact-head hosted acceptance remains required.
+
 ## Reviews and remaining acceptance
 
 Independent architecture and security source reviews found no production bypass or atomicity defect.
