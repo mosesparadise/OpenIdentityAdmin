@@ -87,3 +87,38 @@ and moves only the original journey's two mutation-selection traits. Administrat
 is 2,475; ordinary provider totals are 1,114/1,219, ManagedApplications 118/provider (Admission 54,
 Issuance 64). AppHost Harness now expects 102 cases. All coverage floors, browser engines retained
 for this phase, strict selection/skip rules and production policies remain unchanged. PR122 stays draft.
+
+## Third candidate and live-clock fixture correction
+
+[Run518](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/41951407103), source
+`a87a96d3f7669fc6322e90827028c81dd2dc7508`, tested merge
+`43d4b681d21c3c6c1fa5f563d4284e898675e55a`, tree
+`443ad619b8063ec70cbe043076b76d2f0db184b5`, retains the same verified main parent.
+At the bounded review checkpoint, both full persistence lanes pass21/21 and both native Aspire
+local-demo lanes pass3/3 with zero failures or skips. PostgreSQL's combined mutation job passes
+all eight existing application controls and the four focused lifecycle controls. The run is not yet
+accepted; later job results must be reconciled separately. Independent source obligations are
+122 jobs,116 artifacts,101 ordinary reports/5,523 cases,98 coverage inputs/15 floors and98
+behavioral kills across16 suites/14 jobs.
+
+Both new focused mutation suites also completed locally at this exact source:four baseline passes,
+four demonstrated kills and four restored passes/provider, no skips, with exact source restoration.
+[Receipts](evidence/README.md#focused-admission-witness--a87a96d) retain their precise source binding.
+
+The timeout investigation independently found a fixture clock-domain inconsistency: JourneyScenario
+froze FactorClock at fixture creation and supplied that same time to native OpenIddict. The native
+60-second authorization-code expiry clamps managed ID/access tokens, while the independent relying
+party validates against actual UTC with zero skew. A later browser ceremony can therefore receive
+an already-expired token even though its issuer fixture still observes the earlier time. This is a
+source-established risk, not proof of the historical WebKit failures' cause.
+
+The correction selects a source-backed `FactorClock(TimeProvider.System)` only when constructing
+ApplicationManagedBrowserEvidence, before enrollment or the first native cookie. That exact instance
+passes through all existing fixture constructors to JourneyScenario, issuer/API/BFF service roots
+and native server/client options; the actual browser journey asserts each binding. Every other test
+keeps its original frozen default. The live setter rejects manual resets; inherited real timers,
+production code, native lifetimes, expiry clamps, strict RP validation and browser deadlines remain
+unchanged. Two deterministic Harness controls prove forwarding, preserved frozen defaults, expired
+original absolute deadlines and new observations without renewing old authority. They are fixture
+controls, not a claim of native issuance or historical-cause reproduction. Required actual hosted
+browser journeys and existing native lifetime oracles remain the integration evidence.

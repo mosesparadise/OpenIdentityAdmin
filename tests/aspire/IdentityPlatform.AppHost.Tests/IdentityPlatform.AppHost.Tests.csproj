@@ -30,6 +30,7 @@
     <Using Include="IdentityPlatform.Testing.TestSchemaCatalog" Alias="SchemaCatalog" />
   </ItemGroup>
   <ItemGroup><Compile Include="../IdentityPlatform.Administrator.Tests/Fixtures/FactorOracle.cs" Link="Fixtures/FactorOracle.cs" /></ItemGroup>
+  <ItemGroup><Compile Include="../IdentityPlatform.Administrator.Tests/Fixtures/FactorClock.cs" Link="Fixtures/FactorClock.cs" /></ItemGroup>
   <ItemGroup>
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationEditorJourney.cs" Link="Features/LocalDemo/ApplicationEditorJourney.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationStateJourney.cs" Link="Features/LocalDemo/ApplicationStateJourney.cs" />

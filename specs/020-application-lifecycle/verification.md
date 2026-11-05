@@ -31,7 +31,7 @@ suites are serialized. No operation timeout, MFA window, retry policy or coverag
 | Persistence `ManagedSchemaTests` and `LifecycleSchemaTests`, each provider | 6 passed/provider, no skips. Fresh/populated upgrade, exact historical data/history, idempotence, physical default and finite reason/FK constraints. |
 | Administrator lifecycle namespaces, PostgreSQL | Final33 application and11 managed cases passed (44 total), no skips. Includes native expiry, finite reasons, permission/MFA/waits/failures, independent peer, old artifacts, issuance races and delayed committed publication. |
 | Administrator lifecycle namespaces, SQL Server | Final33 application and11 managed cases passed (44 total), no skips, including accepted finite audit reasons, reason drift and expired-credential enable denial. |
-| Corrective AppHost Harness | 102 passed, zero skips, including deterministic MFA exhaustion and private-safe managed callback diagnostics. |
+| Corrective AppHost Harness | 104 passed, zero skips, including deterministic MFA exhaustion, private-safe managed callback diagnostics and source-backed clock controls. |
 | Full corrected Persistence | PostgreSQL21/21; SQL21/21 with serial execution. Earlier SQL20/21 container-startup failure is retained in the hosted correction record. |
 | Focused managed admission | One genuine BFF/issuer case per provider passed; full journey body remains unchanged. |
 | Host Applications tests | 235 passed, no skips, before final schema metadata refinement. |
@@ -39,7 +39,7 @@ suites are serialized. No operation timeout, MFA window, retry policy or coverag
 | Native API/BFF export, generated browser types, UI build/check | Final native export, core browser-contract generation, deterministic regeneration, TypeScript and six UI assets pass. |
 | Frontend tests | All suites passed, including42 editor cases; critical editor modules retain their existing coverage floors. Generated contract/tooling controls44/44 pass. |
 | Selection tooling | 74 passed after regeneration from actual native discovery. |
-| Mutation tooling controls | 60 passed. Original four lifecycle witnesses demonstrated kills on both providers; receipts and subsequent focused-witness limitation are recorded in [evidence](evidence/README.md). |
+| Mutation tooling controls | 60 passed. Original and focused four lifecycle witnesses demonstrated kills on both providers; exact receipt source bindings are recorded in [evidence](evidence/README.md). |
 | Source quality | Build, staged-source secret scan, whitespace and final source rule checks pass without expanding legacy allowances. |
 
 Current actual discovery contains2,475 portable cases and preserves every2,385 pre-feature identity.
@@ -59,7 +59,7 @@ The feature's four new mutation controls target disabled admission, exact lifecy
 aggregate version advance and independently verified persisted reason. The existing isolated runner
 requires one exact tagged case/provider, unchanged baseline/restored passes, the expected marked
 behavioral failure, identical discovery and source restoration. Both provider workflow lanes include
-the new suite without raising existing time budgets. Original controls have both-provider receipts; the new focused admission control still needs its own strict mutation execution.
+the new suite without raising existing time budgets. Original and focused controls have both-provider receipts; the focused executions bind to a87a96d, before the later live-clock browser fixture correction.
 
 ## Hosted correction checkpoint
 
@@ -71,6 +71,8 @@ missing persistence catalogue entries and four unused imports. Full actual persi
 now preserves38prior identities and appends4new cases,21/provider; all74 selection controls and
 the complete IDE0005 style verification pass. These are verification bookkeeping/style corrections,
 not relaxed gates. Corrected exact-head hosted acceptance remains required.
+
+The live-clock correction builds, passes104 Harness cases, full source quality/IDE0005 checks and complete unchanged2475-case Administrator discovery. Both focused mutation suites passed at a87a96d; run518 also passes both persistence21/provider and both native demos3/provider. Required corrected WebKit and final exact-head acceptance remain open.
 
 ## Reviews and remaining acceptance
 

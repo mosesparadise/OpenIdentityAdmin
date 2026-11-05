@@ -34,13 +34,13 @@ internal sealed class GovernanceScenario : IAsyncDisposable
 
     /// <summary>Composes the existing journey fixture and returns only after native enrollment has committed.</summary>
     internal static async Task<GovernanceScenario> CreateAsync(BootstrapFixture fixture, string provider,
-        Action<IServiceCollection>? configure = null, Uri? issuer = null)
+        Action<IServiceCollection>? configure = null, Uri? issuer = null, FactorClock? clock = null)
     {
         var journey = await JourneyScenario.CreateAsync(fixture, provider, services =>
         {
             services.AddAdministratorGovernance();
             configure?.Invoke(services);
-        }, issuer);
+        }, issuer, clock);
         try
         {
             return new GovernanceScenario(journey, await journey.EnrollAsync());

@@ -27,7 +27,9 @@ internal static class ApplicationManagedBrowserEvidence
     /// <summary>Creates no alternate registration or HTTP login; one native administrator browser owns the editor and subsequent managed ceremony.</summary>
     internal static async Task<string[]> RunAsync(BootstrapFixture fixture, string provider, bool approve)
     {
-        await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true, managed: true);
+        var clock = new FactorClock(TimeProvider.System);
+        await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true, managed: true, clock: clock);
+        RequireClock(environment, clock);
         await using var browser = await BrowserSession.CreateAsync();
         await using var relyingParty = new ManagedBrowserRelyingParty();
         await relyingParty.StartAsync(environment.Profile.Issuer);
@@ -53,6 +55,17 @@ internal static class ApplicationManagedBrowserEvidence
         await BrowserSecretOracle.StorageAsync(page, secrets);
         await observation.RequireAsync(secrets);
         return secrets;
+    }
+
+    /// <summary>Requires one live clock across enrollment and all three native host roots before any actual browser ceremony begins.</summary>
+    private static void RequireClock(BrowserHttpsFixture environment, FactorClock clock)
+    {
+        Assert.Same(clock, environment.Issuer.Account.Journey.Clock);
+        Assert.Same(clock, environment.IssuerServices.GetRequiredService<TimeProvider>());
+        Assert.Same(clock, environment.Api!.Services.GetRequiredService<TimeProvider>());
+        Assert.Same(clock, environment.Client.Services.GetRequiredService<TimeProvider>());
+        Assert.Same(clock, environment.IssuerServices.GetRequiredService<Microsoft.Extensions.Options.IOptions<OpenIddict.Server.OpenIddictServerOptions>>().Value.TimeProvider);
+        Assert.Same(clock, environment.Client.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<OpenIddict.Client.OpenIddictClientOptions>>().Value.TimeProvider);
     }
 
     /// <summary>Disables through React, observes genuine independent issuer denial, then re-enables and completes entirely fresh human/native proof.</summary>

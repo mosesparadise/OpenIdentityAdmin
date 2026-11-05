@@ -49,7 +49,7 @@ Independent acceptance: winner/loser persistence is exact; a lost response produ
 ## Phase 6 — Integrated delivery
 
 - [ ] T015 Extend retained Chromium/WebKit stories and both native Aspire demos in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/` and `tests/aspire/IdentityPlatform.AppHost.Tests/`: create → sign in → disable → denial → enable → fresh success. Retain keyboard/focus, responsive light/dark and accessibility checks plus explicit manual deferrals.
-- [ ] T016 Update actual discovery/inventories in `eng/administrator-test-matrix.json`, `eng/test-matrix.json` and affected contract/Node inventories; place new managed cases in existing Admission/Issuance partitions, preserve every prior case, and add decisive lifecycle/current-authority/revision/audit mutation controls without lowering module coverage floors.
+- [x] T016 Update actual discovery/inventories in `eng/administrator-test-matrix.json`, `eng/test-matrix.json` and affected contract/Node inventories; place new managed cases in existing Admission/Issuance partitions, preserve every prior case, and add decisive lifecycle/current-authority/revision/audit mutation controls without lowering module coverage floors.
 - [ ] T017 Complete independent architecture/security/API/UX/test reviews, exact-head applicable hosted verification and source/tested-merge reconciliation in `specs/020-application-lifecycle/verification.md`; update `docs/roadmap.md`, this task list and `docs/operations/new-task-handoff.md`, then deliver through reviewed squash. Document actual scope and evidence limits.
 
 ## Dependencies and execution strategy
@@ -92,3 +92,5 @@ required by the environment; no parallel marker promises independent writes to s
 
 This table maps requirements to tasks; the linked verification record distinguishes passed local
 evidence from unexecuted hosted/browser/mutation acceptance.
+
+T016 evidence: exact native inventory and selection controls preserve every prior identity; original and focused lifecycle mutation suites each have strict both-provider baseline/kill/restored receipts. Current AppHost Harness104/104 includes clock and diagnostic regressions. Receipt source bindings and remaining exact-head browser/coverage acceptance are recorded in [verification](verification.md); T014/T015/T017 remain open.

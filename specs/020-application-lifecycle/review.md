@@ -90,3 +90,12 @@ and native demos remain required; see [verification](verification.md).
   deadline changes. The private-canary test exercises the actual producer. `failure=None` means no
   recorded RP exception; it does not establish browser success. Observations are concurrent snapshots,
   not proof that pending work has terminated. Corrected hosted execution remains required.
+
+- Architecture review accepts the explicit creation-time live-clock option for the managed browser
+  journey. The exact instance must reach enrollment, every host root and native options; immutable
+  captured deadlines and all frozen defaults remain intact. The implemented bindings and two
+  deterministic Harness controls pass source review. Existing native clamp tests and corrected
+  hosted browser execution remain required; historical timeout causation is unproved.
+- Independent test review verified both focused mutation receipts at a87a96d, including actual
+  method/trait selections, all four substitutions and restored source hashes. It explicitly does
+  not claim the later clock fixture head has already passed hosted verification.
