@@ -1,5 +1,46 @@
 # Grant-revocation hosted verification
 
+## T016 genuine browser recovery acceptance — 6 November 2026
+
+**T016 is complete; feature021 is 17/18 complete.** At `b2464ce11e9ea64208f3843b229ac919a0cf7916`,
+[CI542](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42293990961) executes
+all four PostgreSQL/SQL Server × Chromium/WebKit BrowserProtection cells successfully:
+**34/34 each, 136 total, including eight new recovery executions; zero failures/skips.**
+[Receipts](t016-evidence.json) bind artifact digests, exact run/head/provider/browser,
+committed native names/assembly/class/method identities, unique test/execution IDs and
+result-definition-entry relationships. All ten source-manifest hashes match the tested
+candidate. No production behavior changed.
+
+The genuine lost-response journey proves one committed approval despite response loss,
+a real403 during explicit recovery, hidden protected progress, preserved uncertainty,
+exact same-intent replay after permission restoration, a new protected read and actual
+Worker completion. The stopped journey proves real authority loss after committed progress,
+no silent restart on restoration, visible stopped reference/counts, actual competing
+continuation, stale412 without new approval, fresh unchecked confirmation and same-job
+completion with three immutable approvals. Native controls/configuration and disabled state
+remain unchanged except for the intended revocation. Both journeys pass retained light/dark,
+reflow, accessibility, focus, keyboard and secret-safe output/storage checks.
+
+Architecture and UX/test source reviews pass after the recorded assertion/diagnostic
+corrections. The scope review finds no additional T016 implementation gap: existing
+T010/T015 actual HTTP, key-conflict/replay/expiry and authority evidence remains applicable.
+Independent receipt review recomputes all four artifact/report hashes and verifies exact
+native bindings, including strengthened job-head, assembly and unique execution checks. Browser
+acceptance is hosted; no local pinned-browser or Firefox execution is claimed.
+
+CI542's initial overall result is rejected: one unrelated PostgreSQL governance runner
+received a shutdown signal during build, before its tests. Consequently coverage was
+skipped and final acceptance failed (121 successful, two failed and one skipped jobs).
+The original log is retained. The isolated rerun passed; attempt2 now has **all124 unique
+latest jobs successful**, reconciled across three job pages at the same tested head. This
+is workflow/job status evidence; T018 final artifact/coverage acceptance remains separate
+from the four fully reconciled browser cells. All345 assurance controls remain not_assessed.
+
+Next: **T018 complete-spec review and final-head artifact/coverage acceptance**. PR124
+remains draft/unmerged; main stays `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Refresh,
+the initial pilot replay window and historical/manual/Firefox/A-009/vendor/production/
+public-release gates remain unchanged.
+
 ## T016 browser recovery candidate — 6 November 2026
 
 Two genuine browser journeys now cover response loss/recovery and stopped-job continuation

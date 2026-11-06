@@ -1,13 +1,17 @@
 # OpenIdentityAdmin new-task handoff
 
-**Grant browser recovery candidate — 6 November 2026:** two new genuine browser journeys
-cover lost acceptance with same-key recovery through actual permission denial, and stopped
-work with competing stale continuation and fresh confirmation. Both use real persisted
-jobs, native grants and the production Worker. [Scope and review](../../specs/021-application-grant-revocation/hosted-verification.md#t016-browser-recovery-candidate--6-november-2026)
-record the exact assertions. Retained PostgreSQL/SQL Server × Chromium/WebKit execution is
-pending; T016/T018 remain open (**16/18 complete**). Prior CI541 at `4a7647e` passed all124
-jobs. PR124 stays draft/unmerged; main and historical/manual/public-release gates remain
-unchanged. Next: verify these browser journeys, then T018 complete-spec final acceptance.
+**Grant browser recovery accepted — 6 November 2026:** feature021 T016 is complete;
+**17 of18 tasks** now have acceptance evidence. All four PostgreSQL/SQL Server ×
+Chromium/WebKit BrowserProtection cells pass34/34: **136 total, including eight new
+recovery executions**, with zero failures/skips. [Exact receipts](../../specs/021-application-grant-revocation/t016-evidence.json)
+bind the tested `b2464ce` source and native reports. Lost acceptance recovers the same intent
+through real permission denial; stopped work rejects a competing stale continuation and
+completes only after fresh confirmation. No production code changed. CI542's unrelated
+runner shutdown occurred during governance build; the isolated rerun passed and all124
+latest jobs succeed at that tested head (status reconciliation). New-head checks and final
+artifact/coverage acceptance remain required. Next: **T018 final acceptance**. PR124 stays draft/unmerged;
+main, the initial pilot replay window and all historical/manual/public-release gates remain
+unchanged.
 
 **Grant recovery/deadline acceptance — 6 November 2026:** feature021 T015 is complete;
 **16 of 18 tasks** now have acceptance evidence. PostgreSQL 13/13 and SQL Server 13/13 pass

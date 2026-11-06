@@ -1,9 +1,10 @@
 # Tasks: Managed application grant revocation
 
-**T016 candidate (6 November):** genuine lost-acceptance and stopped/stale-continuation
-browser journeys are implemented and independently reviewed. Both-provider Chromium/WebKit
-execution remains pending; T016/T018 remain unchecked (16/18 complete). See
-[hosted verification](hosted-verification.md#t016-browser-recovery-candidate--6-november-2026).
+**T016 accepted (6 November):** all four retained provider/browser cells pass34/34,
+including eight genuine recovery executions. Exact artifact/native identity/execution
+bindings reconcile; [receipts](t016-evidence.json) retain source/review and the initial CI
+runner interruption. Its isolated rerun passes; all124 latest CI542 jobs succeed at the
+tested head. Feature021 is **17/18 complete**; only T018 remains unchecked.
 
 ## Phase 1: Setup and design
 
@@ -43,7 +44,7 @@ Independent test: fail a later batch, read earlier progress, freshly approve the
 remaining scope and complete without silent revival or duplicate work.
 
 - [x] T015 [US3] Implement serialized stopped outcomes, fresh approved continuation and unknown-commit reconciliation in Infrastructure/Admin.Api ApplicationGrants features; tests cover lost acknowledgements, native-save/audit faults, cancellation/deadlines, same-key replay/conflict/expiry, effective-approver change, processing beyond24hours, late-stop versus progress/new approval/success, unrecordable failure and missing actor lock records.
-- [ ] T016 [US3] Connect BFF/UI recovery to exact job/application versions in their ApplicationGrants/Editor features; verify current authorized status, explicit recovery and stale-key/version handling via actual HTTP and browser journeys.
+- [x] T016 [US3] Connect BFF/UI recovery to exact job/application versions in their ApplicationGrants/Editor features; verify current authorized status, explicit recovery and stale-key/version handling via actual HTTP and browser journeys.
 
 ## Phase 6: Integrated acceptance and delivery
 

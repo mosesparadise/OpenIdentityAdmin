@@ -1,6 +1,24 @@
 # Grant revocation implementation verification
 
-## Current checkpoint — 6 November 2026
+## Current checkpoint — T016 accepted, 6 November 2026
+
+Feature021 is **17/18 complete**. The two genuine browser recovery journeys pass on both
+providers and retained engines: **136/136 BrowserProtection cases, including eight new
+recovery executions**, at `b2464ce` in CI542. Strict artifact/native identity/execution
+reconciliation is recorded in [T016 receipts](t016-evidence.json) and the
+[hosted verification](hosted-verification.md#t016-genuine-browser-recovery-acceptance--6-november-2026).
+No production behavior changed. All prior2,659 test identities/metadata/order remain and
+four browser identities are added (2,663 total). Local build,90 selection/browser-story
+controls, quality, assurance and staged secret scan pass.
+
+T018 remains open for complete-spec final-head acceptance. The initial CI542 attempt has
+an unrelated runner shutdown during governance build. The isolated rerun passed; all124
+latest jobs now succeed at the same tested head. This is status reconciliation; T018 final
+artifact/coverage acceptance and new-head checks remain required. PR124 stays draft/unmerged,
+main is unchanged, refresh remains disabled, and all historical/manual/public-release
+gates and the initial pilot replay window remain open.
+
+## T015 checkpoint — 6 November 2026
 
 Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is unchanged
 at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI540 at `9d68c04` passed all 124 jobs
