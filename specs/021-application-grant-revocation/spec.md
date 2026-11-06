@@ -6,7 +6,7 @@
 
 **Created**: 2026-11-05
 
-**Status**: Scope approved on 2026-11-05; implementation pending verification.
+**Status**: Scope approved on 2026-11-05; T001–T017 accepted, T018 final acceptance in progress.
 
 **Input**: User requested the next task after application disable/re-enable delivery,
 then selected: “Continue under recorded approval; recheck account and permission.”
@@ -195,4 +195,5 @@ in [checklists/requirements.md](checklists/requirements.md).
 General grant catalogues, subject-wide revocation, application clone/delete, dormant
 refresh activation, other client profiles, offline token erasure and relying-party
 logout are outside this slice. Historical findings and manual/external release gates
-remain open. No runtime acceptance or completed implementation is claimed.
+remain open. Scoped runtime acceptance and the remaining final delivery gate are recorded
+in [verification.md](verification.md) and [tasks.md](tasks.md).

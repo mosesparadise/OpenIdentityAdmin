@@ -1,0 +1,187 @@
+{
+  "checkpoint": "T018 final acceptance candidate; hosted full-run reconciliation pending",
+  "baseHead": "09654e2bff5524262d3064e51e9d405c91515fed",
+  "sourceManifest": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReplayScopeTests.cs",
+      "sha256": "194becfe07d760913d051b9e451e2b90b3397e2ac1ab2c7d2ad87033f06b8352"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReplayEvidence.cs",
+      "sha256": "6ccf323409be9414e30f7a5a3b507a5f16e647306f9b356b65766de07a0cc149"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/SessionLogoutCrossSiteBrowserTests.cs",
+      "sha256": "94390142c66471738b383d15e9f7773e8c41f224b7827c3064ebb6e84d70cb1b"
+    },
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "6c8704e671cb9f9558bf7f43f14502c3ed93733ec171b42374e6b478421bbeff"
+    },
+    {
+      "path": "eng/test-matrix.json",
+      "sha256": "1218f8862669354abbf18d56cf9633e9e959cf4eb10bb6fc35b42b69be5a1dfd"
+    }
+  ],
+  "localReports": [
+    {
+      "provider": "PostgreSql",
+      "path": "/workspace/grant-t018-pg-results/t018.trx",
+      "sha256": "121dc8023a0e521821d851d1050e43ae250f1d0483b61262a7f022dc145a2a09",
+      "counters": {
+        "total": "3",
+        "executed": "3",
+        "passed": "3",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "tests": [
+        {
+          "executionId": "0c37509d-9201-47c7-ba91-38185733e072",
+          "testId": "22eb32fd-f923-9697-6a08-006b9b12234a",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:24.2510000",
+          "startTime": "2026-11-06T23:19:50.5978968+00:00",
+          "endTime": "2026-11-06T23:20:14.8639641+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "0c37509d-9201-47c7-ba91-38185733e072"
+        },
+        {
+          "executionId": "6fca1402-fa3f-461a-bca6-e4c46cadf46b",
+          "testId": "ca6a3f85-abe3-9984-4d2a-6c86c61a335d",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"PostgreSql\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:03.0590000",
+          "startTime": "2026-11-06T23:20:14.8760381+00:00",
+          "endTime": "2026-11-06T23:20:17.9362899+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "6fca1402-fa3f-461a-bca6-e4c46cadf46b"
+        },
+        {
+          "executionId": "5d935071-0f64-4a5f-8a06-dbc98d91d76b",
+          "testId": "57ca7a08-623d-0583-b43e-fe3e7fa20894",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"PostgreSql\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:02.1380000",
+          "startTime": "2026-11-06T23:20:17.9376635+00:00",
+          "endTime": "2026-11-06T23:20:20.0759527+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "5d935071-0f64-4a5f-8a06-dbc98d91d76b"
+        }
+      ],
+      "binding": "exact portable names, assembly/class/method, unique test/execution and definition/entry/result bindings"
+    },
+    {
+      "provider": "SqlServer",
+      "path": "/workspace/grant-t018-sql-results/t018.trx",
+      "sha256": "3765a9a3a6cb91cfa08839f61a392e93eea2d605f5039dbddf1a2584ba710d26",
+      "counters": {
+        "total": "3",
+        "executed": "3",
+        "passed": "3",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "tests": [
+        {
+          "executionId": "08b368ad-e19a-4f1a-bfc8-72e565e5d89d",
+          "testId": "9641cd2f-953c-7821-e7ca-b99902db2293",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:45.5250000",
+          "startTime": "2026-11-06T23:17:47.1910232+00:00",
+          "endTime": "2026-11-06T23:18:32.7324555+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "08b368ad-e19a-4f1a-bfc8-72e565e5d89d"
+        },
+        {
+          "executionId": "d3019f2c-9e48-4a79-ab7f-c24a38c7a469",
+          "testId": "f9d2cd17-b579-e7a1-53a1-a19df570aeda",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"SqlServer\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:04.3290000",
+          "startTime": "2026-11-06T23:18:32.7463508+00:00",
+          "endTime": "2026-11-06T23:18:37.0764190+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "d3019f2c-9e48-4a79-ab7f-c24a38c7a469"
+        },
+        {
+          "executionId": "4d8aeded-d503-4762-90e0-7fe87521d7b9",
+          "testId": "e7a7a5c8-92db-78d4-465e-523ccada9642",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"SqlServer\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:03.5220000",
+          "startTime": "2026-11-06T23:18:37.0779443+00:00",
+          "endTime": "2026-11-06T23:18:40.6004699+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "4d8aeded-d503-4762-90e0-7fe87521d7b9"
+        }
+      ],
+      "binding": "exact portable names, assembly/class/method, unique test/execution and definition/entry/result bindings"
+    }
+  ],
+  "inventory": {
+    "prior": 2663,
+    "added": 6,
+    "total": 2669,
+    "ApplicationGrantsPerProvider": 93,
+    "PostgreSqlOrdinary": 1208,
+    "SqlServerOrdinary": 1313,
+    "browserCountsUnchanged": true
+  },
+  "rejectedHostedRun": {
+    "run": 42299484219,
+    "head": "09654e2bff5524262d3064e51e9d405c91515fed",
+    "success": 121,
+    "failed": 2,
+    "skipped": 1,
+    "failedJob": 128173390846,
+    "failure": "SqlServer WebKit cross-site logout test read attacker.Url after response headers but before navigation commit. Denial response already passed. Coverage skipped; final acceptance failed.",
+    "correction": "WaitForURLAsync with same exact destination path predicate and WaitUntilState.Commit; one native POST; all denial/nonmutation/original-form checks retained; corrected browser execution pending."
+  },
+  "reviews": {
+    "architectureSecurityApi": "Scoped source review passed; contextual jobVersion schema precision documented. No production change in this acceptance correction.",
+    "test": "Missing actor/application/action key-scope cases added. Independent review confirms unchanged historical audit/progress and effective actor/configuration assertions; both-provider runs pass.",
+    "uxAspire": "Navigation race correction passes source review. Ordinary native Aspire Chromium on both providers; retained Chromium/WebKit recovery uses shipped UI/real Kestrel/production Worker fixtures."
+  },
+  "limits": [
+    "T018 remains open until full final-head acceptance",
+    "Initial pilot replay/late-issuance window remains unresolved",
+    "Refresh disabled; all historical/manual/Windows/Firefox/A-009/vendor/production/public-release gates remain open"
+  ]
+}

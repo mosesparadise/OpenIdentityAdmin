@@ -1,5 +1,31 @@
 # Grant revocation implementation verification
 
+## T018 acceptance candidate — 6 November 2026
+
+Complete-spec review found missing direct actor/application/action request-key isolation
+cases. Three new cases pass on each real provider with unchanged prior job history, exact
+actor/action/key/target binding, no duplicate acceptance and native/configuration isolation.
+The audit helper proves that all application grant audits are the union of the requested
+job details before splitting histories; orphan audit detection is preserved. All2,663 prior
+portable administrator identities remain; six are added, making2,669 total and93grant
+cases/provider. Build, quality and all74selection controls pass.
+
+CI543 at `09654e2` failed the SQL Server WebKit cross-site logout case: the response was
+correctly denied, but the test read the page URL before navigation commit. The correction
+waits for commit using the same exact destination predicate, without repeating the native
+POST or weakening denial/nonmutation/original-form assertions. The rejected run has121
+successful jobs, two failed and one skipped; it is not accepted. Corrected browser execution
+and full final-head artifact/coverage reconciliation remain pending. [Local receipts](t018-local-evidence.json)
+record six focused passes and source hashes. Architecture/security/API, test and UX/Aspire
+source reviews pass after corrections; this is not hosted runtime acceptance.
+
+The first broad no-restore solution build found missing/stale local assets; locked restore
+and a new serial build are required before fresh non-administrator discovery. The initial
+selector check found stale total expectations; corrected counts pass all74controls with no
+identity removal. T018 remains open and PR124 stays draft. Initial pilot replay/late-issuance,
+historical/manual/Windows/Firefox/A-009/vendor/production/public-release gates remain open;
+refresh stays disabled.
+
 ## Current checkpoint — T016 accepted, 6 November 2026
 
 Feature021 is **17/18 complete**. The two genuine browser recovery journeys pass on both
@@ -114,7 +140,7 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-T016 requires genuine browser stopped-job continuation and unknown-acceptance recovery.
+T016 is complete with the four reconciled retained browser cells described above.
 T018 requires complete-spec review and full exact-head artifact/coverage reconciliation before
 reviewed squash delivery. All100coverage inputs and15unchanged floors remain mandatory.
 The initial pilot replay/late-issuance window, historical findings, manual Windows/accessibility,

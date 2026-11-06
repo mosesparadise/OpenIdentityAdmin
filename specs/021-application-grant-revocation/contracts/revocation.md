@@ -39,3 +39,11 @@ limits, and requires a reason. Pending/partial/stopped/completed states are dist
 recovery is explicit and refreshes stale versions before fresh confirmation. Re-enable
 reports a bounded conflict while any incomplete job remains, including stopped work.
 Automatic polling is read-only, finite and cancelled on navigation/session expiry.
+
+## Contextual input validation
+
+The shared OpenAPI/DTO input type exposes optional nullable `jobVersion` because both POST
+operations reuse it. Runtime validation is operation-specific: continuation requires a
+canonical current job version; creation accepts only an absent/null job version. The shipped
+client sends the current version for continuation. This shared-schema precision limitation
+does not make runtime version checks optional; the route table above remains authoritative.

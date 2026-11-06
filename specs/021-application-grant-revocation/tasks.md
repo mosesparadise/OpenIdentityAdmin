@@ -120,9 +120,8 @@ ambiguity evidence remains applicable. Independent scoped reviews support T015 c
 **16 of 18** tasks complete. CI540 passed 124 jobs (status reconciliation); new-head full CI
 remains required. T016/T018 remain open; production code is unchanged.
 
-Implemented work is not repeated. Remaining acceptance evidence is specific:
+T016 is accepted by the four retained browser cells above. Remaining acceptance evidence is specific:
 
-- T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.
 - T018: verify the bounded replay correction at the final head, retain the initial-replay/late-issuance window as unresolved, then complete-spec review and exact-head delivery after the remaining obligations.
 
 See [hosted verification](hosted-verification.md) for prior failed attempts and review dispositions.

@@ -74,6 +74,9 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
         {
             Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
         }
-        Assert.True(Uri.TryCreate(attacker.Url, UriKind.Absolute, out var uri) && uri.GetLeftPart(UriPartial.Path) == destination.AbsoluteUri);
+        await attacker.WaitForURLAsync(url => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.GetLeftPart(UriPartial.Path) == destination.AbsoluteUri, new()
+        {
+            WaitUntil = WaitUntilState.Commit
+        });
     }
 }

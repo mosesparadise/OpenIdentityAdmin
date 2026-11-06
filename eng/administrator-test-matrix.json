@@ -1279,7 +1279,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2665,7 +2668,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")",
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -57350,6 +57356,120 @@
           "key": "Category",
           "value": "Browser"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReplayScopeTests",
+        "methodName": "Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReplayScopeTests",
+        "methodName": "Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReplayScopeTests",
+        "methodName": "Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReplayScopeTests",
+        "methodName": "Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReplayScopeTests",
+        "methodName": "Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReplayScopeTests",
+        "methodName": "Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"

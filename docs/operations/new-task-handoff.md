@@ -1,5 +1,15 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant final acceptance correction — 6 November 2026:** T018 review added direct retained-key
+isolation evidence for actor, application and action: three cases pass on each real provider,
+with exact native identity/audit bindings and no failures/skips. CI543 failed one SQL Server
+WebKit logout check because response headers preceded navigation commit. The test now awaits
+the same exact destination at commit, retaining its single POST and every denial/nonmutation
+check. [Local receipts](../../specs/021-application-grant-revocation/t018-local-evidence.json) retain the failure and six corrected-source scope passes.
+All 2,663 previous administrator identities remain; six are added (2,669 total).
+T018 remains open for the corrected browser run and full final-head artifacts/coverage;
+PR124 stays draft/unmerged. No production behavior or existing release gate changed.
+
 **Grant browser recovery accepted — 6 November 2026:** feature021 T016 is complete;
 **17 of18 tasks** now have acceptance evidence. All four PostgreSQL/SQL Server ×
 Chromium/WebKit BrowserProtection cells pass34/34: **136 total, including eight new

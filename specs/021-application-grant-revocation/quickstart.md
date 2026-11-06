@@ -1,7 +1,11 @@
 # Validate the application grant-revocation journey
 
-These are acceptance steps for the implementation; they are not already passed.
-Use synthetic disposable local-demo data and the existing runtime prerequisites.
+The feature branch implements this journey; see [verification](verification.md) for actual
+acceptance and the remaining T018 delivery gate. Ordinary Aspire automation uses Chromium
+on both providers. Retained Chromium/WebKit recovery tests use the shipped UI and production
+Worker composition in hosted fixtures; they are not four full-Aspire recovery runs. Actual
+Windows execution and manual accessibility acceptance remain open. Use synthetic disposable
+local-demo data and the existing runtime prerequisites.
 
 ```sh
 dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-demo
