@@ -1,0 +1,535 @@
+{
+  "baseHead": "6d02ec201df9dace6011afd1f1bf4fbb0f2d4ec4",
+  "requirements": [
+    "T010",
+    "GR-002",
+    "GR-006",
+    "GR-010",
+    "GR-011",
+    "GR-013"
+  ],
+  "scope": "Actual grant BFF transport on all four routes: strict finite responses, original deadlines, durable generation changes, and exact wire compatibility. Production correction restricts mutation-only upstream409/412/428 to mutations; GET normalizes503.",
+  "source": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportFaults.cs",
+      "sha256": "0a5237fda3e1d5fa502a96a2f3e424d123356429953b46e6e39a3a55c0b58ba1"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportBoundaryTests.cs",
+      "sha256": "47da5f11a8b2b49a891e8b1ea382eed76f930543564b74c7c12dd2702044669d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportContext.cs",
+      "sha256": "552e9431eb1f6bc37f35ae492d194326dd2edaf2df0c20d07b004f355b71f6dc"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportProbe.cs",
+      "sha256": "b6f9932add5d106e6e979977fbf41e63ebcbb4d83063e4d3da4d122407ef8220"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportTests.cs",
+      "sha256": "fde4196fd9be050402a921bd655ce54def02b7e8aa7ab18030936eabb1add6cd"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationProxyTransport.cs",
+      "sha256": "f57b7dfbdfdc56c7fe02e2442ac899dee10603bc20263a298ab028d078729949"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantHttpRecoveryTests.cs",
+      "sha256": "f31daf4162d0d6b8bcdd177ce358115fa87b07d4b82b94479867a395b52bd46c"
+    }
+  ],
+  "sourceBinding": "Both accepted providers execute the same exact seven-file runtime source manifest; other runtime source derives from baseHead. Inventory, selector and documentation changes are recorded separately. No runtime source variant.",
+  "accepted": [
+    {
+      "provider": "SqlServer",
+      "report": "grant-t010-sql-accepted-results/t010.trx",
+      "sha256": "2587fb38aa9dd1ba37db5895066bad7077f2c484186b336942c8c620238d44b8",
+      "counters": {
+        "total": "16",
+        "executed": "16",
+        "passed": "16",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        }
+      ],
+      "elapsedCancellationMilliseconds": [
+        5003.265,
+        5002.726,
+        5005.007,
+        5001.775
+      ]
+    },
+    {
+      "provider": "PostgreSql",
+      "report": "grant-t010-pg-final-results/t010.trx",
+      "sha256": "378235097aab93afd01c2199fcdaf79c25d89675f4a0997480a11422fbcf83b9",
+      "counters": {
+        "total": "16",
+        "executed": "16",
+        "passed": "16",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Passed"
+        }
+      ],
+      "elapsedCancellationMilliseconds": [
+        5005.743,
+        5001.188,
+        4999.357,
+        5003.782
+      ]
+    }
+  ],
+  "discovery": {
+    "total": 2635,
+    "preserved": 2603,
+    "added": 32,
+    "ordinaryPerProvider": {
+      "PostgreSql": 1193,
+      "SqlServer": 1298
+    },
+    "grantCasesPerProvider": 78,
+    "priorMetadataAndOrderPreserved": true
+  },
+  "priorCi": {
+    "run": 538,
+    "id": 42241533964,
+    "head": "6d02ec201df9dace6011afd1f1bf4fbb0f2d4ec4",
+    "jobs": 124,
+    "succeeded": 124,
+    "scope": "Workflow/job status reconciliation only; no new raw-artifact reconciliation."
+  },
+  "rejected": [
+    {
+      "reason": "Two genuine GET409 versus expected503 regressions; separate create fixture overconstrained API expiry before BFF clamping. No accepted pass claim.",
+      "provider": "SqlServer",
+      "report": "grant-t010-sql-before-results/t010.trx",
+      "sha256": "4f6c84afdd02feda3af7cd1c3073176e828d09e5b91212d15cb42340575314ba",
+      "counters": {
+        "total": "4",
+        "executed": "4",
+        "passed": "1",
+        "failed": "3",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Failed"
+        }
+      ],
+      "elapsedCancellationMilliseconds": [],
+      "log": "grant-t010-sql-before.log",
+      "logSha256": "bd8251a2a68e84d18458900e6838408e6c0a6634a920eab5175160ce71d3ddb5"
+    },
+    {
+      "reason": "One unsupported minimum-duration assertion (<5s) failed after correct503/cancellation/cleanup. Exact elapsed was not logged; timer quantization remains unproven. Removed minimum duration, retained original cancellation/held-valid-response/live-caller/frozen-clock/single-send/join/upper-watchdog checks and added safe elapsed diagnostics.",
+      "provider": "SqlServer",
+      "report": "grant-t010-sql-final-results/t010.trx",
+      "sha256": "baa74e730527e25153d7f06faf00208357154d63a900fa2b7fd13f68f17e77b9",
+      "counters": {
+        "total": "16",
+        "executed": "16",
+        "passed": "15",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")",
+          "outcome": "Passed"
+        }
+      ],
+      "elapsedCancellationMilliseconds": [],
+      "log": "grant-t010-sql-final.log",
+      "logSha256": "aac7bff3e58575c4e1ad70274acf9a34b9a49c08a76ac9a97d0c87072c4f3a0b"
+    },
+    {
+      "reason": "Eleven TRX bootstrap-startup failures; companion grant-t010-pg-accepted.log explicitly records initdb No space left on device. Freed3.4GB by removing only unused pinned SQL image5b0916c7af8c after all SQL containers had stopped. Source/frozen producer/evidence preserved. Entire mixed report rejected; full clean PG rerun accepted separately.",
+      "provider": "PostgreSql",
+      "report": "grant-t010-pg-accepted-results/t010.trx",
+      "sha256": "044b48ca0213f5bd236ec6839f39fc84d3fee385b0462ec48e0d91b5225f936a",
+      "counters": {
+        "total": "16",
+        "executed": "16",
+        "passed": "5",
+        "failed": "11",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")",
+          "outcome": "Passed"
+        }
+      ],
+      "elapsedCancellationMilliseconds": [],
+      "log": "grant-t010-pg-accepted.log",
+      "logSha256": "3c3c3875f0f8c21b13ef9f8c40e254dfd370454e50603fb628ea2f1d694eda07"
+    }
+  ],
+  "intermediate": "grant-t010-sql-results/t010.trx passed16 before positive count/byte-limit additions; superseded by accepted final runs.",
+  "review": "Independent test/security review resolved header-binding masking, fractional-time masking and original-expiry isolation; final source and native receipts reviewed. Separate API/architecture review found no remaining scoped defect.",
+  "limits": [
+    "Counts9007199254740993/9223372036854775807 are synthetic response compatibility values, not durable grant totals.",
+    "Actual HTTPS/native authentication/provider evidence; no browser-engine recovery claim. T016 remains separate.",
+    "Mutation recovery uses an explicit authorized direct API same-key retry after local browser generation/expiry loss; no automatic retry.",
+    "New-head full CI and T012/T015/T016/T018 remain open; PR124 stays draft/unmerged.",
+    "Initial pilot replay window and all historical/manual/Firefox/A-009/production/public-release gates remain open."
+  ],
+  "checks": {
+    "administratorBuild": "0warnings/0errors; grant-t010-accepted-build.log",
+    "style": "Informational severity: Administrator changed files and BFF transport pass; grant-t010-accepted-style.log and grant-t010-bff-style.log",
+    "quality": "Pass, no allowance growth; grant-t010-accepted-quality.log",
+    "selection": "74passed; grant-t010-selection.log",
+    "assurance": "345controls, allnot_assessed; snapshot integrity only; grant-t010-assurance.log",
+    "contractBuild": "0warnings/0errors after locked restore; initial missing-cache MSB3030 attempt retained in grant-t010-contract-build.log",
+    "nativeContracts": {
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/tests/contracts-core/Contracts.trx",
+      "sha256": "761e779a0e5f54a1ccfac8b3c72b3a0b8c43a3a842da61315acb9607048ae96a"
+    },
+    "nodeContracts": {
+      "passed": 44,
+      "failed": 0,
+      "skipped": 0,
+      "report": "artifacts/tests/contracts-core/node.xml",
+      "sha256": "b6cbb31ac224fb1b30693a9469fe6c09cb02adf5c564783e8f57404617060dc4"
+    },
+    "contractCompatibility": "Full verify_contracts.py core passed: five documents, generated types, TypeScript and baseline compatibility; no generated drift; grant-t010-contracts.log",
+    "secrets": "Staged full-source export scanned by gitleaks with redacted output; no leaks. grant-t010-secrets.log."
+  },
+  "commands": [
+    "source /workspace/managed-env.sh",
+    "dotnet build tests/aspire/IdentityPlatform.Administrator.Tests --no-restore -m:1",
+    "dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json",
+    "python3 -m unittest discover -s scripts -p test_*selection.py",
+    "python3 scripts/check_code_quality.py",
+    "python3 scripts/check_assurance.py",
+    "dotnet restore tests/contracts/IdentityPlatform.Api.Contracts.Tests --locked-mode --force",
+    "dotnet build tests/contracts/IdentityPlatform.Api.Contracts.Tests --no-restore -m:1",
+    "python3 scripts/verify_contracts.py core",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-build --no-restore --no-progress --filter 'Provider=SqlServer&FullyQualifiedName~GrantTransport' --report-trx --report-trx-filename t010.trx --results-directory /workspace/grant-t010-sql-accepted-results --pre-enumerate-theories on",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-build --no-restore --no-progress --filter 'Provider=PostgreSql&FullyQualifiedName~GrantTransport' --report-trx --report-trx-filename t010.trx --results-directory /workspace/grant-t010-pg-final-results --pre-enumerate-theories on",
+    "dotnet format style tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-restore --severity info --verify-no-changes --include tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportFaults.cs tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportBoundaryTests.cs tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportContext.cs tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportProbe.cs tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransportTests.cs tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantHttpRecoveryTests.cs",
+    "dotnet format style src/backend/IdentityPlatform.Admin.Bff/IdentityPlatform.Admin.Bff.csproj --no-restore --severity info --verify-no-changes --include src/backend/IdentityPlatform.Admin.Bff/Features/Applications/ApplicationProxyTransport.cs"
+  ]
+}

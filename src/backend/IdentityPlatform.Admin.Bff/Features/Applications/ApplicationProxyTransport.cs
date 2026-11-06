@@ -138,8 +138,8 @@ internal sealed class ApplicationProxyTransport : IDisposable
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(JsonType);
         }
         using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, token);
-        if (response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.NotFound or
-            HttpStatusCode.Conflict or HttpStatusCode.PreconditionFailed or HttpStatusCode.PreconditionRequired)
+        if (response.StatusCode is HttpStatusCode.BadRequest or HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden or HttpStatusCode.NotFound ||
+            input.Mutation && response.StatusCode is HttpStatusCode.Conflict or HttpStatusCode.PreconditionFailed or HttpStatusCode.PreconditionRequired)
         {
             return new((int)response.StatusCode);
         }

@@ -1,5 +1,71 @@
 # Grant-revocation hosted verification
 
+## T010 BFF response and session boundaries — 6 November 2026
+
+Prior [CI538](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42241533964)
+at `6d02ec201df9dace6011afd1f1bf4fbb0f2d4ec4` passed all 124 jobs. This is workflow/job
+status reconciliation, not a new raw-artifact reconciliation. [T010 receipts](t010-evidence.json)
+bind the final local reports to identical source and independently verified native identities.
+
+**T010 is complete; feature021 is 14/18 complete.** Final PostgreSQL 16/16 and SQL Server 16/16
+pass with zero failures/skips. All four real HTTPS BFF routes—submission, continuation,
+exact status and recent status—execute genuine password/MFA, protected session credentials,
+independent API validation and real provider persistence. The response probe observes exact
+method/path/body/key/precondition and the actual server-held bearer, rejects forwarded
+browser cookies/CSRF/arbitrary identity, and buffers genuine API output after owned work.
+
+The tests reproduce a production contract mismatch: GET exact/recent forwarded an upstream
+409 even though their mapped/generated contract only permits 400/401/403/404/503 errors.
+The scoped correction reserves 409/412/428 for mutations and normalizes those unexpected read
+statuses to 503. All finite statuses now pass on all four routes. Redirect/abort, malformed,
+duplicate/unknown members, declared/chunked overflow, media/encoding, application/job/key/
+version/Location bindings, state/failure/count/timestamp and collection-cardinality faults
+produce sanitized output with one send, no redirect following, cookies or private metadata.
+Matched substituted headers isolate job/version checks; fractional updated time preserves
+ordering so each named guard is independently exercised.
+
+Positive controls accept exactly 524,288 UTF-8 bytes, preserve decimal strings 9007199254740993
+and 9223372036854775807, and clamp later upstream expiry. These large counts are synthetic
+wire-compatibility values, not durable progress. Complete safe payload equality is checked.
+Real elapsed cancellation with a frozen wall clock joins the upstream request and suppresses
+success. A committed browser-generation change likewise suppresses output. Original-expiry
+cases extend current persisted expiry and prove `/bff/session` remains authenticated at
+the request's original deadline; the captured deadline still wins. Mutation failures
+retain exactly committed approvals and recover by explicit current-authorized direct API
+same-key replay without duplicate work. This is HTTP evidence, not T016 browser-engine recovery.
+
+Build, informational-severity style, quality, 74 selection controls and assurance pass without
+new allowances; all 345 assurance controls remain not_assessed. Native contract 44/44 and Node
+contract 44/44 pass, including five-document baseline compatibility and generated type/TypeScript
+checks with no drift. Discovery preserves all 2,603 prior portable records/metadata/order and
+adds 32 cases (2,635 total; 78 ordinary grant cases/provider). Independent test/security and separate
+API/architecture reviews support scoped closure; no further findings remain in these scopes.
+
+Retained rejected attempts are explicit. The pre-fix SQL report has 1 pass/3 failures: two real
+GET 409 regressions and one incorrect test assumption that upstream expiry must already fit
+the retained browser deadline; the BFF correctly clamps it. The first corrected SQL 16/16
+predates positive wire controls and is superseded. The expanded SQL report has 15 passes/1 failure
+because it imposed an unsupported minimum five-second response duration after correct 503,
+cancellation and joined cleanup. That minimum was removed: the contract bounds maximum
+lifetime, not minimum response time. The final test keeps a live caller token, frozen clock,
+held valid response, actual upstream cancellation before release, single attempt, joined
+cleanup and upper watchdog, and records elapsed milliseconds. The earlier exact elapsed
+was not logged; timer quantization is plausible, not proven.
+
+The first PostgreSQL report has 5 passes/11 startup failures: initdb explicitly reported `No space
+left on device`. Docker VFS image/database preparation exhausted the 32 GB filesystem. After
+all SQL containers had stopped, removing only the unused pinned SQL image 5b0916c7af8c freed
+3.4GB; source, frozen compatibility producer and evidence were preserved. The entire mixed
+report is rejected; the clean final PostgreSQL 16/16 is separate. Initial formatting/literal/
+size and stale selection-total failures were corrected without allowances; an initial quality
+invocation omitted the SDK environment. Contract build initially lacked five cached assemblies;
+locked restore repaired the cache, then build and the entire contract check passed. No failed
+attempt counts as accepted evidence.
+
+Next: T012 deleted-actor and ordered authority-change/batch-commit evidence, then T015/T016
+and complete T018 acceptance. PR124 remains draft/unmerged. New-head full CI, the initial pilot
+replay window, and every historical/manual/Firefox/A-009/production/public-release gate remain open.
+
 ## T008 admission/status boundaries — 6 November 2026
 
 Prior [CI536](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42227783524)

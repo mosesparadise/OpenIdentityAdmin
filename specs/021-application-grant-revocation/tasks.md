@@ -20,7 +20,7 @@ read truthful protected status and verify peer/configuration isolation.
 - [x] T007 [US1] Implement bounded native batch selection/revocation and atomic job progress in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; at most8authorizations and8tokens, false native result aborts, fresh native verification, current authority before commit and empty-set completion audit.
 - [x] T008 [US1] Add independent current permission/MFA admission, protected status/latest10reads and versioned contracts in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/; preserve original request/publication deadlines and native cleanup.
 - [x] T009 [US1] Enforce incomplete-job re-enable conflict in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs; test both issuance/re-enable/acceptance commit orders and actual provider lock waits in Administrator ApplicationGrants tests.
-- [ ] T010 [US1] Add exact BFF routes/CSRF/key forwarding and generated strict contracts in src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and frontend generated contracts; verify actual HTTP negatives, secrecy and compatibility in tests/contracts/IdentityPlatform.Api.Contracts.Tests/ and Administrator tests.
+- [x] T010 [US1] Add exact BFF routes/CSRF/key forwarding and generated strict contracts in src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and frontend generated contracts; verify actual HTTP negatives, secrecy and compatibility in tests/contracts/IdentityPlatform.Api.Contracts.Tests/ and Administrator tests.
 - [x] T011 [US1] Add confirmation/progress/finite-error UI in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ with current permission visibility, explicit offline limits, read-only polling/navigation cancellation, light/dark/focus and UI tests.
 
 ## Phase 4: US2 durable continuation (P1)
@@ -85,9 +85,16 @@ final context disposal and HTTP publication. T008 is complete; **13 of 18** task
 T010/T012/T015/T016/T018 remain open. Failed sentinel and disk-pressure attempts are retained
 as rejected evidence; no production source changed in this checkpoint.
 
+[T010 receipts](t010-evidence.json) now reconcile 16 final native passes per provider with
+identical source, strict execution bindings and no failures/skips. All four actual BFF routes
+exercise hostile/failed/late downstream responses, durable generation and original expiry,
+exact-byte/lossless-count compatibility, and explicit recovery without duplicate approvals.
+The reproduced GET 409 contract mismatch is corrected; 44 native and 44 Node contracts pass.
+Independent scoped reviews support T010 closure: **14 of 18** tasks complete. Rejected harness
+and disk-pressure attempts remain recorded; T012/T015/T016/T018 and new-head CI stay open.
+
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T010: downstream malformed/failed/late responses and changed durable browser generation.
 - T012: deleted actor and ordered permission loss/final authority change versus batch commit.
 - T015: elapsed request/transaction deadlines and actual ordered late-failure capture.
 - T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.

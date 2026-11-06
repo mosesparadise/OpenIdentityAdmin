@@ -3,34 +3,32 @@
 ## Current checkpoint — 6 November 2026
 
 Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is unchanged
-at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI536 at `9e7293f` passed all 124 jobs.
-The new test/evidence head still requires full CI and complete-feature acceptance.
+at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI538 at `6d02ec2` passed all 124 jobs
+(workflow/job status reconciliation only). The new head still requires full CI and complete
+feature acceptance.
 
-**13 of 18 tasks are complete.** [T008 receipts](t008-evidence.json) reconcile ten focused
-native passes on PostgreSQL and ten on SQL Server, with no failures or skips. They cover
-current revocation permission for initial/replayed/continued requests, isolated MFA
-freshness with live read authority, authority changes after actual save, bounded latest-ten
-status with equal-time ordering/peer isolation, and original publication deadlines through
-actual provider transaction cleanup and final context disposal. Existing production
-coordinators passed these boundaries; this checkpoint changes tests and evidence only.
+**14 of 18 tasks are complete.** [T010 receipts](t010-evidence.json) reconcile 16 focused passes
+on each real provider with identical source, zero failures/skips and independent native
+identity/execution review. Actual HTTPS submission, continuation, exact and recent status
+now prove strict downstream contracts, header/body secrecy, original elapsed/expiry bounds,
+durable browser-generation changes and explicit same-key recovery of committed work.
 
-Native discovery preserves all 2,583 prior portable identities/metadata/order and adds exactly
-20 cases (2,603 total; 62 ordinary grant cases per provider). Build, informational-severity
-style, quality and all 74 selection controls pass without allowance growth. The PostgreSQL
-source differs only by one subsequently removed unused import; the receipt verifies that
-exact difference. SQL Server runs the final source. Rejected test-sentinel and disk-pressure
-attempts remain explicit in [hosted verification](hosted-verification.md).
+The production correction reserves upstream409/412/428 for mutations; unexpected read
+responses normalize to 503, matching mapped and generated contracts. Positive exact-byte and
+lossless-count controls complement malformed/failed response cases. Counts used for wire
+compatibility are synthetic, not a claim of durable totals. This does not replace T016's
+retained-engine stopped-job and unknown-acceptance recovery journeys.
 
-T010/T012/T015/T016/T018 remain open in [tasks](tasks.md). Next is T010's actual BFF downstream
-response and durable browser-session generation boundaries, followed by remaining authority
-races, deadlines/late-failure evidence and genuine browser recovery. Accepted jobs continue
-under recorded approval and current account/permission checks; successful reconciliation
-still requires a separate explicit re-enable.
+Administrator/contract builds, informational style, quality, 74 selection controls, 44 native
+and 44 Node contract cases, generated types and compatibility checks pass. Discovery preserves
+all 2,603 prior identities/metadata/order and adds 32 (2,635 total; 78 grant cases/provider). Rejected
+regression/harness and disk-pressure attempts remain explicit in [hosted verification](hosted-verification.md).
 
-The bounded pilot replay correction repeats cleanup on a later replay; it does not serialize
-pilot issuance or close the initial replay/late-issuance window. That limitation and every
-historical/manual/Firefox/A-009/production/public-release gate remain open. No PR was marked
-ready or merged by this checkpoint.
+T012/T015/T016/T018 remain open in [tasks](tasks.md). Next is deleted-actor and ordered current
+authority/batch-commit evidence in T012. Accepted work retains recorded approval plus current
+account/permission checks; re-enable remains separate after successful reconciliation.
+The initial pilot replay/late-issuance window and all historical/manual/Firefox/A-009/production/
+public-release gates remain open. No PR was marked ready or merged by this checkpoint.
 
 ## Executed local evidence
 
@@ -81,10 +79,10 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-The exact remaining cases are listed by task in [tasks.md](tasks.md). Current issuer
-ordering/cross-instance additions await both-provider execution. Target and current-authority
-negatives, API/BFF deadline/cleanup/downstream/generation boundaries, actual ordered late
-failure capture and browser recovery remain open. Full CI success does not replace these
-unimplemented acceptance cases. All 100 coverage inputs and 15 unchanged floors remain
-mandatory for final delivery. Historical findings, manual Windows/accessibility work,
+T012 requires deleted-actor and ordered permission/final-authority change versus batch commit.
+T015 requires elapsed request/transaction deadlines and actual ordered late-failure capture.
+T016 requires genuine browser stopped-job continuation and unknown-acceptance recovery.
+T018 requires complete-spec review and full exact-head artifact/coverage reconciliation before
+reviewed squash delivery. All100coverage inputs and15unchanged floors remain mandatory.
+The initial pilot replay/late-issuance window, historical findings, manual Windows/accessibility,
 Firefox/A-009, vendor, production and public-release gates remain open. Refresh stays disabled.

@@ -73,7 +73,7 @@ public sealed class GrantHttpRecoveryTests(BootstrapFixture fixture)
     }
 
     /// <summary>Removes actual persisted grants, runs the real worker stop, and restores only those claims without manufacturing a continuation.</summary>
-    private static async Task StopAndRestoreAsync(ApplicationHttpFixture test, string id)
+    internal static async Task StopAndRestoreAsync(ApplicationHttpFixture test, string id)
     {
         var token = TestContext.Current.CancellationToken;
         string[] roles;

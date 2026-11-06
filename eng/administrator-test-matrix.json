@@ -1249,7 +1249,23 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"authority\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: False)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: True)",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2605,7 +2621,23 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"authority\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: False)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: True)",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -56056,6 +56088,646 @@
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportBoundaryTests",
+        "methodName": "Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantTransportTests",
+        "methodName": "Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
           "System.String"
         ]
       },

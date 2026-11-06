@@ -1,5 +1,16 @@
 # Delivery roadmap and task register
 
+**Grant BFF acceptance — 6 November 2026:** feature021 T010 is complete; **14 of 18 tasks**
+now have acceptance evidence. PostgreSQL 16/16 and SQL Server 16/16 pass on identical source.
+The BFF now normalizes mutation-only upstream errors on read routes, matching its contracts.
+All four routes verify strict output, secrecy, original deadlines, browser-generation changes
+and explicit recovery. Native 44/44 and Node 44/44 contracts pass; all 2,603 prior native identities
+remain and 32 are added. [Receipts](../specs/021-application-grant-revocation/t010-evidence.json)
+retain rejected attempts. Prior CI538 at `6d02ec2` passed 124 jobs; new-head CI remains required.
+Next: T012 deleted-actor and ordered authority/batch-commit evidence. T012/T015/T016/T018 remain
+open. PR124 stays draft/unmerged; main, the initial pilot replay window and all historical/
+manual/Firefox/A-009/production/public-release gates remain unchanged.
+
 **Grant admission and status acceptance — 6 November 2026:** feature021 T008 is complete;
 **13 of 18 tasks** now have acceptance evidence. Ten focused cases pass on each real provider
 with zero failures/skips: current permission/MFA, post-save authority, latest-ten status,
