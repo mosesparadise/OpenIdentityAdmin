@@ -59,21 +59,23 @@ reports). Four admission/re-enable cases, all eight extended genuine issuance-ra
 and both commit-timed cross-instance cases pass. T009 and T014 are complete on that
 focused evidence; full CI remains rejected for the separate import and native replay failures.
 
-The import is corrected. The replay assertion remains exact, with finite failure-only
-diagnostics; causation and a product correction remain unproved. Additional HTTP target
-negatives are implemented for missing/stale/foreign-version, unmanaged/native-profile
-and persisted pilot identity denial, with unchanged native-state/audit oracles and a valid
-positive control. Their hosted execution and administrator persisted-ID oracle remain open.
+[Run534 receipts](run534-evidence.json) at `2a18e68` verify all124successful jobs and
+364 selected native passes. Both-provider HTTP target negatives and the valid control
+pass. Administrator persisted-ID protection remains open. The earlier replay failure is
+now reproduced by a controlled real PostgreSQL ordering test. A pilot-only repeated-replay
+cleanup correction is implemented with exact native bindings, native rejection, independent
+authorization and failure controls; current-head integrated acceptance remains pending.
+This bounded correction does not close the initial-replay/late-issuance window.
 
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T005/T006: administrator persisted ID/name drift and hosted verification of new HTTP target/version negatives.
+- T005/T006: administrator persisted ID/name drift; new HTTP target/version negatives are verified on both providers.
 - T008: fresh MFA/permission admission, original publication/deadline/cleanup, latest-ten ordering.
 - T010: downstream malformed/failed/late responses and changed durable browser generation.
 - T012: deleted actor and ordered permission loss/final authority change versus batch commit.
 - T015: elapsed request/transaction deadlines and actual ordered late-failure capture.
 - T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.
-- T018: resolve the existing native replay failure, then complete-spec final review and exact-head delivery after those obligations.
+- T018: verify the bounded replay correction at the final head, retain the initial-replay/late-issuance window as unresolved, then complete-spec review and exact-head delivery after the remaining obligations.
 
 See [hosted verification](hosted-verification.md) for prior failed attempts and review dispositions.
 

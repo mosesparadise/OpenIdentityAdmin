@@ -1,5 +1,19 @@
 # OpenIdentityAdmin new-task handoff
 
+**Pilot replay reproduced and bounded correction — 6 November 2026:** prior run534 at
+`2a18e68` passes all124jobs; both providers verify the new grant target-denial checks.
+A controlled PostgreSQL test now reproduces the older replay failure: replay revocation
+precedes the winner's token insertion, and later replay omits chain cleanup. The scoped
+correction repeats native cleanup for exactly bound, already-revoked pilot codes while
+preserving rejection. Controlled tests pass on both providers, including12binding
+negatives, actual cleanup-write failure and an unaffected authorization. The initial
+replay/late-issuance window remains unresolved; this is not full race prevention.
+[Evidence and limits](../../specs/021-application-grant-revocation/hosted-verification.md) retain both the original failure and corrected results.
+Feature021 remains10/18complete. Next: verify the corrected head, then finish administrator-ID,
+current-authority, API/BFF and browser-recovery obligations. PR124 stays draft; main and
+all historical/manual/Firefox/A-009/production/public-release gates remain unchanged.
+
+
 **Grant-revocation race and cross-instance evidence — 6 November 2026:** run533 at
 `da6f378` verifies 230 native passes across both grant and managed-issuance suites.
 Feature021 T009/T014 are complete; 10 of 18 tasks now have acceptance evidence.

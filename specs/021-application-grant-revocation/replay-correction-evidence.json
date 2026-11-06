@@ -1,0 +1,195 @@
+{
+  "baseHead": "2a18e68cd340c967b91e03399588e5e3fe1b5daf",
+  "scope": "One controlled PostgreSQL reproduction before correction and four targeted passes after correction. Full final-head CI required.",
+  "results": [
+    {
+      "scope": "before-fix-controlled-PostgreSql",
+      "report": "pilot-replay-pg-results/replay.trx",
+      "sha256": "1093db723f903c2c0af5ce67356488a78a2c07fd74a68a7de5a0092576096e63",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")",
+      "outcome": "Failed",
+      "duration": "00:00:35.6680000",
+      "finished": "2026-11-06T07:43:04.9987209Z"
+    },
+    {
+      "scope": "corrected-controlled-PostgreSql",
+      "report": "pilot-replay-pg-final-results/replay.trx",
+      "sha256": "7c7cb142c9fe04e3468a9dc250a25580566d91e0df68ab93122e309ada3eb837",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")",
+      "outcome": "Passed",
+      "duration": "00:00:40.0000000",
+      "finished": "2026-11-06T08:08:47.1793723Z"
+    },
+    {
+      "scope": "corrected-controlled-SqlServer",
+      "report": "pilot-replay-sql-final-results/replay.trx",
+      "sha256": "98205f98890f58ffe272a5a27415201d04991ba22893fbb0def5a8f696d5bbd0",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"SqlServer\")",
+      "outcome": "Passed",
+      "duration": "00:01:14.6500000",
+      "finished": "2026-11-06T08:11:15.3221356Z"
+    },
+    {
+      "scope": "corrected-standalone-PostgreSql",
+      "report": "pilot-replay-standalone-pg-results/replay.trx",
+      "sha256": "b48b88bc4b0205a24000a86274772289f43aaa6922ac631fae9a2e3f961b4997",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(provider: \"PostgreSql\")",
+      "outcome": "Passed",
+      "duration": "00:00:32.2130000",
+      "finished": "2026-11-06T08:03:35.4083938Z"
+    },
+    {
+      "scope": "corrected-standalone-SqlServer",
+      "report": "pilot-replay-standalone-sql-results/replay.trx",
+      "sha256": "48a33f66a7e8376f9418df7b9a2617cbeeeb9a30bcbf7cbcdaa823a474e87b4f",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(provider: \"SqlServer\")",
+      "outcome": "Passed",
+      "duration": "00:00:39.3210000",
+      "finished": "2026-11-06T08:12:49.6832663Z"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotReplayCleanup.cs",
+      "sha256": "c5dd81945dfb7cc758240436f3037e5723c366e21e8890c22e949db51517d26e"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/Setup.cs",
+      "sha256": "7780fc635194aca71d099d2acc1ff69c8d38d1d099a8eb363fd2797f4b5e1889"
+    },
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
+      "sha256": "f37c39cb154c3247e815933f7ef016ae191f1750e760d7eacc1a5548b5de3d95"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayBarrier.cs",
+      "sha256": "139f308d883731cf211f59ff287e7feb1f4c4e6284103ef47a6a8a48803dad06"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayCleanupFault.cs",
+      "sha256": "9b7caf54121dbac824d0721ea5fd0c18d1891847f34804883c1308df564d6754"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayGuardEvidence.cs",
+      "sha256": "f5d94df645b268ea75bd69ac42dd1c511018e3bc8a0e405b9496aa8184a77894"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayJourney.cs",
+      "sha256": "6a48813339c5850a2e79399abd016854b7e93456b16bfb788c3dc828fba5968d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayOrderingTests.cs",
+      "sha256": "d8a0a918f3706cde6ea25a0f76595787836e1dddb366ccae695243cd4869a492"
+    }
+  ],
+  "productionAssemblies": [
+    {
+      "path": "src/backend/IdentityPlatform.AuthServer/bin/Debug/net10.0/IdentityPlatform.AuthServer.dll",
+      "sha256": "01dab35653c6fd30d222fb33a7a9fd04377d974da3707f63ce46f98ce828ec3d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Issuer.Tests/bin/Debug/net10.0/IdentityPlatform.AuthServer.dll",
+      "sha256": "01dab35653c6fd30d222fb33a7a9fd04377d974da3707f63ce46f98ce828ec3d"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.AuthServer.dll",
+      "sha256": "01dab35653c6fd30d222fb33a7a9fd04377d974da3707f63ce46f98ce828ec3d"
+    }
+  ],
+  "limits": [
+    "Baseline controlled test was the original simpler version before later guard, injected-failure and unaffected-control assertions were added; its full original uncommitted source snapshot was not retained. The fixed failure marker and native report retain the observed failing oracle.",
+    "Twelve guard negatives are isolated component inputs; genuine HTTP behavior is checked separately. Persisted manifest/application/authorization-subject mutation permutations are not exhaustively covered.",
+    "This repeats cleanup on later replay; it does not serialize pilot redemption/issuance or close the initial replay-to-late-issuance window.",
+    "No coverage/mutation/full-feature/manual/public-release acceptance is inferred from these focused runs."
+  ]
+}

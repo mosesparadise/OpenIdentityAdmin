@@ -2,27 +2,32 @@
 
 ## Current checkpoint — 6 November 2026
 
-Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is
-`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run531 at `0a5fc76` passed all 124 jobs.
-[Run533 focused receipts](run533-evidence.json) at `da6f378` now verify 51 grant and 64
-managed-issuance cases per provider: 230 native passes, including both new cross-instance
-cases and all extended issuance races. T009/T014 join T001–T004/T007/T011/T013/T017 as
-complete. Full feature acceptance remains open for the specific gaps in [tasks.md](tasks.md).
+Feature021 remains in draft PR124 on `128-application-grant-revocation`; main remains
+`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run534 at `2a18e68` passes all124jobs.
+[Focused raw receipts](run534-evidence.json) verify51grant and131issuer-flow cases per
+provider (364selected passes), including the new HTTP target/version/profile and persisted
+pilot-ID negatives. Ten tasks remain complete: T001–T004/T007/T009/T011/T013/T014/T017.
+Administrator-ID protection and the other specific [task gaps](tasks.md) remain open.
 
-Run533 is rejected: static analysis found one unused import, corrected locally, and the
-older PostgreSQL native code replay test failed its exact winning-access revocation check.
-The observed status was not captured; source analysis identifies a possible redemption /
-chain-revocation / issuance ordering, not proven causation. Failure-only finite diagnostics
-preserve the exact native assertion and security mutation marker. Two native test names
-are explicitly migrated to current scenario naming, with no baseline expansion. See
-[hosted verification](hosted-verification.md) for the mapping, checks and limits.
+The earlier native replay failure is now reproduced by controlled genuine PostgreSQL
+HTTP ordering: the loser revokes the redeemed code before the winner inserts its access
+token; subsequent replay rejects the code without cleaning up that later token. A scoped
+pilot-only correction repeats native cleanup after exact persisted bindings, leaving
+native rejection in place. Final controlled PostgreSQL and SQL Server cases pass, including
+twelve component binding negatives, actual cleanup UPDATE failure and a different genuine
+authorization control. The original standalone issuer case is also verified separately.
+See [replay receipts](replay-correction-evidence.json) and [hosted verification](hosted-verification.md).
 
-Additional real API/BFF target-denial checks are implemented, with exact native/policy/audit
-preservation, persisted pilot-ID protection and a final authorized positive control.
-Hosted execution remains pending, as does independent administrator-ID target coverage.
-Accepted jobs still continue after logout/MFA expiry under recorded approval and current
-account/permission checks. Targets remain disabled until success and a separate re-enable.
-Stopped-job browser recovery and all historical/manual/public-release gates remain open.
+This correction does not close the initial replay/late-issuance window or constitute
+complete race prevention. Full corrected-head CI, further boundary review and feature
+acceptance remain required. Native discovery preserves2,579prior portable identities and
+adds exactly two controlled replay cases. Local quality, formatting at informational
+severity,74selection controls and both affected project builds pass without allowance growth.
+
+Accepted grant jobs continue after logout/MFA expiry under recorded approval and current
+account/permission checks; disabled targets remain disabled until successful reconciliation
+and a separate re-enable. Actual stopped-job browser recovery and all historical/manual/
+public-release gates remain open. No PR has been marked ready or merged by this checkpoint.
 
 ## Executed local evidence
 

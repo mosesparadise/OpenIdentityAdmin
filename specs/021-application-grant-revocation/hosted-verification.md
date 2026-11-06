@@ -1,5 +1,67 @@
 # Grant-revocation hosted verification
 
+## Run534 and controlled pilot replay correction — 6 November 2026
+
+[Run534](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42138440154)
+at `2a18e68cd340c967b91e03399588e5e3fe1b5daf` completes124successful jobs, zero failures
+or skips. [Independent raw receipts](run534-evidence.json) reconcile51grant and131issuer-flow
+cases per provider:364selected native passes. The exact-head invalid-input test awaits
+the new target helper, so its missing/stale/foreign-version/unmanaged/native-profile and
+persisted-pilot denials plus authorized control are verified on both providers. A green
+run did not establish the cause or repair of the earlier replay failure.
+
+A new real-Kestrel pilot journey now controls that ordering. The test obtains a genuine
+password/S256 code and pauses the actual native ProcessSignIn handler immediately after
+redemption. A fresh observer sees Redeemed; a competing exchange completes invalid_grant
+and another fresh observer sees Revoked. Only then does the winner continue to200 and
+independent issuer/audience/signature/nonce/lifetime validation. A later replay returns
+invalid_grant but the winning access remains unrevoked. PostgreSQL reproduces the exact
+final failure in one executed native case. This proves a concrete mechanism consistent
+with CI533; CI533's original scheduler ordering was not captured.
+
+The bounded correction registers a pilot-only cleanup handler just before native token
+entry validation, retaining native filters and responses. It handles already-revoked
+codes only after exact request/client/presenter/token/authorization/subject/application
+and persisted pilot-manifest binding. Native RevokeByAuthorizationIdAsync repeats chain
+cleanup, catching known relational/cancellation failures with a finite message and
+preserving native rejection. It neither changes token validation nor retries issuance.
+It is registered in the common protocol setup for both standalone and mixed pilot hosts.
+
+**Limit:** this does not serialize pilot redemption and winning issuance. A token can
+still be issued after the initial replay completed and before a later replay cleans it
+up. That window remains unresolved; this is not complete race prevention or a public
+release/security acceptance claim. The new regression restores the existing final-replay
+oracle and must not be presented as proof of broader serialization.
+
+Independent source review required explicit LegacyPilot observer scope selection and
+exception-preserving release/join. Both are implemented. Cleanup failure is injected at
+the real native token UPDATE; the test requires one actual failure, invalid_grant and
+unchanged valid access, then separately repeats replay after disarming the fault. A
+second genuine authorization remains distinct and exchanges for cryptographically and
+natively valid access. Twelve isolated component negatives alter request/endpoint/grant,
+principal/type/presenter/subject and token/authorization bindings, each requiring the
+complete native scalar/association digest to remain unchanged. Altered principals are
+not credited as cryptographically valid HTTP input.
+
+The initial corrected PostgreSQL case and original standalone PostgreSQL replay case
+pass. The sole edit after the initial corrected receipt was removal of an unused import;
+additional guard coverage is separately built and executed. Final controlled PostgreSQL and SQL Server plus both original standalone issuer cases
+pass1/1each, with zero skips. [Hashed receipts](replay-correction-evidence.json) record
+the original1/1failure and these four passes; all three production assembly copies have
+the same SHA256. Final controlled-test reports postdate every C# edit. Persisted manifest,
+application and authorization-subject mutation permutations are not exhaustively covered. All2,579 prior native
+Administrator identities/portable metadata remain; exactly two provider cases are added
+(2,581total, ProtocolAdmission111/provider). All74selection controls and syntax-aware
+quality checks pass without allowance growth. Full corrected-head CI remains required.
+
+The resumed environment had lost its temporary SDK/package cache. The pinned10.0.403
+SDK, locked packages and existing HTTPS development-certificate trust were restored.
+Unused test image caches were removed only after verifying zero containers/volumes,
+recovering approximately6GB; source, databases and frozen baseline files were untouched.
+This changed the prior disk blocker sufficiently to run the focused local PostgreSQL
+case. No expired diagnostic approval, production SQL experiment or browser waiver was used.
+
+
 ## Run533 focused acceptance and unresolved replay — 6 November 2026
 
 [Run533](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42133604768)

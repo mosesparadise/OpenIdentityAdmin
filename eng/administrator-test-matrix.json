@@ -1237,7 +1237,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2581,7 +2582,8 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -55559,6 +55561,44 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
         "typeName": "GrantIssuerLifecycleTests",
         "methodName": "Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotReplayOrderingTests",
+        "methodName": "Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotReplayOrderingTests",
+        "methodName": "Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
