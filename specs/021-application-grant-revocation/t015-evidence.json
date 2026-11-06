@@ -1,0 +1,305 @@
+{
+  "baseHead": "9d68c045487d79f8035f0dfa70e6441c8c541083",
+  "requirements": [
+    "T015",
+    "GR-008",
+    "GR-009",
+    "GR-010",
+    "GR-012",
+    "FR-12",
+    "FR-17",
+    "FR-18",
+    "NFR-05"
+  ],
+  "scope": "Actual elapsed transaction/request deadlines and real failed-batch capture ordered against peer progress, fresh continuation approval and terminal success.",
+  "source": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantFailureCapture.cs",
+      "sha256": "8531e43e3de5bd69fc80db5617dda87d40a810c13ad67be0f17700ce8b18e74a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantTransactionDeadline.cs",
+      "sha256": "203a09959d722a62dff7f149fcf9ff94e1a853dadffc4d3bed7cbe133b067bca"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantRequestDeadline.cs",
+      "sha256": "631755d064333dd92f26112dde5177047573eb6ff38211b4281e17215d801746"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantRecoveryDeadlineTests.cs",
+      "sha256": "57dac16e9a01d59794075a454e80f2f56f2838e78cd2901980d89a0633d14bf5"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantRecoveryRace.cs",
+      "sha256": "8c0b1a6f22ef4c02b210ff4c99f8c03df64c10bfc82730acca16fc3e979ad409"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantRecoveryRaceTests.cs",
+      "sha256": "e02d3a34b684201f8e3df2c251cf26b712b64d03e08a7fe3a6d4eb00763015a7"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantAuthorityRaceProbe.cs",
+      "sha256": "493b97780514e4df9ad6f6628d6517b2d92fa82cf3cf524a2da84299d431492c"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/ApplicationMutationFixture.cs",
+      "sha256": "bb9a29f8bdb71f39f4a334dab2a6479bc220b37daecbfeb4965d98e459c0e377"
+    }
+  ],
+  "sourceBinding": "Both accepted reports use this identical eight-file test source manifest and the final serial build. Six new files and two optional reusable helper extensions; all other executable source derives from baseHead. Production source is unchanged.",
+  "accepted": [
+    {
+      "provider": "PostgreSql",
+      "report": "grant-t015-pg-results/t015.trx",
+      "sha256": "dfa7589cd93d5818ab120e013b5a5183d2d2c5ff1e8b5ea937920842b2471221",
+      "counters": {
+        "total": "13",
+        "executed": "13",
+        "passed": "13",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "elapsedMilliseconds": {
+        "transaction": 5034.367,
+        "request": 9998.728
+      },
+      "newCases": 5,
+      "relatedRegressions": 8,
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"approval\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")",
+          "outcome": "Passed"
+        }
+      ]
+    },
+    {
+      "provider": "SqlServer",
+      "report": "grant-t015-sql-results/t015.trx",
+      "sha256": "276875b51ed149e1cae340e75710df21dc390302867cbc7088aa8a4bede9e627",
+      "counters": {
+        "total": "13",
+        "executed": "13",
+        "passed": "13",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "elapsedMilliseconds": {
+        "transaction": 5048.412,
+        "request": 9998.992
+      },
+      "newCases": 5,
+      "relatedRegressions": 8,
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"approval\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")",
+          "outcome": "Passed"
+        }
+      ]
+    }
+  ],
+  "executionBinding": "Strict native discovery, definition, result and execution bindings verify exactly thirteen cases/provider: five new T015 cases, seven current-authority regressions and the existing independent-approver recovery case. No omissions, extras, duplicates, failures or skips.",
+  "inventory": {
+    "priorPreserved": 2649,
+    "added": 10,
+    "total": 2659,
+    "ordinaryGrantsPerProvider": 90,
+    "ordinaryAdministrator": {
+      "PostgreSql": 1205,
+      "SqlServer": 1310
+    },
+    "completeDiscoverySha256": "e3130d77ed75c7c18f133488842a037a1b54401a40bef89225aa6c4c60d9973a"
+  },
+  "precedingCi": {
+    "run": 42270733309,
+    "head": "9d68c045487d79f8035f0dfa70e6441c8c541083",
+    "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42270733309",
+    "conclusion": "success",
+    "successfulJobs": 124,
+    "scope": "Workflow and all124 job status metadata reconciled across both pages; no new raw-artifact reconciliation claimed."
+  },
+  "environment": {
+    "sdk": "10.0.403",
+    "runtime": "10.0.14",
+    "dockerStorageDriver": "vfs",
+    "PostgreSqlImage": "postgres@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336",
+    "SqlServerImage": "mcr.microsoft.com/mssql/server@sha256:4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090",
+    "ownership": "Sequential provider runtimes and image caches; remove only unused provider images after container cleanup. Preserve source, reports and the frozen compatibility producer."
+  },
+  "commands": [
+    "source /workspace/managed-env.sh; dotnet build tests/aspire/IdentityPlatform.Administrator.Tests --no-restore -m:1",
+    "dotnet format style tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-restore --severity info --verify-no-changes --include <eight manifest files>",
+    "dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-build --no-restore --no-progress --filter 'Provider=PostgreSql&(FullyQualifiedName~GrantRecovery|FullyQualifiedName~GrantAuthority)' --report-trx --report-trx-filename t015.trx --results-directory /workspace/grant-t015-pg-results --pre-enumerate-theories on",
+    "dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-build --no-restore --no-progress --filter 'Provider=SqlServer&(FullyQualifiedName~GrantRecovery|FullyQualifiedName~GrantAuthority)' --report-trx --report-trx-filename t015.trx --results-directory /workspace/grant-t015-sql-results --pre-enumerate-theories on",
+    "python3 scripts/check_code_quality.py",
+    "python3 -m unittest discover -s scripts -p 'test_*selection.py'",
+    "python3 scripts/check_assurance.py"
+  ],
+  "checks": {
+    "build": "passed, zero warnings/errors",
+    "informationalStyle": "passed",
+    "quality": "passed, no new allowances",
+    "selectionControls": 74,
+    "assurance": "345 controls retain not_assessed; integrity only"
+  },
+  "reviews": [
+    {
+      "role": "test/security",
+      "reviewer": "grant_t012_review",
+      "result": "Required and resolved a post-verification marker: intended IOException occurs only after persisted native revocation is observed, and final assertions require that marker. Other deadline isolation, real failure order, state/history and cleanup design pass review."
+    },
+    {
+      "role": "architecture",
+      "reviewer": "grant_authority_review",
+      "result": "No blocking finding: retain original scoped context factory and DI ownership; request activation precedes any transaction; phase cancellation keeps request/caller live; actual failed batch drains before a fresh failure transaction contends; optional helpers preserve prior callers."
+    },
+    {
+      "role": "independent receipt reconciliation",
+      "reviewer": "grant_t012_review",
+      "result": "26/26 exact executions reconcile. All six real race cases report observed native contention; elapsed diagnostics match receipts. Eight source checksums match the built PDB and final build precedes both runs. Prior2649 identities/metadata/order preserved, total2659; sixteen tasks complete, production unchanged."
+    }
+  ],
+  "rejectedChecks": [
+    {
+      "log": "grant-t015-quality.log",
+      "reason": "Initial CQ006 identified an unnamed two-revision progress-plus-stop expectation. Replaced with a named fixture constant; no allowance added."
+    }
+  ],
+  "limits": [
+    "No production code change or new recovery API; this closes the remaining T015 evidence alongside prior accepted save/audit/commit/cancellation/idempotency/effective-approver cases.",
+    "Request probe forwards the real native context resolver and original token, then delays activation before a transaction exists. It does not simulate a remote HTTP timeout.",
+    "Deadline attribution uses isolated actual product-token cancellation and live parent/caller checks; measured elapsed values are diagnostic, not brittle exact minimum-duration assertions.",
+    "Late-failure cases follow actual GrantBatchOperation save failure, native rollback/disposal, original context disposal, fresh failure-context lock wait and peer commit. No fabricated GrantAttempt is supplied.",
+    "T016 browser recovery and T018 exact-final-head acceptance remain open. Prior CI status does not replace new-head artifact/coverage reconciliation.",
+    "Initial pilot replay/late-issuance window, Firefox/A-009, six historical findings and Windows/manual/vendor/production/public-release gates remain open. Refresh remains disabled. PR124 stays draft/unmerged.",
+    "TRX does not independently attest the loaded binary hash; source binding also relies on retained build artifacts, PDB checksums and observed build/execution chronology."
+  ],
+  "buildArtifacts": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.Administrator.Tests.dll",
+      "sha256": "cde53319f0ea761003e6c097cc4a7a212cdda015697b31b7ac6401436e198f1a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/bin/Debug/net10.0/IdentityPlatform.Administrator.Tests.pdb",
+      "sha256": "aa6816169d44dfc482e5e570a5f82391a3242b644642a7489f38f0a9abb32383"
+    }
+  ]
+}

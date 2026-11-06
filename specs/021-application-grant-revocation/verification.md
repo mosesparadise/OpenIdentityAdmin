@@ -3,41 +3,49 @@
 ## Current checkpoint — 6 November 2026
 
 Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is unchanged
-at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI539 at `2ff0877` passed all 124 jobs
+at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI540 at `9d68c04` passed all 124 jobs
 (workflow/job status reconciliation only). New-head full CI and final feature acceptance
 remain required.
 
-**15 of 18 tasks are complete.** [T012 receipts](t012-evidence.json) reconcile seven focused
-passes on each real provider using identical final source, zero failures/skips and strict
-native discovery/definition/execution bindings. No production code changed: the existing
-worker correctly rejects deleted actors and current authority loss.
+**16 of 18 tasks are complete.** [T015 receipts](t015-evidence.json) reconcile 13 passes on
+each real provider using identical final source and strict native discovery/definition/
+execution bindings, with zero failures/skips. Five new cases per provider close the remaining
+T015 gaps; eight related authority/effective-approver cases provide targeted regressions.
+Existing production behavior passes without modification.
 
-The deletion case retains authentication/enrollment coordination rows, isolating actual
-user existence from missing-lock storage failure; eight earlier authorization/token changes
-and immutable approvals/audits survive. Four same-transaction fault-injection cases remove
-permission or disable the account after actual progress/audit save, for populated batches
-and empty-success reconciliation. Native changes, progress and injected authority mutations
-roll back; one fresh zero-delta authority stop commits, and later polling cannot restart it.
+The transaction deadline test waits on the actual product token after a native token save,
+observing phase cancellation while request/caller remain live. The request deadline test
+forwards the original scoped native resolver and token, delaying real context activation
+before any transaction can start. It observes request cancellation with a live caller, no
+transaction, unchanged durable job/native/history state and completed context disposal;
+a fresh ordinary request subsequently completes the queued work. UTC remains frozen in
+both cases, so wall-clock advancement cannot masquerade as real elapsed enforcement.
+Measured timings are retained as diagnostics; exact minimum timing assertions are not used.
 
-Two genuine governance races per provider use fresh password/MFA and a surviving platform
-administrator. Exact blocker/waiter sessions are observed before releasing the held native
-commit. Governance-first permits no progress and commits a separate stop; batch-first retains
-exactly eight authorizations/eight tokens before the next batch stops. Native target/control
-identities, associations, types, statuses and configuration are independently compared.
+Three real failed-batch races cover later progress, fresh explicit continuation and terminal
+success. A persisted native revocation is observed before the deliberate save failure;
+actual rollback/disposal releases its locks before a test gate delays cleanup. After the
+peer reaches commit, original cleanup drains and the fresh failure recorder is observed
+waiting on that exact peer session. Same-approval incomplete progress gains one zero-delta
+stop; newer approval and success preserve the peer's exact job snapshot without extra audit.
+Target/control native rows, configuration, counts and immutable approvals/audits are checked.
+No manually constructed GrantAttempt is supplied to these races.
 
-Build, informational style, quality, all 74 selector controls and assurance pass without new
-allowances. All 345 assurance controls remain not_assessed. Discovery preserves all 2,635
-prior identities/metadata/order and adds 14 (2,649 total; 85 ordinary grant cases/provider).
-Independent architecture and test/security reviews support scoped closure. Earlier compiler,
-style and local-function documentation failures, and the superseded initial PostgreSQL pass,
-remain explicit in [hosted verification](hosted-verification.md).
+Build, informational style, quality, all 74 selection controls and assurance pass without new
+allowances. All 345 assurance controls remain not_assessed. Discovery preserves all 2,649
+prior identities/metadata/order and adds ten (2,659 total; 90 grant cases/provider).
+Independent test/security review required a marker proving the intended native fault was
+reached after persisted verification; this is implemented and required by both-provider
+results. Architecture review passes scoped ownership and helper-compatibility checks.
+See [hosted verification](hosted-verification.md) for the retained initial quality failure,
+review dispositions and execution limits.
 
-T015/T016/T018 remain open in [tasks](tasks.md). Next is elapsed deadline and actual ordered
-late-failure capture in T015, followed by genuine browser recovery and final acceptance.
-Accepted work still uses recorded approval plus current account/permission checks; re-enable
-remains separate after successful reconciliation. The initial pilot replay/late-issuance
-window and all historical/manual/Firefox/A-009/production/public-release gates remain open.
-Refresh stays disabled. No PR was marked ready or merged by this checkpoint.
+T016/T018 remain open in [tasks](tasks.md). Next is genuine browser stopped-job continuation
+and unknown-acceptance recovery, followed by complete-spec final-head acceptance. Accepted
+work retains recorded approval plus current account/permission checks; re-enable stays
+separate after successful reconciliation. The initial pilot replay/late-issuance window and
+all historical/manual/Firefox/A-009/production/public-release gates remain open. Refresh
+stays disabled. No PR was marked ready or merged by this checkpoint.
 
 ## Executed local evidence
 
@@ -88,7 +96,6 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-T015 requires elapsed request/transaction deadlines and actual ordered late-failure capture.
 T016 requires genuine browser stopped-job continuation and unknown-acceptance recovery.
 T018 requires complete-spec review and full exact-head artifact/coverage reconciliation before
 reviewed squash delivery. All100coverage inputs and15unchanged floors remain mandatory.

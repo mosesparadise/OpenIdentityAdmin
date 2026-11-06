@@ -93,11 +93,12 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     }
 
     /// <summary>Builds an independent API service root sharing only the actual database and immutable identity profile, without reseeding authority.</summary>
-    internal ServiceProvider Peer(string provider, IInterceptor? fault = null) => BuildApi(scenario, material, provider, fault);
+    internal ServiceProvider Peer(string provider, IInterceptor? fault = null, Action<IServiceCollection>? configure = null) =>
+        BuildApi(scenario, material, provider, fault, configure: configure);
 
     /// <summary>Uses identical production registrations for every independent root; test faults remain scoped to the requested node.</summary>
     private static ServiceProvider BuildApi(AdministratorProtocolScenario scenario, NativeAssertionMaterial material, string provider,
-        IInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+        IInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null, Action<IServiceCollection>? configure = null)
     {
         var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders())
             .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Account.Journey.Lease.RuntimeConnection)
@@ -107,6 +108,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
             services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(fault));
         }
         cleanup?.Configure(services);
+        configure?.Invoke(services);
         return services.BuildServiceProvider(validateScopes: true);
     }
 

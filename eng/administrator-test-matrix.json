@@ -1272,7 +1272,12 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: False)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: True)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"approval\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2651,7 +2656,12 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: False)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: True)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: False)",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"approval\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -57029,6 +57039,202 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryDeadlineTests",
+        "methodName": "Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryDeadlineTests",
+        "methodName": "Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryDeadlineTests",
+        "methodName": "Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryDeadlineTests",
+        "methodName": "Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"approval\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryRaceTests",
+        "methodName": "Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryRaceTests",
+        "methodName": "Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryRaceTests",
+        "methodName": "Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"approval\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryRaceTests",
+        "methodName": "Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryRaceTests",
+        "methodName": "Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecoveryRaceTests",
+        "methodName": "Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
         ]
       },
       "traits": [

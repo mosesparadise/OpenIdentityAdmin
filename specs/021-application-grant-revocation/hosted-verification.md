@@ -1,5 +1,71 @@
 # Grant-revocation hosted verification
 
+## T015 elapsed deadlines and real late-failure ordering — 6 November 2026
+
+Prior [CI540](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42270733309)
+at `9d68c045487d79f8035f0dfa70e6441c8c541083` passed all 124 jobs. Both job pages were
+reconciled; this is status evidence, not a new artifact/coverage reconciliation.
+[T015 receipts](t015-evidence.json) retain identical-source final local reports and exact
+native execution bindings.
+
+**T015 is complete; feature021 is 16/18 complete.** PostgreSQL 13/13 and SQL Server 13/13
+pass with zero failures/skips. Each provider executes five new T015 cases, seven authority
+regressions and the existing alternate-approver recovery case. Earlier accepted native-save/
+audit failure, cancellation, unknown commit, idempotency/expiry, effective-approver and
+unrecordable-stop evidence remains applicable. No production code changed.
+
+Elapsed transaction expiry occurs after an actual native token save. The callback waits
+on the product token and records phase cancellation while the request and caller are still
+live, before cleanup could cancel them. A shorter-than-request watchdog rejects missing
+phase cancellation. The original transaction and native changes roll back; exactly one
+fresh storage stop commits, with no silent restart. The independent request case delays
+actual native-context activation before any transaction exists, forwarding the original
+resolver/token and retaining exact context identity/DI ownership. Its product token expires
+with a live caller; no transaction, job mutation or fictitious stop occurs. Actual context
+disposal is required before return, and a new ordinary request can complete queued work.
+Frozen UTC isolates real monotonic timers. Measured elapsed values are diagnostic; timer
+rounding does not impose an unsupported exact minimum duration.
+
+The three ordered cases follow actual GrantBatchOperation failures rather than constructing
+GrantAttempt directly. A real native revoked status is reread inside its transaction before
+a one-shot IOException. The probe binds completed native rollback and exact transaction
+disposal. Locks are released before cleanup is held. A peer commits progress, a genuinely
+admitted fresh continuation, or empty-set success; when the peer reaches commit, original
+cleanup is released and drained. Provider-specific observation proves that the fresh failure
+recorder's exact session waits on the peer's governance lock. Original and recovery contexts/
+transactions and native commit outcomes are checked independently.
+
+Same-approval progress retains eight authorization/token changes and receives exactly one
+extra zero-delta stopped audit. Fresh continuation and success retain the peer's exact
+precommit job snapshot and receive no late-failure revision. Native target/control IDs,
+associations, types, statuses and configuration remain isolated; every prior approval and
+audit is immutable. A new approval remains runnable; stopped and successful jobs do not
+advance on a later poll. All gates release and operations join before fixture disposal.
+
+Independent test/security review identified an oracle hole: a failed persisted-status
+assertion could be caught as the intended native-save failure. The correction sets a marker
+only after that assertion and immediately before the deliberate IOException, then requires
+it at final verification. This correction precedes both accepted provider runs. Separate
+architecture review found no blocker in resolver ownership, timer isolation, real failure
+ordering, cleanup or optional shared-helper compatibility.
+
+Final build has zero warnings/errors; informational style, quality, all 74 selector controls
+and assurance pass without new allowances. All 345 controls remain not_assessed. Discovery
+preserves all 2,649 prior portable identities, metadata and ordering, adding ten (2,659 total;
+90 ordinary grant cases/provider). Both reports pass strict native definition/result/execution
+binding checks. Independent reconciliation confirms all six race executions observed native
+contention and all eight source checksums match the built PDB; final build precedes both
+runs. TRX alone does not attest the loaded binary hash. The initial quality gate rejected
+an unnamed two-revision progress-plus-stop
+expectation; a named fixture constant fixes it without an allowance. No provider test failed.
+
+Provider runtimes and image caches remained sequential under Docker VFS disk limits. Only
+unused caches were removed after container cleanup; source, reports and the frozen baseline
+producer remain intact. New-head full CI is required. Next: T016 genuine browser recovery,
+then T018 complete-spec review and final-head acceptance. PR124 remains draft/unmerged;
+main, the initial replay/late-issuance window and all historical/manual/Firefox/A-009/
+production/public-release gates remain unchanged. Refresh stays disabled.
+
 ## T012 worker current authority — 6 November 2026
 
 Prior [CI539](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42260822547)

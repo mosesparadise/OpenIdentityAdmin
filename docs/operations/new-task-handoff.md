@@ -1,5 +1,17 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant recovery/deadline acceptance — 6 November 2026:** feature021 T015 is complete;
+**16 of 18 tasks** now have acceptance evidence. PostgreSQL 13/13 and SQL Server 13/13 pass
+on identical source: five new deadline/real late-failure cases per provider plus eight
+related regressions. Actual request/transaction timeouts preserve atomic state; a genuinely
+failed batch cannot erase peer progress, supersede fresh approval or replace success.
+No production change was needed. All 2,649 prior native identities remain, with ten additions
+(2,659 total). [Receipts](../../specs/021-application-grant-revocation/t015-evidence.json) record exact source/report bindings and review corrections.
+Prior CI540 at `9d68c04` passed all 124 jobs; new-head full CI remains required. Next: T016
+genuine stopped-job and unknown-acceptance browser recovery, then T018 final acceptance.
+PR124 stays draft/unmerged; main, the initial pilot replay window and all historical/manual/
+Firefox/A-009/production/public-release gates remain unchanged.
+
 **Grant worker authority acceptance — 6 November 2026:** feature021 T012 is complete;
 **15 of 18 tasks** now have acceptance evidence. Seven new cases pass on each real provider
 with identical final source and no failures/skips: actual actor deletion after partial progress,

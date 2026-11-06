@@ -37,7 +37,7 @@ worker restart; lost current authority stops the next batch with ordered races.
 Independent test: fail a later batch, read earlier progress, freshly approve the same
 remaining scope and complete without silent revival or duplicate work.
 
-- [ ] T015 [US3] Implement serialized stopped outcomes, fresh approved continuation and unknown-commit reconciliation in Infrastructure/Admin.Api ApplicationGrants features; tests cover lost acknowledgements, native-save/audit faults, cancellation/deadlines, same-key replay/conflict/expiry, effective-approver change, processing beyond24hours, late-stop versus progress/new approval/success, unrecordable failure and missing actor lock records.
+- [x] T015 [US3] Implement serialized stopped outcomes, fresh approved continuation and unknown-commit reconciliation in Infrastructure/Admin.Api ApplicationGrants features; tests cover lost acknowledgements, native-save/audit faults, cancellation/deadlines, same-key replay/conflict/expiry, effective-approver change, processing beyond24hours, late-stop versus progress/new approval/success, unrecordable failure and missing actor lock records.
 - [ ] T016 [US3] Connect BFF/UI recovery to exact job/application versions in their ApplicationGrants/Editor features; verify current authorized status, explicit recovery and stale-key/version handling via actual HTTP and browser journeys.
 
 ## Phase 6: Integrated acceptance and delivery
@@ -103,9 +103,19 @@ architecture and test/security review support T012 closure: **15 of 18** tasks c
 Prior CI539 passed all 124 jobs (status reconciliation); new-head full CI remains required.
 No production code changed. T015/T016/T018 remain open.
 
+[T015 receipts](t015-evidence.json) reconcile 13 final native passes per provider with
+identical source and no failures/skips: five new deadline/actual late-failure cases plus
+eight related authority/recovery regressions. The transaction timeout is observed after a
+real save with its request/caller still live; request timeout is isolated at genuine context
+activation before any transaction. Real failed batches roll back and drain before their
+fresh failure recorder visibly waits on a peer's commit. Same-approval progress gains one
+zero-delta stop; new approval and success survive exactly. Prior recovery/idempotency/commit
+ambiguity evidence remains applicable. Independent scoped reviews support T015 closure:
+**16 of 18** tasks complete. CI540 passed 124 jobs (status reconciliation); new-head full CI
+remains required. T016/T018 remain open; production code is unchanged.
+
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T015: elapsed request/transaction deadlines and actual ordered late-failure capture.
 - T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.
 - T018: verify the bounded replay correction at the final head, retain the initial-replay/late-issuance window as unresolved, then complete-spec review and exact-head delivery after the remaining obligations.
 

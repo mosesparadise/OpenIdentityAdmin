@@ -20,6 +20,10 @@ internal sealed class GrantAuthorityRaceProbe(bool holdCommit) : DbCommandInterc
     {
         get; set;
     }
+    internal Action<PlatformDbContext>? BeforeCommit
+    {
+        get; set;
+    }
     internal TaskCompletionSource<int> Lock { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource<int> Committing { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
     internal TaskCompletionSource Release { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -55,6 +59,7 @@ internal sealed class GrantAuthorityRaceProbe(bool holdCommit) : DbCommandInterc
         {
             Assert.Null(originalCommit);
             originalCommit = data.TransactionId;
+            BeforeCommit?.Invoke(original!);
             if (holdCommit)
             {
                 Committing.SetResult(NativeLockObservation.Session(transaction.Connection!));
