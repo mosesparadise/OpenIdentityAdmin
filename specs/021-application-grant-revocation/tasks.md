@@ -28,7 +28,7 @@ read truthful protected status and verify peer/configuration isolation.
 Independent test: accepted multi-batch job continues after logout/MFA expiry and actual
 worker restart; lost current authority stops the next batch with ordered races.
 
-- [ ] T012 [US2] Implement metadata-only current actor/permission eligibility and post-save rereads in Infrastructure Features/ApplicationGrants/; test logout/MFA continuation and disabled/deleted/suspended/locked/factor-generation/permission loss in Administrator ApplicationGrants tests.
+- [x] T012 [US2] Implement metadata-only current actor/permission eligibility and post-save rereads in Infrastructure Features/ApplicationGrants/; test logout/MFA continuation and disabled/deleted/suspended/locked/factor-generation/permission loss in Administrator ApplicationGrants tests.
 - [x] T013 [US2] Compose bounded worker polling and safe telemetry in src/backend/IdentityPlatform.Worker/Features/ApplicationGrants/ and Features/Setup.cs; use native owned store lifetime, no factor keys, actual two-worker contention/restart and startup/shutdown coverage in Host/Administrator tests.
 - [x] T014 [US2] Prove actual native entry validation separately from revision/wrong-audience denial in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ and genuine cross-instance issuer flows with unaffected controls, measured from each committed batch.
 
@@ -93,9 +93,18 @@ The reproduced GET 409 contract mismatch is corrected; 44 native and 44 Node con
 Independent scoped reviews support T010 closure: **14 of 18** tasks complete. Rejected harness
 and disk-pressure attempts remain recorded; T012/T015/T016/T018 and new-head CI stay open.
 
+[T012 receipts](t012-evidence.json) reconcile seven final native passes per provider on
+identical source with no failures/skips. Actual user deletion preserves earlier progress and
+approval history; four post-save account/permission faults roll back both populated batches
+and empty-success reconciliation. Genuine self-bundle removal and batch commits execute in
+both provider-observed orders, with exact original/recovery commit ownership and unaffected
+managed controls. Existing logout/MFA/account/factor evidence remains applicable. Independent
+architecture and test/security review support T012 closure: **15 of 18** tasks complete.
+Prior CI539 passed all 124 jobs (status reconciliation); new-head full CI remains required.
+No production code changed. T015/T016/T018 remain open.
+
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T012: deleted actor and ordered permission loss/final authority change versus batch commit.
 - T015: elapsed request/transaction deadlines and actual ordered late-failure capture.
 - T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.
 - T018: verify the bounded replay correction at the final head, retain the initial-replay/late-issuance window as unresolved, then complete-spec review and exact-head delivery after the remaining obligations.

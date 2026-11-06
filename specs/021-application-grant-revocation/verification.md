@@ -3,32 +3,41 @@
 ## Current checkpoint — 6 November 2026
 
 Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is unchanged
-at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI538 at `6d02ec2` passed all 124 jobs
-(workflow/job status reconciliation only). The new head still requires full CI and complete
-feature acceptance.
+at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI539 at `2ff0877` passed all 124 jobs
+(workflow/job status reconciliation only). New-head full CI and final feature acceptance
+remain required.
 
-**14 of 18 tasks are complete.** [T010 receipts](t010-evidence.json) reconcile 16 focused passes
-on each real provider with identical source, zero failures/skips and independent native
-identity/execution review. Actual HTTPS submission, continuation, exact and recent status
-now prove strict downstream contracts, header/body secrecy, original elapsed/expiry bounds,
-durable browser-generation changes and explicit same-key recovery of committed work.
+**15 of 18 tasks are complete.** [T012 receipts](t012-evidence.json) reconcile seven focused
+passes on each real provider using identical final source, zero failures/skips and strict
+native discovery/definition/execution bindings. No production code changed: the existing
+worker correctly rejects deleted actors and current authority loss.
 
-The production correction reserves upstream409/412/428 for mutations; unexpected read
-responses normalize to 503, matching mapped and generated contracts. Positive exact-byte and
-lossless-count controls complement malformed/failed response cases. Counts used for wire
-compatibility are synthetic, not a claim of durable totals. This does not replace T016's
-retained-engine stopped-job and unknown-acceptance recovery journeys.
+The deletion case retains authentication/enrollment coordination rows, isolating actual
+user existence from missing-lock storage failure; eight earlier authorization/token changes
+and immutable approvals/audits survive. Four same-transaction fault-injection cases remove
+permission or disable the account after actual progress/audit save, for populated batches
+and empty-success reconciliation. Native changes, progress and injected authority mutations
+roll back; one fresh zero-delta authority stop commits, and later polling cannot restart it.
 
-Administrator/contract builds, informational style, quality, 74 selection controls, 44 native
-and 44 Node contract cases, generated types and compatibility checks pass. Discovery preserves
-all 2,603 prior identities/metadata/order and adds 32 (2,635 total; 78 grant cases/provider). Rejected
-regression/harness and disk-pressure attempts remain explicit in [hosted verification](hosted-verification.md).
+Two genuine governance races per provider use fresh password/MFA and a surviving platform
+administrator. Exact blocker/waiter sessions are observed before releasing the held native
+commit. Governance-first permits no progress and commits a separate stop; batch-first retains
+exactly eight authorizations/eight tokens before the next batch stops. Native target/control
+identities, associations, types, statuses and configuration are independently compared.
 
-T012/T015/T016/T018 remain open in [tasks](tasks.md). Next is deleted-actor and ordered current
-authority/batch-commit evidence in T012. Accepted work retains recorded approval plus current
-account/permission checks; re-enable remains separate after successful reconciliation.
-The initial pilot replay/late-issuance window and all historical/manual/Firefox/A-009/production/
-public-release gates remain open. No PR was marked ready or merged by this checkpoint.
+Build, informational style, quality, all 74 selector controls and assurance pass without new
+allowances. All 345 assurance controls remain not_assessed. Discovery preserves all 2,635
+prior identities/metadata/order and adds 14 (2,649 total; 85 ordinary grant cases/provider).
+Independent architecture and test/security reviews support scoped closure. Earlier compiler,
+style and local-function documentation failures, and the superseded initial PostgreSQL pass,
+remain explicit in [hosted verification](hosted-verification.md).
+
+T015/T016/T018 remain open in [tasks](tasks.md). Next is elapsed deadline and actual ordered
+late-failure capture in T015, followed by genuine browser recovery and final acceptance.
+Accepted work still uses recorded approval plus current account/permission checks; re-enable
+remains separate after successful reconciliation. The initial pilot replay/late-issuance
+window and all historical/manual/Firefox/A-009/production/public-release gates remain open.
+Refresh stays disabled. No PR was marked ready or merged by this checkpoint.
 
 ## Executed local evidence
 
@@ -79,7 +88,6 @@ passed its then-current inventory. A later malformed OR class filter executed ze
 
 ## Required remaining evidence
 
-T012 requires deleted-actor and ordered permission/final-authority change versus batch commit.
 T015 requires elapsed request/transaction deadlines and actual ordered late-failure capture.
 T016 requires genuine browser stopped-job continuation and unknown-acceptance recovery.
 T018 requires complete-spec review and full exact-head artifact/coverage reconciliation before

@@ -22,8 +22,8 @@ class LifecycleSelectionTests(unittest.TestCase):
             self.assertEqual(complete, standard | lifecycle | administrator)
             self.assertEqual(338, sum(standard.values()))
             self.assertEqual({'Issuer.Lifecycle': 41}, lifecycle)
-            expected_administrator = {'PostgreSql': 1193, 'SqlServer': 1298}
-            expected_total = {'PostgreSql': 1572, 'SqlServer': 1677}
+            expected_administrator = {'PostgreSql': 1200, 'SqlServer': 1305}
+            expected_total = {'PostgreSql': 1579, 'SqlServer': 1684}
             self.assertEqual({'Administrator': expected_administrator[provider]}, administrator)
             self.assertEqual(expected_total[provider], sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))

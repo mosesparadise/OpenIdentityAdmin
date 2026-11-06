@@ -1265,7 +1265,14 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2637,7 +2644,14 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -56729,6 +56743,292 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityBoundaryTests",
+        "methodName": "Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityRaceTests",
+        "methodName": "Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityRaceTests",
+        "methodName": "Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityRaceTests",
+        "methodName": "Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAuthorityRaceTests",
+        "methodName": "Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
         ]
       },
       "traits": [

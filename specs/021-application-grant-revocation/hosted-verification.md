@@ -1,5 +1,68 @@
 # Grant-revocation hosted verification
 
+## T012 worker current authority — 6 November 2026
+
+Prior [CI539](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42260822547)
+at `2ff0877b981304031dec145abd59a135c89e89fc` passed all 124 jobs. Both job pages were
+reconciled; this is status evidence, not a new artifact/coverage reconciliation.
+[T012 receipts](t012-evidence.json) bind the final local source manifest and reports.
+
+**T012 is complete; feature021 is 15/18 complete.** PostgreSQL 7/7 and SQL Server 7/7 pass
+with identical final source and zero failures/skips. The existing production worker needs
+no correction. Tests add the previously missing deleted-user, ordered permission-loss and
+final post-save authority observations; earlier logout/MFA, account/factor-generation and
+effective-approver evidence remains applicable.
+
+The deleted-user case uses the Identity manager after one eight-entry-per-family batch.
+Authentication/enrollment lock records deliberately remain, isolating the missing actual
+user from the already-tested missing-lock storage failure. The remaining native entries,
+prior counts and immutable approval/audit history survive exactly one authority stop.
+This test models deletion; it does not introduce a supported account-deletion endpoint.
+
+Four post-save cases mutate actual persisted permission/account state inside the batch
+transaction after native progress/audit save, for both nonempty processing and empty-set
+success. The final current-authority reread rejects them. Native mutation, staged progress,
+audit and injected authority change all roll back; fresh persisted observations prove
+restored authority and one separate zero-delta stop. No subsequent poll silently restarts.
+These are explicit fault-injection seams, not independent-writer race claims.
+
+The two genuine races use an independent issuer root, real password/TOTP, prepared versions,
+a surviving administrator and the actual self-bundle-removal command. The selected winner
+is held at native commit; provider-specific observation proves the exact loser waits on
+that session. Commit callbacks distinguish the original worker transaction from fresh
+failure-recording ownership. Governance-first produces no native changes and a fresh stop;
+batch-first retains exactly eight authorizations/eight tokens, then the next batch stops.
+Independent rows/configuration for the managed target and a second managed control are
+preserved. The governance audit and immutable grant audit history are separately verified.
+
+Separate architecture and test/security reviews found no blocking defect. Review corrected
+an XML claim: RemoveBundle removes membership; it does not invoke the token-revocation path
+used by disable/suspend. A final-reread-only mutation was suggested as additional evidence;
+no such execution is claimed. Existing mutation obligations remain unchanged for T018.
+
+Final serial build has zero warnings/errors. Informational style, quality, 74 selector
+controls, staged-source secret scan and assurance pass without new allowances. All 345 controls remain not_assessed.
+Discovery preserves all 2,635 prior native identities, metadata and order, adding 14 cases
+(2,649 total; 85 ordinary grant cases/provider). Both final reports pass exact discovery,
+definition, result and execution binding checks with no omissions/duplicates/extras.
+Independent reconciliation also matches all six source checksums to the built portable PDB
+and confirms the final successful build precedes both accepted runs.
+
+Retained rejected checks: the initial build had four nullable native-ID projection errors;
+the first informational style check required a local function; subsequent quality checks
+required its ordinary purpose comment rather than missing/XML documentation. All were
+corrected without exceptions. An initial PostgreSQL 7/7 pass predates the final style change
+and is superseded by the final-source PostgreSQL run. No rejected check counts as a pass.
+Pinned provider images and live runtimes were kept sequential under Docker VFS disk limits;
+only unused image caches were removed after container cleanup. Source, retained reports and
+the frozen compatibility producer remain intact. The pinned SQL image download succeeds in
+this current managed runtime. Both accepted provider runs finish without disk failures.
+
+Next: T015 elapsed request/transaction deadlines and actual ordered late-failure capture,
+then T016 browser recovery and T018 complete-spec/final-head acceptance. PR124 stays draft;
+main, the initial pilot replay window and historical/manual/Firefox/A-009/production/
+public-release gates remain unchanged. Refresh stays disabled.
+
 ## T010 BFF response and session boundaries — 6 November 2026
 
 Prior [CI538](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42241533964)

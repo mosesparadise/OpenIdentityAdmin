@@ -1,5 +1,17 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant worker authority acceptance — 6 November 2026:** feature021 T012 is complete;
+**15 of 18 tasks** now have acceptance evidence. Seven new cases pass on each real provider
+with identical final source and no failures/skips: actual actor deletion after partial progress,
+post-save account/permission loss, and both genuine governance/batch commit orders with native
+lock-wait observation. Existing worker behavior passes; no production change was needed.
+All 2,635 prior native identities remain, with 14 additions (2,649 total). [Receipts](../../specs/021-application-grant-revocation/t012-evidence.json)
+retain source/report bindings and superseded checks. Prior CI539 at `2ff0877` passed all 124 jobs;
+new-head full CI remains required. Next: T015 elapsed deadlines and ordered late-failure capture,
+then T016 genuine browser recovery and T018 final acceptance. PR124 stays draft/unmerged;
+main, the initial pilot replay window and all historical/manual/Firefox/A-009/production/
+public-release gates remain unchanged.
+
 **Grant BFF acceptance — 6 November 2026:** feature021 T010 is complete; **14 of 18 tasks**
 now have acceptance evidence. PostgreSQL 16/16 and SQL Server 16/16 pass on identical source.
 The BFF now normalizes mutation-only upstream errors on read routes, matching its contracts.
