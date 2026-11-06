@@ -1,0 +1,104 @@
+{
+  "checkpoint": "T016 browser recovery candidate",
+  "date": "2026-11-06",
+  "baseHead": "4a7647e46f0574e9eb5ad7621b07e7ed2f2dbef0",
+  "runtimeAcceptance": "pending hosted PostgreSQL/SqlServer x Chromium/WebKit execution; no local browser pass claimed",
+  "priorCi": {
+    "run": 42285819012,
+    "runNumber": 541,
+    "head": "4a7647e46f0574e9eb5ad7621b07e7ed2f2dbef0",
+    "jobs": 124,
+    "success": 124,
+    "scope": "both job pages; status only"
+  },
+  "sourceManifest": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/AdministratorBrowserEvidence.cs",
+      "sha256": "10712d70a6276f5045ca84a011c1d0d511f6fbb84cc407bdce98325be20958e7"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationGrantBrowserEvidence.cs",
+      "sha256": "c0ee3c63c5ac454558fb115aba788f7b97451afa1c8e414abc25d615b6287616"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationManagedBrowserEvidence.cs",
+      "sha256": "aa34361be9ace1e4a00e8412bdb1bd60854a35c12a3a1f81470c96ce88bb1fa4"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/EditorRecoveryResponse.cs",
+      "sha256": "86ab627d31833e1247ae3ed73e5829161aebae914c20113b86a59d69b5584231"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationGrantRecoveryBrowserTests.cs",
+      "sha256": "7bb4290af7f044732f547de75ce8a89539d3b91584ccc69fd78faa1233966f83"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryBrowserJourney.cs",
+      "sha256": "2c1f826d332dc4a6a98cafddec76b94366be468dfc0c5f00bac9055c0a349bf2"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryBrowserStore.cs",
+      "sha256": "3846d11cd824239b91b3bbcdb02e7cda2050f98df1cdb93ed5f8df15418d783f"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryTraffic.cs",
+      "sha256": "db439e0fd31726fd50aff7c208b802e3585c2e6c572d62658ba76ad3c8fc3c0a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryIntent.cs",
+      "sha256": "9d3be783a3cb21b57606a19067f83bb2265b1645c95c183fd1608540ac09b376"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryView.cs",
+      "sha256": "0187bf15d714564d064d49c604298ccad7771b8bebd192870842dd8736a3f379"
+    }
+  ],
+  "inventory": {
+    "prior": 2659,
+    "preservedPriorMetadataAndProviderOrder": true,
+    "added": 4,
+    "total": 2663,
+    "BrowserProtectionPerProvider": 34,
+    "allBrowserPerProvider": 74,
+    "ordinaryUnchanged": {
+      "PostgreSql": 1205,
+      "SqlServer": 1310
+    }
+  },
+  "localReports": [
+    {
+      "path": "/workspace/grant-t016-build-corrected.log",
+      "sha256": "e52e8930899f1e26c81c364149d5f91378eb434271b24116e0d30b4874c7f48c"
+    },
+    {
+      "path": "/workspace/grant-t016-discovery.json",
+      "sha256": "f761ec05a36a44729209a6a0361165026c62ede829cc3b24ff66016096f36550"
+    },
+    {
+      "path": "/workspace/grant-t016-selectors.log",
+      "sha256": "cff0a27a1dea85730a775cdc8cf8d41d631757b49ce1b5c6db92cceee9734c0e"
+    },
+    {
+      "path": "/workspace/grant-t016-quality-accepted.log",
+      "sha256": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6"
+    },
+    {
+      "path": "/workspace/grant-t016-assurance.log",
+      "sha256": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980"
+    }
+  ],
+  "reviews": {
+    "architecture": "No blocking finding; real jobs/coordinators/Worker, fresh evidence scopes and helper compatibility reviewed.",
+    "uxTest": "Resolved raw intent formatting, stopped UI counts/reference/state, hidden denied progress, sanitizer filename list. Follow-up source review passes."
+  },
+  "retainedRejectedAttempts": [
+    "Initial post-review build failed formatting only in new UI assertions; dotnet formatting then serial build passed.",
+    "One shell quality invocation omitted the SDK setup and could not find dotnet; corrected invocation sourced managed-env.sh."
+  ],
+  "limits": [
+    "T016 and T018 remain open; feature021 16/18 complete.",
+    "PR124 remains draft/unmerged; main unchanged.",
+    "No local browser execution, Firefox execution, production correction or public release.",
+    "Refresh disabled; initial pilot replay window and historical/manual/vendor/release gates unchanged."
+  ]
+}

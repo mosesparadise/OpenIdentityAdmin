@@ -48,7 +48,7 @@ internal static class ApplicationGrantBrowserEvidence
     }
 
     /// <summary>Reads exact small isolated native identity/status snapshots through fresh contexts rather than trusting worker counts.</summary>
-    private static async Task<NativeRow[]> SnapshotAsync(BrowserHttpsFixture environment)
+    internal static async Task<NativeRow[]> SnapshotAsync(BrowserHttpsFixture environment)
     {
         await using var scope = environment.Issuer.Account.CreateScope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -79,5 +79,5 @@ internal static class ApplicationGrantBrowserEvidence
     }
 
     /// <summary>Retains only native IDs, exact application binding and status for this isolated evidence comparison.</summary>
-    private sealed record NativeRow(bool Authorization, string Id, string Application, string Status);
+    internal sealed record NativeRow(bool Authorization, string Id, string Application, string Status);
 }

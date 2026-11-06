@@ -1,5 +1,14 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant browser recovery candidate — 6 November 2026:** two new genuine browser journeys
+cover lost acceptance with same-key recovery through actual permission denial, and stopped
+work with competing stale continuation and fresh confirmation. Both use real persisted
+jobs, native grants and the production Worker. [Scope and review](../../specs/021-application-grant-revocation/hosted-verification.md#t016-browser-recovery-candidate--6-november-2026)
+record the exact assertions. Retained PostgreSQL/SQL Server × Chromium/WebKit execution is
+pending; T016/T018 remain open (**16/18 complete**). Prior CI541 at `4a7647e` passed all124
+jobs. PR124 stays draft/unmerged; main and historical/manual/public-release gates remain
+unchanged. Next: verify these browser journeys, then T018 complete-spec final acceptance.
+
 **Grant recovery/deadline acceptance — 6 November 2026:** feature021 T015 is complete;
 **16 of 18 tasks** now have acceptance evidence. PostgreSQL 13/13 and SQL Server 13/13 pass
 on identical source: five new deadline/real late-failure cases per provider plus eight

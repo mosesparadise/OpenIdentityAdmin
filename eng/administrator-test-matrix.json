@@ -1277,7 +1277,9 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"approval\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2661,7 +2663,9 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"approval\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -57238,6 +57242,114 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationGrantRecoveryBrowserTests",
+        "methodName": "Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationGrantRecoveryBrowserTests",
+        "methodName": "Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationGrantRecoveryBrowserTests",
+        "methodName": "Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationGrantRecoveryBrowserTests",
+        "methodName": "Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

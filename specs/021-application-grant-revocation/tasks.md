@@ -1,5 +1,10 @@
 # Tasks: Managed application grant revocation
 
+**T016 candidate (6 November):** genuine lost-acceptance and stopped/stale-continuation
+browser journeys are implemented and independently reviewed. Both-provider Chromium/WebKit
+execution remains pending; T016/T018 remain unchecked (16/18 complete). See
+[hosted verification](hosted-verification.md#t016-browser-recovery-candidate--6-november-2026).
+
 ## Phase 1: Setup and design
 
 - [x] T001 Record both selected scope decisions in docs/approval.md and finalize specs/021-application-grant-revocation/{spec,plan,research,data-model,contracts/revocation,quickstart}.md; obtain independent design review before affected implementation.

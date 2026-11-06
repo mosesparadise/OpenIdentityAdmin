@@ -1,5 +1,48 @@
 # Grant-revocation hosted verification
 
+## T016 browser recovery candidate — 6 November 2026
+
+Two genuine browser journeys now cover response loss/recovery and stopped-job continuation
+on PostgreSQL and SQL Server, selected in the retained Chromium/WebKit BrowserProtection
+cells. T016 remains open until these new cases execute successfully; T018 final acceptance
+also remains open (16/18 complete). No production behavior changed.
+
+The lost-response seam forwards the original request once, requires actual HTTP202, then
+aborts only delivery. A real persisted permission removal produces403 on explicit same-key
+recovery, retaining unknown acceptance while hiding private progress and mutation controls.
+After restoration, explicit recovery replays the exact URL/key/application version/body,
+reads protected progress and lets the real Worker complete. Durable evidence requires one
+approval, isolated native revocation, unchanged application configuration and disabled state.
+
+The stopped journey commits a genuine batch, removes actual permission and runs the real
+coordinator to record an authority stop. Restored permission cannot silently restart it.
+The UI must show the same job, stopped state and committed one-authorization/two-token counts.
+A separate browser continuation advances the version and stops again, causing the original
+form to receive actual412 without mutation. Reloading and fresh unchecked confirmation
+continues the same job; real Worker reconciliation completes it with three immutable
+approvals. The stale request key is absent from approval history. Both journeys exercise
+light/dark, reflow, accessibility, keyboard/focus and finite-secret oracles.
+
+Local serial build passes with zero warnings/errors. Native discovery preserves all2,659
+prior identities/metadata/order and adds four (2,663 total); BrowserProtection now selects
+34/provider, total browser74/provider, and ordinary counts remain unchanged. All74 selection
+controls plus16 browser-story controls, quality and assurance pass. [Receipts](t016-evidence.json)
+bind exact source and logs. Initial post-review formatting errors and one missing-SDK shell
+invocation are retained as failed attempts, followed by corrected checks.
+
+Architecture review found no blocker. UX/test review required explicit stopped counts,
+hidden denied progress, digest-only request capture and sanitizer source allowlisting;
+these are implemented and the follow-up source review passes. Browser execution remains
+separate from source review. The selected local environment lacks pinned Playwright browser
+binaries; existing hosted retained-browser cells provide execution without alternate engines
+or weakened assertions. Firefox remains deferred under the existing initial-phase exception.
+
+Prior [CI541](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42285819012)
+at `4a7647e46f0574e9eb5ad7621b07e7ed2f2dbef0` passed all124 jobs, reconciled across both job
+pages (status evidence only). PR124 remains draft/unmerged; main stays
+`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Refresh, the initial pilot replay window and all
+historical/manual/A-009/vendor/production/public-release gates remain unchanged.
+
 ## T015 elapsed deadlines and real late-failure ordering — 6 November 2026
 
 Prior [CI540](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42270733309)
