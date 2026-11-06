@@ -18,7 +18,7 @@ read truthful protected status and verify peer/configuration isolation.
 - [x] T005 [US1] Add both-provider admission/selection/atomicity cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ for independent native authorization/token families, empty/eight/nine sets, invalid states, protected IDs and target/version errors.
 - [x] T006 [US1] Implement target, job admission and audit staging in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; exact actor/action/target key/hash binding for24hours, disabled/non-system target, one incomplete job, fresh persisted verification and no automatic re-enable.
 - [x] T007 [US1] Implement bounded native batch selection/revocation and atomic job progress in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; at most8authorizations and8tokens, false native result aborts, fresh native verification, current authority before commit and empty-set completion audit.
-- [ ] T008 [US1] Add independent current permission/MFA admission, protected status/latest10reads and versioned contracts in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/; preserve original request/publication deadlines and native cleanup.
+- [x] T008 [US1] Add independent current permission/MFA admission, protected status/latest10reads and versioned contracts in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/; preserve original request/publication deadlines and native cleanup.
 - [x] T009 [US1] Enforce incomplete-job re-enable conflict in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs; test both issuance/re-enable/acceptance commit orders and actual provider lock waits in Administrator ApplicationGrants tests.
 - [ ] T010 [US1] Add exact BFF routes/CSRF/key forwarding and generated strict contracts in src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and frontend generated contracts; verify actual HTTP negatives, secrecy and compatibility in tests/contracts/IdentityPlatform.Api.Contracts.Tests/ and Administrator tests.
 - [x] T011 [US1] Add confirmation/progress/finite-error UI in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ with current permission visibility, explicit offline limits, read-only polling/navigation cancellation, light/dark/focus and UI tests.
@@ -76,9 +76,17 @@ without name/authentication masking, preserves state, restores the profile and a
 the same intent. This closes T005/T006 with the previously verified admission/atomicity
 and real HTTP negatives. Twelve of 18 tasks are complete; full feature acceptance is not.
 
+[T008 receipts](t008-evidence.json) now reconcile ten selected native passes per provider,
+zero failures/skips, and independent source review. Current permission denies new/replayed/
+continued requests, fresh MFA is isolated from earlier bearer expiry, post-save authority
+loss rolls back, latest-ten reads use genuine histories and peer isolation, and actual
+provider transaction cleanup gates enforce original authority/request deadlines before
+final context disposal and HTTP publication. T008 is complete; **13 of 18** tasks are complete.
+T010/T012/T015/T016/T018 remain open. Failed sentinel and disk-pressure attempts are retained
+as rejected evidence; no production source changed in this checkpoint.
+
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T008: fresh MFA/permission admission, original publication/deadline/cleanup, latest-ten ordering.
 - T010: downstream malformed/failed/late responses and changed durable browser generation.
 - T012: deleted actor and ordered permission loss/final authority change versus batch commit.
 - T015: elapsed request/transaction deadlines and actual ordered late-failure capture.

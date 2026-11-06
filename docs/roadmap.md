@@ -1,5 +1,15 @@
 # Delivery roadmap and task register
 
+**Grant admission and status acceptance — 6 November 2026:** feature021 T008 is complete;
+**13 of 18 tasks** now have acceptance evidence. Ten focused cases pass on each real provider
+with zero failures/skips: current permission/MFA, post-save authority, latest-ten status,
+and original HTTP publication/cleanup deadlines. [Receipts](../specs/021-application-grant-revocation/t008-evidence.json)
+retain rejected harness/environment attempts and the final source bindings. Prior CI536 at
+`9e7293f` passed all 124 jobs; the new head still requires full CI. Next: T010 BFF response
+and browser-session boundary verification. T010/T012/T015/T016/T018 remain open. PR124 stays
+draft/unmerged; the initial pilot replay window and all historical/manual/Firefox/A-009/
+production/public-release gates remain open. Main is unchanged.
+
 **Grant target protection complete — 6 November 2026:** run535 at `bdad762` passes all
 124 jobs; independent reports reconcile 586 selected native passes. The remaining persisted
 administrator-ID target guard now passes on both real providers with unchanged state,

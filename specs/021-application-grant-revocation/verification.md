@@ -3,32 +3,34 @@
 ## Current checkpoint — 6 November 2026
 
 Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is unchanged
-at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run535 at `bdad762` passes all 124 jobs.
-[Independent raw receipts](run535-evidence.json) reconcile 51 grant,111 ProtocolAdmission
-and 131 issuer-flow cases per provider:586 selected native passes, zero failures/skips.
+at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Prior CI536 at `9e7293f` passed all 124 jobs.
+The new test/evidence head still requires full CI and complete-feature acceptance.
 
-The final persisted-administrator-ID target case additionally passes on PostgreSQL and
-SQL Server ([receipts](protected-target-evidence.json)). It isolates the owned production
-target guard from earlier authentication, proves exact Forbidden with full state unchanged,
-restores the profile and admits the same original intent under genuine current API authority.
-This closes T005/T006 with the previously verified admission/atomicity and HTTP negatives.
-**12 of 18 tasks are complete.** T008/T010/T012/T015/T016/T018 remain open in [tasks](tasks.md).
+**13 of 18 tasks are complete.** [T008 receipts](t008-evidence.json) reconcile ten focused
+native passes on PostgreSQL and ten on SQL Server, with no failures or skips. They cover
+current revocation permission for initial/replayed/continued requests, isolated MFA
+freshness with live read authority, authority changes after actual save, bounded latest-ten
+status with equal-time ordering/peer isolation, and original publication deadlines through
+actual provider transaction cleanup and final context disposal. Existing production
+coordinators passed these boundaries; this checkpoint changes tests and evidence only.
 
-The bounded pilot replay correction passes its controlled and original standalone cases
-on both providers and in CI535. It repeats cleanup on a later replay; it does not serialize
-pilot issuance or close the initial replay/late-issuance window. That limitation, further
-boundary acceptance and all historical/manual/public-release gates remain open.
+Native discovery preserves all 2,583 prior portable identities/metadata/order and adds exactly
+20 cases (2,603 total; 62 ordinary grant cases per provider). Build, informational-severity
+style, quality and all 74 selection controls pass without allowance growth. The PostgreSQL
+source differs only by one subsequently removed unused import; the receipt verifies that
+exact difference. SQL Server runs the final source. Rejected test-sentinel and disk-pressure
+attempts remain explicit in [hosted verification](hosted-verification.md).
 
-This update changes tests/evidence only. The Administrator build, informational-severity
-style, quality and 74 selection controls pass without allowance growth. Discovery preserves
-all 2,581 prior portable identities/order and adds exactly two cases (2,583 total;52 ordinary
-grant cases/provider). Current-head full CI and complete-spec review remain required.
+T010/T012/T015/T016/T018 remain open in [tasks](tasks.md). Next is T010's actual BFF downstream
+response and durable browser-session generation boundaries, followed by remaining authority
+races, deadlines/late-failure evidence and genuine browser recovery. Accepted jobs continue
+under recorded approval and current account/permission checks; successful reconciliation
+still requires a separate explicit re-enable.
 
-Accepted grant jobs continue after logout/MFA expiry under recorded approval and current
-account/permission checks. Targets remain disabled until successful reconciliation and
-a separate explicit re-enable. Actual stopped-job browser recovery is still outstanding.
-No PR has been marked ready or merged by this checkpoint. [Hosted verification](hosted-verification.md)
-retains prior failures, reviewer dispositions and exact scopes of earlier evidence.
+The bounded pilot replay correction repeats cleanup on a later replay; it does not serialize
+pilot issuance or close the initial replay/late-issuance window. That limitation and every
+historical/manual/Firefox/A-009/production/public-release gate remain open. No PR was marked
+ready or merged by this checkpoint.
 
 ## Executed local evidence
 

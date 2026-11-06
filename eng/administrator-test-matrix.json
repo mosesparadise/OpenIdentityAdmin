@@ -1239,7 +1239,17 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"cleanup\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"authority\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2585,7 +2595,17 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"cleanup\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"authority\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -55639,6 +55659,400 @@
         "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
         "typeName": "GrantProtectedTargetTests",
         "methodName": "Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAdmissionAuthorityTests",
+        "methodName": "Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"cleanup\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantPublicationTests",
+        "methodName": "Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantPublicationTests",
+        "methodName": "Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"authority\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantPublicationTests",
+        "methodName": "Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"cleanup\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantPublicationTests",
+        "methodName": "Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantPublicationTests",
+        "methodName": "Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"authority\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantPublicationTests",
+        "methodName": "Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReadPublicationTests",
+        "methodName": "Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReadPublicationTests",
+        "methodName": "Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReadPublicationTests",
+        "methodName": "Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantReadPublicationTests",
+        "methodName": "Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecentStatusTests",
+        "methodName": "Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantRecentStatusTests",
+        "methodName": "Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished",
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [

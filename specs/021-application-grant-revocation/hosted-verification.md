@@ -1,5 +1,66 @@
 # Grant-revocation hosted verification
 
+## T008 admission/status boundaries — 6 November 2026
+
+Prior [CI536](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42227783524)
+at `9e7293fea58eb20de98e214812a72a8a3aa56252` passed all 124 jobs. This is verified workflow/job
+status, not a new artifact-level native reconciliation. [T008 receipts](t008-evidence.json)
+independently bind the new local reports, source hashes and exact native case identities.
+
+Ten focused cases pass on each real PostgreSQL and SQL Server provider, with zero failures
+or skips. Genuine HTTPS API/BFF requests reject missing persisted `grants.revoke` for new
+acceptance, exact-key replay and current-version continuation after an actual worker stop.
+Ordinary application reads remain live, and restored revocation permission admits without
+write/credential/disable permissions. Full native, target, grant and audit digests preserve
+rejected state. The isolated MFA component case uses genuine enrollment/source authority
+and longer-lived manager-created native records: last-second acceptance succeeds, exact
+MFA equality denies new/replayed admission, and protected status remains readable. It does
+not claim that a genuine signed access token outlives the native MFA deadline. Real save
+callbacks separately remove current permission or expire MFA before final verification;
+all staged native/job/approval/audit changes roll back.
+
+Status evidence genuinely admits and reconciles twelve jobs for one disabled target, with
+six equal timestamps, and a newer peer job. API/BFF reads return exactly the newest ten,
+repeat stable provider-correct GUID tie ordering, project truthful persisted metadata and
+ETags, reject a peer job under the target route, and preserve state. Expected ordering is
+computed independently in memory with Guid/SqlGuid comparison, not by repeating the query.
+
+Publication probes observe EF Core 10.0.14's documented TransactionDisposed diagnostic
+event, emitted after actual provider transaction disposal and before connection clearing.
+They match native transaction reference, transaction ID and context from the real commit or
+API-read SELECT. A bounded synchronous test gate remains within production cleanup; no
+async work is detached and no production hook or service replacement is added. Tests always
+release/join and require the captured context to be disposed before accepting the HTTP
+result. Cleanup failure, exact original native-authority expiry and a real 5.5-second hold
+past the original five-second HTTP budget withhold success and headers. Writes preserve
+one committed approval/job; eligible explicit same-key recovery returns that job without
+additional rows. Separate rollback-only read cases withhold metadata without changing state.
+This is transaction-cleanup evidence before final context disposal, not a post-context hook.
+
+Earlier attempts are rejected, not hidden retries. The first test sentinel deadlocked DI
+by resolving storage selection during context-options construction; captured stacks identify
+the probe, and only its owned process tree was stopped. Deferring lookup removed that cycle,
+but async-only and then armed dual-interface sentinels encountered synchronous scope disposal.
+Completed reports retained five passing authority/ordering cases and five publication failures;
+a focused diagnostic observed one read, zero async callbacks and one synchronous disposal.
+Those sentinels and temporary first-chance diagnostics were removed. The documented native
+event approach then passed five focused publication cases and the complete PostgreSQL set.
+
+An initial SQL attempt exhausted the VFS workspace because a moving-tag image was cached
+alongside the project's pinned image. The unused image and only that attempt's unreferenced
+VFS copies were removed after metadata/reference checks; sources, existing work and frozen
+compatibility producers were preserved. The accepted SQL run uses the pinned digest
+`4402d880dd4c34bfa7d8705e56a86cd6c88da80a1f6bbbe741f999e76264a090` and passes all ten cases.
+The failed startup is not counted as acceptance or an unexplained product failure.
+
+Final source review and exact report reconciliation support T008 completion: 13 of 18 tasks.
+The sole PostgreSQL-to-final source delta is removal of an informational IDE0005 unused import,
+verified by reconstructing its earlier hash; SQL executes final source. Native discovery keeps
+all 2,583 previous records/metadata/order and adds 20 cases. Build, informational style, quality,
+74 selector controls and assurance checks pass. No allowance, floor or prior test is removed.
+T010/T012/T015/T016/T018, new-head full CI, initial pilot replay window and every historical/
+manual/Firefox/A-009/production/public-release gate remain open. PR124 stays draft/unmerged.
+
 ## Run535 and persisted administrator target protection — 6 November 2026
 
 [Run535](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42186722362)
