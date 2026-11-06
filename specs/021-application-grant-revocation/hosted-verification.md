@@ -40,6 +40,16 @@ these new issuer cases is required before closing T009/T014. PR124 remains draft
 manual, Firefox/A-009 and production/public-release gates remain open.
 
 
+### Evidence representation correction
+
+The first issuer-test candidate was published before its staged source-scan result was
+inspected. That scan flagged eight source-file SHA-256 values next to filenames containing
+security-related words. They are verified public source checksums, not credentials. The
+report now represents all 18 source hash maps as explicit path/sha256 records, preserving
+all 92 bindings and every checksum. The corrected staged source scan passes without any
+allowlist change. Run532 is superseded by this corrected candidate; no result from that
+candidate is inferred as acceptance.
+
 ## Ordered lifecycle acceptance and metadata fixture correction — 5 November 2026
 
 [Run530](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42121786444)

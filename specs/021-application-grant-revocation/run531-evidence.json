@@ -48,13 +48,28 @@
           "suite": "issuer",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562",
-            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs": "73be9b42e2f6003801a963763c77940c8f65e71bed947ed1aaf2c04c8522da3a",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs": "d1efa035784292c2e57981f6b5f6ec2dbc3dcf448c3e5bb11dcace0083100d18"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs",
+              "sha256": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs",
+              "sha256": "73be9b42e2f6003801a963763c77940c8f65e71bed947ed1aaf2c04c8522da3a"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs",
+              "sha256": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs",
+              "sha256": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
+              "sha256": "d1efa035784292c2e57981f6b5f6ec2dbc3dcf448c3e5bb11dcace0083100d18"
+            }
+          ],
           "mutations": [
             {
               "id": "pkce-syntax",
@@ -227,13 +242,28 @@
           "suite": "issuer",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562",
-            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs": "73be9b42e2f6003801a963763c77940c8f65e71bed947ed1aaf2c04c8522da3a",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs": "d1efa035784292c2e57981f6b5f6ec2dbc3dcf448c3e5bb11dcace0083100d18"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/InteractionSecrets.cs",
+              "sha256": "9d54ea5355a687214b00d79fa3fb72cc7a5a053eab9b9b51a9c990e778e3e562"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/Login/LoginInteractions.cs",
+              "sha256": "73be9b42e2f6003801a963763c77940c8f65e71bed947ed1aaf2c04c8522da3a"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/PilotEligibility.cs",
+              "sha256": "9cd0ab562fc4d5a4f6b9fde97f01fea55fb39eaba1358df1edbc621e7afe029c"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Policy/ProofKeyPolicy.cs",
+              "sha256": "0ed7db264f0fac560891cd090ff20838161abe79ac72b30443a10de04d910dd7"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
+              "sha256": "d1efa035784292c2e57981f6b5f6ec2dbc3dcf448c3e5bb11dcace0083100d18"
+            }
+          ],
           "mutations": [
             {
               "id": "pkce-syntax",
@@ -374,12 +404,24 @@
           "suite": "managed-applications",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs": "02363ef3ca8c223f6cac8aa0397fd2a425352dba4fed272aaf512e83fb2324d7",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs": "69fcd8452d05d78089db8ec5ac47561816dfb4305023243828936add8fc7e744",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs": "337c7bb49a51571473e0475a632a0a6ec68a02feca110d9c3bb9f3aadd5a1268",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
+              "sha256": "02363ef3ca8c223f6cac8aa0397fd2a425352dba4fed272aaf512e83fb2324d7"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs",
+              "sha256": "69fcd8452d05d78089db8ec5ac47561816dfb4305023243828936add8fc7e744"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs",
+              "sha256": "337c7bb49a51571473e0475a632a0a6ec68a02feca110d9c3bb9f3aadd5a1268"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+              "sha256": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+            }
+          ],
           "mutations": [
             {
               "id": "managed-explicit-consent",
@@ -514,14 +556,32 @@
           "suite": "applications",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
-            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs": "9c68c03ce4e2530fdd977f75248a84c34de8a9db0e83af5a6d7dafe369c40d95",
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
-            "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs": "01980ffa7577ba024785eb93244642e9c659092679846829bcc4bbc4043a8610",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+              "sha256": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs",
+              "sha256": "9c68c03ce4e2530fdd977f75248a84c34de8a9db0e83af5a6d7dafe369c40d95"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs",
+              "sha256": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e"
+            },
+            {
+              "path": "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs",
+              "sha256": "01980ffa7577ba024785eb93244642e9c659092679846829bcc4bbc4043a8610"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+              "sha256": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+              "sha256": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+            }
+          ],
           "mutations": [
             {
               "id": "application-read-commit",
@@ -669,11 +729,20 @@
           "suite": "application-lifecycle",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+              "sha256": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+              "sha256": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+              "sha256": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+            }
+          ],
           "mutations": [
             {
               "id": "application-lifecycle-enforcement",
@@ -761,13 +830,28 @@
           "suite": "application-grants",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs": "720ddc67bc697ca9056a44b5f6216dd60d347be55ca86f840f40701731df7549",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs": "abd7e08725b9da10027abe8c9454253f2eacc9379ffbff044aecf8ee074643b9",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs": "ec630534d0a4e74c87b5c89e0875b337a27c8f80bafa44b4b07f84101ff6b9e4",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs": "6ea1f936b9abd40014b277043ed51d8d36e727042531f6f539885c19d72d9603",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
-          },
+          "source_sha256": [
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs",
+              "sha256": "720ddc67bc697ca9056a44b5f6216dd60d347be55ca86f840f40701731df7549"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs",
+              "sha256": "abd7e08725b9da10027abe8c9454253f2eacc9379ffbff044aecf8ee074643b9"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs",
+              "sha256": "ec630534d0a4e74c87b5c89e0875b337a27c8f80bafa44b4b07f84101ff6b9e4"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs",
+              "sha256": "6ea1f936b9abd40014b277043ed51d8d36e727042531f6f539885c19d72d9603"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+              "sha256": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+            }
+          ],
           "mutations": [
             {
               "id": "grant-enable-conflict",
@@ -893,14 +977,32 @@
           "suite": "applications",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
-            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs": "9c68c03ce4e2530fdd977f75248a84c34de8a9db0e83af5a6d7dafe369c40d95",
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
-            "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs": "01980ffa7577ba024785eb93244642e9c659092679846829bcc4bbc4043a8610",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+              "sha256": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationMutationOperation.cs",
+              "sha256": "9c68c03ce4e2530fdd977f75248a84c34de8a9db0e83af5a6d7dafe369c40d95"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs",
+              "sha256": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e"
+            },
+            {
+              "path": "src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs",
+              "sha256": "01980ffa7577ba024785eb93244642e9c659092679846829bcc4bbc4043a8610"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+              "sha256": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+              "sha256": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+            }
+          ],
           "mutations": [
             {
               "id": "application-read-commit",
@@ -1048,11 +1150,20 @@
           "suite": "application-lifecycle",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+              "sha256": "135fc1d74b0266ed4b05dfa518f9b5c4a0241abeb7d25b48abf133f3fc608b58"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+              "sha256": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+              "sha256": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+            }
+          ],
           "mutations": [
             {
               "id": "application-lifecycle-enforcement",
@@ -1140,13 +1251,28 @@
           "suite": "application-grants",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs": "720ddc67bc697ca9056a44b5f6216dd60d347be55ca86f840f40701731df7549",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs": "abd7e08725b9da10027abe8c9454253f2eacc9379ffbff044aecf8ee074643b9",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs": "ec630534d0a4e74c87b5c89e0875b337a27c8f80bafa44b4b07f84101ff6b9e4",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs": "6ea1f936b9abd40014b277043ed51d8d36e727042531f6f539885c19d72d9603",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
-          },
+          "source_sha256": [
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantActor.cs",
+              "sha256": "720ddc67bc697ca9056a44b5f6216dd60d347be55ca86f840f40701731df7549"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs",
+              "sha256": "abd7e08725b9da10027abe8c9454253f2eacc9379ffbff044aecf8ee074643b9"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs",
+              "sha256": "ec630534d0a4e74c87b5c89e0875b337a27c8f80bafa44b4b07f84101ff6b9e4"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs",
+              "sha256": "6ea1f936b9abd40014b277043ed51d8d36e727042531f6f539885c19d72d9603"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+              "sha256": "41e7b5af217c5611fd302ea867ddaf4a1d656d2cc9eb6495b2f784f669cd9547"
+            }
+          ],
           "mutations": [
             {
               "id": "grant-enable-conflict",
@@ -1272,14 +1398,32 @@
           "suite": "browser-session",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs": "57d538dffa7c9ead05958d1767be580657118c9ae96d217353c8cbac2ab0db64",
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs": "ea6a18aef60b54d35a2275fa752c28e754e2a7dfcc5f45deb3af95b22f1f5523",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs": "b40755ea963bfd22ccb5666b35a380002ae854b76d7245ccc9d26da5e2d82b04",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs": "298c8bbd56afb54059977c580330742828ad31a1e89732111be79e58ee6e34a9",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs": "8b4038a3c04858739500284a67aee6c4248dc621fffcd808f974c01a96f6ebea"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs",
+              "sha256": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs",
+              "sha256": "57d538dffa7c9ead05958d1767be580657118c9ae96d217353c8cbac2ab0db64"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs",
+              "sha256": "ea6a18aef60b54d35a2275fa752c28e754e2a7dfcc5f45deb3af95b22f1f5523"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs",
+              "sha256": "b40755ea963bfd22ccb5666b35a380002ae854b76d7245ccc9d26da5e2d82b04"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs",
+              "sha256": "298c8bbd56afb54059977c580330742828ad31a1e89732111be79e58ee6e34a9"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs",
+              "sha256": "8b4038a3c04858739500284a67aee6c4248dc621fffcd808f974c01a96f6ebea"
+            }
+          ],
           "mutations": [
             {
               "id": "browser-intent-binding",
@@ -1435,11 +1579,20 @@
           "suite": "administrator-protocol",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs": "15693c40294cc1d52857a61d2d97e88a872456331a942a1d05039ba810d54cca",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs": "5f76c9ce20016a0b434fb0860acf0c49c8fb7bebdef001e31e0c3eb517130387",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs": "d553f07a6fd6192bb8715db57ec4fa82a4796eba43d7c68f60bb6a1342236bd8"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs",
+              "sha256": "15693c40294cc1d52857a61d2d97e88a872456331a942a1d05039ba810d54cca"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs",
+              "sha256": "5f76c9ce20016a0b434fb0860acf0c49c8fb7bebdef001e31e0c3eb517130387"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs",
+              "sha256": "d553f07a6fd6192bb8715db57ec4fa82a4796eba43d7c68f60bb6a1342236bd8"
+            }
+          ],
           "mutations": [
             {
               "id": "protocol-current-authority",
@@ -1520,14 +1673,32 @@
           "suite": "governance",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs": "8d5c2fb1ec4253cf7da69f4b7496834e862b8c5ac0350b8798d3ed723a2cd13a",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs": "084b6cb33e893b0b69849b435ac9c119bcdee325bf6c1408fcb465dec7c9288e",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs": "89bdcc8a7c9eb1552579d94dd4a59c0f13c89bb0b54cae73de911cce22aa99bd",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs": "fe08c62c9ba7a4f89e394801b2f00281dd3612f3d224cb940c097b652c83756e",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs": "d2383e37ab2b116567b8f98738f8977f1783fa0164ce668b6ef4e078ec6a066f",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs": "e14876521f59f8114cf01dcbb15cb561ba9c5f41623641d4b30c8a66fedd32e4"
-          },
+          "source_sha256": [
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs",
+              "sha256": "8d5c2fb1ec4253cf7da69f4b7496834e862b8c5ac0350b8798d3ed723a2cd13a"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs",
+              "sha256": "084b6cb33e893b0b69849b435ac9c119bcdee325bf6c1408fcb465dec7c9288e"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs",
+              "sha256": "89bdcc8a7c9eb1552579d94dd4a59c0f13c89bb0b54cae73de911cce22aa99bd"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs",
+              "sha256": "fe08c62c9ba7a4f89e394801b2f00281dd3612f3d224cb940c097b652c83756e"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs",
+              "sha256": "d2383e37ab2b116567b8f98738f8977f1783fa0164ce668b6ef4e078ec6a066f"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs",
+              "sha256": "e14876521f59f8114cf01dcbb15cb561ba9c5f41623641d4b30c8a66fedd32e4"
+            }
+          ],
           "mutations": [
             {
               "id": "governance-current-grants",
@@ -1653,14 +1824,32 @@
           "suite": "governance",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs": "8d5c2fb1ec4253cf7da69f4b7496834e862b8c5ac0350b8798d3ed723a2cd13a",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs": "084b6cb33e893b0b69849b435ac9c119bcdee325bf6c1408fcb465dec7c9288e",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs": "89bdcc8a7c9eb1552579d94dd4a59c0f13c89bb0b54cae73de911cce22aa99bd",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs": "fe08c62c9ba7a4f89e394801b2f00281dd3612f3d224cb940c097b652c83756e",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs": "d2383e37ab2b116567b8f98738f8977f1783fa0164ce668b6ef4e078ec6a066f",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs": "e14876521f59f8114cf01dcbb15cb561ba9c5f41623641d4b30c8a66fedd32e4"
-          },
+          "source_sha256": [
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyLocks.cs",
+              "sha256": "8d5c2fb1ec4253cf7da69f4b7496834e862b8c5ac0350b8798d3ed723a2cd13a"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceCommit.cs",
+              "sha256": "084b6cb33e893b0b69849b435ac9c119bcdee325bf6c1408fcb465dec7c9288e"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceMutation.cs",
+              "sha256": "89bdcc8a7c9eb1552579d94dd4a59c0f13c89bb0b54cae73de911cce22aa99bd"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceProof.cs",
+              "sha256": "fe08c62c9ba7a4f89e394801b2f00281dd3612f3d224cb940c097b652c83756e"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceState.cs",
+              "sha256": "d2383e37ab2b116567b8f98738f8977f1783fa0164ce668b6ef4e078ec6a066f"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance/GovernanceUsability.cs",
+              "sha256": "e14876521f59f8114cf01dcbb15cb561ba9c5f41623641d4b30c8a66fedd32e4"
+            }
+          ],
           "mutations": [
             {
               "id": "governance-current-grants",
@@ -1786,16 +1975,40 @@
           "suite": "administrator",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs": "3eb3aa0ca5246acb25418021841510cfae415a8bc1affcc97c6edaed0d0e921d",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs": "09361a786cec60640f3aaeda62f2329db2f47184122e15eea3e5c37d711df118",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs": "6ebc82c66bfadfc904abfeafdd7525d0d9b0db50ad8f24dfca10218ada66f530",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs": "656b42d498aafe0d202c95ade60a8ff2d24db06028366034c42eac70b7c22eb3",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs": "af2fc191f6e3f920cd9019c466fcabfeddb023e6630b181ff7eae273b78fafdc",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs": "a7d428921609fc63d168873d3601d87e8e0d9e729d2e80249c6923a6bb2a99fc",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs": "7701c6318bd5b963178b8f7bcef23d77713c04c5285a977442b8dd330c5f098c"
-          },
+          "source_sha256": [
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs",
+              "sha256": "3eb3aa0ca5246acb25418021841510cfae415a8bc1affcc97c6edaed0d0e921d"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs",
+              "sha256": "09361a786cec60640f3aaeda62f2329db2f47184122e15eea3e5c37d711df118"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs",
+              "sha256": "6ebc82c66bfadfc904abfeafdd7525d0d9b0db50ad8f24dfca10218ada66f530"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs",
+              "sha256": "656b42d498aafe0d202c95ade60a8ff2d24db06028366034c42eac70b7c22eb3"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+              "sha256": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs",
+              "sha256": "af2fc191f6e3f920cd9019c466fcabfeddb023e6630b181ff7eae273b78fafdc"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs",
+              "sha256": "a7d428921609fc63d168873d3601d87e8e0d9e729d2e80249c6923a6bb2a99fc"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs",
+              "sha256": "7701c6318bd5b963178b8f7bcef23d77713c04c5285a977442b8dd330c5f098c"
+            }
+          ],
           "mutations": [
             {
               "id": "administrator-replay",
@@ -1951,11 +2164,20 @@
           "suite": "administrator-protocol",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs": "15693c40294cc1d52857a61d2d97e88a872456331a942a1d05039ba810d54cca",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs": "5f76c9ce20016a0b434fb0860acf0c49c8fb7bebdef001e31e0c3eb517130387",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs": "d553f07a6fd6192bb8715db57ec4fa82a4796eba43d7c68f60bb6a1342236bd8"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/AdministratorPrincipal.cs",
+              "sha256": "15693c40294cc1d52857a61d2d97e88a872456331a942a1d05039ba810d54cca"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ProtocolAdmission/ProtocolAdmissionProof.cs",
+              "sha256": "5f76c9ce20016a0b434fb0860acf0c49c8fb7bebdef001e31e0c3eb517130387"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/Administrator/AdministratorAssertionLedger.cs",
+              "sha256": "d553f07a6fd6192bb8715db57ec4fa82a4796eba43d7c68f60bb6a1342236bd8"
+            }
+          ],
           "mutations": [
             {
               "id": "protocol-current-authority",
@@ -2036,12 +2258,24 @@
           "suite": "managed-applications",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "SqlServer",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs": "02363ef3ca8c223f6cac8aa0397fd2a425352dba4fed272aaf512e83fb2324d7",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs": "69fcd8452d05d78089db8ec5ac47561816dfb4305023243828936add8fc7e744",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs": "337c7bb49a51571473e0475a632a0a6ec68a02feca110d9c3bb9f3aadd5a1268",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs",
+              "sha256": "02363ef3ca8c223f6cac8aa0397fd2a425352dba4fed272aaf512e83fb2324d7"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs",
+              "sha256": "69fcd8452d05d78089db8ec5ac47561816dfb4305023243828936add8fc7e744"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs",
+              "sha256": "337c7bb49a51571473e0475a632a0a6ec68a02feca110d9c3bb9f3aadd5a1268"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+              "sha256": "42f7e36acf747cc499e34f70fe8242ca39815a23f6744ca0e9108f573f1e8587"
+            }
+          ],
           "mutations": [
             {
               "id": "managed-explicit-consent",
@@ -2152,16 +2386,40 @@
           "suite": "administrator",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs": "3eb3aa0ca5246acb25418021841510cfae415a8bc1affcc97c6edaed0d0e921d",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs": "09361a786cec60640f3aaeda62f2329db2f47184122e15eea3e5c37d711df118",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs": "6ebc82c66bfadfc904abfeafdd7525d0d9b0db50ad8f24dfca10218ada66f530",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs": "656b42d498aafe0d202c95ade60a8ff2d24db06028366034c42eac70b7c22eb3",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs": "af2fc191f6e3f920cd9019c466fcabfeddb023e6630b181ff7eae273b78fafdc",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs": "a7d428921609fc63d168873d3601d87e8e0d9e729d2e80249c6923a6bb2a99fc",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs": "7701c6318bd5b963178b8f7bcef23d77713c04c5285a977442b8dd330c5f098c"
-          },
+          "source_sha256": [
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyAccount.cs",
+              "sha256": "3eb3aa0ca5246acb25418021841510cfae415a8bc1affcc97c6edaed0d0e921d"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyPassword.cs",
+              "sha256": "09361a786cec60640f3aaeda62f2329db2f47184122e15eea3e5c37d711df118"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyRecoveryProof.cs",
+              "sha256": "6ebc82c66bfadfc904abfeafdd7525d0d9b0db50ad8f24dfca10218ada66f530"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyReplayLedger.cs",
+              "sha256": "656b42d498aafe0d202c95ade60a8ff2d24db06028366034c42eac70b7c22eb3"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs",
+              "sha256": "7d64a710a8820be9e187dd6ed77be46c3f0cf6c0c0d230cdfe0d042bb426d07d"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyCompletion.cs",
+              "sha256": "af2fc191f6e3f920cd9019c466fcabfeddb023e6630b181ff7eae273b78fafdc"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneyLogout.cs",
+              "sha256": "a7d428921609fc63d168873d3601d87e8e0d9e729d2e80249c6923a6bb2a99fc"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Journeys/JourneySessions.cs",
+              "sha256": "7701c6318bd5b963178b8f7bcef23d77713c04c5285a977442b8dd330c5f098c"
+            }
+          ],
           "mutations": [
             {
               "id": "administrator-replay",
@@ -2332,14 +2590,32 @@
           "suite": "browser-session",
           "commit": "f09aa04561473239a29ee6ed64af70c0736c26c9",
           "provider": "PostgreSql",
-          "source_sha256": {
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e",
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs": "57d538dffa7c9ead05958d1767be580657118c9ae96d217353c8cbac2ab0db64",
-            "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs": "ea6a18aef60b54d35a2275fa752c28e754e2a7dfcc5f45deb3af95b22f1f5523",
-            "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs": "b40755ea963bfd22ccb5666b35a380002ae854b76d7245ccc9d26da5e2d82b04",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs": "298c8bbd56afb54059977c580330742828ad31a1e89732111be79e58ee6e34a9",
-            "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs": "8b4038a3c04858739500284a67aee6c4248dc621fffcd808f974c01a96f6ebea"
-          },
+          "source_sha256": [
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserAntiforgeryData.cs",
+              "sha256": "04e6aeca60c594d340c07ac87a850c50cd86b61d32fe65c678c836615044903e"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserLogoutCookie.cs",
+              "sha256": "57d538dffa7c9ead05958d1767be580657118c9ae96d217353c8cbac2ab0db64"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.Admin.Bff/Features/BrowserSessions/BrowserSessionIdentity.cs",
+              "sha256": "ea6a18aef60b54d35a2275fa752c28e754e2a7dfcc5f45deb3af95b22f1f5523"
+            },
+            {
+              "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Administrator/IssuerLogoutFlow.cs",
+              "sha256": "b40755ea963bfd22ccb5666b35a380002ae854b76d7245ccc9d26da5e2d82b04"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserLogoutService.cs",
+              "sha256": "298c8bbd56afb54059977c580330742828ad31a1e89732111be79e58ee6e34a9"
+            },
+            {
+              "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs",
+              "sha256": "8b4038a3c04858739500284a67aee6c4248dc621fffcd808f974c01a96f6ebea"
+            }
+          ],
           "mutations": [
             {
               "id": "browser-intent-binding",
@@ -2736,5 +3012,6 @@
       "dce682f9812d228b41ae7fad1dcb1f6636f40d38",
       "0a5fc764cd5ea66feb5e8275089d7e8329c35f1d"
     ]
-  }
+  },
+  "sourceHashRepresentation": "Source checksum maps are represented as path/sha256 records; values and file bindings are unchanged."
 }
