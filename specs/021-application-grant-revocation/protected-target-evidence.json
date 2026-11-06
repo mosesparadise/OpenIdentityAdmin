@@ -1,0 +1,76 @@
+{
+  "baseHead": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+  "requirements": [
+    "GR-003",
+    "T005",
+    "T006"
+  ],
+  "scope": "Exact persisted administrator target protection at an isolated owned component boundary; no HTTP bearer acceptance is claimed.",
+  "source": {
+    "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantProtectedTargetTests.cs",
+    "sha256": "dfbfc785d9a101381af79b75f48316f118fea5230c71e51fabeb703367109665"
+  },
+  "results": [
+    {
+      "provider": "PostgreSql",
+      "report": "grant-protected-pg-results/protected.trx",
+      "sha256": "8292c18cb776c66d490bf053dfef7580ebbb1b27f07bd3dfdad65c1e8272ab94",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"PostgreSql\")",
+      "finished": "2026-11-06T13:38:33.6150383Z"
+    },
+    {
+      "provider": "SqlServer",
+      "report": "grant-protected-sql-results/protected.trx",
+      "sha256": "c07d281fd152930877eec8ad208161ee8ecce444bd417a1fb97845c1da9df8c2",
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "1",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"SqlServer\")",
+      "finished": "2026-11-06T13:37:03.7361717Z"
+    }
+  ],
+  "checks": [
+    "Positive eligible target read, disabled/version and persisted verification before mutation.",
+    "Only persisted administrator profile ApplicationId changes; ordinary target names remain.",
+    "Exact Forbidden; full native/configuration/policy/profile/audit digest unchanged; zero grant job/approval/progress records.",
+    "Finally restores original profile and exact original digest; same intent then admits under real current API authority with one immutable approval."
+  ],
+  "limits": [
+    "Complete-spec final-head CI and remaining task acceptance are separate.",
+    "This complements genuine HTTP target negatives and previously verified grant suites; it does not replace them.",
+    "Pilot initial-replay/late-issuance window and all historical/manual/public-release gates remain open."
+  ]
+}

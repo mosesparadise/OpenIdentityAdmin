@@ -1,10 +1,53 @@
 # Grant-revocation hosted verification
 
+## Run535 and persisted administrator target protection — 6 November 2026
+
+[Run535](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42186722362)
+at `bdad7626383c0bd4a00bc544c37305b1617e8162` passes all 124 jobs. Independent
+[raw receipts](run535-evidence.json) reconcile 51 grant,111 ProtocolAdmission and 131 issuer-flow
+cases per provider:586 selected native passes, zero failures/skips, six artifact hashes
+and exact TRX identity/execution bindings. Both controlled replay cases include all 12
+binding checks, the actual failed UPDATE, explicit subsequent cleanup and unaffected
+control; both original standalone cases pass. This verifies the bounded correction,
+not closure of the initial replay/late-issuance window.
+
+The remaining T005/T006 administrator-ID guard now has two passing real-provider cases
+in [protected-target receipts](protected-target-evidence.json). A genuine enrolled fixture
+creates an ordinary managed disabled target and nonempty native grants. The production
+target reader passes its disabled/version/persisted-state checks in an owned transaction
+with actual governance/profile/actor locks. Changing only the persisted administrator
+profile's ApplicationId makes that same guard throw exact Forbidden. Complete native
+scalar/association, target configuration/policy/audit and entire profile digests stay
+unchanged; no grant job, approval or progress audit exists. Finally restoration recovers
+the exact original digest, and the same original intent admits under genuine current API
+component authority with one immutable approval and zero progress.
+
+This explicitly isolates the target guard. Changing the administrator profile during
+HTTP testing would make earlier bearer authentication reject and could mask a missing
+target guard. No HTTP-authentication result is claimed for this case; the previously
+verified genuine API/BFF target negatives remain separate evidence. Independent design
+and source review found no blocker and supports T005/T006 closure with both-provider
+execution. All real schema constraints stay intact; no production code changed.
+
+The Administrator build passes with zero warnings/errors, informational-severity style
+verification passes, syntax-aware quality passes without allowances, and all 74 selection
+controls pass. Native discovery preserves all 2,581 prior portable records/order and adds
+exactly two protected-target cases (2,583 total;52 ordinary grant cases/provider). Provider
+execution was serial; the unused SQL image cache was released after its completed test
+to fit PostgreSQL in the current vfs environment. No database/source/baseline work was deleted.
+
+T008/T010/T012/T015/T016/T018 remain open. Current-head full CI, original deadline/current
+permission/MFA and publication tests, remaining authority races, real-browser recovery,
+complete-spec review and the documented initial replay window remain distinct obligations.
+PR124 stays draft/unmerged; main and every historical/manual/Firefox/A-009/production/
+public-release gate remain unchanged.
+
+
 ## Run534 and controlled pilot replay correction — 6 November 2026
 
 [Run534](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42138440154)
 at `2a18e68cd340c967b91e03399588e5e3fe1b5daf` completes124successful jobs, zero failures
-or skips. [Independent raw receipts](run534-evidence.json) reconcile51grant and131issuer-flow
+or skips. [Independent raw receipts](run534-evidence.json) reconcile 51 grant and 131 issuer-flow
 cases per provider:364selected native passes. The exact-head invalid-input test awaits
 the new target helper, so its missing/stale/foreign-version/unmanaged/native-profile and
 persisted-pilot denials plus authorized control are verified on both providers. A green

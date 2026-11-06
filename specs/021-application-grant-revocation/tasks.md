@@ -15,8 +15,8 @@
 Independent test: genuinely admit an eligible disabled target, complete native batches,
 read truthful protected status and verify peer/configuration isolation.
 
-- [ ] T005 [US1] Add both-provider admission/selection/atomicity cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ for independent native authorization/token families, empty/eight/nine sets, invalid states, protected IDs and target/version errors.
-- [ ] T006 [US1] Implement target, job admission and audit staging in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; exact actor/action/target key/hash binding for24hours, disabled/non-system target, one incomplete job, fresh persisted verification and no automatic re-enable.
+- [x] T005 [US1] Add both-provider admission/selection/atomicity cases in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ for independent native authorization/token families, empty/eight/nine sets, invalid states, protected IDs and target/version errors.
+- [x] T006 [US1] Implement target, job admission and audit staging in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; exact actor/action/target key/hash binding for24hours, disabled/non-system target, one incomplete job, fresh persisted verification and no automatic re-enable.
 - [x] T007 [US1] Implement bounded native batch selection/revocation and atomic job progress in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; at most8authorizations and8tokens, false native result aborts, fresh native verification, current authority before commit and empty-set completion audit.
 - [ ] T008 [US1] Add independent current permission/MFA admission, protected status/latest10reads and versioned contracts in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/; preserve original request/publication deadlines and native cleanup.
 - [x] T009 [US1] Enforce incomplete-job re-enable conflict in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs; test both issuance/re-enable/acceptance commit orders and actual provider lock waits in Administrator ApplicationGrants tests.
@@ -59,7 +59,7 @@ reports). Four admission/re-enable cases, all eight extended genuine issuance-ra
 and both commit-timed cross-instance cases pass. T009 and T014 are complete on that
 focused evidence; full CI remains rejected for the separate import and native replay failures.
 
-[Run534 receipts](run534-evidence.json) at `2a18e68` verify all124successful jobs and
+[Run534 receipts](run534-evidence.json) at `2a18e68` verify all 124successful jobs and
 364 selected native passes. Both-provider HTTP target negatives and the valid control
 pass. Administrator persisted-ID protection remains open. The earlier replay failure is
 now reproduced by a controlled real PostgreSQL ordering test. A pilot-only repeated-replay
@@ -67,9 +67,17 @@ cleanup correction is implemented with exact native bindings, native rejection, 
 authorization and failure controls; current-head integrated acceptance remains pending.
 This bounded correction does not close the initial-replay/late-issuance window.
 
+[Run535 receipts](run535-evidence.json) at `bdad762` verify124successful jobs and 586
+selected native passes. Both controlled and original replay cases pass on both providers;
+the initial replay/late-issuance window remains open. The remaining administrator-ID target
+case now passes on PostgreSQL and SQL Server ([receipts](protected-target-evidence.json)).
+It isolates the production target guard under real owned locks, proves exact Forbidden
+without name/authentication masking, preserves state, restores the profile and admits
+the same intent. This closes T005/T006 with the previously verified admission/atomicity
+and real HTTP negatives. Twelve of 18 tasks are complete; full feature acceptance is not.
+
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T005/T006: administrator persisted ID/name drift; new HTTP target/version negatives are verified on both providers.
 - T008: fresh MFA/permission admission, original publication/deadline/cleanup, latest-ten ordering.
 - T010: downstream malformed/failed/late responses and changed durable browser generation.
 - T012: deleted actor and ordered permission loss/final authority change versus batch commit.

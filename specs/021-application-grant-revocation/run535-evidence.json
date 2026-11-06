@@ -1,0 +1,260 @@
+{
+  "run": 42186722362,
+  "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+  "artifacts": [
+    {
+      "artifactId": 13488901542,
+      "name": "foundation-administrator-PostgreSql-applicationgrants",
+      "path": "/workspace/attachments/b1a32bf1-0761-4267-a3b4-c7931ab97d3b/grant535-review-foundation-administrator-PostgreSql-applicationgrants.zip",
+      "zipDigest": "sha256:b12b024421b95593dfe5dae09171a4ee02ab3e4cb7b43495d6b80a78839b760b",
+      "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+      "run": 42186722362,
+      "provider": "PostgreSql",
+      "report": "tests/administrator-PostgreSql-applicationgrants/Administrator.trx",
+      "reportSha256": "bff860ba9aedc228afda027879f84f5bce911edcdd05d7d61ea92f7d0ab0a946",
+      "counters": {
+        "total": "51",
+        "executed": "51",
+        "passed": "51",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactAdministratorInventoryMatch": true,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "f8b4ccc770880de7a4bf4f4a45ae44499f9b9555e7ecc7041021974b74d18420"
+    },
+    {
+      "artifactId": 13487858038,
+      "name": "foundation-administrator-SqlServer-applicationgrants",
+      "path": "/workspace/attachments/be76586f-6143-474d-a6e1-e05e2b1c6ea4/grant535-review-foundation-administrator-SqlServer-applicationgrants.zip",
+      "zipDigest": "sha256:083df2a35e98097f0295ed2b4b575b4f5a78be91349ce23cd6398d558572944c",
+      "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+      "run": 42186722362,
+      "provider": "SqlServer",
+      "report": "tests/administrator-SqlServer-applicationgrants/Administrator.trx",
+      "reportSha256": "3b1e96fea52a3d76385c3d213c7166b8985564c4710be9ad10b0b7a5e519825e",
+      "counters": {
+        "total": "51",
+        "executed": "51",
+        "passed": "51",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactAdministratorInventoryMatch": true,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "888e43a9aa0e08d2f7ec1261da89eefc8b62b18dfe02e8da7d1cc2935c2c4be1"
+    },
+    {
+      "artifactId": 13488047976,
+      "name": "foundation-administrator-PostgreSql-protocoladmission",
+      "path": "/workspace/attachments/56cbee1b-f39f-4bb6-8bfd-c5eb03fb1122/grant535-review-foundation-administrator-PostgreSql-protocoladmission.zip",
+      "zipDigest": "sha256:38f58d970bb93bd778943a2f4dd62ee90778ce64570a0c5ce1e27d823f0f9334",
+      "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+      "run": 42186722362,
+      "provider": "PostgreSql",
+      "report": "tests/administrator-PostgreSql-protocoladmission/Administrator.trx",
+      "reportSha256": "11bb5d6e8a02738ef2e0588c3b35412ab9e6159529834da454507c3367963a99",
+      "counters": {
+        "total": "111",
+        "executed": "111",
+        "passed": "111",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactAdministratorInventoryMatch": true,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "7b092a999debb823d2ecb79df02a3743a4487eca5928e7a5b3521573da9520cc"
+    },
+    {
+      "artifactId": 13488184072,
+      "name": "foundation-administrator-SqlServer-protocoladmission",
+      "path": "/workspace/attachments/27ff22e9-ba8f-40f7-8ffc-e7b1ede9e64c/grant535-review-foundation-administrator-SqlServer-protocoladmission.zip",
+      "zipDigest": "sha256:69f7e7a0818b25725c471d5f33c7f237747a50b08d1e2bd0d5380c86814fd9d7",
+      "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+      "run": 42186722362,
+      "provider": "SqlServer",
+      "report": "tests/administrator-SqlServer-protocoladmission/Administrator.trx",
+      "reportSha256": "9f52d601bd0cf5e217762cd5739316fa429fa0a9de7597447d3e5d3c82fd0ece",
+      "counters": {
+        "total": "111",
+        "executed": "111",
+        "passed": "111",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactAdministratorInventoryMatch": true,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "068cfbbee73bec5102d13298992c8df93e88056fde3109b955b22e38b652dd5a"
+    },
+    {
+      "artifactId": 13488002716,
+      "name": "foundation-issuer-PostgreSql-flows",
+      "path": "/workspace/attachments/9f83f551-f228-4ed2-b9df-473b0e782ed6/grant535-review-foundation-issuer-PostgreSql-flows.zip",
+      "zipDigest": "sha256:ddab59542fdde85fd8f7795c26a45276da0517c4469907d44fc7d026983ab924",
+      "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+      "run": 42186722362,
+      "provider": "PostgreSql",
+      "report": "tests/issuer-PostgreSql-flows/Issuer.trx",
+      "reportSha256": "ee3fdac74e191a7083e78bfc316128a90c1d94cd18a3c3a9a3a0261354183e4d",
+      "counters": {
+        "total": "131",
+        "executed": "131",
+        "passed": "131",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactAdministratorInventoryMatch": false,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "8b5064a747576ea46e37cd04af41b8cbb1faf306dbc4d524cad3a8c6e02fa6ce"
+    },
+    {
+      "artifactId": 13488142924,
+      "name": "foundation-issuer-SqlServer-flows",
+      "path": "/workspace/attachments/bf72b6fb-a75b-4d37-8a3a-049609d0ca5b/grant535-review-foundation-issuer-SqlServer-flows.zip",
+      "zipDigest": "sha256:e52d433acdac83b0c9ae18e45a10cdeb5e124c82fff2b5972ecab8cdd7340c52",
+      "head": "bdad7626383c0bd4a00bc544c37305b1617e8162",
+      "run": 42186722362,
+      "provider": "SqlServer",
+      "report": "tests/issuer-SqlServer-flows/Issuer.trx",
+      "reportSha256": "91a492c6f613d616a8c82c4abc377010d100d111d94b042f83f58d8f31133570",
+      "counters": {
+        "total": "131",
+        "executed": "131",
+        "passed": "131",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactAdministratorInventoryMatch": false,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "c1496a4ac870fe88affec49c708987124fdffc47fe0a608b4dba6d95ddaa1626"
+    }
+  ],
+  "sourceHooks": {
+    "sourceFiles": [
+      {
+        "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayOrderingTests.cs",
+        "sha256": "d8a0a918f3706cde6ea25a0f76595787836e1dddb366ccae695243cd4869a492"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayGuardEvidence.cs",
+        "sha256": "f5d94df645b268ea75bd69ac42dd1c511018e3bc8a0e405b9496aa8184a77894"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayCleanupFault.cs",
+        "sha256": "9b7caf54121dbac824d0721ea5fd0c18d1891847f34804883c1308df564d6754"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotReplayBarrier.cs",
+        "sha256": "139f308d883731cf211f59ff287e7feb1f4c4e6284103ef47a6a8a48803dad06"
+      }
+    ],
+    "bindingGuards": "12 independent invalid binding variants require unchanged complete native digests and unchanged native response decisions at an explicit component seam.",
+    "failedCleanup": "Actual armed native UPDATE interception must fail exactly once; rejected replay remains invalid_grant, winning access remains Valid, then a separate explicit replay must revoke it.",
+    "unaffectedControl": "A distinct genuine pilot authorization still exchanges for cryptographically and natively valid access.",
+    "ordering": "Real redeemed code is observed before a replay completes and marks it revoked; winning issuance is then released. No sleep establishes ordering."
+  },
+  "selectedNativePasses": 586,
+  "replayDisposition": "Controlled ordering and original replay cases passed on both providers. The first replay completing before winning issuance leaves an initial late-issuance exposure window; this remains open. Recovery by a later explicit replay is not closure of that window.",
+  "limits": "Focused raw report review only; overall feature, full coverage, manual and release acceptance remain outside this reconciliation.",
+  "jobTotals": {
+    "success": 124,
+    "failure": 0,
+    "skipped": 0
+  }
+}

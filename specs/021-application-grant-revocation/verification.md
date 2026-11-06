@@ -2,32 +2,33 @@
 
 ## Current checkpoint — 6 November 2026
 
-Feature021 remains in draft PR124 on `128-application-grant-revocation`; main remains
-`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run534 at `2a18e68` passes all124jobs.
-[Focused raw receipts](run534-evidence.json) verify51grant and131issuer-flow cases per
-provider (364selected passes), including the new HTTP target/version/profile and persisted
-pilot-ID negatives. Ten tasks remain complete: T001–T004/T007/T009/T011/T013/T014/T017.
-Administrator-ID protection and the other specific [task gaps](tasks.md) remain open.
+Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is unchanged
+at `dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run535 at `bdad762` passes all 124 jobs.
+[Independent raw receipts](run535-evidence.json) reconcile 51 grant,111 ProtocolAdmission
+and 131 issuer-flow cases per provider:586 selected native passes, zero failures/skips.
 
-The earlier native replay failure is now reproduced by controlled genuine PostgreSQL
-HTTP ordering: the loser revokes the redeemed code before the winner inserts its access
-token; subsequent replay rejects the code without cleaning up that later token. A scoped
-pilot-only correction repeats native cleanup after exact persisted bindings, leaving
-native rejection in place. Final controlled PostgreSQL and SQL Server cases pass, including
-twelve component binding negatives, actual cleanup UPDATE failure and a different genuine
-authorization control. The original standalone issuer case is also verified separately.
-See [replay receipts](replay-correction-evidence.json) and [hosted verification](hosted-verification.md).
+The final persisted-administrator-ID target case additionally passes on PostgreSQL and
+SQL Server ([receipts](protected-target-evidence.json)). It isolates the owned production
+target guard from earlier authentication, proves exact Forbidden with full state unchanged,
+restores the profile and admits the same original intent under genuine current API authority.
+This closes T005/T006 with the previously verified admission/atomicity and HTTP negatives.
+**12 of 18 tasks are complete.** T008/T010/T012/T015/T016/T018 remain open in [tasks](tasks.md).
 
-This correction does not close the initial replay/late-issuance window or constitute
-complete race prevention. Full corrected-head CI, further boundary review and feature
-acceptance remain required. Native discovery preserves2,579prior portable identities and
-adds exactly two controlled replay cases. Local quality, formatting at informational
-severity,74selection controls and both affected project builds pass without allowance growth.
+The bounded pilot replay correction passes its controlled and original standalone cases
+on both providers and in CI535. It repeats cleanup on a later replay; it does not serialize
+pilot issuance or close the initial replay/late-issuance window. That limitation, further
+boundary acceptance and all historical/manual/public-release gates remain open.
+
+This update changes tests/evidence only. The Administrator build, informational-severity
+style, quality and 74 selection controls pass without allowance growth. Discovery preserves
+all 2,581 prior portable identities/order and adds exactly two cases (2,583 total;52 ordinary
+grant cases/provider). Current-head full CI and complete-spec review remain required.
 
 Accepted grant jobs continue after logout/MFA expiry under recorded approval and current
-account/permission checks; disabled targets remain disabled until successful reconciliation
-and a separate re-enable. Actual stopped-job browser recovery and all historical/manual/
-public-release gates remain open. No PR has been marked ready or merged by this checkpoint.
+account/permission checks. Targets remain disabled until successful reconciliation and
+a separate explicit re-enable. Actual stopped-job browser recovery is still outstanding.
+No PR has been marked ready or merged by this checkpoint. [Hosted verification](hosted-verification.md)
+retains prior failures, reviewer dispositions and exact scopes of earlier evidence.
 
 ## Executed local evidence
 
