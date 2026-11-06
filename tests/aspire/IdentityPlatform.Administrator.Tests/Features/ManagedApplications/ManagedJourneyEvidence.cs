@@ -28,7 +28,7 @@ internal static class ManagedJourneyEvidence
     }
 
     /// <summary>Includes every native token/authorization scalar and actual foreign-key binding across both clients; no redemption field is omitted.</summary>
-    private static async Task<string> NativeAsync(PlatformDbContext database, string? applicationId = null)
+    internal static async Task<string> NativeAsync(PlatformDbContext database, string? applicationId = null)
     {
         var tokens = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking()
             .Where(row => applicationId == null || row.Application!.Id == applicationId).OrderBy(row => row.Id).Select(row => new

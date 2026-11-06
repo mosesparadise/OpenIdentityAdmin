@@ -8252,46 +8252,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string)",
-        "Fingerprint": "1A2BDAF3FB4E344EA70A6CCF1529A31CF19CF569EBA3209C5EE213BE6D930947"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string)",
-        "Fingerprint": "1A2BDAF3FB4E344EA70A6CCF1529A31CF19CF569EBA3209C5EE213BE6D930947"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string)",
-        "Fingerprint": "1A2BDAF3FB4E344EA70A6CCF1529A31CF19CF569EBA3209C5EE213BE6D930947"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string).Exchange()",
-        "Fingerprint": "46A928DDA452A423D509DF195A87A5D002741803F00A07AF398761ADAF137A2A"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ006",
         "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CurrentStateTests.cs",
         "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CurrentStateTests.Cases",

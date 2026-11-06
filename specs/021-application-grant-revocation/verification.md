@@ -1,23 +1,28 @@
 # Grant revocation implementation verification
 
-## Current checkpoint — 5 November 2026
+## Current checkpoint — 6 November 2026
 
 Feature021 remains in draft PR124 on `128-application-grant-revocation`; main is
-`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run531 at `0a5fc76` passes all 124 jobs.
-[Independent raw receipts](run531-evidence.json) reconcile 50 grant cases/provider, full
-persistence, native demos, retained protection browsers, 110 mutation kills and all 15
-unchanged module floors. T007/T011/T013/T017 now join T001–T004 as complete. Full feature
-acceptance remains open for the specific gaps in [tasks.md](tasks.md).
+`dce682f9812d228b41ae7fad1dcb1f6636f40d38`. Run531 at `0a5fc76` passed all 124 jobs.
+[Run533 focused receipts](run533-evidence.json) at `da6f378` now verify 51 grant and 64
+managed-issuance cases per provider: 230 native passes, including both new cross-instance
+cases and all extended issuance races. T009/T014 join T001–T004/T007/T011/T013/T017 as
+complete. Full feature acceptance remains open for the specific gaps in [tasks.md](tasks.md).
 
-Accepted jobs continue after logout/MFA expiry under recorded approval and current
-account/permission checks; disabled targets remain disabled until success and a separate
-re-enable. Both choices remain settled. Actual browser confirmation/progress/completion
-is verified; stopped-job browser recovery remains a separate outstanding obligation.
+Run533 is rejected: static analysis found one unused import, corrected locally, and the
+older PostgreSQL native code replay test failed its exact winning-access revocation check.
+The observed status was not captured; source analysis identifies a possible redemption /
+chain-revocation / issuance ordering, not proven causation. Failure-only finite diagnostics
+preserve the exact native assertion and security mutation marker. Two native test names
+are explicitly migrated to current scenario naming, with no baseline expansion. See
+[hosted verification](hosted-verification.md) for the mapping, checks and limits.
 
-Current additions extend the genuine issuance/disable races through revocation and add
-commit-timed cross-instance native entry validation with real peer exchange controls.
-They build and pass independent source review; hosted runtime remains pending. The
-historical local evidence below retains its original scope and limitations.
+Additional real API/BFF target-denial checks are implemented, with exact native/policy/audit
+preservation, persisted pilot-ID protection and a final authorized positive control.
+Hosted execution remains pending, as does independent administrator-ID target coverage.
+Accepted jobs still continue after logout/MFA expiry under recorded approval and current
+account/permission checks. Targets remain disabled until success and a separate re-enable.
+Stopped-job browser recovery and all historical/manual/public-release gates remain open.
 
 ## Executed local evidence
 

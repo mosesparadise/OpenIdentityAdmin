@@ -6,7 +6,6 @@ using IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ApplicationGrants;

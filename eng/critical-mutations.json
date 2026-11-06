@@ -54,7 +54,7 @@
       "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
       "before": "options.RequireProofKeyForCodeExchange();",
       "after": "options.RequireProofKeyForCodeExchange();\n            options.RemoveEventHandler(OpenIddict.Server.OpenIddictServerHandlers.RedeemTokenEntry.Descriptor);",
-      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails",
+      "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked",
       "marker": "Critical decision bypass: native-replay."
     }
   ]

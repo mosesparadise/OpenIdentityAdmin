@@ -19,7 +19,7 @@ read truthful protected status and verify peer/configuration isolation.
 - [ ] T006 [US1] Implement target, job admission and audit staging in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; exact actor/action/target key/hash binding for24hours, disabled/non-system target, one incomplete job, fresh persisted verification and no automatic re-enable.
 - [x] T007 [US1] Implement bounded native batch selection/revocation and atomic job progress in src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/; at most8authorizations and8tokens, false native result aborts, fresh native verification, current authority before commit and empty-set completion audit.
 - [ ] T008 [US1] Add independent current permission/MFA admission, protected status/latest10reads and versioned contracts in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/; preserve original request/publication deadlines and native cleanup.
-- [ ] T009 [US1] Enforce incomplete-job re-enable conflict in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs; test both issuance/re-enable/acceptance commit orders and actual provider lock waits in Administrator ApplicationGrants tests.
+- [x] T009 [US1] Enforce incomplete-job re-enable conflict in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs; test both issuance/re-enable/acceptance commit orders and actual provider lock waits in Administrator ApplicationGrants tests.
 - [ ] T010 [US1] Add exact BFF routes/CSRF/key forwarding and generated strict contracts in src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and frontend generated contracts; verify actual HTTP negatives, secrecy and compatibility in tests/contracts/IdentityPlatform.Api.Contracts.Tests/ and Administrator tests.
 - [x] T011 [US1] Add confirmation/progress/finite-error UI in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/ with current permission visibility, explicit offline limits, read-only polling/navigation cancellation, light/dark/focus and UI tests.
 
@@ -30,7 +30,7 @@ worker restart; lost current authority stops the next batch with ordered races.
 
 - [ ] T012 [US2] Implement metadata-only current actor/permission eligibility and post-save rereads in Infrastructure Features/ApplicationGrants/; test logout/MFA continuation and disabled/deleted/suspended/locked/factor-generation/permission loss in Administrator ApplicationGrants tests.
 - [x] T013 [US2] Compose bounded worker polling and safe telemetry in src/backend/IdentityPlatform.Worker/Features/ApplicationGrants/ and Features/Setup.cs; use native owned store lifetime, no factor keys, actual two-worker contention/restart and startup/shutdown coverage in Host/Administrator tests.
-- [ ] T014 [US2] Prove actual native entry validation separately from revision/wrong-audience denial in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ and genuine cross-instance issuer flows with unaffected controls, measured from each committed batch.
+- [x] T014 [US2] Prove actual native entry validation separately from revision/wrong-audience denial in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/ and genuine cross-instance issuer flows with unaffected controls, measured from each committed batch.
 
 ## Phase 5: US3 explicit recovery (P2)
 
@@ -53,22 +53,27 @@ remaining scope and complete without silent revival or duplicate work.
 T007 (native batches), T011 (confirmation/progress UI), T013 (Worker) and T017 (integrated
 Aspire/browser/mutation/coverage execution). T001–T004 were already complete.
 
-T009's ordered admission/re-enable cases now pass both providers. Eight existing genuine
-issuance/disable race cases are extended through HTTPS revocation and exact native/audit
-reconciliation. Two new T014 cases isolate native token/authorization checks on two real
-issuer roots within five seconds of the actual batch commit, with unaffected controls,
-peer HTTPS exchange and fresh post-completion sign-in. Build and source review pass;
-these additions still require hosted execution. Neither task is closed yet.
+[Run533 receipts](run533-evidence.json) at `da6f378` independently reconcile 51 grant
+and 64 managed-issuance cases per provider (230 passes, zero failures/skips in these four
+reports). Four admission/re-enable cases, all eight extended genuine issuance-race cases
+and both commit-timed cross-instance cases pass. T009 and T014 are complete on that
+focused evidence; full CI remains rejected for the separate import and native replay failures.
+
+The import is corrected. The replay assertion remains exact, with finite failure-only
+diagnostics; causation and a product correction remain unproved. Additional HTTP target
+negatives are implemented for missing/stale/foreign-version, unmanaged/native-profile
+and persisted pilot identity denial, with unchanged native-state/audit oracles and a valid
+positive control. Their hosted execution and administrator persisted-ID oracle remain open.
 
 Implemented work is not repeated. Remaining acceptance evidence is specific:
 
-- T005/T006: protected persisted ID/name drift, missing/unmanaged target and version denial.
+- T005/T006: administrator persisted ID/name drift and hosted verification of new HTTP target/version negatives.
 - T008: fresh MFA/permission admission, original publication/deadline/cleanup, latest-ten ordering.
 - T010: downstream malformed/failed/late responses and changed durable browser generation.
 - T012: deleted actor and ordered permission loss/final authority change versus batch commit.
 - T015: elapsed request/transaction deadlines and actual ordered late-failure capture.
 - T016: genuine stopped-job continuation and unknown-acceptance recovery in the browser.
-- T018: complete-spec final review and exact-head delivery after those obligations.
+- T018: resolve the existing native replay failure, then complete-spec final review and exact-head delivery after those obligations.
 
 See [hosted verification](hosted-verification.md) for prior failed attempts and review dispositions.
 

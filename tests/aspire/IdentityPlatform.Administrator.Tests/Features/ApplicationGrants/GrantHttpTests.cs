@@ -94,6 +94,7 @@ public sealed class GrantHttpTests(BootstrapFixture fixture)
         await ApplicationHttpTests.ProblemAsync(invalidProof, HttpStatusCode.BadRequest);
         await using var scope = test.Scope();
         Assert.Empty(await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationGrantJob>().ToArrayAsync(TestContext.Current.CancellationToken));
+        await GrantTargetHttpEvidence.RequireAsync(test, id, version);
     }
 
     /// <summary>Current persisted permissions govern both exact and recent status; holding job references or previously valid cookies never supplies read authority.</summary>

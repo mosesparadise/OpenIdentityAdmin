@@ -1,5 +1,76 @@
 # Grant-revocation hosted verification
 
+## Run533 focused acceptance and unresolved replay — 6 November 2026
+
+[Run533](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42133604768)
+at `da6f378100006bb317325408c44566ec956f49b7` completes with120successful, three failed
+(including final acceptance) and one skipped job. It is **not accepted overall**.
+[Independent receipts](run533-evidence.json) reconcile four ZIP digests, every native
+result/definition/execution binding and the exact-head discovery inventory:
+
+- PostgreSQL and SQL Server grant suites: 51 passes each.
+- PostgreSQL and SQL Server managed-issuance suites: 64 passes each.
+- Four ordered admission/re-enable cases, eight extended genuine issuance cases and
+  both actual-commit-timed cross-instance cases pass: 230 selected native passes total.
+
+Independent evidence review closes T009 and T014. This does not waive other tasks or
+make the PR mergeable. Static job127616903897 reports IDE0005 on the unused EF import in
+`GrantIssuerLifecycleTests`; the correction removes that import. The earlier local style
+command omitted informational severity, so it did not detect this diagnostic.
+
+Issuer PostgreSQL flows job127616906260 fails the existing
+`CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails`
+final native `HasStatusAsync(..., Revoked)` assertion. One winner, independent cryptographic
+validation, concurrent-loser invalid_grant and final-replay invalid_grant all passed.
+The actual access status was not retained. No transient/cache explanation is established;
+entity caching is disabled and observation uses a separate scope. OpenIddict7.7.2 source
+suggests a candidate ordering: redeemed-code replay revokes existing rows, winner issuance
+adds a valid access entry afterward, and later replay rejects the already revoked code
+without repeating family revocation. This remains a hypothesis about this CI failure.
+
+The test now retains that exact `HasStatusAsync` gate and emits only bounded finite
+status/type labels and whitelisted library error IDs after a failing observation. It
+never converts failure into success on a later read, logs credentials/native identifiers,
+retries a request or alters library/product behavior. Independent source/security review
+found no blocking issue after restoring native case-insensitive status semantics.
+
+Changed legacy code must comply immediately. Both provider identities are explicitly
+renamed from `Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails` to
+`Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked`
+in the same `CodeFlowTests` class. Provider and native-replay traits, method body oracles,
+mutation marker and ordinary counts remain. The mutation manifest and current assurance
+reference point to the new method; immutable historical evidence retains its old name.
+Exactly four obsolete quality allowances are removed, with none added or rebound.
+Native discovery verifies646 issuer cases and both renamed cases; nine selector controls,
+quality and the345-control assurance consistency check pass. The issuer build passes
+with zero warnings/errors after satisfying the cached CompositeFormat analyzer.
+
+The next target-boundary extension reuses the existing grant input/proof scenario on
+both real HTTP surfaces. It seeds eligible native rows, requires precise missing404,
+stale/foreign-version412, unmanaged/native-profile409 and persisted pilot-ID403 responses,
+compares complete native/policy/audit digests and requires no grant jobs/approvals/audits.
+A final valid202 control proves the caller remains eligible. Fixture review corrected
+an impossible policy-profile mutation: the actual schema permits only the managed
+profile, so the test instead removes/restores the native PKCE requirement through its
+manager. All relational constraints remain intact. Complete native scalar/association
+comparison reuses `ManagedJourneyEvidence.NativeAsync`. Administrator persisted-ID
+coverage remains a separate open obligation; neither that nor runtime success is inferred.
+
+The final Administrator build also passes with zero warnings/errors; code quality passes
+without allowance growth. Native discovery preserves all2,579 Administrator identities,
+portable metadata and order; only six expected source-line locations move. The first
+strict whole-JSON comparison rejected those line moves; the portable-inventory comparison
+then passed. Explicit changed-file formatting includes informational severity.
+
+Local provider execution is unavailable because of the recorded shared disk exhaustion;
+no additional container retry or timing waiver was introduced. Hosted execution of the
+latest corrections/extensions remains required. A bounded replay follow-on can use the
+existing real-Kestrel pilot fixture with a test-only handler just after native redemption:
+hold the winner, observe the loser's actual replay response, then release issuance.
+Do not claim a product fix or close the failure from an unexplained green rerun.
+PR124 remains draft; all historical/manual/release gates persist.
+
+
 ## Successful integrated checkpoint and issuer acceptance additions — 5 November 2026
 
 [Run531](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42123227146)

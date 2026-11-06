@@ -1,5 +1,17 @@
 # Delivery roadmap and task register
 
+**Grant-revocation race and cross-instance evidence — 6 November 2026:** run533 at
+`da6f378` verifies 230 native passes across both grant and managed-issuance suites.
+Feature021 T009/T014 are complete; 10 of 18 tasks now have acceptance evidence.
+Full CI remains rejected for an unused import (corrected) and an older native code-replay
+revocation failure (unresolved; exact assertion retained with safe diagnostics).
+New HTTP target-denial checks need hosted execution; administrator-ID, authority,
+API/BFF failure and browser-recovery gaps remain explicit in [tasks](../specs/021-application-grant-revocation/tasks.md).
+Next: verify the target checks and deterministically isolate the replay ordering, then
+finish those remaining acceptance obligations. PR124 stays draft; main and all
+historical/manual/Firefox/A-009/production/public-release gates remain unchanged.
+
+
 **Grant-revocation verified progress — 5 November 2026:** run531 at `0a5fc76` passes all
 124 jobs. Raw evidence confirms 50 grant and 24 persistence cases/provider, both native
 demos, all four retained protection-browser cells, 110 mutation kills and all 15 coverage
