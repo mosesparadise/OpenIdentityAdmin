@@ -1328,7 +1328,12 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False, authority: \"authorization\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False, authority: \"scope\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False, authority: \"application\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False, authority: \"session\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False, authority: \"session\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2763,7 +2768,12 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: False, authority: \"session\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: False, authority: \"account\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: True, authority: \"scope\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: True, authority: \"authorization\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotWaitTests.Given_PilotExchangeWaitingOnGate_When_CurrentAuthorityIsIndependentlyRestricted_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: True, authority: \"authorization\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -59470,6 +59480,236 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotConsumptionMutationTests",
+        "methodName": "Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-durable-consumption"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotConsumptionMutationTests",
+        "methodName": "Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-durable-consumption"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotGateMutationTests",
+        "methodName": "Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-premature-gate-release"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotGateMutationTests",
+        "methodName": "Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-premature-gate-release"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotGateMutationTests",
+        "methodName": "Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-gate"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotGateMutationTests",
+        "methodName": "Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-gate"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotPublicationMutationTests",
+        "methodName": "Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-publication-cleanup"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotPublicationMutationTests",
+        "methodName": "Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-publication-cleanup"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotPublicationMutationTests",
+        "methodName": "Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-publication-commit"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotPublicationMutationTests",
+        "methodName": "Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "pilot-publication-commit"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

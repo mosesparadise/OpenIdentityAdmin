@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "pilot-gate",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs",
+      "before": "            await AcquireAsync(database, lifetime.Token);",
+      "after": "            await Task.CompletedTask;",
+      "marker": "pilot-gate-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease"
+    },
+    {
+      "id": "pilot-durable-consumption",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotConsumption.cs",
+      "before": "            await transaction.CommitAsync(lifetime.Token);",
+      "after": "            await transaction.RollbackAsync(lifetime.Token);",
+      "marker": "pilot-consumption-rollback-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed"
+    },
+    {
+      "id": "pilot-premature-gate-release",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs",
+      "before": "            await AcquireAsync(database, lifetime.Token);",
+      "after": "            await transaction.CreateSavepointAsync(\"pilot_mutation_gate\", lifetime.Token);\n            await AcquireAsync(database, lifetime.Token);\n            await transaction.RollbackToSavepointAsync(\"pilot_mutation_gate\", lifetime.Token);",
+      "marker": "pilot-premature-gate-release-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration"
+    },
+    {
+      "id": "pilot-publication-commit",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs",
+      "before": "                await transaction.CommitAsync(lifetime.Token);",
+      "after": "                await Task.CompletedTask;",
+      "marker": "pilot-publication-without-commit-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted"
+    },
+    {
+      "id": "pilot-publication-cleanup",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs",
+      "before": "        await using (var scope = factory.CreateAsyncScope())",
+      "after": "        var scope = factory.CreateAsyncScope();",
+      "marker": "pilot-publication-before-cleanup-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup"
+    }
+  ]
+}
