@@ -28,8 +28,8 @@
     {
       "id": "catalogue-original-browser-generation",
       "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Catalogue/CatalogueProxy.cs",
-      "before": "current is null || !state.Same(current) || state.Expiry(now)",
-      "after": "current is null || state.Expiry(now)",
+      "before": "var current = await ApplicationBrowserState.ReadAsync(http, clock, catalogue: true);",
+      "after": "var current = state;",
       "marker": "catalogue-original-browser-generation-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval"
     }
