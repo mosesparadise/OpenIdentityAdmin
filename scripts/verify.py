@@ -27,10 +27,11 @@ parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
 parser.add_argument("--apphost-group", choices=["Foundation", "BffSessions", "LocalDemo"])
 parser.add_argument("--browser-session-group", choices=["Foundations", "Product", "Lifecycle"])
 parser.add_argument("--managed-application-group", choices=["Admission", "Issuance"])
+parser.add_argument("--protocol-admission-group", choices=["Admission", "Replay"])
 args = parser.parse_args()
 if HISTORY_MODE_VARIABLE in os.environ:
     parser.error("Ordinary acceptance cannot run with a history diagnostic mode")
-if args.apphost_group and (args.partition != "apphost" or args.browser or args.story or args.issuer_group or args.browser_story or args.browser_session_group or args.managed_application_group or args.profile == "unit"):
+if args.apphost_group and (args.partition != "apphost" or args.browser or args.story or args.issuer_group or args.browser_story or args.browser_session_group or args.managed_application_group or args.protocol_admission_group or args.profile == "unit"):
     parser.error("AppHost group requires its ordinary provider partition")
 if args.issuer_group and (args.partition != "issuer" or args.browser or args.story or args.profile == "unit"):
     parser.error("Issuer group requires an ordinary issuer provider partition")
@@ -38,6 +39,8 @@ if args.browser_session_group and (args.partition != "administrator" or args.sto
     parser.error("Browser-session group requires its ordinary administrator provider story")
 if args.managed_application_group and (args.partition != "administrator" or args.story != "ManagedApplications" or args.browser or args.profile == "unit"):
     parser.error("Managed-application group requires its ordinary administrator provider story")
+if args.protocol_admission_group and (args.partition != "administrator" or args.story != "ProtocolAdmission" or args.browser or args.profile == "unit"):
+    parser.error("Protocol-admission group requires its ordinary administrator provider story")
 if args.browser_story and (not args.browser or args.partition != "administrator"):
     parser.error("Browser story requires an administrator browser invocation")
 install_cancellation_handler()
@@ -63,7 +66,7 @@ for project, count in projects.items():
         invocations.extend((project, expected, story, None, None) for story, expected in lifecycle_invocations(matrix, args.profile, args.story))
     elif project == "Administrator" and not args.browser:
         invocations.extend((project, count, story, None, group) for story, group, count in
-                           administrator_execution_invocations(matrix, args.profile, args.story, args.browser_session_group, args.managed_application_group))
+                           administrator_execution_invocations(matrix, args.profile, args.story, args.browser_session_group, args.managed_application_group, args.protocol_admission_group))
     elif project == "Administrator":
         invocations.extend((project, expected, None, browser_story, None) for browser_story, expected in administrator_browser_invocations(matrix, args.browser_story))
     else:

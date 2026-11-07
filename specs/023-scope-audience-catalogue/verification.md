@@ -236,3 +236,62 @@ using directives pass the SDK formatter. Failed run557 remains visible and is su
 by the corrected candidate; it is not counted as acceptance. Local Host1892/1892, UI111,
 verification-tooling330 and code-quality checks pass. Full corrected-head CI and WebKit
 acceptance remain required before PR128 leaves draft or merges.
+
+
+## Retained-browser correction and source review — 7 November 2026
+
+Focused run [42419063699](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42419063699)
+passes both Chromium journeys but fails WebKit reflow. Diagnostic run
+[42419769625](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42419769625)
+is intentionally failing evidence: at viewport 320 the document scroll width is 682;
+waiting leaves 682, appearance:none with the existing bounded overflow produces 320,
+and restoring the original style returns 682. Temporary probes were removed before
+acceptance runs. The two earlier diagnostic builds failed formatting before runtime
+and establish no layout result.
+
+The first NativeSelect candidate b747b94 inadvertently omitted overflow:hidden.
+Focused run [42420390096](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42420390096)
+therefore passes both Chromium cells and fails both WebKit cells; finite geometry
+shows viewport 320 with scroll widths 673/680. This rejected attempt remains recorded.
+The final correction 30f5caf restores overflow:hidden on the select itself while
+retaining native semantics, explicit labels/ARIA, a decorative noninteractive SVG arrow,
+shared theme colors and unclipped ancestor focus outlines. No touch target, reflow,
+theme, axe or focus assertion is weakened. CI558/559 were superseded by these source
+corrections and are not acceptance runs.
+
+Corrected focused run [42420821014](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42420821014)
+at 48cb78aab23e56de40087de86e96b8997c028ba5 passes all four Chromium/WebKit and
+PostgreSQL/SQL Server cells, one complete catalogue journey each, with zero failures
+or skips. Each hosted job reconciles exact native discovery and original TRX results.
+Its src/tests/scripts/eng trees equal product 30f5caff91f68cc16d342f5782a744f8d9887675.
+Independent retained-log/source review PASS; local receipt SHA-256:
+`2fde904d933c98d5ec637fae7c92cb1516a87380d5eab8d205f5d2d7356b86b3`.
+The raw ZIP/TRX archives were not retrieved and independently reparsed locally.
+
+Architecture/API/security and UX source reviews PASS the exact product revision.
+Full CI560 subsequently exceeds the existing SQL protocol-admission execution deadline.
+It is rejected as integrated acceptance; focused browser success does not close T004–T007.
+
+
+## Bounded protocol suite partition — 7 November 2026
+
+CI560 job128549065485 starts the SQL ProtocolAdmission native runner, then exceeds
+its unchanged660-second process deadline without producing a completed native report.
+There is no recorded individual assertion failure; the timeout is not a clean pass or
+proof of a product defect. Its original partial artifact13593818587 and decoded log are
+retained. Baseline CI553's successful SQL ProtocolAdmission coverage step took651 seconds,
+which includes discovery/collector overhead; it does not establish an exact per-case cause.
+
+Split the existing story using the shared exact administrator-group selector:
+Admission107 cases/27 classes and Replay55 cases/16 classes on each provider. Explicit
+class inventories preserve all162 original cases, traits and identities. Default and
+explicit story invocations require both groups. Both-provider jobs retain660-second
+execution and20-minute hosted deadlines. No product C#, test body, mutation target,
+coverage floor or exclusion changes. Required coverage inputs become104; native report
+count107 and ordinary executions6,090, with130 jobs and128 mutation kills required.
+
+Local selection80, coverage68 and browser-matrix7 controls pass. Seeded omissions,
+overlaps, provider/story/UID substitutions, redistributed counts, incompatible CLI and
+old combined coverage replacement reject. Actual native discovery retains2,871 cases;
+four real filtered discoveries reconcile107/55 per provider as exact disjoint unions.
+Independent source review and clean final-head hosted acceptance remain required.

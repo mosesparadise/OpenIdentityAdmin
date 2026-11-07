@@ -366,5 +366,66 @@
         "SqlServer": 64
       }
     }
+  },
+  "protocol_admission_groups": {
+    "Admission": {
+      "classes": [
+        "AdmissionDriftTests",
+        "AdmissionTests",
+        "NativeAccountDenialTests",
+        "NativeAccountFinalReadTests",
+        "NativeAccountIssuanceTests",
+        "NativeAccountResponseTests",
+        "NativeAuthorityRaceTests",
+        "NativeAuthorizationStateTests",
+        "NativeClientCallbackMutationTests",
+        "NativeClientCancellationTests",
+        "NativeClientCreationTests",
+        "NativeClientDatabaseFailureTests",
+        "NativeClientHttpsTests",
+        "NativeClientIdentityTests",
+        "NativeClientInteroperabilityTests",
+        "NativeClientLifetimeTests",
+        "NativeClientLoggingTests",
+        "NativeClientProcessTests",
+        "NativeClientReloadTests",
+        "NativeGenerationTests",
+        "NativeIssuanceCompletionTests",
+        "NativeParRaceTests",
+        "NativeProtocolMutationTests",
+        "NativeRegistrationDriftTests",
+        "NativeWireBindingTests",
+        "NativeWireQuotaTests",
+        "ProtocolInitializationCommandTests"
+      ],
+      "counts": {
+        "PostgreSql": 107,
+        "SqlServer": 107
+      }
+    },
+    "Replay": {
+      "classes": [
+        "InitialPilotReplayTests",
+        "NativeIssuerReplayTests",
+        "NativeRestoreConsequenceTests",
+        "PilotConsumptionMutationTests",
+        "PilotDeadlineTests",
+        "PilotGateLossConsumptionTests",
+        "PilotGateLossTests",
+        "PilotGateMutationTests",
+        "PilotGenerationFailureTests",
+        "PilotPublicationMutationTests",
+        "PilotReplayOrderingTests",
+        "PilotReplayPublicationTests",
+        "PilotValidationTests",
+        "PilotWaitExpiryTests",
+        "PilotWaitFailureTests",
+        "PilotWaitTests"
+      ],
+      "counts": {
+        "PostgreSql": 55,
+        "SqlServer": 55
+      }
+    }
   }
 }
