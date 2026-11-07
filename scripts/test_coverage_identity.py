@@ -136,25 +136,34 @@ class CoverageIdentityControls(unittest.TestCase):
                 self.change(mutate)
                 with self.assertRaises(ValueError): self.evaluate()
 
+    def change_builds(self, mutate):
+        """Change every cell coherently so cross-cell disagreement cannot mask validation."""
+        def replace(value):
+            value['build'] = copy.deepcopy(self.build)
+            mutate(value['build'])
+        for label in self.labels:
+            self.change(replace, label)
+
     def test_missing_required_binary_manifest_entry_rejects(self):
-        self.change(lambda value: value['build']['modules'].clear())
-        with self.assertRaises(ValueError): self.evaluate()
+        self.change_builds(lambda build: build['modules'].clear())
+        with self.assertRaisesRegex(ValueError, 'Build manifest must bind every required module'):
+            self.evaluate()
 
     def test_extra_binary_manifest_entry_rejects(self):
-        self.change(lambda value: value['build']['modules'].__setitem__('Unreviewed', {'dllSha256': '1' * 64, 'pdbSha256': '2' * 64}))
-        with self.assertRaises(ValueError): self.evaluate()
+        self.change_builds(lambda build: build['modules'].__setitem__('Unreviewed', {'dllSha256': '1' * 64, 'pdbSha256': '2' * 64}))
+        with self.assertRaisesRegex(ValueError, 'Build manifest must bind every required module'):
+            self.evaluate()
 
     def test_missing_and_invalid_dll_pdb_hashes_reject(self):
-        original = self.manifest(self.first).read_text()
         for field in ['dllSha256', 'pdbSha256']:
             for value in [None, '', 'f' * 63, 'G' * 64, 123]:
                 with self.subTest(field=field, value=value):
-                    self.manifest(self.first).write_text(original)
-                    self.change(lambda row: row['build']['modules'][MODULE].__setitem__(field, value))
-                    with self.assertRaises(ValueError): self.evaluate()
-            self.manifest(self.first).write_text(original)
-            self.change(lambda row: row['build']['modules'][MODULE].pop(field))
-            with self.assertRaises(ValueError): self.evaluate()
+                    self.change_builds(lambda build: build['modules'][MODULE].__setitem__(field, value))
+                    with self.assertRaisesRegex(ValueError, 'Invalid build hash'):
+                        self.evaluate()
+            self.change_builds(lambda build: build['modules'][MODULE].pop(field))
+            with self.assertRaisesRegex(ValueError, 'Missing DLL/PDB binding'):
+                self.evaluate()
 
     def test_observed_module_substitution_rejects(self):
         self.change(lambda value: value.__setitem__('observedModules', ['Substituted']))

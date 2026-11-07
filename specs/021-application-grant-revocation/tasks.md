@@ -1,10 +1,11 @@
 # Tasks: Managed application grant revocation
 
-**T016 accepted (6 November):** all four retained provider/browser cells pass34/34,
-including eight genuine recovery executions. Exact artifact/native identity/execution
-bindings reconcile; [receipts](t016-evidence.json) retain source/review and the initial CI
-runner interruption. Its isolated rerun passes; all124 latest CI542 jobs succeed at the
-tested head. Feature021 is **17/18 complete**; only T018 remains unchecked.
+**T018 source acceptance complete (7 November):** all 18 tasks are accepted for internal
+development at `2343f2b`. [Receipts](t018-evidence.json) reconcile 124 successful CI545 jobs,
+118 artifacts, 5,753 native passes, 110 mutation kills and 100 coverage inputs/15 unchanged
+floors; [requirement bindings](t018-requirements.json) retain exact scope and limits.
+Final-head checks and reviewed squash remain required on PR124. The initial
+pilot replay window and all historical/manual/production/public-release gates remain open.
 
 ## Phase 1: Setup and design
 
@@ -49,9 +50,9 @@ remaining scope and complete without silent revival or duplicate work.
 ## Phase 6: Integrated acceptance and delivery
 
 - [x] T017 Exercise actual Worker through ordinary Aspire local-demo on both providers and retained Chromium/WebKit; extend tests/aspire native demo/browser fixtures, eng test inventories and behavioral mutation/coverage controls without losing prior identities or lowering floors.
-- [ ] T018 Run full applicable exact-head checks, reconcile native reports/artifacts/coverage, resolve independent architecture/security/test/API/UX/Aspire findings, and record actual evidence in specs/021-application-grant-revocation/verification.md; update docs/roadmap.md and docs/operations/new-task-handoff.md before reviewed squash delivery.
+- [x] T018 Run full applicable exact-head checks, reconcile native reports/artifacts/coverage, resolve independent architecture/security/test/API/UX/Aspire findings, and record actual evidence in specs/021-application-grant-revocation/verification.md; update docs/roadmap.md and docs/operations/new-task-handoff.md before reviewed squash delivery.
 
-## Current boundary verification
+## Historical boundary verification — superseded by T018 acceptance above
 
 [Run531 receipts](run531-evidence.json) at `0a5fc76` reconcile all 124 successful jobs,
 50 grant cases per provider, both native demos and four retained protection-browser cells,
@@ -120,9 +121,7 @@ ambiguity evidence remains applicable. Independent scoped reviews support T015 c
 **16 of 18** tasks complete. CI540 passed 124 jobs (status reconciliation); new-head full CI
 remains required. T016/T018 remain open; production code is unchanged.
 
-T016 is accepted by the four retained browser cells above. Remaining acceptance evidence is specific:
-
-- T018: verify the bounded replay correction at the final head, retain the initial-replay/late-issuance window as unresolved, then complete-spec review and exact-head delivery after the remaining obligations.
+T016 and T018 are accepted at the source checkpoint above. [Exact requirement bindings](t018-requirements.json) and [complete receipts](t018-evidence.json) record current acceptance; the initial pilot replay/late-issuance window remains unresolved. Final-head checks and reviewed squash are recorded on PR124.
 
 See [hosted verification](hosted-verification.md) for prior failed attempts and review dispositions.
 
@@ -147,12 +146,12 @@ inspect API/UX and test evidence in parallel. No parallel .NET builds/provider r
 | GR-011/013/015; FR-10/16/18 | T008,010,011,016,017 | Current protected metadata, generated contracts, real UI/Aspire/browser behavior |
 | All; constitution13/18/23 | T018 | Exact IDs, invariant links, reviewer dispositions and full applicable acceptance |
 
-Exact discovered test IDs and outcomes are added as tests are implemented; planned
-scenario coverage is not runtime evidence. All external/historical gates remain open.
+Exact discovered test names and accepted report bindings are recorded in [T018 requirements](t018-requirements.json), with exhaustive counts/hashes in [T018 receipts](t018-evidence.json). All external/historical gates remain open.
 
-## T018 coverage correction — 7 November 2026
+## Historical T018 coverage correction — superseded by acceptance above
 
 CI544 passes all124 jobs, but original-report reconciliation proves merged branch metadata
 is lossy. [The correction](coverage-correction.md) retains all15 floors and adds method-level
 conservative bounds with genuine per-cell build provenance. Saved inputs establish feasibility,
-not acceptance; new current-head execution is required. T018 remains unchecked.
+not acceptance. At that checkpoint, current-head execution was still required and T018
+remained unchecked; the CI545 acceptance above supersedes that pending state.

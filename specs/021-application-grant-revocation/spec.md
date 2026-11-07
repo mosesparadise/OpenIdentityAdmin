@@ -6,7 +6,7 @@
 
 **Created**: 2026-11-05
 
-**Status**: Scope approved on 2026-11-05; T001–T017 accepted, T018 final acceptance in progress.
+**Status**: Scope approved on 2026-11-05; T001–T018 accepted for internal development at CI545; final-head delivery is recorded on PR124.
 
 **Input**: User requested the next task after application disable/re-enable delivery,
 then selected: “Continue under recorded approval; recheck account and permission.”

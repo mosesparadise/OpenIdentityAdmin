@@ -1,5 +1,11 @@
 # T018 original-report coverage correction
 
+**Current acceptance:** CI545 supplied all100 genuine build/report manifests and passed the
+unchanged floors. Independent archive/step/arithmetic reconciliation is recorded in
+[T018 receipts](t018-evidence.json). The diagnosis and pre-execution requirements below
+retain the historical correction checkpoint. Final-head checks and reviewed
+squash are recorded on PR124.
+
 CI544 ([run42311638811](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42311638811))
 at `c18569efafa56026c3ae3a3370a85bce309a02f7` passed all124 jobs on its first attempt.
 Reconciliation retained118 artifact bindings,103 ordinary native TRX reports with5,753
@@ -36,8 +42,8 @@ uses original per-cell reports, unchanged required module membership and exact90
 cell, checked-out commit/tree, workflow run/attempt, SDK/configuration/framework, collector
 version/package hash/settings and all15 product DLL/PDB hashes. Before/after snapshots
 must agree. These are trusted CI build-copy bindings for the existing no-build test
-commands, not runtime loaded-module attestation. RID/publish/container outputs are not
-silently combined with the host Debug build.
+commands, not runtime loaded-module attestation. The manifest scans standard host Debug outputs; it does not attest RID/publish/container
+binaries. Current execution follows the reviewed no-build contract.
 
 Branches are keyed by module, class, source file, method name/signature and source line.
 Two methods sharing one line remain distinct populations; class condition IDs are not

@@ -1,5 +1,57 @@
 # Grant revocation implementation verification
 
+## Accepted source — T018, 7 November 2026
+
+Feature021 T001–T018 are complete for internal development at `2343f2bb10740444eb55d231f6861879dd033495`.
+[CI545](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42319410601) passes
+all 124 jobs on its first attempt. The tested merge and reviewed source share the exact tree recorded in the receipts.
+[Exact receipts](t018-evidence.json) and [requirement bindings](t018-requirements.json)
+record the accepted result. Final-head checks and normal reviewed squash are
+recorded on [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124); it remains
+draft until those pass. This section supersedes pending implementation/evidence wording below.
+
+| Required scope | Verified result |
+| --- | --- |
+| Source/jobs/artifacts | Exact 124 jobs, 118 artifact names/digests and 124 timestamped checkout log bindings; no job failures/skips/reruns. |
+| Native cases | 103 reports, 5,753 passes, zero required failures/skips; exact source-derived name multiplicities, assembly/class/method and unique result/definition/execution/entry bindings. Host has 10 truncated-display collisions; discovery UID-to-TRX-ID equality is explicitly not attested. |
+| Grant scope | 93 cases on each real provider, including actor/application/action retained-key isolation and every earlier boundary/race/recovery obligation. All 2,663 prior administrator identities/metadata/order retained; 2,669 total. |
+| Browser/UI/contracts | Both-provider Chromium native Aspire demos; all retained Chromium/WebKit matrices, 136 BrowserProtection passes and the corrected SQL Server WebKit logout case; 83 UI and 44 Node contract cases. |
+| Mutation controls | 18 suite executions/110 demonstrated behavioral kills, passing baseline/restored controls and exact original/mutant/restored source hashes; 14 anti-vacuity control steps. |
+| Instrumentation | All 40 browser control steps and four actual native visibility wrappers independently bound to pinned bundle hashes and their own step timestamps. |
+| Coverage | All 100 source-derived inputs, all 15 unchanged 90% line/80% branch floors; independent original-report arithmetic verifies conservative method branch bounds, exact input/build manifests and merged line-union equality. Upstream merged branch metadata is non-authoritative. UI critical-module 95% line/90% branch/100% function floors pass. |
+| Additional controls | Separate bounded WebKit contrast cohort 20 samples × 3 arms/60 contexts has zero findings. Advisory 31-project inventory reports no known vulnerabilities; 288 locked NuGet license pairs and 104 frontend package versions/integrities/licenses match source. |
+
+CI543 remains rejected:121 jobs passed, the SQL Server WebKit navigation assertion and
+final gate failed, and coverage skipped. The test had observed the denied response before
+the navigation committed. Waiting for commit with the same destination predicate corrects
+the observation without another POST or weakened security assertions. CI544 and CI545 verify the
+correction; no blanket retry or required-test waiver was introduced. Local new scope tests
+pass 3/3 on each provider, full solution build has zero warnings/errors, all 74 selectors,
+quality, assurance snapshot and source secret scans pass. All 345 assurance controls remain
+not_assessed; snapshot checks are not compliance acceptance.
+
+Independent architecture/security/API, test and UX/Aspire source reviews pass after the
+recorded corrections. Complete-spec review added direct key-scope evidence, preserved
+orphan-audit detection across multiple jobs, documented contextual `jobVersion` validation
+and corrected stale implementation/topology descriptions. The native workspace reconciler rejects
+46 seeded malformed-evidence controls; the coverage gate has 65 independent controls and its independent artifact reconciler
+rejects 14 seeded defects after a complete synthetic positive baseline; these are parser controls, not product test passes.
+
+Final record review corrected historical Core UUID argument names in the requirement map
+using fresh discovery, unchanged source methods/subcase cardinality and the exact CI545
+results. A test-review correction now changes every synthetic manifest coherently and
+asserts the specific malformed-module/hash error, so a cross-cell disagreement cannot
+mask those validators. All 36 provenance controls pass locally; these strengthened
+controls are part of the final head and require its CI before squash.
+
+Ordinary native Aspire demo acceptance is Chromium on both providers. Chromium/WebKit
+recovery composes shipped UI, real Kestrel and the production Worker host in fixtures;
+it is not four full-Aspire recovery executions. Host-lifecycle restart is not an OS-process
+kill claim. Firefox and two exact WebKit certificate cases remain deferred under A-009,
+not passed. Actual Windows/manual accessibility, six historical findings, vendor, production
+and public-release gates remain open. Refresh stays disabled. The earlier bounded repeated
+pilot replay cleanup does not close the initial replay/late-issuance window.
+
 **Grant coverage correction — 7 November 2026:** CI544 at `c18569e` passes all124 jobs;
 reconciliation verifies5,753 native executions, both native demos and110 mutation kills.
 Independent coverage review nevertheless proves that the upstream merge loses branch

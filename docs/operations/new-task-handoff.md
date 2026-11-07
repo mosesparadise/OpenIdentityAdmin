@@ -1,5 +1,21 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant revocation source accepted — 7 November 2026:** feature021 T001–T018 are complete
+for internal development. At `2343f2b`, [CI545](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42319410601)
+passes all 124 jobs on its first attempt. Independent reconciliation binds 118 artifacts,
+103 native reports/**5,753 passing executions**, 83 UI cases, 44 Node contracts, 110 demonstrated mutation
+kills and 100 coverage inputs meeting all 15 unchanged module floors. Independent arithmetic verifies original method bounds and all 100 current-run build
+manifests; known-lossy upstream branch summaries are non-authoritative. [Exact receipts](../../specs/021-application-grant-revocation/t018-evidence.json) and
+[requirement bindings](../../specs/021-application-grant-revocation/t018-requirements.json) retain the earlier browser failure and its correction.
+Ordinary native Aspire Chromium demos pass on both providers; retained Chromium/WebKit
+recovery uses shipped UI and production Worker fixtures. All 2,663 prior administrator
+identities remain, with six added. Final-head checks and reviewed squash
+are recorded on [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124);
+it stays draft until those gates pass.
+Next: use the [grant walkthrough](../../specs/021-application-grant-revocation/quickstart.md), then address the separately tracked initial
+pilot replay/late-issuance window. Refresh stays disabled; all six historical findings and
+Windows/manual/Firefox/A-009/vendor/production/public-release gates remain open.
+
 **Grant coverage correction — 7 November 2026:** CI544 at `c18569e` passes all124 jobs;
 reconciliation verifies5,753 native executions, both native demos and110 mutation kills.
 Independent coverage review nevertheless proves that the upstream merge loses branch

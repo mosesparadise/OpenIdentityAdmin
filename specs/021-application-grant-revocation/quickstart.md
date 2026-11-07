@@ -1,7 +1,7 @@
 # Validate the application grant-revocation journey
 
-The feature branch implements this journey; see [verification](verification.md) for actual
-acceptance and the remaining T018 delivery gate. Ordinary Aspire automation uses Chromium
+This journey has [accepted source evidence](verification.md#accepted-source--t018-7-november-2026);
+final-head delivery is recorded on [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124). Ordinary Aspire automation uses Chromium
 on both providers. Retained Chromium/WebKit recovery tests use the shipped UI and production
 Worker composition in hosted fixtures; they are not four full-Aspire recovery runs. Actual
 Windows execution and manual accessibility acceptance remain open. Use synthetic disposable
