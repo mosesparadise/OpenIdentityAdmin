@@ -83,6 +83,7 @@ internal static class PilotGateUpgradeWitness
     /// <summary>Removes only independently named seeded additions so earlier immutable upgrade witnesses still assess their original changes.</summary>
     internal static Dictionary<string, string[]> Predecessor(string provider, Dictionary<string, string[]> after)
     {
+        after = CatalogueUpgradeWitness.Predecessor(provider, after);
         var result = new Dictionary<string, string[]>(StringComparer.Ordinal);
         var migration = provider == Postgres ? PostgresMigration : SqlMigration;
         var removedHistory = 0;

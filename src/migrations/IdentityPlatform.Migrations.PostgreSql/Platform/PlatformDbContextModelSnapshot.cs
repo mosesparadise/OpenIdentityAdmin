@@ -265,6 +265,189 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         });
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.ApiAudience", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Resource")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Resource")
+                        .IsUnique();
+
+                    b.ToTable("ApiAudience", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApiAudience_Revision", "\"Revision\" > 0");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.CatalogueDeletion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ActorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<Guid>("AdmissionAuditId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("ApprovalUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AuthenticationGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid?>("CompletionAuditId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EnrollmentRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FactorGeneration")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FactorVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Failure")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RequestHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("RequestKey")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ScopedKeyHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("SecurityStamp")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TargetId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<long>("TargetRevision")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdmissionAuditId")
+                        .IsUnique();
+
+                    b.HasIndex("CompletionAuditId")
+                        .IsUnique();
+
+                    b.HasIndex("ScopedKeyHash")
+                        .IsUnique();
+
+                    b.HasIndex("Kind", "TargetId", "State");
+
+                    b.HasIndex("State", "ObservedAt", "Id");
+
+                    b.ToTable("CatalogueDeletion", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_CatalogueDeletion_Authority", "\"AuthenticationGeneration\" > 0 AND \"FactorGeneration\" > 0 AND \"EnrollmentRevision\" >= 0");
+
+                            t.HasCheckConstraint("CK_CatalogueDeletion_State", "\"State\" IN (1, 2, 3) AND \"Failure\" IN (0, 1, 2, 3, 4, 5) AND ((\"State\" = 3 AND \"Failure\" <> 0) OR (\"State\" <> 3 AND \"Failure\" = 0)) AND ((\"State\" = 1 AND \"CompletionAuditId\" IS NULL) OR (\"State\" <> 1 AND \"CompletionAuditId\" IS NOT NULL)) AND (\"CompletionAuditId\" IS NULL OR \"CompletionAuditId\" <> \"AdmissionAuditId\")");
+
+                            t.HasCheckConstraint("CK_CatalogueDeletion_Target", "\"Kind\" IN ('scope', 'audience') AND \"Revision\" > 0 AND \"TargetRevision\" > 0");
+
+                            t.HasCheckConstraint("CK_CatalogueDeletion_Time", "\"FactorVerifiedAt\" >= 0 AND \"CreatedAt\" >= \"FactorVerifiedAt\" AND \"ObservedAt\" >= \"CreatedAt\" AND \"ApprovalUntil\" > \"CreatedAt\" AND \"ApprovalUntil\" - \"FactorVerifiedAt\" <= 300");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.ScopePolicy", b =>
+                {
+                    b.Property<string>("ScopeId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("ConsentText")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Disclosure")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ScopeId");
+
+                    b.ToTable("ScopePolicy", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ScopePolicy_Disclosure", "\"Kind\" IN ('identity', 'api') AND \"Disclosure\" IN ('none', 'email') AND (\"Kind\" = 'identity' OR \"Disclosure\" = 'none')");
+
+                            t.HasCheckConstraint("CK_ScopePolicy_Revision", "\"Revision\" > 0");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion.IssuerContinuation", b =>
                 {
                     b.Property<string>("IntentDigest")
@@ -1727,6 +1910,29 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", "AuditId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.CatalogueDeletion", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Catalogue.CatalogueDeletion", "AdmissionAuditId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Catalogue.CatalogueDeletion", "CompletionAuditId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.ScopePolicy", b =>
+                {
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.Catalogue.ScopePolicy", "ScopeId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

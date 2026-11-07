@@ -1,5 +1,21 @@
 # OpenIdentityAdmin new-task handoff
 
+## Active batch — scope and audience catalogue, 7 November 2026
+
+The user selected M03-A–M03-C, including UI, dependencies and tests, and consented
+email/email_verified from the current Identity account. [Feature023](../../specs/023-scope-audience-catalogue/spec.md)
+records the selected scope and [tasks](../../specs/023-scope-audience-catalogue/tasks.md). T001 packet and T002
+Core policy/projection controls are complete; Core94/94 passes with independent review.
+Additive catalogue migrations and provider tests are under validation; no catalogue
+UI/API/UserInfo delivery or milestone acceptance is claimed yet.
+
+Local PostgreSQL schema runs fail during container initialization with ENOSPC, even
+serially. Preserve both receipts; do not count them as schema failures or passes.
+Use bounded hosted PostgreSQL/SQL Server validation without changing pinned images
+or reviving old SQL startup experiments. Continue the selected implementation batch.
+Feature022 remains accepted; all historical/manual/refresh/production/release gates
+remain open. Earlier current-delivery notices describe their completed feature.
+
 ## Current delivery — 7 November 2026
 
 Feature022 T001–T009 are complete for internal development. The selected T008,

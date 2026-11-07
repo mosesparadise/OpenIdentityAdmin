@@ -1,5 +1,18 @@
 # Documentation approval
 
+**Scope/audience catalogue selection (7 November 2026):** the user selected
+“M03-A–M03-C: scope and audience catalogue”, including its UI, dependencies and
+tests, after feature022 delivery. This authorizes [feature023](../specs/023-scope-audience-catalogue/spec.md):
+real scope/audience management, explicit claim policy, application scope assignment,
+consented native token issuance and UserInfo, both-provider/browser verification,
+independent review and ordinary reviewed squash delivery. The user additionally
+selected “Allow consented email and email_verified”: those claims may come only
+from the current Identity account after explicit consent. Username, administrator
+roles/permissions and arbitrary user claims are excluded. Existing code-only
+applications remain unchanged until explicitly assigned additional scopes.
+Refresh and machine-grant activation, all six historical findings and existing
+human/Windows/Firefox/A-009/vendor/production/public-release gates remain separate.
+
 **Pilot replay acceptance selection (7 November 2026):** the user selected
 “T008, SQL Server validation, and T009” for the three-item batch in
 [feature022](../specs/022-pilot-replay-serialization/tasks.md). This continues the

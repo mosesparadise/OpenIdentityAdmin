@@ -1,5 +1,21 @@
 # Delivery roadmap and task register
 
+## Active batch — scope and audience catalogue, 7 November 2026
+
+The user selected M03-A–M03-C, including UI, dependencies and tests, and consented
+email/email_verified from the current Identity account. [Feature023](../specs/023-scope-audience-catalogue/spec.md)
+records the selected scope and [tasks](../specs/023-scope-audience-catalogue/tasks.md). T001 packet and T002
+Core policy/projection controls are complete; Core94/94 passes with independent review.
+Additive catalogue migrations and provider tests are under validation; no catalogue
+UI/API/UserInfo delivery or milestone acceptance is claimed yet.
+
+Local PostgreSQL schema runs fail during container initialization with ENOSPC, even
+serially. Preserve both receipts; do not count them as schema failures or passes.
+Use bounded hosted PostgreSQL/SQL Server validation without changing pinned images
+or reviving old SQL startup experiments. Continue the selected implementation batch.
+Feature022 remains accepted; all historical/manual/refresh/production/release gates
+remain open. Earlier current-delivery notices describe their completed feature.
+
 ## Current delivery — 7 November 2026
 
 Feature022 T001–T009 are complete for internal development. The selected T008,
@@ -604,7 +620,7 @@ Prerequisites: issuer flow and durable session/key behavior; minimum administrat
 | M02-D | Protected application-read authority delivered in PR118; PR120 adds current independently authorized create/edit/credential replacement, exact JSON/CSRF transport and original bounded publication on both providers. Remaining management APIs and release acceptance stay open. |
 | M02-E | Native Aspire React workspace delivered in PR116, protected Applications list in PR118 and create/details/edit/secret replacement in PR120. Retained browser/theme/reflow/automated accessibility and both provider demos pass. Qualified manual/Windows acceptance remains open. |
 
-## Milestone 003 — Scope and audience catalogue (planned)
+## Milestone 003 — Scope and audience catalogue (feature023 in progress)
 
 Prerequisite: milestone 002. Real UserInfo needed for this milestone's approved claim-policy exit must be implemented here; milestone 007 later completes the surface.
 
