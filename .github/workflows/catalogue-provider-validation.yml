@@ -112,7 +112,7 @@ jobs:
           dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj
           --no-build --no-restore --no-progress --pre-enumerate-theories on --parallel none
           --report-trx --report-trx-filename Catalogue.trx --results-directory artifacts/catalogue-mutation
-          --filter "Provider=${CATALOGUE_PROVIDER}&FullyQualifiedName~.Features.Catalogue."
+          --filter "Provider=${CATALOGUE_PROVIDER}&(FullyQualifiedName~.Features.Catalogue.|FullyQualifiedName~.Features.ApplicationGrants.GrantActorTests)"
       - name: Reconcile original discovery and native results
         shell: bash
         run: |
@@ -122,7 +122,7 @@ jobs:
           import xml.etree.ElementTree as ET
           root = Path('artifacts/catalogue-mutation')
           tests = json.loads((root / 'discovery.json').read_text())['tests']
-          selected = [t for t in tests if any(x['key'] == 'Provider' and x['value'] == os.environ['CATALOGUE_PROVIDER'] for x in t['traits']) and t['type']['namespace'] == 'IdentityPlatform.Administrator.Tests.Features.Catalogue']
+          selected = [t for t in tests if any(x['key'] == 'Provider' and x['value'] == os.environ['CATALOGUE_PROVIDER'] for x in t['traits']) and (t['type']['namespace'] == 'IdentityPlatform.Administrator.Tests.Features.Catalogue' or t['type']['namespace'] == 'IdentityPlatform.Administrator.Tests.Features.ApplicationGrants' and t['type']['typeName'] == 'GrantActorTests')]
           assert selected
           trx = ET.parse(root / 'Catalogue.trx')
           results = trx.findall('.//{*}UnitTestResult')
