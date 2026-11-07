@@ -1,5 +1,14 @@
 # Tasks: Pilot replay serialization
 
+**Latest validation:** CI552 at `413a3d4` passes123 jobs but fails SQL Distribution
+and final acceptance; coverage aggregation is skipped. All earlier regression
+producer jobs now succeed. A separate failed diagnostic observes native token-read
+blocking before the replay's gate UPDATE. The corrected test requires exact native
+lock-resource ownership under the winner's exclusive gate transaction and known
+issuer process identities. Its focused hosted execution and a clean final-head
+full run remain required. See `verification.md`; no task is accepted from a failed
+run. The older local startup limitation below does not describe hosted SQL readiness.
+
 **Current batch:** the user selected T008, SQL Server validation and T009. Branch132
 adds five pilot mutation witnesses per provider, mandatory hosted mutation jobs and
 updated native inventory at `71ab8e319ab183b8af21b0405f4a2ac565a93894`. T008/T009

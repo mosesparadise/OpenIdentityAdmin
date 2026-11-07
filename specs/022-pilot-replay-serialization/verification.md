@@ -1,5 +1,49 @@
 # Pilot replay correction evidence
 
+## CI552 and SQL ordering witness — 7 November 2026
+
+[CI552](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42394874564)
+at `413a3d40a96da6b1d84335e5a7c8732a3c45aed8` finishes with 123 successful jobs,
+two failures and one skipped job. The only failed producer is SQL Distribution:
+24/25 pass, with the secondary-to-primary pilot replay case timing out during the
+second, gate-specific observation. Final acceptance fails and coverage aggregation
+is skipped. The [failed-run receipt](evidence/ci552-failed.json) retains all126 job
+outcomes, exact merge/tree binding and the selected archive/native failure. All
+earlier response, native-error, gate-loss and mutation producer jobs now succeed;
+that does not make this a clean acceptance run.
+
+The [isolated diagnostic](evidence/sql-ordering-diagnostic.json) at
+`83d63db414e4b93d38184c89e842f7ada77e3f36`,
+[run42396589720](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42396589720),
+preserves the original success predicate, pinned image,25-case Distribution suite,
+coverage instrumentation and deadlines. It also fails24/25, this time in the
+primary-to-secondary direction. Its80 polls retain two distinct safe summaries:
+the replay is observed directly blocked in a native token SELECT, while the winner
+is still fixture-blocked and its current transaction owns an exclusive pilot-gate
+lock. These adjacent DMV observations do not prove the exact conflicting resource;
+no frequency or ordering of the deduplicated summaries is inferred.
+
+The corrected test keeps the gate-wait branch and adds an explicitly named native
+read witness. It requires a known replay-process session directly blocked by the
+known winner, an active native token SELECT, and a waiting S/IS lock that exactly
+matches a granted X lock owned by the winner's current transaction. Database,
+resource type/subtype, associated entity, description and partition must match and
+resolve to the native token object/index. That same transaction must also own a
+granted exclusive gate lock while the winner remains blocked by the fixture.
+This proves database ordering under a gate-owning generation, not observation of
+the replay's gate UPDATE. Successful evidence names the actual witness. The
+original two-second budget, unique waiter, durable consumption, independent token
+validation, first-replay revocation, unrelated flow, process generations and real
+drain/cleanup remain mandatory. No product behavior, isolation setting or schema
+changes. Independent architecture/test source review passes conditionally; actual
+corrected hosted execution and clean exact-head full acceptance remain required.
+
+The [local repaired issuer mutation receipt](evidence/issuer-mutation-correction.json)
+at `413a3d4` independently verifies seven baseline passes, seven demonstrated
+behavioral kills, seven restored passes and restored source hashes. It preserves
+the earlier local build failure and is not a substitute for hosted acceptance.
+T008/T009, PR126 delivery and all historical/manual/public-release gates remain open.
+
 ## CI551 regression corrections — 7 November 2026
 
 [PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126) remains draft.

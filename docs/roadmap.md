@@ -1,5 +1,14 @@
 # Delivery roadmap and task register
 
+**Latest feature022 validation — 7 November 2026:** CI552 passes123 jobs; the sole
+failed producer is SQL cross-process Distribution, followed by failed acceptance
+and skipped coverage aggregation. Earlier response/gate-loss/mutation regressions
+now pass on both providers. Retained diagnostics show native token-read blocking
+before replay reaches the gate UPDATE; the test correction verifies the exact
+conflicting native lock under a gate-owning generation. Focused hosted validation,
+clean exact-head full acceptance and PR126 delivery remain pending. Main is still
+`8f840f5`; no defect closure or merge is claimed. [Evidence](../specs/022-pilot-replay-serialization/verification.md).
+
 **Current feature022 acceptance batch — 7 November 2026:** the user selected T008,
 SQL Server validation and T009. Branch132 adds five pilot replay mutation controls,
 both-provider required CI jobs and 2,771-case native inventory, preserving every

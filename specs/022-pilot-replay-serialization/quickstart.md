@@ -3,8 +3,10 @@
 The complete pilot replay implementation is under acceptance in
 [PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126). Hosted SQL Server
 starts with the unchanged pinned image, and both providers pass the five new mutation
-controls. CI551 exposed integration regressions that are being corrected; required
-exact-head full verification and T008/T009 review remain open. This candidate is not
+controls. CI552 confirms the earlier integration corrections but still fails the SQL
+cross-process ordering observer. The revised witness requires exact native read-lock
+contention under a gate-owning transaction; hosted validation, required exact-head
+full verification and T008/T009 review remain open. This candidate is not
 ready to merge or deploy. See [current evidence](verification.md).
 
 The existing administrator UI and grant revocation are already delivered through

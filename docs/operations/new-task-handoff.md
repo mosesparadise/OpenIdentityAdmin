@@ -1,5 +1,19 @@
 # OpenIdentityAdmin new-task handoff
 
+**Latest SQL witness correction — 7 November 2026:** CI552 at `413a3d4` finished
+123success/2failure/1skipped. SQL Distribution is the only failed producer; final
+acceptance fails and coverage aggregation is skipped. All earlier correction jobs
+pass. Branch133 retains the isolated diagnostic at `83d63db` and the reviewed
+matching-resource witness at `e75c43a`; its branch-only workflow must not be merged
+or counted as full acceptance. Branch132 integrates only the test-source changes.
+The diagnostic observed native token SELECT contention before replay's gate UPDATE;
+the correction requires exact conflicting native-resource ownership, current winner
+transaction/gate ownership, known process identities and every original final
+oracle. Its focused hosted run and clean final-head full acceptance remain pending.
+See [current evidence](../../specs/022-pilot-replay-serialization/verification.md).
+PR126 stays draft/unmerged; preserve both failed full runs and the failed diagnostic.
+All historical/manual/refresh/production/public-release gates remain open.
+
 **Current acceptance batch — 7 November 2026:** the user selected feature022 T008,
 SQL Server validation and T009. Work continues on `132-pilot-replay-acceptance`, based
 on `2b5990d79fa89b152bf6b2c382bf70e089efb705`; preserve branches130/131 and their
