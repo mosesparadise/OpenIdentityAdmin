@@ -1,8 +1,8 @@
 # Feature Specification: Pilot replay serialization
 
-**Branch**: `129-pilot-replay-serialization`  
-**Created**: 7 November 2026  
-**Status**: T001 planning reviewed within approved LIFE-003/006; implementation and acceptance pending.  
+**Branch**: `129-pilot-replay-serialization`
+**Created**: 7 November 2026
+**Status**: T001 planning reviewed within approved LIFE-003/006; implementation and acceptance pending.
 **Input**: Continue after PR124 delivery with the handoff's initial pilot replay/late-issuance defect.
 
 ## Authority and scope

@@ -57,7 +57,8 @@ gates remain open.
 - Gitleaks directory scan with redacted output: no leaks. An initial invocation
   referenced an absent optional config and did not scan; the corrected invocation
   used the same default configuration as repository CI.
-- `git diff --check`: pass. Spec Kit setup-plan/setup-tasks/prerequisite resolution
+- Final indexed `git diff --check`: pass after removing three Markdown hard-break
+  trailing spaces detected during staging. Spec Kit setup-plan/setup-tasks/prerequisite resolution
   succeeds for feature022; no extension hooks file exists.
 
 T001 is complete for planning. T002–T009 and every runtime acceptance cell remain
