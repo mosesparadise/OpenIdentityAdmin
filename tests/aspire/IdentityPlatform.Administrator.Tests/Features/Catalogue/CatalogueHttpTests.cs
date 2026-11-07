@@ -42,7 +42,7 @@ public sealed class CatalogueHttpTests(BootstrapFixture fixture)
         var audience = (await CatalogueHttpEvidence.AudienceAsync(created))!;
         Assert.Equal(audience.Version, created.Headers.ETag!.ToString());
         Assert.True(created.Headers.CacheControl!.NoStore);
-        Assert.True(audience.ExpiresAt <= test.AccessExpiresAt);
+        await CatalogueHttpEvidence.RequireExpiryAsync(test, audience.ExpiresAt, browser);
         var detail = path + Separator + audience.Id;
         using var missing = await test.CatalogueAsync(HttpMethod.Put, detail, Edit, direct: !browser, csrf: proof);
         Assert.Equal((HttpStatusCode)428, missing.StatusCode);

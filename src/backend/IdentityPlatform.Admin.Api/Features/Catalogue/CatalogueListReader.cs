@@ -26,7 +26,9 @@ internal static class CatalogueListReader
             source = source.Where(row => EF.Functions.Collate(row.Name, ordinal).StartsWith(query.Search));
         }
         var rows = await source.OrderBy(row => EF.Functions.Collate(row.Name, ordinal)).ThenBy(row => EF.Functions.Collate(row.Id, ordinal))
-            .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize + Probe).ToArrayAsync(token);
+            .Skip((query.Page - 1) * query.PageSize).Take(query.PageSize + Probe)
+            .Select(row => new CatalogueSummary(row.Id.Substring(0, CatalogueRules.IdentifierLength + Probe),
+                row.Name.Substring(0, CatalogueRules.ResourceLength + Probe), row.DisplayName.Substring(0, CatalogueRules.DisplayLength + Probe), row.Enabled)).ToArrayAsync(token);
         if (rows.Any(row => !CatalogueRules.IsIdentifier(row.Id) ||
             !(kind == CatalogueResource.Scope ? CatalogueRules.IsName(row.Name) : CatalogueRules.IsResource(row.Name)) ||
             !ApplicationEditorRules.IsText(row.DisplayName, CatalogueRules.DisplayLength)))
@@ -37,18 +39,26 @@ internal static class CatalogueListReader
     }
 
     /// <summary>Reads native scope identity joined to explicit policy; unknown kinds cannot select another catalogue accidentally.</summary>
-    private static IQueryable<CatalogueSummary> Rows(PlatformDbContext database, CatalogueResource kind) => kind switch
+    private static IQueryable<Row> Rows(PlatformDbContext database, CatalogueResource kind) => kind switch
     {
         CatalogueResource.Scope => from native in database.Set<OpenIddictEntityFrameworkCoreScope>().AsNoTracking()
                                    join policy in database.Set<ScopePolicy>().AsNoTracking() on native.Id equals policy.ScopeId
                                    where !database.Set<AdministratorProtocolProfile>().Any(row => row.ScopeId == native.Id) &&
                                          !database.Set<PilotManifest>().Any(row => row.ScopeId == native.Id)
-                                   select new CatalogueSummary(native.Id!.Substring(0, CatalogueRules.IdentifierLength + Probe),
-                                       native.Name!.Substring(0, CatalogueRules.NameLength + Probe),
-                                       native.DisplayName!.Substring(0, CatalogueRules.DisplayLength + Probe), policy.Enabled),
-        CatalogueResource.Audience => database.Set<ApiAudience>().AsNoTracking().Select(row => new CatalogueSummary(
-            row.Id.Substring(0, CatalogueRules.IdentifierLength + Probe), row.Resource.Substring(0, CatalogueRules.ResourceLength + Probe),
-            row.DisplayName.Substring(0, CatalogueRules.DisplayLength + Probe), row.Enabled)),
+                                   select new Row { Id = native.Id!, Name = native.Name!, DisplayName = native.DisplayName!, Enabled = policy.Enabled },
+        CatalogueResource.Audience => database.Set<ApiAudience>().AsNoTracking().Select(row => new Row { Id = row.Id, Name = row.Resource, DisplayName = row.DisplayName, Enabled = row.Enabled }),
         _ => throw new InvalidOperationException()
     };
+    /// <summary>Uses member initializers for provider translation; only the final bounded projection is materialized.</summary>
+    private sealed class Row
+    {
+        public string Id { get; init; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
+        public string DisplayName { get; init; } = string.Empty;
+        public bool Enabled
+        {
+            get; init;
+        }
+    }
+
 }
