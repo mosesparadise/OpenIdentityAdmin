@@ -12,7 +12,11 @@ Next correction: [feature022 pilot replay serialization](../specs/022-pilot-repl
 Its [tasks](../specs/022-pilot-replay-serialization/tasks.md) separate reviewed design,
 regression, both-provider persistence/runtime work and integrated acceptance. The
 initial replay/late-issuance defect remains open until that evidence passes. T001
-planning is reviewed; T002–T009 remain open. Refresh,
+planning is reviewed; T002 now retains the demonstrated old-source failure. T003–T004
+code and both-provider migrations are on `130-pilot-replay-foundation`, with PostgreSQL
+foundation tests passing and SQL Server startup blocked. They remain unchecked
+until both-provider verification; T005–T009 remain open. See the
+[current evidence](../specs/022-pilot-replay-serialization/verification.md). Refresh,
 all six historical findings and Windows/manual/Firefox/A-009/vendor/production/
 public-release gates remain open.
 

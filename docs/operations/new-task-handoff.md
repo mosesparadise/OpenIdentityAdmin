@@ -1,5 +1,36 @@
 # OpenIdentityAdmin new-task handoff
 
+
+**Current foundation checkpoint — 7 November 2026:** user requested the next three
+feature022 tasks, T002–T004. Worktree `/workspace/pilot-replay-serialization`, branch
+`130-pilot-replay-foundation`, code commit
+`bcb3bd52180286021582444c6ba5ed4bba1fd0ee`, based on PR125's planning squash
+`8f840f5a22836efd4b74ee5883ec98d04d3c6cec`. Main remains at that squash. Existing
+worktrees, complete evidence and frozen provider-compatibility producers are preserved.
+
+T002's full baseline source/report hashes and actual PostgreSQL initial-replay
+failure are retained. T003 adds the isolated migration-seeded gate on both providers;
+T004 integrates fresh gate-owned native token/authorization validation in both host
+graphs. [Current evidence](../../specs/022-pilot-replay-serialization/verification.md)
+records PostgreSQL persistence10/10, registration8/8, HTTPS5pass plus the mandatory
+initial-race failure. T003/T004 stay unchecked because SQL verification is blocked:
+both Aspire and direct Testcontainers SQL2022 exit1 before readiness, reporting
+`/.system` access denied (`LinuxDirectory.cpp:420`, errno13). Registry download works.
+Do not describe this startup failure as a schema/replay result or repeat identical
+SQL attempts without a changed, evidence-based condition.
+
+**Next implementation is T005**, followed by T006–T009. Keep generation and its gate
+in one transaction, retain separately durable native consumption, and withhold
+publication through actual cleanup. Do not weaken/skip the red safety regression or
+claim partial-runtime defect closure. No PR/full CI/merge is requested at this
+incomplete foundation checkpoint; the branch is retained remotely for continuation.
+All six historical findings, refresh activation and human/manual/Firefox/A-009/
+vendor/production/public-release gates remain open. Previous checkpoint notes below
+are historical. Runtime tools are sourced via `/workspace/managed-env.sh`; SDK and
+package caches are temporary. Archived artifacts/build outputs were byte-verified
+before relocation to `/tmp`, with original paths preserved by symlinks; preserve
+those targets during environment housekeeping.
+
 **Current checkpoint — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)
 is merged, not draft: main is `e44667c45d103cdc3d70427577f89b77539f6f22`.
 Post-merge runs42326203442 and42329191762 report success. Feature021 T001–T018

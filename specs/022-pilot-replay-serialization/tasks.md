@@ -1,7 +1,9 @@
 # Tasks: Pilot replay serialization
 
-Only T001 is the planning checkpoint. All runtime work and defect acceptance remain
-open until their actual evidence is recorded in verification.md.
+T001 is the planning checkpoint. T002 has a retained PostgreSQL old-source failure.
+T003–T004 are implemented on branch130, with PostgreSQL foundation evidence, but
+remain unchecked pending SQL Server verification. All integrated defect acceptance
+remains open; see verification.md for the exact evidence and environment blocker.
 
 ## Setup
 
@@ -9,7 +11,7 @@ open until their actual evidence is recorded in verification.md.
 
 ## US1 — Serialized concurrent exchanges
 
-- [ ] T002 [US1] Add the controlled initial-replay oracle under `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; retain complete baseline source/report hashes and demonstrate its old-source failure without a second replay. Preserve the existing later-cleanup/guard regressions in separate cases. C01/C08.
+- [x] T002 [US1] Add the controlled initial-replay oracle under `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; retain complete baseline source/report hashes and demonstrate its old-source failure without a second replay. Preserve the existing later-cleanup/guard regressions in separate cases. C01/C08.
 - [ ] T003 [US1] Add `PilotProtocolGate` model/configuration under `src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/`, new migrations in both `src/migrations/IdentityPlatform.Migrations.*` projects and fresh/upgrade/least-privilege tests under `tests/persistence/IdentityPlatform.Persistence.Tests/Features/`. Preserve histories and native data; never activate or repair the pilot from HTTP. C09.
 - [ ] T004 [US1] Implement feature-local database gate ownership and fresh native validation under `src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/`; wire both host entry paths without weakening `ProtocolStorageOwner.BeginChild()` or other profile selection. C01/C07/C10.
 

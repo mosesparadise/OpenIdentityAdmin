@@ -1,6 +1,8 @@
 # Pilot replay correction validation
 
-This correction is planned, not implemented. The existing administrator UI and grant
+The T002–T004 foundation is implemented on branch130, with SQL Server verification
+blocked by local container startup. T005 generation fencing is not implemented, so
+the initial replay defect remains open and this branch is not ready to merge. The existing administrator UI and grant
 revocation are already delivered through PR124; use the [native Aspire grant
 walkthrough](../021-application-grant-revocation/quickstart.md) for local testing now.
 
