@@ -8,6 +8,7 @@ internal sealed class BrowserRequestBinding
 {
     private const string Separator = ":";
     private const string Purpose = "browser-mutation-v1";
+    private const string CataloguePurpose = "catalogue-mutation-v1";
     private const string ApplicationPurpose = "application-mutation-v1";
     internal string AdditionalData
     {
@@ -21,6 +22,10 @@ internal sealed class BrowserRequestBinding
     /// <summary>Separates application JSON tokens from login/logout forms using only an already authenticated durable snapshot.</summary>
     internal static BrowserRequestBinding? ForApplications(string digest, long generation, BrowserContext row, DateTimeOffset now) =>
         generation > 0 && FromRead(digest, generation, row, now) is not null ? new(digest, generation, ApplicationPurpose) : null;
+
+    /// <summary>Separates catalogue JSON proof from application mutations and login/logout forms using the same observed durable generation.</summary>
+    internal static BrowserRequestBinding? ForCatalogue(string digest, long generation, BrowserContext row, DateTimeOffset now) =>
+        generation > 0 && FromRead(digest, generation, row, now) is not null ? new(digest, generation, CataloguePurpose) : null;
 
     private const string ReconciliationPurpose = "browser-logout-reconciliation-v1";
 

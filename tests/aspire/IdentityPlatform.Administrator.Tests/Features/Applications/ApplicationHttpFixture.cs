@@ -158,6 +158,34 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
         return await (direct ? api : browser).SendAsync(request, TestContext.Current.CancellationToken);
     }
 
+    /// <summary>Sends one explicit catalogue test request with the genuine server bearer or caller-supplied native browser proof.</summary>
+    internal async Task<HttpResponseMessage> CatalogueAsync(HttpMethod method, string path, string? body = null, string? version = null,
+        bool direct = true, bool authenticated = true, string? csrf = null)
+    {
+        using var request = new HttpRequestMessage(method, path);
+        if (body is not null)
+        {
+            request.Content = new StringContent(body, Encoding.UTF8, Media);
+        }
+        if (version is not null)
+        {
+            request.Headers.TryAddWithoutValidation(Microsoft.Net.Http.Headers.HeaderNames.IfMatch, version);
+        }
+        if (direct && authenticated)
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, Access);
+        }
+        else if (!direct)
+        {
+            request.Headers.Add(Origin, environment.Profile.ClientUri.GetLeftPart(UriPartial.Authority));
+            if (csrf is not null)
+            {
+                request.Headers.Add(Csrf, csrf);
+            }
+        }
+        return await (direct ? api : browser).SendAsync(request, TestContext.Current.CancellationToken);
+    }
+
     /// <summary>Sends a direct genuine bearer details read without copying that credential into the BFF request surface.</summary>
     internal async Task<HttpResponseMessage> DirectGetAsync(string path, bool authenticated = true, string? credential = null)
     {

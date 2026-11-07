@@ -26,7 +26,7 @@ internal static class ApplicationHttpBoundary
     private const int AuthorizationCharacters = 16391;
 
     /// <summary>Keeps one original budget across admission, authentication, transaction, disposal and response serialization.</summary>
-    internal static async Task RunAsync(HttpContext http, Func<ApplicationReadBudget, TimeProvider, Task> operation)
+    internal static async Task RunAsync(HttpContext http, Func<ApplicationReadBudget, TimeProvider, Task> operation, Func<int, string>? problemTitle = null)
     {
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers.XContentTypeOptions = NoSniff;
@@ -44,7 +44,7 @@ internal static class ApplicationHttpBoundary
             http.Response.Headers.Remove(VersionHeader);
             http.Response.Headers.Location = Microsoft.Extensions.Primitives.StringValues.Empty;
             http.Response.ContentLength = null;
-            await ProblemAsync(http, error is ApplicationHttpRejected rejected ? rejected.Status : StatusCodes.Status503ServiceUnavailable);
+            await ProblemAsync(http, error is ApplicationHttpRejected rejected ? rejected.Status : StatusCodes.Status503ServiceUnavailable, problemTitle);
         }
         finally { http.RequestAborted = original; }
     }
@@ -98,7 +98,7 @@ internal static class ApplicationHttpBoundary
     }
 
     /// <summary>Maps finite statuses to fixed safe messages without native errors, submitted fields or credentials.</summary>
-    private static Task ProblemAsync(HttpContext http, int status) => Results.Problem(statusCode: status, title: status switch
+    private static Task ProblemAsync(HttpContext http, int status, Func<int, string>? title) => Results.Problem(statusCode: status, title: title?.Invoke(status) ?? (status switch
     {
         StatusCodes.Status400BadRequest => Invalid,
         StatusCodes.Status401Unauthorized => SignIn,
@@ -107,7 +107,7 @@ internal static class ApplicationHttpBoundary
         StatusCodes.Status409Conflict => Conflict,
         StatusCodes.Status412PreconditionFailed or StatusCodes.Status428PreconditionRequired => Precondition,
         _ => Unavailable
-    }, extensions: new Dictionary<string, object?> { [Correlation] = http.TraceIdentifier }).ExecuteAsync(http);
+    }), extensions: new Dictionary<string, object?> { [Correlation] = http.TraceIdentifier }).ExecuteAsync(http);
 }
 
 /// <summary>Carries only a finite public status across the local HTTP boundary.</summary>

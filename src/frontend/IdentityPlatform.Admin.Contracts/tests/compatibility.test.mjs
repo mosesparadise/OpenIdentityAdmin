@@ -104,8 +104,8 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 13);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/session']);
+  assert.equal(inventory(browserStatus, 'bff').size, 27);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/api/v1/audiences', '/bff/api/v1/audiences/antiforgery', '/bff/api/v1/audiences/deletions/{jobId}', '/bff/api/v1/audiences/{id}', '/bff/api/v1/scopes', '/bff/api/v1/scopes/antiforgery', '/bff/api/v1/scopes/deletions/{jobId}', '/bff/api/v1/scopes/{id}', '/bff/session'].sort());
   const management = browserStatus.paths['/bff/api/v1/applications'].get;
   assert.deepEqual(management.security, [{ BrowserSession: [] }]);
   assert.equal(management['x-required-permission'], 'applications.read');
@@ -187,4 +187,19 @@ test('Given application replacement When MFA or strong version semantics weaken 
   const missing = structuredClone(browserStatus);
   missing.paths[path].post.parameters = missing.paths[path].post.parameters.filter(p => p.name !== 'If-Match');
   assert.throws(() => inventory(missing, 'bff'), ContractViolation);
+});
+
+for (const resource of ['scopes', 'audiences']) test(`Given ${resource} token acquisition When local authority shape changes Then the narrow exception rejects it`, () => {
+  const path = `/bff/api/v1/${resource}/antiforgery`;
+  for (const change of [op => { op.security = [{}]; }, op => { delete op.responses['401']; },
+    op => { op.responses['200'].headers['Cache-Control'].schema.const = 'public'; },
+    op => { op['x-downstream-api-version'] = 1; }, op => { op.operationId = 'GenericToken'; },
+    op => { op['x-required-permission'] = 'scopes.read'; }, op => { op.requestBody = { required: true }; }]) {
+    const candidate = structuredClone(browserStatus); change(candidate.paths[path].get);
+    assert.throws(() => inventory(candidate, 'bff'));
+  }
+  const moved = structuredClone(browserStatus); moved.paths[path + '/alias'] = moved.paths[path]; delete moved.paths[path];
+  assert.throws(() => inventory(moved, 'bff'));
+  const verb = structuredClone(browserStatus); verb.paths[path].post = verb.paths[path].get; delete verb.paths[path].get;
+  assert.throws(() => inventory(verb, 'bff'));
 });

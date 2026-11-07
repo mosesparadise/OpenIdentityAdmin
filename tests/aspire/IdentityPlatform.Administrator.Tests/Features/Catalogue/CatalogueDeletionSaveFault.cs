@@ -31,7 +31,7 @@ internal sealed class CatalogueDeletionSaveFault(bool substitute) : SaveChangesI
             !await database.Set<ApiAudience>().AsNoTracking().AnyAsync(row => row.Id == target, cancellationToken);
         if (substitute)
         {
-            database.ChangeTracker.Entries<CatalogueDeletion>().Single().Entity.ApprovalUntil++;
+            database.ChangeTracker.Entries<CatalogueDeletion>().Single().Entity.ApprovalUntil--;
             return result;
         }
         return InterceptionResult<int>.SuppressWithResult(0);
