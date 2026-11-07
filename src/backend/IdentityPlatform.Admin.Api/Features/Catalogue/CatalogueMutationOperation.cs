@@ -21,7 +21,7 @@ internal static class CatalogueMutationOperation
             var completed = await request.RunAsync(factory, (scope, token) => ExecuteOwnedAsync(scope, identity, intent, profile, budget, correlation, token));
             completed.Authority.RequirePublication(clock, budget);
             return new(intent.Action == CatalogueAction.Create ? StatusCodes.Status201Created : StatusCodes.Status200OK,
-                completed.Audience, completed.Scope, completed.Authority.Deadline);
+                completed.Audience, completed.Scope, completed.Authority.Deadline, completed.Referenced);
         }
         catch (ApiMutationDenied denied) { return new(denied.Status, null, null); }
         catch (CatalogueRejected rejected) { return new(Status(rejected.Failure), null, null); }
@@ -51,11 +51,13 @@ internal static class CatalogueMutationOperation
         {
             await native.VerifyAsync(scope, token);
         }
+        var referenced = native is not null ? await CatalogueNativeReferences.ScopeAsync(scope.Services, native.Name, token) :
+            await CatalogueNativeReferences.AudienceAsync(scope.Services, audience!.Resource, token);
         await authority.VerifyAsync(scope, intent, token);
         budget.RequireCurrent();
         authority.Consume(scope, intent, token);
         await transaction.CommitAsync(token);
-        return new(audience, native, authority);
+        return new(audience, native, authority, referenced);
     }
 
     /// <summary>Maps expected finite catalogue failures; unknown native/storage failures propagate to the sanitized HTTP boundary.</summary>
@@ -68,8 +70,8 @@ internal static class CatalogueMutationOperation
     };
 
     /// <summary>Keeps only frozen policy and private authority until the owned native child has actually finished disposal.</summary>
-    private sealed record Completed(CatalogueAudience? Audience, CatalogueScope? Scope, ApiMutationAuthority Authority);
+    private sealed record Completed(CatalogueAudience? Audience, CatalogueScope? Scope, ApiMutationAuthority Authority, bool Referenced);
 }
 
 /// <summary>Retains internal fixed state for later bounded HTTP projection; no native entities or arbitrary properties escape.</summary>
-internal sealed record CatalogueMutationResult(int Status, CatalogueAudience? Audience, CatalogueScope? Scope, DateTimeOffset? ExpiresAt = null);
+internal sealed record CatalogueMutationResult(int Status, CatalogueAudience? Audience, CatalogueScope? Scope, DateTimeOffset? ExpiresAt = null, bool Referenced = false);

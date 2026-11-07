@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Admin.Bff.Features.Catalogue;
 using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
 using Microsoft.AspNetCore.WebUtilities;
@@ -120,6 +121,10 @@ internal sealed class ApplicationProxyTransport : IDisposable
         var bytes = await ApplicationJson.ReadAsync(stream, ApplicationProjection.MaximumResponseBytes, token);
         return ApplicationProxyResult.ParseDetails(bytes, id, response.Headers.ETag?.ToString());
     }
+
+    /// <summary>Shares the fixed redirect-free transport owner with the finite catalogue feature, never a caller-selected destination.</summary>
+    internal Task<CatalogueProxyResult> CatalogueAsync(BrowserAccessCredential access, CatalogueProxyRequest input, CancellationToken token) =>
+        CatalogueTransport.SendAsync(client, target, access, input, token);
 
     /// <summary>Disposes pooled transport when the owning host stops; response/request owners are joined by each awaited read.</summary>
     public void Dispose() => client.Dispose();

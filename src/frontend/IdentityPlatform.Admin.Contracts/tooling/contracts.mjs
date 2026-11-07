@@ -50,6 +50,15 @@ export function inventory(document, surface, allowEmpty = false) {
         operations.set(`${method} ${route}`, op);
         continue;
       }
+      const catalogueToken = surface === 'bff' && ({
+        '/bff/api/v1/scopes/antiforgery': 'GetCatalogueAntiforgeryScope',
+        '/bff/api/v1/audiences/antiforgery': 'GetCatalogueAntiforgeryAudience'
+      })[route];
+      if (catalogueToken) {
+        requireCatalogueToken(op, method, item, catalogueToken);
+        operations.set(`${method} ${route}`, op);
+        continue;
+      }
       const scheme = surface === 'bff' ? 'BrowserSession' : 'AdminBearer';
       if (!isDeepStrictEqual(op.security, [{ [scheme]: [] }])) throw new ContractViolation('Missing or weakened authentication requirement');
       if (typeof op['x-required-permission'] !== 'string' || !op['x-required-permission']) throw new ContractViolation('Missing permission');
@@ -120,5 +129,21 @@ function requireApplicationToken(op, method, item) {
   }
   if (op.responses['200'].content?.['application/json']?.schema?.$ref !== '#/components/schemas/ApplicationAntiforgeryToken') {
     throw new ContractViolation('Unexpected application antiforgery response');
+  }
+}
+
+// Two exact catalogue proof routes, independently bound from application mutation tokens.
+function requireCatalogueToken(op, method, item, operationId) {
+  if (item.parameters?.length || method !== 'get' || op.operationId !== operationId ||
+      !isDeepStrictEqual(op.security, [{ BrowserSession: [] }]) || op.requestBody || op.parameters?.length ||
+      op['x-required-permission'] !== undefined || op['x-downstream-api-version'] !== undefined ||
+      Object.keys(op.responses ?? {}).sort().join() !== '200,400,401,503') {
+    throw new ContractViolation('Invalid catalogue antiforgery acquisition boundary');
+  }
+  for (const response of Object.values(op.responses)) {
+    if (response.headers?.['Cache-Control']?.schema?.const !== 'no-store') throw new ContractViolation('Cacheable catalogue proof');
+  }
+  if (op.responses['200'].content?.['application/json']?.schema?.$ref !== '#/components/schemas/CatalogueAntiforgeryToken') {
+    throw new ContractViolation('Unexpected catalogue antiforgery response');
   }
 }

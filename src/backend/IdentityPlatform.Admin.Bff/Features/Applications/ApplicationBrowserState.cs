@@ -10,12 +10,12 @@ internal sealed class ApplicationBrowserState(BrowserSessionRead session, Browse
     internal BrowserRequestBinding Binding => binding;
 
     /// <summary>Disposes the actual read scope before returning; generation and credential come from one joined durable observation.</summary>
-    internal static async Task<ApplicationBrowserState?> ReadAsync(HttpContext http, TimeProvider clock)
+    internal static async Task<ApplicationBrowserState?> ReadAsync(HttpContext http, TimeProvider clock, bool catalogue = false)
     {
         await using var scope = http.RequestServices.GetRequiredService<IServiceScopeFactory>().CreateAsyncScope();
         var session = await scope.ServiceProvider.GetRequiredService<BrowserSessionReader>().ReadAsync(http);
         var access = session?.Access(scope.ServiceProvider.GetRequiredService<SessionTicketCodec>(), clock.GetUtcNow());
-        var binding = session?.ApplicationBinding(clock.GetUtcNow());
+        var binding = catalogue ? session?.CatalogueBinding(clock.GetUtcNow()) : session?.ApplicationBinding(clock.GetUtcNow());
         return session is not null && access is not null && binding is not null ? new(session, access, binding) : null;
     }
 

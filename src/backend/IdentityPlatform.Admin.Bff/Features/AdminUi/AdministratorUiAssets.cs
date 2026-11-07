@@ -14,6 +14,8 @@ internal static class AdministratorUiAssets
     private const string Root = "/";
     private const string Session = "/session";
     private const string Applications = "/applications";
+    private const string Scopes = "/scopes";
+    private const string Audiences = "/audiences";
     private const string Prefix = "/admin-assets/";
     private const string Resource = "IdentityPlatform.Admin.Ui.";
     private const string Html = "text/html; charset=utf-8";
@@ -73,6 +75,8 @@ internal static class AdministratorUiAssets
             [Root] = document,
             [Session] = document,
             [Applications] = document,
+            [Scopes] = document,
+            [Audiences] = document,
             [Prefix + AppScript] = Read(AppScript, JavaScript),
             [Prefix + AppStyle] = Read(AppStyle, Css),
             [Prefix + ThemeScript] = Read(ThemeScript, JavaScript),

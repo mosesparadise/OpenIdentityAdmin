@@ -1,6 +1,7 @@
 using IdentityPlatform.Admin.Api.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.Authentication;
+using IdentityPlatform.Admin.Api.Features.Catalogue;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using Microsoft.AspNetCore.Builder;
@@ -59,7 +60,7 @@ internal sealed class ApplicationApiHost(IHost host, BrowserHttpsEndpoint endpoi
                         app.Use(mutationProbe.InvokeAsync);
                     }
                     app.UseRouting();
-                    app.UseEndpoints(routes => routes.MapApplications().MapGrantRevocations());
+                    app.UseEndpoints(routes => routes.MapApplications().MapGrantRevocations().MapCatalogue());
                 });
             }).Build();
             await host.StartAsync(TestContext.Current.CancellationToken);

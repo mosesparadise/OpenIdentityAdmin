@@ -22,7 +22,7 @@ internal static class ApplicationMutationBoundary
     private const string Correlation = "correlationId";
 
     /// <summary>Starts one budget before reading sessions or input and sanitizes failures without reflecting upstream values.</summary>
-    internal static async Task RunAsync(HttpContext http, Func<ApplicationReadBudget, TimeProvider, Task> operation)
+    internal static async Task RunAsync(HttpContext http, Func<ApplicationReadBudget, TimeProvider, Task> operation, Func<int, string>? problemTitle = null)
     {
         http.Response.Headers.CacheControl = NoStore;
         http.Response.Headers.XContentTypeOptions = NoSniff;
@@ -43,7 +43,7 @@ internal static class ApplicationMutationBoundary
             http.Response.ContentLength = null;
             var status = error is ApplicationProxyRejected rejected ? rejected.Status : error is AntiforgeryValidationException ?
                 StatusCodes.Status400BadRequest : StatusCodes.Status503ServiceUnavailable;
-            await ProblemAsync(http, status);
+            await ProblemAsync(http, status, problemTitle);
         }
         finally
         {
@@ -72,13 +72,13 @@ internal static class ApplicationMutationBoundary
     }
 
     /// <summary>Reports only finite statuses and fixed recovery text; an unavailable response never promises remote rollback.</summary>
-    internal static Task ProblemAsync(HttpContext http, int status) => Results.Problem(statusCode: status,
-        title: status switch
+    internal static Task ProblemAsync(HttpContext http, int status, Func<int, string>? title = null) => Results.Problem(statusCode: status,
+        title: title?.Invoke(status) ?? (status switch
         {
             StatusCodes.Status400BadRequest => Invalid,
             StatusCodes.Status401Unauthorized => SignIn,
             StatusCodes.Status403Forbidden => Forbidden,
             StatusCodes.Status404NotFound or StatusCodes.Status409Conflict or StatusCodes.Status412PreconditionFailed or StatusCodes.Status428PreconditionRequired => Conflict,
             _ => Unavailable
-        }, extensions: new Dictionary<string, object?> { [Correlation] = http.TraceIdentifier }).ExecuteAsync(http);
+        }), extensions: new Dictionary<string, object?> { [Correlation] = http.TraceIdentifier }).ExecuteAsync(http);
 }

@@ -3,6 +3,7 @@ using IdentityPlatform.Admin.Bff.Features.ApiContracts;
 using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Bff.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Admin.Bff.Features.Catalogue;
 using IdentityPlatform.Admin.Bff.Features.Documentation;
 using IdentityPlatform.Admin.Bff.Features.LocalDemo;
 using IdentityPlatform.Admin.Bff.Features.Storage;
@@ -33,7 +34,7 @@ internal static class Setup
             endpoints.MapPlatformHealthEndpoints();
             if (startup.Enabled)
             {
-                endpoints.MapApplicationProxy().MapGrantProxy();
+                endpoints.MapApplicationProxy().MapGrantProxy().MapCatalogueProxy();
             }
         });
         return app;
