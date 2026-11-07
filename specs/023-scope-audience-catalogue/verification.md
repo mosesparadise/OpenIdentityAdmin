@@ -84,3 +84,15 @@ Build8 passes with zero warnings/errors; both EF pending-model checks report no 
 Quality checks pass. Native discovery is retained locally as
 `/workspace/catalogue-persistence-discovery-8.json`. These source observations do not
 complete T003: hosted execution of the actual final candidate remains pending.
+
+Hosted run[42406690944](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42406690944)
+at diagnostic head445b42b executed13 cases/provider. PostgreSQL12passed/1failed;
+SQLServer1passed/12failed; no skips. Actual SQL DDL rejected the new scope FK's width100
+against unchanged native width450. Corrected only the new FK mapping to inherit native
+storage (PostgreSQLtext, SQLnvarchar450); catalogue input identifiers remain bounded100.
+PostgreSQL's sole failure was missing owned-storage registration in the runtime test
+fixture; added the existing composition extension. Both corrected EF model checks and
+build pass. Failed artifacts13587990850/13587199766 and decoded local job logs retain
+these attempts; their7day retention is not permanent acceptance evidence. Test-run
+archive download through the connector succeeds, but local access to its temporary
+file URL is403; no local archive preservation is claimed.

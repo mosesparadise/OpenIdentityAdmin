@@ -30,7 +30,7 @@ public sealed class CatalogueRuntimeTests
         var native = NativeProviderFixtures.Create(provider, database.Database.GetConnectionString()!);
         await NativeProviderConformance.VerifyAsync(native, fixture.Token);
         await using var runtime = new ServiceCollection().AddLogging().AddPlatformPersistence(native.Provider,
-            native.RuntimeConnection(DatabaseStore.Platform), native.RuntimeConnection(DatabaseStore.Sessions)).BuildServiceProvider(validateScopes: true);
+            native.RuntimeConnection(DatabaseStore.Platform), native.RuntimeConnection(DatabaseStore.Sessions)).AddProtocolStorageOwnership().BuildServiceProvider(validateScopes: true);
         var request = new ProtocolStorageRequest(TimeProvider.System, fixture.Token);
         string id;
         try

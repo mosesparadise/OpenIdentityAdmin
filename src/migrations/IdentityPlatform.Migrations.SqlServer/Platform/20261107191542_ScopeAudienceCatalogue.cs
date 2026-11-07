@@ -84,7 +84,7 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                 schema: "platform",
                 columns: table => new
                 {
-                    ScopeId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ScopeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Kind = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false, collation: "Latin1_General_100_BIN2"),
                     Enabled = table.Column<bool>(type: "bit", nullable: false),
                     ConsentText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
