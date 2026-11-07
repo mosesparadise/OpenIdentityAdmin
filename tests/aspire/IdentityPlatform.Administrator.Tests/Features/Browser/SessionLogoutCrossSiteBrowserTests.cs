@@ -57,13 +57,16 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
             Assert.Equal(1, environment.EndSessionGets);
             Assert.Equal(2, environment.EndSessionPosts);
             environment.RequirePolicies(ClientCounts, IssuerCounts);
+            Assert.Fail("Cross-site navigation diagnostic completed every original assertion.");
         });
 
     /// <summary>Copies the legitimate form into a real other-site document and submits natively without overriding headers, cookies or TLS.</summary>
     private static async Task AttackAsync(BrowserHttpsFixture fixture, IPage attacker, IPage original, Uri foreignOrigin, Uri destination, string button)
     {
         var form = await original.Locator(Form).EvaluateAsync<string>(CopyForm, destination.AbsoluteUri);
-        await attacker.GotoAsync(fixture.StageAttacker(foreignOrigin, form).AbsoluteUri);
+        var staged = fixture.StageAttacker(foreignOrigin, form);
+        await attacker.GotoAsync(staged.AbsoluteUri);
+        using var trace = new CrossSiteNavigationTrace(attacker, destination, staged);
         var response = await attacker.RunAndWaitForResponseAsync(() => attacker.Locator(button).ClickAsync(),
             response => response.Request.Method == HttpMethods.Post);
         if (destination.Host == fixture.Profile.Issuer.Host)
@@ -74,9 +77,16 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
         {
             Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
         }
-        await attacker.WaitForURLAsync(url => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.GetLeftPart(UriPartial.Path) == destination.AbsoluteUri, new()
+        try
         {
-            WaitUntil = WaitUntilState.Commit
-        });
+            await attacker.WaitForURLAsync(url => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.GetLeftPart(UriPartial.Path) == destination.AbsoluteUri, new()
+            {
+                WaitUntil = WaitUntilState.Commit
+            });
+        }
+        finally
+        {
+            trace.Report(response);
+        }
     }
 }
