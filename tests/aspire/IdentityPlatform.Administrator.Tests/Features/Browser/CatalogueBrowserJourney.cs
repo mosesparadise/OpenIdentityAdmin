@@ -21,6 +21,9 @@ internal static class CatalogueBrowserJourney
     private const string ConsentField = "#catalogue-consentText";
     private const string AudienceField = "#catalogue-audienceId";
     private const string SearchField = "#catalogue-audienceSearch";
+    private const string KindField = "#catalogue-kind";
+    private const string KindErrorLink = "a[href='#catalogue-kind']";
+    private const string Email = "email";
     private const string SelectedOption = "option:checked";
     private const string RetainedSelection = "selected; outside these search results";
     private const string ReadOnlyAttribute = "readonly";
@@ -39,6 +42,9 @@ internal static class CatalogueBrowserJourney
     private const string ScopeConfirmation = "I confirm deletion of this scope.";
     private const string AudienceConfirmation = "I confirm deletion of this audience.";
     private const string Completed = "Deletion completed";
+    private const string Queued = "Deletion queued";
+    private const string CheckStatus = "Check deletion status";
+    private const string BackScopes = "Back to scopes";
     private const string Enter = "Enter";
     private const string Appearance = "Appearance";
     private static readonly string[] Themes = ["light", "dark"];
@@ -68,6 +74,7 @@ internal static class CatalogueBrowserJourney
         await page.Locator(DisplayField).FillAsync(ScopeName);
         await page.Locator(ConsentField).FillAsync(Consent);
         await page.Locator(AudienceField).SelectOptionAsync(audience);
+        await RequireEmailErrorAsync(page);
         await page.Locator(SearchField).FillAsync(NoMatch);
         await Button(page, Search).ClickAsync();
         await Assertions.Expect(page.Locator(AudienceField)).ToHaveValueAsync(audience);
@@ -86,6 +93,17 @@ internal static class CatalogueBrowserJourney
         })).ToBeVisibleAsync();
     }
 
+    /// <summary>An email/API policy conflict must link to a visible editable type control and support keyboard recovery before any server write.</summary>
+    private static async Task RequireEmailErrorAsync(IPage page)
+    {
+        await page.Locator(NameField).FillAsync(Email);
+        await Button(page, CreateScope).PressAsync(Enter);
+        await Assertions.Expect(page.GetByRole(AriaRole.Alert)).ToBeFocusedAsync();
+        await page.Locator(KindErrorLink).PressAsync(Enter);
+        await Assertions.Expect(page.Locator(KindField)).ToBeFocusedAsync();
+        await page.Locator(NameField).FillAsync(Name);
+    }
+
     /// <summary>Native scope mapping makes the audience visibly referenced and prevents the UI from offering a deletion confirmation.</summary>
     internal static async Task RequireReferencedAsync(IPage page, Uri origin)
     {
@@ -97,7 +115,7 @@ internal static class CatalogueBrowserJourney
     }
 
     /// <summary>Explicit checked confirmation is followed by actual Worker completion, with focus and both-theme accessibility retained.</summary>
-    internal static async Task DeleteAsync(IPage page, Uri origin, bool scope)
+    internal static async Task DeleteAsync(IPage page, Uri origin, bool scope, Func<Task>? start = null)
     {
         await page.GotoAsync(new Uri(origin, scope ? Scopes : Audiences).AbsoluteUri);
         await Button(page, View + (scope ? UpdatedScope : AudienceName)).ClickAsync();
@@ -109,11 +127,19 @@ internal static class CatalogueBrowserJourney
             Exact = true
         }).CheckAsync();
         await Button(page, Confirm).PressAsync(Enter);
+        if (start is not null)
+        {
+            await Assertions.Expect(page.Locator(Heading)).ToHaveTextAsync(Queued);
+            await Button(page, CheckStatus).PressAsync(Enter);
+            await Assertions.Expect(page.Locator(Heading)).ToBeFocusedAsync();
+            await Button(page, BackScopes).FocusAsync();
+            await start();
+        }
         await Assertions.Expect(page.Locator(Heading)).ToHaveTextAsync(Completed, new()
         {
             Timeout = CompletionMilliseconds
         });
-        await Assertions.Expect(page.Locator(Heading)).ToBeFocusedAsync();
+        await Assertions.Expect(start is null ? page.Locator(Heading) : Button(page, BackScopes)).ToBeFocusedAsync();
         await PresentationAsync(page);
     }
 

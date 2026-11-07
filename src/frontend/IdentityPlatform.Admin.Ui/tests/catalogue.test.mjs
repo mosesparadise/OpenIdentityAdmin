@@ -33,8 +33,13 @@ test('Given invalid identifiers and field bounds When validated Then reserved an
   for (const value of ['', 'openid', 'IDENTITYPLATFORM.test', 'bad name', '\u0000', 'a'.repeat(201), null]) assert.equal(protocol(value, true), false);
   for (const value of ['.', '..', 'deletions', 'ANTIFORGERY', 'with space', '', null]) assert.equal(addressable(value), false);
   for (const [key, value] of Object.entries({ name: 'openid', displayName: '', owner: '', enabled: 'yes' })) assert.ok(validate('audience', { ...draft(audience), [key]: value }).errors[key]);
-  for (const [key, value] of Object.entries({ kind: 'unknown', consentText: '', audienceId: '', disclosure: 'roles' })) assert.ok(validate('scope', { ...draft(scope), [key]: value }).errors[key]);
-  for (const name of ['email', 'Email']) assert.ok(validate('scope', { ...draft(scope), name }).errors.disclosure);
+  for (const [key, value] of Object.entries({ kind: 'unknown', consentText: '', audienceId: '' })) assert.ok(validate('scope', { ...draft(scope), [key]: value }).errors[key]);
+  for (const name of ['email', 'Email']) {
+    const invalid = validate('scope', { ...draft(scope), name });
+    assert.ok(invalid.errors.kind); assert.equal(invalid.errors.disclosure, undefined);
+  }
+  assert.ok(validate('scope', { ...draft(scope), disclosure: 'roles' }).errors.kind);
+  assert.ok(validate('scope', { ...draft(scope), kind: 'identity', disclosure: 'roles' }).errors.disclosure);
   assert.ok(validate('scope', { ...draft(scope), name: 'email', kind: 'identity', audienceId: '', disclosure: 'email' }).input);
 });
 test('Given exact native projections When observed Then valid scope audience page and status remain usable', () => {
@@ -178,4 +183,15 @@ test('Given production key generation When an explicit deletion is confirmed The
   const owner = new CatalogueController('audience', { details: async () => response(value), token: async () => ({ status: 200, value: { requestToken: 'proof' } }), remove: async (...args) => { sent.push(args); return { status: 503 }; } }, () => {});
   t.after(() => owner.dispose()); owner.authorize({ kind: 'authenticated', subject: 'operator', expires: now + 100000 });
   await owner.details(value.id); owner.confirm(); await owner.remove(true); assert.equal(sent.length, 1); assert.match(sent[0][3], /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+});
+
+test('Given manual status read When navigation supersedes it Then late success or failure cannot authorize a focus change', async t => {
+  for (const fail of [false, true]) {
+    const f = fixture(t), wait = deferred();
+    await f.owner.details(audience.id); f.owner.confirm(); await f.owner.remove(true);
+    f.client.status = async () => { await wait.promise; if (fail) throw Error('private'); return response({ ...status, state: 'succeeded' }); };
+    const refreshing = f.owner.refresh();
+    await f.owner.details(audience.id); f.owner.form(true); const current = f.owner.state;
+    wait.resolve(); assert.equal(await refreshing, false); assert.equal(f.owner.state, current);
+  }
 });

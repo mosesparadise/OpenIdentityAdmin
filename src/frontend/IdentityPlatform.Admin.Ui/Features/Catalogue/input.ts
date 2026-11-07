@@ -43,7 +43,7 @@ export function validate(kind: Kind, value: Draft): { input?: Input; errors: Err
   if (value.kind !== "identity" && value.kind !== "api") errors.kind = "Choose an identity or API scope.";
   if (value.kind === "api" && !addressable(value.audienceId)) errors.audienceId = "Choose an audience.";
   if (!["none", "email"].includes(value.disclosure) || value.kind === "api" && value.disclosure !== "none" ||
-      value.name.toLowerCase() === "email" && (value.name !== "email" || value.kind !== "identity" || value.disclosure !== "email")) errors.disclosure = "The email scope must be an identity scope sharing email and its verification status.";
+      value.name.toLowerCase() === "email" && (value.name !== "email" || value.kind !== "identity" || value.disclosure !== "email")) errors[value.kind === "api" ? "kind" : "disclosure"] = "The email scope must be an identity scope sharing email and its verification status.";
   const input: ScopeInput = { name: value.name, displayName: value.displayName, enabled: value.enabled, kind: value.kind as ScopeInput["kind"],
     consentText: value.consentText, audienceId: value.kind === "api" ? value.audienceId : null, disclosure: value.disclosure as ScopeInput["disclosure"] };
   return { errors, ...(Object.keys(errors).length ? {} : { input }) };

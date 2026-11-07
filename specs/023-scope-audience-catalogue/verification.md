@@ -179,7 +179,7 @@ Runtime attempts retained before acceptance:
   providers. Corrected the test's native access-token URN and explicit ordinal collation
   on SQL scope joins/system-ID exclusions. All four browser attempts failed: SQL reads
   hit the same collation conflict, Chromium expected revision1 after a genuine edit,
-  and WebKit found narrow-screen selector overflow. The test now expects revision2 and
+  and WebKit found horizontal reflow failure after audience selection. The test now expects revision2 and
   exact edited text; CSS permits the selector to shrink. No timeout, assertion or
   provider requirement was weakened.
 
@@ -197,3 +197,42 @@ original authority/expiry and the CSS correction. Test review passes exact scope
 preservation and the actual one-send DELETE recovery snapshot. Final runtime review,
 full exact-head checks and normal reviewed delivery remain pending. T004–T007 stay unchecked
 until that evidence is reconciled. Existing historical/manual/refresh/release gates remain open.
+
+## Corrected native/transport and mutation evidence
+
+Bounded run[42418041016](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42418041016)
+at isolatedf2fb586 (src/tests/scripts/eng identical to producta174f6d) passes all56
+component cases per provider, schema13/provider, both Chromium catalogue journeys and
+all four critical-decision mutations per provider. Both providers validate actual paging,
+observed reference races, restart/queue/commit faults, exact held GET/DELETE publication
+boundaries and explicit unchanged-approval recovery. The previous four failures per
+provider were the application-specific problem-title helper; the corrected helper
+requires exact catalogue titles and preserves safe status/header/field checks.
+
+Mutation markers require independently demonstrated bad outcomes: fully committed deletion
+after original expiry or despite a retained revoked grant, unchanged complete queued
+approval/native/audit state after a false success, or genuine202 publication after omitting
+the current browser-authority observation. Setup failures and unrelated safe errors do not
+count as killed mutants. PostgreSQL and SQLServer each kill all four controls, with clean
+positive controls and restored source required by the existing verifier.
+
+WebKit still fails reflow on both providers. Safe dimensions show320px viewport and685px
+document scroll width, with no undersized controls. Earlier min-width and explicit-height
+changes did not resolve it. The next candidate clips/ellipsizes select overflow and retains
+more numeric layout diagnostics; no reflow/axe/theme/keyboard assertion is removed.
+Local WebKit installation is blocked by the runtime proxy's403 Domain forbidden response;
+retained-browser execution continues on the normal hosted runner.
+
+UX review also found a validation link to an absent claim field for email/API input, loss
+of focus after explicit status refresh, and403 copy that attributed expired MFA to missing
+permission. Corrections target the visible scope-type control, require an unsuperseded
+status receipt and current focus ownership, and explain both permission and recent-MFA
+requirements. The browser journey checks linked-field keyboard recovery and manual versus
+background status focus. UI111 cases now pass, including a late-success/failure navigation
+regression. All existing module floors remain unchanged.
+
+Initial full CI557 at a174f6d reports import-order failures; corrected imports and unused
+using directives pass the SDK formatter. Failed run557 remains visible and is superseded
+by the corrected candidate; it is not counted as acceptance. Local Host1892/1892, UI111,
+verification-tooling330 and code-quality checks pass. Full corrected-head CI and WebKit
+acceptance remain required before PR128 leaves draft or merges.

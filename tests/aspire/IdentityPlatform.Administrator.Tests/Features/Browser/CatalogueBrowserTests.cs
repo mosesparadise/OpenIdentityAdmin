@@ -58,8 +58,7 @@ public sealed class CatalogueBrowserTests(BootstrapFixture fixture)
         Assert.Equal(UpdatedScope, scope.DisplayName);
         await CatalogueBrowserJourney.RequireReferencedAsync(page, environment.Profile.ClientUri);
         await using var worker = GrantWorkerTests.CreateHost(provider, environment.Issuer.Account.Journey.Lease.RuntimeConnection, clock);
-        await worker.StartAsync(token);
-        await CatalogueBrowserJourney.DeleteAsync(page, environment.Profile.ClientUri, scope: true);
+        await CatalogueBrowserJourney.DeleteAsync(page, environment.Profile.ClientUri, scope: true, start: () => worker.StartAsync(token));
         await CatalogueBrowserJourney.DeleteAsync(page, environment.Profile.ClientUri, scope: false);
         await worker.StopAsync(token);
         await RequireAsync(database, audience.Id, scope.Id!, original);

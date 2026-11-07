@@ -112,17 +112,18 @@ export class CatalogueController {
       this.pending = undefined; this.showJob(value);
     } catch (error) { if (this.live(operation.generation)) this.emit(this.failure({ status: error instanceof ProofFailure ? error.status : 503 }, dispatched || wasUncertain)); }
   }
-  /** Refreshes only a known status and never extends the original session or accepted observation ceiling. */
-  async refresh(): Promise<void> {
-    if (!this.current() || !this.knownJob) return;
+  /** Returns whether this status response still owns the view; stale reads cannot authorize focus changes or renew observation. */
+  async refresh(): Promise<boolean> {
+    if (!this.current() || !this.knownJob) return false;
     const original = this.knownJob, operation = this.begin();
     try {
       const result = await this.client.status(this.kind, original.id, operation.signal);
-      if (!this.live(operation.generation)) return;
+      if (!this.live(operation.generation)) return false;
       const value = result.status === 200 ? job(result, this.kind, original.targetId, this.now(), original.id) : null;
       if (value && value.createdAt === original.createdAt && Date.parse(value.observedAt) >= Date.parse(original.observedAt) &&
           (original.state === "queued" || value.state === original.state && value.failure === original.failure)) this.showJob(value); else this.emit(this.failure(result));
-    } catch { if (this.live(operation.generation)) this.emit(this.failure({ status: 503 })); }
+      return true;
+    } catch { if (this.live(operation.generation)) { this.emit(this.failure({ status: 503 })); return true; } return false; }
   }
   /** Clears a hidden or expired view synchronously; returning does not replay a read or mutation. */
   suspend(): void { this.cancel(); clearTimeout(this.expiryTimer); this.subject = undefined; this.pending = undefined; this.knownJob = undefined; this.deadline = 0; this.emit({ kind: "problem", reason: "cleared", uncertain: false, recoverable: false }); }

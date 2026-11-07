@@ -2,9 +2,9 @@ using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Catalogue;
-using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
+using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.EntityFrameworkCore.Models;
 

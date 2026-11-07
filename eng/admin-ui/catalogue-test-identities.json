@@ -25,5 +25,6 @@
   "Given deletion transport failure and lost proof When recovery fails Then uncertainty and the original intent survive",
   "Given queued deletion When its polling timer runs Then it sends only a status read",
   "Given original observation deadline When the timer fires Then the view clears independently of an action",
-  "Given production key generation When an explicit deletion is confirmed Then a fresh canonical UUID is submitted once"
+  "Given production key generation When an explicit deletion is confirmed Then a fresh canonical UUID is submitted once",
+  "Given manual status read When navigation supersedes it Then late success or failure cannot authorize a focus change"
 ]
