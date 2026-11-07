@@ -1,10 +1,15 @@
 # Pilot replay correction validation
 
-The T002–T004 foundation is implemented on branch130, with SQL Server verification
-blocked by local container startup. T005 generation fencing is not implemented, so
-the initial replay defect remains open and this branch is not ready to merge. The existing administrator UI and grant
-revocation are already delivered through PR124; use the [native Aspire grant
-walkthrough](../021-application-grant-revocation/quickstart.md) for local testing now.
+T003–T007 are implemented through branch131's
+`6860a6b7b155d931b8d7e7757992ddceb1b428a4` source checkpoint. PostgreSQL demonstrates
+gate-owned generation, separately durable consumption, withheld output on failures,
+and the initial-replay invariant across both process directions. Required SQL Server
+verification and T008/T009 integrated acceptance remain open; this branch is not
+ready to merge or deploy. See [current evidence](verification.md).
+
+The existing administrator UI and grant revocation are already delivered through
+PR124; use the [native Aspire grant walkthrough](../021-application-grant-revocation/quickstart.md)
+for local testing. This correction adds no custom launch script.
 
 Implementation verification starts from the clean feature branch with the repository
 .NET10 SDK policy, locked dependencies, trusted development HTTPS and Docker ready.

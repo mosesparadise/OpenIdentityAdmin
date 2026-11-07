@@ -1,7 +1,44 @@
 # OpenIdentityAdmin new-task handoff
 
 
-**Current foundation checkpoint — 7 November 2026:** user requested the next three
+**Current implementation checkpoint — 7 November 2026:** the next three tasks,
+feature022 T005–T007, are implemented on `131-pilot-replay-coordination`, source
+`6860a6b7b155d931b8d7e7757992ddceb1b428a4`, worktree
+`/workspace/pilot-replay-serialization`. Branch131 is pushed; remote main remains
+`8f840f5a22836efd4b74ee5883ec98d04d3c6cec`. Existing worktrees, baseline/foundation
+evidence and frozen provider producers are preserved. Earlier checkpoint notices
+below are historical.
+
+The coordinator keeps generation in the gate transaction, commits native consumption
+separately under a Valid-row lock, fences late/replacement storage, and withholds
+output through commit and actual cleanup. PostgreSQL now proves the initial-replay
+invariant and both real process directions. Faults, original deadlines, fresh
+post-wait authority, historic cleanup and post-revocation publication failure have
+permanent tests. See the [current evidence](../../specs/022-pilot-replay-serialization/verification.md)
+for exact reports, failed attempts and final-source limits.
+
+Final-source scoped runs pass **157 PostgreSQL ProtocolAdmission, 1,852 host,
+25 PostgreSQL Distribution and 29 PostgreSQL persistence cases**, with no skips.
+The [source/report receipt](../../specs/022-pilot-replay-serialization/evidence/coordination.json)
+retains exact native identities, hashes and failed attempts. Persistence runs in this
+storage-constrained environment require serial collections and the preserved frozen
+producer/manifest paths recorded there; do not rebuild that historical producer.
+
+**Next: T008/T009 acceptance and outstanding SQL cells.** Native inventory/selection
+is reconciled; do not repeat the implementation. T003–T007 remain unchecked pending
+required SQL verification. SQL2022 still exits before readiness with `/.system`
+access denied (errno13); both workdir-only and HOME-only non-root probes failed and
+were removed. Neither is a repository workaround. Registry access works; do not
+revive expired diagnostic approvals or repeat identical startup attempts without a
+changed, evidence-based condition. Full CI, new mutation controls, coverage and
+final integrated delivery remain open. No PR/merge/production action was performed.
+All six historical findings, refresh activation and manual/Firefox/A-009/vendor/
+production/public-release gates remain open.
+
+Use `/workspace/managed-env.sh` for the SDK, package cache and HTTPS trust. Retained
+artifacts/build outputs have verified symlinks into `/tmp`; preserve their targets.
+
+**Historical foundation checkpoint — 7 November 2026:** user requested the next three
 feature022 tasks, T002–T004. Worktree `/workspace/pilot-replay-serialization`, branch
 `130-pilot-replay-foundation`, code commit
 `bcb3bd52180286021582444c6ba5ed4bba1fd0ee`, based on PR125's planning squash

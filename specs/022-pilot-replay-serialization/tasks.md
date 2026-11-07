@@ -1,9 +1,17 @@
 # Tasks: Pilot replay serialization
 
-T001 is the planning checkpoint. T002 has a retained PostgreSQL old-source failure.
-T003–T004 are implemented on branch130, with PostgreSQL foundation evidence, but
-remain unchecked pending SQL Server verification. All integrated defect acceptance
-remains open; see verification.md for the exact evidence and environment blocker.
+T001 is the planning checkpoint. T002 retains a PostgreSQL old-source failure.
+T003–T004 are implemented on branch130; T005–T007 are implemented on
+`131-pilot-replay-coordination` at `6860a6b7b155d931b8d7e7757992ddceb1b428a4`.
+PostgreSQL now demonstrates the corrected initial-replay invariant, including both
+real process directions. These implementation tasks remain unchecked until their
+required SQL Server verification succeeds. SQL still exits before readiness; it is
+not a replay/schema test result. See `verification.md` for reports and limits.
+
+Next is T008/T009 integrated acceptance plus the outstanding SQL cells. Preserve
+existing source/evidence; do not repeat completed implementation or reopen expired
+diagnostic approvals. Native inventory reconciliation is already included; new
+mutation controls, coverage/full CI and final delivery acceptance remain open.
 
 ## Setup
 
