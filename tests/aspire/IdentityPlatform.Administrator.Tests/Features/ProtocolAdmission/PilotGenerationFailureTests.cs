@@ -40,7 +40,7 @@ public sealed class PilotGenerationFailureTests(BootstrapFixture fixture)
         fault.Armed = true;
         using var failed = await pilot.Client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: token);
         Assert.Equal(HttpStatusCode.ServiceUnavailable, failed.StatusCode);
-        Assert.Empty(await failed.Content.ReadAsByteArrayAsync(token));
+        await PilotWaitState.UnavailableAsync(failed);
         Assert.False(failed.Headers.Contains(PilotGenerationFault.StagedHeader));
         RequireFault(fault, mode);
         var committed = mode != PilotGenerationFailure.AfterInsert;

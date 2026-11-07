@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using OpenIddict.Server;
@@ -68,7 +69,12 @@ internal static class PilotHttpBoundary
                 }
                 else
                 {
-                    await ProtocolResponseTransfer.RejectAsync(features.Response, features.Body, features.Cancellation);
+                    try
+                    {
+                        await PilotRequestProtection.WriteUnavailableAsync(http, features.Cancellation);
+                        await features.Body.CompleteAsync();
+                    }
+                    catch { http.Abort(); }
                 }
             }
         }

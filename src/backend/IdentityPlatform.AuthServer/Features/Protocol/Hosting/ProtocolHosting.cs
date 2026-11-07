@@ -52,6 +52,7 @@ internal static class ProtocolHosting
             if (endpoint == OpenIddictServerEndpointType.Token)
             {
                 await PilotHttpBoundary.RunAsync(http, next, request);
+                return;
             }
             else
             {

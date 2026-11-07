@@ -18,6 +18,15 @@ namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 [Collection("issuer")]
 public sealed class OperationsAcceptanceTests(IssuerFixture fixture, ITestOutputHelper output)
 {
+    private const int ContentionCleanupSeconds = 8;
+    private const int ContentionLimitSeconds = 11;
+    private const string PreservedApplication = "Faulted exchange must preserve application state.";
+    private const string NoBlockedTokens = "Blocked exchange must not create token entries.";
+    private const string UndrainedOperation = "The issuer database operation did not drain before cleanup.";
+    private const string BoundedOperation = "Blocked native work must finish within the recorded command/request bound.";
+    private const string ContentionDiagnostic = "Provider={0}; cancelled={1}; blockedStage={2}; drainedMilliseconds={3:F0}";
+    private const string UpdateStage = "update";
+    private const string ReadStage = "read";
     [Theory]
     [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql"])]
     [InlineData("PostgreSql", true, Traits = ["Provider", "PostgreSql"])]
@@ -143,94 +152,103 @@ public sealed class OperationsAcceptanceTests(IssuerFixture fixture, ITestOutput
         await RecoverAsync(environment, browser, code);
     }
 
+    /// <summary>Observes real native contention, requires bounded failure or caller cancellation, and proves drained work preserves state before fresh recovery.</summary>
     [Theory]
     [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql"])]
     [InlineData("PostgreSql", true, Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", false, Traits = ["Provider", "SqlServer"])]
     [InlineData("SqlServer", true, Traits = ["Provider", "SqlServer"])]
-    public async Task Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(string provider, bool cancelClient)
+    public async Task Given_ObservedNativeContention_When_RequestExpiresOrCallerCancels_Then_WorkDrainsAndFreshAuthorizationRecovers(string provider, bool cancelClient)
     {
         var environment = await fixture.GetAsync(provider);
         using var browser = IssuerEnvironment.CreateBrowserClient();
         var code = await ExchangeEvidence.IssueAsync(environment, browser);
         var before = await ExchangeSnapshot.CaptureAsync(environment);
         var application = await ApplicationSnapshotAsync(environment);
-        var elapsed = new Stopwatch();
         await using (var held = await DatabaseRowLock.AcquireNativeCodeAsync(environment, provider, code.CodeId))
         {
-            using var caller = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
-            elapsed.Start();
-            var request = environment.RelyingParty.ExchangeAsync(code.Flow.Code, code.Flow.Verifier, cancellationToken: caller.Token);
-            DatabaseRowLock.BlockedCommand? blocked = null;
-            try
-            {
-                blocked = await held.WaitForRuntimeAsync(TestContext.Current.CancellationToken);
-                if (cancelClient)
-                {
-                    caller.Cancel();
-                    await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => { using var response = await request; });
-                }
-                else
-                {
-                    using var response = await request;
-                    if (blocked.IsUpdate)
-                    {
-                        // TryRedeemAsync catches the provider UPDATE failure and returns a native denial.
-                        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-                        var text = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
-                        SafeAssertions.ContainsNoSensitiveMaterial(text, code.Flow.Code, code.Flow.Verifier);
-                        using var denial = JsonDocument.Parse(text);
-                        Assert.True(denial.RootElement.GetProperty("error").GetString() == "invalid_grant" &&
-                            !denial.RootElement.TryGetProperty("access_token", out _) && !denial.RootElement.TryGetProperty("id_token", out _),
-                            "A failed native redemption UPDATE must deny issuance.");
-                    }
-                    else
-                    {
-                        await SafeFailureAsync(response, code.Flow.Code, code.Flow.Verifier);
-                    }
-                }
-            }
-            finally
-            {
-                caller.Cancel();
-                try
-                {
-                    try
-                    {
-                        (await request).Dispose();
-                    }
-                    catch (OperationCanceledException) when (caller.IsCancellationRequested) { }
-                }
-                finally
-                {
-                    using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(8));
-                    if (blocked is not null)
-                    {
-                        try
-                        {
-                            await held.DrainAsync(blocked, cleanup.Token);
-                        }
-                        catch { environment.Invalidate(); }
-                    }
-                    else
-                    {
-                        environment.Invalidate();
-                    }
-                }
-            }
-            elapsed.Stop();
-            Assert.False(environment.Invalidated, "The issuer database operation did not drain before cleanup.");
-            Assert.True(elapsed.Elapsed < TimeSpan.FromSeconds(11), "Blocked native work must finish within the recorded command/request bound.");
-            output.WriteLine("Provider={0}; cancelled={1}; blockedStage={2}; drainedMilliseconds={3:F0}",
-                provider, cancelClient, blocked.IsUpdate ? "update" : "read", elapsed.Elapsed.TotalMilliseconds);
+            await RequireBoundedContentionAsync(environment, provider, code, held, cancelClient);
         }
         // Fresh contexts, after the held transaction and native work have ended, are the persistence oracle.
         await code.RequireFreshAsync(environment);
-        Assert.True(application == await ApplicationSnapshotAsync(environment), "Faulted exchange must preserve application state.");
+        Assert.True(application == await ApplicationSnapshotAsync(environment), PreservedApplication);
         var after = await ExchangeSnapshot.CaptureAsync(environment);
-        Assert.True(before.TokenIds.SetEquals(after.TokenIds), "Blocked exchange must not create token entries.");
+        Assert.True(before.TokenIds.SetEquals(after.TokenIds), NoBlockedTokens);
         before.AssertAuditUnchanged(after);
         await RecoverAsync(environment, browser, code);
+    }
+
+    /// <summary>Times one exchange while retaining the independent blocker until the observed native session has drained.</summary>
+    private async Task RequireBoundedContentionAsync(IssuerEnvironment environment, string provider, ExchangeEvidence code,
+        DatabaseRowLock held, bool cancelClient)
+    {
+        using var caller = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        var elapsed = Stopwatch.StartNew();
+        var request = environment.RelyingParty.ExchangeAsync(code.Flow.Code, code.Flow.Verifier, cancellationToken: caller.Token);
+        DatabaseRowLock.BlockedCommand? blocked = null;
+        try
+        {
+            blocked = await held.WaitForRuntimeAsync(TestContext.Current.CancellationToken);
+            await RequireContendedResponseAsync(request, caller, code, cancelClient);
+        }
+        finally
+        {
+            caller.Cancel();
+            await JoinAndDrainAsync(environment, held, blocked, request, caller);
+        }
+        elapsed.Stop();
+        Assert.False(environment.Invalidated, UndrainedOperation);
+        Assert.True(elapsed.Elapsed < TimeSpan.FromSeconds(ContentionLimitSeconds), BoundedOperation);
+        output.WriteLine(ContentionDiagnostic, provider, cancelClient, blocked.IsUpdate ? UpdateStage : ReadStage,
+            elapsed.Elapsed.TotalMilliseconds);
+    }
+
+    /// <summary>Requires actual client cancellation or the coordinator's safe infrastructure failure without exposing code or verifier.</summary>
+    private static async Task RequireContendedResponseAsync(Task<HttpResponseMessage> request, CancellationTokenSource caller,
+        ExchangeEvidence code, bool cancelClient)
+    {
+        if (cancelClient)
+        {
+            caller.Cancel();
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => { using var response = await request; });
+        }
+        else
+        {
+            using var response = await request;
+            // The coordinator's Valid-row lock precedes TryRedeemAsync. Its UPDATE is an
+            // infrastructure acquisition, so read and update contention use the same safe failure.
+            await SafeFailureAsync(response, code.Flow.Code, code.Flow.Verifier);
+        }
+    }
+
+    /// <summary>Joins the original HTTP task and always attempts the independently bounded database drain before releasing its blocker.</summary>
+    private static async Task JoinAndDrainAsync(IssuerEnvironment environment, DatabaseRowLock held, DatabaseRowLock.BlockedCommand? blocked,
+        Task<HttpResponseMessage> request, CancellationTokenSource caller)
+    {
+        try
+        {
+            try
+            {
+                (await request).Dispose();
+            }
+            catch (OperationCanceledException) when (caller.IsCancellationRequested) { }
+        }
+        finally
+        {
+            using var cleanup = new CancellationTokenSource(TimeSpan.FromSeconds(ContentionCleanupSeconds));
+            if (blocked is not null)
+            {
+                try
+                {
+                    await held.DrainAsync(blocked, cleanup.Token);
+                }
+                catch { environment.Invalidate(); }
+            }
+            else
+            {
+                environment.Invalidate();
+            }
+        }
     }
 
     private static async Task<string> SafeFailureAsync(HttpResponseMessage response, params string[] secrets)

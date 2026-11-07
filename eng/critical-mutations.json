@@ -51,9 +51,9 @@
     },
     {
       "id": "native-replay",
-      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/Setup.cs",
-      "before": "options.RequireProofKeyForCodeExchange();",
-      "after": "options.RequireProofKeyForCodeExchange();\n            options.RemoveEventHandler(OpenIddict.Server.OpenIddictServerHandlers.RedeemTokenEntry.Descriptor);",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotIssuanceCoordinator.cs",
+      "before": "            return true;\n        }\n        finally",
+      "after": "            var manager = services.GetRequiredService<IOpenIddictTokenManager>();\n            var entry = await manager.FindByIdAsync(continuation.Principal.GetTokenId()!, token);\n            var descriptor = new OpenIddictTokenDescriptor();\n            await manager.PopulateAsync(descriptor, entry!, token);\n            descriptor.Status = OpenIddictConstants.Statuses.Valid;\n            await manager.UpdateAsync(entry!, descriptor, token);\n            return true;\n        }\n        finally",
       "method": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked",
       "marker": "Critical decision bypass: native-replay."
     }

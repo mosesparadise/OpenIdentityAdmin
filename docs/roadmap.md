@@ -3,8 +3,11 @@
 **Current feature022 acceptance batch — 7 November 2026:** the user selected T008,
 SQL Server validation and T009. Branch132 adds five pilot replay mutation controls,
 both-provider required CI jobs and 2,771-case native inventory, preserving every
-earlier identity. Required full hosted verification and integrated review remain
-open; no merge or correction acceptance is claimed by this candidate. See the
+earlier administrator identity. [PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126)
+is draft. Hosted SQL starts and both providers pass the new mutation controls;
+CI551 exposed response-contract and test-observer regressions being corrected.
+Twenty-two new native-error publication controls bring Host inventory to 1,874.
+Required clean exact-head full verification and integrated review remain open; no merge or correction acceptance is claimed by this candidate. See the
 [current evidence](../specs/022-pilot-replay-serialization/verification.md).
 
 **Current delivery — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)

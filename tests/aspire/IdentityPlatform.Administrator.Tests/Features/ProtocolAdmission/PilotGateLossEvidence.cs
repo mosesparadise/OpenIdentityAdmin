@@ -70,7 +70,7 @@ internal static class PilotGateLossEvidence
         if (infrastructure || response.StatusCode == HttpStatusCode.ServiceUnavailable)
         {
             Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
-            Assert.Empty(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+            await PilotWaitState.UnavailableAsync(response);
         }
         else
         {

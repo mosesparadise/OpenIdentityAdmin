@@ -18,6 +18,11 @@ internal sealed class PilotWaitState(string codeId, string authorizationId, stri
     private const string Enabled = "enabled";
     private const string InvalidAuthority = "Unknown pilot wait authority.";
     private const string Cookie = "Set-Cookie";
+    private const string IncidentHeader = "X-Identity-Incident";
+    private const string IncidentFormat = "N";
+    private const string UnavailableMessage = "Sign-in is temporarily unavailable. Return to your application and try again.";
+    private const string UnexpectedFailure = "Unexpected pilot infrastructure failure response.";
+    private const string InvalidIncident = "Expected an independent support identifier.";
     internal string CodeId => codeId;
     internal DateTimeOffset Expiration => expiration;
 
@@ -144,7 +149,10 @@ internal sealed class PilotWaitState(string codeId, string authorizationId, stri
         Assert.Null(response.Headers.Location);
         Assert.False(response.Headers.Contains(Cookie));
         Assert.True(response.Headers.CacheControl?.NoStore == true);
-        Assert.Empty(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        Assert.True(body == UnavailableMessage, UnexpectedFailure);
+        var incident = Assert.Single(response.Headers.GetValues(IncidentHeader));
+        Assert.True(Guid.TryParseExact(incident, IncidentFormat, out var id) && id != Guid.Empty, InvalidIncident);
     }
 
     /// <summary>Retains the native invalid_grant oracle and independently excludes every successful credential and browser authority channel.</summary>

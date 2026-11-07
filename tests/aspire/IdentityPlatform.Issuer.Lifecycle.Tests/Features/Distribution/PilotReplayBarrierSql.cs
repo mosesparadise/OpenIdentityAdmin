@@ -9,7 +9,8 @@ internal static class PilotReplayBarrierSql
     internal const string PgHold = "UPDATE platform.\"PilotReplayTestBarrier\" SET \"Touch\"=\"Touch\" WHERE \"Id\"=1";
     internal const string SqlHold = "UPDATE [platform].[PilotReplayTestBarrier] WITH (ROWLOCK) SET [Touch]=[Touch] WHERE [Id]=1";
     internal const string PgWait = "SELECT pid FROM pg_stat_activity WHERE datname=current_database() AND usename='platform_runtime' AND state='active' AND @blocker=ANY(pg_blocking_pids(pid)) AND (@gate=0 OR query LIKE '%PilotProtocolGate%')";
-    internal const string SqlWait = "SELECT CAST(r.session_id AS int) FROM sys.dm_exec_requests r JOIN sys.dm_exec_sessions s ON s.session_id=r.session_id CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t WHERE r.database_id=DB_ID() AND s.login_name='platform_runtime' AND r.blocking_session_id=@blocker AND r.wait_type LIKE 'LCK_M_%' AND (@gate=0 OR t.text LIKE '%PilotProtocolGate%')";
+    // The trigger executes as owner; retain the authenticated runtime identity across that context switch.
+    internal const string SqlWait = "SELECT CAST(r.session_id AS int) FROM sys.dm_exec_requests r JOIN sys.dm_exec_sessions s ON s.session_id=r.session_id CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t WHERE r.database_id=DB_ID() AND s.original_login_name='platform_runtime' AND r.blocking_session_id=@blocker AND r.wait_type LIKE 'LCK_M_%' AND (@gate=0 OR t.text LIKE '%PilotProtocolGate%')";
     internal const string PgDrain = "SELECT COUNT(*) FROM pg_stat_activity WHERE pid=@session AND (state<>'idle' OR xact_start IS NOT NULL)";
     internal const string SqlDrain = "SELECT COUNT(*) FROM sys.dm_exec_sessions s WHERE s.session_id=@session AND (s.open_transaction_count>0 OR EXISTS (SELECT 1 FROM sys.dm_exec_requests r WHERE r.session_id=s.session_id) OR EXISTS (SELECT 1 FROM sys.dm_tran_session_transactions t WHERE t.session_id=s.session_id))";
     internal const string PgSession = "SELECT pg_backend_pid()";

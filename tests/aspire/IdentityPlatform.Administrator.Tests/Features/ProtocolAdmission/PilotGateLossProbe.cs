@@ -2,6 +2,7 @@ using System.Data.Common;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
 using Microsoft.AspNetCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -25,6 +26,7 @@ internal sealed class PilotGateLossProbe(PilotGateLossStage stage) : DbCommandIn
     private const string Gate = "PilotProtocolGate";
     private const string Tokens = "OpenIddictTokens";
     private const string StagedValue = "synthetic-unpublished-output";
+    private const string DistinctSqlConnection = "The contender must own a different physical SQL connection after backend termination.";
     private const int WaitSeconds = 3;
     private readonly TaskCompletionSource held = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource release = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -33,6 +35,7 @@ internal sealed class PilotGateLossProbe(PilotGateLossStage stage) : DbCommandIn
     private readonly TaskCompletionSource acquired = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private DbContext? owner;
     private DbTransaction? transaction;
+    private Guid sqlConnectionId;
     private int paused;
     internal bool Armed
     {
@@ -73,22 +76,50 @@ internal sealed class PilotGateLossProbe(PilotGateLossStage stage) : DbCommandIn
     public override ValueTask<int> NonQueryExecutedAsync(DbCommand command, CommandExecutedEventData eventData, int result,
         CancellationToken cancellationToken = default)
     {
-        if (Armed && result == 1 && IsUpdate(command, Gate))
+        try
         {
-            if (Volatile.Read(ref paused) == 0)
+            if (Armed && IsUpdate(command, Gate))
             {
-                owner = eventData.Context;
-                transaction = command.Transaction;
-                Session = NativeLockObservation.Session(command.Connection!);
-            }
-            else
-            {
-                Assert.NotSame(transaction, command.Transaction);
-                Assert.NotEqual(Session, NativeLockObservation.Session(command.Connection!));
-                acquired.TrySetResult();
+                Assert.Equal(1, result);
+                if (Volatile.Read(ref paused) == 0)
+                {
+                    owner = eventData.Context;
+                    transaction = command.Transaction;
+                    Session = NativeLockObservation.Session(command.Connection!);
+                    sqlConnectionId = command.Connection is SqlConnection sql ? sql.ClientConnectionId : Guid.Empty;
+                }
+                else
+                {
+                    RequireNewOwner(command, eventData);
+                    acquired.TrySetResult();
+                }
             }
         }
+        catch (Exception error)
+        {
+            ReportFailure(error);
+            throw;
+        }
         return ValueTask.FromResult(result);
+    }
+
+    /// <summary>Distinguishes a new physical SQL connection even when SQL Server recycles the terminated session number.</summary>
+    private void RequireNewOwner(DbCommand command, CommandExecutedEventData eventData)
+    {
+        Assert.NotNull(eventData.Context);
+        Assert.NotSame(owner, eventData.Context);
+        Assert.NotSame(transaction, command.Transaction);
+        Assert.True(NativeLockObservation.Session(command.Connection!) > 0);
+        if (command.Connection is SqlConnection sql)
+        {
+            Assert.NotEqual(Guid.Empty, sqlConnectionId);
+            Assert.NotEqual(Guid.Empty, sql.ClientConnectionId);
+            Assert.True(sqlConnectionId != sql.ClientConnectionId, DistinctSqlConnection);
+        }
+        else
+        {
+            Assert.NotEqual(Session, NativeLockObservation.Session(command.Connection!));
+        }
     }
 
     /// <summary>Holds the separate consumption child before its conditional Valid-only native UPDATE can acquire the code lock.</summary>
@@ -145,7 +176,11 @@ internal sealed class PilotGateLossProbe(PilotGateLossStage stage) : DbCommandIn
     }
 
     /// <summary>Preserves the original observer failure instead of letting the production error boundary turn it into a barrier timeout.</summary>
-    internal void ReportFailure(Exception error) => held.TrySetException(error);
+    internal void ReportFailure(Exception error)
+    {
+        held.TrySetException(error);
+        acquired.TrySetException(error);
+    }
 
     /// <summary>Waits for the actual native barrier within the original production transaction budget.</summary>
     internal Task WaitAsync() => held.Task.WaitAsync(TimeSpan.FromSeconds(WaitSeconds), TestContext.Current.CancellationToken);

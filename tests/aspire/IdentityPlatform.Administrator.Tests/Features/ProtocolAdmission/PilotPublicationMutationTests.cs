@@ -70,11 +70,11 @@ public sealed class PilotPublicationMutationTests(BootstrapFixture fixture)
         Assert.False(bypass, CleanupBypass);
     }
 
-    /// <summary>Requires empty unavailable output and the exact reached disposal fault, never an arbitrary HTTP failure.</summary>
+    /// <summary>Requires the fixed safe unavailable output and the exact reached disposal fault, never an arbitrary HTTP failure.</summary>
     private static async Task RequireCleanupFailureAsync(HttpResponseMessage response, PilotGenerationFault fault)
     {
         Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
-        Assert.Empty(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        await PilotWaitState.UnavailableAsync(response);
         Assert.False(response.Headers.Contains(PilotGenerationFault.StagedHeader));
         Assert.Equal(1, fault.Disposals);
         Assert.Equal(1, fault.Failures);

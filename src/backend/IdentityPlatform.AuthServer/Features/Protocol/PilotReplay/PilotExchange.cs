@@ -13,7 +13,7 @@ internal sealed class PilotExchange(HttpContext http, ProtocolStorageRequest req
     private static readonly AsyncLocal<PilotExchange?> Ambient = new();
     private OpenIddictServerEvents.ProcessRequestContext? outer;
     private OpenIddictServerEvents.ProcessSignInContext? success;
-    private bool nativeError;
+    private OpenIddictResponse? nativeError;
     private bool generationStarted;
     internal bool StorageClosed
     {
@@ -62,7 +62,7 @@ internal sealed class PilotExchange(HttpContext http, ProtocolStorageRequest req
             context is OpenIddictServerEvents.BaseRequestContext { IsRequestHandled: true, IsRequestSkipped: false } &&
             !string.IsNullOrEmpty(context.Transaction.Response?.Error))
         {
-            nativeError = true;
+            nativeError = context.Transaction.Response;
         }
     }
 
@@ -94,11 +94,17 @@ internal sealed class PilotExchange(HttpContext http, ProtocolStorageRequest req
         request.RequireCurrent();
         if (!capture.IsSealed || (capture.StatusCode == StatusCodes.Status200OK
             ? success is not { IsRequestHandled: true, IsRejected: false, IsRequestSkipped: false }
-            : !nativeError || capture.StatusCode is not (StatusCodes.Status400BadRequest or StatusCodes.Status401Unauthorized)))
+            : !AllowsError()))
         {
             throw ProtocolStorageOwner.Unavailable();
         }
     }
+
+    /// <summary>Retains native client denials and admits the existing generation server error only after actual storage cleanup.</summary>
+    private bool AllowsError() => nativeError is not null &&
+        (capture.StatusCode is StatusCodes.Status400BadRequest or StatusCodes.Status401Unauthorized ||
+            capture.StatusCode == StatusCodes.Status500InternalServerError && generationStarted && StorageClosed &&
+            PilotServerError.Allows(capture, nativeError));
 
     /// <summary>Restricts coordination to pilot authorization-code sign-in; native handling remains unchanged for all other contexts.</summary>
     internal static bool Candidate(OpenIddictServerEvents.ProcessSignInContext context) =>

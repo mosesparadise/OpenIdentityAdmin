@@ -1,5 +1,94 @@
 # Pilot replay correction evidence
 
+## CI551 regression corrections — 7 November 2026
+
+[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126) remains draft.
+[CI551](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42390767562)
+at `0159cc26e0005284534e9fc98133b9bf433f06ce` is a failed acceptance attempt, retained
+without rerunning or relabeling it. The final run has 126 jobs: 115 succeeded,
+nine producer jobs failed, the final acceptance gate failed, and coverage was skipped.
+The [failed-attempt receipt](evidence/ci551-failed.json) binds the tested merge tree,
+all job outcomes and ten retained selected archives to their exact remote sizes and
+digests. It preserves failed native cases and both pilot mutation receipts without
+claiming acceptance or replacing the required original coverage inputs.
+Hosted SQL starts successfully with the unchanged
+pinned image. Both new pilot mutation jobs pass all five behavioral kills, so the
+local SQL startup limitation does not prevent hosted provider validation. A successful
+subset does not close T008/T009 or the required SQL cells.
+
+The broader run exposed these concrete integration issues:
+
+- The pilot boundary returned empty 503 instead of the established fixed sign-in
+  failure, independent incident header and safe event1001. It now reuses the account
+  formatter only after staged callbacks join and original HTTP features are restored.
+  The original watchdog remains active through fallback completion; cancellation,
+  expiry, already-started output or fallback failure aborts. Mixed hosting returns
+  after this boundary instead of rechecking a deliberately failed request. New pilot
+  assertions require the exact established fixed response, incident identifier and
+  absence of staged headers/cookies/redirects. The pre-existing real-process outage
+  and secret-free logging assertions remain intact.
+- The contention fixture labels SQL verbs, not native handler ownership. Its observed
+  UPDATE now belongs to the earlier conditional Valid-row acquisition. Noncancelled
+  contention therefore requires the exact infrastructure 503 for either read/update;
+  it no longer incorrectly assumes every UPDATE is native `TryRedeemAsync`. Actual
+  blocker/session drain, original budget, fresh unconsumed code, unchanged native/
+  application/audit state and fresh recovery remain required. The same four cases
+  now use `Given_ObservedNativeContention_When_RequestExpiresOrCallerCancels_Then_WorkDrainsAndFreshAuthorizationRecovers`;
+  their historical name remains in earlier evidence. Four exact obsolete quality
+  allowances were removed after splitting this touched test into documented bounded
+  helpers; no allowance was added or rebound.
+- Native signing-key generation rejection must retain its existing 500 `server_error`.
+  The pilot admits this only after generation starts and storage closes, with a live
+  original request and an actual handled native error. Its sealed JSON must contain
+  only exact scalar native error fields; credentials, duplicate fields, malformed
+  JSON, cookies and redirects are rejected. Existing400/401 and administrator-owned
+  handling remain unchanged. Twenty-two Host publication controls cover safe errors,
+  independent missing receipts and contaminated output; the existing certificate-tail
+  expiry/native-state/recovery test retains its original assertions. Its later
+  non-HTTP component probe now explicitly restores the original native redemption
+  descriptor in its isolated provider, before any dispatch, and uses the concrete
+  native dispatcher. This preserves the existing unsupported-ID-lifetime timing,
+  consumed code, exact earlier access entry and fresh HTTPS recovery evidence. It
+  does not change host options or relax the production requirement for a pilot HTTP
+  boundary. Three resolved legacy helper allowances were removed after extraction.
+- The SQL cross-process barrier executes its trigger as owner. Its observer must bind
+  `original_login_name`, which retains the authenticated runtime identity across that
+  context switch, instead of current `login_name`. Exact database/blocker/lock wait,
+  uniqueness, timing, both directions and native issuance/revocation assertions remain.
+  This is a source-supported observer correction; only the corrected hosted run can
+  establish its actual outcome.
+- Six SQL gate-loss cases timed out awaiting the contender observer signal. The
+  probe previously required a different SQL session number after `KILL`, although
+  SQL can recycle that number. It now requires a distinct nonempty physical
+  `ClientConnectionId`, context and transaction after an actual one-row gate UPDATE;
+  PostgreSQL retains its distinct process ID check. Observer assertions now fault
+  the waiting signal directly instead of becoming a later timeout. CI551 did not
+  retain the observed connection IDs, so reuse is a source-supported hypothesis,
+  not a demonstrated root cause. Actual termination, held old continuation, native
+  state and no-late-output oracles remain mandatory in the corrected SQL run.
+- The old `native-replay` descriptor-removal mutant became inert when the pilot began
+  explicitly invoking native redemption and registering its adapter. Its replacement
+  reactivates the same consumed code through the native manager within the still-held
+  generation transaction after the final Redeemed check. The existing witness still
+  emits its marker only after two independently validated 200 credential responses.
+  Identity, marker, method and kill count are unchanged; every other old mutant is
+  byte-identical. Exact old/new manifest hashes are pinned in the independent evidence
+  validator, which rejects unrelated changes. Both-provider behavioral execution is
+  required; a build failure or generic denial cannot count as a kill.
+
+[Iterative local correction reports](evidence/corrections-local.json) retain the
+passed and failed attempts without treating overlapping cases as a new acceptance
+total. The focused final key-policy case passes, including native500, consumed-code
+and fresh HTTPS recovery. The corrected solution builds without warnings; quality
+checks pass with seven obsolete allowances removed. Full Host1,874, PostgreSQL
+protocol162 and the focused operations/contention/gate-loss/publication runs are
+recorded at their actual working-tree boundaries. They do not establish SQL acceptance.
+
+The corrected source requires fresh exact-head CI, native discovery and artifact
+reconciliation. Host inventory is now 1,874 (+22), with 2,771 administrator cases and
+unchanged provider/browser partitions. Historical findings and manual/release gates
+remain open. The following candidate section records the earlier source boundary.
+
 ## T008 acceptance candidate — 7 November 2026
 
 The user selected **T008, SQL Server validation, and T009** for this batch. Branch

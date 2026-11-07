@@ -54,7 +54,7 @@ public sealed class PilotReplayPublicationTests(BootstrapFixture fixture)
     private static async Task RequireSuppressedAsync(HttpResponseMessage response)
     {
         Assert.Equal(HttpStatusCode.ServiceUnavailable, response.StatusCode);
-        Assert.Empty(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        await PilotWaitState.UnavailableAsync(response);
         Assert.Null(response.Headers.Location);
         Assert.False(response.Headers.Contains(SetCookie));
         Assert.False(response.Headers.Contains(PilotReplayPublicationFault.StagedHeader));

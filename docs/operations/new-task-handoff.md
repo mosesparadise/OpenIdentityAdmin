@@ -6,6 +6,10 @@ on `2b5990d79fa89b152bf6b2c382bf70e089efb705`; preserve branches130/131 and thei
 source/evidence. Source `71ab8e319ab183b8af21b0405f4a2ac565a93894` adds five pilot
 mutation controls and both-provider mandatory CI jobs. Native inventory is 2,771,
 preserving all 2,761 earlier identities, with ProtocolAdmission162/provider.
+PR126 is draft at the acceptance candidate. CI551 is retained as a failed full run:
+hosted SQL starts and both pilot mutation jobs pass, but response-contract, old-mutant
+and SQL observer failures require correction. The next candidate adds 22 native-error
+publication controls (Host 1,874) and preserves all existing acceptance obligations.
 See [current acceptance evidence](../../specs/022-pilot-replay-serialization/verification.md).
 
 The batch authorizes required exact-head hosted verification and normal reviewed
