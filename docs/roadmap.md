@@ -1,5 +1,33 @@
 # Delivery roadmap and task register
 
+## Current delivery — 7 November 2026
+
+Feature022 T001–T009 are complete for internal development. The selected T008,
+SQL Server validation and T009 batch is squash-merged in
+[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126) as
+`c2e41521ece542a92fa7ddb8867834b3d81b9ee3`. CI553 passes all 126 jobs at reviewed
+source `0be053ea3ee09086634ecf981f3bfb1f01917608`; the tested merge and squash have
+the same source tree. Independent review verifies 5,899 native executions,
+120 mutation kills, 83 UI cases, 44 Node contracts and 100 original coverage inputs
+meeting all 15 unchanged module floors. Both providers pass; SQL Distribution
+passes 27/27. [Final acceptance, hashes and retention limits](../specs/022-pilot-replay-serialization/acceptance.md).
+
+The initial pilot replay/late-issuance correction is accepted. The existing
+administrator UI, application editor, disable/re-enable and grant revocation remain
+available through native Aspire. All six historical findings, refresh activation
+and Windows/manual/Firefox/A-009/vendor/production/public-release gates remain open.
+
+Next: select the next approved roadmap slice; do not repeat feature022 implementation
+or SQL diagnostics. Preserve branches130–133, original failed-run receipts and the
+frozen provider-compatibility producer. Branch133’s isolated workflow is diagnostic
+only and must not be merged. This prose follow-up records accepted runtime evidence;
+its lighter documentation checks are not a new full runtime verification.
+
+## Historical checkpoints
+
+The dated notices below retain the state known at each checkpoint. Their pending,
+draft and next-step language is superseded by the current delivery above.
+
 **SQL ordering validated — 7 November 2026:** focused run42398907537 passes27/27,
 including both deterministic native-read conformance directions and both ordinary
 process directions. The actual matched native lock and gate-wait paths are both
@@ -596,7 +624,7 @@ Prerequisites: milestones 002–003 and the actual protocol capabilities being o
 | M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit OpenID-only consent. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
 | M04-C | PR120 delivers manager-hashed one-time shared secrets, enforced expiry, immediate explicit replacement and lost-output recovery with no plaintext reread. Asymmetric public-key registration and remaining credential lifecycle remain open. |
 | M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
-| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. Broader client profiles, clone/delete and manual/external acceptance remain open; the separate legacy pilot replay window is tracked in feature022. |
+| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. Broader client profiles, clone/delete and manual/external acceptance remain open; the separate legacy pilot replay correction is accepted in [feature022](../specs/022-pilot-replay-serialization/acceptance.md) via PR126. |
 
 ## Milestone 005 — Accounts and strong authentication (planned)
 
