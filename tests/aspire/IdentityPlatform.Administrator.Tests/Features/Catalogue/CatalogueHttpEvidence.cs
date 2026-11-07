@@ -23,6 +23,8 @@ internal static class CatalogueHttpEvidence
         RespectRequiredConstructorParameters = true,
         NumberHandling = JsonNumberHandling.Strict
     };
+    private const string AccessType = "access_token";
+    private const int FreshSeconds = 300;
     private const string JsonType = "application/json";
     private const string Cookies = "Set-Cookie";
     private const string NoSniff = "X-Content-Type-Options";
@@ -48,6 +50,23 @@ internal static class CatalogueHttpEvidence
         using var document = JsonDocument.Parse(bytes);
         Assert.Equal(fields.Order(), document.RootElement.EnumerateObject().Select(value => value.Name).Order());
         return bytes;
+    }
+
+    /// <summary>Uses original native issuer expiry and source MFA for direct API evidence; the browser also applies its own earlier transport ceiling.</summary>
+    internal static async Task RequireExpiryAsync(ApplicationHttpFixture test, DateTimeOffset expiry, bool browser)
+    {
+        await using var scope = test.Environment.Api!.Services.CreateAsyncScope();
+        var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var token = TestContext.Current.CancellationToken;
+        var native = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().SingleAsync(row => row.Type == AccessType, token);
+        var source = await database.Set<AdministratorSession>().AsNoTracking().SingleAsync(row => row.PublicId == test.SourceSession, token);
+        var signed = DateTimeOffset.FromUnixTimeSeconds(new DateTimeOffset(native.ExpirationDate!.Value, TimeSpan.Zero).ToUnixTimeSeconds());
+        var ceiling = new[] { signed, DateTimeOffset.FromUnixTimeSeconds(source.ExpiresAt), DateTimeOffset.FromUnixTimeSeconds(source.FactorVerifiedAt + FreshSeconds) }.Min();
+        Assert.True(expiry > test.Now && expiry <= ceiling);
+        if (browser)
+        {
+            Assert.True(expiry <= test.AccessExpiresAt);
+        }
     }
 
     /// <summary>Includes exact native scopes, all product rows and complete audit history around real HTTP denials.</summary>
