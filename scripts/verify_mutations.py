@@ -95,6 +95,29 @@ def report_checkpoints(root):
     return [checkpoints[index] for index in sorted(retained)]
 
 
+PILOT_WITNESS_METHODS = tuple('IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.' + method for method in (
+    'PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration',
+    'PilotEarlyReleaseWitness.RunAsync', 'PilotEarlyReleaseWitness.FinishAsync',
+    'PilotReplayGateProbe.ObserveAsync', 'PilotReplayBarrier.WaitAsync', 'PilotReplayBarrier.CompleteAsync',
+    'InitialPilotReplayEvidence.RequireCodeAsync', 'InitialPilotReplayEvidence.RequireRejectedAsync',
+    'InitialPilotReplayEvidence.RequireAsync', 'PilotMutationFlow.RequireFreshAsync',
+    'PilotMutationFlow.IsCommittedSuccessAsync'))
+
+
+def pilot_witness_frames(root):
+    """Diagnostic-only closed source method/line labels; never copy a path, message or argument."""
+    frames = []
+    for node in root.findall('.//{*}StackTrace'):
+        for line in (node.text or '').splitlines():
+            position = re.search(r':line ([1-9][0-9]{0,4})\s*$', line)
+            for method in PILOT_WITNESS_METHODS:
+                if position and re.match(r'\s*at ' + re.escape(method) + r'\(', line):
+                    item = {'method': method, 'line': int(position[1])}
+                    if item not in frames:
+                        frames.append(item)
+    return frames[:16]
+
+
 def report_observation(path, item):
     """Read at most two MiB and project untrusted XML into a finite, bounded schema."""
     try:
@@ -120,7 +143,8 @@ def report_observation(path, item):
             'summary_errors': min(len(root.findall('.//{*}ResultSummary//{*}ErrorInfo')), COUNTER_LIMIT),
             'marker_match': bool(marker and any(e.findtext('{*}Message', '').strip() == marker for e in errors)),
             'stack_match': bool(method and any(method + '(' in e.findtext('{*}StackTrace', '') for e in errors)),
-            'categories': report_categories(root), 'checkpoints': report_checkpoints(root)}
+            'categories': report_categories(root), 'checkpoints': report_checkpoints(root),
+            'pilot_witness_frames': pilot_witness_frames(root)}
 
 
 def retain_failure(report, item, error):
