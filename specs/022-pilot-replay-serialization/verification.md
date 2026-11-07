@@ -38,6 +38,14 @@ reviewed strict-runner validation, not independent raw-report reparsing. The sav
 mutation demonstrably releases exclusion on PostgreSQL; its SQL behavior remains
 unverified until the hosted run. Exact-head hosted acceptance is pending.
 
+CI551 at `0159cc26e0005284534e9fc98133b9bf433f06ce` caught a missing expected-job
+entry in `test_prepare_native_image.py`: the new pilot mutation job already prepares
+the correct pinned image, but the independent job inventory did not include it.
+The failure was reproduced locally. Adding the exact new entry preserves set,
+ordering and timeout assertions; all 22 related controls pass. The hosted run is
+retained as a failed attempt, and its other provider results do not establish full
+acceptance. The next candidate requires its own complete clean run.
+
 Provider/Aspire review found no verified local PAL configuration correction. Both
 retained HOME/workdir probes already reached the pinned sqlservr binary and failed
 creating `/.system`; neither is repeated. The unchanged pinned image and required
