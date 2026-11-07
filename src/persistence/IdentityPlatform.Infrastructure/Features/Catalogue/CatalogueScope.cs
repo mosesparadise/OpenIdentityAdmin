@@ -12,6 +12,7 @@ namespace IdentityPlatform.Infrastructure.Features.Catalogue;
 internal sealed record CatalogueScope(string Id, string Name, string DisplayName, string Kind, bool Enabled,
     string ConsentText, string? AudienceId, string? Resource, string Disclosure, long Revision)
 {
+    internal string Version => CatalogueVersion.Create(CatalogueVersion.Scope, Id, Revision);
     /// <summary>Reloads native state rather than trusting process-local manager caches, then resolves its current resource through the audience catalogue.</summary>
     internal static async Task<CatalogueScope> ReadAsync(ProtocolStorageScope scope, string id, CancellationToken token)
     {
@@ -26,15 +27,22 @@ internal sealed record CatalogueScope(string Id, string Name, string DisplayName
         await manager.PopulateAsync(descriptor, native, token);
         var policy = await scope.Owner.RunAsync(current => new ValueTask<ScopePolicy?>(scope.Owner.Database.Set<ScopePolicy>()
             .AsNoTracking().SingleOrDefaultAsync(row => row.ScopeId == id, current)), token);
-        if (policy is null || policy.ScopeId != id || policy.Revision <= 0 || descriptor.Resources.Count > 1 ||
+        var resource = descriptor.Resources.Count == 1 ? descriptor.Resources.Single() : null;
+        var audience = resource is null ? null : await ReadAudienceAsync(scope, resource, token);
+        return Capture(id, descriptor, policy, audience);
+    }
+
+    /// <summary>Shares only pure finite native/product validation between owned writes and rollback-only reads.</summary>
+    internal static CatalogueScope Capture(string id, OpenIddictScopeDescriptor descriptor, ScopePolicy? policy, CatalogueAudience? audience)
+    {
+        if (!CatalogueRules.IsIdentifier(id) || policy is null || policy.ScopeId != id || policy.Revision <= 0 || descriptor.Resources.Count > 1 ||
             descriptor.Description is not null || descriptor.Descriptions.Count != 0 || descriptor.DisplayNames.Count != 0 || descriptor.Properties.Count != 0)
         {
             throw new CatalogueRejected(CatalogueFailure.Unsupported);
         }
         var resource = descriptor.Resources.SingleOrDefault();
-        var audience = resource is null ? null : await ReadAudienceAsync(scope, resource, token);
         var input = new ScopeInput(descriptor.Name!, descriptor.DisplayName!, policy.Kind, policy.Enabled, policy.ConsentText, audience?.Id, policy.Disclosure);
-        if (CatalogueRules.Validate(input).Count != 0 || (policy.Kind == CatalogueRules.Identity && resource is not null))
+        if (CatalogueRules.Validate(input).Count != 0 || (policy.Kind == CatalogueRules.Identity && resource is not null) || resource != audience?.Resource)
         {
             throw new CatalogueRejected(CatalogueFailure.Unsupported);
         }
@@ -71,6 +79,6 @@ internal sealed record CatalogueScope(string Id, string Name, string DisplayName
     }
 
     /// <summary>Returns finite policy and native resource metadata after current references and publication authority are separately established.</summary>
-    internal ScopeDetails Details(bool referenced) => new(Id, Name, DisplayName, Kind, Enabled, ConsentText, AudienceId, Resource, Disclosure,
-        CatalogueVersion.Create(CatalogueVersion.Scope, Id, Revision), referenced);
+    internal ScopeDetails Details(bool referenced, DateTimeOffset expiry) => new(Id, Name, DisplayName, Kind, Enabled, ConsentText, AudienceId, Resource, Disclosure,
+        Version, referenced, expiry);
 }

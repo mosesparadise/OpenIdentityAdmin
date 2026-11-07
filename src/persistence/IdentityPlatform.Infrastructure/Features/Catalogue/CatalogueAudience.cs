@@ -7,6 +7,7 @@ namespace IdentityPlatform.Infrastructure.Features.Catalogue;
 /// <summary>Freezes audience metadata for exact post-save verification; a snapshot carries no independent authority to commit.</summary>
 internal sealed record CatalogueAudience(string Id, string Resource, string DisplayName, string Owner, bool Enabled, long Revision)
 {
+    internal string Version => CatalogueVersion.Create(CatalogueVersion.Audience, Id, Revision);
     /// <summary>Rejects aliased, malformed or nonpositive persisted identities before exposing them as protocol authority.</summary>
     internal static CatalogueAudience Capture(ApiAudience row)
     {
@@ -36,6 +37,6 @@ internal sealed record CatalogueAudience(string Id, string Resource, string Disp
     }
 
     /// <summary>Creates a fixed safe response only after the owning operation has separately established current reference state.</summary>
-    internal AudienceDetails Details(bool referenced) => new(Id, Resource, DisplayName, Owner, Enabled,
-        CatalogueVersion.Create(CatalogueVersion.Audience, Id, Revision), referenced);
+    internal AudienceDetails Details(bool referenced, DateTimeOffset expiry) => new(Id, Resource, DisplayName, Owner, Enabled,
+        Version, referenced, expiry);
 }

@@ -1,5 +1,11 @@
 # Documentation approval
 
+**Catalogue UI batch selection (7 November 2026):** the user selected “T005–T007,
+including T004 prerequisites” for the next three tasks. Complete catalogue reads and
+durable deletion, then the Admin API, BFF and Scopes/Audiences UI with their required
+provider/browser tests and dependencies. Existing M03-B/C authorization remains;
+this batch does not declare assignment or consented issuance/UserInfo complete.
+
 **Scope/audience catalogue selection (7 November 2026):** the user selected
 “M03-A–M03-C: scope and audience catalogue”, including its UI, dependencies and
 tests, after feature022 delivery. This authorizes [feature023](../specs/023-scope-audience-catalogue/spec.md):

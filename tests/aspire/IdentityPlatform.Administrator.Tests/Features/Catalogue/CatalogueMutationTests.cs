@@ -55,7 +55,7 @@ public sealed class CatalogueMutationTests(BootstrapFixture fixture)
         Assert.Equal(201, created.Status);
         var original = Assert.IsType<CatalogueScope>(created.Scope);
         await CatalogueMutationEvidence.RequireAuditAsync(test, correlation, ScopeCreated, CatalogueAssertions.ScopeTarget, original.Id, at);
-        var version = original.Details(false).Version;
+        var version = original.Version;
         var command = CatalogueIntent.Edit(original.Id, version, new ScopeInput(Name, Display, Api, false, Edited, audience.Id, None))!;
         var editCorrelation = Guid.NewGuid();
         var changed = await ExecuteAsync(test, command, correlation: editCorrelation);
@@ -64,7 +64,7 @@ public sealed class CatalogueMutationTests(BootstrapFixture fixture)
         Assert.False(changed.Scope!.Enabled);
         Assert.Equal(Edited, changed.Scope.ConsentText);
         await CatalogueMutationEvidence.RequireDeniedAsync(test, command, Stale);
-        var immutable = CatalogueIntent.Edit(original.Id, changed.Scope.Details(false).Version, new ScopeInput(Email, Display, Identity, true, Consent, null, Email))!;
+        var immutable = CatalogueIntent.Edit(original.Id, changed.Scope.Version, new ScopeInput(Email, Display, Identity, true, Consent, null, Email))!;
         await CatalogueMutationEvidence.RequireDeniedAsync(test, immutable, Conflict);
         await using var observer = test.Scope();
         var database = observer.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -96,7 +96,7 @@ public sealed class CatalogueMutationTests(BootstrapFixture fixture)
         Assert.Equal(DuplicateStatuses, creates.Select(value => value.Status).Order());
         var original = Assert.Single(creates, value => value.Status == Created).Audience!;
         await CatalogueMutationEvidence.RequireAuditAsync(test, creates[0].Status == Created ? firstCorrelation : secondCorrelation, AudienceCreated, CatalogueAssertions.AudienceTarget, original.Id, at);
-        var edit = CatalogueIntent.Edit(original.Id, original.Details(false).Version, new AudienceInput(Resource, Edited, Owner, false))!;
+        var edit = CatalogueIntent.Edit(original.Id, original.Version, new AudienceInput(Resource, Edited, Owner, false))!;
         firstCorrelation = Guid.NewGuid();
         secondCorrelation = Guid.NewGuid();
         var edits = await Task.WhenAll(ExecuteAsync(test, edit, correlation: firstCorrelation), ExecuteAsync(test, edit, peer, secondCorrelation));
@@ -127,7 +127,7 @@ public sealed class CatalogueMutationTests(BootstrapFixture fixture)
         var verified = await database.Set<AdministratorSession>().Select(row => row.FactorVerifiedAt).SingleAsync(test.Token);
         test.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(verified + MfaSeconds);
         var current = allowed.Audience!;
-        await CatalogueMutationEvidence.RequireDeniedAsync(test, CatalogueIntent.Edit(current.Id, current.Details(false).Version, new AudienceInput(Resource, Edited, Owner, false))!, Forbidden);
+        await CatalogueMutationEvidence.RequireDeniedAsync(test, CatalogueIntent.Edit(current.Id, current.Version, new AudienceInput(Resource, Edited, Owner, false))!, Forbidden);
         Assert.Empty(await database.Set<ScopePolicy>().AsNoTracking().ToArrayAsync(test.Token));
         var actual = await database.Set<ApiAudience>().AsNoTracking().SingleAsync(test.Token);
         Assert.True(actual.Enabled);

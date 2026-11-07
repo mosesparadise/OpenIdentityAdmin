@@ -16,9 +16,9 @@ internal static class CatalogueNativeReferences
     private const string Escape = "\\";
 
     /// <summary>Includes unmanaged native scopes and escaped JSON encodings; only decoded ordinal resources count as a reference.</summary>
-    internal static Task<bool> AudienceAsync(ProtocolStorageScope scope, string resource, CancellationToken token)
+    internal static Task<bool> AudienceAsync(IServiceProvider services, string resource, CancellationToken token)
     {
-        var store = scope.Services.GetRequiredService<IOpenIddictScopeStore<OpenIddictEntityFrameworkCoreScope>>();
+        var store = services.GetRequiredService<IOpenIddictScopeStore<OpenIddictEntityFrameworkCoreScope>>();
         var quoted = JsonSerializer.Serialize(resource);
         var candidates = store.ListAsync((rows, value) => rows.Where(row => row.Resources != null &&
                 (row.Resources.Contains(value) || row.Resources.Contains(Escape))).OrderBy(row => row.Id)
@@ -27,9 +27,9 @@ internal static class CatalogueNativeReferences
     }
 
     /// <summary>Includes every retained native authorization status and exact application scope permission, not just currently valid grants.</summary>
-    internal static async Task<bool> ScopeAsync(ProtocolStorageScope scope, string name, CancellationToken token)
+    internal static async Task<bool> ScopeAsync(IServiceProvider services, string name, CancellationToken token)
     {
-        var applications = scope.Services.GetRequiredService<IOpenIddictApplicationStore<OpenIddictEntityFrameworkCoreApplication>>();
+        var applications = services.GetRequiredService<IOpenIddictApplicationStore<OpenIddictEntityFrameworkCoreApplication>>();
         var permission = OpenIddictConstants.Permissions.Prefixes.Scope + name;
         var quotedPermission = JsonSerializer.Serialize(permission);
         var assigned = applications.ListAsync((rows, value) => rows.Where(row => row.Permissions != null &&
@@ -39,7 +39,7 @@ internal static class CatalogueNativeReferences
         {
             return true;
         }
-        var authorizations = scope.Services.GetRequiredService<IOpenIddictAuthorizationStore<OpenIddictEntityFrameworkCoreAuthorization>>();
+        var authorizations = services.GetRequiredService<IOpenIddictAuthorizationStore<OpenIddictEntityFrameworkCoreAuthorization>>();
         var quotedName = JsonSerializer.Serialize(name);
         var retained = authorizations.ListAsync((rows, value) => rows.Where(row => row.Scopes != null &&
                 (row.Scopes.Contains(value) || row.Scopes.Contains(Escape))).OrderBy(row => row.Id)

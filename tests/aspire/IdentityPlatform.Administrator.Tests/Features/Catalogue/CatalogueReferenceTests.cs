@@ -129,7 +129,7 @@ public sealed class CatalogueReferenceTests(BootstrapFixture fixture)
                 scope.Services.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.Owned);
                 await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
                 await ManagedRegistration.LockAsync(scope, token);
-                return audience ? await CatalogueNativeReferences.AudienceAsync(scope, Resource, token) : await CatalogueNativeReferences.ScopeAsync(scope, Name, token);
+                return audience ? await CatalogueNativeReferences.AudienceAsync(scope.Services, Resource, token) : await CatalogueNativeReferences.ScopeAsync(scope.Services, Name, token);
             });
         }
         finally { await request.DrainAsync(); }

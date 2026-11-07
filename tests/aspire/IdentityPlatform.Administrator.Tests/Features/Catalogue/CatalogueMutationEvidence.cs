@@ -45,7 +45,7 @@ internal static class CatalogueMutationEvidence
     }
 
     /// <summary>Includes all persisted native scope fields and every product/audit property, not just tracked or target-count observations.</summary>
-    private static async Task<string[]> SnapshotAsync(ApplicationMutationFixture test)
+    internal static async Task<string[]> SnapshotAsync(ApplicationMutationFixture test)
     {
         await using var scope = test.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -59,5 +59,5 @@ internal static class CatalogueMutationEvidence
     }
 
     /// <summary>Uses complete serialized values while preventing raw synthetic identity or policy fields from entering assertion diagnostics.</summary>
-    private static string Hash<T>(T value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(value))));
+    internal static string Hash<T>(T value) => Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(value))));
 }
