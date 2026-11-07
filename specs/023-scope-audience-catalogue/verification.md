@@ -295,3 +295,32 @@ overlaps, provider/story/UID substitutions, redistributed counts, incompatible C
 old combined coverage replacement reject. Actual native discovery retains2,871 cases;
 four real filtered discoveries reconcile107/55 per provider as exact disjoint unions.
 Independent source review and clean final-head hosted acceptance remain required.
+
+## Pilot replay observer correction — 7 November 2026
+
+Full CI561 [42422882155](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42422882155)
+at a75ade11444c89fc08cfef1aab12480b6d7b634a is rejected. PostgreSQL pilot replay
+job128555017387 passes its five baseline cases and first two mutant controls, then
+the premature-gate-release witness fails outside its strict mutation marker. The
+sanitized receipt establishes one failed case and an unknown error category; it does
+not identify a product defect or prove an observer timeout. No unrelated failure is
+credited as a mutation kill. The original raw failure report is unavailable.
+
+Source review identifies a separate concrete observer-lifetime race: when the replay
+response wins, the two-second lock observer continues polling during subsequent HTTP
+and database evidence checks. Stop and join that observer immediately upon response-first
+selection, before checking later evidence. An already-failed observer or in-flight query
+failure must still propagate. Winner-first and observer-first results retain their exact
+identity. Native response, committed revocation, original held-winner, fresh-control,
+cleanup and final strict-marker assertions remain unchanged, as do every deadline and
+native case identity. This correction does not establish the cause of CI561.
+
+Deterministic calibration runs inside the existing witness before native setup. A
+completed replay must signal stop while selection remains pending until the observer
+joins. Already-failed and later-failed observers propagate the same exception; other
+winners cannot signal stop. Local exact-source positive and restored controls pass;
+removing only the stop signal rejects at its exact immediate-stop assertion. Corrected
+helper SHA-256: `909683274c1597e00032e9faedc03ac61a02a69879805b80ca6e1411760b26ed`.
+The administrator test project builds with zero warnings/errors, repository quality
+controls pass, and independent test review accepts the source correction. Hosted native
+mutation verification and complete final-head acceptance are still required.
