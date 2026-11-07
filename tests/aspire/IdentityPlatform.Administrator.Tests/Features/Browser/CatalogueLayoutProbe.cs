@@ -13,6 +13,7 @@ internal static class CatalogueLayoutProbe
           const initial = { select: select.style.cssText, parent: parent.style.cssText, options: options.map(o => o.textContent) };
           const frames = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
           const tests = [
+            ['settle-only', () => {}],
             ['select-contain-paint', () => select.style.contain = 'paint'],
             ['select-appearance-none', () => select.style.appearance = 'none'],
             ['select-contain-inline-size', () => select.style.contain = 'inline-size'],
