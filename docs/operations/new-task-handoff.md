@@ -1,5 +1,23 @@
 # OpenIdentityAdmin new-task handoff
 
+**Current checkpoint — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)
+is merged, not draft: main is `e44667c45d103cdc3d70427577f89b77539f6f22`.
+Post-merge runs42326203442 and42329191762 report success. Feature021 T001–T018
+are complete for internal development; do not repeat that implementation or final
+acceptance. The prior worktree/evidence remains preserved. Native Aspire already
+provides application management and grant revocation; see the [walkthrough](../../specs/021-application-grant-revocation/quickstart.md).
+
+Continue the separately tracked initial pilot replay/late-issuance correction through
+[feature022](../../specs/022-pilot-replay-serialization/spec.md), its [plan](../../specs/022-pilot-replay-serialization/plan.md),
+[tasks](../../specs/022-pilot-replay-serialization/tasks.md) and [evidence](../../specs/022-pilot-replay-serialization/verification.md).
+Read the design's durable-consumption, actual lock ownership, no-late-issuance and
+both-provider/cross-process requirements before implementing. T001 planning has independent architecture/security and test acceptance; next is
+T002 baseline regression, then T003–T009 implementation/verification. No runtime
+correction or defect closure is claimed by this checkpoint. Existing approved
+LIFE-003/006 scope covers this preserving-contract correction; no expired approval
+is renewed. Refresh, six historical findings and all manual/platform/release gates
+remain open. Older draft/checkpoint notices below retain historical evidence only.
+
 **Grant revocation source accepted — 7 November 2026:** feature021 T001–T018 are complete
 for internal development. At `2343f2b`, [CI545](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42319410601)
 passes all 124 jobs on its first attempt. Independent reconciliation binds 118 artifacts,
