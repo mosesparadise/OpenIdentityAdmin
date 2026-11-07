@@ -6,15 +6,22 @@ The user selected M03-A–M03-C, including UI, dependencies and tests, and conse
 email/email_verified from the current Identity account. [Feature023](../specs/023-scope-audience-catalogue/spec.md)
 records the selected scope and [tasks](../specs/023-scope-audience-catalogue/tasks.md). T001 packet and T002
 Core policy/projection controls are complete; Core94/94 passes with independent review.
-T003 additive catalogue schema passes13/13 focused hosted checks on each provider
-(run42407104845), with independent source/runtime review. T004 native catalogue mutation
-and reference handling is in progress; no catalogue UI/API/UserInfo delivery or milestone
-acceptance is claimed yet.
+T003 additive catalogue schema is complete. Runtime checkpoint `9d3a437` on branch
+`135-scope-audience-catalogue` passes 13 schema and 8 create/edit/reference component
+cases per provider in run42408239551 (42 native passes, zero failed/skipped), with
+independent source/runtime review. T004 remains in progress; no catalogue endpoint,
+UI, UserInfo or milestone acceptance is claimed yet.
 
 Local PostgreSQL schema runs fail during container initialization with ENOSPC, even
 serially. Preserve both receipts; do not count them as schema failures or passes.
 Use bounded hosted PostgreSQL/SQL Server validation without changing pinned images
 or reviving old SQL startup experiments. Continue the selected implementation batch.
+Next bounded step: finish T004 permission-bound reads and durable deletion admission,
+status and worker completion, including exact original approval bounds and current
+reference/authority checks. Then deliver the versioned API/BFF and Scopes/Audiences UI
+(T005–T007), followed by assignment and consented token/UserInfo work. Continue under
+the already recorded M03-A–M03-C authorization. Keep the isolated validation workflow
+on branch136; integrate new native selections/coverage/mutations before full acceptance.
 Feature022 remains accepted; all historical/manual/refresh/production/release gates
 remain open. Earlier current-delivery notices describe their completed feature.
 

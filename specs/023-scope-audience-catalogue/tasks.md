@@ -43,3 +43,12 @@ No runtime task is declared independently parallel before its prerequisites exis
 
 Deliver coherent reviewed increments, preserving old application behavior at each
 boundary. Catalogue-only progress does not complete the selected M03-B/C tasks.
+
+## Current T004 checkpoint
+
+Create/edit coordination, fixed current permissions/fresh MFA, native/product/audit
+atomicity and bounded decoded native references have 16 both-provider component passes
+at runtime9d3a437. Schema adds another26 current passes. [Evidence and limits](component-evidence.json).
+T004 remains unchecked: permission-bound reads, durable deletion admission/status/worker
+and remaining fault/observed-contention controls are unfinished. Complete these next,
+then the API/BFF/UI tasks; keep the selected assignment/claims/UserInfo batch in scope.

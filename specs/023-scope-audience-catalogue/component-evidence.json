@@ -1,0 +1,85 @@
+{
+  "status": "bounded-component-pass",
+  "runtimeCommit": "9d3a43788ed4e74f323bf3c788de00ce2ce687cc",
+  "hostedHead": "65bf2ed4f2e2515e0487c06cf32d78a875d62745",
+  "sourceTree": "b9e06112060e389b66e32ea75757c79c27c9b757",
+  "testsTree": "0acbabaea59c3eb5b99fc07f1e7ecce00726e4c6",
+  "runId": 42408239551,
+  "runUrl": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551",
+  "results": [
+    {
+      "provider": "PostgreSql",
+      "group": "schema",
+      "jobId": 128510507007,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "provider": "SqlServer",
+      "group": "schema",
+      "jobId": 128510506819,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "provider": "PostgreSql",
+      "group": "mutation-reference",
+      "jobId": 128510507022,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "provider": "SqlServer",
+      "group": "mutation-reference",
+      "jobId": 128510507031,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "reconciliation": "Every hosted job matched its original native discovery names exactly to original TRX results and required all results Passed.",
+  "artifacts": [
+    {
+      "id": 13588591018,
+      "name": "catalogue-mutation-SqlServer",
+      "digest": "sha256:b8c4420589e089a142a6afc48fdb2d5cbb40981c8f7e7cb853b13a38e815bf08",
+      "expiresAt": "2026-11-14T19:55:31Z",
+      "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551/artifacts/13588591018"
+    },
+    {
+      "id": 13588447216,
+      "name": "catalogue-schema-PostgreSql",
+      "digest": "sha256:6e2dccb2129dd8e9bb33f6b562ad05dfa7aaa439a93174b237736cd9094680e7",
+      "expiresAt": "2026-11-14T19:53:34Z",
+      "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551/artifacts/13588447216"
+    },
+    {
+      "id": 13588227848,
+      "name": "catalogue-schema-SqlServer",
+      "digest": "sha256:facef03ff92df0cca7b3b30102589649973b9087c72d1af61516da6191ad6b3f",
+      "expiresAt": "2026-11-14T19:54:14Z",
+      "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551/artifacts/13588227848"
+    },
+    {
+      "id": 13588103380,
+      "name": "catalogue-mutation-PostgreSql",
+      "digest": "sha256:d4ed17a804387d89d30157730c2a43c546d923f00a3064e034c863da39ad8c0b",
+      "expiresAt": "2026-11-14T19:54:45Z",
+      "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551/artifacts/13588103380"
+    }
+  ],
+  "reviews": {
+    "architecture": "Early coordinator/writer/reference source review PASS; unimplemented boundaries excluded.",
+    "tests": "Corrected source and bounded runtime review PASS; exact-limit success controls calibrate overflow denials."
+  },
+  "limits": [
+    "T004 remains incomplete: read/list, durable deletion admission/status/worker and additional fault/observed contention controls remain.",
+    "No catalogue HTTP/BFF/UI, assignment, consented issuance or UserInfo activation.",
+    "No full CI, coverage/mutation acceptance or merge.",
+    "Original artifacts are hosted with seven-day retention. Local decoded logs were reviewed; no local archive or TRX-byte reparse is claimed."
+  ],
+  "priorFailedRun": 42407808413
+}

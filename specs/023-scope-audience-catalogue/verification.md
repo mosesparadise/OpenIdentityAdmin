@@ -133,3 +133,23 @@ JsonException normalization. Independent test review also required exact caller-
 audit fields and fresh full native-scope/product/audit snapshots around denials; both
 are implemented for scope/audience actions. Correction source review, build and quality
 pass. Corrected native execution remains pending; no T004 acceptance is claimed.
+
+## Corrected T004 component checkpoint
+
+Run[42408239551](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551)
+at isolated diagnostic65bf2ed passes all four jobs: schema13/13 and component8/8 on
+each provider, 42 actual native passes, zero failed/skipped. Original native discovery
+and TRX results reconcile exactly in each job. Tested source matches feature runtime
+`9d3a43788ed4e74f323bf3c788de00ce2ce687cc`; only the isolated workflow differs.
+[Exact source trees, artifact digests, review dispositions and limits](component-evidence.json).
+Independent corrected test/runtime review PASS. The successful exact-limit reference
+controls calibrate the overflow denials; the prior setup-failure false positive remains
+explicitly rejected. Build and quality pass without expanding allowances.
+
+This completes only the create/edit and current-native-reference component checkpoint.
+T004 still needs current permission-bound reads, durable deletion admission/status/worker,
+original-approval expiry/revocation/restart behavior, and remaining fault/observed-lock
+controls. T005–T016 remain unchecked. No catalogue HTTP/BFF/UI, application assignment,
+consented native claims/UserInfo, full CI/coverage/mutation acceptance or merge is claimed.
+Original artifacts expire14November2026; decoded logs were inspected locally, while
+local archive/TRX-byte retrieval remains unavailable through the file-URL proxy route.
