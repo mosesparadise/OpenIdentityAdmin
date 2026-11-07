@@ -24,7 +24,7 @@ internal static class PilotEarlyReleaseWitness
         var bypass = false;
         try
         {
-            var first = await Task.WhenAny(replay, observation, winner);
+            var first = await PilotReplayObservation.SelectAsync(replay, observation, winner, stop);
             if (first == winner)
             {
                 await winner;

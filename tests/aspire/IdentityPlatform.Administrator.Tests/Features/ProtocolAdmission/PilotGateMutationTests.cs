@@ -59,6 +59,7 @@ public sealed class PilotGateMutationTests(BootstrapFixture fixture)
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public async Task Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(string provider)
     {
+        await PilotReplayObservation.RequireOrderingAsync();
         var barrier = new PilotReplayBarrier();
         var gate = new PilotReplayGateProbe();
         await using var pilot = await BrowserPilotClient.CreateAsync();
