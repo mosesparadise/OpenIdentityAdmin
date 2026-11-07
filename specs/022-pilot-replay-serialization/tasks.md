@@ -1,5 +1,12 @@
 # Tasks: Pilot replay serialization
 
+**Current batch:** the user selected T008, SQL Server validation and T009. Branch132
+adds five pilot mutation witnesses per provider, mandatory hosted mutation jobs and
+updated native inventory at `71ab8e319ab183b8af21b0405f4a2ac565a93894`. T008/T009
+remain open until actual both-provider/full-CI evidence and integrated review pass.
+The prior implementation is preserved; local SQL startup is not repeated without
+a verified changed condition. See the current section in `verification.md`.
+
 T001 is the planning checkpoint. T002 retains a PostgreSQL old-source failure.
 T003–T004 are implemented on branch130; T005–T007 are implemented on
 `131-pilot-replay-coordination` at `6860a6b7b155d931b8d7e7757992ddceb1b428a4`.

@@ -1,5 +1,56 @@
 # Pilot replay correction evidence
 
+## T008 acceptance candidate — 7 November 2026
+
+The user selected **T008, SQL Server validation, and T009** for this batch. Branch
+`132-pilot-replay-acceptance` preserves the prior handoff `2b5990d79fa89b152bf6b2c382bf70e089efb705`.
+Source `71ab8e319ab183b8af21b0405f4a2ac565a93894` adds five behavioral mutation controls,
+their real-provider witnesses, portable native inventory and mandatory hosted jobs.
+Production behavior and migrations remain the reviewed T003–T007 implementation;
+subsequent style cleanup only orders imports and removes unnecessary directives.
+
+The controls independently omit gate acquisition, roll back native consumption,
+release the gate through a savepoint while generation remains active, omit generation
+commit, and omit actual scope cleanup. Each kill marker requires an observed protocol/
+native-storage violation. Setup failures, timeouts and unrelated errors cannot count
+as kills. The cleanup witness explicitly drains all actual scopes, including its
+fresh-flow positive control. Architecture/test review accepts these source boundaries
+conditionally; actual provider execution remains required.
+
+Native discovery is now **2,771 administrator cases**, adding exactly five per provider.
+All 2,761 previous identities, metadata and relative order remain. Each provider's
+ProtocolAdmission partition has 162 cases; browser cases remain 74/provider. No
+production gate, native validation, response rule, browser deferral or coverage floor
+was relaxed. All 74 selector controls and 62 mutation-verifier controls pass; the
+five PostgreSQL baseline witnesses pass. Initial formatting-only build errors were
+corrected; the rebuilt project and code-quality gate pass without allowances.
+
+Both provider mutation jobs are mandatory in the fail-closed final acceptance gate.
+Source-derived full-run obligations are 126 jobs, 103 native reports/5,875 executions,
+120 mutation kills, 120 artifacts, 100 original coverage inputs, 15 unchanged module
+floors, 83 UI cases and 44 Node contract identities. These are required counts, not
+completed hosted evidence. [Isolated PostgreSQL mutation evidence](evidence/mutation-candidate.json)
+passes all five baseline cases, demonstrates all five intended behavioral kills,
+then passes all five restored cases with source hashes restored. Independent review
+recomputes all mutation hashes and verifies exact identities, traits and clean
+restoration. Raw mutation TRXs are intentionally ephemeral; this is receipt plus
+reviewed strict-runner validation, not independent raw-report reparsing. The savepoint
+mutation demonstrably releases exclusion on PostgreSQL; its SQL behavior remains
+unverified until the hosted run. Exact-head hosted acceptance is pending.
+
+Provider/Aspire review found no verified local PAL configuration correction. Both
+retained HOME/workdir probes already reached the pinned sqlservr binary and failed
+creating `/.system`; neither is repeated. The unchanged pinned image and required
+SQL cells will run in the authorized hosted matrix. Local startup failure remains
+an environment limitation; it is not SQL or schema acceptance. Both-provider schema/
+transaction review is source-only until the actual required tests succeed.
+
+T008/T009 and outstanding both-provider acceptance remain open. Preserve all previous
+failed attempts, source receipts and frozen producer files. Historical findings,
+refresh activation and manual/Firefox/A-009/vendor/production/public-release gates
+remain open.
+
+
 ## T005–T007 implementation checkpoint — 7 November 2026
 
 Source `6860a6b7b155d931b8d7e7757992ddceb1b428a4` is pushed on

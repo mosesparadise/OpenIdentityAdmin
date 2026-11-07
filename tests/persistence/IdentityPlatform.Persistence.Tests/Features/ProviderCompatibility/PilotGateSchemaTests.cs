@@ -1,6 +1,6 @@
 using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
-using IdentityPlatform.Database;
 using IdentityPlatform.Core.Features.ApplicationGrants;
+using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Migrator.Features.Database.Upgrade;

@@ -1,5 +1,12 @@
 # Delivery roadmap and task register
 
+**Current feature022 acceptance batch — 7 November 2026:** the user selected T008,
+SQL Server validation and T009. Branch132 adds five pilot replay mutation controls,
+both-provider required CI jobs and 2,771-case native inventory, preserving every
+earlier identity. Required full hosted verification and integrated review remain
+open; no merge or correction acceptance is claimed by this candidate. See the
+[current evidence](../specs/022-pilot-replay-serialization/verification.md).
+
 **Current delivery — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)
 is squash-merged into main as `e44667c45d103cdc3d70427577f89b77539f6f22`.
 Both post-merge workflows report success. Durable application grant revocation,

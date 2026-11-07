@@ -1,5 +1,4 @@
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 

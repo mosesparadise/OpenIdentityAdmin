@@ -4,7 +4,6 @@ using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Administrator.Tests.Fixtures.Governance;
 using IdentityPlatform.Infrastructure.Persistence;
 using IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 

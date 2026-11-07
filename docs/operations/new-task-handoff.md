@@ -1,5 +1,21 @@
 # OpenIdentityAdmin new-task handoff
 
+**Current acceptance batch — 7 November 2026:** the user selected feature022 T008,
+SQL Server validation and T009. Work continues on `132-pilot-replay-acceptance`, based
+on `2b5990d79fa89b152bf6b2c382bf70e089efb705`; preserve branches130/131 and their
+source/evidence. Source `71ab8e319ab183b8af21b0405f4a2ac565a93894` adds five pilot
+mutation controls and both-provider mandatory CI jobs. Native inventory is 2,771,
+preserving all 2,761 earlier identities, with ProtocolAdmission162/provider.
+See [current acceptance evidence](../../specs/022-pilot-replay-serialization/verification.md).
+
+The batch authorizes required exact-head hosted verification and normal reviewed
+delivery; it does not renew historical diagnostic approvals or authorize production.
+Use the unchanged pinned SQL image on the hosted runner for required validation.
+Local HOME/workdir startup probes already failed; no verified corrective setting was
+found, so do not repeat them or add a root/permissions workaround. All historical,
+manual, refresh and public-release gates remain unchanged. Earlier notices below
+are historical checkpoints.
+
 
 **Current implementation checkpoint — 7 November 2026:** the next three tasks,
 feature022 T005–T007, are implemented on `131-pilot-replay-coordination`, source
