@@ -28,7 +28,8 @@ public sealed class PilotReplayDistributionTests(DistributionFixture fixture)
         var evidence = await ExchangeEvidence.IssueAsync(environment, browser);
         var expiration = await PilotReplayDistributionEvidence.ExpirationAsync(environment, evidence);
         var before = await ExchangeSnapshot.CaptureAsync(environment);
-        var barrier = await PilotReplayDatabaseBarrier.CreateAsync(environment, provider, evidence.AuthorizationId);
+        var barrier = await PilotReplayDatabaseBarrier.CreateAsync(environment, provider, evidence.AuthorizationId,
+            generations[source].Id, generations[target].Id);
         Task<HttpResponseMessage>? winner = null;
         Task<HttpResponseMessage>? replay = null;
         ExceptionDispatchInfo? failure = null;

@@ -23,6 +23,8 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     private const string AmbiguousWaiter = "The isolated barrier has more than one candidate runtime waiter.";
     private const string CleanupFailure = "Ordered pilot barrier cleanup failed.";
     private readonly string provider;
+    private readonly int winnerProcess;
+    private readonly int replayProcess;
     private readonly AsyncServiceScope owner;
     private readonly AsyncServiceScope observer;
     private readonly PlatformDbContext database;
@@ -32,9 +34,11 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     private int holder;
 
     /// <summary>Uses independent privileged fixture connections without changing either issuer runtime principal.</summary>
-    private PilotReplayDatabaseBarrier(IssuerEnvironment environment, string provider)
+    private PilotReplayDatabaseBarrier(IssuerEnvironment environment, string provider, int winnerProcess, int replayProcess)
     {
         this.provider = provider;
+        this.winnerProcess = winnerProcess;
+        this.replayProcess = replayProcess;
         owner = environment.Services.CreateAsyncScope();
         observer = environment.Services.CreateAsyncScope();
         database = owner.ServiceProvider.GetRequiredService<PlatformDbContext>();
@@ -42,9 +46,11 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     }
 
     /// <summary>Creates the finite barrier before either exchange, preserving native credentials and original expiry.</summary>
-    internal static async Task<PilotReplayDatabaseBarrier> CreateAsync(IssuerEnvironment environment, string provider, string authorization)
+    internal static async Task<PilotReplayDatabaseBarrier> CreateAsync(IssuerEnvironment environment, string provider, string authorization,
+        int winnerProcess, int replayProcess)
     {
-        var barrier = new PilotReplayDatabaseBarrier(environment, provider);
+        Assert.True(winnerProcess > 0 && replayProcess > 0 && winnerProcess != replayProcess);
+        var barrier = new PilotReplayDatabaseBarrier(environment, provider, winnerProcess, replayProcess);
         try
         {
             await barrier.InitializeAsync(authorization, TestContext.Current.CancellationToken);
@@ -88,7 +94,7 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     internal Task<int> WaitForWinnerAsync(Task<HttpResponseMessage> winner, CancellationToken token) =>
         WaitAsync(holder, gate: false, [winner], token);
 
-    /// <summary>Requires another runtime session waiting specifically on the winner's native pilot gate.</summary>
+    /// <summary>Requires a peer process blocked by the winner's gate or an exact native read lock in its still-gated generation transaction.</summary>
     internal Task<int> WaitForReplayAsync(int winner, Task<HttpResponseMessage> issuance, Task<HttpResponseMessage> replay, CancellationToken token) =>
         WaitAsync(winner, gate: true, [issuance, replay], token);
 
@@ -129,27 +135,39 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
         }
     }
 
-    /// <summary>Correlates direct provider lock ownership, database, runtime principal and the replay gate statement.</summary>
+    /// <summary>Correlates direct provider blocking, database, runtime identity and gate or exact native read resource ownership.</summary>
     private async Task<int?> ReadWaiterAsync(int blocker, bool gate, PilotReplaySqlWaitDiagnostics diagnostics, CancellationToken token)
     {
         var postgres = provider == PilotReplayBarrierSql.PostgreSql;
-        await using var command = Command(postgres ? PilotReplayBarrierSql.PgWait : PilotReplayBarrierSql.SqlWait + PilotReplaySqlWaitDiagnostics.Query);
+        await using var command = Command(postgres ? PilotReplayBarrierSql.PgWait : PilotReplaySqlWait.Query + PilotReplaySqlWaitDiagnostics.Query);
         Add(command, BlockerParameter, blocker);
         Add(command, GateParameter, gate ? 1 : 0);
         if (!postgres)
         {
             Add(command, PilotReplaySqlWaitDiagnostics.HolderParameter, holder);
+            Add(command, PilotReplaySqlWait.WinnerProcessParameter, winnerProcess);
+            Add(command, PilotReplaySqlWait.ReplayProcessParameter, replayProcess);
         }
         await using var rows = await command.ExecuteReaderAsync(token);
         int? session = null;
+        PilotReplaySqlWaitMode? mode = null;
         if (await rows.ReadAsync(token))
         {
             session = rows.GetInt32(0);
+            if (!postgres)
+            {
+                mode = (PilotReplaySqlWaitMode)rows.GetInt32(1);
+                Assert.True(Enum.IsDefined(mode.Value));
+            }
             Assert.False(await rows.ReadAsync(token), AmbiguousWaiter);
         }
         if (!postgres)
         {
             await diagnostics.CaptureAsync(rows, token);
+        }
+        if (mode is { } observed)
+        {
+            TestContext.Current.TestOutputHelper?.WriteLine(PilotReplaySqlWait.ObservedMode, observed);
         }
         return session;
     }
