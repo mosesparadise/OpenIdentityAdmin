@@ -8,6 +8,7 @@ using IdentityPlatform.AuthServer.Features.Pilot;
 using IdentityPlatform.AuthServer.Features.Protocol;
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.AuthServer.Features.Storage;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
@@ -77,6 +78,10 @@ internal static class Setup
             if (startup.AdministratorProtocol is not null)
             {
                 app.UseProtocolHosting();
+            }
+            else if (startup.PilotEnabled)
+            {
+                app.Use(PilotHttpBoundary.InvokeAsync);
             }
             app.UseAuthentication();
             app.UseAuthorization();

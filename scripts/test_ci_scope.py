@@ -1,4 +1,6 @@
 """Independent controls for documentation selection and final-job acceptance."""
+from pathlib import Path
+import re
 import subprocess
 import unittest
 from control_runner import run
@@ -8,7 +10,7 @@ from ci_scope import ALWAYS_JOBS, FULL_JOBS, changed_paths, event_paths, require
 
 EXPECTED_ALWAYS = frozenset(('scope', 'assurance', 'source-secrets'))
 EXPECTED_FULL = frozenset(('browser-plan', 'static-analysis', 'supply-chain', 'verify', 'browser',
-                           'contrast-experiment', 'mutations', 'administrator-mutations', 'governance-mutations', 'administrator-protocol-mutations', 'browser-session-mutations', 'application-mutations', 'managed-application-mutations', 'contracts', 'admin-ui', 'coverage'))
+                           'contrast-experiment', 'mutations', 'administrator-mutations', 'governance-mutations', 'administrator-protocol-mutations', 'pilot-replay-mutations', 'browser-session-mutations', 'application-mutations', 'managed-application-mutations', 'contracts', 'admin-ui', 'coverage'))
 
 
 class ScopeTests(unittest.TestCase):
@@ -85,6 +87,30 @@ class ScopeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             require_acceptance('unknown', self.results('full'))
 
+    def test_Given_pilot_mutation_obligation_When_workflow_is_scheduled_Then_both_providers_and_final_gate_are_required(self):
+        """Bind the workflow's new execution and artifact to the independently required final-job inventory."""
+        workflow = (Path(__file__).resolve().parents[1] / '.github/workflows/verify.yml').read_text()
+        self.assertEqual(1, workflow.count('\njobs:\n'))
+        blocks = re.findall(r'^  ([a-z][a-z-]*):\n(.*?)(?=^  [a-z][a-z-]*:|\Z)', workflow.split('\njobs:\n')[1], re.M | re.S)
+        jobs = dict(blocks)
+        self.assertEqual(len(blocks), len(jobs))
+        self.assertEqual(EXPECTED_ALWAYS | EXPECTED_FULL | {'acceptance'}, set(jobs))
+        needs = re.search(r'^    needs: \[([^\]]+)\]$', jobs['acceptance'], re.M)
+        self.assertIsNotNone(needs)
+        self.assertEqual(EXPECTED_ALWAYS | EXPECTED_FULL, set(needs[1].split(', ')))
+        pilot = jobs['pilot-replay-mutations']
+        for required in ("    if: needs.scope.outputs.scope == 'full'\n", '    needs: scope\n',
+                         '    timeout-minutes: 30\n', '      fail-fast: false\n',
+                         '        provider: [PostgreSql, SqlServer]\n',
+                         '      - run: python3 scripts/test_mutations.py\n',
+                         '        run: python3 scripts/prepare_native_image.py ${{ matrix.provider }}\n',
+                         '        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite pilot-replay --disposable-checkout\n',
+                         '          name: pilot-replay-mutations-${{ matrix.provider }}\n',
+                         '          path: artifacts/mutations/pilot-replay-${{ matrix.provider }}/evidence.json\n',
+                         '          if-no-files-found: error\n'):
+            self.assertIn(required, pilot)
+        self.assertNotIn('continue-on-error:', pilot)
+
     @staticmethod
     def results(scope):
         """Construct explicit expected outcomes without reading production selection logic."""
@@ -93,4 +119,4 @@ class ScopeTests(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    run(7)
+    run(8)

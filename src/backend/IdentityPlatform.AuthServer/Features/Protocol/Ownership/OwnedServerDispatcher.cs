@@ -2,6 +2,7 @@ using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Server;
@@ -28,7 +29,17 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
     {
         owner.RequireNeverActivated();
         host.RequireUnowned(context);
-        await native.DispatchAsync(context);
+        var exchange = PilotExchange.Current;
+        exchange?.Before(context);
+        if (context is OpenIddictServerEvents.ProcessSignInContext signIn && PilotExchange.Candidate(signIn))
+        {
+            await services.GetRequiredService<PilotIssuanceCoordinator>().RunAsync(signIn);
+        }
+        else
+        {
+            await native.DispatchAsync(context);
+        }
+        exchange?.After(context);
         owner.RequireNeverActivated();
         if (context is OpenIddictServerEvents.ProcessRequestContext request)
         {

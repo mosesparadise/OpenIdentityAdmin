@@ -1,0 +1,255 @@
+{
+  "source_sha": "71ab8e319ab183b8af21b0405f4a2ac565a93894",
+  "postgres_mutation_evidence": {
+    "version": 1,
+    "suite": "pilot-replay",
+    "commit": "71ab8e319ab183b8af21b0405f4a2ac565a93894",
+    "provider": "PostgreSql",
+    "source_sha256": {
+      "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotConsumption.cs": "16e2f011dc1cc65a7e2874b422af22ebcd33d83a10cb24b5694eccb04fdec0e0",
+      "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs": "b4f3629f1163245eacd48ed8503a01a431aef2056de748169ee414684cabe8fd"
+    },
+    "mutations": [
+      {
+        "id": "pilot-gate",
+        "mutant_sha256": "000e346add06a9c557253efaf815ada23961185c38985ebbb94a8fab4c6352d1",
+        "verdict": "killed_by_demonstrated_bypass",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "seconds": 35.994,
+        "tests": [
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")"
+        ]
+      },
+      {
+        "id": "pilot-durable-consumption",
+        "mutant_sha256": "d589d5f02251b1e31d33211d791af62d5565b8386454e45a7c1f1d7f9f57f9df",
+        "verdict": "killed_by_demonstrated_bypass",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "seconds": 35.029,
+        "tests": [
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")"
+        ]
+      },
+      {
+        "id": "pilot-premature-gate-release",
+        "mutant_sha256": "6cd40eec45212fa82de0f3d2e1aa11f30061a564d48129f29f31c3804c6fc176",
+        "verdict": "killed_by_demonstrated_bypass",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "seconds": 34.949,
+        "tests": [
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")"
+        ]
+      },
+      {
+        "id": "pilot-publication-commit",
+        "mutant_sha256": "112d7fbe8a55b0630cd3ee3ec6afd40ff7a2e12716011ee784631fd634723c37",
+        "verdict": "killed_by_demonstrated_bypass",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "seconds": 35.509,
+        "tests": [
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+        ]
+      },
+      {
+        "id": "pilot-publication-cleanup",
+        "mutant_sha256": "916a2246b02fbdff9c6b9fb50ca5afb501fdec01e84f93931aecebc50898d2a2",
+        "verdict": "killed_by_demonstrated_bypass",
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0,
+        "seconds": 35.214,
+        "tests": [
+          "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")"
+        ]
+      }
+    ],
+    "baseline": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 50.1,
+      "tests": [
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+      ]
+    },
+    "restored": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 43.679,
+      "tests": [
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+      ]
+    },
+    "source_restored": true
+  },
+  "isolated_report": {
+    "path": "/workspace/pilot-replay-mutation-checkout/artifacts/mutations/pilot-replay-PostgreSql/evidence.json",
+    "sha256": "6044117e3a1c2df91ac51620d1b437c56b110eacad691b587090b0955300ea14",
+    "bytes": 5688
+  },
+  "runtime_log": {
+    "path": "/workspace/pilot-t008-mutations-pg.log",
+    "sha256": "6299c16f910800698d30c26d9ee7b1170fd37558b1f20c4cdb636fe3aaba39a1",
+    "bytes": 11165
+  },
+  "inventory": {
+    "base": "2b5990d79fa89b152bf6b2c382bf70e089efb705",
+    "retained_metadata_and_relative_order": 2761,
+    "added": [
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")",
+      "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")"
+    ],
+    "removed": [],
+    "counts": {
+      "PostgreSql": {
+        "all": 1333,
+        "http": 1259,
+        "protocol": 162,
+        "browser": 74
+      },
+      "SqlServer": {
+        "all": 1438,
+        "http": 1364,
+        "protocol": 162,
+        "browser": 74
+      }
+    },
+    "native_discovery_sha256": "3b55f48be20c3708529d9ae05a260f07cb35f5c7ede752318d5389e8ed32f3c3",
+    "inventory_sha256": "59bf9d1d0b3340ea577aeeadd02db2d417be18044dc31c20cd84e5c94402dccf",
+    "test_matrix_sha256": "3bc51702d228f0265e22795bfd0249d6e053e6461813db6362b4840474c6832b"
+  },
+  "ci_integration": {
+    "scope": "Source-only feature022 T008 CI/coverage integration; no native/provider/full-CI runtime acceptance",
+    "baseCommit": "2b5990d79fa89b152bf6b2c382bf70e089efb705",
+    "changedFiles": [
+      {
+        "path": ".github/workflows/verify.yml",
+        "sha256": "753a3ca25d642542b12401d2ba46be8f736e4aa6b9f8f258bcfc252ca89b19e7"
+      },
+      {
+        "path": "scripts/ci_scope.py",
+        "sha256": "a03ffe1107ba45c7f2b7b396063853c658feb27a7d0b4d82be97c648fb3e50ac"
+      },
+      {
+        "path": "scripts/test_ci_scope.py",
+        "sha256": "6bc8576a74e406fdfff51adde781180c1050bb905bfacefe2c05c96549210392"
+      }
+    ],
+    "newJobId": "pilot-replay-mutations",
+    "providers": [
+      "PostgreSql",
+      "SqlServer"
+    ],
+    "timeoutMinutesPerProvider": 30,
+    "suite": "pilot-replay",
+    "artifactNames": [
+      "pilot-replay-mutations-PostgreSql",
+      "pilot-replay-mutations-SqlServer"
+    ],
+    "reportPathTemplate": "artifacts/mutations/pilot-replay-${provider}/evidence.json",
+    "retainedCoverageInputs": 100,
+    "retainedRequiredCoverageModules": 15,
+    "retainedLegacyMutationKills": 110,
+    "sourceChecks": [
+      "YAML parse and exact equality for every pre-existing job except acceptance.needs",
+      "Final acceptance dependency adds only pilot-replay-mutations",
+      "All100expected coverage paths remain including bothprovider ProtocolAdmission andDistribution",
+      "Coveragepolicy/settings/selector/bounds/identity source bytes unchanged againstHEAD"
+    ],
+    "tests": [
+      {
+        "command": "python3 scripts/test_ci_scope.py",
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "command": "python3 scripts/test_browser_matrix.py",
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "initialRejectedControl": "New workflow inspection test initially captured top-level event keys; restricted inspection to the unique jobs section. Initial8-test run had1failure; corrected8-test run passed. No production acceptance rule relaxed.",
+    "limits": [
+      "New pilot-replay suite manifest and witnesses owned by independent test agent.",
+      "Root must refresh native inventory after newwitness additions.",
+      "Mutation kills, both-provider execution, coverage floors and finalCI remain unexecuted by this agent."
+    ]
+  },
+  "static_logs": [
+    {
+      "path": "/workspace/pilot-mutation-python-controls.log",
+      "sha256": "ecbba40d8a5fab37979977ad15971d79279c1966ef3c0ed51a3eb3acd2c9ea96",
+      "bytes": 17097
+    },
+    {
+      "path": "/workspace/pilot-t008-ci-scope.log",
+      "sha256": "637ad693971420b70a01476cd5d51065ecc3c7af270c41cfe91899ec8c2db4bd",
+      "bytes": 106
+    },
+    {
+      "path": "/workspace/pilot-t008-selection-tests.log",
+      "sha256": "6b0f6de9c50caaca3fbd76638ec749621a0706695430c6cbb4032ba1ce37ebb1",
+      "bytes": 17446
+    },
+    {
+      "path": "/workspace/pilot-t008-quality.log",
+      "sha256": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+      "bytes": 151
+    },
+    {
+      "path": "/workspace/pilot-t008-secrets.log",
+      "sha256": "4162a9d1644c7c98aa667be8018869c5730c596e8f8d9b1db52a469fc1c51d68",
+      "bytes": 81
+    }
+  ],
+  "limits": [
+    "PostgreSQL isolated mutation acceptance only; SQL and full exact-head hosted CI remain pending.",
+    "Earlier formatting-only build errors retained; no production change or allowance expansion.",
+    "Coverage obligations/floors unchanged; coverage acceptance not yet claimed.",
+    "All historical findings and refresh/manual/Firefox/A-009/vendor/production/public-release gates remain open."
+  ],
+  "independent_review": {
+    "scope": "Receipt plus reviewed strict-runner validation; raw mutant TRXs were ephemeral and were not independently reparsed.",
+    "baseline_passes": 5,
+    "demonstrated_kills": 5,
+    "restored_passes": 5,
+    "verified_source_and_mutant_hashes": true,
+    "source_checkout_clean": true,
+    "exact_native_identities_and_traits": true,
+    "sql_and_integrated_acceptance": "pending"
+  }
+}

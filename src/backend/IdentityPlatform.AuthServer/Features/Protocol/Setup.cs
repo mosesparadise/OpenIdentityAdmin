@@ -46,7 +46,7 @@ internal static class Setup
             options.AddFormExtractionProtection().AddTokenExtraction();
             if (profiles.Pilot)
             {
-                options.AddPilotReplayCleanup();
+                options.AddPilotReplayCleanup(standalone: profiles.Administrator is null);
             }
             if (profiles.Pilot || profiles.Managed)
             {

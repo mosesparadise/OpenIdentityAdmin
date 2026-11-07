@@ -7,13 +7,8 @@ using IdentityPlatform.Issuer.Lifecycle.Tests.Fixtures;
 using IdentityPlatform.Issuer.Tests.Fixtures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.JsonWebTokens;
 using OpenIddict.Abstractions;
-using OpenIddict.Server;
 using static OpenIddict.Abstractions.OpenIddictConstants;
-using static OpenIddict.Server.OpenIddictServerEvents;
 
 namespace IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation;
 
@@ -82,83 +77,8 @@ public sealed class GenerationGuardTests
         await LateIdentityFailureAsync(host);
     }
 
-    private static async Task LateIdentityFailureAsync(IssuerEnvironment host)
-    {
-        using var browser = host.NodeClient("auth", autoRedirect: true);
-        var code = await ExchangeEvidence.IssueAsync(host, browser);
-        var before = await ExchangeSnapshot.CaptureAsync(host);
-        string generatedTokenId;
-        // Native-pipeline integration only: the normal pilot rejects client lifetime overrides.
-        // An explicitly supplied native principal lifetime reaches the later ID generation boundary.
-        using (var runtime = host.RuntimeServices())
-        await using (var scope = runtime.CreateAsyncScope())
-        {
-            var dispatcher = scope.ServiceProvider.GetRequiredService<IOpenIddictServerDispatcher>();
-            var transaction = new OpenIddictServerTransaction
-            {
-                Options = runtime.GetRequiredService<IOptions<OpenIddictServerOptions>>().Value,
-                Logger = NullLogger.Instance,
-                CancellationToken = TestContext.Current.CancellationToken,
-                BaseUri = host.Issuer,
-                RequestUri = new Uri(host.Issuer, "/connect/token"),
-                EndpointType = OpenIddictServerEndpointType.Token,
-                Request = new OpenIddictRequest
-                {
-                    ClientId = "identityplatform-pilot",
-                    GrantType = GrantTypes.AuthorizationCode,
-                    Code = code.Flow.Code,
-                    CodeVerifier = code.Flow.Verifier,
-                    RedirectUri = host.RelyingParty.Callback
-                },
-                Response = new OpenIddictResponse()
-            };
-            var validated = new ValidateTokenContext(transaction)
-            {
-                Token = code.Flow.Code,
-                ValidTokenTypes = { TokenTypeIdentifiers.Private.AuthorizationCode },
-                DisableAudienceValidation = true
-            };
-            await dispatcher.DispatchAsync(validated);
-            Assert.False(validated.IsRejected);
-            Assert.NotNull(validated.Principal);
-            var authenticated = new ProcessAuthenticationContext(transaction) { AuthorizationCodePrincipal = validated.Principal };
-            transaction.SetProperty(typeof(ProcessAuthenticationContext).FullName!, authenticated);
-            var signIn = new ProcessSignInContext(transaction)
-            {
-                Principal = validated.Principal.Clone(_ => true).SetIdentityTokenLifetime(TimeSpan.FromSeconds(301))
-            };
-            await dispatcher.DispatchAsync(signIn);
-            Assert.True(signIn.IsRejected && signIn.Error == Errors.ServerError && signIn.ErrorDescription == ActiveKeyPolicy.SafeDescription);
-            Assert.False(string.IsNullOrEmpty(signIn.AccessToken), "The test did not reach failure after native access generation.");
-            var generated = new JsonWebToken(signIn.AccessToken);
-            Assert.True(generated.TryGetClaim(Claims.Private.TokenId, out var tokenId), "Generated access token has no native identity.");
-            generatedTokenId = tokenId.Value;
-            Assert.True(string.IsNullOrEmpty(signIn.IdentityToken) && string.IsNullOrEmpty(transaction.Response.AccessToken) &&
-                string.IsNullOrEmpty(transaction.Response.IdToken), "Rejected native pipeline returned credentials.");
-        }
-        await using (var scope = host.Services.CreateAsyncScope())
-        {
-            var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictTokenManager>();
-            var entry = await manager.FindByReferenceIdAsync(code.Flow.Code, TestContext.Current.CancellationToken);
-            Assert.NotNull(entry);
-            Assert.True(await manager.HasStatusAsync(entry, Statuses.Redeemed, TestContext.Current.CancellationToken));
-            var after = await ExchangeSnapshot.CaptureAsync(host);
-            var added = after.TokenIds.Except(before.TokenIds, StringComparer.Ordinal).ToArray();
-            Assert.True(before.TokenIds.IsSubsetOf(after.TokenIds), "Late rejection removed an existing native token row.");
-            Assert.True(added.Length == 1 && added[0] == generatedTokenId, "Late ID rejection must leave exactly the generated access entry.");
-            var access = await manager.FindByIdAsync(added[0], TestContext.Current.CancellationToken);
-            Assert.NotNull(access);
-            Assert.True(await manager.GetTypeAsync(access, TestContext.Current.CancellationToken) == TokenTypeIdentifiers.AccessToken &&
-                await manager.HasStatusAsync(access, Statuses.Valid, TestContext.Current.CancellationToken));
-            Assert.True(await manager.GetSubjectAsync(access, TestContext.Current.CancellationToken) == await manager.GetSubjectAsync(entry, TestContext.Current.CancellationToken) &&
-                await manager.GetApplicationIdAsync(access, TestContext.Current.CancellationToken) == await manager.GetApplicationIdAsync(entry, TestContext.Current.CancellationToken) &&
-                await manager.GetAuthorizationIdAsync(access, TestContext.Current.CancellationToken) == await manager.GetAuthorizationIdAsync(entry, TestContext.Current.CancellationToken),
-                "Earlier access entry changed the original code's identity binding.");
-        }
-        using var recovery = host.NodeClient("auth", autoRedirect: true);
-        var fresh = await host.AuthorizeAsync(recovery);
-        using var tokens = await DistributionEvidence.RedeemAsync(host, "auth", fresh);
-    }
+    /// <summary>Preserves isolated native late-generation evidence separately from the genuine HTTP key-failure and recovery assertions.</summary>
+    private static Task LateIdentityFailureAsync(IssuerEnvironment host) => NativeKeyGenerationEvidence.RequireAsync(host);
 
     private static async Task RequestOverrideAsync(KeyRotationEnvironment fixture)
     {

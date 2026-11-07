@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -6,7 +7,8 @@ using OpenIddict.Server;
 namespace IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 
 /// <summary>Preserves the native validation slot while isolating its replay-revocation writes from later issuance rollback.</summary>
-internal sealed class DurableServerValidation(IServiceScopeFactory factory, OpenIddictServerHandlers.Protection.ValidateTokenEntry native)
+internal sealed class DurableServerValidation(IServiceScopeFactory factory, OpenIddictServerHandlers.Protection.ValidateTokenEntry native,
+    PilotTokenValidation? pilot = null)
     : IOpenIddictServerHandler<OpenIddictServerEvents.ValidateTokenContext>
 {
     /// <summary>Delegates other profiles unchanged and commits fixed-profile native validation in its own bounded child.</summary>
@@ -17,6 +19,10 @@ internal sealed class DurableServerValidation(IServiceScopeFactory factory, Open
         {
             context.Reject(OpenIddictConstants.Errors.InvalidToken);
             return ValueTask.CompletedTask;
+        }
+        if (pilot is not null && PilotTokenValidation.Candidate(context))
+        {
+            return pilot.HandleAsync(context);
         }
         if (ManagedTokenBinding.Candidate(context.Principal))
         {

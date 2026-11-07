@@ -1,7 +1,24 @@
 # Tasks: Pilot replay serialization
 
-Only T001 is the planning checkpoint. All runtime work and defect acceptance remain
-open until their actual evidence is recorded in verification.md.
+**Current batch:** the user selected T008, SQL Server validation and T009. Branch132
+adds five pilot mutation witnesses per provider, mandatory hosted mutation jobs and
+updated native inventory at `71ab8e319ab183b8af21b0405f4a2ac565a93894`. T008/T009
+remain open until actual both-provider/full-CI evidence and integrated review pass.
+The prior implementation is preserved; local SQL startup is not repeated without
+a verified changed condition. See the current section in `verification.md`.
+
+T001 is the planning checkpoint. T002 retains a PostgreSQL old-source failure.
+T003–T004 are implemented on branch130; T005–T007 are implemented on
+`131-pilot-replay-coordination` at `6860a6b7b155d931b8d7e7757992ddceb1b428a4`.
+PostgreSQL now demonstrates the corrected initial-replay invariant, including both
+real process directions. These implementation tasks remain unchecked until their
+required SQL Server verification succeeds. SQL still exits before readiness; it is
+not a replay/schema test result. See `verification.md` for reports and limits.
+
+Next is T008/T009 integrated acceptance plus the outstanding SQL cells. Preserve
+existing source/evidence; do not repeat completed implementation or reopen expired
+diagnostic approvals. Native inventory reconciliation is already included; new
+mutation controls, coverage/full CI and final delivery acceptance remain open.
 
 ## Setup
 
@@ -9,7 +26,7 @@ open until their actual evidence is recorded in verification.md.
 
 ## US1 — Serialized concurrent exchanges
 
-- [ ] T002 [US1] Add the controlled initial-replay oracle under `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; retain complete baseline source/report hashes and demonstrate its old-source failure without a second replay. Preserve the existing later-cleanup/guard regressions in separate cases. C01/C08.
+- [x] T002 [US1] Add the controlled initial-replay oracle under `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; retain complete baseline source/report hashes and demonstrate its old-source failure without a second replay. Preserve the existing later-cleanup/guard regressions in separate cases. C01/C08.
 - [ ] T003 [US1] Add `PilotProtocolGate` model/configuration under `src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/`, new migrations in both `src/migrations/IdentityPlatform.Migrations.*` projects and fresh/upgrade/least-privilege tests under `tests/persistence/IdentityPlatform.Persistence.Tests/Features/`. Preserve histories and native data; never activate or repair the pilot from HTTP. C09.
 - [ ] T004 [US1] Implement feature-local database gate ownership and fresh native validation under `src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/`; wire both host entry paths without weakening `ProtocolStorageOwner.BeginChild()` or other profile selection. C01/C07/C10.
 

@@ -1,0 +1,1482 @@
+{
+  "schema": 1,
+  "sourceCommit": "0159cc26e0005284534e9fc98133b9bf433f06ce",
+  "testedMerge": "5b51b468cc12f2c096340b04c1b5b11cedc74e41",
+  "testedTree": "c6c671fa50e6b3821062cd94a01c9acfb1455ea5",
+  "run": 42390767562,
+  "attempt": 1,
+  "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42390767562",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "id": 128457671320,
+      "name": "Source secret checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457671436,
+      "name": "Change scope and documentation checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457671456,
+      "name": "Assurance register integrity",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707032,
+      "name": "Browser matrix selection",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707033,
+      "name": "Dependency, license and secret checks",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457707094,
+      "name": "Administrator mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707102,
+      "name": "Browser session mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707110,
+      "name": "Application mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707122,
+      "name": "Administrator protocol mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707127,
+      "name": "Focused WebKit contrast experiment",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707129,
+      "name": "Administrator UI",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707139,
+      "name": "Critical mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457707156,
+      "name": "Administrator mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707161,
+      "name": "Browser session mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707162,
+      "name": "Static analysis and formatting",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707163,
+      "name": "Governance mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707174,
+      "name": "Application mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707175,
+      "name": "Administrator protocol mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707191,
+      "name": "Pilot replay mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707207,
+      "name": "Governance mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707244,
+      "name": "Pilot replay mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707256,
+      "name": "Managed application mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707262,
+      "name": "Managed application mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707414,
+      "name": "Critical mutations SqlServer",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457707906,
+      "name": "issuer-PostgreSql-flows",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457707908,
+      "name": "PostgreSql-apphost-localdemo",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707912,
+      "name": "SqlServer-apphost-localdemo",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707914,
+      "name": "administrator-PostgreSql-bootstrap",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707939,
+      "name": "SqlServer-apphost-foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707949,
+      "name": "SqlServer-apphost-bffsessions",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707950,
+      "name": "issuer-SqlServer-boundaries",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707953,
+      "name": "PostgreSql-apphost-foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707961,
+      "name": "issuer-SqlServer-flows",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457707964,
+      "name": "administrator-SqlServer-bootstrap",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707973,
+      "name": "administrator-SqlServer-factors",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707980,
+      "name": "administrator-PostgreSql-recovery",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707983,
+      "name": "PostgreSql-apphost-bffsessions",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457707995,
+      "name": "issuer-PostgreSql-boundaries",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708004,
+      "name": "PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708009,
+      "name": "unit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708019,
+      "name": "administrator-PostgreSql-factors",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708022,
+      "name": "SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708035,
+      "name": "administrator-SqlServer-governance-failures",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708058,
+      "name": "administrator-SqlServer-ceremonies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708072,
+      "name": "administrator-PostgreSql-governance-commands",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708091,
+      "name": "administrator-PostgreSql-security",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708111,
+      "name": "administrator-PostgreSql-managedapplications-admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708114,
+      "name": "administrator-SqlServer-accounts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708116,
+      "name": "administrator-PostgreSql-accounts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708120,
+      "name": "administrator-SqlServer-governance-policy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708128,
+      "name": "administrator-SqlServer-browsersessions-product",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708144,
+      "name": "administrator-SqlServer-applications",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708149,
+      "name": "PostgreSql-lifecycle-restart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708153,
+      "name": "administrator-SqlServer-applicationgrants",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708154,
+      "name": "administrator-SqlServer-sessionrefresh",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708158,
+      "name": "administrator-PostgreSql-protocoladmission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708159,
+      "name": "administrator-SqlServer-managedapplications-admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708166,
+      "name": "administrator-SqlServer-recovery",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708167,
+      "name": "administrator-SqlServer-governance-commands",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708168,
+      "name": "PostgreSql-lifecycle-keyrotation-activation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457708174,
+      "name": "administrator-PostgreSql-governance-failures",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708189,
+      "name": "administrator-SqlServer-browsersessions-lifecycle",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708190,
+      "name": "administrator-PostgreSql-governance-policy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708192,
+      "name": "SqlServer-lifecycle-distribution",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457708199,
+      "name": "administrator-PostgreSql-browsersessions-lifecycle",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708200,
+      "name": "administrator-PostgreSql-browsersessions-foundations",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708202,
+      "name": "administrator-SqlServer-security",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708204,
+      "name": "administrator-PostgreSql-sessionrefresh",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708208,
+      "name": "administrator-SqlServer-managedapplications-issuance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708209,
+      "name": "SqlServer-lifecycle-keyrotation-retirement",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708216,
+      "name": "administrator-PostgreSql-managedapplications-issuance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708217,
+      "name": "administrator-PostgreSql-applicationgrants",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708239,
+      "name": "administrator-SqlServer-browsersessions-foundations",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708266,
+      "name": "SqlServer-lifecycle-keyrotation-activation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457708270,
+      "name": "SqlServer-lifecycle-restart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708271,
+      "name": "administrator-PostgreSql-browsersessions-product",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708272,
+      "name": "PostgreSql-lifecycle-keyrotation-retirement",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708277,
+      "name": "administrator-SqlServer-protocoladmission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128457708292,
+      "name": "PostgreSql-lifecycle-distribution",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457708524,
+      "name": "administrator-PostgreSql-applications",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457709363,
+      "name": "administrator-PostgreSql-ceremonies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748278,
+      "name": "Contracts chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748282,
+      "name": "Contracts webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748293,
+      "name": "Contracts core",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748823,
+      "name": "Browser administrator Security / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748846,
+      "name": "Browser administrator ApplicationLifecycle / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748858,
+      "name": "Browser administrator BrowserLogin / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748862,
+      "name": "Browser administrator Accounts / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748874,
+      "name": "Browser standard  / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748875,
+      "name": "Browser administrator ApplicationEditor / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748878,
+      "name": "Browser administrator Security / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748885,
+      "name": "Browser administrator Security / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748886,
+      "name": "Browser administrator BrowserSessions / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748899,
+      "name": "Browser administrator BrowserLogin / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748903,
+      "name": "Browser administrator ManagedConsent / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748907,
+      "name": "Browser administrator ApplicationAuthority / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748913,
+      "name": "Browser standard  / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748915,
+      "name": "Browser administrator BrowserLogin / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748916,
+      "name": "Browser administrator BrowserLogin / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748924,
+      "name": "Browser administrator Accounts / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748925,
+      "name": "Browser administrator Accounts / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748931,
+      "name": "Browser administrator ApplicationLifecycle / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748932,
+      "name": "Browser standard  / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748936,
+      "name": "Browser administrator ManagedConsent / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748939,
+      "name": "Browser administrator BrowserSessions / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748940,
+      "name": "Browser administrator BrowserProtection / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748941,
+      "name": "Browser administrator ManagedConsent / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748946,
+      "name": "Browser administrator BrowserSessions / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748950,
+      "name": "Browser administrator ApplicationAuthority / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748951,
+      "name": "Browser administrator ApplicationAuthority / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748952,
+      "name": "Browser administrator ApplicationEditor / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748961,
+      "name": "Browser administrator BrowserProtection / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748964,
+      "name": "Browser administrator BrowserProtection / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748972,
+      "name": "Browser administrator Accounts / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748980,
+      "name": "Browser administrator ApplicationLifecycle / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748989,
+      "name": "Browser administrator ApplicationLifecycle / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748992,
+      "name": "Browser administrator ApplicationEditor / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457748994,
+      "name": "Browser administrator ApplicationEditor / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457749000,
+      "name": "Browser administrator ManagedConsent / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457749002,
+      "name": "Browser administrator ApplicationAuthority / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457749017,
+      "name": "Browser standard  / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457749048,
+      "name": "Browser administrator BrowserSessions / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457749052,
+      "name": "Browser administrator BrowserProtection / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128457749059,
+      "name": "Browser administrator Security / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128465040734,
+      "name": "Per-module coverage",
+      "status": "completed",
+      "conclusion": "skipped"
+    },
+    {
+      "id": 128465343716,
+      "name": "Verification acceptance",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "retainedArtifacts": [
+    {
+      "artifactId": 13582381419,
+      "name": "foundation-administrator-PostgreSql-protocoladmission",
+      "bytes": 329416,
+      "sha256": "5248d4a849538b2900bbdc2301d367ab6b2dcf1933f639009226b9752c81bc38",
+      "localPath": "/workspace/attachments/ff12bac9-09ad-405b-a0d1-52e9473b448b/pilot-ci551-foundation-administrator-PostgreSql-protocoladmission.zip",
+      "reports": [
+        {
+          "name": "tests/administrator-PostgreSql-protocoladmission/Administrator.trx",
+          "counters": {
+            "total": "162",
+            "executed": "162",
+            "passed": "162",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": []
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/administrator-PostgreSql-protocoladmission/Administrator.trx",
+          "sha256": "c8d812297440ba596fc4c696b1ef84a881c03b10c31d4a8d640593c75a1074ef",
+          "bytes": 449916
+        },
+        {
+          "name": "coverage/administrator-PostgreSql-protocoladmission.cobertura.xml",
+          "sha256": "3167b10677d5c82383a688291b66f42350249d880a7cd54873ee5d7cf5fad418",
+          "bytes": 6373148
+        },
+        {
+          "name": "coverage/administrator-PostgreSql-protocoladmission.build.json",
+          "sha256": "52512cf174c71989d3d0a6081f15e80246a4b29d8a4d2aab1b806bd350ea7b1f",
+          "bytes": 4181
+        },
+        {
+          "name": "coverage/administrator-PostgreSql-protocoladmission.identity.json",
+          "sha256": "3ad07b77f61958d77ad55001e3a908f118f73a9a9f0935b72d4df3d54ff0bc16",
+          "bytes": 5017
+        }
+      ]
+    },
+    {
+      "artifactId": 13582205640,
+      "name": "foundation-issuer-SqlServer-flows",
+      "bytes": 296118,
+      "sha256": "1ca47298a4ecf77b7f9525c12c513f45ef93b238b9eb10e70d8fc21273381d55",
+      "localPath": "/workspace/attachments/ed82f585-ae07-4b81-ac1d-2074e0c28bf4/pilot-ci551-foundation-issuer-SqlServer-flows.zip",
+      "reports": [
+        {
+          "name": "tests/issuer-SqlServer-flows/Issuer.trx",
+          "counters": {
+            "total": "131",
+            "executed": "131",
+            "passed": "128",
+            "failed": "3",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsTests.Stopped_database_denies_a_valid_exchange_within_budget_without_liveness_failure(provider: \"SqlServer\")",
+              "message": "Unexpected outage response."
+            },
+            {
+              "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Native_issuance_failure_keeps_code_redemption_and_real_process_logs_secret_free(provider: \"SqlServer\")",
+              "message": "Unexpected infrastructure failure response."
+            },
+            {
+              "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(provider: \"SqlServer\", cancelClient: False)",
+              "message": "Unexpected infrastructure failure response."
+            }
+          ]
+        }
+      ],
+      "members": [
+        {
+          "name": "coverage/issuer-SqlServer-flows.build.json",
+          "sha256": "3c4ff9663665f10411a128189630bad8a1b42cdc34b46f3d553efc38708e3617",
+          "bytes": 4161
+        },
+        {
+          "name": "tests/issuer-SqlServer-flows/Issuer.trx",
+          "sha256": "98b649c24bef03c0185aace3de82e555422eadcef4160de8bd058a449b683426",
+          "bytes": 252754
+        },
+        {
+          "name": "coverage/issuer-SqlServer-flows.cobertura.xml",
+          "sha256": "3ee94bbd4e6e67c99a57d6decab9bd98ca05932a1da132a15a5bea5ee2f348ba",
+          "bytes": 6234652
+        }
+      ]
+    },
+    {
+      "artifactId": 13582135991,
+      "name": "pilot-replay-mutations-PostgreSql",
+      "bytes": 1258,
+      "sha256": "eb46bb040f5d50153f92d5de2dfe23473a351f886344a0d345a483d1dd7e7a8e",
+      "localPath": "/workspace/attachments/dd997881-090b-49ac-857b-df163f80a99b/pilot-ci551-pilot-replay-mutations-PostgreSql.zip",
+      "reports": [],
+      "members": [
+        {
+          "name": "evidence.json",
+          "sha256": "e26d7a965fd3acdfdc1164b6ad4b918b4987f7853ca5ae45d21c79dc3176fa7e",
+          "bytes": 5688
+        }
+      ],
+      "mutationEvidence": {
+        "version": 1,
+        "suite": "pilot-replay",
+        "commit": "5b51b468cc12f2c096340b04c1b5b11cedc74e41",
+        "provider": "PostgreSql",
+        "source_sha256": {
+          "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotConsumption.cs": "16e2f011dc1cc65a7e2874b422af22ebcd33d83a10cb24b5694eccb04fdec0e0",
+          "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs": "d10480115b7e958dac15ecba75fcbccf26f8fe2d11f1571834e382ef797fe005"
+        },
+        "mutations": [
+          {
+            "id": "pilot-gate",
+            "mutant_sha256": "24cf16a8bd596a9cb5e902b3789bd8ae4d6787802c894ec6c7f2daac5c1d3f68",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 40.663,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")"
+            ]
+          },
+          {
+            "id": "pilot-durable-consumption",
+            "mutant_sha256": "d589d5f02251b1e31d33211d791af62d5565b8386454e45a7c1f1d7f9f57f9df",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 38.563,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")"
+            ]
+          },
+          {
+            "id": "pilot-premature-gate-release",
+            "mutant_sha256": "522cb1ef9ae177e6db2d1042333c5bce025599fabaeab82db13f619b96f286b0",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 37.157,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")"
+            ]
+          },
+          {
+            "id": "pilot-publication-commit",
+            "mutant_sha256": "78fcb4dfcb3829a525c4b988cbf1771b27db1ad13302660150e1df0dc0b7257f",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 36.798,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+            ]
+          },
+          {
+            "id": "pilot-publication-cleanup",
+            "mutant_sha256": "458882f4a41e08b78b1eaf824d5f3f750cb0e342ee1d203960736acf49798084",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 40.3,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")"
+            ]
+          }
+        ],
+        "baseline": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "seconds": 63.764,
+          "tests": [
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+          ]
+        },
+        "restored": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "seconds": 57.213,
+          "tests": [
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+          ]
+        },
+        "source_restored": true
+      }
+    },
+    {
+      "artifactId": 13582061662,
+      "name": "foundation-PostgreSql-lifecycle-distribution",
+      "bytes": 269430,
+      "sha256": "d6b091aec215adc25ca2b44d236f91c667484c67364d62245614351e3da0ccb6",
+      "localPath": "/workspace/attachments/8e005df7-f847-4016-a5d4-d6438b6ecfb8/pilot-ci551-foundation-PostgreSql-lifecycle-distribution.zip",
+      "reports": [
+        {
+          "name": "tests/PostgreSql-lifecycle-distribution/Issuer.Lifecycle.trx",
+          "counters": {
+            "total": "25",
+            "executed": "25",
+            "passed": "25",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": []
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/PostgreSql-lifecycle-distribution/Issuer.Lifecycle.trx",
+          "sha256": "7894b44801300a6bd07bdaa4a0ab71223efc12132b1275a0e95345025f821f72",
+          "bytes": 52750
+        },
+        {
+          "name": "coverage/PostgreSql-lifecycle-distribution.build.json",
+          "sha256": "56d021ff00137533fb38ac4a425e8106c1b46edf537cedcfb651fec029b0a83a",
+          "bytes": 4172
+        },
+        {
+          "name": "coverage/PostgreSql-lifecycle-distribution.cobertura.xml",
+          "sha256": "af724f2936b73112fe41f352e3ed98da7ec371ed33a8e3c3ad3c5b9104a088a8",
+          "bytes": 6230937
+        },
+        {
+          "name": "coverage/PostgreSql-lifecycle-distribution.identity.json",
+          "sha256": "2cc0472bbc6bfb9e9b5d4560e06c4ea3160b3d19a82072019cad3e5efd13c7ec",
+          "bytes": 4964
+        }
+      ]
+    },
+    {
+      "artifactId": 13581998337,
+      "name": "foundation-administrator-SqlServer-protocoladmission",
+      "bytes": 327835,
+      "sha256": "0f37e556336a3ad0cbbe023f6a6ef34df11330cbc5d3f60c3fe870e4c46a1a2a",
+      "localPath": "/workspace/attachments/00ac7a76-c116-46c8-a78c-6ea51e204e9e/pilot-ci551-foundation-administrator-SqlServer-protocoladmission.zip",
+      "reports": [
+        {
+          "name": "tests/administrator-SqlServer-protocoladmission/Administrator.trx",
+          "counters": {
+            "total": "162",
+            "executed": "162",
+            "passed": "156",
+            "failed": "6",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateLossTests.Given_HeldPilotContinuation_When_GateBackendTerminatesAndContenderCompletes_Then_OldRequestCannotWriteOrPublish(provider: \"SqlServer\", standalone: True, stage: AfterConsumption)",
+              "message": "System.TimeoutException : The operation has timed out."
+            },
+            {
+              "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateLossTests.Given_HeldPilotContinuation_When_GateBackendTerminatesAndContenderCompletes_Then_OldRequestCannotWriteOrPublish(provider: \"SqlServer\", standalone: False, stage: BeforeRevokedConsumption)",
+              "message": "System.TimeoutException : The operation has timed out."
+            },
+            {
+              "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateLossTests.Given_HeldPilotContinuation_When_GateBackendTerminatesAndContenderCompletes_Then_OldRequestCannotWriteOrPublish(provider: \"SqlServer\", standalone: False, stage: BeforeConsumption)",
+              "message": "System.TimeoutException : The operation has timed out."
+            },
+            {
+              "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateLossTests.Given_HeldPilotContinuation_When_GateBackendTerminatesAndContenderCompletes_Then_OldRequestCannotWriteOrPublish(provider: \"SqlServer\", standalone: False, stage: AfterConsumption)",
+              "message": "System.TimeoutException : The operation has timed out."
+            },
+            {
+              "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateLossTests.Given_HeldPilotContinuation_When_GateBackendTerminatesAndContenderCompletes_Then_OldRequestCannotWriteOrPublish(provider: \"SqlServer\", standalone: True, stage: BeforeConsumption)",
+              "message": "System.TimeoutException : The operation has timed out."
+            },
+            {
+              "name": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateLossTests.Given_HeldPilotContinuation_When_GateBackendTerminatesAndContenderCompletes_Then_OldRequestCannotWriteOrPublish(provider: \"SqlServer\", standalone: True, stage: BeforeRevokedConsumption)",
+              "message": "System.TimeoutException : The operation has timed out."
+            }
+          ]
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/administrator-SqlServer-protocoladmission/Administrator.trx",
+          "sha256": "9c010805e20f17e36eef6bf69c135cff688d03bdd490d2500a212cffaea4e2d6",
+          "bytes": 462361
+        },
+        {
+          "name": "coverage/administrator-SqlServer-protocoladmission.build.json",
+          "sha256": "436c88499f1aa5d434131cd71f1476980ec3a0151ae5b3f6a90f0fd7852ea6bb",
+          "bytes": 4180
+        },
+        {
+          "name": "coverage/administrator-SqlServer-protocoladmission.cobertura.xml",
+          "sha256": "7fdd75e99a1910f81f1d182fafd4f8827a94483ecca91069bffe961872d9baa9",
+          "bytes": 6372901
+        }
+      ]
+    },
+    {
+      "artifactId": 13581816996,
+      "name": "foundation-SqlServer-lifecycle-distribution",
+      "bytes": 267986,
+      "sha256": "2064774172a649457f26f923f7435fced2196b392c5e08ad8644d4482da01786",
+      "localPath": "/workspace/attachments/9f8f69cb-c515-4d9a-900a-1dbf843bc426/pilot-ci551-foundation-SqlServer-lifecycle-distribution.zip",
+      "reports": [
+        {
+          "name": "tests/SqlServer-lifecycle-distribution/Issuer.Lifecycle.trx",
+          "counters": {
+            "total": "25",
+            "executed": "25",
+            "passed": "23",
+            "failed": "2",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+              "message": "System.Threading.Tasks.TaskCanceledException : A task was canceled."
+            },
+            {
+              "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+              "message": "System.Threading.Tasks.TaskCanceledException : A task was canceled."
+            }
+          ]
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/SqlServer-lifecycle-distribution/Issuer.Lifecycle.trx",
+          "sha256": "0cb136c5431fc97fd8fe0099c9fc547224bf4e9c73d0166379675d9c45b34b56",
+          "bytes": 56325
+        },
+        {
+          "name": "coverage/SqlServer-lifecycle-distribution.build.json",
+          "sha256": "ef256be9c990606d3989889c95765a06c7a346299b58666f8cdf5111702d6615",
+          "bytes": 4171
+        },
+        {
+          "name": "coverage/SqlServer-lifecycle-distribution.cobertura.xml",
+          "sha256": "bc6b4323bc5b7090deb0806250f03ba784c42095f96bfa7138b02ab0a8b0a1c5",
+          "bytes": 6230710
+        }
+      ]
+    },
+    {
+      "artifactId": 13581755900,
+      "name": "foundation-issuer-PostgreSql-flows",
+      "bytes": 296294,
+      "sha256": "8f28bc32dfa8e2bb3efb2e682610051463e52c8877e420053d3cc51c6c042e35",
+      "localPath": "/workspace/attachments/b4e069cc-40c0-4ba8-949a-91360b788f40/pilot-ci551-foundation-issuer-PostgreSql-flows.zip",
+      "reports": [
+        {
+          "name": "tests/issuer-PostgreSql-flows/Issuer.trx",
+          "counters": {
+            "total": "131",
+            "executed": "131",
+            "passed": "128",
+            "failed": "3",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsTests.Stopped_database_denies_a_valid_exchange_within_budget_without_liveness_failure(provider: \"PostgreSql\")",
+              "message": "Unexpected outage response."
+            },
+            {
+              "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Native_issuance_failure_keeps_code_redemption_and_real_process_logs_secret_free(provider: \"PostgreSql\")",
+              "message": "Unexpected infrastructure failure response."
+            },
+            {
+              "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(provider: \"PostgreSql\", cancelClient: False)",
+              "message": "Assert.Equal() Failure: Values differ\nExpected: BadRequest\nActual:   ServiceUnavailable"
+            }
+          ]
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/issuer-PostgreSql-flows/Issuer.trx",
+          "sha256": "b852a3ccb7de4af6bf925188732ba104c54142a5826b6318d8be652ae88f5988",
+          "bytes": 252941
+        },
+        {
+          "name": "coverage/issuer-PostgreSql-flows.build.json",
+          "sha256": "650ec462dd7dcd9d81d6e2795a714f69613f3f48160326731d1ded5463ce74c2",
+          "bytes": 4162
+        },
+        {
+          "name": "coverage/issuer-PostgreSql-flows.cobertura.xml",
+          "sha256": "de237f35d5f68f50b6f1fcb686274523d98209d05632d2933a027c2b41d9e570",
+          "bytes": 6234877
+        }
+      ]
+    },
+    {
+      "artifactId": 13581274413,
+      "name": "foundation-SqlServer-lifecycle-keyrotation-activation",
+      "bytes": 264431,
+      "sha256": "cfc48de05894edbae7858016bd428b290af7c580415c495e7aa454ce991a5cd4",
+      "localPath": "/workspace/attachments/a56f8712-df53-418e-b16f-16f1a25a7a2c/pilot-ci551-foundation-SqlServer-lifecycle-keyrotation-activation.zip",
+      "reports": [
+        {
+          "name": "tests/SqlServer-lifecycle-keyrotation-activation/Issuer.Lifecycle.trx",
+          "counters": {
+            "total": "3",
+            "executed": "3",
+            "passed": "2",
+            "failed": "1",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation.GenerationGuardTests.Real_certificate_tail_expiry_and_request_override_fail_with_native_errors_and_fresh_recovery(provider: \"SqlServer\")",
+              "message": "Assert.Equal() Failure: Values differ\nExpected: InternalServerError\nActual:   ServiceUnavailable"
+            }
+          ]
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/SqlServer-lifecycle-keyrotation-activation/Issuer.Lifecycle.trx",
+          "sha256": "9dcf0612244c6324da2f35450e81538ec077f966e2392586b960d5409c75ea0d",
+          "bytes": 8348
+        },
+        {
+          "name": "coverage/SqlServer-lifecycle-keyrotation-activation.build.json",
+          "sha256": "a7f48fa72434aed011e95a140bfb327dbbf085d68cdbd9192a62e039ad9eb513",
+          "bytes": 4181
+        },
+        {
+          "name": "coverage/SqlServer-lifecycle-keyrotation-activation.cobertura.xml",
+          "sha256": "6cece5dc83053a5efe3ce641ee7dd5ab70bbf10afd8cb7f3ad437f46563f2b71",
+          "bytes": 6230841
+        }
+      ]
+    },
+    {
+      "artifactId": 13581148604,
+      "name": "pilot-replay-mutations-SqlServer",
+      "bytes": 1252,
+      "sha256": "a7e2d69ac8d211813695fc711445e1ad8629551b7707807d54751eaef0c57022",
+      "localPath": "/workspace/attachments/fd77645c-51fb-4185-8588-eb90e33d48ea/pilot-ci551-pilot-replay-mutations-SqlServer.zip",
+      "reports": [],
+      "members": [
+        {
+          "name": "evidence.json",
+          "sha256": "b27c3c578e3a78296e45be3e62b7ada681b561f5230fdcb79c9536476f4b447e",
+          "bytes": 5674
+        }
+      ],
+      "mutationEvidence": {
+        "version": 1,
+        "suite": "pilot-replay",
+        "commit": "5b51b468cc12f2c096340b04c1b5b11cedc74e41",
+        "provider": "SqlServer",
+        "source_sha256": {
+          "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotConsumption.cs": "16e2f011dc1cc65a7e2874b422af22ebcd33d83a10cb24b5694eccb04fdec0e0",
+          "src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs": "d10480115b7e958dac15ecba75fcbccf26f8fe2d11f1571834e382ef797fe005"
+        },
+        "mutations": [
+          {
+            "id": "pilot-gate",
+            "mutant_sha256": "24cf16a8bd596a9cb5e902b3789bd8ae4d6787802c894ec6c7f2daac5c1d3f68",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 57.436,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")"
+            ]
+          },
+          {
+            "id": "pilot-durable-consumption",
+            "mutant_sha256": "d589d5f02251b1e31d33211d791af62d5565b8386454e45a7c1f1d7f9f57f9df",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 55.972,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"SqlServer\")"
+            ]
+          },
+          {
+            "id": "pilot-premature-gate-release",
+            "mutant_sha256": "522cb1ef9ae177e6db2d1042333c5bce025599fabaeab82db13f619b96f286b0",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 57.435,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")"
+            ]
+          },
+          {
+            "id": "pilot-publication-commit",
+            "mutant_sha256": "78fcb4dfcb3829a525c4b988cbf1771b27db1ad13302660150e1df0dc0b7257f",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 54.944,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")"
+            ]
+          },
+          {
+            "id": "pilot-publication-cleanup",
+            "mutant_sha256": "458882f4a41e08b78b1eaf824d5f3f750cb0e342ee1d203960736acf49798084",
+            "verdict": "killed_by_demonstrated_bypass",
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 0,
+            "seconds": 56.403,
+            "tests": [
+              "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")"
+            ]
+          }
+        ],
+        "baseline": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "seconds": 86.766,
+          "tests": [
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")"
+          ]
+        },
+        "restored": {
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "skipped": 0,
+          "seconds": 83.334,
+          "tests": [
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotConsumptionMutationTests.Given_GenuineNativeRedemption_When_ConsumptionCompletes_Then_TheOriginalCodeRemainsConsumed(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")",
+            "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")"
+          ]
+        },
+        "source_restored": true
+      }
+    },
+    {
+      "artifactId": 13581094684,
+      "name": "foundation-PostgreSql-lifecycle-keyrotation-activation",
+      "bytes": 264575,
+      "sha256": "58541df7130de106447f827fce50ce875d5899db7ad9ac794bdc5304a2ba6bdb",
+      "localPath": "/workspace/attachments/44f30ab2-1910-40e8-82f8-b6e1f2dd43ba/pilot-ci551-foundation-PostgreSql-lifecycle-keyrotation-activation.zip",
+      "reports": [
+        {
+          "name": "tests/PostgreSql-lifecycle-keyrotation-activation/Issuer.Lifecycle.trx",
+          "counters": {
+            "total": "3",
+            "executed": "3",
+            "passed": "2",
+            "failed": "1",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation.GenerationGuardTests.Real_certificate_tail_expiry_and_request_override_fail_with_native_errors_and_fresh_recovery(provider: \"PostgreSql\")",
+              "message": "Assert.Equal() Failure: Values differ\nExpected: InternalServerError\nActual:   ServiceUnavailable"
+            }
+          ]
+        }
+      ],
+      "members": [
+        {
+          "name": "tests/PostgreSql-lifecycle-keyrotation-activation/Issuer.Lifecycle.trx",
+          "sha256": "42f8bc3e91a82160517378de848739c545dfd729feaead67a9a766538767061c",
+          "bytes": 8360
+        },
+        {
+          "name": "coverage/PostgreSql-lifecycle-keyrotation-activation.build.json",
+          "sha256": "93e68d80322dd601c5bbab72029a36e6b1b64f334a1698003fc6c151b173df1e",
+          "bytes": 4182
+        },
+        {
+          "name": "coverage/PostgreSql-lifecycle-keyrotation-activation.cobertura.xml",
+          "sha256": "74b4c6a8046af5d16d4f2391a6e432e6b5461703fb79b3bc97963ab48e48806a",
+          "bytes": 6231089
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "This is a failed full attempt, not integrated acceptance.",
+    "Only the listed selected archives are locally retained; complete remote artifact metadata is retained separately.",
+    "Mutation verdicts are sanitized receipts plus reviewed strict runner; raw mutant TRXs are ephemeral.",
+    "Corrected source requires its own clean exact-head full run."
+  ]
+}

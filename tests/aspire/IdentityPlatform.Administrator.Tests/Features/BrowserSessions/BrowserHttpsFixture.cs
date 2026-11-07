@@ -84,7 +84,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
     /// <summary>Initializes real enrollment and audited registration before any browser receives an account or BFF cookie.</summary>
     internal static async Task<BrowserHttpsFixture> CreateAsync(BootstrapFixture fixture, string provider,
         Action<IServiceCollection>? configureClient = null, Action<IServiceCollection>? configureIssuer = null, bool distinctSites = false,
-        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null, ApplicationMutationProbe? mutationProbe = null, Action<IServiceCollection>? configureApi = null, bool managed = false, FactorClock? clock = null)
+        BrowserPilotClient? pilot = null, bool workspace = false, bool applications = false, ApplicationProxyProbe? applicationProbe = null, ApplicationMutationProbe? mutationProbe = null, Action<IServiceCollection>? configureApi = null, bool managed = false, FactorClock? clock = null, bool standalonePilot = false)
     {
         var owner = new BrowserHttpsFixture(distinctSites);
         try
@@ -99,7 +99,7 @@ internal sealed class BrowserHttpsFixture : IAsyncDisposable
                 BrowserUpgradeFixture.Operator, ordinary.Registration, 1)));
             owner.database = await fixture.LeaseSessionsAsync(provider);
             owner.issuerHost = await BrowserIssuerHost.CreateHttpsAsync(owner.Issuer.Account.Journey, provider,
-                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer, pilot, managed);
+                owner.Profile.Registration, owner.Profile.ClientUri, owner.issuerEndpoint, configureIssuer, pilot, managed, standalonePilot);
             if (applications)
             {
                 owner.Api = await ApplicationApiHost.CreateAsync(owner.Issuer.Account.Journey, provider, owner.Profile.Issuer,

@@ -47,13 +47,19 @@ internal static class AccountRequestGuard
         }
         catch (Exception) when (!context.Response.HasStarted)
         {
-            var incident = Guid.NewGuid().ToString(GuidFormat);
-            failed(incident);
-            context.Response.Clear();
-            SetHeaders(context);
-            context.Response.Headers[IncidentHeader] = incident;
-            await WriteAsync(context, StatusCodes.Status503ServiceUnavailable, Unavailable);
+            await WriteUnavailableAsync(context, failed, CancellationToken.None);
         }
+    }
+
+    /// <summary>Writes only the established fixed failure and an independent support identifier after the caller discards unsafe output.</summary>
+    internal static Task WriteUnavailableAsync(HttpContext context, Action<string> failed, CancellationToken token)
+    {
+        var incident = Guid.NewGuid().ToString(GuidFormat);
+        failed(incident);
+        context.Response.Clear();
+        SetHeaders(context);
+        context.Response.Headers[IncidentHeader] = incident;
+        return WriteAsync(context, StatusCodes.Status503ServiceUnavailable, Unavailable, token);
     }
 
     /// <summary>Excludes liveness/readiness and fixed static assets from account-specific processing.</summary>
@@ -103,10 +109,10 @@ internal static class AccountRequestGuard
     }
 
     /// <summary>Completes a classified response without writing request-derived values.</summary>
-    private static Task WriteAsync(HttpContext context, int status, string message)
+    private static Task WriteAsync(HttpContext context, int status, string message, CancellationToken token = default)
     {
         context.Response.StatusCode = status;
         context.Response.ContentType = AccountPolicy.TextContentType;
-        return context.Response.WriteAsync(message, CancellationToken.None);
+        return context.Response.WriteAsync(message, token);
     }
 }

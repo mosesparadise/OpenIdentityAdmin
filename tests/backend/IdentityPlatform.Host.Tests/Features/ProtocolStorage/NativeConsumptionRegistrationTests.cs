@@ -1,5 +1,6 @@
 using IdentityPlatform.Admin.Bff.Features.Authentication.Ownership;
 using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,31 @@ public sealed class NativeConsumptionRegistrationTests
         RequireServer(options, OpenIddictServerHandlers.Protection.ValidateTokenEntry.Descriptor, typeof(DurableServerValidation), enabled);
         Assert.Contains(services, descriptor => descriptor.ServiceType == typeof(OpenIddictServerHandlers.RedeemTokenEntry));
         Assert.Contains(services, descriptor => descriptor.ServiceType == typeof(OpenIddictServerHandlers.Protection.ValidateTokenEntry));
+    }
+
+    /// <summary>Standalone and mixed pilot graphs replace exactly one native validation slot and preserve its filter contract.</summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Given_PilotComposition_When_ValidationIsRegistered_Then_OneNativeSlotAndResolvableHandlerRemain(bool standalone)
+    {
+        var services = new ServiceCollection().AddLogging();
+        var builder = services.AddOpenIddict().AddServer().AllowAuthorizationCodeFlow()
+            .SetAuthorizationEndpointUris(AuthorizationPath).SetTokenEndpointUris(TokenPath).AddEphemeralEncryptionKey().AddEphemeralSigningKey();
+        builder.AddPilotReplayCleanup(standalone);
+        if (!standalone)
+        {
+            builder.AddDurableServerConsumption();
+        }
+        using var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<OpenIddictServerOptions>>().Value;
+        RequireServer(options, OpenIddictServerHandlers.Protection.ValidateTokenEntry.Descriptor,
+            standalone ? typeof(PilotTokenValidation) : typeof(DurableServerValidation), true);
+        RequireServer(options, OpenIddictServerHandlers.RedeemTokenEntry.Descriptor,
+            standalone ? typeof(PilotRedemption) : typeof(DurableServerRedemption), true);
+        Assert.DoesNotContain(options.Handlers, descriptor => descriptor.ServiceDescriptor.ServiceType == typeof(PilotReplayCleanup));
+        Assert.Single(services, descriptor => descriptor.ServiceType == typeof(OpenIddictServerHandlers.Protection.ValidateTokenEntry));
+        Assert.Single(services, descriptor => descriptor.ServiceType == typeof(PilotTokenValidation));
     }
 
     /// <summary>Early client state consumption retains every native filter and precedes later endpoint/correlation processing.</summary>

@@ -23,11 +23,11 @@ public sealed class GrantUpgradeTests
         await SeedAsync(fixture);
         var before = await fixture.SnapshotAsync(provider);
         await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token);
-        var after = await fixture.SnapshotAsync(provider);
+        var after = PilotGateUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider));
         GrantUpgradeWitness.Require(provider, before, after);
         GrantUpgradeWitness.RejectDefects(provider, before, after);
         await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token);
-        GrantUpgradeWitness.Require(provider, before, await fixture.SnapshotAsync(provider));
+        GrantUpgradeWitness.Require(provider, before, PilotGateUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider)));
     }
 
     /// <summary>Seeds native authorization plus authorization-less token and disabled product metadata without any new job authority.</summary>

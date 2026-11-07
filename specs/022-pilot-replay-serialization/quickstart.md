@@ -1,8 +1,15 @@
 # Pilot replay correction validation
 
-This correction is planned, not implemented. The existing administrator UI and grant
-revocation are already delivered through PR124; use the [native Aspire grant
-walkthrough](../021-application-grant-revocation/quickstart.md) for local testing now.
+The complete pilot replay implementation is under acceptance in
+[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126). Hosted SQL Server
+starts with the unchanged pinned image, and both providers pass the five new mutation
+controls. CI551 exposed integration regressions that are being corrected; required
+exact-head full verification and T008/T009 review remain open. This candidate is not
+ready to merge or deploy. See [current evidence](verification.md).
+
+The existing administrator UI and grant revocation are already delivered through
+PR124; use the [native Aspire grant walkthrough](../021-application-grant-revocation/quickstart.md)
+for local testing. This correction adds no custom launch script.
 
 Implementation verification starts from the clean feature branch with the repository
 .NET10 SDK policy, locked dependencies, trusted development HTTPS and Docker ready.
@@ -22,8 +29,12 @@ case selectors from discovery rather than inventing names/counts in advance.
 5. Review the evidence and publish a precise correction status. Unexecuted cells stay
    open; a green planning PR does not establish runtime acceptance.
 
-For a future corrected local topology, drain/stop all old pilot issuers, apply normal
-Migrator upgrades, then start only corrected issuer binaries. Mixed old/new pilot
+For a corrected development topology, drain/stop every old pilot issuer before
+running the normal Migrator. The additive platform migrations are
+`20261107135812_PilotProtocolGate` for PostgreSQL and
+`20261107140026_PilotProtocolGate` for SQL Server. They add and seed the coordination
+row while preserving prior histories and native data; HTTP never creates or repairs
+this state. Start only corrected issuer binaries after migration succeeds. Mixed old/new pilot
 processes do not share this guarantee. Preserve existing native state and histories;
 normal disposable Aspire behavior stays as selected by the user. This guide does not
 authorize production migration or imply immediate offline token invalidation.

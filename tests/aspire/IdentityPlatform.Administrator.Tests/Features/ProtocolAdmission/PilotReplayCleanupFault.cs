@@ -23,7 +23,7 @@ internal sealed class PilotReplayCleanupFault : DbCommandInterceptor
     /// <summary>Uses the actual issuer database pipeline without replacing native managers or provider constraints.</summary>
     internal void Configure(IServiceCollection services) => services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(this));
 
-    /// <summary>Injects a finite provider-write failure only after the test has observed native redemption and the first completed replay.</summary>
+    /// <summary>Injects a finite native-write failure only after the test explicitly seeds a revoked code with valid linked access.</summary>
     public override ValueTask<InterceptionResult<int>> NonQueryExecutingAsync(DbCommand command, CommandEventData eventData,
         InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {

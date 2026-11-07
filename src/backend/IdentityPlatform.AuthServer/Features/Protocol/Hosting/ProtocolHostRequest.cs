@@ -18,6 +18,19 @@ internal sealed class ProtocolHostRequest
     }
     internal bool IsPilot => mode == ProtocolHostMode.PilotProtocol;
 
+    /// <summary>Copies only an already-validated pilot host identity into its fresh gate-owning generation scope.</summary>
+    internal void BindContinuation(ProtocolHostRequest original, OpenIddictServerEvents.ProcessSignInContext context)
+    {
+        original.RequireUnowned(context);
+        if (!original.IsPilot || original.Outer is not { IsRequestSkipped: true } || !original.extracted || http is not null)
+        {
+            throw ProtocolStorageOwner.Unavailable();
+        }
+        Bind(original.http!, original.endpoint, ProtocolHostMode.PilotProtocol);
+        Outer = original.Outer;
+        extracted = true;
+    }
+
     /// <summary>Allows one middleware routing decision before native handlers or account-page managers resolve.</summary>
     internal void Bind(HttpContext context, OpenIddictServerEndpointType expected, ProtocolHostMode selected)
     {

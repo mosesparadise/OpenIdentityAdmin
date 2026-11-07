@@ -1,0 +1,173 @@
+{
+  "source_sha": "bcb3bd52180286021582444c6ba5ed4bba1fd0ee",
+  "sdk": "10.0.403",
+  "runtime": "10.0.14",
+  "reports": [
+    {
+      "name": "postgres_persistence",
+      "path": "/workspace/pilot-foundation-persistence-pg-complete/persistence.trx",
+      "sha256": "bf79abfd8930e85c4aea15927311ccfb4e1eaa2112f700c3a5216dc39b9daf0f",
+      "outcomes": {
+        "Passed": 10
+      },
+      "test_names": [
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_LifecycleSchema_When_ReasonAndOwnershipConstraintsAreExercised_Then_OnlyOwnedFiniteReasonsAndExplicitDisabledStatePersist(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_PopulatedPriorAuditSchemas_When_CorrelationMigrationsRun_Then_AllRowsAndHistoryRemainWithNullRelations(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.BrowserAuditMigrationTests.Given_IndependentAuditUpgradeWitness_When_SchemaOrHistoricalRowsAreForged_Then_EachDefectDenies(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: True)",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: False)",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateContentionTests.Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"PostgreSql\")"
+      ]
+    },
+    {
+      "name": "postgres_https",
+      "path": "/workspace/pilot-foundation-https-pg-complete/https.trx",
+      "sha256": "8c6a812997d3c7307cdb19df7a2a9a131af03e474e5c0899d9f47d2035cbe26e",
+      "outcomes": {
+        "Failed": 1,
+        "Passed": 5
+      },
+      "test_names": [
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotReplayOrderingTests.Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.InitialPilotReplayTests.Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"PostgreSql\", standalone: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"PostgreSql\", standalone: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: True)"
+      ]
+    },
+    {
+      "name": "registration",
+      "path": "/workspace/pilot-foundation-host-final/host.trx",
+      "sha256": "3f72ed289ded4e71f19a84b496d876e464b667de2e640d070ac9e1b8703aa6b1",
+      "outcomes": {
+        "Passed": 8
+      },
+      "test_names": [
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_ServerComposition_When_DurableConsumptionSelected_Then_NativeOrderAndFiltersRemain(enabled: False)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_ServerComposition_When_DurableConsumptionSelected_Then_NativeOrderAndFiltersRemain(enabled: True)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_PilotComposition_When_ValidationIsRegistered_Then_OneNativeSlotAndResolvableHandlerRemain(standalone: True)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_PilotComposition_When_ValidationIsRegistered_Then_OneNativeSlotAndResolvableHandlerRemain(standalone: False)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_ClientComposition_When_DurableConsumptionSelected_Then_NativeEarlySlotRemains(enabled: True)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_ClientComposition_When_DurableConsumptionSelected_Then_NativeEarlySlotRemains(enabled: False)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_ReadPhase_When_ProtocolLockRequested_Then_NoAutocommitLockIsAllowed(client: True)",
+        "IdentityPlatform.Host.Tests.Features.ProtocolStorage.NativeConsumptionRegistrationTests.Given_ReadPhase_When_ProtocolLockRequested_Then_NoAutocommitLockIsAllowed(client: False)"
+      ]
+    },
+    {
+      "name": "sql_setup",
+      "path": "/workspace/pilot-foundation-persistence-sql/persistence.trx",
+      "sha256": "5bf1930022881551561cf75cac310383e16437d9d7327deba05778478d413d40",
+      "outcomes": {
+        "Failed": 1
+      },
+      "test_names": [
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"SqlServer\")"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/workspace/pilot-foundation-source-bcb3bd5.tar.gz",
+      "sha256": "571c9146d10fad5d71e62687eb8ebb965fd76694a72a9cc0609256d3335b3fbf",
+      "bytes": 4915203
+    },
+    {
+      "path": "/workspace/pilot-foundation-persistence-pg-complete.log",
+      "sha256": "6798689ce9da8ca027d3db79139b1a8c6e2ab66272db41c1ea616363862fd057",
+      "bytes": 7250
+    },
+    {
+      "path": "/workspace/pilot-foundation-https-pg-complete.log",
+      "sha256": "5b64e1a774530b898dbf6243d252c233348741eb52309af61658a54d61b26016",
+      "bytes": 81445
+    },
+    {
+      "path": "/workspace/pilot-foundation-host-final.log",
+      "sha256": "52c227c1295294a3276660822ffaccf813805d0b0d8c777a1e978066d3d60b47",
+      "bytes": 342
+    },
+    {
+      "path": "/workspace/pilot-foundation-persistence-sql.log",
+      "sha256": "63c38cdaaede872913ab6a6e33f220fbf9cb7fc064ab3e76476504cd53b5e56e",
+      "bytes": 6302
+    },
+    {
+      "path": "/workspace/pilot-foundation-build6.log",
+      "sha256": "943fd0078015a5c7d868d120959c79bea25c7e2b619ca1551c9918f3fc438dfc",
+      "bytes": 3633
+    },
+    {
+      "path": "/workspace/pilot-persistence-build-final2.log",
+      "sha256": "35b3895a57583816c1ab469ca331d14d7996abec0f99b6c979b3105e7d297e33",
+      "bytes": 2203
+    },
+    {
+      "path": "/workspace/pilot-host-build-final.log",
+      "sha256": "80a21a972fc145e974d4801a8013c0f17eb7d9d8b3c45b4d0d19654699dbba2e",
+      "bytes": 2485
+    },
+    {
+      "path": "/workspace/pilot-quality-complete.log",
+      "sha256": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6",
+      "bytes": 151
+    },
+    {
+      "path": "/workspace/pilot-assurance.log",
+      "sha256": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980",
+      "bytes": 87
+    },
+    {
+      "path": "/workspace/pilot-admin-discovery-final.json",
+      "sha256": "e56d229c98080d683c66a699d19c5e0e6a8215463b724cc513254bc49dd5633a",
+      "bytes": 3462898
+    },
+    {
+      "path": "/workspace/pilot-persistence-discovery-final.json",
+      "sha256": "635d8f7d5587d4c6dadb8788bca22d44b4c31784b64aefbec3bfddd42f99f844",
+      "bytes": 72279
+    },
+    {
+      "path": "/workspace/pilot-host-discovery.json",
+      "sha256": "8a45c75a534f260d38846fc6f7031723531e82fe046242a82cb4b2bea81237b5",
+      "bytes": 1987474
+    },
+    {
+      "path": "/workspace/pilot-selection-admin.log",
+      "sha256": "28d26235a78b6955a11132fceb0ae21aff1da08deac4c37e3cd14afe53b55dd2",
+      "bytes": 129
+    },
+    {
+      "path": "/workspace/pilot-selection-persistence.log",
+      "sha256": "dcd2147edfda2291b456dfb6d9f3021f0fed07760d5a1c8869fc5446f30e28fe",
+      "bytes": 104
+    }
+  ],
+  "limits": [
+    "HTTPS contains the mandatory failing initial-replay safety regression pending T005, not a clean pass.",
+    "SQL Server test failed before readiness; no SQL behavior evidence.",
+    "No full CI, cross-process, mutation, coverage, merge or integrated acceptance claimed."
+  ],
+  "discovery": {
+    "admin": {
+      "retained": 2669,
+      "added": 10,
+      "provider_counts": {
+        "PostgreSql": 1287,
+        "SqlServer": 1392
+      }
+    },
+    "persistence": {
+      "retained": 48,
+      "added": 10,
+      "provider_counts": {
+        "PostgreSql": 29,
+        "SqlServer": 29
+      }
+    }
+  }
+}

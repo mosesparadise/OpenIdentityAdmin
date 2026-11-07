@@ -1,98 +1,64 @@
 using System.Net;
-using System.Runtime.ExceptionServices;
 using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Issuer.Tests.Fixtures;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
 using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 
-/// <summary>Orders real pilot code redemption, replay revocation and later winning issuance without sleeps, transport emulation or weakened replay assertions.</summary>
+/// <summary>Preserves historical later-replay cleanup evidence using explicitly seeded native state, without recreating the prohibited issuance race.</summary>
 [Collection("administrator-bootstrap")]
 public sealed class PilotReplayOrderingTests(BootstrapFixture fixture)
 {
-    private const string RevocationFailure = "Ordered native replay failed: winning access remains unrevoked after replay completed before issuance.";
-
-    /// <summary>A replay response must not leave later-issued access usable; all preceding password, crypto and persisted code-state observations are independent.</summary>
+    /// <summary>A seeded revoked code retains valid linked access through a failed cleanup, then real replay revokes it without affecting another authorization.</summary>
     [Theory]
-    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
-    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
-    public async Task Given_RedeemedCodeBeforeWinningIssuance_When_ReplayRevocationCompletesFirst_Then_WinningAccessIsRevoked(string provider)
+    [InlineData("PostgreSql", false, Traits = ["Provider", "PostgreSql"])]
+    [InlineData("PostgreSql", true, Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", false, Traits = ["Provider", "SqlServer"])]
+    [InlineData("SqlServer", true, Traits = ["Provider", "SqlServer"])]
+    public async Task Given_SeededRevokedCodeWithValidAccess_When_ReplayCleanupFailsThenSucceeds_Then_OnlyBoundChainIsRevoked(string provider, bool standalone)
     {
-        var barrier = new PilotReplayBarrier();
+        var observation = new PilotCodeObservation();
         var fault = new PilotReplayCleanupFault();
         await using var pilot = await BrowserPilotClient.CreateAsync();
-        await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, pilot: pilot, configureIssuer: services =>
-        {
-            barrier.Configure(services);
-            fault.Configure(services);
-        }, clock: new FactorClock(TimeProvider.System));
+        await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, pilot: pilot, standalonePilot: standalone,
+            configureIssuer: services => { observation.Configure(services); fault.Configure(services); }, clock: new FactorClock(TimeProvider.System));
         var control = await PilotReplayJourney.AuthorizeAsync(environment, pilot.Client);
         var controlIdentity = pilot.Client.ExpectedIdentity;
         var flow = await PilotReplayJourney.AuthorizeAsync(environment, pilot.Client);
         var targetIdentity = pilot.Client.ExpectedIdentity;
-        pilot.Client.ExpectedIdentity = (candidate, cancellation) => ReferenceEquals(candidate, control)
-            ? controlIdentity(candidate, cancellation) : targetIdentity(candidate, cancellation);
-        barrier.Armed = true;
-        var token = TestContext.Current.CancellationToken;
-        var winner = pilot.Client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: token);
-        ExceptionDispatchInfo? failure = null;
-        string? targetAuthorization = null;
-        try
-        {
-            targetAuthorization = await RequireOrderingAsync(environment, pilot.Client, barrier, fault, flow, winner);
-        }
-        catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
-        await barrier.CompleteAsync(winner, failure);
-        barrier.Armed = false;
-        await RequireControlAsync(environment, pilot.Client, control, targetAuthorization!);
+        pilot.Client.ExpectedIdentity = (candidate, token) => ReferenceEquals(candidate, control)
+            ? controlIdentity(candidate, token) : targetIdentity(candidate, token);
+        var history = await PilotReplayHistory.SeedAsync(environment, pilot.Client, flow, observation);
+        await PilotReplayGuardEvidence.RequireAsync(environment, observation.Principal);
+        await RequireFailedCleanupAsync(environment, pilot.Client, flow, fault, history);
+        using var replay = await pilot.Client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
+        await InitialPilotReplayEvidence.RequireRejectedAsync(replay);
+        await PilotReplayHistory.RequireStatusAsync(environment, history.AccessId, OpenIddictConstants.Statuses.Revoked);
+        await PilotReplayHistory.RequireStatusAsync(environment, history.CodeId, OpenIddictConstants.Statuses.Revoked);
+        await RequireControlAsync(environment, pilot.Client, control, history.AuthorizationId);
     }
 
-    /// <summary>Requires persisted redeemed/revoked ordering before release and the original winning-token revocation oracle after actual replay.</summary>
-    private static async Task<string> RequireOrderingAsync(BrowserHttpsFixture environment, TestRelyingParty client, PilotReplayBarrier barrier, PilotReplayCleanupFault fault,
-        TestFlow flow, Task<HttpResponseMessage> winner)
-    {
-        var token = TestContext.Current.CancellationToken;
-        var codeId = await barrier.WaitAsync();
-        Assert.True(await HasStatusAsync(environment, codeId, OpenIddictConstants.Statuses.Redeemed));
-        using var loser = await client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: token);
-        await RequireReplayAsync(loser);
-        Assert.True(await HasStatusAsync(environment, codeId, OpenIddictConstants.Statuses.Revoked));
-        barrier.Release();
-        var won = await winner;
-        Assert.Equal(HttpStatusCode.OK, won.StatusCode);
-        using var tokens = JsonDocument.Parse(await won.Content.ReadAsStringAsync(token));
-        Assert.Empty(await client.ValidateAsync(tokens.RootElement, flow, token));
-        var access = new JsonWebToken(tokens.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!);
-        await PilotReplayGuardEvidence.RequireAsync(environment, barrier.Principal);
-        await RequireFailedCleanupAsync(environment, client, flow, fault, access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value);
-        using var replay = await client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: token);
-        await RequireReplayAsync(replay);
-        Assert.True(await HasStatusAsync(environment, access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value,
-            OpenIddictConstants.Statuses.Revoked), RevocationFailure);
-        return access.GetClaim(OpenIddictConstants.Claims.Private.AuthorizationId).Value;
-    }
-
-    /// <summary>Observes an actual failed native UPDATE, unchanged valid access and native invalid_grant before a separate explicit replay succeeds in cleanup.</summary>
+    /// <summary>Observes the actual failed native update and a complete unchanged native digest before a separate explicit replay succeeds.</summary>
     private static async Task RequireFailedCleanupAsync(BrowserHttpsFixture environment, TestRelyingParty client, TestFlow flow,
-        PilotReplayCleanupFault fault, string accessId)
+        PilotReplayCleanupFault fault, PilotReplayHistory history)
     {
+        var before = await PilotReplayHistory.DigestAsync(environment);
         fault.Armed = true;
         try
         {
             using var denied = await client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
-            await RequireReplayAsync(denied);
+            await InitialPilotReplayEvidence.RequireRejectedAsync(denied);
             Assert.Equal(1, fault.Failures);
-            Assert.True(await HasStatusAsync(environment, accessId, OpenIddictConstants.Statuses.Valid));
+            Assert.Equal(before, await PilotReplayHistory.DigestAsync(environment));
+            await PilotReplayHistory.RequireStatusAsync(environment, history.AccessId, OpenIddictConstants.Statuses.Valid);
         }
         finally { fault.Armed = false; }
     }
 
-    /// <summary>A separate genuine pilot authorization survives cleanup and still exchanges for cryptographically valid, natively valid access.</summary>
+    /// <summary>A separate genuine authorization survives cleanup and still exchanges for independently validated, natively valid access.</summary>
     private static async Task RequireControlAsync(BrowserHttpsFixture environment, TestRelyingParty client, TestFlow control, string targetAuthorization)
     {
         var token = TestContext.Current.CancellationToken;
@@ -102,26 +68,6 @@ public sealed class PilotReplayOrderingTests(BootstrapFixture fixture)
         Assert.Empty(await client.ValidateAsync(body.RootElement, control, token));
         var access = new JsonWebToken(body.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!);
         Assert.False(string.Equals(targetAuthorization, access.GetClaim(OpenIddictConstants.Claims.Private.AuthorizationId).Value, StringComparison.Ordinal));
-        Assert.True(await HasStatusAsync(environment, access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value, OpenIddictConstants.Statuses.Valid));
-    }
-
-    /// <summary>Requires a real rejected exchange without returned token material; the response remains owned by its caller.</summary>
-    private static async Task RequireReplayAsync(HttpResponseMessage response)
-    {
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
-        Assert.Equal(OpenIddictConstants.Errors.InvalidGrant, body.RootElement.GetProperty(OpenIddictConstants.Parameters.Error).GetString());
-        Assert.False(body.RootElement.TryGetProperty(OpenIddictConstants.Parameters.AccessToken, out _));
-    }
-
-    /// <summary>Reads native status through a fresh context after each observed stage; token IDs stay in memory and never enter diagnostics.</summary>
-    private static async Task<bool> HasStatusAsync(BrowserHttpsFixture environment, string id, string status)
-    {
-        await using var scope = environment.IssuerServices.CreateAsyncScope();
-        scope.ServiceProvider.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.LegacyPilot);
-        var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictTokenManager>();
-        var entry = await manager.FindByIdAsync(id, TestContext.Current.CancellationToken);
-        Assert.NotNull(entry);
-        return await manager.HasStatusAsync(entry, status, TestContext.Current.CancellationToken);
+        await PilotReplayHistory.RequireStatusAsync(environment, access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value, OpenIddictConstants.Statuses.Valid);
     }
 }

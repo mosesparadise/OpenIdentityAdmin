@@ -1102,6 +1102,23 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.ToTable("PilotManifest", "platform");
                 });
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.PilotProtocolGate", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PilotProtocolGate", "platform");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "first-party-v1"
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.PlatformUser", b =>
                 {
                     b.Property<string>("Id")
