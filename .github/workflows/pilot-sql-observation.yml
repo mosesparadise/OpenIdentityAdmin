@@ -1,0 +1,52 @@
+name: Observe pilot SQL ordering
+on:
+  push:
+    branches: [133-pilot-sql-observation]
+permissions:
+  contents: read
+jobs:
+  distribution:
+    name: Bounded SQL distribution observation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_COVERAGE_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet tool restore
+      - run: dotnet restore --locked-mode
+      - run: dotnet build --no-restore --nologo
+      - run: python3 scripts/test_lifecycle_selection.py
+      - name: Prepare unchanged pinned SQL image
+        run: python3 scripts/prepare_native_image.py SqlServer
+      - name: Trust local HTTPS certificate
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/identity-https-trust"
+          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
+          openssl rehash "$RUNNER_TEMP/identity-https-trust"
+          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - name: Bind coverage build before execution
+        run: python3 scripts/coverage_identity.py before SqlServer-lifecycle-distribution
+      - name: Observe unchanged required distribution cases
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/SqlServer-lifecycle-distribution.cobertura.xml -f cobertura python3 scripts/verify.py SqlServer --partition lifecycle --story Distribution
+      - name: Bind original coverage report after execution
+        run: python3 scripts/coverage_identity.py after SqlServer-lifecycle-distribution
+      - name: Retain diagnostic evidence without claiming acceptance
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: diagnostic-pilot-sql-distribution
+          path: |
+            artifacts/tests/
+            artifacts/coverage/
+          retention-days: 7
+          if-no-files-found: error
