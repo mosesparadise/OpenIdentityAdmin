@@ -21,7 +21,7 @@ internal static class CatalogueMutationOperation
             var completed = await request.RunAsync(factory, (scope, token) => ExecuteOwnedAsync(scope, identity, intent, profile, budget, correlation, token));
             completed.Authority.RequirePublication(clock, budget);
             return new(intent.Action == CatalogueAction.Create ? StatusCodes.Status201Created : StatusCodes.Status200OK,
-                completed.Audience, completed.Scope);
+                completed.Audience, completed.Scope, completed.Authority.Deadline);
         }
         catch (ApiMutationDenied denied) { return new(denied.Status, null, null); }
         catch (CatalogueRejected rejected) { return new(Status(rejected.Failure), null, null); }
@@ -59,7 +59,7 @@ internal static class CatalogueMutationOperation
     }
 
     /// <summary>Maps expected finite catalogue failures; unknown native/storage failures propagate to the sanitized HTTP boundary.</summary>
-    private static int Status(CatalogueFailure failure) => failure switch
+    internal static int Status(CatalogueFailure failure) => failure switch
     {
         CatalogueFailure.Missing => StatusCodes.Status404NotFound,
         CatalogueFailure.Stale => StatusCodes.Status412PreconditionFailed,
@@ -72,4 +72,4 @@ internal static class CatalogueMutationOperation
 }
 
 /// <summary>Retains internal fixed state for later bounded HTTP projection; no native entities or arbitrary properties escape.</summary>
-internal sealed record CatalogueMutationResult(int Status, CatalogueAudience? Audience, CatalogueScope? Scope);
+internal sealed record CatalogueMutationResult(int Status, CatalogueAudience? Audience, CatalogueScope? Scope, DateTimeOffset? ExpiresAt = null);
