@@ -43,7 +43,7 @@
       "Persistence": 29,
       "AppHost": 21,
       "Issuer": 293,
-      "Issuer.Lifecycle": 43,
+      "Issuer.Lifecycle": 45,
       "Administrator": 1364
     }
   },
@@ -58,7 +58,7 @@
     },
     "Distribution": {
       "PostgreSql": 25,
-      "SqlServer": 25
+      "SqlServer": 27
     },
     "KeyRotation.Activation": {
       "PostgreSql": 3,
