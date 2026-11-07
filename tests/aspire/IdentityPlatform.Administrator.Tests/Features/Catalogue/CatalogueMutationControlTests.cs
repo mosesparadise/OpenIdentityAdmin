@@ -87,6 +87,7 @@ public sealed class CatalogueMutationControlTests(BootstrapFixture fixture)
         await using var test = await ApplicationMutationFixture.CreateAsync(fixture, provider);
         var intent = await CatalogueDeletionTest.CreateAsync(test, scope: true);
         var job = (await CatalogueDeletionTest.AdmitAsync(test, intent)).Job!;
+        var original = CatalogueDeletionSnapshot.Capture(await CatalogueDeletionTest.ReadAsync(test, job.Id));
         var before = await CatalogueMutationEvidence.SnapshotAsync(test);
         Assert.True(await CatalogueDeletionTest.ProcessAsync(test, job.Id));
         await using var observer = test.Scope();
@@ -96,6 +97,7 @@ public sealed class CatalogueMutationControlTests(BootstrapFixture fixture)
         if (current.State == CatalogueDeletionState.Queued)
         {
             Assert.True(exists);
+            Assert.Equal(original, CatalogueDeletionSnapshot.Capture(current));
             Assert.Equal(before, await CatalogueMutationEvidence.SnapshotAsync(test));
             Assert.Fail(CommitMarker);
         }
