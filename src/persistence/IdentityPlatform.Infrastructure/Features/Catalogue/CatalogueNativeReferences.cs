@@ -57,7 +57,7 @@ internal static class CatalogueNativeReferences
             {
                 throw ProtocolStorageOwner.Unavailable();
             }
-            using var document = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = JsonDepth });
+            using var document = Parse(json);
             if (document.RootElement.ValueKind != JsonValueKind.Array)
             {
                 throw ProtocolStorageOwner.Unavailable();
@@ -79,4 +79,14 @@ internal static class CatalogueNativeReferences
         token.ThrowIfCancellationRequested();
         return false;
     }
+    /// <summary>Converts invalid native JSON into the same value-free unavailable outcome as any other incomplete reference observation.</summary>
+    private static JsonDocument Parse(string json)
+    {
+        try
+        {
+            return JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = JsonDepth });
+        }
+        catch (JsonException) { throw ProtocolStorageOwner.Unavailable(); }
+    }
+
 }

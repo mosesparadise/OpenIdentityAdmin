@@ -24,6 +24,9 @@ public sealed class CatalogueReferenceTests(BootstrapFixture fixture)
     private const string EscapedPermission = "[\"scp:\\u0065mail\"]";
     private const string EscapedOther = "[\"scp:\\u006fther\"]";
     private const string InvalidArray = "[\"scp:email\",null]";
+    private const string MalformedArray = "[\"scp:email\"";
+    private const int MaximumJson = 32_768;
+    private const int MaximumCandidates = 128;
     private const string EmptyArray = "[]";
     private const string EscapedResource = "[\"orders-\\u0061pi\"]";
     private const int OversizedJson = 32_769;
@@ -41,11 +44,11 @@ public sealed class CatalogueReferenceTests(BootstrapFixture fixture)
         var manager = setup.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
         var native = await manager.CreateAsync(new OpenIddictApplicationDescriptor { ClientId = Client, ClientType = OpenIddictConstants.ClientTypes.Public }, test.Token);
         var id = await manager.GetIdAsync(native, test.Token);
-        foreach (var json in new[] { PermissionCase, PermissionPrefix, EscapedPermission, InvalidArray })
+        foreach (var json in new[] { PermissionCase, PermissionPrefix, EscapedPermission, InvalidArray, MalformedArray })
         {
             await database.Set<OpenIddictEntityFrameworkCoreApplication>().Where(row => row.Id == id)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(row => row.Permissions, json), test.Token);
-            if (json == InvalidArray)
+            if (json is InvalidArray or MalformedArray)
             {
                 await Assert.ThrowsAsync<InvalidOperationException>(() => ReadAsync(test, audience: false));
             }
@@ -95,16 +98,23 @@ public sealed class CatalogueReferenceTests(BootstrapFixture fixture)
         await using var test = await ApplicationMutationFixture.CreateAsync(fixture, provider);
         await using var setup = test.Scope();
         var database = setup.ServiceProvider.GetRequiredService<PlatformDbContext>();
-        var row = new OpenIddictEntityFrameworkCoreApplication { Id = Guid.NewGuid().ToString(), ClientId = Client, Permissions = EscapedOther.PadRight(OversizedJson) };
+        var row = new OpenIddictEntityFrameworkCoreApplication { Id = Guid.NewGuid().ToString(), ClientId = Client, Permissions = EscapedOther.PadRight(MaximumJson) };
         database.Add(row);
+        await database.SaveChangesAsync(test.Token);
+        Assert.False(await ReadAsync(test, audience: false));
+        row.Permissions = EscapedOther.PadRight(OversizedJson);
         await database.SaveChangesAsync(test.Token);
         await Assert.ThrowsAsync<InvalidOperationException>(() => ReadAsync(test, audience: false));
         row.Permissions = EscapedOther;
-        for (var index = 1; index < OverflowCandidates; index++)
+        for (var index = 1; index < MaximumCandidates; index++)
         {
             database.Add(new OpenIddictEntityFrameworkCoreApplication { Id = Guid.NewGuid().ToString(), ClientId = Guid.NewGuid().ToString(), Permissions = EscapedOther });
         }
         await database.SaveChangesAsync(test.Token);
+        Assert.False(await ReadAsync(test, audience: false));
+        database.Add(new OpenIddictEntityFrameworkCoreApplication { Id = Guid.NewGuid().ToString(), ClientId = Guid.NewGuid().ToString(), Permissions = EscapedOther });
+        await database.SaveChangesAsync(test.Token);
+        Assert.Equal(OverflowCandidates, await database.Set<OpenIddictEntityFrameworkCoreApplication>().CountAsync(row => row.Permissions == EscapedOther, test.Token));
         await Assert.ThrowsAsync<InvalidOperationException>(() => ReadAsync(test, audience: false));
     }
 
@@ -116,6 +126,7 @@ public sealed class CatalogueReferenceTests(BootstrapFixture fixture)
         {
             return await request.RunAsync(test.Api.GetRequiredService<IServiceScopeFactory>(), async (scope, token) =>
             {
+                scope.Services.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.Owned);
                 await using var transaction = await ProtocolStorageTransaction.OpenAsync(scope.Owner);
                 await ManagedRegistration.LockAsync(scope, token);
                 return audience ? await CatalogueNativeReferences.AudienceAsync(scope, Resource, token) : await CatalogueNativeReferences.ScopeAsync(scope, Name, token);
