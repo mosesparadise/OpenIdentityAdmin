@@ -54,6 +54,8 @@ public sealed class NativeConsumptionRegistrationTests
         var options = provider.GetRequiredService<IOptions<OpenIddictServerOptions>>().Value;
         RequireServer(options, OpenIddictServerHandlers.Protection.ValidateTokenEntry.Descriptor,
             standalone ? typeof(PilotTokenValidation) : typeof(DurableServerValidation), true);
+        RequireServer(options, OpenIddictServerHandlers.RedeemTokenEntry.Descriptor,
+            standalone ? typeof(PilotRedemption) : typeof(DurableServerRedemption), true);
         Assert.DoesNotContain(options.Handlers, descriptor => descriptor.ServiceDescriptor.ServiceType == typeof(PilotReplayCleanup));
         Assert.Single(services, descriptor => descriptor.ServiceType == typeof(OpenIddictServerHandlers.Protection.ValidateTokenEntry));
         Assert.Single(services, descriptor => descriptor.ServiceType == typeof(PilotTokenValidation));

@@ -86,7 +86,7 @@ internal static class InitialPilotReplayEvidence
     private static AsyncServiceScope Observer(BrowserHttpsFixture environment)
     {
         var scope = environment.IssuerServices.CreateAsyncScope();
-        scope.ServiceProvider.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.LegacyPilot);
+        scope.ServiceProvider.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.LegacyPilot);
         return scope;
     }
 }

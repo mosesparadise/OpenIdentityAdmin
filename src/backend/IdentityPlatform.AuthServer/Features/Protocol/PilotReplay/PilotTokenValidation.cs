@@ -21,14 +21,15 @@ internal sealed class PilotTokenValidation(IServiceScopeFactory factory, TimePro
         : native.HandleAsync(context);
 
     /// <summary>Freshly binds all native identifiers to the persisted pilot before native validation can revoke a chain.</summary>
-    private static async ValueTask ValidateAsync(IServiceProvider services, OpenIddictServerEvents.ValidateTokenContext context, CancellationToken token)
+    internal static async ValueTask ValidateAsync(IServiceProvider services, OpenIddictServerEvents.ValidateTokenContext context, CancellationToken token)
     {
         var original = context.CancellationToken;
         context.CancellationToken = token;
         try
         {
             var cleanup = services.GetRequiredService<PilotReplayCleanup>();
-            if (!PilotReplayCleanup.Matches(context) || !await cleanup.IsBoundAsync(context, requireRevoked: false))
+            if (!PilotReplayCleanup.Matches(context) || !await cleanup.IsBoundAsync(context, requireRevoked: false) ||
+                context.Principal!.GetExpirationDate() is not { } expiration || expiration <= services.GetRequiredService<TimeProvider>().GetUtcNow())
             {
                 context.Reject(OpenIddictConstants.Errors.InvalidToken);
                 return;

@@ -1,6 +1,7 @@
 using IdentityPlatform.AuthServer.Features.Protocol.Administrator;
 using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 using OpenIddict.Server;
@@ -48,7 +49,14 @@ internal static class ProtocolHosting
             request.RequireCurrent();
             host.Bind(http, endpoint, ProtocolHostMode.PilotProtocol);
             http.RequestServices.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.LegacyPilot);
-            await next(http);
+            if (endpoint == OpenIddictServerEndpointType.Token)
+            {
+                await PilotHttpBoundary.RunAsync(http, next, request);
+            }
+            else
+            {
+                await next(http);
+            }
             request.RequireCurrent();
         }
         else

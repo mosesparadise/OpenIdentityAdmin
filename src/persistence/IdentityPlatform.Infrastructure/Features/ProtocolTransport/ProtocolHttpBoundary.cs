@@ -8,10 +8,6 @@ namespace IdentityPlatform.Infrastructure.Features.ProtocolTransport;
 /// <summary>Owns a dormant nonstreaming protocol invocation through response admission and actual cleanup.</summary>
 internal static class ProtocolHttpBoundary
 {
-    private const string FailureCacheControl = "no-store";
-    private const string ReferrerPolicy = "Referrer-Policy";
-    private const string NoReferrer = "no-referrer";
-
     /// <summary>Aborts transport at the original deadline but never detaches work that still references its HTTP context.</summary>
     internal static Task RunAsync(HttpContext context, IServiceScopeFactory factory, TimeProvider clock,
         Func<HttpContext, ProtocolStorageScope, CancellationToken, ValueTask<ProtocolResponseOutcome>> operation) =>
@@ -96,36 +92,12 @@ internal static class ProtocolHttpBoundary
     });
 
     /// <summary>Transfers only an admitted finite response and keeps the original watchdog active throughout actual sending.</summary>
-    private static async Task PublishAsync(IHttpResponseFeature response, IHttpResponseBodyFeature body,
-        ProtocolResponseCapture capture, ProtocolStorageRequest request, ProtocolResponseOutcome outcome)
-    {
-        request.RequirePublication(outcome);
-        response.StatusCode = capture.StatusCode;
-        response.ReasonPhrase = capture.ReasonPhrase;
-        response.Headers.Clear();
-        foreach (var header in capture.Headers)
-        {
-            response.Headers[header.Key] = header.Value;
-        }
-        await body.StartAsync(request.Token);
-        request.RequirePublication(outcome);
-        await body.Stream.WriteAsync(capture.Bytes, request.Token);
-        await body.Stream.FlushAsync(request.Token);
-        await body.CompleteAsync();
-        request.RequirePublication(outcome);
-    }
+    private static Task PublishAsync(IHttpResponseFeature response, IHttpResponseBodyFeature body,
+        ProtocolResponseCapture capture, ProtocolStorageRequest request, ProtocolResponseOutcome outcome) =>
+        ProtocolResponseTransfer.PublishAsync(response, body, capture, () => request.RequirePublication(outcome), request.Token);
 
     /// <summary>Publishes no staged success material when native rejection has no verified response permit.</summary>
-    private static async Task RejectAsync(IHttpResponseFeature response, IHttpResponseBodyFeature body, CancellationToken token)
-    {
-        response.Headers.Clear();
-        response.StatusCode = StatusCodes.Status503ServiceUnavailable;
-        response.ReasonPhrase = null;
-        response.Headers.CacheControl = FailureCacheControl;
-        response.Headers[ReferrerPolicy] = NoReferrer;
-        await body.StartAsync(token);
-        await body.Stream.FlushAsync(token);
-        await body.CompleteAsync();
-    }
+    private static Task RejectAsync(IHttpResponseFeature response, IHttpResponseBodyFeature body, CancellationToken token) =>
+        ProtocolResponseTransfer.RejectAsync(response, body, token);
 
 }

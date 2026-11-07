@@ -1,4 +1,5 @@
 using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
@@ -6,12 +7,17 @@ using OpenIddict.Server;
 namespace IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 
 /// <summary>Forwards actual native early redemption after fresh serialized validation of the same tracked token row.</summary>
-internal sealed class DurableServerRedemption(IServiceScopeFactory factory, OpenIddictServerHandlers.RedeemTokenEntry native)
+internal sealed class DurableServerRedemption(IServiceScopeFactory factory, OpenIddictServerHandlers.RedeemTokenEntry native, PilotGeneration? pilot = null)
     : IOpenIddictServerHandler<OpenIddictServerEvents.ProcessSignInContext>
 {
     /// <summary>Retains the original native transaction and principal while moving only durable consumption into a fresh child.</summary>
     public async ValueTask HandleAsync(OpenIddictServerEvents.ProcessSignInContext context)
     {
+        if (pilot is not null && PilotExchange.Candidate(context))
+        {
+            await pilot.RedeemAsync(context);
+            return;
+        }
         if (ManagedIssuance.Find(context.Transaction) is not null)
         {
             await ManagedConsumption.RedeemAsync(factory, context);

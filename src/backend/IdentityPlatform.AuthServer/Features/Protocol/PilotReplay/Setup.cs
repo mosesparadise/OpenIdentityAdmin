@@ -1,3 +1,5 @@
+using IdentityPlatform.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using OpenIddict.Server;
 
@@ -10,6 +12,10 @@ internal static class Setup
     internal static OpenIddictServerBuilder AddPilotReplayCleanup(this OpenIddictServerBuilder builder, bool standalone)
     {
         var native = OpenIddictServerHandlers.Protection.ValidateTokenEntry.Descriptor;
+        builder.Services.TryAddScoped<PilotGeneration>();
+        builder.Services.TryAddScoped<PilotIssuanceCoordinator>();
+        builder.Services.TryAddScoped<OpenIddictServerDispatcher>();
+        builder.Services.AddDbContext<PlatformDbContext>(options => options.AddInterceptors(new PilotCommandFence(), new PilotConnectionFence(), new PilotCommitFence()));
         builder.Services.TryAddScoped<PilotReplayCleanup>();
         builder.Services.TryAddScoped<OpenIddictServerHandlers.Protection.ValidateAuthorizationEntry>();
         if (!standalone)
@@ -18,6 +24,12 @@ internal static class Setup
             return builder;
         }
         builder.RemoveEventHandler(native);
+        var redemption = OpenIddictServerHandlers.RedeemTokenEntry.Descriptor;
+        builder.RemoveEventHandler(redemption);
+        builder.Services.TryAddScoped<OpenIddictServerHandlers.RedeemTokenEntry>();
+        builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.ProcessSignInContext>()
+            .Import(redemption).UseScopedHandler<PilotRedemption>().SetType(OpenIddictServerHandlerType.Custom).Build());
+        builder.Services.Replace(ServiceDescriptor.Scoped<IOpenIddictServerDispatcher, PilotServerDispatcher>());
         builder.Services.TryAddScoped<OpenIddictServerHandlers.Protection.ValidateTokenEntry>();
         builder.AddEventHandler(OpenIddictServerHandlerDescriptor.CreateBuilder<OpenIddictServerEvents.ValidateTokenContext>()
             .Import(native).UseScopedHandler<PilotTokenValidation>().SetType(OpenIddictServerHandlerType.Custom).Build());

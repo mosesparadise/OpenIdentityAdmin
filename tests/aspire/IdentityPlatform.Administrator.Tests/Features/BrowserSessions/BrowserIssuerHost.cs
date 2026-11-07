@@ -1,3 +1,4 @@
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using System.Net;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.AuthServer.Features.Accounts;
@@ -117,6 +118,10 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         if (logout)
         {
             app.UseProtocolHosting();
+        }
+        if (pilot && !logout)
+        {
+            app.Use(PilotHttpBoundary.InvokeAsync);
         }
         app.UseAuthentication();
         app.UseAuthorization();

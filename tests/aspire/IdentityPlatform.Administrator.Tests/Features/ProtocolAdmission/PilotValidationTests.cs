@@ -28,7 +28,7 @@ public sealed class PilotValidationTests(BootstrapFixture fixture)
         var probe = new PilotValidationProbe();
         await using var pilot = await BrowserPilotClient.CreateAsync();
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, pilot: pilot, standalonePilot: standalone,
-            configureIssuer: services => services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(probe)),
+            configureIssuer: services => services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(probe, new PilotValidationWrites(probe))),
             clock: new FactorClock(TimeProvider.System));
         var flow = await PilotReplayJourney.AuthorizeAsync(environment, pilot.Client);
         using var winner = await pilot.Client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
@@ -36,6 +36,7 @@ public sealed class PilotValidationTests(BootstrapFixture fixture)
         using var body = JsonDocument.Parse(await winner.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.Empty(await pilot.Client.ValidateAsync(body.RootElement, flow, TestContext.Current.CancellationToken));
         var access = new JsonWebToken(body.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!);
+        probe.RequireGeneration();
         using var replay = await pilot.Client.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
         await InitialPilotReplayEvidence.RequireRejectedAsync(replay);
         await using var scope = environment.IssuerServices.CreateAsyncScope();
@@ -44,8 +45,7 @@ public sealed class PilotValidationTests(BootstrapFixture fixture)
         var entry = await manager.FindByIdAsync(access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value, TestContext.Current.CancellationToken);
         Assert.NotNull(entry);
         Assert.True(await manager.HasStatusAsync(entry, OpenIddictConstants.Statuses.Revoked, TestContext.Current.CancellationToken));
-        Assert.Equal(2, probe.Contexts.Count);
-        Assert.Equal(2, probe.Acquisitions);
+        probe.RequireReplay();
     }
     /// <summary>A genuine protected code remains unconsumed when its separately committed authorization has lost native validity.</summary>
     [Theory]
@@ -74,10 +74,38 @@ internal sealed class PilotValidationProbe : DbCommandInterceptor
     private const string Update = "UPDATE";
     private const string Gate = "PilotProtocolGate";
 
-    internal HashSet<Guid> Contexts { get; } = [];
+    private const int ValidationAndGeneration = 2;
+    private const int ValidationGenerationAndReplay = 3;
+    private readonly List<Guid> contexts = [];
+    internal Guid Consumption
+    {
+        get; set;
+    }
+    internal Guid Generation
+    {
+        get; set;
+    }
     internal int Acquisitions
     {
         get; private set;
+    }
+
+    /// <summary>Requires distinct initial validation, gate-owning generation and independently committed consumption contexts.</summary>
+    internal void RequireGeneration()
+    {
+        Assert.Equal(ValidationAndGeneration, Acquisitions);
+        Assert.Equal(ValidationAndGeneration, contexts.Distinct().Count());
+        Assert.NotEqual(Guid.Empty, Consumption);
+        Assert.DoesNotContain(Consumption, contexts);
+        Assert.Equal(contexts.Last(), Generation);
+    }
+
+    /// <summary>Requires the first replay's separate validation gate after both successful issuance phases.</summary>
+    internal void RequireReplay()
+    {
+        Assert.Equal(ValidationGenerationAndReplay, Acquisitions);
+        Assert.Equal(ValidationGenerationAndReplay, contexts.Distinct().Count());
+        Assert.NotEqual(Generation, contexts.Last());
     }
 
     /// <summary>Observes only the coordination update; unrelated SQL and failed acquisitions cannot satisfy the assertion.</summary>
@@ -89,7 +117,7 @@ internal sealed class PilotValidationProbe : DbCommandInterceptor
         {
             Assert.NotNull(command.Transaction);
             Assert.Equal(1, result);
-            Contexts.Add(eventData.Context!.ContextId.InstanceId);
+            contexts.Add(eventData.Context!.ContextId.InstanceId);
             Acquisitions++;
         }
         return ValueTask.FromResult(result);
