@@ -4,6 +4,7 @@ using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Identity.Authentication;
 using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.ProtocolAdmission;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
@@ -17,6 +18,8 @@ internal sealed class ApiMutationAuthority
     private const string WritePermission = "applications.write";
     private const string CredentialPermission = "applications.credentials";
     private const string LifecyclePermission = "applications.disable";
+    private const string ScopePermission = "scopes.write";
+    private const string AudiencePermission = "audiences.write";
     private readonly ProtocolStorageScope scope;
     private readonly ProtocolAdmissionOwnership ownership;
     private readonly ApiIdentity identity;
@@ -63,6 +66,20 @@ internal sealed class ApiMutationAuthority
     {
         var observation = await ObserveAsync(scope, ownership, identity, GrantRevocationRules.Permission, true, callback, token);
         return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, GrantRevocationRules.Permission, true);
+    }
+
+    /// <summary>Binds only a validated catalogue action to its fixed current permission and the original fresh-MFA deadline.</summary>
+    internal static async Task<ApiMutationAuthority> AcquireCatalogueAsync(ProtocolStorageScope scope, ProtocolAdmissionOwnership ownership,
+        ApiIdentity identity, CatalogueIntent command, string callback, CancellationToken token)
+    {
+        var permission = command.Resource switch
+        {
+            CatalogueResource.Scope => ScopePermission,
+            CatalogueResource.Audience => AudiencePermission,
+            _ => throw ProtocolStorageOwner.Unavailable()
+        };
+        var observation = await ObserveAsync(scope, ownership, identity, permission, true, callback, token);
+        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, permission, true);
     }
 
     /// <summary>Separates direct EF execution from native manager calls, whose owned stores acquire their own non-reentrant execution leases.</summary>

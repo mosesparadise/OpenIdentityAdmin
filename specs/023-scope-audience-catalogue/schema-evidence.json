@@ -1,0 +1,50 @@
+{
+  "task": "T003",
+  "status": "scoped-pass",
+  "sourceCommit": "d5ccaca",
+  "hostedHead": "a71414f14a48e59c6fae022b1d348c3402e3d63c",
+  "sourceTree": "5c5ed220a8ef4a4b9963f935955e3adc4e39269c",
+  "testsTree": "d634ac38aef71ff3f0d331ac0301449dd7381e5f",
+  "runId": 42407104845,
+  "runUrl": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42407104845",
+  "results": [
+    {
+      "provider": "PostgreSql",
+      "jobId": 128507050480,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "provider": "SqlServer",
+      "jobId": 128507050886,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "reconciliation": "Hosted validator exactly matched original native discovery names to original TRX results and required every result Passed.",
+  "artifacts": [
+    {
+      "id": 13587951625,
+      "name": "catalogue-schema-SqlServer",
+      "digest": "sha256:01772d9b1b450205f7d183501d42e284689f376d03d57061d8d07cb771caee1c",
+      "expiresAt": "2026-11-14T19:40:13Z",
+      "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42407104845/artifacts/13587951625"
+    },
+    {
+      "id": 13587876731,
+      "name": "catalogue-schema-PostgreSql",
+      "digest": "sha256:da7928527fd88bcdc8587f1b887f581e95fc73262b63352de6b1870a4da325c4",
+      "expiresAt": "2026-11-14T19:39:02Z",
+      "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42407104845/artifacts/13587876731"
+    }
+  ],
+  "review": "Independent source and bounded runtime reviews PASS.",
+  "limits": [
+    "No local archive or TRX byte reparse; temporary connector file URL denied by local proxy.",
+    "Seven-day hosted artifact retention; retain original artifact references and hashes.",
+    "No full regression, catalogue UI/API activation, T004 or feature acceptance."
+  ],
+  "priorFailedRun": 42406690944
+}

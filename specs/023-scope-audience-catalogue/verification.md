@@ -96,3 +96,29 @@ build pass. Failed artifacts13587990850/13587199766 and decoded local job logs r
 these attempts; their7day retention is not permanent acceptance evidence. Test-run
 archive download through the connector succeeds, but local access to its temporary
 file URL is403; no local archive preservation is claimed.
+
+## T003 scoped acceptance
+
+Correction run[42407104845](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42407104845)
+passes13/13 on each provider:26 total, zero failed/skipped, with exact original
+discovery/TRX reconciliation. Tested diagnostic a71414f differs from feature source
+d5ccaca only by isolated hosted workflow; all source/test/build-input trees match.
+[Source, original artifact identities/digests and limits](schema-evidence.json).
+Independent source and bounded runtime reviews PASS. T003 is complete; full regression,
+remaining feature tasks and catalogue product activation remain pending. Original
+archives remain hosted with7day retention; decoded job logs were reviewed locally,
+but no local archive/TRX-byte reparse is claimed.
+
+## T004 create/edit and native reference candidate
+
+Current candidate adds finite immutable catalogue intents, governed create/edit
+coordination using the existing private one-use API authority receipt, fresh MFA and
+fixed scope/audience grants. Native scope writes, product state and exact audit share
+one transaction; native scope rows reload before policy verification. Reference reads
+project bounded native JSON and compare decoded ordinal values, preserving escaped
+encodings and all retained authorization statuses; overflow cannot mean unreferenced.
+Independent early architecture review found no source blocker. Sixteen both-provider
+component cases build with zero warnings/errors and quality passes; runtime results
+remain pending. Two-root races assert competing outcomes, not observed DB contention.
+No catalogue endpoints, deletion worker, read/list UI, assignment or UserInfo is active.
+T004 remains unchecked until its complete requirements pass.
