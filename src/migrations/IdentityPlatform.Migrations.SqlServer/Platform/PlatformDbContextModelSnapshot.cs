@@ -429,8 +429,7 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.ScopePolicy", b =>
                 {
                     b.Property<string>("ScopeId")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConsentText")
                         .IsRequired()

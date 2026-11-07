@@ -416,8 +416,7 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Catalogue.ScopePolicy", b =>
                 {
                     b.Property<string>("ScopeId")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConsentText")
                         .IsRequired()

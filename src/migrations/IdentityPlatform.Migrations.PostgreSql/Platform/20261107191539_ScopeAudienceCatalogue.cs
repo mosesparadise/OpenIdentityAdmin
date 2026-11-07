@@ -84,7 +84,7 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                 schema: "platform",
                 columns: table => new
                 {
-                    ScopeId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ScopeId = table.Column<string>(type: "text", nullable: false),
                     Kind = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     Enabled = table.Column<bool>(type: "boolean", nullable: false),
                     ConsentText = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),

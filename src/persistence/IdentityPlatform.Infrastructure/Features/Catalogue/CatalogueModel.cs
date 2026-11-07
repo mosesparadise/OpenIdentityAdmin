@@ -43,8 +43,7 @@ internal static class CatalogueModel
     {
         var row = builder.Entity<ScopePolicy>();
         row.HasKey(value => value.ScopeId);
-        // Native opaque IDs retain their existing parent collation; only protocol names/resources use ordinal catalogue semantics.
-        row.Property(value => value.ScopeId).HasMaxLength(CatalogueRules.IdentifierLength);
+        // Native foreign keys inherit the unchanged parent storage type and collation; catalogue inputs retain their separate bounded identifier validation.
         FactorSchema.Text(row, nameof(ScopePolicy.Kind), CatalogueRules.Identity.Length, dialect);
         FactorSchema.Text(row, nameof(ScopePolicy.Disclosure), CatalogueRules.Email.Length, dialect);
         row.Property(value => value.ConsentText).HasMaxLength(CatalogueRules.ConsentLength);

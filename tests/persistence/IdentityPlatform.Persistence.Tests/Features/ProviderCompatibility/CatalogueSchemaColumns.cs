@@ -22,6 +22,9 @@ internal static class CatalogueSchemaColumns
     private const string PgGuid = "uuid";
     private const string SqlGuid = "uniqueidentifier";
     private const string Number = "bigint";
+    private const string NativeId = "ScopeId";
+    private const string PgNativeId = "text";
+    private const int SqlNativeIdLength = 450;
     private const string Revision = "Revision";
     private const string Enabled = "Enabled";
     private const string Completion = "CompletionAuditId";
@@ -62,6 +65,10 @@ internal static class CatalogueSchemaColumns
         foreach (var field in table == Audience ? AudienceText : table == Policy ? PolicyText : JobText)
         {
             expected.Add(field.Name, (provider == Postgres ? PgText : SqlText, false, field.Length));
+        }
+        if (table == Policy)
+        {
+            expected[NativeId] = (provider == Postgres ? PgNativeId : SqlText, false, provider == Postgres ? null : SqlNativeIdLength);
         }
         if (table != Job)
         {
