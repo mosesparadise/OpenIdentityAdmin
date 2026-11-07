@@ -1,0 +1,71 @@
+name: Validate catalogue provider foundations
+on:
+  push:
+    branches: [136-catalogue-provider-validation]
+permissions:
+  contents: read
+jobs:
+  schema:
+    name: Catalogue schema (${{ matrix.provider }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [PostgreSql, SqlServer]
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      CATALOGUE_PROVIDER: ${{ matrix.provider }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet tool restore
+      - run: dotnet restore tests/persistence/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj --locked-mode
+      - run: dotnet build tests/persistence/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj --no-restore --nologo
+      - run: python3 scripts/prepare_native_image.py "${CATALOGUE_PROVIDER}"
+      - name: Bind source and actual native discovery
+        shell: bash
+        run: |
+          mkdir -p artifacts/catalogue
+          git rev-parse HEAD HEAD:src HEAD:tests HEAD:scripts HEAD:eng > artifacts/catalogue/source.txt
+          dotnet --info > artifacts/catalogue/sdk.txt
+          dotnet run --project tests/persistence/IdentityPlatform.Persistence.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json > artifacts/catalogue/discovery.json
+      - name: Execute catalogue and immediate predecessor regressions
+        run: >-
+          dotnet test --project tests/persistence/IdentityPlatform.Persistence.Tests/IdentityPlatform.Persistence.Tests.csproj
+          --no-build --no-restore --no-progress --pre-enumerate-theories on --parallel none
+          --report-trx --report-trx-filename Catalogue.trx --results-directory artifacts/catalogue
+          --filter "Provider=${CATALOGUE_PROVIDER}&(FullyQualifiedName~.Catalogue|FullyQualifiedName~.PilotGateSchemaTests|FullyQualifiedName~.BrowserAuditMigrationTests)"
+      - name: Reconcile original discovery and native results
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import collections, hashlib, json, os
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          root = Path('artifacts/catalogue')
+          tests = json.loads((root / 'discovery.json').read_text())['tests']
+          selected = [t for t in tests if any(x['key'] == 'Provider' and x['value'] == os.environ['CATALOGUE_PROVIDER'] for x in t['traits']) and (t['type']['typeName'].startswith('Catalogue') or t['type']['typeName'] in ('PilotGateSchemaTests', 'BrowserAuditMigrationTests'))]
+          assert selected
+          trx = ET.parse(root / 'Catalogue.trx')
+          results = trx.findall('.//{*}UnitTestResult')
+          assert collections.Counter(t['displayName'] for t in selected) == collections.Counter(r.attrib['testName'] for r in results)
+          assert all(r.attrib['outcome'] == 'Passed' for r in results)
+          receipt = {'provider': os.environ['CATALOGUE_PROVIDER'], 'selected': len(selected), 'passed': len(results), 'nativeIds': [t['uid'] for t in selected], 'sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir() if p.is_file()}}
+          (root / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(f"Verified {len(results)} exact discovered cases; no skipped or unexpected result")
+          PY
+      - name: Preserve bounded validation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: catalogue-schema-${{ matrix.provider }}
+          path: artifacts/catalogue/
+          retention-days: 7
+          if-no-files-found: error
