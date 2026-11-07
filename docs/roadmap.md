@@ -1,5 +1,21 @@
 # Delivery roadmap and task register
 
+**Current delivery — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)
+is squash-merged into main as `e44667c45d103cdc3d70427577f89b77539f6f22`.
+Both post-merge workflows report success. Durable application grant revocation,
+progress and explicit recovery are available in the existing native Aspire UI;
+use the [grant walkthrough](../specs/021-application-grant-revocation/quickstart.md).
+The M04 rows below now reflect that delivery. Feature021 is complete for internal
+development; the older draft/checkpoint notices below are historical.
+
+Next correction: [feature022 pilot replay serialization](../specs/022-pilot-replay-serialization/spec.md).
+Its [tasks](../specs/022-pilot-replay-serialization/tasks.md) separate reviewed design,
+regression, both-provider persistence/runtime work and integrated acceptance. The
+initial replay/late-issuance defect remains open until that evidence passes. T001
+planning is reviewed; T002–T009 remain open. Refresh,
+all six historical findings and Windows/manual/Firefox/A-009/vendor/production/
+public-release gates remain open.
+
 **Grant revocation source accepted — 7 November 2026:** feature021 T001–T018 are complete
 for internal development. At `2343f2b`, [CI545](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42319410601)
 passes all 124 jobs on its first attempt. Independent reconciliation binds 118 artifacts,
@@ -534,17 +550,17 @@ Prerequisite: milestone 002. Real UserInfo needed for this milestone's approved 
 | M03-B | Explicit claim catalogue/reserved claims, requested/allowed/consented scope intersection and one approved resource audience. No arbitrary credential/internal claims. |
 | M03-C | Prove scope policy with real tokens and scope-filtered UserInfo, exact subject, machine restrictions and current-state changes. |
 
-## Milestone 004 — Application lifecycle (catalogue and managed creation/editing delivered)
+## Milestone 004 — Application lifecycle (catalogue, editing, enablement and grant revocation delivered)
 
 Prerequisites: milestones 002–003 and the actual protocol capabilities being offered. Do not accept an unimplemented grant merely because it is shown in a client profile.
 
 | Task | Deliverable and acceptance |
 | --- | --- |
-| M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. Clone/delete and separate bulk grant revocation remain open. |
+| M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. PR124 delivers durable bulk grant revocation, current batch authority, progress and explicit recovery while the application stays disabled. Clone/delete remain open. |
 | M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit OpenID-only consent. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
 | M04-C | PR120 delivers manager-hashed one-time shared secrets, enforced expiry, immediate explicit replacement and lost-output recovery with no plaintext reread. Asymmetric public-key registration and remaining credential lifecycle remain open. |
-| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
-| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success across both providers, retained browsers and ordinary Aspire demos, plus old-artifact, race/failure and current-authority controls. Broader client profiles, clone/delete/revocation and manual/external acceptance remain open. |
+| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
+| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. Broader client profiles, clone/delete and manual/external acceptance remain open; the separate legacy pilot replay window is tracked in feature022. |
 
 ## Milestone 005 — Accounts and strong authentication (planned)
 
