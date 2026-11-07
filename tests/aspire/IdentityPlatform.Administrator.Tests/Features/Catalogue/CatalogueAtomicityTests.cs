@@ -15,6 +15,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Catalogue;
 [Collection("administrator-bootstrap")]
 public sealed class CatalogueAtomicityTests(BootstrapFixture fixture)
 {
+    private const int Conflict = 409;
     private const string Name = "email";
     private const string Display = "Email";
     private const string Identity = "identity";
@@ -51,7 +52,7 @@ public sealed class CatalogueAtomicityTests(BootstrapFixture fixture)
         var native = await manager.CreateAsync(new OpenIddictScopeDescriptor { Name = Name, DisplayName = ExistingDisplay }, test.Token);
         var id = await manager.GetIdAsync(native, test.Token);
         var intent = CatalogueIntent.Create(new ScopeInput(Name, Display, Identity, true, Consent, null, Name))!;
-        Assert.Equal(409, (await CatalogueMutationTests.ExecuteAsync(test, intent)).Status);
+        await CatalogueMutationEvidence.RequireDeniedAsync(test, intent, Conflict);
         await using var observer = test.Scope();
         var database = observer.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var actual = await database.Set<OpenIddictEntityFrameworkCoreScope>().AsNoTracking().SingleAsync(row => row.Id == id, test.Token);

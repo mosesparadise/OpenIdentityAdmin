@@ -122,3 +122,14 @@ component cases build with zero warnings/errors and quality passes; runtime resu
 remain pending. Two-root races assert competing outcomes, not observed DB contention.
 No catalogue endpoints, deletion worker, read/list UI, assignment or UserInfo is active.
 T004 remains unchecked until its complete requirements pass.
+
+First component run42407808413: schema13/13 per provider remains green; component6/8
+per provider fails both positive native-reference cases because the test helper omitted
+explicit Owned mode selection. The old overflow-negative case also reached that setup
+failure, so its apparent pass is rejected as evidence. Corrected helper selection and
+added exact32768-character/128-candidate success controls before32769/129 failures.
+Added actual malformed syntax alongside invalid array-member controls and value-free
+JsonException normalization. Independent test review also required exact caller-bound
+audit fields and fresh full native-scope/product/audit snapshots around denials; both
+are implemented for scope/audience actions. Correction source review, build and quality
+pass. Corrected native execution remains pending; no T004 acceptance is claimed.
