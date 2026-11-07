@@ -7,7 +7,7 @@ accepted from planning alone. Feature022 and all preserved evidence remain compl
 
 - [x] T001 Record selected scope/claims, approved constraints, source research and implementation packet in `specs/023-scope-audience-catalogue/`; complete independent architecture/security/test review and cross-artifact analysis. FR-001–013.
 - [x] T002 Define bounded catalogue intents, projections, identifiers, versions and finite email policy in `src/core/IdentityPlatform.Core/Features/Catalogue/`; add meaningful boundary controls in `tests/core/IdentityPlatform.Core.Tests/Features/Catalogue/`. C01/C07.
-- [ ] T003 Add catalogue model and additive provider migrations through `src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/`, PlatformDbContext and both `src/migrations/IdentityPlatform.Migrations.*` projects; prove fresh/populated upgrades, histories, constraints and least privilege in `tests/persistence/IdentityPlatform.Persistence.Tests/Features/`. C05.
+- [x] T003 Add catalogue model and additive provider migrations through `src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/`, PlatformDbContext and both `src/migrations/IdentityPlatform.Migrations.*` projects; prove fresh/populated upgrades, histories, constraints and least privilege in `tests/persistence/IdentityPlatform.Persistence.Tests/Features/`. C05.
 
 ## US1 — Catalogue management (M03-A)
 

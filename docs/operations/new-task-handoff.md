@@ -6,8 +6,10 @@ The user selected M03-A–M03-C, including UI, dependencies and tests, and conse
 email/email_verified from the current Identity account. [Feature023](../../specs/023-scope-audience-catalogue/spec.md)
 records the selected scope and [tasks](../../specs/023-scope-audience-catalogue/tasks.md). T001 packet and T002
 Core policy/projection controls are complete; Core94/94 passes with independent review.
-Additive catalogue migrations and provider tests are under validation; no catalogue
-UI/API/UserInfo delivery or milestone acceptance is claimed yet.
+T003 additive catalogue schema passes13/13 focused hosted checks on each provider
+(run42407104845), with independent source/runtime review. T004 native catalogue mutation
+and reference handling is in progress; no catalogue UI/API/UserInfo delivery or milestone
+acceptance is claimed yet.
 
 Local PostgreSQL schema runs fail during container initialization with ENOSPC, even
 serially. Preserve both receipts; do not count them as schema failures or passes.
