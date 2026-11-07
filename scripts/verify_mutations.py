@@ -190,6 +190,7 @@ def manifest(root, suite='issuer'):
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
         'applications': (8, 'eng/application-mutations.json', None),
+        'catalogue': (4, 'eng/catalogue-mutations.json', None),
         'application-grants': (6, 'eng/application-grant-mutations.json', None),
         'application-lifecycle': (4, 'eng/application-lifecycle-mutations.json', None),
         'managed-applications': (5, 'eng/managed-application-mutations.json', None),
@@ -234,7 +235,11 @@ def manifest(root, suite='issuer'):
             'src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs'
         }
-        exact_paths = {'administrator-protocol': protocol_paths, 'browser-session': browser_paths,
+        exact_paths = {'catalogue': {
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionActor.cs',
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionProcessor.cs',
+                           'src/backend/IdentityPlatform.Admin.Bff/Features/Catalogue/CatalogueProxy.cs'},
+                       'administrator-protocol': protocol_paths, 'browser-session': browser_paths,
                        'pilot-replay': {
                            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotProtocolTransaction.cs',
                            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotConsumption.cs'},
@@ -407,11 +412,11 @@ def main():
     global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=['PostgreSql', 'SqlServer'])
-    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay'], default='issuer')
+    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
-    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay'):
+    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue'):
         PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))

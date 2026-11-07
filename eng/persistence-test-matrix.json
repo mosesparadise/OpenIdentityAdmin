@@ -1110,6 +1110,348 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_DeletionTerminalState_When_AuditAndFailureAreBound_Then_OnlyConsistentIndependentEvidencePersists(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueDeletionSchemaTests",
+        "methodName": "Given_DeletionTerminalState_When_AuditAndFailureAreBound_Then_OnlyConsistentIndependentEvidencePersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_DeletionTerminalState_When_AuditAndFailureAreBound_Then_OnlyConsistentIndependentEvidencePersists(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueDeletionSchemaTests",
+        "methodName": "Given_DeletionTerminalState_When_AuditAndFailureAreBound_Then_OnlyConsistentIndependentEvidencePersists",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_InvalidDeletionEvidence_When_StoredDirectly_Then_ConstraintsRejectAndRollbackEachWrite(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueDeletionSchemaTests",
+        "methodName": "Given_InvalidDeletionEvidence_When_StoredDirectly_Then_ConstraintsRejectAndRollbackEachWrite",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_InvalidDeletionEvidence_When_StoredDirectly_Then_ConstraintsRejectAndRollbackEachWrite(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueDeletionSchemaTests",
+        "methodName": "Given_InvalidDeletionEvidence_When_StoredDirectly_Then_ConstraintsRejectAndRollbackEachWrite",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_QueuedDeletion_When_TwoWritersComplete_Then_OnlyFirstOutcomeAndAuditCommit(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueDeletionSchemaTests",
+        "methodName": "Given_QueuedDeletion_When_TwoWritersComplete_Then_OnlyFirstOutcomeAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_QueuedDeletion_When_TwoWritersComplete_Then_OnlyFirstOutcomeAndAuditCommit(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueDeletionSchemaTests",
+        "methodName": "Given_QueuedDeletion_When_TwoWritersComplete_Then_OnlyFirstOutcomeAndAuditCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueRuntimeTests.Given_LeastPrivilegeRuntime_When_OwnedNativeScopeAndPolicyCommit_Then_OnlyPermittedStorageIsUsable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueRuntimeTests",
+        "methodName": "Given_LeastPrivilegeRuntime_When_OwnedNativeScopeAndPolicyCommit_Then_OnlyPermittedStorageIsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueRuntimeTests.Given_LeastPrivilegeRuntime_When_OwnedNativeScopeAndPolicyCommit_Then_OnlyPermittedStorageIsUsable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueRuntimeTests",
+        "methodName": "Given_LeastPrivilegeRuntime_When_OwnedNativeScopeAndPolicyCommit_Then_OnlyPermittedStorageIsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_FreshCatalogue_When_OrdinalDuplicatesAndInvalidRevisionWritten_Then_DatabaseRejectsOnlyInvalidRows(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_FreshCatalogue_When_OrdinalDuplicatesAndInvalidRevisionWritten_Then_DatabaseRejectsOnlyInvalidRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_FreshCatalogue_When_OrdinalDuplicatesAndInvalidRevisionWritten_Then_DatabaseRejectsOnlyInvalidRows(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_FreshCatalogue_When_OrdinalDuplicatesAndInvalidRevisionWritten_Then_DatabaseRejectsOnlyInvalidRows",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_ManagedNativeScope_When_ConflictingDisclosureOrNativeDeletionAttempted_Then_ConstraintsPreservePolicy(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_ManagedNativeScope_When_ConflictingDisclosureOrNativeDeletionAttempted_Then_ConstraintsPreservePolicy",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_ManagedNativeScope_When_ConflictingDisclosureOrNativeDeletionAttempted_Then_ConstraintsPreservePolicy(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_ManagedNativeScope_When_ConflictingDisclosureOrNativeDeletionAttempted_Then_ConstraintsPreservePolicy",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoCurrentAudienceReaders_When_FirstRevisionCommits_Then_SecondStaleWriteFails(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_TwoCurrentAudienceReaders_When_FirstRevisionCommits_Then_SecondStaleWriteFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoCurrentAudienceReaders_When_FirstRevisionCommits_Then_SecondStaleWriteFails(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_TwoCurrentAudienceReaders_When_FirstRevisionCommits_Then_SecondStaleWriteFails",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoPolicyReaders_When_FirstRevisionCommits_Then_StaleAndNonpositiveWritesCannotReplaceIt(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_TwoPolicyReaders_When_FirstRevisionCommits_Then_StaleAndNonpositiveWritesCannotReplaceIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoPolicyReaders_When_FirstRevisionCommits_Then_StaleAndNonpositiveWritesCannotReplaceIt(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueSchemaTests",
+        "methodName": "Given_TwoPolicyReaders_When_FirstRevisionCommits_Then_StaleAndNonpositiveWritesCannotReplaceIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueUpgradeTests.Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueUpgradeTests",
+        "methodName": "Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueUpgradeTests.Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "CatalogueUpgradeTests",
+        "methodName": "Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -1141,7 +1483,16 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: False)",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: True)",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_DeletionTerminalState_When_AuditAndFailureAreBound_Then_OnlyConsistentIndependentEvidencePersists(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_InvalidDeletionEvidence_When_StoredDirectly_Then_ConstraintsRejectAndRollbackEachWrite(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_QueuedDeletion_When_TwoWritersComplete_Then_OnlyFirstOutcomeAndAuditCommit(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueRuntimeTests.Given_LeastPrivilegeRuntime_When_OwnedNativeScopeAndPolicyCommit_Then_OnlyPermittedStorageIsUsable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_FreshCatalogue_When_OrdinalDuplicatesAndInvalidRevisionWritten_Then_DatabaseRejectsOnlyInvalidRows(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_ManagedNativeScope_When_ConflictingDisclosureOrNativeDeletionAttempted_Then_ConstraintsPreservePolicy(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoCurrentAudienceReaders_When_FirstRevisionCommits_Then_SecondStaleWriteFails(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoPolicyReaders_When_FirstRevisionCommits_Then_StaleAndNonpositiveWritesCannotReplaceIt(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueUpgradeTests.Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -1172,6 +1523,15 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"SqlServer\", cancel: False)",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"SqlServer\", cancel: True)",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_DeletionTerminalState_When_AuditAndFailureAreBound_Then_OnlyConsistentIndependentEvidencePersists(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_InvalidDeletionEvidence_When_StoredDirectly_Then_ConstraintsRejectAndRollbackEachWrite(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueDeletionSchemaTests.Given_QueuedDeletion_When_TwoWritersComplete_Then_OnlyFirstOutcomeAndAuditCommit(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueRuntimeTests.Given_LeastPrivilegeRuntime_When_OwnedNativeScopeAndPolicyCommit_Then_OnlyPermittedStorageIsUsable(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_FreshCatalogue_When_OrdinalDuplicatesAndInvalidRevisionWritten_Then_DatabaseRejectsOnlyInvalidRows(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_ManagedNativeScope_When_ConflictingDisclosureOrNativeDeletionAttempted_Then_ConstraintsPreservePolicy(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoCurrentAudienceReaders_When_FirstRevisionCommits_Then_SecondStaleWriteFails(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueSchemaTests.Given_TwoPolicyReaders_When_FirstRevisionCommits_Then_StaleAndNonpositiveWritesCannotReplaceIt(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueUpgradeTests.Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact(provider: \"SqlServer\")"
   ]
 }

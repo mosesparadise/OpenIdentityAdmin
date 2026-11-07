@@ -153,3 +153,47 @@ controls. T005–T016 remain unchecked. No catalogue HTTP/BFF/UI, application as
 consented native claims/UserInfo, full CI/coverage/mutation acceptance or merge is claimed.
 Original artifacts expire14November2026; decoded logs were inspected locally, while
 local archive/TRX-byte retrieval remains unavailable through the file-URL proxy route.
+
+## T004–T007 implementation candidate — 7 November 2026
+
+User selection confirms T005–T007 with unfinished T004 prerequisites. Branch135 now
+implements permission-bound ordinal list/detail reads, native scope/audience writes,
+atomic audited durable deletion, original approval/current-account enforcement and the
+existing Worker queue. The fixed versioned Admin API and BFF expose strict bounded
+contracts, native purpose-bound CSRF and one-send publication. The Scopes/Audiences UI
+includes bounded search, create/edit, preserved audience selection, explicit deletion,
+status/recovery and expired/stale/uncertain states. Assignment, claim emission and UserInfo
+remain T008–T014; this candidate does not activate them.
+
+Runtime attempts retained before acceptance:
+
+- Run42412586118: schema13/provider passes; component26/27/provider. The failing fault
+  test incremented ApprovalUntil into a schema constraint before its intended snapshot
+  check. The correction decrements it and preserves the exact failure assertion.
+- Run42415307625: schema13/provider passes; PostgreSQL32/33 and SQLServer31/33 component
+  results. EF could not translate sorting after a constructor projection; corrected to
+  a scalar member projection before SQL paging. The direct API expiry oracle now uses
+  native/source/MFA limits independently of the BFF's earlier transport deadline.
+- Run42415911228: schema13/provider passes; PostgreSQL37/39 and SQLServer36/39 component
+  results. Queue progress, real stop/restart and before/after-commit faults passed both
+  providers. Corrected the test's native access-token URN and explicit ordinal collation
+  on SQL scope joins/system-ID exclusions. All four browser attempts failed: SQL reads
+  hit the same collation conflict, Chromium expected revision1 after a genuine edit,
+  and WebKit found narrow-screen selector overflow. The test now expects revision2 and
+  exact edited text; CSS permits the selector to shrink. No timeout, assertion or
+  provider requirement was weakened.
+
+Candidate sourcea77ffba is undergoing bounded run42417189419 through isolated validation
+headae586c8. That branch-only workflow must never merge. Additional actual paging,
+observed-reference contention and held-response GET/DELETE tests address independent
+review findings. Local Admin build25 passes; Host catalogue18/18, existing native
+contracts44/44 and Node contracts46/46 pass. UI verification includes27 catalogue cases,
+unchanged per-module floors and generated assets. These focused results do not constitute
+full acceptance. Original local logs retain failed attempts; seven-day hosted artifact
+retention is temporary, and decoded job logs are not claimed as locally downloaded TRXs.
+
+Architecture review passes ordinal joins/exclusions, job validation before Location,
+original authority/expiry and the CSS correction. Test review passes exact scope/policy
+preservation and the actual one-send DELETE recovery snapshot. Final runtime review,
+full exact-head checks and normal reviewed delivery remain pending. T004–T007 stay unchecked
+until that evidence is reconciled. Existing historical/manual/refresh/release gates remain open.

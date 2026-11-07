@@ -29,6 +29,7 @@ internal static class WorkspacePresentation
     private const string Appearance = "Appearance";
     private const string Palette = "dark => getComputedStyle(document.body).backgroundColor === (dark ? 'rgb(2, 6, 23)' : 'rgb(248, 250, 252)')";
     private const string Layout = "() => document.documentElement.scrollWidth <= innerWidth && [...document.querySelectorAll('button,select,a.button')].filter(e=>e.getClientRects().length).every(e=>e.getBoundingClientRect().height>=44)";
+    private const string LayoutEvidence = "() => JSON.stringify({viewport:innerWidth,scrollWidth:document.documentElement.scrollWidth,smallControls:[...document.querySelectorAll('button,select,a.button')].filter(e=>e.getClientRects().length&&e.getBoundingClientRect().height<44).map(e=>({tag:e.tagName,height:e.getBoundingClientRect().height,width:e.getBoundingClientRect().width})),overflow:[...document.querySelectorAll('main *')].filter(e=>e.getClientRects().length&&e.getBoundingClientRect().right>innerWidth).slice(0,20).map(e=>({tag:e.tagName,right:e.getBoundingClientRect().right,width:e.getBoundingClientRect().width}))})";
     private const string Storage = "() => Object.keys(localStorage).every(key=>key==='identity-theme') && sessionStorage.length===0 && document.cookie===''";
     private static readonly int[] Widths = [320, 768, 1280];
     private static readonly bool[] Themes = [false, true];
@@ -108,7 +109,7 @@ internal static class WorkspacePresentation
         foreach (var width in Widths)
         {
             await page.SetViewportSizeAsync(width, Height);
-            Assert.True(await page.EvaluateAsync<bool>(Layout));
+            Assert.True(await page.EvaluateAsync<bool>(Layout), await page.EvaluateAsync<string>(LayoutEvidence));
             await BrowserAccessibility.RequireNoViolationsAsync(page);
         }
     }
