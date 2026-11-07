@@ -324,3 +324,61 @@ helper SHA-256: `909683274c1597e00032e9faedc03ac61a02a69879805b80ca6e1411760b26e
 The administrator test project builds with zero warnings/errors, repository quality
 controls pass, and independent test review accepts the source correction. Hosted native
 mutation verification and complete final-head acceptance are still required.
+
+The isolated original-source diagnostic
+[42423527441](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42423527441)
+at 6aa9a70319b9278bf054ffac1cddbfd6ae3bc290 passes PostgreSQL baseline five, all five
+strict behavioral kills and restored five, with source hashes restored. Its product
+src/tests match a75ade1; only isolated workflow and allowlisted stack-location receipt
+instrumentation differ. No failure location was observed, so this does not establish
+CI561's cause or accept the corrected source. Decoded log SHA-256:
+`37077c7bdb334210d7cf8007764c2b7605b79c976bf096a718aa9aefecd6cc7d`.
+CI561 terminates with 60 successful, 68 cancelled and two failed jobs (the pilot witness
+and final acceptance); it remains rejected. Diagnostic branch136 is not merged.
+
+## Cross-site logout completion witness — 7 November 2026
+
+CI562 [42424175571](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42424175571)
+at 618c7f27b90c0064e8b99f37d4ddf4283eb21b4c is rejected: 127 jobs succeed, the
+SQL Server/WebKit BrowserSessions job and final acceptance fail, and coverage aggregation
+is skipped. All 128 mutation controls pass with baseline/restored evidence, including both
+corrected pilot suites and both new catalogue suites. All four catalogue browser journeys
+pass. The independent partial reconciliation verifies 106 native reports/6,077 executions,
+111 UI cases and 46 Node contracts; these are not integrated acceptance.
+
+The failed browser job128558951393 passes 12 of 13 cases. Its cross-site logout scenario
+times out at AttackAsync's error-document URL wait after the actual issuer POST returns
+an accepted empty503 denial with no redirect/cookie publication. Policy observations show
+the expected hostile origin/referrer and no foreign authentication cookie. Earlier startup
+SQL readiness messages are not the recorded test failure. No browser obligation is waived.
+
+Passive four-cell diagnostic
+[42426294380](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42426294380)
+at 11f74dcc283d9a48aa9994f59b4eb58413ede5a7 retains every original assertion and then
+intentionally fails at a fixed completion marker. All four provider/engine cells reach that
+marker. Both native400/503 POSTs have exact destination/navigation/main-frame identity,
+no redirects, one RequestFinished, no RequestFailed and one target document commit.
+The prior timeout does not reproduce; its cause and a WebKit defect remain unproven.
+The diagnostic is not a passing acceptance run, and its ordinary pass-only reconciliation
+is skipped. Branch136 also retains earlier diagnostic-only script differences.
+
+ProtocolResponseTransfer.RejectAsync explicitly permits an empty503 response, with no
+error-document rendering contract. Replace the broad any-POST response selection and
+later document-commit wait with a passive witness armed before submission. It requires
+the exact target/native document POST/main frame, no redirect chain or Location, exactly
+one observed submission and the same IRequest's clean RequestFinished. RequestFailed,
+missing, premature, unrelated and duplicate evidence cannot count as denial. The former
+20-second navigation budget bounds terminal observation; no retry or deadline increase
+is introduced. Every original denial-header, durable-state, cookie, request-count, policy
+and subsequent genuine same-origin logout assertion remains required.
+
+Deterministic controls run inside the existing scenario before native setup and preserve
+all case identities/counts. Architecture/security and test reviews accept the correction;
+the administrator test project builds with zero warnings/errors and quality checks pass
+without new allowances. Exact-source local positive and restored controls pass; treating
+RequestFailed as clean completion and ignoring the exact destination are independently
+rejected by their specific negative controls. Receipt helper SHA-256:
+`439364594ccd4bc735b57714cb777d34a06871a502ccd26e31edf43e1f399d60`;
+native witness SHA-256: `a36426afde77bf5677bc3d30aced6ea265711cac97dbe698f66b1331d7e15710`.
+Corrected four-cell browser and complete final-head acceptance
+remain required before T004–T007 close or PR128 merges.
