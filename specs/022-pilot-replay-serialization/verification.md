@@ -12,6 +12,14 @@ outcomes, exact merge/tree binding and the selected archive/native failure. All
 earlier response, native-error, gate-loss and mutation producer jobs now succeed;
 that does not make this a clean acceptance run.
 
+A separate [original-report coverage diagnostic](evidence/ci552-coverage-diagnostic.json)
+streams all100 original reports and finds all15 unchanged90% line/80% branch floors
+satisfied using conservative original-method branch bounds. AuthServer is closest
+at5,363/6,700 proved branches (80.0448%). Only99 after-bindings are complete: the
+failed SQL Distribution cell lacks its after-binding. This preliminary gap check
+does not replace clean full-run provenance, the skipped coverage job or acceptance;
+no merged branch-summary percentage is treated as authoritative.
+
 The [isolated diagnostic](evidence/sql-ordering-diagnostic.json) at
 `83d63db414e4b93d38184c89e842f7ada77e3f36`,
 [run42396589720](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42396589720),
@@ -37,6 +45,30 @@ validation, first-replay revocation, unrelated flow, process generations and rea
 drain/cleanup remain mandatory. No product behavior, isolation setting or schema
 changes. Independent architecture/test source review passes conditionally; actual
 corrected hosted execution and clean exact-head full acceptance remain required.
+
+The first [corrected focused SQL run](evidence/sql-ordering-focused.json),
+[run42397559266](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42397559266)
+at `e75c43a33bd2d589b29768aedc921dfac2f14c1f`, passes25/25 with no skips or errors.
+Both ordinary directions report `GateWait`, so this run does not establish execution
+of `NativeTokenReadMatched`. Two separate SQL observer-conformance cases retain the
+ordinary cases and explicitly require that alternative. They add a test-only native
+row lock after independently proving durable consumption; this fixture-induced lock
+must not be described as an ordinary product write or as a changed isolation policy.
+Actual conformance execution and full final-source acceptance remain required.
+
+Conformance source `22ee253719ba119f3d39d8fc5a7c0987f946d399` uses a SELECT assignment
+with `XLOCK, ROWLOCK, HOLDLOCK` on the exact code/authorization in Redeemed state,
+requiring one row and returning no result set. Phase one proves durable consumption
+before that lock is taken. Phase two must retain the original session, physical
+connection and transaction; transition and replay observation share the original
+two-second observer budget. Both holders release before actual requests join and
+drain; the trigger is removed before the second fixture table. No native values or
+product request/generation budgets change. Independent architecture/test review
+accepts this source conditionally. After formatting corrections, the local lifecycle
+build and quality checks pass. Discovery preserves all86 previous identities and
+semantic metadata and adds exactly two SQL cases:88 total,43 PostgreSQL/45 SQL,
+Distribution25/27. All seven selector controls pass. These are build/discovery
+results, not provider execution or full acceptance.
 
 The [local repaired issuer mutation receipt](evidence/issuer-mutation-correction.json)
 at `413a3d4` independently verifies seven baseline passes, seven demonstrated

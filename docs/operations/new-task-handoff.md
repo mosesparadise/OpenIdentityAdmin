@@ -14,6 +14,14 @@ See [current evidence](../../specs/022-pilot-replay-serialization/verification.m
 PR126 stays draft/unmerged; preserve both failed full runs and the failed diagnostic.
 All historical/manual/refresh/production/public-release gates remain open.
 
+The first corrected focused run passes25/25, but both directions use `GateWait`.
+Do not claim it validates `NativeTokenReadMatched`. Branch132 source `22ee253`
+adds two explicitly synthetic SQL controls that require that witness, retain the
+same winning session/connection/transaction across two fixture phases, and share
+the original replay observation budget. Discovery preserves all86 earlier cases
+and adds two SQL cases; required SQL Distribution is now27. Build/quality/selection
+checks pass; actual conformance execution and clean full acceptance remain pending.
+
 **Current acceptance batch — 7 November 2026:** the user selected feature022 T008,
 SQL Server validation and T009. Work continues on `132-pilot-replay-acceptance`, based
 on `2b5990d79fa89b152bf6b2c382bf70e089efb705`; preserve branches130/131 and their

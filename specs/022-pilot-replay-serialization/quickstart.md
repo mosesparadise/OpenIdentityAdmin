@@ -9,6 +9,10 @@ contention under a gate-owning transaction; hosted validation, required exact-he
 full verification and T008/T009 review remain open. This candidate is not
 ready to merge or deploy. See [current evidence](verification.md).
 
+The first corrected SQL run passes25/25 through the gate-wait path. Two added
+observer-conformance cases must also prove the native-read path under a deliberately
+introduced test-only lock; they are not a product isolation or native-data change.
+
 The existing administrator UI and grant revocation are already delivered through
 PR124; use the [native Aspire grant walkthrough](../021-application-grant-revocation/quickstart.md)
 for local testing. This correction adds no custom launch script.

@@ -1,0 +1,270 @@
+{
+  "schema": 1,
+  "scope": "Focused corrected SQL Distribution verification only; not final integrated acceptance and not runtime proof of NativeTokenReadMatched.",
+  "source": {
+    "head": "e75c43a33bd2d589b29768aedc921dfac2f14c1f",
+    "tree": "3537233d0ac015ccf0015ee6b157109ccaa734da",
+    "branch": "133-pilot-sql-observation",
+    "integratedCandidate": "3ee22b80e7f3feb0d061a397433be0133df0b262",
+    "allTestSourceBlobsIdenticalToIntegratedCandidate": true,
+    "changedDistributionBlobs": [
+      {
+        "path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayBarrierSql.cs",
+        "gitBlob": "0427cd5eb339b17aeaadd7d475125f0ac50db747",
+        "sha256": "504e64262faa53ce1bf7d53200fe308578e49fb81f1793673847f539594f3f09"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDatabaseBarrier.cs",
+        "gitBlob": "6a38473a1872d93d39e1ac1c1069c1b06ac42fdf",
+        "sha256": "9c8ad05f42db4350091377be53f759084cceb3623a336369ec62aa6762416bab"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDistributionTests.cs",
+        "gitBlob": "ea69a9f6ed381f77175f771a0add1e85030b4c87",
+        "sha256": "1a4cc3598f662b3fc44481a5ed052094680f2ba0b3ad68e2c070ec78f79d0066"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplaySqlWait.cs",
+        "gitBlob": "b6fc63ddda2909ea3a9c33ef320fa426d2ae28b9",
+        "sha256": "e88bf6c4a7e9ad5d22af6c5243cd20d3beb35f2f3f13829be2c5012be97c4a42"
+      },
+      {
+        "path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplaySqlWaitDiagnostics.cs",
+        "gitBlob": "a88e3499a764fd63c997a800f200616c85f6d55a",
+        "sha256": "37e5e7ca191da9bc22003754162665184c74d652f065a6fc1200dd308caa417c"
+      }
+    ],
+    "isolatedWorkflowAbsentFromIntegratedCandidate": true
+  },
+  "run": {
+    "id": 42397559266,
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "jobId": 128478102718,
+    "jobConclusion": "success",
+    "allJobStepsSucceeded": true
+  },
+  "rawApiMetadata": [
+    {
+      "path": "/workspace/pilot-sql-witness-run2-run.json",
+      "sha256": "a50890dc0f477eb4b9389ee5b3b7641295b4cb3b6048e31b8a17355fbc2167fe",
+      "bytes": 15127
+    },
+    {
+      "path": "/workspace/pilot-sql-witness-run2-jobs.json",
+      "sha256": "2627641ded00678d58f3ca31d33248600aefb40943a40fc48f6be3fb97c05b3e",
+      "bytes": 5622
+    },
+    {
+      "path": "/workspace/pilot-sql-witness-run2-artifacts.json",
+      "sha256": "dca26bf641196d5829ffa85e9653ef31ad694d3e2ea95bdd0d526d9139b24756",
+      "bytes": 952
+    }
+  ],
+  "artifact": {
+    "id": 13584491732,
+    "name": "diagnostic-pilot-sql-distribution",
+    "githubDigest": "sha256:5905bef4d4b5f111d129a10d3c3d96399cddc00a68d934ee599f7707ba48796a",
+    "archive": {
+      "path": "/workspace/attachments/3457b50b-65fb-4213-99d2-8fd5c7abe4ab/pilot-sql-witness-run2.zip",
+      "sha256": "5905bef4d4b5f111d129a10d3c3d96399cddc00a68d934ee599f7707ba48796a",
+      "bytes": 270267
+    },
+    "entries": [
+      {
+        "name": "tests/SqlServer-lifecycle-distribution/Issuer.Lifecycle.trx",
+        "bytes": 52983,
+        "sha256": "bc9f0c7c304a4a4bc5b1bbf310b7d0afb4339b9a1324a04c54596387042ca0d3"
+      },
+      {
+        "name": "coverage/SqlServer-lifecycle-distribution.build.json",
+        "bytes": 4171,
+        "sha256": "70a410b4595fbbe7d1e16c1cd4fd76017c622485cf0d17e5720d2d8d4eb404fa"
+      },
+      {
+        "name": "coverage/SqlServer-lifecycle-distribution.cobertura.xml",
+        "bytes": 6242992,
+        "sha256": "53e7f87d8f9f9398b8d34a30b32c740d0769d2a60f1385401957095cf993bc70"
+      },
+      {
+        "name": "coverage/SqlServer-lifecycle-distribution.identity.json",
+        "bytes": 4963,
+        "sha256": "8a695de6946ca29068cc6d8916492fa5261f80bc95251577e6dbf31cd24d302c"
+      }
+    ]
+  },
+  "report": {
+    "file": {
+      "path": "/workspace/pilot-sql-witness-run2.trx",
+      "sha256": "bc9f0c7c304a4a4bc5b1bbf310b7d0afb4339b9a1324a04c54596387042ca0d3",
+      "bytes": 52983
+    },
+    "summary": "Completed",
+    "counters": {
+      "total": 25,
+      "executed": 25,
+      "passed": 25,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "uniqueResultDefinitionEntryIdsMatched": true,
+    "discovery": {
+      "path": "/workspace/pilot-t008-discovery/413a3d4/Issuer.Lifecycle.json",
+      "sha256": "2ffdc935b58b5579d33f99639b5b05e02f0ec450a009bd839578beaa515b3845",
+      "bytes": 108217
+    },
+    "identitiesMatchUnchangedDistributionSelection": true,
+    "tests": [
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.TransportDistributionTests.Selected_socket_preserves_certificate_validation_and_canonical_authority(provider: \"SqlServer\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.ProtectionDistributionTests.Unsuitable_secondary_material_fails_safely_while_original_cookie_survives(provider: \"SqlServer\", kind: \"missing\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.ProtectionDistributionTests.Unsuitable_secondary_material_fails_safely_while_original_cookie_survives(provider: \"SqlServer\", kind: \"wrapper\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.ProtectionDistributionTests.Healthy_but_incompatible_encryption_denies_then_exact_original_code_recovers(provider: \"SqlServer\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.CodeDistributionTests.Concurrent_node_redemptions_have_one_native_winner_and_replay_revokes_issued_tokens(provider: \"SqlServer\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.CodeDistributionTests.Exact_live_code_crosses_nodes_with_original_proof_and_single_use(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.CodeDistributionTests.Exact_live_code_crosses_nodes_with_original_proof_and_single_use(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Surviving_node_uses_original_state_while_opposite_process_is_stopped(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Surviving_node_uses_original_state_while_opposite_process_is_stopped(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_form_crosses_nodes_with_antiforgery_and_browser_binding(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_form_crosses_nodes_with_antiforgery_and_browser_binding(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_completed_continuation_crosses_nodes_once_for_its_owner(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_completed_continuation_crosses_nodes_once_for_its_owner(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_cookie_silently_crosses_nodes_without_reauthentication(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_cookie_silently_crosses_nodes_without_reauthentication(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"scope\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"session\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"scope\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"account\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"account\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"client\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"client\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"session\")",
+        "outcome": "Passed"
+      }
+    ]
+  },
+  "pilotWitnesses": [
+    {
+      "test": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+      "outcome": "Passed",
+      "witnesses": [
+        "FixtureInsert",
+        "GateWait"
+      ]
+    },
+    {
+      "test": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+      "outcome": "Passed",
+      "witnesses": [
+        "FixtureInsert",
+        "GateWait"
+      ]
+    }
+  ],
+  "matchingResourceFallbackObserved": false,
+  "log": {
+    "path": "/workspace/pilot-sql-witness-run2.log",
+    "sha256": "640fd10fa1867136e34352501d21c3a17620c65bc605298c4ef578339a6d8929",
+    "bytes": 43458
+  },
+  "coverage": {
+    "buildReceiptAndReportHashBindingVerified": true,
+    "attestationLimit": "Trusted CI build-copy binding; not runtime loaded-module attestation.",
+    "aggregateCoverageAcceptance": false
+  },
+  "limits": [
+    "Both directions genuinely passed via FixtureInsert followed by GateWait. NativeTokenReadMatched did not appear in either case.",
+    "The matching-resource fallback was compiled and reviewed but its successful runtime branch is not demonstrated by this focused run.",
+    "This is one focused SQL Distribution suite at the diagnostic branch head, not a clean final-head full CI run or authorization to merge.",
+    "The earlier failed CI551/CI552 and failed diagnostic run remain retained; this evidence does not erase them.",
+    "No runtime-loaded module attestation, full coverage floors or integrated artifact reconciliation is claimed."
+  ],
+  "review": "PASS for focused25/25 SQL Distribution and exact evidence integrity; requested demonstration of fallback execution is not satisfied by this run."
+}

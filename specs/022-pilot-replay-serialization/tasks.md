@@ -9,6 +9,11 @@ issuer process identities. Its focused hosted execution and a clean final-head
 full run remain required. See `verification.md`; no task is accepted from a failed
 run. The older local startup limitation below does not describe hosted SQL readiness.
 
+The initial corrected SQL run passes25/25 but exercises only the existing gate
+witness. Two additional SQL controls now require the exact native-read witness
+under an explicitly synthetic lock. Lifecycle inventory is88 (43 PostgreSQL/45 SQL);
+Distribution is25/27, preserving every earlier case. Their execution is pending.
+
 **Current batch:** the user selected T008, SQL Server validation and T009. Branch132
 adds five pilot mutation witnesses per provider, mandatory hosted mutation jobs and
 updated native inventory at `71ab8e319ab183b8af21b0405f4a2ac565a93894`. T008/T009
