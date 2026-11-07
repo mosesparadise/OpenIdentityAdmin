@@ -97,39 +97,60 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
         deadline.CancelAfter(TimeSpan.FromSeconds(ObserveSeconds));
-        while (true)
+        var diagnostics = new PilotReplaySqlWaitDiagnostics();
+        try
         {
-            deadline.Token.ThrowIfCancellationRequested();
-            foreach (var request in pending.Where(value => value.IsCompleted))
+            while (true)
             {
-                var response = await request;
-                Assert.Fail(EarlyCompletion + (int)response.StatusCode);
+                deadline.Token.ThrowIfCancellationRequested();
+                foreach (var request in pending.Where(value => value.IsCompleted))
+                {
+                    var response = await request;
+                    Assert.Fail(EarlyCompletion + (int)response.StatusCode);
+                }
+                var session = await ReadWaiterAsync(blocker, gate, diagnostics, deadline.Token);
+                deadline.Token.ThrowIfCancellationRequested();
+                if (session is { } observed)
+                {
+                    Assert.True(observed != blocker && observed != holder, DistinctSession);
+                    sessions.Add(observed);
+                    return observed;
+                }
+                await Task.Delay(TimeSpan.FromMilliseconds(PollMilliseconds), deadline.Token);
             }
-            var session = await ReadWaiterAsync(blocker, gate, deadline.Token);
-            deadline.Token.ThrowIfCancellationRequested();
-            if (session is { } observed)
+        }
+        catch
+        {
+            if (provider != PilotReplayBarrierSql.PostgreSql)
             {
-                Assert.True(observed != blocker && observed != holder, DistinctSession);
-                sessions.Add(observed);
-                return observed;
+                diagnostics.Report(gate);
             }
-            await Task.Delay(TimeSpan.FromMilliseconds(PollMilliseconds), deadline.Token);
+            throw;
         }
     }
 
     /// <summary>Correlates direct provider lock ownership, database, runtime principal and the replay gate statement.</summary>
-    private async Task<int?> ReadWaiterAsync(int blocker, bool gate, CancellationToken token)
+    private async Task<int?> ReadWaiterAsync(int blocker, bool gate, PilotReplaySqlWaitDiagnostics diagnostics, CancellationToken token)
     {
-        await using var command = Command(provider == PilotReplayBarrierSql.PostgreSql ? PilotReplayBarrierSql.PgWait : PilotReplayBarrierSql.SqlWait);
+        var postgres = provider == PilotReplayBarrierSql.PostgreSql;
+        await using var command = Command(postgres ? PilotReplayBarrierSql.PgWait : PilotReplayBarrierSql.SqlWait + PilotReplaySqlWaitDiagnostics.Query);
         Add(command, BlockerParameter, blocker);
         Add(command, GateParameter, gate ? 1 : 0);
-        await using var rows = await command.ExecuteReaderAsync(token);
-        if (!await rows.ReadAsync(token))
+        if (!postgres)
         {
-            return null;
+            Add(command, PilotReplaySqlWaitDiagnostics.HolderParameter, holder);
         }
-        var session = rows.GetInt32(0);
-        Assert.False(await rows.ReadAsync(token), AmbiguousWaiter);
+        await using var rows = await command.ExecuteReaderAsync(token);
+        int? session = null;
+        if (await rows.ReadAsync(token))
+        {
+            session = rows.GetInt32(0);
+            Assert.False(await rows.ReadAsync(token), AmbiguousWaiter);
+        }
+        if (!postgres)
+        {
+            await diagnostics.CaptureAsync(rows, token);
+        }
         return session;
     }
 
