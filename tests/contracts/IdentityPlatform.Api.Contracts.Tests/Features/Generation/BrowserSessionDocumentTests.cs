@@ -1,8 +1,8 @@
 using System.Text.Json.Nodes;
 using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Bff.Features.Applications;
-using IdentityPlatform.Admin.Bff.Features.Catalogue;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Admin.Bff.Features.Catalogue;
 using IdentityPlatform.Api.Contracts.Tests.Fixtures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;

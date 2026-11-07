@@ -1,7 +1,7 @@
 using IdentityPlatform.Database;
-using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;

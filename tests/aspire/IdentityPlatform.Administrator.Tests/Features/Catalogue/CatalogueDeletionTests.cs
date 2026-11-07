@@ -1,6 +1,5 @@
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Persistence;

@@ -20,7 +20,7 @@ export function CatalogueForm({ kind, base, audiences, choicesError, searchAudie
       <p>The permanent, case-sensitive identifier. System identifiers are reserved.</p>{error("name")}</div>
     <div><label htmlFor="catalogue-displayName">Display name (required)</label><input {...field("displayName")} required maxLength={200} />{error("displayName")}</div>
     {kind === "audience" ? <div><label htmlFor="catalogue-owner">Owner or team (required)</label><input {...field("owner")} required maxLength={200} />{error("owner")}</div> : <>
-      <div><label htmlFor="catalogue-kind">Scope type</label><select id="catalogue-kind" value={value.kind} disabled={!!base} onChange={event => setValue(current => ({ ...current, kind: event.target.value, audienceId: "", disclosure: "none" }))}>
+      <div><label htmlFor="catalogue-kind">Scope type</label><select id="catalogue-kind" value={value.kind} disabled={!!base} aria-invalid={!!errors.kind} aria-describedby={errors.kind ? "catalogue-kind-error" : undefined} onChange={event => setValue(current => ({ ...current, kind: event.target.value, audienceId: "", disclosure: "none" }))}>
         <option value="api">API access</option><option value="identity">Identity information</option></select><p>The type cannot change after creation.</p>{error("kind")}</div>
       <div><label htmlFor="catalogue-consentText">Consent text (required)</label><textarea {...field("consentText")} rows={3} maxLength={500} required />
         <p>Describe clearly what the application may receive or access.</p>{error("consentText")}</div>
