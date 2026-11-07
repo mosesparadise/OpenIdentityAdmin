@@ -1,5 +1,14 @@
 # Grant revocation implementation verification
 
+**Grant coverage correction — 7 November 2026:** CI544 at `c18569e` passes all124 jobs;
+reconciliation verifies5,753 native executions, both native demos and110 mutation kills.
+Independent coverage review nevertheless proves that the upstream merge loses branch
+metadata. T018 stays open. The correction enforces conservative original-method bounds,
+unchanged15-module floors and per-cell before/after DLL/PDB/source/collector bindings.
+Saved-report feasibility passes; new exact-head CI provenance and acceptance remain required.
+PR124 stays draft/unmerged. The initial pilot replay window and all historical/manual/
+public-release gates remain open. See [coverage correction](coverage-correction.md).
+
 ## T018 acceptance candidate — 6 November 2026
 
 Complete-spec review found missing direct actor/application/action request-key isolation

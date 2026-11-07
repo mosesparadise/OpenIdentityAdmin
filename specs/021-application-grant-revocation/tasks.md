@@ -149,3 +149,10 @@ inspect API/UX and test evidence in parallel. No parallel .NET builds/provider r
 
 Exact discovered test IDs and outcomes are added as tests are implemented; planned
 scenario coverage is not runtime evidence. All external/historical gates remain open.
+
+## T018 coverage correction — 7 November 2026
+
+CI544 passes all124 jobs, but original-report reconciliation proves merged branch metadata
+is lossy. [The correction](coverage-correction.md) retains all15 floors and adds method-level
+conservative bounds with genuine per-cell build provenance. Saved inputs establish feasibility,
+not acceptance; new current-head execution is required. T018 remains unchecked.
