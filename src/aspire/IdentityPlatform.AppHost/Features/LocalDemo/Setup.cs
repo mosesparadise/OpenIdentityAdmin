@@ -23,6 +23,7 @@ internal static class Setup
     private const string ApiResource = "admin-api";
     private const string ApiStage = "api";
     private const string InitializerResource = "initializer";
+    private const string WorkerResource = "worker";
     private const string ProviderVariable = "Database__Provider";
     private const string ProvisionRoles = "LocalDevelopment__ProvisionRuntimeRoles";
     private const string TrueValue = "true";
@@ -96,8 +97,15 @@ internal static class Setup
         var assertion = AddMaterial(builder, auth, bff);
         auth.WithEnvironment(PublicKeyVariable, assertion.PublicKey);
         AddInitializer(builder, database, migrator, run, assertion.PublicKey);
+        AddWorker(builder, database, migrator, run);
         return builder;
     }
+
+    /// <summary>Runs durable jobs after schema completion with Platform runtime access and no issuer keys, session store or published listener.</summary>
+    private static void AddWorker(IDistributedApplicationBuilder builder, DatabaseResources database, IResourceBuilder<ContainerResource> migrator, string run) =>
+        builder.AddDemoContainer(WorkerResource, WorkerResource, run)
+            .WithEnvironment(ProviderVariable, database.Provider).WithEnvironment(PlatformConnection, database.PlatformRuntime)
+            .WaitForCompletion(migrator);
 
     /// <summary>Generates seven distinct roles and sends each only to its owning host.</summary>
     private static DemoCertificate AddMaterial(IDistributedApplicationBuilder builder, IResourceBuilder<ContainerResource> auth, IResourceBuilder<ContainerResource> bff)

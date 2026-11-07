@@ -944,6 +944,15 @@
           "OpenTelemetry.Instrumentation.AspNetCore": "[1.20.1, )"
         }
       },
+      "identityplatform.worker": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.Database.PostgreSql": "[1.0.0, )",
+          "IdentityPlatform.Database.SqlServer": "[1.0.0, )",
+          "IdentityPlatform.Infrastructure": "[1.0.0, )",
+          "IdentityPlatform.ServiceDefaults": "[1.0.0, )"
+        }
+      },
       "Asp.Versioning.Http": {
         "type": "CentralTransitive",
         "requested": "[10.2.3, )",

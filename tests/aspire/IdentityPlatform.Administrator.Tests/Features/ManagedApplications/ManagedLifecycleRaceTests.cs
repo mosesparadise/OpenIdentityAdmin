@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using IdentityPlatform.Administrator.Tests.Features.ApplicationGrants;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 using IdentityPlatform.Administrator.Tests.Fixtures;
@@ -58,6 +59,8 @@ public sealed class ManagedLifecycleRaceTests(BootstrapFixture fixture)
         Assert.Equal(policy.Policy.CredentialExpiresAt, changed.Policy.CredentialExpiresAt);
         Assert.Single(changed.LifecycleAudits);
         await RequireOutputAsync(test, flow, issuance, exchange, issuanceFirst);
+        probe.Endpoint = null;
+        await GrantIssuerRevocation.ReconcileAsync(test);
     }
 
     /// <summary>Pauses after early consumption, then requires the exact peer/winner wait graph before releasing the selected actual commit.</summary>

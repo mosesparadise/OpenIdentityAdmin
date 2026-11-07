@@ -41,6 +41,7 @@ internal sealed class EditorRecoveryResponse : IAsyncDisposable
     private readonly string method;
     private readonly Behavior behavior;
     private readonly int status;
+    private readonly int? committedStatus;
     private readonly TaskCompletionSource release = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource entered = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly TaskCompletionSource joined = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -62,20 +63,21 @@ internal sealed class EditorRecoveryResponse : IAsyncDisposable
     }
 
     /// <summary>Fixes one exact endpoint and method; all other traffic proceeds normally.</summary>
-    private EditorRecoveryResponse(IPage page, string url, string method, Behavior behavior, int status)
+    private EditorRecoveryResponse(IPage page, string url, string method, Behavior behavior, int status, int? committedStatus)
     {
         this.page = page;
         this.url = url;
         this.method = method;
         this.behavior = behavior;
         this.status = status;
+        this.committedStatus = committedStatus;
     }
 
     /// <summary>Installs one removable response seam without changing the app's request timeout or retry policy.</summary>
     internal static async Task<EditorRecoveryResponse> AttachAsync(IPage page, string url, string method,
-        Behavior behavior = Behavior.FiniteStatus, int status = Unavailable)
+        Behavior behavior = Behavior.FiniteStatus, int status = Unavailable, int? committedStatus = null)
     {
-        var probe = new EditorRecoveryResponse(page, url, method, behavior, status);
+        var probe = new EditorRecoveryResponse(page, url, method, behavior, status, committedStatus);
         await page.RouteAsync(url, probe.HandleAsync);
         return probe;
     }
@@ -145,7 +147,7 @@ internal sealed class EditorRecoveryResponse : IAsyncDisposable
         {
             Advance(FailurePhase.Status);
             CommittedStatus = response.Status;
-            if (response.Status is not (Success or Created))
+            if (committedStatus is { } expected ? response.Status != expected : response.Status is not (Success or Created))
             {
                 Failed = true;
             }

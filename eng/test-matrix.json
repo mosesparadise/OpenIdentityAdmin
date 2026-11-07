@@ -27,29 +27,29 @@
   },
   "profiles": {
     "unit": {
-      "Core": 25,
+      "Core": 41,
       "Host": 1846,
       "Architecture": 5,
       "AppHost": 110
     },
     "PostgreSql": {
-      "Persistence": 21,
+      "Persistence": 24,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1114
+      "Administrator": 1208
     },
     "SqlServer": {
-      "Persistence": 21,
+      "Persistence": 24,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1219
+      "Administrator": 1313
     }
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 71
+    "Administrator": 74
   },
   "lifecycle_stories": {
     "Restart": {
@@ -107,8 +107,8 @@
       "SqlServer": 166
     },
     "ProtocolAdmission": {
-      "PostgreSql": 110,
-      "SqlServer": 110
+      "PostgreSql": 111,
+      "SqlServer": 111
     },
     "BrowserSessions": {
       "PostgreSql": 322,
@@ -125,13 +125,17 @@
     "ManagedApplications": {
       "PostgreSql": 118,
       "SqlServer": 118
+    },
+    "ApplicationGrants": {
+      "PostgreSql": 93,
+      "SqlServer": 93
     }
   },
   "administrator_browser_stories": {
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 31,
+    "BrowserProtection": 34,
     "BrowserLogin": 9,
     "ApplicationEditor": 1,
     "ApplicationAuthority": 1,

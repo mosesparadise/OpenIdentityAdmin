@@ -1,0 +1,163 @@
+{
+  "run": 42138440154,
+  "head": "2a18e68cd340c967b91e03399588e5e3fe1b5daf",
+  "artifacts": [
+    {
+      "artifactId": 13466947999,
+      "name": "foundation-administrator-PostgreSql-applicationgrants",
+      "path": "/workspace/attachments/8d80ce41-e1b4-450b-9e2a-8bff40957209/grant534-review-foundation-administrator-PostgreSql-applicationgrants.zip",
+      "zipDigest": "sha256:7b2b183fc723d6eaf53a1cbf4e0ae6a32020d1ccf2e456b60b5f254a1351d093",
+      "head": "2a18e68cd340c967b91e03399588e5e3fe1b5daf",
+      "run": 42138440154,
+      "provider": "PostgreSql",
+      "report": "tests/administrator-PostgreSql-applicationgrants/Administrator.trx",
+      "reportSha256": "ed94bfc3bc9de3b4a70a192fbd2523bea8df008f7b7e5dbc2d4b7ee14289a951",
+      "counters": {
+        "total": "51",
+        "executed": "51",
+        "passed": "51",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactGrantInventoryMatch": true,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "f8b4ccc770880de7a4bf4f4a45ae44499f9b9555e7ecc7041021974b74d18420"
+    },
+    {
+      "artifactId": 13468380232,
+      "name": "foundation-administrator-SqlServer-applicationgrants",
+      "path": "/workspace/attachments/70c0bf3b-cb7d-40fe-be3a-b3d1eb341326/grant534-review-foundation-administrator-SqlServer-applicationgrants.zip",
+      "zipDigest": "sha256:38cde2a0b2aa274bacb98ed95f8a164d20be769a4a381757c26286a371b7eee9",
+      "head": "2a18e68cd340c967b91e03399588e5e3fe1b5daf",
+      "run": 42138440154,
+      "provider": "SqlServer",
+      "report": "tests/administrator-SqlServer-applicationgrants/Administrator.trx",
+      "reportSha256": "22a9f7b6a1a6cfecf1adb8b113200f237daa520900004eb4cedc83032e1a489d",
+      "counters": {
+        "total": "51",
+        "executed": "51",
+        "passed": "51",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactGrantInventoryMatch": true,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "888e43a9aa0e08d2f7ec1261da89eefc8b62b18dfe02e8da7d1cc2935c2c4be1"
+    },
+    {
+      "artifactId": 13467306333,
+      "name": "foundation-issuer-PostgreSql-flows",
+      "path": "/workspace/attachments/15bba1a8-0df6-4538-b638-df660c13eade/grant534-review-foundation-issuer-PostgreSql-flows.zip",
+      "zipDigest": "sha256:d8ecaccc059bbc060dbfc258ec0a4e852f8e9b1dfa60e0e1e81dd5dcc6b58db3",
+      "head": "2a18e68cd340c967b91e03399588e5e3fe1b5daf",
+      "run": 42138440154,
+      "provider": "PostgreSql",
+      "report": "tests/issuer-PostgreSql-flows/Issuer.trx",
+      "reportSha256": "48b5dc021a06bbcfcaed1983fa279333c387daa747710e180c6e6653fd35eb02",
+      "counters": {
+        "total": "131",
+        "executed": "131",
+        "passed": "131",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactGrantInventoryMatch": false,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "8b5064a747576ea46e37cd04af41b8cbb1faf306dbc4d524cad3a8c6e02fa6ce"
+    },
+    {
+      "artifactId": 13468200756,
+      "name": "foundation-issuer-SqlServer-flows",
+      "path": "/workspace/attachments/4933fef0-5e7a-4d71-9d61-67a53fa7b8a6/grant534-review-foundation-issuer-SqlServer-flows.zip",
+      "zipDigest": "sha256:159e55d2984ba03b6c2724c6beb7a9b9330cae06783a4ebbe7100cc7c9634230",
+      "head": "2a18e68cd340c967b91e03399588e5e3fe1b5daf",
+      "run": 42138440154,
+      "provider": "SqlServer",
+      "report": "tests/issuer-SqlServer-flows/Issuer.trx",
+      "reportSha256": "d51b9e56b9d3a83fdf69356addce5ec06a0a41ac5f6c6b12d6c52088aa71c67f",
+      "counters": {
+        "total": "131",
+        "executed": "131",
+        "passed": "131",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactGrantInventoryMatch": false,
+      "focusCases": [
+        {
+          "name": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        }
+      ],
+      "testNamesSha256": "c1496a4ac870fe88affec49c708987124fdffc47fe0a608b4dba6d95ddaa1626"
+    }
+  ],
+  "selectedNativePasses": 364,
+  "targetHelperBinding": "The exact-head GrantHttpTests invalid-input case awaits GrantTargetHttpEvidence.RequireAsync; both provider identities passed, including its target/version/profile/persisted-pilot checks and final valid-control acceptance.",
+  "replayDisposition": "The renamed replay case passed once per provider in this run. Historical intermittent native replay failure remains open; no repair or nonrecurrence claim is inferred from a green rerun or improved diagnostic output.",
+  "limits": "All 124 job conclusions independently confirmed. Raw report reconciliation is limited to four selected artifacts; no independent full coverage, manual acceptance or release-gate closure is claimed.",
+  "jobTotals": {
+    "success": 124,
+    "failure": 0,
+    "skipped": 0
+  }
+}

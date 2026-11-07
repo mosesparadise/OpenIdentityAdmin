@@ -1,0 +1,241 @@
+{
+  "checkpoint": "T016 genuine browser recovery acceptance",
+  "date": "2026-11-06",
+  "baseHead": "4a7647e46f0574e9eb5ad7621b07e7ed2f2dbef0",
+  "runtimeAcceptance": "accepted: both genuine recovery journeys pass on PostgreSQL/SqlServer x Chromium/WebKit",
+  "priorCi": {
+    "run": 42285819012,
+    "runNumber": 541,
+    "head": "4a7647e46f0574e9eb5ad7621b07e7ed2f2dbef0",
+    "jobs": 124,
+    "success": 124,
+    "scope": "both job pages; status only"
+  },
+  "sourceManifest": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/AdministratorBrowserEvidence.cs",
+      "sha256": "10712d70a6276f5045ca84a011c1d0d511f6fbb84cc407bdce98325be20958e7"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationGrantBrowserEvidence.cs",
+      "sha256": "c0ee3c63c5ac454558fb115aba788f7b97451afa1c8e414abc25d615b6287616"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationManagedBrowserEvidence.cs",
+      "sha256": "aa34361be9ace1e4a00e8412bdb1bd60854a35c12a3a1f81470c96ce88bb1fa4"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/EditorRecoveryResponse.cs",
+      "sha256": "86ab627d31833e1247ae3ed73e5829161aebae914c20113b86a59d69b5584231"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/ApplicationGrantRecoveryBrowserTests.cs",
+      "sha256": "7bb4290af7f044732f547de75ce8a89539d3b91584ccc69fd78faa1233966f83"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryBrowserJourney.cs",
+      "sha256": "2c1f826d332dc4a6a98cafddec76b94366be468dfc0c5f00bac9055c0a349bf2"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryBrowserStore.cs",
+      "sha256": "3846d11cd824239b91b3bbcdb02e7cda2050f98df1cdb93ed5f8df15418d783f"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryTraffic.cs",
+      "sha256": "db439e0fd31726fd50aff7c208b802e3585c2e6c572d62658ba76ad3c8fc3c0a"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryIntent.cs",
+      "sha256": "9d3be783a3cb21b57606a19067f83bb2265b1645c95c183fd1608540ac09b376"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/GrantRecoveryView.cs",
+      "sha256": "0187bf15d714564d064d49c604298ccad7771b8bebd192870842dd8736a3f379"
+    }
+  ],
+  "inventory": {
+    "prior": 2659,
+    "preservedPriorMetadataAndProviderOrder": true,
+    "added": 4,
+    "total": 2663,
+    "BrowserProtectionPerProvider": 34,
+    "allBrowserPerProvider": 74,
+    "ordinaryUnchanged": {
+      "PostgreSql": 1205,
+      "SqlServer": 1310
+    }
+  },
+  "localReports": [
+    {
+      "path": "/workspace/grant-t016-build-corrected.log",
+      "sha256": "e52e8930899f1e26c81c364149d5f91378eb434271b24116e0d30b4874c7f48c"
+    },
+    {
+      "path": "/workspace/grant-t016-discovery.json",
+      "sha256": "f761ec05a36a44729209a6a0361165026c62ede829cc3b24ff66016096f36550"
+    },
+    {
+      "path": "/workspace/grant-t016-selectors.log",
+      "sha256": "cff0a27a1dea85730a775cdc8cf8d41d631757b49ce1b5c6db92cceee9734c0e"
+    },
+    {
+      "path": "/workspace/grant-t016-quality-accepted.log",
+      "sha256": "7fbcef84db42cc7f144e1483b1d2fd346f6675f31540cc19c1a5dad94498bfc6"
+    },
+    {
+      "path": "/workspace/grant-t016-assurance.log",
+      "sha256": "2a2cd2b936b3145f23687279af86d00620a08b8f393fac22fdd56ad13c1dc980"
+    }
+  ],
+  "reviews": {
+    "architecture": "No blocking finding; real jobs/coordinators/Worker, fresh evidence scopes and helper compatibility reviewed.",
+    "uxTest": "Resolved raw intent formatting, stopped UI counts/reference/state, hidden denied progress, sanitizer filename list. Follow-up source review passes.",
+    "receipt": "PASS: independent review recomputed all four ZIP/TRX hashes and exact native names, assembly/class/method, unique execution and result-definition-entry bindings. 136 passes, eight recovery executions, zero failures/skips. Scoped T016 only; full final-head acceptance remains separate.",
+    "closureScope": "No additional T016 implementation gap: T010/T015 supply existing HTTP conflict/replay, authorization and retained-key expiry evidence; T018 final acceptance remains separate."
+  },
+  "retainedRejectedAttempts": [
+    "Initial post-review build failed formatting only in new UI assertions; dotnet formatting then serial build passed.",
+    "One shell quality invocation omitted the SDK setup and could not find dotnet; corrected invocation sourced managed-env.sh."
+  ],
+  "limits": [
+    "T016 complete; T018 remains open; feature021 17/18 complete.",
+    "PR124 remains draft/unmerged; main unchanged.",
+    "No local browser execution, Firefox execution, production correction or public release.",
+    "Refresh disabled; initial pilot replay window and historical/manual/vendor/release gates unchanged."
+  ],
+  "hosted": {
+    "head": "b2464ce11e9ea64208f3843b229ac919a0cf7916",
+    "run": 42293990961,
+    "executed": 136,
+    "newRecoveryExecutions": 8,
+    "artifacts": [
+      {
+        "provider": "PostgreSql",
+        "browser": "chromium",
+        "artifactId": 13542147919,
+        "artifactName": "foundation-administrator-PostgreSql-chromium-browserprotection",
+        "artifactSha256": "sha256:13d2c3f64e7e83e36990c8a91411d28ec7b67bbc3be48ad27ed03c5e40a323e6",
+        "jobId": 128154545897,
+        "report": "tests/administrator-PostgreSql-chromium-browserprotection/Administrator.trx",
+        "reportSha256": "34c465de6d42a003dc854b543b95926bd5fde5dcef165496552a35c1bec803f4",
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "exactNativeIdentityDefinitionAndExecutionBinding": true,
+        "focus": [
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")",
+            "outcome": "Passed",
+            "duration": "00:00:38.3170000"
+          },
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")",
+            "outcome": "Passed",
+            "duration": "00:00:35.8700000"
+          }
+        ]
+      },
+      {
+        "provider": "PostgreSql",
+        "browser": "webkit",
+        "artifactId": 13541933973,
+        "artifactName": "foundation-administrator-PostgreSql-webkit-browserprotection",
+        "artifactSha256": "sha256:18dae0d02d20b1c85b3f348166b6d5311115ce06fb042643dab8446d52f3d3eb",
+        "jobId": 128154546125,
+        "report": "tests/administrator-PostgreSql-webkit-browserprotection/Administrator.trx",
+        "reportSha256": "1637eb298d554136fce1272d2b1613282a3a5b687630a21212d0ebf190a082e3",
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "exactNativeIdentityDefinitionAndExecutionBinding": true,
+        "focus": [
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")",
+            "outcome": "Passed",
+            "duration": "00:00:40.2550000"
+          },
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")",
+            "outcome": "Passed",
+            "duration": "00:00:37.2939999"
+          }
+        ]
+      },
+      {
+        "provider": "SqlServer",
+        "browser": "chromium",
+        "artifactId": 13542124183,
+        "artifactName": "foundation-administrator-SqlServer-chromium-browserprotection",
+        "artifactSha256": "sha256:827ff221178042602e9715b01c30d2f26a75b1072ba817f262e2587c88ddf53b",
+        "jobId": 128154546238,
+        "report": "tests/administrator-SqlServer-chromium-browserprotection/Administrator.trx",
+        "reportSha256": "b78a9b8d67d399b0fa57735e4616d9880f1f39f34b2cc26fc8fb528d739ab788",
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "exactNativeIdentityDefinitionAndExecutionBinding": true,
+        "focus": [
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")",
+            "outcome": "Passed",
+            "duration": "00:00:49.0490000"
+          },
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")",
+            "outcome": "Passed",
+            "duration": "00:00:46.0930000"
+          }
+        ]
+      },
+      {
+        "provider": "SqlServer",
+        "browser": "webkit",
+        "artifactId": 13541308474,
+        "artifactName": "foundation-administrator-SqlServer-webkit-browserprotection",
+        "artifactSha256": "sha256:42e4f68450178bdb6a73669546e51d197c9241cdbc937739b76d43d576d0aa3f",
+        "jobId": 128154545921,
+        "report": "tests/administrator-SqlServer-webkit-browserprotection/Administrator.trx",
+        "reportSha256": "19208404b5da2c9a63b7c4e8e5da5cd07051e4d04bf47c9e5a1f5d6482f6dfa7",
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0,
+        "exactNativeIdentityDefinitionAndExecutionBinding": true,
+        "focus": [
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")",
+            "outcome": "Passed",
+            "duration": "00:00:47.4400000"
+          },
+          {
+            "name": "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")",
+            "outcome": "Passed",
+            "duration": "00:00:44.8830000"
+          }
+        ]
+      }
+    ],
+    "reconcilerSha256": "5cbcf38cf963fcc2e30cfc8ce7a9944040f99abb384f8048995a61ab70126fa6"
+  },
+  "currentCi": {
+    "run": 42293990961,
+    "runNumber": 542,
+    "head": "b2464ce11e9ea64208f3843b229ac919a0cf7916",
+    "firstAttempt": {
+      "success": 121,
+      "failure": 2,
+      "skipped": 1,
+      "interruptedJob": 128154457244,
+      "cause": "GitHub runner shutdown during dotnet build; no governance tests executed. Coverage skipped and acceptance gate failed as dependencies.",
+      "logPath": "/workspace/grant542-governance-runner-shutdown.log",
+      "logSha256": "6f775b01c8806793b0c1e1fb71c6feb2318f92ab2a5f92a7754e3bf5fa2eb9ff"
+    },
+    "isolatedRerun": "PASS: attempt2 completed successfully, all124 unique latest jobs successful across three job pages; exact head b2464ce. Workflow/job status reconciliation only; T018 final artifact/coverage acceptance remains separate.",
+    "finalStatus": {
+      "attempt": 2,
+      "jobs": 124,
+      "success": 124,
+      "path": "/workspace/grant542-final-status.json",
+      "sha256": "d6d186bc193ceca2a05a56b59630627c96170c0de490df607ac317b35246c1f2"
+    }
+  }
+}

@@ -1702,26 +1702,6 @@
     },
     {
       "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.Worker/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.Worker.Features.Setup.AddFeatures(thisWebApplicationBuilder)",
-        "Fingerprint": "CD58E77384F557C10ADC319D5445425337C897F96622E0348C9CF94B3DCC69C0"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "src/backend/IdentityPlatform.Worker/Features/Setup.cs",
-        "Symbol": "IdentityPlatform.Worker.Features.Setup.MapFeaturesEndpoints(thisWebApplication)",
-        "Fingerprint": "4B0AB198BA10FB37FA5A8672A19DB1EB8DBA1C763026E0F2439B08406A8DE8C4"
-      },
-      "Task": "T014",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
         "Rule": "CQ003",
         "Path": "src/core/IdentityPlatform.Core/Features/Configuration/IssuerUri.cs",
         "Symbol": "IdentityPlatform.Core.Features.Configuration.IssuerUri",
@@ -8266,46 +8246,6 @@
         "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
         "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Real_form_callback_and_independent_token_validation_succeed(string)",
         "Fingerprint": "D64950534EC01F5FBE3A6A3181B05375197EEA793EA157344B54676214920D2C"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string)",
-        "Fingerprint": "1A2BDAF3FB4E344EA70A6CCF1529A31CF19CF569EBA3209C5EE213BE6D930947"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string)",
-        "Fingerprint": "1A2BDAF3FB4E344EA70A6CCF1529A31CF19CF569EBA3209C5EE213BE6D930947"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string)",
-        "Fingerprint": "1A2BDAF3FB4E344EA70A6CCF1529A31CF19CF569EBA3209C5EE213BE6D930947"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/CodeFlowTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.CodeFlowTests.Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string).Exchange()",
-        "Fingerprint": "46A928DDA452A423D509DF195A87A5D002741803F00A07AF398761ADAF137A2A"
       },
       "Task": "T015",
       "Owner": "Implementation lead"

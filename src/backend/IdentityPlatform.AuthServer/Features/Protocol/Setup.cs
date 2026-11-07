@@ -6,6 +6,7 @@ using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.AuthServer.Features.Protocol.Keys;
 using IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
+using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
@@ -43,6 +44,10 @@ internal static class Setup
             options.SetAccessTokenLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds));
             options.SetIdentityTokenLifetime(TimeSpan.FromSeconds(AdministratorRegistrationPolicy.TokenLifetimeSeconds));
             options.AddFormExtractionProtection().AddTokenExtraction();
+            if (profiles.Pilot)
+            {
+                options.AddPilotReplayCleanup();
+            }
             if (profiles.Pilot || profiles.Managed)
             {
                 options.EnableAuthorizationRequestCaching();

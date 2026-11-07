@@ -23,6 +23,183 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantApproval", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Action")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ActorId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("character varying(450)");
+
+                    b.Property<string>("ApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("ApplicationRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ApprovedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("FactorVerifiedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Reason")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("ReplayUntil")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RequestHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<Guid>("RequestKey")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ScopedKeyHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuditId")
+                        .IsUnique();
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("ScopedKeyHash")
+                        .IsUnique();
+
+                    b.ToTable("ApplicationGrantApproval", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationGrantApproval_Intent", "\"Action\" IN (1, 2) AND \"Reason\" IN (1, 2, 3) AND \"ApplicationRevision\" > 0");
+
+                            t.HasCheckConstraint("CK_ApplicationGrantApproval_Time", "\"FactorVerifiedAt\" >= 0 AND \"ApprovedAt\" >= \"FactorVerifiedAt\" AND \"ReplayUntil\" > \"ApprovedAt\"");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantAudit", b =>
+                {
+                    b.Property<Guid>("AuditId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ApprovalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("AuthorizationCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AuthorizationDelta")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Failure")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("JobRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("TokenCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TokenDelta")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("AuditId");
+
+                    b.HasIndex("ApprovalId");
+
+                    b.HasIndex("JobId", "JobRevision")
+                        .IsUnique();
+
+                    b.ToTable("ApplicationGrantAudit", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationGrantAudit_Count", "\"AuthorizationCount\" >= 0 AND \"TokenCount\" >= 0");
+
+                            t.HasCheckConstraint("CK_ApplicationGrantAudit_Delta", "\"JobRevision\" > 0 AND \"AuthorizationDelta\" >= 0 AND \"TokenDelta\" >= 0 AND \"AuthorizationDelta\" <= \"AuthorizationCount\" AND \"TokenDelta\" <= \"TokenCount\"");
+
+                            t.HasCheckConstraint("CK_ApplicationGrantAudit_State", "\"State\" IN (1, 2, 3, 4) AND \"Failure\" IN (0, 1, 2, 3, 4) AND ((\"State\" = 3 AND \"Failure\" <> 0) OR (\"State\" <> 3 AND \"Failure\" = 0))");
+                        });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ApplicationId")
+                        .IsRequired()
+                        .HasMaxLength(400)
+                        .HasColumnType("character varying(400)");
+
+                    b.Property<long>("ApplicationRevision")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AuthorizationCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("EffectiveApprovalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Failure")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("ObservedAt")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Revision")
+                        .IsConcurrencyToken()
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("TokenCount")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId", "State");
+
+                    b.HasIndex("State", "ObservedAt", "Id");
+
+                    b.ToTable("ApplicationGrantJob", "platform", t =>
+                        {
+                            t.HasCheckConstraint("CK_ApplicationGrantJob_Count", "\"AuthorizationCount\" >= 0 AND \"TokenCount\" >= 0");
+
+                            t.HasCheckConstraint("CK_ApplicationGrantJob_Revision", "\"Revision\" > 0 AND \"ApplicationRevision\" > 0");
+
+                            t.HasCheckConstraint("CK_ApplicationGrantJob_State", "\"State\" IN (1, 2, 3, 4) AND \"Failure\" IN (0, 1, 2, 3, 4) AND ((\"State\" = 3 AND \"Failure\" <> 0) OR (\"State\" <> 3 AND \"Failure\" = 0))");
+
+                            t.HasCheckConstraint("CK_ApplicationGrantJob_Time", "\"CreatedAt\" >= 0 AND \"ObservedAt\" >= \"CreatedAt\"");
+                        });
+                });
+
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>
                 {
                     b.Property<Guid>("AuditId")
@@ -1480,6 +1657,51 @@ namespace IdentityPlatform.Migrations.PostgreSql.Platform
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
                     b.ToTable("OpenIddictTokens", "platform");
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantApproval", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantApproval", "AuditId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", null)
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantAudit", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantApproval", null)
+                        .WithMany()
+                        .HasForeignKey("ApprovalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.Persistence.SecurityAuditIntent", null)
+                        .WithOne()
+                        .HasForeignKey("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantAudit", "AuditId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", null)
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.ApplicationGrants.ApplicationGrantJob", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Applications.ApplicationPolicy", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Applications.ApplicationLifecycleAuditDetail", b =>

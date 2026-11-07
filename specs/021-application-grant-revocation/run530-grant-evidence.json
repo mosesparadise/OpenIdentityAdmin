@@ -1,0 +1,95 @@
+{
+  "runId": 42121786444,
+  "head": "5a288d2569be7b70d8c049f9a58df197cb6382a6",
+  "acceptance": "Rejected: each grant suite has one fixture-setup failure; full run is separate.",
+  "artifacts": [
+    {
+      "provider": "PostgreSql",
+      "artifactId": 13459905945,
+      "zipDigest": "sha256:1c6e5aa8cbaeb359bf370f947757c1c669e8fd19e62739167155781a200ae2ea",
+      "report": "tests/administrator-PostgreSql-applicationgrants/Administrator.trx",
+      "reportSha256": "6669320d8993d0e9f7086af488b0e88dd6a5c948e15f76c5b6ad870ac1ecb805",
+      "counters": {
+        "total": "48",
+        "executed": "48",
+        "passed": "47",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "passedNamesSha256": "35c422c65d8fde81b368e369a4c05ebdd63494802d4139a2211f601febc3dce8",
+      "expandedCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"missing-lock\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"wrong-generation\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        }
+      ]
+    },
+    {
+      "provider": "SqlServer",
+      "artifactId": 13458337992,
+      "zipDigest": "sha256:6f92bc00cdf1353d9c0590e718633d5fcb2114d973ece463c6cba108a5933aca",
+      "report": "tests/administrator-SqlServer-applicationgrants/Administrator.trx",
+      "reportSha256": "641033af1cf0c67781c44e3d13f99c27ddab132ba3bf98315f95eb0a2f981c97",
+      "counters": {
+        "total": "48",
+        "executed": "48",
+        "passed": "47",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "passedNamesSha256": "7486acb1dc558fb1bf97903e10be0d098698793111de493549ff68206e989e58",
+      "expandedCases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"missing-lock\")",
+          "outcome": "Failed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"wrong-generation\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        }
+      ]
+    }
+  ]
+}

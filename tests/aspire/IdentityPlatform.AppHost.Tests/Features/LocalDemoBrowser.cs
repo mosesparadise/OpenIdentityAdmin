@@ -13,6 +13,7 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     private const string EditorPhase = "application creation, edit and replacement";
     private const string SubjectPhase = "current managed subject binding";
     private const string ManagedPhase = "managed password, MFA, consent and client callback";
+    private const string GrantPhase = "explicit grant confirmation and Worker completion";
     private const string WorkspacePath = "/";
     private const string ReadSubject = "async () => { const r=await fetch('/bff/session',{cache:'no-store'}); if(r.status!==200)throw new Error('Session unavailable'); const body=await r.json(); if(!body.authenticated || typeof body.subject!=='string')throw new Error('Session unavailable'); return body.subject; }";
     private const string WorkspaceSignedOut = "Not signed in";
@@ -70,7 +71,10 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
             ManagedFactorAsync, subject);
         await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: false);
         await ApplicationStateJourney.RequireDeniedAsync(page, new Uri(Issuer), registration);
+        phase(GrantPhase);
+        await ApplicationGrantJourney.RunAsync(page, new Uri(Client), registration);
         await ApplicationStateJourney.ChangeAsync(page, new Uri(Client), registration, enabled: true);
+        phase(ManagedPhase);
         await ManagedBrowserJourney.RunAsync(page, relyingParty, registration, LocalDemoRuntime.Username, runtime.Password,
             ManagedFactorAsync, subject);
     }

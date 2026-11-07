@@ -30,19 +30,24 @@ def browser_labels(matrix):
     return [cell['label'] for cell in cells]
 
 
-def require_inputs(root, matrix):
-    """Require every independent execution report, including both issuer groups on both providers."""
-    labels = ['administrator-PostgreSql-managedapplications-admission', 'administrator-PostgreSql-managedapplications-issuance', 'administrator-SqlServer-managedapplications-admission', 'administrator-SqlServer-managedapplications-issuance', 'administrator-PostgreSql-applications', 'administrator-SqlServer-applications', 'administrator-PostgreSql-sessionrefresh', 'administrator-SqlServer-sessionrefresh', 'PostgreSql-apphost-localdemo', 'SqlServer-apphost-localdemo', 'PostgreSql-apphost-foundation', 'SqlServer-apphost-foundation', 'PostgreSql-apphost-bffsessions', 'SqlServer-apphost-bffsessions', 'administrator-PostgreSql-browsersessions-foundations', 'administrator-PostgreSql-browsersessions-product', 'administrator-PostgreSql-browsersessions-lifecycle', 'administrator-SqlServer-browsersessions-foundations', 'administrator-SqlServer-browsersessions-product', 'administrator-SqlServer-browsersessions-lifecycle', 'administrator-PostgreSql-protocoladmission', 'administrator-SqlServer-protocoladmission', 'issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
+def expected_inputs(root, matrix):
+    """Name every independent execution report, including both issuer groups on both providers."""
+    labels = ['administrator-PostgreSql-applicationgrants', 'administrator-SqlServer-applicationgrants', 'administrator-PostgreSql-managedapplications-admission', 'administrator-PostgreSql-managedapplications-issuance', 'administrator-SqlServer-managedapplications-admission', 'administrator-SqlServer-managedapplications-issuance', 'administrator-PostgreSql-applications', 'administrator-SqlServer-applications', 'administrator-PostgreSql-sessionrefresh', 'administrator-SqlServer-sessionrefresh', 'PostgreSql-apphost-localdemo', 'SqlServer-apphost-localdemo', 'PostgreSql-apphost-foundation', 'SqlServer-apphost-foundation', 'PostgreSql-apphost-bffsessions', 'SqlServer-apphost-bffsessions', 'administrator-PostgreSql-browsersessions-foundations', 'administrator-PostgreSql-browsersessions-product', 'administrator-PostgreSql-browsersessions-lifecycle', 'administrator-SqlServer-browsersessions-foundations', 'administrator-SqlServer-browsersessions-product', 'administrator-SqlServer-browsersessions-lifecycle', 'administrator-PostgreSql-protocoladmission', 'administrator-SqlServer-protocoladmission', 'issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
               'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
               'PostgreSql-lifecycle-keyrotation-activation', 'SqlServer-lifecycle-keyrotation-activation',
               'PostgreSql-lifecycle-keyrotation-retirement', 'SqlServer-lifecycle-keyrotation-retirement'] + ['contracts-' + partition for partition in CONTRACT_PARTITIONS] + browser_labels(matrix)
     if len(labels) != len(set(labels)):
         raise ValueError('Duplicate required coverage cell')
-    for label in labels:
-        report = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
+    return [root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml') for label in labels]
+
+
+def require_inputs(root, matrix):
+    reports = expected_inputs(root, matrix)
+    for report in reports:
+        label = report.name.removesuffix('.cobertura.xml')
         if not report.is_file() or report.stat().st_size == 0:
             raise ValueError('Missing required coverage input: ' + label)
-    return len(labels)
+    return len(reports)
 
 
 if __name__ == '__main__':

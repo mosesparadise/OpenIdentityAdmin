@@ -46,6 +46,7 @@ public sealed class LocalDemoCompositionTests
     private const string ClientResource = "admin-bff";
     private const string InitializerResource = "initializer";
     private const string MigratorResource = "migrator";
+    private const string WorkerResource = "worker";
     private static readonly string[] IssuerRoles = ["IssuerSigning", "IssuerEncryption", "IssuerWrapping"];
     private static readonly string[] ClientRoles = ["ClientStateSigning", "ClientStateEncryption", "ClientAssertion", "ClientWrapping"];
 
@@ -80,11 +81,28 @@ public sealed class LocalDemoCompositionTests
         }
         Assert.Equal(RoleTotal, fingerprints.Count);
         RequireEndpoints(builder);
+        RequireWorker(builder, environments);
         RequirePublicRegistration(environments);
         var commands = builder.Resources.SelectMany(resource => resource.Annotations.OfType<ResourceCommandAnnotation>()
             .Where(command => command.Name == InitializationCommand).Select(command => (resource.Name, Command: command))).ToArray();
         Assert.Equal("initializer", Assert.Single(commands).Name);
         Assert.Empty(commands[0].Command.Arguments);
+    }
+
+    /// <summary>Requires the real processor after schema completion with only Platform runtime access and no published endpoint or issuer keys.</summary>
+    private static void RequireWorker(IDistributedApplicationTestingBuilder builder, Dictionary<string, Dictionary<string, object>> environments)
+    {
+        var worker = Assert.Single(builder.Resources.OfType<ContainerResource>(), resource => resource.Name == WorkerResource);
+        var environment = environments[WorkerResource];
+        Assert.True(environment.ContainsKey(PlatformConnection));
+        Assert.Same(environments[ApiResource][PlatformConnection], environment[PlatformConnection]);
+        Assert.False(environment.ContainsKey(SessionsConnection));
+        Assert.False(environment.ContainsKey(ProvisionRoles));
+        Assert.DoesNotContain(environment.Keys, key => key.StartsWith(MaterialPrefix, StringComparison.Ordinal));
+        Assert.Empty(worker.Annotations.OfType<EndpointAnnotation>());
+        var wait = Assert.Single(worker.Annotations.OfType<WaitAnnotation>());
+        Assert.Equal(MigratorResource, wait.Resource.Name);
+        Assert.Equal(WaitType.WaitForCompletion, wait.WaitType);
     }
 
     /// <summary>All private inputs are masked parameter objects, rather than raw environment literals.</summary>

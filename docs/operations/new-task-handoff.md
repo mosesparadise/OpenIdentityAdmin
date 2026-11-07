@@ -1,5 +1,206 @@
 # OpenIdentityAdmin new-task handoff
 
+**Grant revocation source accepted — 7 November 2026:** feature021 T001–T018 are complete
+for internal development. At `2343f2b`, [CI545](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42319410601)
+passes all 124 jobs on its first attempt. Independent reconciliation binds 118 artifacts,
+103 native reports/**5,753 passing executions**, 83 UI cases, 44 Node contracts, 110 demonstrated mutation
+kills and 100 coverage inputs meeting all 15 unchanged module floors. Independent arithmetic verifies original method bounds and all 100 current-run build
+manifests; known-lossy upstream branch summaries are non-authoritative. [Exact receipts](../../specs/021-application-grant-revocation/t018-evidence.json) and
+[requirement bindings](../../specs/021-application-grant-revocation/t018-requirements.json) retain the earlier browser failure and its correction.
+Ordinary native Aspire Chromium demos pass on both providers; retained Chromium/WebKit
+recovery uses shipped UI and production Worker fixtures. All 2,663 prior administrator
+identities remain, with six added. Final-head checks and reviewed squash
+are recorded on [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124);
+it stays draft until those gates pass.
+Next: use the [grant walkthrough](../../specs/021-application-grant-revocation/quickstart.md), then address the separately tracked initial
+pilot replay/late-issuance window. Refresh stays disabled; all six historical findings and
+Windows/manual/Firefox/A-009/vendor/production/public-release gates remain open.
+
+**Grant coverage correction — 7 November 2026:** CI544 at `c18569e` passes all124 jobs;
+reconciliation verifies5,753 native executions, both native demos and110 mutation kills.
+Independent coverage review nevertheless proves that the upstream merge loses branch
+metadata. T018 stays open. The correction enforces conservative original-method bounds,
+unchanged15-module floors and per-cell before/after DLL/PDB/source/collector bindings.
+Saved-report feasibility passes; new exact-head CI provenance and acceptance remain required.
+PR124 stays draft/unmerged. The initial pilot replay window and all historical/manual/
+public-release gates remain open. See [coverage correction](../../specs/021-application-grant-revocation/coverage-correction.md).
+
+**Grant final acceptance correction — 6 November 2026:** T018 review added direct retained-key
+isolation evidence for actor, application and action: three cases pass on each real provider,
+with exact native identity/audit bindings and no failures/skips. CI543 failed one SQL Server
+WebKit logout check because response headers preceded navigation commit. The test now awaits
+the same exact destination at commit, retaining its single POST and every denial/nonmutation
+check. [Local receipts](../../specs/021-application-grant-revocation/t018-local-evidence.json) retain the failure and six corrected-source scope passes.
+All 2,663 previous administrator identities remain; six are added (2,669 total).
+T018 remains open for the corrected browser run and full final-head artifacts/coverage;
+PR124 stays draft/unmerged. No production behavior or existing release gate changed.
+
+**Grant browser recovery accepted — 6 November 2026:** feature021 T016 is complete;
+**17 of18 tasks** now have acceptance evidence. All four PostgreSQL/SQL Server ×
+Chromium/WebKit BrowserProtection cells pass34/34: **136 total, including eight new
+recovery executions**, with zero failures/skips. [Exact receipts](../../specs/021-application-grant-revocation/t016-evidence.json)
+bind the tested `b2464ce` source and native reports. Lost acceptance recovers the same intent
+through real permission denial; stopped work rejects a competing stale continuation and
+completes only after fresh confirmation. No production code changed. CI542's unrelated
+runner shutdown occurred during governance build; the isolated rerun passed and all124
+latest jobs succeed at that tested head (status reconciliation). New-head checks and final
+artifact/coverage acceptance remain required. Next: **T018 final acceptance**. PR124 stays draft/unmerged;
+main, the initial pilot replay window and all historical/manual/public-release gates remain
+unchanged.
+
+**Grant recovery/deadline acceptance — 6 November 2026:** feature021 T015 is complete;
+**16 of 18 tasks** now have acceptance evidence. PostgreSQL 13/13 and SQL Server 13/13 pass
+on identical source: five new deadline/real late-failure cases per provider plus eight
+related regressions. Actual request/transaction timeouts preserve atomic state; a genuinely
+failed batch cannot erase peer progress, supersede fresh approval or replace success.
+No production change was needed. All 2,649 prior native identities remain, with ten additions
+(2,659 total). [Receipts](../../specs/021-application-grant-revocation/t015-evidence.json) record exact source/report bindings and review corrections.
+Prior CI540 at `9d68c04` passed all 124 jobs; new-head full CI remains required. Next: T016
+genuine stopped-job and unknown-acceptance browser recovery, then T018 final acceptance.
+PR124 stays draft/unmerged; main, the initial pilot replay window and all historical/manual/
+Firefox/A-009/production/public-release gates remain unchanged.
+
+**Grant worker authority acceptance — 6 November 2026:** feature021 T012 is complete;
+**15 of 18 tasks** now have acceptance evidence. Seven new cases pass on each real provider
+with identical final source and no failures/skips: actual actor deletion after partial progress,
+post-save account/permission loss, and both genuine governance/batch commit orders with native
+lock-wait observation. Existing worker behavior passes; no production change was needed.
+All 2,635 prior native identities remain, with 14 additions (2,649 total). [Receipts](../../specs/021-application-grant-revocation/t012-evidence.json)
+retain source/report bindings and superseded checks. Prior CI539 at `2ff0877` passed all 124 jobs;
+new-head full CI remains required. Next: T015 elapsed deadlines and ordered late-failure capture,
+then T016 genuine browser recovery and T018 final acceptance. PR124 stays draft/unmerged;
+main, the initial pilot replay window and all historical/manual/Firefox/A-009/production/
+public-release gates remain unchanged.
+
+**Grant BFF acceptance — 6 November 2026:** feature021 T010 is complete; **14 of 18 tasks**
+now have acceptance evidence. PostgreSQL 16/16 and SQL Server 16/16 pass on identical source.
+The BFF now normalizes mutation-only upstream errors on read routes, matching its contracts.
+All four routes verify strict output, secrecy, original deadlines, browser-generation changes
+and explicit recovery. Native 44/44 and Node 44/44 contracts pass; all 2,603 prior native identities
+remain and 32 are added. [Receipts](../../specs/021-application-grant-revocation/t010-evidence.json)
+retain rejected attempts. Prior CI538 at `6d02ec2` passed 124 jobs; new-head CI remains required.
+Next: T012 deleted-actor and ordered authority/batch-commit evidence. T012/T015/T016/T018 remain
+open. PR124 stays draft/unmerged; main, the initial pilot replay window and all historical/
+manual/Firefox/A-009/production/public-release gates remain unchanged.
+
+**Grant admission and status acceptance — 6 November 2026:** feature021 T008 is complete;
+**13 of 18 tasks** now have acceptance evidence. Ten focused cases pass on each real provider
+with zero failures/skips: current permission/MFA, post-save authority, latest-ten status,
+and original HTTP publication/cleanup deadlines. [Receipts](../../specs/021-application-grant-revocation/t008-evidence.json)
+retain rejected harness/environment attempts and the final source bindings. Prior CI536 at
+`9e7293f` passed all 124 jobs; the new head still requires full CI. Next: T010 BFF response
+and browser-session boundary verification. T010/T012/T015/T016/T018 remain open. PR124 stays
+draft/unmerged; the initial pilot replay window and all historical/manual/Firefox/A-009/
+production/public-release gates remain open. Main is unchanged.
+
+**Grant target protection complete — 6 November 2026:** run535 at `bdad762` passes all
+124 jobs; independent reports reconcile 586 selected native passes. The remaining persisted
+administrator-ID target guard now passes on both real providers with unchanged state,
+restoration and authorized same-intent admission. T005/T006 are complete; feature021 is
+**12/18 complete**. [Remaining tasks](../../specs/021-application-grant-revocation/tasks.md) are T008/T010/T012/T015/T016/T018.
+Next: verify this test-only head and complete fresh permission/MFA, deadline/publication
+and latest-ten status acceptance in T008, then remaining authority/BFF/browser recovery.
+PR124 stays draft; the initial pilot replay/late-issuance window and all historical/manual/
+Firefox/A-009/production/public-release gates remain open. Main is unchanged.
+
+
+**Pilot replay reproduced and bounded correction — 6 November 2026:** prior run534 at
+`2a18e68` passes all 124 jobs; both providers verify the new grant target-denial checks.
+A controlled PostgreSQL test now reproduces the older replay failure: replay revocation
+precedes the winner's token insertion, and later replay omits chain cleanup. The scoped
+correction repeats native cleanup for exactly bound, already-revoked pilot codes while
+preserving rejection. Controlled tests pass on both providers, including12binding
+negatives, actual cleanup-write failure and an unaffected authorization. The initial
+replay/late-issuance window remains unresolved; this is not full race prevention.
+[Evidence and limits](../../specs/021-application-grant-revocation/hosted-verification.md) retain both the original failure and corrected results.
+Feature021 remains10/18complete. Next: verify the corrected head, then finish administrator-ID,
+current-authority, API/BFF and browser-recovery obligations. PR124 stays draft; main and
+all historical/manual/Firefox/A-009/production/public-release gates remain unchanged.
+
+
+**Grant-revocation race and cross-instance evidence — 6 November 2026:** run533 at
+`da6f378` verifies 230 native passes across both grant and managed-issuance suites.
+Feature021 T009/T014 are complete; 10 of 18 tasks now have acceptance evidence.
+Full CI remains rejected for an unused import (corrected) and an older native code-replay
+revocation failure (unresolved; exact assertion retained with safe diagnostics).
+New HTTP target-denial checks need hosted execution; administrator-ID, authority,
+API/BFF failure and browser-recovery gaps remain explicit in [tasks](../../specs/021-application-grant-revocation/tasks.md).
+Next: verify the target checks and deterministically isolate the replay ordering, then
+finish those remaining acceptance obligations. PR124 stays draft; main and all
+historical/manual/Firefox/A-009/production/public-release gates remain unchanged.
+
+
+**Grant-revocation verified progress — 5 November 2026:** run531 at `0a5fc76` passes all
+124 jobs. Raw evidence confirms 50 grant and 24 persistence cases/provider, both native
+demos, all four retained protection-browser cells, 110 mutation kills and all 15 coverage
+floors. Independent review closes feature021 T007/T011/T013/T017; T001–T004 were already
+complete. New issuance-race extensions and two commit-timed cross-instance cases build
+and pass source review, with hosted execution pending. Next: verify those additions,
+then complete the specific target/authority/API/BFF/browser-recovery gaps in feature021
+[tasks](../../specs/021-application-grant-revocation/tasks.md). PR124 remains draft; main and historical/manual/release gates stay unchanged.
+
+
+**Grant-revocation boundary progress — 5 November 2026:** run530 executes 47/48 grant
+cases successfully on each provider, including alternate approver, factor generation and
+24-hour replay expiry. The missing-lock fixture fails restrictive FK setup; its correction
+preserves all constraints and now removes the actor's dependent ceremony material first.
+Four additional admission/re-enable cases cover both ordered commits with native lock-wait
+observation; build, source review and all 74 selection controls pass. Corrected provider
+execution remains pending. Next: verify these cases, finish issuance/cross-instance and
+remaining boundary acceptance. PR124 stays draft; historical/manual/release gates persist.
+
+
+**Grant-revocation inventory correction — 5 November 2026:** run529 passes the UI fix
+but stops96native/browser jobs at stale selection-control counts; one further job fails
+NuGet restore. The corrected three control suites preserve all prior identities and pass
+all 74 selection controls after four reproduced failures. Eight new authority/replay cases
+still require hosted execution. Next: verify the corrected candidate and finish ordered
+races/native cross-instance acceptance. PR124 remains draft; all existing release gates persist.
+
+
+**Grant-revocation integrated progress — 5 November 2026:** run528 at `a2f1595`
+confirms the Worker correction: both native Aspire demos pass3/3; grant suites pass44
+and persistence24 on each real provider; all four protection-browser cells pass32;
+all 12new grant behavioral mutants are killed. Feature021 T004 migration verification
+is complete. [Raw artifact reconciliation](../../specs/021-application-grant-revocation/hosted-verification.md) retains the rejected
+119success/four-failure/one-skipped run. The UI polling test now waits for actual async
+publication; two WebKit jobs failed NuGet restore. Eight additional authority/replay
+cases compile and preserve all2,565prior test identities; execution remains pending.
+**Next:** verify the corrected candidate, then finish the remaining ordered races,
+cross-instance native enforcement and boundary acceptance. PR124 remains draft; main
+and all historical/manual/public-release gates remain unchanged.
+
+
+**Grant-revocation hosted verification — 5 November 2026:** implementation is published
+at `a1b809cb4e0c075dd1475d6a048560fc7481f8d4` in draft PR124. Run527 passes both
+ordinary grant lanes and PostgreSQL persistence, but is not accepted. Confirmed corrections
+cover imports, the mutation-job timeout assertion and a stale noncompiling permission
+mutant. The local-demo graph omitted Worker; it now composes the processor after migrations
+with Platform-only access. Both-provider graph cases fail before and pass after this fix.
+A prior browser focus check now waits for required focus; NuGet resets remain separate.
+Run527 finishes109successful/14failed/one skipped; corrected full acceptance remains open.
+See [hosted evidence](../../specs/021-application-grant-revocation/hosted-verification.md).
+**Next:** corrected hosted execution plus the remaining feature021 authority/race and
+integrated acceptance cases. Main, draft status and all historical/manual/release gates
+remain unchanged; do not repeat delivered feature020.
+
+
+**Grant-revocation implementation in progress — 5 November 2026:**
+[Feature021](../../specs/021-application-grant-revocation/spec.md) on `128-application-grant-revocation` implements the selected
+policy: applications must be disabled and remain disabled until revocation succeeds.
+Accepted jobs continue after logout/MFA expiry with current effective-account/permission
+checks. Neither decision remains pending. Additive migrations, native batches, audit,
+worker, API/BFF contracts and the confirmation/progress/recovery UI are implemented in
+the worktree. [Partial verification](../../specs/021-application-grant-revocation/verification.md) records44 grant cases on each real provider, both-provider Worker restart/contention,
+4 native contract cases,44 Node contract controls and83 UI cases. The shared actual
+browser/native Aspire grant journey is implemented and compiled. Hosted browser execution,
+remaining authority/race edge cases, behavioral mutants and full exact-head acceptance
+remain open. PR124 remains draft; main is `dce682f9812d228b41ae7fad1dcb1f6636f40d38`.
+**Next:** finish the required boundary/integrated evidence and reviewed delivery; do not
+repeat feature020. All historical/manual/Firefox/A-009/vendor/production/public-release
+gates remain open. This supersedes the earlier requirements-only checkpoint.
+
+
 **Managed application lifecycle delivered — 5 November 2026:**
 [PR #122](https://github.com/mosesparadise/OpenIdentityAdmin/pull/122) is squash-merged as
 `0ce00a22f4534847bb7ae5731ae20bf6b6c3064f`. Main now offers Disable/Re-enable in application details through the ordinary
@@ -45,9 +246,9 @@ The dated notices below retain their historical checkpoint status and are supers
 
 **Synchronous lifecycle verification — 4 November 2026:** feature019 T020/T021 remain complete; T019/T022 remain open. [Run502](../../specs/019-application-editor/hosted-verification.md#seventh-candidate--protocol-observation-remained-insufficient) rejects both Chromium history observations and both WebKit lifecycle command timeouts. Overview metadata is delayed; actual failed job steps/logs are retained without inferring final totals. The next source scopes synchronous trusted-event counters to the two lifecycle scenarios and adds finite, non-disruptive phase diagnostics. Original deadlines, native transitions, empty product storage, one-send and no-late-output assertions remain. PR120 stays draft/unmerged; refresh and all historical/human/Windows/A-009/vendor/production/public-release gates stay open.
 
-**Native lifecycle follow-up — 4 November 2026:** feature019 T020/T021 are complete; T019/T022 remain open. [The sixth hosted run](../../specs/019-application-editor/hosted-verification.md#sixth-candidate--native-lifecycle-observation) finishes116success/five failures/one skipped coverage job. Both native Aspire demos, all standard/protection cells and all12 consent/recovery/authority cells pass. Only the four lifecycle cells and final acceptance fail. The bounded correction receives Chromium unload events without a destroyed-context lookup and joins pending browser/upstream completion without assuming immediate remote disconnect; original deadlines, native transitions, one-send and no-late-output assertions remain. PR120 stays draft/unmerged until corrected exact-head acceptance. Refresh and all historical/human/Windows/A-009/vendor/production/public-release gates remain unchanged.
+**Native lifecycle follow-up — 4 November 2026:** feature019 T020/T021 are complete; T019/T022 remain open. [The sixth hosted run](../../specs/019-application-editor/hosted-verification.md#sixth-candidate--native-lifecycle-observation) finishes116success/five failures/one skipped coverage job. Both native Aspire demos, all standard/protection cells and all 12 consent/recovery/authority cells pass. Only the four lifecycle cells and final acceptance fail. The bounded correction receives Chromium unload events without a destroyed-context lookup and joins pending browser/upstream completion without assuming immediate remote disconnect; original deadlines, native transitions, one-send and no-late-output assertions remain. PR120 stays draft/unmerged until corrected exact-head acceptance. Refresh and all historical/human/Windows/A-009/vendor/production/public-release gates remain unchanged.
 
-**Browser fixture follow-up — 4 November 2026:** feature019 T020/T021 remain complete; T019/T022 remain open. Fifth hosted run`41846849133` at`1efd6a7` finishes108 successful/13 failed/one skipped jobs. Both native Aspire demos pass3/3 and all12 new consent/recovery/authority lanes pass. [Targeted corrections](../../specs/019-application-editor/browser-corrections.md#fifth-attempt-fixture-follow-up) preserve diagnostic ordering, exact foreign-media rejection and native visibility through engine-specific disposable driver copies. Unchanged diagnostic controls fail2/2 before and pass2/2 after;11 driver/desktop controls and complete build/style/quality checks pass. Next: corrected exact-head hosted acceptance and evidence reconciliation. PR120 remains draft/unmerged; main`4c9fb24` and all human/external/release gates remain unchanged.
+**Browser fixture follow-up — 4 November 2026:** feature019 T020/T021 remain complete; T019/T022 remain open. Fifth hosted run`41846849133` at`1efd6a7` finishes108 successful/13 failed/one skipped jobs. Both native Aspire demos pass3/3 and all 12 new consent/recovery/authority lanes pass. [Targeted corrections](../../specs/019-application-editor/browser-corrections.md#fifth-attempt-fixture-follow-up) preserve diagnostic ordering, exact foreign-media rejection and native visibility through engine-specific disposable driver copies. Unchanged diagnostic controls fail2/2 before and pass2/2 after;11 driver/desktop controls and complete build/style/quality checks pass. Next: corrected exact-head hosted acceptance and evidence reconciliation. PR120 remains draft/unmerged; main`4c9fb24` and all human/external/release gates remain unchanged.
 
 **Browser acceptance implementation — 4 November 2026:** draft [PR #120](https://github.com/mosesparadise/OpenIdentityAdmin/pull/120) continues feature019 T020–T022. T020/T021 remain complete; T019/T022 remain open pending current hosted execution. [New scenario source](../../specs/019-application-editor/browser-acceptance-implementation.md) joins the actual UI-created/edited registration to fresh browser password/MFA/consent and server-side token verification, adds permission/expiry/recovery and native history/visibility/late-response cases, and extends both native Aspire demos. Actual discovery preserves all 2,375 prior records and adds ten; all nine browser stories exhaust 71 cases/provider. Ten focused native regressions pass on each database and 77 selection/quality controls pass. [Three hosted attempts](../../specs/019-application-editor/hosted-verification.md) retain their failures; the latest has 100 successful jobs, four failed protection lanes, failed acceptance and skipped aggregate coverage. The next candidate corrects the foreign-origin test document without changing product CSP and requires 98 coverage inputs/15 unchanged floors. Main remains `4c9fb24`; PR120 is draft/unmerged. The feature UI can be launched with the ordinary Aspire [local-demo profile](../../specs/019-application-editor/quickstart.md). Firefox, blocked local downloads, refresh and all historical/human/Windows/A-009/vendor/production/public-release boundaries remain unchanged.
 

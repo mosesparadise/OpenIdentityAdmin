@@ -28,6 +28,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
     private const string ApiPort = "17445";
     private const string ClientResource = "admin-bff";
     private const string InitializerResource = "initializer";
+    private const string WorkerResource = "worker";
     private const string Docker = "docker";
     private const string InspectArgument = "inspect";
     private const string FormatArgument = "--format";
@@ -73,6 +74,7 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
             await app.ResourceNotifications.WaitForResourceHealthyAsync(ClientResource, token);
             await app.ResourceNotifications.WaitForResourceHealthyAsync(ApiResource, token);
             await app.ResourceNotifications.WaitForResourceAsync(InitializerResource, KnownResourceStates.Running, token);
+            await app.ResourceNotifications.WaitForResourceAsync(WorkerResource, KnownResourceStates.Running, token);
             await RequireLoopbackAsync(run, token);
             var runtime = new LocalDemoRuntime(builder, app, run);
             runtime.volumes = await LocalDemoLifecycle.CaptureVolumesAsync(run, token);

@@ -1,5 +1,7 @@
 using System.Security.Cryptography;
+using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
@@ -105,6 +107,12 @@ internal static class ApplicationMutationWriter
         }
         if (command.Kind is ApplicationMutationKind.Disable or ApplicationMutationKind.Enable)
         {
+            if (command.Kind == ApplicationMutationKind.Enable && await scope.Owner.RunAsync(async current =>
+                await scope.Owner.Database.Set<ApplicationGrantJob>().AsNoTracking()
+                    .AnyAsync(row => row.ApplicationId == policy.ApplicationId && row.State != GrantJobState.Succeeded, current), token))
+            {
+                throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);
+            }
             return ChangeLifecycle(application, descriptor, policy, command, now);
         }
         string? secret = null;

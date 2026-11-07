@@ -1,0 +1,698 @@
+{
+  "inputCount": 100,
+  "scope": "CI544 feasibility only; no retrospective build provenance or T018 acceptance",
+  "modules": [
+    {
+      "module": "IdentityPlatform.Core",
+      "linesCovered": 342,
+      "linesTotal": 343,
+      "branchesCoveredLowerBound": 265,
+      "branchesTotal": 275,
+      "lineRate": 0.9970845481049563,
+      "branchRateLowerBound": 0.9636363636363636,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Infrastructure",
+      "linesCovered": 8415,
+      "linesTotal": 9010,
+      "branchesCoveredLowerBound": 4095,
+      "branchesTotal": 4835,
+      "lineRate": 0.9339622641509434,
+      "branchRateLowerBound": 0.8469493278179938,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.ServiceDefaults",
+      "linesCovered": 70,
+      "linesTotal": 70,
+      "branchesCoveredLowerBound": 43,
+      "branchesTotal": 44,
+      "lineRate": 1.0,
+      "branchRateLowerBound": 0.9772727272727273,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Migrator",
+      "linesCovered": 608,
+      "linesTotal": 616,
+      "branchesCoveredLowerBound": 319,
+      "branchesTotal": 366,
+      "lineRate": 0.987012987012987,
+      "branchRateLowerBound": 0.8715846994535519,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.AuthServer",
+      "linesCovered": 6351,
+      "linesTotal": 6740,
+      "branchesCoveredLowerBound": 5079,
+      "branchesTotal": 6328,
+      "lineRate": 0.9422848664688427,
+      "branchRateLowerBound": 0.8026232616940582,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Admin.Api",
+      "linesCovered": 1191,
+      "linesTotal": 1274,
+      "branchesCoveredLowerBound": 694,
+      "branchesTotal": 843,
+      "lineRate": 0.934850863422292,
+      "branchRateLowerBound": 0.8232502965599051,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Admin.Bff",
+      "linesCovered": 4039,
+      "linesTotal": 4274,
+      "branchesCoveredLowerBound": 2900,
+      "branchesTotal": 3455,
+      "lineRate": 0.9450163781001404,
+      "branchRateLowerBound": 0.8393632416787264,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Worker",
+      "linesCovered": 60,
+      "linesTotal": 61,
+      "branchesCoveredLowerBound": 4,
+      "branchesTotal": 4,
+      "lineRate": 0.9836065573770492,
+      "branchRateLowerBound": 1.0,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.AppHost",
+      "linesCovered": 531,
+      "linesTotal": 547,
+      "branchesCoveredLowerBound": 220,
+      "branchesTotal": 250,
+      "lineRate": 0.9707495429616088,
+      "branchRateLowerBound": 0.88,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Database.Abstractions",
+      "linesCovered": 111,
+      "linesTotal": 112,
+      "branchesCoveredLowerBound": 71,
+      "branchesTotal": 78,
+      "lineRate": 0.9910714285714286,
+      "branchRateLowerBound": 0.9102564102564102,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Database.PostgreSql",
+      "linesCovered": 96,
+      "linesTotal": 96,
+      "branchesCoveredLowerBound": 12,
+      "branchesTotal": 12,
+      "lineRate": 1.0,
+      "branchRateLowerBound": 1.0,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Database.SqlServer",
+      "linesCovered": 93,
+      "linesTotal": 93,
+      "branchesCoveredLowerBound": 16,
+      "branchesTotal": 16,
+      "lineRate": 1.0,
+      "branchRateLowerBound": 1.0,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Database.Hosting",
+      "linesCovered": 42,
+      "linesTotal": 44,
+      "branchesCoveredLowerBound": 14,
+      "branchesTotal": 16,
+      "lineRate": 0.9545454545454546,
+      "branchRateLowerBound": 0.875,
+      "zeroBranchPopulation": false
+    },
+    {
+      "module": "IdentityPlatform.Database.PostgreSql.Hosting",
+      "linesCovered": 13,
+      "linesTotal": 13,
+      "branchesCoveredLowerBound": 0,
+      "branchesTotal": 0,
+      "lineRate": 1.0,
+      "branchRateLowerBound": 1.0,
+      "zeroBranchPopulation": true
+    },
+    {
+      "module": "IdentityPlatform.Database.SqlServer.Hosting",
+      "linesCovered": 13,
+      "linesTotal": 13,
+      "branchesCoveredLowerBound": 0,
+      "branchesTotal": 0,
+      "lineRate": 1.0,
+      "branchRateLowerBound": 1.0,
+      "zeroBranchPopulation": true
+    }
+  ],
+  "run": 42311638811,
+  "head": "c18569efafa56026c3ae3a3370a85bce309a02f7",
+  "testedMerge": "c9503ada7a4eea29f0ef53a6f0e3d30e111e0920",
+  "newGateAcceptance": false,
+  "inputs": [
+    {
+      "cell": "PostgreSql-apphost-bffsessions",
+      "sha256": "eafe51645df393eb653c1530bfae10408668b213749394c2dd02e0af3a74b028"
+    },
+    {
+      "cell": "PostgreSql-apphost-foundation",
+      "sha256": "1d27211bbb934c266e364bafd6bf5ab5fd5e2af8c8b6877fcb34ef6fb96e279f"
+    },
+    {
+      "cell": "PostgreSql-apphost-localdemo",
+      "sha256": "62a297053e8a510cb54fa37f8d8bf9c4a0e576147807c8639fbb5132ed2eeb87"
+    },
+    {
+      "cell": "PostgreSql-chromium",
+      "sha256": "2d38f680951af749c62e11a56b1e0186f58187ae4b41b6e4521be4e4d49a1e86"
+    },
+    {
+      "cell": "PostgreSql-lifecycle-distribution",
+      "sha256": "e7ec2ed9f587038e7556e75a3a2adcecd6507941fe8306d8bf3633afcd961b75"
+    },
+    {
+      "cell": "PostgreSql-lifecycle-keyrotation-activation",
+      "sha256": "d241a4f350ebd676d1d53cc4cf52f5db0913bf4da386e154f4566cebe6d76f49"
+    },
+    {
+      "cell": "PostgreSql-lifecycle-keyrotation-retirement",
+      "sha256": "b79a5d54ee8f17cfca69a7c65aa2b8fbdf996abc29e15a9269b9f246627ac67a"
+    },
+    {
+      "cell": "PostgreSql-lifecycle-restart",
+      "sha256": "a3b1bbd6c93d2606ee43ff75ad414e455436926b8f501ca811bc9ba34f5d1077"
+    },
+    {
+      "cell": "PostgreSql-webkit",
+      "sha256": "e847836e8710ed745fdf5a089a4b2cf865409fc59685437a01decc2fa6711348"
+    },
+    {
+      "cell": "PostgreSql",
+      "sha256": "0c2d548c10e5cebf37860acd4af7b4ad13e84abacdaf16e66736f1d4d2e9b6bc"
+    },
+    {
+      "cell": "SqlServer-apphost-bffsessions",
+      "sha256": "b9bf38e9c49e0080ce6b4982a31f55d388a884161c3119b2df5ad1306e23de14"
+    },
+    {
+      "cell": "SqlServer-apphost-foundation",
+      "sha256": "ff891de55cf5a0741329ec7f597bc01acba9aa36084eb98bc0c6b30b9c857d45"
+    },
+    {
+      "cell": "SqlServer-apphost-localdemo",
+      "sha256": "35a33c9bd31dff1b52768f63c2014833748201c5da1803690804c242ffdb90e7"
+    },
+    {
+      "cell": "SqlServer-chromium",
+      "sha256": "eb8abc0a7575ab58e75a4def1a5d64380e52fd5716e051ea7d0cb70b9dc05827"
+    },
+    {
+      "cell": "SqlServer-lifecycle-distribution",
+      "sha256": "8552d791f9fe840d351b85cb2df44dee0a09449e779b5d831d464d97980d9fed"
+    },
+    {
+      "cell": "SqlServer-lifecycle-keyrotation-activation",
+      "sha256": "b1c4dc1872e5f69fcf91d1a4bf4da35669bb80d721109cc5e6714a9314d70498"
+    },
+    {
+      "cell": "SqlServer-lifecycle-keyrotation-retirement",
+      "sha256": "96ec6e7b5037c05ceb3a5978be048c7392f035ebde6fb5b98603f193ded138fe"
+    },
+    {
+      "cell": "SqlServer-lifecycle-restart",
+      "sha256": "45f4dd3488bddb2d2f1b90816d0e87d933ee28f84eebc9047e1bce56ad311a52"
+    },
+    {
+      "cell": "SqlServer-webkit",
+      "sha256": "1a916209dc3ead05d27de97dc11699cbc499850af159922e47892472f0cb0ca0"
+    },
+    {
+      "cell": "SqlServer",
+      "sha256": "14e925e57131c35d33a849c974ec05298b0fa7d3b8d5999a1bcd6fce9a5c11ee"
+    },
+    {
+      "cell": "administrator-PostgreSql-accounts",
+      "sha256": "4353d037be9dd21df83a406296bcbdba4e0e5471e88d7320912e85a56a5702cc"
+    },
+    {
+      "cell": "administrator-PostgreSql-applicationgrants",
+      "sha256": "04e8b7c5945ccd826202d6bc4bbfbaa697472440986dcdf0242b50c01caa8c00"
+    },
+    {
+      "cell": "administrator-PostgreSql-applications",
+      "sha256": "f7d099ed3c3fa293ba28eb54f260449fab25456053d24b95ad3fd7f2396384fb"
+    },
+    {
+      "cell": "administrator-PostgreSql-bootstrap",
+      "sha256": "d2d43c67201b166e29d1265e6ca96cf2728de7f8cbc84fed6450d1400385bbfd"
+    },
+    {
+      "cell": "administrator-PostgreSql-browsersessions-foundations",
+      "sha256": "7839e272028a5b9585630265cce2dba592d717ff4bde64b94afdb9af838fedbe"
+    },
+    {
+      "cell": "administrator-PostgreSql-browsersessions-lifecycle",
+      "sha256": "2c5d782812069f18a0fa0c97ed72b56756d7e6507c51d60d2734abba9afca47d"
+    },
+    {
+      "cell": "administrator-PostgreSql-browsersessions-product",
+      "sha256": "a96d36e6776bbd673a97c64b1bf940f4493eecb52ac078e626095e34766cc3fa"
+    },
+    {
+      "cell": "administrator-PostgreSql-ceremonies",
+      "sha256": "fbb144449f0d4115d5353148cae76794e2b55c6492a1a5da6bce3ec287ce83bf"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-accounts",
+      "sha256": "17f414fc34d14e8535dbde5bdfbb95285a42b1863841312402f66dc91634049f"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-applicationauthority",
+      "sha256": "d3b176b3a785e3061825b48f0bb83c2e379cf09cdd1860ceb5ea654a660a1b5e"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-applicationeditor",
+      "sha256": "4afecb081a2a1cca2d505fc7bbe98296891835ecf48d02dc7e9ddae9767e579b"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-applicationlifecycle",
+      "sha256": "3fb4d7eacfdbd42602fcb6f1e3ca2bed5ac0758e25efe3ebae85c9991dd65079"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-browserlogin",
+      "sha256": "7d2b7538f977480d4dca05081c90abf93dda8f33d0e1e87f046a7fb6c9dcbfe6"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-browserprotection",
+      "sha256": "d223f1b337101cbfa6bca834dfa1c787286031c8734bfea9493b5ae129b02671"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-browsersessions",
+      "sha256": "d991dc6853eb2dd9517c7a0af3e3f42142048cbb3c2cf9b49ccd5358c3972559"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-managedconsent",
+      "sha256": "0a1484d7d5bc4cd00be19858c103f3b6e269574b959c26736154bbc4aa683ca7"
+    },
+    {
+      "cell": "administrator-PostgreSql-chromium-security",
+      "sha256": "7fdc7a533dcffa941ad801a09eef087977bcd01942eacfca87f2887e1b824c09"
+    },
+    {
+      "cell": "administrator-PostgreSql-factors",
+      "sha256": "6cbf0854dff6fdd057c62c9510da657a8d602339ca3788e6cf6c7e2d114217e1"
+    },
+    {
+      "cell": "administrator-PostgreSql-governance-commands",
+      "sha256": "36cea7c15dd4d5ba28b8de0f5051b41f41496ae1a30fd852576e1939a2a2c2b9"
+    },
+    {
+      "cell": "administrator-PostgreSql-governance-failures",
+      "sha256": "5a9e20faf8f5855dd5074404e62a3ef4d6b5a186ec26772e0e03a106959c47ef"
+    },
+    {
+      "cell": "administrator-PostgreSql-governance-policy",
+      "sha256": "59d77ff2ac5dc720a497af79ea269ac2d782e172d5fd9fc87fe4d6adee3a602e"
+    },
+    {
+      "cell": "administrator-PostgreSql-managedapplications-admission",
+      "sha256": "49413edad21b30193993b220d0ff29ae94a1b2cfc363a2666d8379e35c6b523f"
+    },
+    {
+      "cell": "administrator-PostgreSql-managedapplications-issuance",
+      "sha256": "7fd033eb1c104188dc80f9560b6161902c6c9fe01d05e411b2193f436a115633"
+    },
+    {
+      "cell": "administrator-PostgreSql-protocoladmission",
+      "sha256": "8f1ceac30bf12aadaed35e7c2f5eca7a76e37058ecba608e0573a241703b7610"
+    },
+    {
+      "cell": "administrator-PostgreSql-recovery",
+      "sha256": "cf138f73d2536328d9c2362497a00abd26d84cc489b104643ca30cf078ef0dba"
+    },
+    {
+      "cell": "administrator-PostgreSql-security",
+      "sha256": "b26089064974ba25f645af3ea5dd71081bb380c7ce367302ac986703e5c720d3"
+    },
+    {
+      "cell": "administrator-PostgreSql-sessionrefresh",
+      "sha256": "5b6cd0b495bae8f419ae343f082fd31b600c76583f9a4f4decb61837da574902"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-accounts",
+      "sha256": "c2e12a89fadd89c8350083a429d2509a7887b827f574d5a8e0b644888389bbf0"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-applicationauthority",
+      "sha256": "964a124076126d07fe6b7620e12aeacf9d00bb258134e0cd9734398d7a512922"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-applicationeditor",
+      "sha256": "209b181e9c650a27b249e744592392c8cbacdecd094198500d5139c49cca6caf"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-applicationlifecycle",
+      "sha256": "749736d8198eff5bb5927d41b4dcf2653d596ffb2ef2aa59b5f4185ff4be71e3"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-browserlogin",
+      "sha256": "532609812a6c6e9ac07941663af32c7288a9e4c1d397f22f360e4338c2a247a6"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-browserprotection",
+      "sha256": "cede52abac650632468f65cba962a0476f5da6af16cdb7556f6de52da13c21a2"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-browsersessions",
+      "sha256": "2638e2527a4c948a26d5efece72c1c20b30fa1fb317b6462b5fee0feee42d4fa"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-managedconsent",
+      "sha256": "491d20bf63fd1c7ec932b4f4acd5afc41c4d46eac806732ffcfed5d409d38615"
+    },
+    {
+      "cell": "administrator-PostgreSql-webkit-security",
+      "sha256": "be3b312c75c295112b6b23765af0f21f93e89c3af52c458fe7c45e85b00ecb18"
+    },
+    {
+      "cell": "administrator-SqlServer-accounts",
+      "sha256": "4484071e6b3c9f15ed795ad6fefd889f6a163b62af2e7cab7ebdf70e0d00469e"
+    },
+    {
+      "cell": "administrator-SqlServer-applicationgrants",
+      "sha256": "2f86f46038b5e92f2a4beef0b0faf0f89996601cd9eb0098d617a4de1941e948"
+    },
+    {
+      "cell": "administrator-SqlServer-applications",
+      "sha256": "906a87496cd8e8ea44bcc2b3defe7d79aec4271b64db885cbd5c9989cb4db596"
+    },
+    {
+      "cell": "administrator-SqlServer-bootstrap",
+      "sha256": "8bf99222bf93eeb652272f033f2aa1a42430eb842f364b9fdbdb926073b98f10"
+    },
+    {
+      "cell": "administrator-SqlServer-browsersessions-foundations",
+      "sha256": "cb744ea323108324557fd70610205a34fe158d306b53398d058875d4a061f1e7"
+    },
+    {
+      "cell": "administrator-SqlServer-browsersessions-lifecycle",
+      "sha256": "f4eaa34bbb0ace3f6310ef15bf1272dfa722d0034f97077a58f2c00a3bc8268e"
+    },
+    {
+      "cell": "administrator-SqlServer-browsersessions-product",
+      "sha256": "59675e9c67adad3e47c33476692904110092e339aa4aa813e532a05b8a9a381e"
+    },
+    {
+      "cell": "administrator-SqlServer-ceremonies",
+      "sha256": "84b94fd7805861c1a4398190c8c75655d8ee9e35e16d2cd4b211f382cee80de1"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-accounts",
+      "sha256": "8f8c859af835772ea44f6a841ccbd407fd08c695e6ff1ba8e8036237479e08d0"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-applicationauthority",
+      "sha256": "1b775d30f248a06d948f795a7f8fa88e3558505a1a918a1f0be4549cc52e9966"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-applicationeditor",
+      "sha256": "1e29de082426d1bc83cb99a95979c5112263645bd9e8007371ef7af1d362f1fe"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-applicationlifecycle",
+      "sha256": "b691129c650bbd58536297dfe6ac53ded8a8d65c21579ea5a35a615d186f80a2"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-browserlogin",
+      "sha256": "34d757f0cf4dfcb31485dae72f589cf32144136ae7d83803ab8f59a38718d9cc"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-browserprotection",
+      "sha256": "04c5346c4b3bf2596b0ca835110a6c8d4d8921608fc36b19c9fa6aa96e085fdd"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-browsersessions",
+      "sha256": "d1459a45fc67de771601ab4beae52d5aa933d2abeb0ad3821e0fca650f601067"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-managedconsent",
+      "sha256": "31673fe2c7d526e18f4725d354513cad6d68742f91277c6d554b8524213f030c"
+    },
+    {
+      "cell": "administrator-SqlServer-chromium-security",
+      "sha256": "741676c40e56a8df65c62f9c9195a33021f1db148ad9fe034583a6aabdce864b"
+    },
+    {
+      "cell": "administrator-SqlServer-factors",
+      "sha256": "850244fd3c18f126f1fc63a4041c77582325936b112c0cddd905a52a9b9ac5bb"
+    },
+    {
+      "cell": "administrator-SqlServer-governance-commands",
+      "sha256": "04f2315f7c5a0a9587b2e9dd897b9701d7111926681e32a2eaaea9e3b6a1316a"
+    },
+    {
+      "cell": "administrator-SqlServer-governance-failures",
+      "sha256": "a7759cc15e8dc9fcd697b6ef3edbb51ac15169886789f1be6b868ad5932109f8"
+    },
+    {
+      "cell": "administrator-SqlServer-governance-policy",
+      "sha256": "de9ea16bb1fd00009aa77f8aba2faac398735675a211d340d47dc5a73ce3f218"
+    },
+    {
+      "cell": "administrator-SqlServer-managedapplications-admission",
+      "sha256": "2588ae81c78d3bff54c6c147fb33a025a4e199677fb59f9376c53847b75851b9"
+    },
+    {
+      "cell": "administrator-SqlServer-managedapplications-issuance",
+      "sha256": "892549a8eeab8664b9394035908cf53fa5a1a02f6fc462b3cee98e41faf89885"
+    },
+    {
+      "cell": "administrator-SqlServer-protocoladmission",
+      "sha256": "1e8d50e694e31e495e5256905649677303f9a1514d124f47984add0d0d3072cb"
+    },
+    {
+      "cell": "administrator-SqlServer-recovery",
+      "sha256": "8a562252c7d3b1a28e65953f88b3ce41e02aea0ded2fb3203dc870b901fbe27a"
+    },
+    {
+      "cell": "administrator-SqlServer-security",
+      "sha256": "61430ce1e6935ab89de1b60ccd53f45f4cc9d88f09b8a488c4c4978cda7e86f8"
+    },
+    {
+      "cell": "administrator-SqlServer-sessionrefresh",
+      "sha256": "f100b3f05899b8f6e7d69a55b229c68499f46142df5147cb952d71aa4e48b23c"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-accounts",
+      "sha256": "27d612438c3482267ecc85877dec1bf402f1b680eb59b3c20183089f633a5b89"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-applicationauthority",
+      "sha256": "4eb1fb8123c4ec5cfb53ebd08e2dfc9a0687a8ffe0f8bcbf74f3b0c8bb783d15"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-applicationeditor",
+      "sha256": "91e54d8b5b719785396b9fe19e8acb97e0557b6a52d33a4cba4dcabc8cab6406"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-applicationlifecycle",
+      "sha256": "9c0ac3992547b69781723cf20886da9a9bb1767897a1d4c687efeb485bd2ffa5"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-browserlogin",
+      "sha256": "1f7696be5660a744800093d099186f93403137457b02568ff97a64917e542720"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-browserprotection",
+      "sha256": "cf57d97a49effd8278ac06582c5ec313f2405292cd4c6b468cdd0f0ea1d699f3"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-browsersessions",
+      "sha256": "57259b7ac4b19c9dbcd3b45025ea84290a21ba05d8a2c84f2157c19365c2b823"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-managedconsent",
+      "sha256": "d4d4ea35acccb5c96d39d8ab5d4a6705bbc27254b53cff57671cb46c2f9a6a27"
+    },
+    {
+      "cell": "administrator-SqlServer-webkit-security",
+      "sha256": "f1048e3e29a3538c518d94551ab61284f8fc24fee91c7cfce90d1a4a02adbaef"
+    },
+    {
+      "cell": "contracts-chromium",
+      "sha256": "49601dfd92c4f2f89444b6cf7f932faced9ab13850d6b7b82e0378873ebbbdd3"
+    },
+    {
+      "cell": "contracts-core",
+      "sha256": "035e099181e50d84962d9486ffe089a2855580a3feaddcde11617b5bf66c148e"
+    },
+    {
+      "cell": "contracts-webkit",
+      "sha256": "75af91cdb8ad1a8438e6f99d6330f4c72ae6ac9475d957b44ece4e0ea7a41957"
+    },
+    {
+      "cell": "issuer-PostgreSql-boundaries",
+      "sha256": "c107021dacfdd2425bf345a1369f7d6d725812ce0a59134a7cb85ebdd3be2b51"
+    },
+    {
+      "cell": "issuer-PostgreSql-flows",
+      "sha256": "5c919c43c28e03588e520af49a998ee1a8d1189ff71a30099853db9a3c8c1d8a"
+    },
+    {
+      "cell": "issuer-SqlServer-boundaries",
+      "sha256": "47482fbdab47c39a492dc6de6918d2b0fbdcb11c8b3561b8140909c952533420"
+    },
+    {
+      "cell": "issuer-SqlServer-flows",
+      "sha256": "66e2f462eb73fa39d6f53fa5cf3fc760b372f85f0a38dd96301436d32ae3dd28"
+    },
+    {
+      "cell": "unit",
+      "sha256": "583aeaa220fcc0880aa6024e02c723058d805a87de90798d403b76fdb9b61e78"
+    }
+  ],
+  "diagnosis": {
+    "scope": "Read-only existing-output comparison; no rerun or acceptance",
+    "outputs": [
+      {
+        "path": "/workspace/grant-t018-reconciled/hosted-merged.cobertura.xml",
+        "root": {
+          "line-rate": "0.9371701641387907",
+          "branch-rate": "0.9595997034840623",
+          "complexity": "4095",
+          "version": "1.9",
+          "timestamp": "1794009204",
+          "lines-covered": "22553",
+          "lines-valid": "24065",
+          "branches-covered": "2589",
+          "branches-valid": "2698"
+        }
+      },
+      {
+        "path": "/workspace/grant-t018-reconciled/independent-merged.cobertura.xml",
+        "root": {
+          "line-rate": "0.9371701641387907",
+          "branch-rate": "0.9598569157392687",
+          "complexity": "3907",
+          "version": "1.9",
+          "timestamp": "1794009441",
+          "lines-covered": "22553",
+          "lines-valid": "24065",
+          "branches-covered": "2415",
+          "branches-valid": "2516"
+        }
+      },
+      {
+        "path": "/workspace/grant-t018-reconciled/independent-host-order.cobertura.xml",
+        "root": {
+          "line-rate": "0.9371701641387907",
+          "branch-rate": "0.9620300751879699",
+          "complexity": "4045",
+          "version": "1.9",
+          "timestamp": "1794009718",
+          "lines-covered": "22553",
+          "lines-valid": "24065",
+          "branches-covered": "2559",
+          "branches-valid": "2660"
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "comparison": "independent-merged.cobertura.xml",
+        "classKeysEqual": true,
+        "lineKeysEqual": true,
+        "lineCount": 24065,
+        "allLineHitsEqual": true,
+        "allBranchFlagsEqual": true,
+        "branchLineMetadataDifferences": 70,
+        "hostedConditionMissingLocal": 44,
+        "localConditionMissingHosted": 26,
+        "bothPresentDifferent": 0,
+        "affectedModules": {
+          "IdentityPlatform.Admin.Bff": 19,
+          "IdentityPlatform.AuthServer": 22,
+          "IdentityPlatform.Admin.Api": 11,
+          "IdentityPlatform.Infrastructure": 18
+        }
+      },
+      {
+        "comparison": "independent-host-order.cobertura.xml",
+        "classKeysEqual": true,
+        "lineKeysEqual": true,
+        "lineCount": 24065,
+        "allLineHitsEqual": true,
+        "allBranchFlagsEqual": true,
+        "branchLineMetadataDifferences": 58,
+        "hostedConditionMissingLocal": 28,
+        "localConditionMissingHosted": 30,
+        "bothPresentDifferent": 0,
+        "affectedModules": {
+          "IdentityPlatform.Admin.Bff": 10,
+          "IdentityPlatform.AppHost": 13,
+          "IdentityPlatform.AuthServer": 4,
+          "IdentityPlatform.Admin.Api": 9,
+          "IdentityPlatform.Migrator": 3,
+          "IdentityPlatform.Core": 3,
+          "IdentityPlatform.Infrastructure": 14,
+          "IdentityPlatform.NativeClient.Driver": 2
+        }
+      }
+    ],
+    "witnesses": [
+      {
+        "module": "IdentityPlatform.Admin.Bff",
+        "class": "IdentityPlatform.Admin.Bff.Features.Documentation.DocumentationPolicy.<InvokeAsync>d__20",
+        "source": "/_/src/backend/IdentityPlatform.Admin.Bff/Features/Documentation/DocumentationPolicy.cs",
+        "line": 38,
+        "inputsContainingClass": 98,
+        "allInputsContainConditionMetadata": true,
+        "inputConditionCoverageDistribution": {
+          "0% (0/8)": 95,
+          "87.5% (7/8)": 2,
+          "100% (8/8)": 1
+        },
+        "hostedConditionCoverage": "100% (8/8)",
+        "firstLocalConditionCoverage": null,
+        "hostedClassComplexity": 12,
+        "firstLocalClassComplexity": 4
+      },
+      {
+        "module": "IdentityPlatform.Infrastructure",
+        "class": "IdentityPlatform.Infrastructure.Features.ApplicationGrants.GrantIntent",
+        "source": "/_/src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantIntent.cs",
+        "line": 16,
+        "inputsContainingClass": 96,
+        "allInputsContainConditionMetadata": true,
+        "inputConditionCoverageDistribution": {
+          "0% (0/2)": 88,
+          "100% (2/2)": 6,
+          "50% (1/2)": 2
+        },
+        "hostedConditionCoverage": null,
+        "firstLocalConditionCoverage": "100% (2/2)"
+      }
+    ],
+    "localToolCore": {
+      "path": "/tmp/aspire-nuget/dotnet-coverage/18.12.0/tools/net8.0/any/Microsoft.CodeCoverage.Core.dll",
+      "sha256": "6a332099c9b4940dcb2876d507527988f5911bf68478089e73694b2d23b26a0c",
+      "version": "18.12.0",
+      "documentedConcurrencyProperty": "Microsoft.CodeCoverage.Core.ICoverageFileConfiguration.MaxDegreeOfParallelism: maximum number of concurrent tasks enabled during coverage file operations."
+    },
+    "limits": [
+      "No tool execution, build, test, container or repository mutation performed during this diagnosis.",
+      "Existing output/input parsing demonstrates omitted branch metadata in both hosted and local merge results.",
+      "Runtime differs: hosted .NET8.0.33 versus local .NET10.0.14, as separately reported by root.",
+      "Async/parallel symbols and output-order variation do not independently prove the cause.",
+      "Canonical comparison remains failed; all floor passes are reported observations, not complete coverage acceptance."
+    ]
+  }
+}

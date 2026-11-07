@@ -53,8 +53,8 @@ public sealed class BrowserAuditMigrationTests
         var before = await BrowserAuditMigrationRows.CaptureAsync(platform, sessions, deadline.Token);
         var history = await BrowserAuditMigrationRows.CaptureHistoryAsync(platform, sessions, deadline.Token);
         string[][] additions = provider == Postgres
-            ? [[PostgresPlatform, ManagedApplicationUpgradeWitness.PostgresMigration, LifecycleUpgradeWitness.PostgresMigration], [PostgresSessions]]
-            : [[SqlPlatform, ManagedApplicationUpgradeWitness.SqlMigration, LifecycleUpgradeWitness.SqlMigration], [SqlSessions]];
+            ? [[PostgresPlatform, ManagedApplicationUpgradeWitness.PostgresMigration, LifecycleUpgradeWitness.PostgresMigration, GrantUpgradeWitness.PostgresMigration], [PostgresSessions]]
+            : [[SqlPlatform, ManagedApplicationUpgradeWitness.SqlMigration, LifecycleUpgradeWitness.SqlMigration, GrantUpgradeWitness.SqlMigration], [SqlSessions]];
         Assert.Equal(0, await DatabaseUpgrade.RunAsync(root, deadline.Token));
         await BrowserAuditMigrationRows.RequireAsync(platform, sessions, before, deadline.Token);
         await BrowserAuditMigrationRows.RequireHistoryAsync(platform, sessions, history, additions, deadline.Token);

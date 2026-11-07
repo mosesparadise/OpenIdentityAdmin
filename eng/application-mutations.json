@@ -21,7 +21,7 @@
       "id": "application-write-permission",
       "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
       "before": "if (!grants.Permissions(identity.Subject).Contains(permission))",
-      "after": "if (command.Kind == ApplicationMutationKind.Replace && !grants.Permissions(identity.Subject).Contains(permission))",
+      "after": "if (permission == CredentialPermission && !grants.Permissions(identity.Subject).Contains(permission))",
       "marker": "application-write-permission-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationMutationTests.Given_IndependentPersistedGrants_When_MutationIsRequested_Then_OnlyItsSpecificPermissionAuthorizes"
     },

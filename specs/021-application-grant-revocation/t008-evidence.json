@@ -1,0 +1,463 @@
+{
+  "baseHead": "9e7293fea58eb20de98e214812a72a8a3aa56252",
+  "requirements": [
+    "GR-002",
+    "GR-004",
+    "GR-006",
+    "GR-010",
+    "GR-011",
+    "T008"
+  ],
+  "scope": "Current admission authority, protected bounded reads and original publication/cleanup boundaries. Test/evidence changes only; no production implementation changed.",
+  "source": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantAdmissionAuthorityTests.cs",
+      "sha256": "f0c7ebdcc5912198836821a04a6c4c8a106da749fa1e8671478151573f991f41"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantAdmissionChange.cs",
+      "sha256": "08efc00fa9cb2eaaafdaf085e26d1bda54d5127cd0e8ea78677c8a3e01400e67"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantBoundaryEvidence.cs",
+      "sha256": "09f6e090f08fc93fda1ed0840e3f8538c9b59b5b3fc7cd4d7055eecd30bf84d7"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantRecentStatusTests.cs",
+      "sha256": "7c76b77f0123aaea5f2bca733c330695052e69916bcf5f20283f71e1266c7439"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantPublicationTests.cs",
+      "sha256": "69370bb7b0c2e7eaf70b544c8124e422eade62fccdc8f020c7afecfc78d40ad9"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantPublicationProbe.cs",
+      "sha256": "a92af85e001cb1746cd335ca955cbae9d3581ec3f663a6551fd4359d5913f9a0"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReadPublicationTests.cs",
+      "sha256": "02448fb95d4c1e69bbbf508f49dac8831f73af9698b2334fd7c63f1cfb754368"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReadPublicationProbe.cs",
+      "sha256": "f4ff4f170f68505a376142c6b664af16d5a41c3fa94be2ee6d792bee18a3fa95"
+    }
+  ],
+  "postgresqlStyleOnlyVariant": [
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReadPublicationProbe.cs",
+      "postgresqlSha256": "fab154edcb1ea767f8ce4ca25d85ca1184f2efcb6572ece254c5b5020c1c6094",
+      "finalSha256": "f4ff4f170f68505a376142c6b664af16d5a41c3fa94be2ee6d792bee18a3fa95",
+      "change": "Remove one informational IDE0005 unused Microsoft.EntityFrameworkCore using; no behavioral change. SQL Server executes the final source."
+    }
+  ],
+  "results": [
+    {
+      "provider": "PostgreSql",
+      "report": "grant-t008-pg-accepted-results/t008.trx",
+      "sha256": "a6df5659e3f5078890f8e08be5a7b479a77ca01c3db531c3fea0f8dd0c0cf4ac",
+      "counters": {
+        "total": "10",
+        "executed": "10",
+        "passed": "10",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "times": {
+        "creation": "2026-11-06T14:53:58.9410699Z",
+        "queuing": "2026-11-06T14:53:58.9410699Z",
+        "start": "2026-11-06T14:53:58.9410699Z",
+        "finish": "2026-11-06T14:55:22.763957Z"
+      },
+      "cases": [
+        {
+          "executionId": "32398a27-be80-4c59-b6c8-26908b4a1904",
+          "testId": "285cb5c2-e5d2-8e03-1460-b87123bbd156",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:34.5940000",
+          "startTime": "2026-11-06T14:53:59.7370496+00:00",
+          "endTime": "2026-11-06T14:54:34.3463713+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "32398a27-be80-4c59-b6c8-26908b4a1904"
+        },
+        {
+          "executionId": "c7464f15-bb4c-4a9e-9a68-7ca3d373260c",
+          "testId": "b43b58f1-e594-322c-1af5-d760509fed86",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: False)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:04.9300000",
+          "startTime": "2026-11-06T14:54:34.3705124+00:00",
+          "endTime": "2026-11-06T14:54:39.3019776+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "c7464f15-bb4c-4a9e-9a68-7ca3d373260c"
+        },
+        {
+          "executionId": "1a943218-2525-4c04-9e58-7233ce1bb118",
+          "testId": "3d9f9932-44a5-1e50-be07-44a857c85598",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: True)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:10.0800000",
+          "startTime": "2026-11-06T14:54:39.3024318+00:00",
+          "endTime": "2026-11-06T14:54:49.3829666+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "1a943218-2525-4c04-9e58-7233ce1bb118"
+        },
+        {
+          "executionId": "978a5251-feac-4ecc-a37c-1492c54f1fe3",
+          "testId": "1bec1ded-3561-789b-d958-77da712fa284",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"deadline\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:09.4610000",
+          "startTime": "2026-11-06T14:54:49.3858361+00:00",
+          "endTime": "2026-11-06T14:54:58.8474248+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "978a5251-feac-4ecc-a37c-1492c54f1fe3"
+        },
+        {
+          "executionId": "12fbefd0-b091-4a9a-bc0f-943588ca116f",
+          "testId": "76d07f38-e523-5676-c756-b728b8b9de43",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"cleanup\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:04.3220000",
+          "startTime": "2026-11-06T14:54:58.8478879+00:00",
+          "endTime": "2026-11-06T14:55:03.1709894+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "12fbefd0-b091-4a9a-bc0f-943588ca116f"
+        },
+        {
+          "executionId": "723c0c98-5d36-4ed9-9e19-625e07947dac",
+          "testId": "b92dff01-dcae-6ecc-3823-e76c9f753fef",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"authority\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:03.6650000",
+          "startTime": "2026-11-06T14:55:03.1712474+00:00",
+          "endTime": "2026-11-06T14:55:06.8369146+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "723c0c98-5d36-4ed9-9e19-625e07947dac"
+        },
+        {
+          "executionId": "91512c00-3293-4e59-86ca-40840daf885b",
+          "testId": "8930b179-65ab-42ab-b073-73e1f74bf8a8",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"PostgreSql\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:01.6630000",
+          "startTime": "2026-11-06T14:55:06.8390491+00:00",
+          "endTime": "2026-11-06T14:55:08.5027214+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "91512c00-3293-4e59-86ca-40840daf885b"
+        },
+        {
+          "executionId": "8b792498-8698-471a-8bae-fc0367619faf",
+          "testId": "0fcdd34b-5f2b-03b0-5a92-6a0e1bbe2996",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"PostgreSql\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:04.8010000",
+          "startTime": "2026-11-06T14:55:08.5044359+00:00",
+          "endTime": "2026-11-06T14:55:13.3063713+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "8b792498-8698-471a-8bae-fc0367619faf"
+        },
+        {
+          "executionId": "bedbc144-efad-4161-a468-7460e19260c3",
+          "testId": "20030326-406e-2477-2fb2-ada6b3f9c14d",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: False)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:01.5460000",
+          "startTime": "2026-11-06T14:55:13.3070119+00:00",
+          "endTime": "2026-11-06T14:55:14.8533781+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "bedbc144-efad-4161-a468-7460e19260c3"
+        },
+        {
+          "executionId": "d99315b1-123c-42c7-baa1-4731606e006d",
+          "testId": "68d07e13-3dd0-600f-8293-866b9697fd75",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: True)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:01.4980000",
+          "startTime": "2026-11-06T14:55:14.8539305+00:00",
+          "endTime": "2026-11-06T14:55:16.3529648+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "d99315b1-123c-42c7-baa1-4731606e006d"
+        }
+      ]
+    },
+    {
+      "provider": "SqlServer",
+      "report": "grant-t008-sql-accepted-results/t008.trx",
+      "sha256": "9f63c58f8c2b60aa76b1cc0a6118a3a6e4095ccd0e14bc6b9392aef54d8d316e",
+      "counters": {
+        "total": "10",
+        "executed": "10",
+        "passed": "10",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "times": {
+        "creation": "2026-11-06T15:07:59.0963894Z",
+        "queuing": "2026-11-06T15:07:59.0963894Z",
+        "start": "2026-11-06T15:07:59.0963894Z",
+        "finish": "2026-11-06T15:10:02.6929669Z"
+      },
+      "cases": [
+        {
+          "executionId": "a42e8edb-29cf-47b1-a20d-44a4f1c39ad3",
+          "testId": "cc2eda31-d47d-ded0-462e-c2a618347161",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:52.5760000",
+          "startTime": "2026-11-06T15:07:59.9306570+00:00",
+          "endTime": "2026-11-06T15:08:52.5227036+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "a42e8edb-29cf-47b1-a20d-44a4f1c39ad3"
+        },
+        {
+          "executionId": "f69e8be5-6210-49c2-9307-e198558c85df",
+          "testId": "b112844f-6397-2e52-9ce6-b0a10bc66084",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: True)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:12.1180000",
+          "startTime": "2026-11-06T15:08:52.5478597+00:00",
+          "endTime": "2026-11-06T15:09:04.6673734+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "f69e8be5-6210-49c2-9307-e198558c85df"
+        },
+        {
+          "executionId": "aa88feb3-08e9-49ba-a0bc-6e14627dd901",
+          "testId": "13f82ffc-1801-19bf-84bb-f40f83398614",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: False)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:05.8750000",
+          "startTime": "2026-11-06T15:09:04.6683183+00:00",
+          "endTime": "2026-11-06T15:09:10.5435088+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "aa88feb3-08e9-49ba-a0bc-6e14627dd901"
+        },
+        {
+          "executionId": "374f46a1-58c0-4dee-bb35-cd9dfa2cc291",
+          "testId": "4155d431-afc9-61e8-d23e-2f610a386fdd",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"deadline\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:11.3379999",
+          "startTime": "2026-11-06T15:09:10.5454898+00:00",
+          "endTime": "2026-11-06T15:09:21.8845642+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "374f46a1-58c0-4dee-bb35-cd9dfa2cc291"
+        },
+        {
+          "executionId": "e638977f-e7e3-428d-8296-785d188a1af3",
+          "testId": "300714b7-83b2-d70a-fa55-a2d045e76bb3",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"cleanup\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:05.9290000",
+          "startTime": "2026-11-06T15:09:21.8851306+00:00",
+          "endTime": "2026-11-06T15:09:27.8149774+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "e638977f-e7e3-428d-8296-785d188a1af3"
+        },
+        {
+          "executionId": "1a873a1c-f180-48f1-8632-68c93d4412e5",
+          "testId": "aa6ae750-436f-e6ac-85a4-e1a51b452d8d",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"authority\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:05.3630000",
+          "startTime": "2026-11-06T15:09:27.8153903+00:00",
+          "endTime": "2026-11-06T15:09:33.1792223+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "1a873a1c-f180-48f1-8632-68c93d4412e5"
+        },
+        {
+          "executionId": "7be373e0-9865-4a07-b36c-6968a631ec18",
+          "testId": "7aaa5b25-8c03-99e9-faa2-a73ddd2fbf59",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"SqlServer\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:03.5870000",
+          "startTime": "2026-11-06T15:09:33.1840505+00:00",
+          "endTime": "2026-11-06T15:09:36.7719020+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "7be373e0-9865-4a07-b36c-6968a631ec18"
+        },
+        {
+          "executionId": "8e54efb6-be14-44a3-866f-987cdcca814a",
+          "testId": "ed3b282f-20c2-3445-7b65-11ced1ec6272",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"SqlServer\")",
+          "computerName": "d625f036076e",
+          "duration": "00:00:07.3980000",
+          "startTime": "2026-11-06T15:09:36.7735683+00:00",
+          "endTime": "2026-11-06T15:09:44.1726225+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "8e54efb6-be14-44a3-866f-987cdcca814a"
+        },
+        {
+          "executionId": "5cffdf54-caf0-4574-b6f7-d0848a0e036c",
+          "testId": "4b2e51c2-846a-a76a-0914-fc4181d40ed7",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: False)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:02.3990000",
+          "startTime": "2026-11-06T15:09:44.1734606+00:00",
+          "endTime": "2026-11-06T15:09:46.5732817+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "5cffdf54-caf0-4574-b6f7-d0848a0e036c"
+        },
+        {
+          "executionId": "d40275aa-07a9-43e8-a2bc-4ecf6e170baa",
+          "testId": "4b73bee2-1fbc-8df8-6278-b63eaf8cc10d",
+          "testName": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: True)",
+          "computerName": "d625f036076e",
+          "duration": "00:00:02.5530000",
+          "startTime": "2026-11-06T15:09:46.5739910+00:00",
+          "endTime": "2026-11-06T15:09:49.1282256+00:00",
+          "testType": "13CDC9D9-DDB5-4fa4-A97D-D965CCFC6D4B",
+          "outcome": "Passed",
+          "testListId": "8C84FA94-04C1-424b-9868-57A2D4851A1D",
+          "relativeResultsDirectory": "d40275aa-07a9-43e8-a2bc-4ecf6e170baa"
+        }
+      ]
+    }
+  ],
+  "inventory": {
+    "priorPortableRecordsPreserved": 2583,
+    "newCases": 20,
+    "totalNativeCases": 2603,
+    "grantCasesPerProvider": 62
+  },
+  "previousCI": {
+    "runId": 42227783524,
+    "head": "9e7293fea58eb20de98e214812a72a8a3aa56252",
+    "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42227783524",
+    "jobs": {
+      "success": 124,
+      "failed": 0,
+      "skipped": 0
+    },
+    "scope": "Workflow/job status verified; this is not a new native artifact reconciliation."
+  },
+  "rejectedCompletedAttempts": [
+    {
+      "report": "grant-t008-pg-corrected-results/t008.trx",
+      "sha256": "d615cdf15fcd5fdd60fe0083a6bc4de7ffa71a824ebc84feecc7c0895d8a89f0",
+      "counters": {
+        "total": "10",
+        "executed": "10",
+        "passed": "5",
+        "failed": "5",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "disposition": "Unarmed async-only test sentinel caused synchronous DI disposal failure before probe activation."
+    },
+    {
+      "report": "grant-t008-pg-final-results/t008.trx",
+      "sha256": "65f09e8ad3510c92c4bf6a1b264032f680a859f669a67407a4fffeeda559f7a6",
+      "counters": {
+        "total": "10",
+        "executed": "10",
+        "passed": "5",
+        "failed": "5",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "disposition": "Armed sentinel used synchronous disposal and did not reach its async gate; rejected, then replaced with a documented provider transaction event."
+    }
+  ],
+  "otherRejectedAttempts": [
+    {
+      "log": "grant-t008-pg.log",
+      "sha256": "5e1bfb5994e4d56e2b6ebc9a76b11d8701c02d87505731d76a6c796c8c55a033",
+      "stack": "grant-t008-stacks.log",
+      "stackSha256": "797556592b500b7c13dfdfedc673816ad6f6acf715892fa6740774da4fffc551",
+      "disposition": "Incomplete first attempt: test probe resolved storage selection during DbContext options construction and deadlocked DI. Only owned test processes were stopped; no pass claimed."
+    },
+    {
+      "log": "grant-t008-sql.log",
+      "sha256": "5a39210f8402e641438496c81aa6fa2c8bbad461fe2d2978207a7c8b31f42327",
+      "disposition": "SQL bootstrap failed under disk exhaustion before valid acceptance. Removed unused moving-tag image and only this attempt's unreferenced VFS copies; retained pinned image and retried successfully. No valid completed native report claimed."
+    }
+  ],
+  "limits": [
+    "MFA freshness isolation uses genuine enrolled component authority with longer-lived manager-created native records; it does not claim a signed HTTP token survives the native MFA deadline.",
+    "Publication gate observes exact EF provider transaction disposal before final context disposal; it is not a post-context-disposal hook.",
+    "Final-head full CI and T010/T012/T015/T016/T018 remain required.",
+    "Initial pilot replay/late-issuance window and all historical/manual/Firefox/A-009/production/public-release gates remain open."
+  ]
+}

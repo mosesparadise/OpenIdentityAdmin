@@ -1,0 +1,185 @@
+{
+  "run": 42133604768,
+  "head": "da6f378100006bb317325408c44566ec956f49b7",
+  "scope": "Focused exact-head native report reconciliation; not full CI acceptance.",
+  "artifacts": [
+    {
+      "artifactId": 13465495021,
+      "name": "foundation-administrator-PostgreSql-applicationgrants",
+      "provider": "PostgreSql",
+      "zipDigest": "sha256:a9ec019d7a6c022d72092d7757a988d740cd9961a1edfab3a87a561a00172907",
+      "report": "tests/administrator-PostgreSql-applicationgrants/Administrator.trx",
+      "reportSha256": "1b54753bb30edcc54e2150c54bbc278451e72315573983eb8cd7add0656369cf",
+      "counters": {
+        "total": "51",
+        "executed": "51",
+        "passed": "51",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactInventoryMatch": true,
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"PostgreSql\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)",
+          "outcome": "Passed"
+        }
+      ]
+    },
+    {
+      "artifactId": 13465495169,
+      "name": "foundation-administrator-SqlServer-applicationgrants",
+      "provider": "SqlServer",
+      "zipDigest": "sha256:bfc5a017297330ea584ee43176901680306d598b37c095144a552de56b9a8e76",
+      "report": "tests/administrator-SqlServer-applicationgrants/Administrator.trx",
+      "reportSha256": "f9288f4434bbd888d22603a797f9289b7cdeb61b8f47c01180628261c330c3d7",
+      "counters": {
+        "total": "51",
+        "executed": "51",
+        "passed": "51",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactInventoryMatch": true,
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"SqlServer\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)",
+          "outcome": "Passed"
+        }
+      ]
+    },
+    {
+      "artifactId": 13465685494,
+      "name": "foundation-administrator-PostgreSql-managedapplications-issuance",
+      "provider": "PostgreSql",
+      "zipDigest": "sha256:cd1f710135f5ca63abd0c54b2a95ee72cb4626759991097bafe120a6d1498683",
+      "report": "tests/administrator-PostgreSql-managedapplications-issuance/Administrator.trx",
+      "reportSha256": "234a17912e30707fed1841f65f87df1c23291cff47657669fae5a73905be0876",
+      "counters": {
+        "total": "64",
+        "executed": "64",
+        "passed": "64",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactInventoryMatch": true,
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)",
+          "outcome": "Passed"
+        }
+      ]
+    },
+    {
+      "artifactId": 13465592143,
+      "name": "foundation-administrator-SqlServer-managedapplications-issuance",
+      "provider": "SqlServer",
+      "zipDigest": "sha256:58fd4da78b0e140cb3b4194fe6edc0b8b13c93644b22b3eac8261ffef2cf060c",
+      "report": "tests/administrator-SqlServer-managedapplications-issuance/Administrator.trx",
+      "reportSha256": "82ca976e83f6a1568ed5bc645522dddfcf301b2f24e1a5bb9d8324c966003ffe",
+      "counters": {
+        "total": "64",
+        "executed": "64",
+        "passed": "64",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "exactInventoryMatch": true,
+      "cases": [
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)",
+          "outcome": "Passed"
+        }
+      ]
+    }
+  ],
+  "selected_native_passes": 230,
+  "taskDisposition": {
+    "T009": "Focused evidence supports closure: four admission/re-enable cases plus eight genuine issuer/disable ordered cases followed by actual revocation reconciliation. No impossible accepted-job/enabled-target scenario is manufactured.",
+    "T014": "Focused evidence supports closure: two genuine same-issuer cross-host cases independently exercise token and authorization handlers on both roots within five real seconds of the actual progress commit, unaffected native/control exchanges, denied old code and fresh post-enable exchange.",
+    "limits": "Full CI is rejected for separately tracked static unused import and older native replay failure. No overall feature, merge, manual or release acceptance is inferred."
+  }
+}

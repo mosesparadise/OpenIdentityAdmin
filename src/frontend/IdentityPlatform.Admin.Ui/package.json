@@ -10,7 +10,7 @@
   "scripts": {
     "build": "node tooling/build.mjs",
     "check": "tsc --noEmit && node tooling/build.mjs --check",
-    "test": "node tooling/test.mjs && node tooling/test-applications.mjs && node tooling/test-editor.mjs"
+    "test": "node tooling/test.mjs && node tooling/test-applications.mjs && node tooling/test-editor.mjs && node tooling/test-grants.mjs"
   },
   "dependencies": {
     "react": "19.3.1",

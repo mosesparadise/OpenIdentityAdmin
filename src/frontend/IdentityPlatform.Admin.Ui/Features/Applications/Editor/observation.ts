@@ -14,7 +14,7 @@ export function reason(status: number): Reason {
   return status === 401 ? "expired" : status === 403 ? "forbidden" : status === 404 ? "missing" : status === 400 ? "invalid" : status === 409 ? "conflict" : status === 412 || status === 428 ? "stale" : "unavailable";
 }
 /** Checks the strong tag's exact resource hash and portable positive revision, including initial revision one on create. */
-async function version(value: string | null | undefined, id: string, created: boolean): Promise<boolean> {
+export async function version(value: string | null | undefined, id: string, created: boolean): Promise<boolean> {
   if (!value || !/^"[0-9a-f]{64}-[1-9][0-9]{0,18}"$/.test(value)) return false;
   const revision = BigInt(value.slice(66, -1));
   if (revision > 9223372036854775807n || created && revision !== 1n) return false;

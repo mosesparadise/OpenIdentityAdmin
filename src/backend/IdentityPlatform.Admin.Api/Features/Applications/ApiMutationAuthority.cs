@@ -1,6 +1,8 @@
 using IdentityPlatform.Admin.Api.Features.Authentication;
+using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Identity.Authentication;
+using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.ProtocolAdmission;
@@ -18,22 +20,27 @@ internal sealed class ApiMutationAuthority
     private readonly ProtocolStorageScope scope;
     private readonly ProtocolAdmissionOwnership ownership;
     private readonly ApiIdentity identity;
-    private readonly ApplicationMutationCommand command;
+    private readonly object command;
+    private readonly string permission;
+    private readonly bool fresh;
     private readonly string callback;
     private readonly ApiSourceState source;
     private readonly DateTimeOffset started;
     private DateTimeOffset deadline;
     private int consumed;
     internal DateTimeOffset Deadline => deadline;
+    internal long FactorVerifiedAt => source.FactorVerifiedAt;
 
     /// <summary>Captures the first successful observation and original deadlines; no external constructor can fabricate an approved receipt.</summary>
     private ApiMutationAuthority(ProtocolStorageScope scope, ProtocolAdmissionOwnership ownership, ApiIdentity identity,
-        ApplicationMutationCommand command, string callback, ApiSourceState source, DateTimeOffset deadline)
+        object command, string callback, ApiSourceState source, DateTimeOffset deadline, string permission, bool fresh)
     {
         this.scope = scope;
         this.ownership = ownership;
         this.identity = identity;
         this.command = command;
+        this.permission = permission;
+        this.fresh = fresh;
         this.callback = callback;
         this.source = source;
         this.deadline = deadline;
@@ -44,13 +51,23 @@ internal sealed class ApiMutationAuthority
     internal static async Task<ApiMutationAuthority> AcquireAsync(ProtocolStorageScope scope, ProtocolAdmissionOwnership ownership,
         ApiIdentity identity, ApplicationMutationCommand command, string callback, CancellationToken token)
     {
-        var observation = await ObserveAsync(scope, ownership, identity, command, callback, token);
-        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline);
+        var permission = Permission(command.Kind);
+        var fresh = command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable;
+        var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token);
+        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, permission, fresh);
+    }
+
+    /// <summary>Admits only a validated grant intent with current persisted revocation permission and original fresh MFA bounds.</summary>
+    internal static async Task<ApiMutationAuthority> AcquireGrantAsync(ProtocolStorageScope scope, ProtocolAdmissionOwnership ownership,
+        ApiIdentity identity, GrantIntent command, string callback, CancellationToken token)
+    {
+        var observation = await ObserveAsync(scope, ownership, identity, GrantRevocationRules.Permission, true, callback, token);
+        return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, GrantRevocationRules.Permission, true);
     }
 
     /// <summary>Separates direct EF execution from native manager calls, whose owned stores acquire their own non-reentrant execution leases.</summary>
     private static async Task<(ApiSourceState Source, DateTimeOffset Deadline)> ObserveAsync(ProtocolStorageScope scope,
-        ProtocolAdmissionOwnership ownership, ApiIdentity identity, ApplicationMutationCommand command, string callback, CancellationToken token)
+        ProtocolAdmissionOwnership ownership, ApiIdentity identity, string permission, bool fresh, string callback, CancellationToken token)
     {
         var database = (PlatformDbContext)scope.Owner.Database;
         ownership.RequireCurrent(database, token);
@@ -68,12 +85,11 @@ internal sealed class ApiMutationAuthority
         {
             throw new ApiMutationDenied(StatusCodes.Status401Unauthorized);
         }
-        var permission = Permission(command.Kind);
         if (!grants.Permissions(identity.Subject).Contains(permission))
         {
             throw new ApiMutationDenied(StatusCodes.Status403Forbidden);
         }
-        if (command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable)
+        if (fresh)
         {
             var mfaDeadline = DateTimeOffset.FromUnixTimeSeconds(checked(source.FactorVerifiedAt + AdministratorPolicy.FreshnessSeconds));
             if (mfaDeadline <= now)
@@ -95,10 +111,10 @@ internal sealed class ApiMutationAuthority
     };
 
     /// <summary>Rechecks fresh persisted authority after native saves and audit, shortening but never renewing its original useful lifetime.</summary>
-    internal async Task VerifyAsync(ProtocolStorageScope current, ApplicationMutationCommand intent, CancellationToken token)
+    internal async Task VerifyAsync(ProtocolStorageScope current, object intent, CancellationToken token)
     {
         Require(current, intent, token);
-        var observation = await ObserveAsync(scope, ownership, identity, command, callback, token);
+        var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token);
         if (observation.Source.FactorVerifiedAt != source.FactorVerifiedAt || observation.Source.Binding != source.Binding)
         {
             throw new ApiMutationDenied(StatusCodes.Status401Unauthorized);
@@ -108,7 +124,7 @@ internal sealed class ApiMutationAuthority
     }
 
     /// <summary>Rejects foreign scope/action substitution, replay, clock rollback and original expiry before the one commit attempt.</summary>
-    private void Require(ProtocolStorageScope current, ApplicationMutationCommand intent, CancellationToken token)
+    private void Require(ProtocolStorageScope current, object intent, CancellationToken token)
     {
         if (!ReferenceEquals(scope, current) || !ReferenceEquals(command, intent) || Volatile.Read(ref consumed) != 0)
         {
@@ -119,7 +135,7 @@ internal sealed class ApiMutationAuthority
     }
 
     /// <summary>Consumes the receipt once immediately before the owning native commit; unknown commit outcomes cannot be retried with it.</summary>
-    internal void Consume(ProtocolStorageScope current, ApplicationMutationCommand intent, CancellationToken token)
+    internal void Consume(ProtocolStorageScope current, object intent, CancellationToken token)
     {
         Require(current, intent, token);
         if (Interlocked.Exchange(ref consumed, 1) != 0)

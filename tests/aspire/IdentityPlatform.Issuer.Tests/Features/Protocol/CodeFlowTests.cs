@@ -12,6 +12,7 @@ namespace IdentityPlatform.Issuer.Tests.Features.Protocol;
 [Collection("issuer")]
 public sealed class CodeFlowTests(IssuerFixture fixture)
 {
+    private const string ReplayBypass = "Critical decision bypass: native-replay.";
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -72,16 +73,18 @@ public sealed class CodeFlowTests(IssuerFixture fixture)
         Assert.Empty(flow.Error);
     }
 
+    /// <summary>Requires one cryptographically valid winner, rejected concurrent and later replays, and exact native revocation of the winning access token.</summary>
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     [Trait("CriticalDecision", "native-replay")]
-    public async Task Concurrent_valid_redemption_has_exactly_one_winner_and_replay_fails(string provider)
+    public async Task Given_ConcurrentCodeRedemption_When_OneRequestWinsAndCodeIsReplayed_Then_WinnerAccessIsRevoked(string provider)
     {
         var environment = await fixture.GetAsync(provider);
         using var browser = IssuerEnvironment.CreateBrowserClient();
         var flow = await environment.AuthorizeAsync(browser);
         var start = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        // Release both genuine exchanges together without retrying either request.
         async Task<HttpResponseMessage> Exchange()
         {
             await start.Task;
@@ -95,22 +98,22 @@ public sealed class CodeFlowTests(IssuerFixture fixture)
         using var two = responses[1];
         await CriticalDecisionAssertions.SingleWinnerAsync(responses,
             async tokens => string.IsNullOrEmpty(await environment.RelyingParty.ValidateAsync(tokens, flow, TestContext.Current.CancellationToken)),
-            "Critical decision bypass: native-replay.");
+            ReplayBypass);
         var winner = responses.Single(response => response.StatusCode == HttpStatusCode.OK);
         var loser = responses.Single(response => response.StatusCode == HttpStatusCode.BadRequest);
         using var lost = JsonDocument.Parse(await loser.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
-        Assert.Equal("invalid_grant", lost.RootElement.GetProperty("error").GetString());
+        Assert.Equal("invalid_grant", lost.RootElement.GetProperty(OpenIddictConstants.Parameters.Error).GetString());
         using var tokens = JsonDocument.Parse(await winner.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.Empty(await environment.RelyingParty.ValidateAsync(tokens.RootElement, flow, TestContext.Current.CancellationToken));
         using var replay = await environment.RelyingParty.ExchangeAsync(flow.Code, flow.Verifier, cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.BadRequest, replay.StatusCode);
         using var error = JsonDocument.Parse(await replay.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
-        Assert.Equal("invalid_grant", error.RootElement.GetProperty("error").GetString());
-        var access = new JsonWebToken(tokens.RootElement.GetProperty("access_token").GetString()!);
+        Assert.Equal("invalid_grant", error.RootElement.GetProperty(OpenIddictConstants.Parameters.Error).GetString());
+        var access = new JsonWebToken(tokens.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!);
         await using var scope = environment.Services.CreateAsyncScope();
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictTokenManager>();
-        var persisted = await manager.FindByIdAsync(access.GetClaim("oi_tkn_id").Value, TestContext.Current.CancellationToken);
+        var persisted = await manager.FindByIdAsync(access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value, TestContext.Current.CancellationToken);
         Assert.NotNull(persisted);
-        Assert.True(await manager.HasStatusAsync(persisted, OpenIddictConstants.Statuses.Revoked, TestContext.Current.CancellationToken));
+        await NativeReplayEvidence.RequireRevokedAsync(manager, persisted, lost.RootElement, error.RootElement);
     }
 }

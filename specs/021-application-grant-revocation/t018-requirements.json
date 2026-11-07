@@ -1,0 +1,1938 @@
+{
+  "schemaVersion": 1,
+  "scope": "Representative requirement-to-runtime-evidence map, reconciled against CI545 at the stated source; exhaustive reports/coverage/mutations are recorded in t018-evidence.json.",
+  "sourceCommit": "2343f2bb10740444eb55d231f6861879dd033495",
+  "sourceWorktree": "Committed source at the accepted CI545 head",
+  "inputs": [
+    {
+      "path": "eng/administrator-test-matrix.json",
+      "sha256": "6c8704e671cb9f9558bf7f43f14502c3ed93733ec171b42374e6b478421bbeff"
+    },
+    {
+      "path": "eng/persistence-test-matrix.json",
+      "sha256": "2ba20b19022e35cc5e7f483cdcf85bc35e58ac6edd2f91b8449c870ecf2c1e50"
+    },
+    {
+      "path": "eng/test-matrix.json",
+      "sha256": "1218f8862669354abbf18d56cf9633e9e959cf4eb10bb6fc35b42b69be5a1dfd"
+    },
+    {
+      "path": "eng/admin-ui/grant-test-identities.json",
+      "sha256": "437c27a5d12148e8b8a0d3aefa3a9dc2997c4ad85774506b6d4ca75786e66c47"
+    },
+    {
+      "path": "/workspace/grant-core-discovery.json",
+      "sha256": "c3e351251c5abf8a02362340c89199f036409dd22285f66507b20ff09aa50c5c",
+      "scope": "Historical authoring input only; superseded for runtime identities by fresh T018 Core discovery."
+    },
+    {
+      "path": "specs/021-application-grant-revocation/spec.md",
+      "sha256": "55495601e6a72c69396ef8df35581aa1cfde65a8f07fddef8d39630bda4974d3"
+    },
+    {
+      "path": "specs/021-application-grant-revocation/tasks.md",
+      "sha256": "d3143f8d9478af796cd1d25215f703ee347ac3c0492fdcd8384bec7132df8415",
+      "authoredSha256": "61042029de3e006b8fb42ee233ab614625c1bbcadf411b5d103ece9e495a5bdc",
+      "rebindReason": "Only appended T018 coverage correction evidence; task identities and requirements unchanged."
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReplayScopeTests.cs",
+      "sha256": "194becfe07d760913d051b9e451e2b90b3397e2ac1ab2c7d2ad87033f06b8352"
+    },
+    {
+      "path": "tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/GrantReplayEvidence.cs",
+      "sha256": "6ccf323409be9414e30f7a5a3b507a5f16e647306f9b356b65766de07a0cc149"
+    },
+    {
+      "path": "/workspace/attachments/09041d05-b630-4f04-9e96-2a8ba90789ac/grant531-review-foundation-PostgreSql-apphost-localdemo.zip",
+      "sha256": "741b4f00c6ef8a28ef56ddee3ffe094a1e667bbefcf73ca82e6fde5091fb448b",
+      "purpose": "Historical native portable identity provenance only; no current runtime acceptance."
+    },
+    {
+      "path": "/workspace/attachments/bed09fd9-078a-4481-a6d0-ad9fc3539c1d/grant531-review-foundation-SqlServer-apphost-localdemo.zip",
+      "sha256": "8795329564e7465cbc8c3c57e7275dfa1fb2e2f05892bdbb0ee74043cc4a308d",
+      "purpose": "Historical native portable identity provenance only; no current runtime acceptance."
+    },
+    {
+      "path": "tests/core/IdentityPlatform.Core.Tests/Features/ApplicationGrants/GrantRevocationTests.cs",
+      "sha256": "56e0b16b3f44165c16081907f171bdb15cc297c22dfe24c2fe5935faea2a00c6"
+    },
+    {
+      "path": "/workspace/grant-t018-discovery-Core.json",
+      "sha256": "bbde2aa5b6bab38fb69bd75a918f26873e057f6c0bdf5bdfc8bf822d5b0392ac",
+      "scope": "Fresh native Core discovery used in exact CI545 report binding."
+    }
+  ],
+  "evidenceSets": {
+    "admission": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Current proof/access, explicit input and version boundaries, protected durable target identities; denied admission preserves full snapshot. GrantTargetHttpEvidence exercises additional target/profile negatives.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"PostgreSql\", permission: \"applications.read\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"PostgreSql\", permission: \"grants.revoke\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineAdministrator_When_GrantAcceptanceIsReplayedThroughBothSurfaces_Then_OneJobAndApprovalAreDurable(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"SqlServer\", permission: \"applications.read\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"SqlServer\", permission: \"grants.revoke\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineAdministrator_When_GrantAcceptanceIsReplayedThroughBothSurfaces_Then_OneJobAndApprovalAreDurable(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"PostgreSql\", permission: \"applications.read\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"PostgreSql\", permission: \"grants.revoke\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineAdministrator_When_GrantAcceptanceIsReplayedThroughBothSurfaces_Then_OneJobAndApprovalAreDurable(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"PostgreSql\", expireMfa: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"SqlServer\", permission: \"applications.read\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_AcceptedJob_When_CurrentReadPermissionIsRemoved_Then_ApiAndBrowserStatusAreForbidden(provider: \"SqlServer\", permission: \"grants.revoke\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineAdministrator_When_GrantAcceptanceIsReplayedThroughBothSurfaces_Then_OneJobAndApprovalAreDurable(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpTests.Given_GenuineSession_When_GrantInputOrProofIsInvalid_Then_NoJobIsAdmitted(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantProtectedTargetTests.Given_OrdinaryManagedTarget_When_PersistedAdministratorIdentityBindsIt_Then_GrantProtectionDeniesWithoutNameOrAuthenticationMasking(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_StagedAdmission_When_CurrentPermissionOrMfaEnds_Then_FinalObservationRollsBackAllWrites(provider: \"SqlServer\", expireMfa: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_GenuineAccess_When_RevocationPermissionIsRemoved_Then_NewAndReplayRequestsDenyWithoutChangingState(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionAuthorityTests.Given_LiveComponentAuthority_When_MfaReachesEquality_Then_AdmissionIsForbiddenButStatusStillReads(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "selection": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Independent authorization/token populations 0/8/9 and unequal families; eligible/invalid states, exact native IDs and counts, unrelated native/configuration preservation; separate re-enable.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_AcceptedJob_When_SessionRevokedAndMoreThanOneDayPasses_Then_CurrentAccountCanFinishWithoutFreshMfa(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 0, tokens: 0)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 0, tokens: 9)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 1, tokens: 9)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 8, tokens: 8)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 0)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 1)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_AcceptedJob_When_SessionRevokedAndMoreThanOneDayPasses_Then_CurrentAccountCanFinishWithoutFreshMfa(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 0, tokens: 0)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 0, tokens: 9)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 1, tokens: 9)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 8, tokens: 8)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 0)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 1)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_AcceptedJob_When_SessionRevokedAndMoreThanOneDayPasses_Then_CurrentAccountCanFinishWithoutFreshMfa(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 0, tokens: 0)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 0, tokens: 9)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 1, tokens: 9)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 8, tokens: 8)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 0)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"PostgreSql\", authorizations: 9, tokens: 1)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_AcceptedJob_When_SessionRevokedAndMoreThanOneDayPasses_Then_CurrentAccountCanFinishWithoutFreshMfa(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_DisabledApplicationWithNineGrants_When_Batched_Then_ExactNativeProgressPrecedesSeparateReenable(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantJobTests.Given_PartialJob_When_PermissionIsRemovedAndRestored_Then_OnlyExplicitContinuationResumes(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 0, tokens: 0)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 0, tokens: 9)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 1, tokens: 9)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 8, tokens: 8)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 0)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_IndependentNativeFamilies_When_Batched_Then_EachFamilyHasItsOwnBoundAndExactCompletion(provider: \"SqlServer\", authorizations: 9, tokens: 1)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSelectionTests.Given_MixedNativeStates_When_RevocationCompletes_Then_OnlyEligibleTransitionsAreCounted(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "admissionRaces": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Actual independent roots and provider lock waits; both ordered admission/reenable and managed issuance/disable outcomes, exact committed effects.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: False)": [
+          "administrator-PostgreSql-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: False, issuanceFirst: True)": [
+          "administrator-PostgreSql-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: False)": [
+          "administrator-PostgreSql-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)": [
+          "administrator-PostgreSql-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"PostgreSql\", sameKey: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"PostgreSql\", grantFirst: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: False)": [
+          "administrator-SqlServer-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: False, issuanceFirst: True)": [
+          "administrator-SqlServer-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: False)": [
+          "administrator-SqlServer-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedLifecycleRaceTests.Given_ConsumedManagedProof_When_DisableAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)": [
+          "administrator-SqlServer-managedapplications-issuance/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAdmissionRaceTests.Given_IndependentApiNodes_When_GrantAdmissionsActuallyContend_Then_OneJobAndApprovalCommit(provider: \"SqlServer\", sameKey: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLifecycleRaceTests.Given_IndependentApiNodes_When_RevocationAndReenableCommitInEitherObservedOrder_Then_OnlyTheWinnerChangesState(provider: \"SqlServer\", grantFirst: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "authority": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Deleted/disabled/locked/suspended/factor-generation/permission metadata; post-save reread rollback; actual governance/worker ordered commits; changed effective approver preserves original history.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"disabled\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"factor-disabled\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"factor-missing\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"locked\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"password-missing\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"stamp-missing\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"suspended\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"missing-lock\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"wrong-generation\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"disabled\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"factor-disabled\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"factor-missing\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"locked\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"password-missing\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"stamp-missing\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"suspended\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"missing-lock\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"wrong-generation\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"disabled\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"factor-disabled\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"factor-missing\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"locked\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"password-missing\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"stamp-missing\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"PostgreSql\", change: \"suspended\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"missing-lock\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"PostgreSql\", change: \"wrong-generation\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: False, populated: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"PostgreSql\", permission: True, populated: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"PostgreSql\", batchFirst: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"disabled\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"factor-disabled\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"factor-missing\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"locked\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"password-missing\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"stamp-missing\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantActorTests.Given_AcceptedJob_When_EffectiveAccountBecomesIneligible_Then_NativeEntriesStayValidAndWorkStops(provider: \"SqlServer\", change: \"suspended\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"missing-lock\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantMetadataTests.Given_AcceptedJob_When_CurrentActorMetadataCannotAuthorize_Then_NativeStateAndPriorApprovalSurvive(provider: \"SqlServer\", change: \"wrong-generation\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryAuthorityTests.Given_DisabledOriginalApprover_When_AnotherAdministratorContinues_Then_ImmutableHistoryAndEffectiveAuthorityRemainDistinct(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_PartiallyProcessedJob_When_ActualActorIsDeleted_Then_AuthorityStopPreservesEarlierProgress(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: False, populated: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityBoundaryTests.Given_SavedBatch_When_CurrentAuthorityChangesBeforeFinalReread_Then_AllStagedEffectsRollBackAndWorkStops(provider: \"SqlServer\", permission: True, populated: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAuthorityRaceTests.Given_IndependentWorkerAndGovernanceNodes_When_PermissionRemovalCommitsInEitherObservedOrder_Then_OnlyAuthorizedProgressPersists(provider: \"SqlServer\", batchFirst: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "atomicity": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Actual native concurrency/audit denial/cancellation and before/after commit faults; committed native IDs, progress and immutable audit history distinguish rollback from durable unknown acknowledgement.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"PostgreSql\", after: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"PostgreSql\", after: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_SameKeyRecoversExactlyOneDurableApproval(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_ActualAuditInsertDenial_When_BatchAndFailureRecordingFail_Then_OriginalQueuedStateAndNativeEntriesSurvive(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeConcurrencyFailure_When_ManagerCannotRevoke_Then_AllNativeChangesRollBackAndJobStops(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeSave_When_OwnedBatchIsCancelled_Then_NoPartialProgressOrFalseStopIsRecorded(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Approval)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Clock)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Counter)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Credential)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Revision)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: Enabled)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: MemoryOutput)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"SqlServer\", after: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"SqlServer\", after: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_SameKeyRecoversExactlyOneDurableApproval(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_ActualAuditInsertDenial_When_BatchAndFailureRecordingFail_Then_OriginalQueuedStateAndNativeEntriesSurvive(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeConcurrencyFailure_When_ManagerCannotRevoke_Then_AllNativeChangesRollBackAndJobStops(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeSave_When_OwnedBatchIsCancelled_Then_NoPartialProgressOrFalseStopIsRecorded(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Approval)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Clock)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Counter)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Credential)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Revision)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: Enabled)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: MemoryOutput)"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"PostgreSql\", after: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"PostgreSql\", after: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_SameKeyRecoversExactlyOneDurableApproval(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_ActualAuditInsertDenial_When_BatchAndFailureRecordingFail_Then_OriginalQueuedStateAndNativeEntriesSurvive(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeConcurrencyFailure_When_ManagerCannotRevoke_Then_AllNativeChangesRollBackAndJobStops(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeSave_When_OwnedBatchIsCancelled_Then_NoPartialProgressOrFalseStopIsRecorded(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Approval)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Clock)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Counter)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Credential)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"PostgreSql\", defect: Revision)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: Enabled)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"PostgreSql\", defect: MemoryOutput)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"SqlServer\", after: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AcceptedJob_When_CommitBoundaryFails_Then_OnlyActualCommittedProgressIsReconciled(provider: \"SqlServer\", after: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_SameKeyRecoversExactlyOneDurableApproval(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_ActualAuditInsertDenial_When_BatchAndFailureRecordingFail_Then_OriginalQueuedStateAndNativeEntriesSurvive(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeConcurrencyFailure_When_ManagerCannotRevoke_Then_AllNativeChangesRollBackAndJobStops(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeFailureTests.Given_NativeSave_When_OwnedBatchIsCancelled_Then_NoPartialProgressOrFalseStopIsRecorded(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Approval)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Clock)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Counter)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Credential)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_AcceptedJob_When_SaveChangesBaselineTargetOrClock_Then_AttemptRollsBackAndJobStops(provider: \"SqlServer\", defect: Revision)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: Enabled)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantSaveFailureTests.Given_DisabledTarget_When_AdmissionSaveChangesTargetOrOutput_Then_NoJobOrApprovalCommits(provider: \"SqlServer\", defect: MemoryOutput)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "worker": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Production Worker registrations in hosted WebApplication/TestServer using real provider databases; stop/start and independently hosted workers.",
+      "oracle": "Restart preserves durable partial progress; two workers actually contend and commit disjoint counted transitions. This is host lifecycle, not an OS process-kill test.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_AcceptedJob_When_WorkerRestartsAfterPartialProgress_Then_DurableRemainingWorkCompletes(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_TwoHostedWorkers_When_BothActuallyWaitOnGovernance_Then_OnlyDisjointNativeTransitionsAreCounted(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_AcceptedJob_When_WorkerRestartsAfterPartialProgress_Then_DurableRemainingWorkCompletes(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_TwoHostedWorkers_When_BothActuallyWaitOnGovernance_Then_OnlyDisjointNativeTransitionsAreCounted(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_AcceptedJob_When_WorkerRestartsAfterPartialProgress_Then_DurableRemainingWorkCompletes(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_TwoHostedWorkers_When_BothActuallyWaitOnGovernance_Then_OnlyDisjointNativeTransitionsAreCounted(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_AcceptedJob_When_WorkerRestartsAfterPartialProgress_Then_DurableRemainingWorkCompletes(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantWorkerTests.Given_TwoHostedWorkers_When_BothActuallyWaitOnGovernance_Then_OnlyDisjointNativeTransitionsAreCounted(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "recovery": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Fresh explicit continuation preserves prior approvals/progress; actual owned transaction/request deadline cancellation; actual failed native save and delayed failure recorder reconcile peer progress/new approval/success.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpRecoveryTests.Given_PermissionStoppedJob_When_FreshContinuationAndReplayCrossHttpsSurfaces_Then_OneNewApprovalResumesOriginalJob(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_OldAttemptUnderCurrentApproval_When_LaterBatchCommitted_Then_StopPreservesCommittedProgress(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_SuccessfulReconciliation_When_OldFailureArrives_Then_SuccessAndAuditRemainTerminal(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"approval\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpRecoveryTests.Given_PermissionStoppedJob_When_FreshContinuationAndReplayCrossHttpsSurfaces_Then_OneNewApprovalResumesOriginalJob(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_OldAttemptUnderCurrentApproval_When_LaterBatchCommitted_Then_StopPreservesCommittedProgress(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_SuccessfulReconciliation_When_OldFailureArrives_Then_SuccessAndAuditRemainTerminal(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"approval\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpRecoveryTests.Given_PermissionStoppedJob_When_FreshContinuationAndReplayCrossHttpsSurfaces_Then_OneNewApprovalResumesOriginalJob(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_OldAttemptUnderCurrentApproval_When_LaterBatchCommitted_Then_StopPreservesCommittedProgress(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_SuccessfulReconciliation_When_OldFailureArrives_Then_SuccessAndAuditRemainTerminal(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"approval\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"progress\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"PostgreSql\", outcome: \"success\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantHttpRecoveryTests.Given_PermissionStoppedJob_When_FreshContinuationAndReplayCrossHttpsSurfaces_Then_OneNewApprovalResumesOriginalJob(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_ExplicitContinuation_When_PreviousApprovalFailureArrives_Then_NewApprovalAndQueuedStateSurvive(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_OldAttemptUnderCurrentApproval_When_LaterBatchCommitted_Then_StopPreservesCommittedProgress(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantLateFailureTests.Given_SuccessfulReconciliation_When_OldFailureArrives_Then_SuccessAndAuditRemainTerminal(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_NativeSave_When_TransactionDeadlineElapsesWithLiveRequest_Then_OriginalChangesRollBackAndFreshStopCommits(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryDeadlineTests.Given_RealNativeContextActivation_When_OriginalRequestDeadlineElapses_Then_NoTransactionOrMutationOccursAndFreshWorkCanResume(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"approval\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"progress\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecoveryRaceTests.Given_ActualFailedBatch_When_PeerCommitsBeforeFailureRecording_Then_DurableProgressApprovalAndSuccessAreReconciled(provider: \"SqlServer\", outcome: \"success\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "replayExpiry": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Fresh real authentication after retained-key deadline avoids expired proof masking the 409; old intent conflicts and fresh intent can be admitted.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayExpiryTests.Given_RetainedKeyAtDeadline_When_SameActorAuthenticatesAgain_Then_OldIntentConflictsAndFreshIntentCanBeAccepted(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "replayScope": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Real second actor cannot recover original job; original completed job removes incomplete-job masking before second actor admission. Second disabled target and Submit/Continue actions reuse the identical UUID in separate namespaces. Exact replay leaves full ledger/native/configuration unchanged. GrantReplayEvidence verifies all grant-detail audit IDs equal the global grant-security-audit union, then each job witness; orphan detection remains intact.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "status": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Exact target latest ten, timestamp ties/provider ordering and peer exclusion; protected finite status, original authority/deadlines, no-store/ETag/Location, publication withheld after cleanup or publication limits.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"cleanup\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"deadline\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"authority\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"cleanup\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"deadline\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"authority\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"cleanup\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"deadline\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"PostgreSql\", boundary: \"authority\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"PostgreSql\", elapsed: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"cleanup\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"deadline\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantPublicationTests.Given_CommittedGrant_When_CleanupFailsOrOriginalPublicationBoundsEnd_Then_HttpsWithholdsAcceptanceAndPreservesOneJob(provider: \"SqlServer\", boundary: \"authority\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReadPublicationTests.Given_CurrentStatusRead_When_CleanupOutlivesOriginalAuthorityOrBudget_Then_NoMetadataIsPublishedOrMutated(provider: \"SqlServer\", elapsed: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantRecentStatusTests.Given_MoreThanTenJobsAndNewerPeer_When_StatusIsReadOverHttps_Then_OnlyExactTargetNewestTenArePublished(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "transport": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Real provider-backed Administrator fixture with production coordinators and independent fresh persisted-state observations; API/BFF HTTPS when named by case.",
+      "oracle": "Actual BFF routes, exact downstream contracts, CSRF and finite sanitized responses; original browser authority/deadline/generation observed without unsafe resubmission.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"continue\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"create\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"exact\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"PostgreSql\", shape: \"recent\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"continue\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"create\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"exact\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"PostgreSql\", shape: \"recent\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_DurableBrowserGenerationChanges_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalBrowserExpiryIsReached_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"continue\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"create\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"exact\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportBoundaryTests.Given_ValidApiResult_When_OriginalElapsedBudgetEnds_Then_ResultIsWithheldAndDurableWorkRemains(provider: \"SqlServer\", shape: \"recent\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"continue\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"create\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"exact\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantTransportTests.Given_GenuineGrantOperation_When_DownstreamResponsesViolateContracts_Then_OnlySanitizedFiniteResultsReachBrowser(provider: \"SqlServer\", shape: \"recent\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "nativeValidation": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "Installed OpenIddict entry handlers and real provider native entries; separate two-issuer-root genuine password/MFA/consent/code flows.",
+      "oracle": "Prevalidated same principal entry passes before actual batch and fails after; isolated handlers do not claim signed issuance. Genuine issuer case starts elapsed clock at exact batch TransactionCommitted callback, checks <=5 seconds and usable unaffected controls; target fresh flow after successful reconciliation and separate re-enable.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"PostgreSql\", authorization: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"PostgreSql\", authorization: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"SqlServer\", authorization: False)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"SqlServer\", authorization: True)",
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"PostgreSql\", authorization: False)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"PostgreSql\", authorization: True)": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"SqlServer\", authorization: False)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantNativeValidationTests.Given_ValidNativeEntry_When_ProductionGrantBatchCommits_Then_OnlyTargetEntryValidationRejects(provider: \"SqlServer\", authorization: True)": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantIssuerLifecycleTests.Given_GenuineCodesAndTwoIssuerHosts_When_TargetBatchCommits_Then_EntryDenialIsTimelyAndPeerJourneysRemainIsolated(provider: \"SqlServer\")": [
+          "administrator-SqlServer-applicationgrants/Administrator"
+        ]
+      }
+    },
+    "browser": {
+      "identitySource": "eng/administrator-test-matrix.json",
+      "topology": "BrowserHttpsFixture plus production Worker WebApplication host; real managed issuer/browser journeys. Selected independently for PostgreSql/SqlServer and Chromium/WebKit. This is not the ordinary Aspire container graph.",
+      "oracle": "Real shipped confirmation/progress/recovery UI and independent persisted native/job/approval/audit witnesses. Lost acceptance and stale continuation variants cover explicit recovery; fresh versions, permission restoration, themes/focus behavior are asserted by browser helpers.",
+      "portableNames": [
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")",
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")",
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-chromium-browserprotection/Administrator",
+          "administrator-PostgreSql-webkit-browserprotection/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-chromium-browserprotection/Administrator",
+          "administrator-PostgreSql-webkit-browserprotection/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")": [
+          "administrator-PostgreSql-chromium-browserprotection/Administrator",
+          "administrator-PostgreSql-webkit-browserprotection/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantBrowserTests.Given_GenuineManagedGrants_When_ConfirmedInBrowser_Then_WorkerCompletesWithExactVisibleAndPersistedProgress(provider: \"SqlServer\")": [
+          "administrator-SqlServer-chromium-browserprotection/Administrator",
+          "administrator-SqlServer-webkit-browserprotection/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_LostCommittedAcceptance_When_UserExplicitlyRecoversAfterPermissionRestoration_Then_SameIntentAndOneApprovalComplete(provider: \"SqlServer\")": [
+          "administrator-SqlServer-chromium-browserprotection/Administrator",
+          "administrator-SqlServer-webkit-browserprotection/Administrator"
+        ],
+        "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")": [
+          "administrator-SqlServer-chromium-browserprotection/Administrator",
+          "administrator-SqlServer-webkit-browserprotection/Administrator"
+        ]
+      }
+    },
+    "persistence": {
+      "identitySource": "eng/persistence-test-matrix.json",
+      "topology": "Real PostgreSQL and SQL Server migration/provider compatibility fixtures.",
+      "oracle": "Actual relational constraints and optimistic revisions. Real migrator twice from populated lifecycle predecessor; prior physical data fingerprints/history exact, one additive grant migration, only three empty new tables; calibrated history/policy/job corruptions reject.",
+      "portableNames": [
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"PostgreSql\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"SqlServer\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"SqlServer\")",
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"SqlServer\")"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"PostgreSql\")": [
+          "PostgreSql/Persistence"
+        ],
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"PostgreSql\")": [
+          "PostgreSql/Persistence"
+        ],
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"PostgreSql\")": [
+          "PostgreSql/Persistence"
+        ],
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"SqlServer\")": [
+          "SqlServer/Persistence"
+        ],
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"SqlServer\")": [
+          "SqlServer/Persistence"
+        ],
+        "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"SqlServer\")": [
+          "SqlServer/Persistence"
+        ]
+      }
+    },
+    "core": {
+      "identitySource": "/workspace/grant-t018-discovery-Core.json",
+      "identityProvenance": "Fresh T018 native discovery and exact CI545 report names; earlier helper referenced historical UUID fixture values. Current fixed-UUID subcases are source-bound, with unchanged methods and cardinality.",
+      "topology": "Core finite/canonical input tests.",
+      "oracle": "Strict canonical nonempty UUID; explicit finite confirmation/reason; application and continuation job versions.",
+      "portableNames": [
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_Continuation_When_JobPreconditionMissingOrAliased_Then_OnlyCanonicalVersionPasses",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"Security\", confirm: True, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"arbitrary\", confirm: True, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"configuration\", confirm: True, jobVersion: False, valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"maintenance\", confirm: True, jobVersion: False, valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security \", confirm: True, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: False, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: True, jobVersion: False, valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: True, jobVersion: True, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \" aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"00000000-0000-0000-0000-000000000000\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\", valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"aaaaaaaaaaaa4aaa8aaaaaaaaaaaaaaa\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"{aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa}\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: null, valid: False)"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "authoredPortableNames": [
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"7bc74601-f6e2-4932-92a0-a6044816c151\", valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"7BC74601-F6E2-4932-92A0-A6044816C151\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"7bc74601f6e2493292a0a6044816c151\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"{7bc74601-f6e2-4932-92a0-a6044816c151}\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \" 7bc74601-f6e2-4932-92a0-a6044816c151\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"00000000-0000-0000-0000-000000000000\", valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: null, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: True, jobVersion: False, valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"maintenance\", confirm: True, jobVersion: False, valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"configuration\", confirm: True, jobVersion: False, valid: True)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"Security\", confirm: True, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security \", confirm: True, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"arbitrary\", confirm: True, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: False, jobVersion: False, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: True, jobVersion: True, valid: False)",
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_Continuation_When_JobPreconditionMissingOrAliased_Then_OnlyCanonicalVersionPasses"
+      ],
+      "acceptedReportBindings": {
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_Continuation_When_JobPreconditionMissingOrAliased_Then_OnlyCanonicalVersionPasses": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"Security\", confirm: True, jobVersion: False, valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"arbitrary\", confirm: True, jobVersion: False, valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"configuration\", confirm: True, jobVersion: False, valid: True)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"maintenance\", confirm: True, jobVersion: False, valid: True)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security \", confirm: True, jobVersion: False, valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: False, jobVersion: False, valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: True, jobVersion: False, valid: True)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_DestructiveInput_When_SubmissionValidated_Then_OnlyExplicitFiniteIntentPasses(reason: \"security\", confirm: True, jobVersion: True, valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \" aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\", valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"00000000-0000-0000-0000-000000000000\", valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA\", valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\", valid: True)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"aaaaaaaaaaaa4aaa8aaaaaaaaaaaaaaa\", valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: \"{aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa}\", valid: False)": [
+          "unit/Core"
+        ],
+        "IdentityPlatform.Core.Tests.Features.ApplicationGrants.GrantRevocationTests.Given_RequestKeyAliases_When_Validated_Then_OnlyCanonicalNonemptyKeyPasses(value: null, valid: False)": [
+          "unit/Core"
+        ]
+      }
+    },
+    "ui": {
+      "identitySource": "eng/admin-ui/grant-test-identities.json",
+      "identityKind": "Node UI test identity, not .NET portable name",
+      "topology": "UI state/transport tests with exact immutable intent and finite observation oracles.",
+      "oracle": "No implicit mutation from polling; explicit recovery preserves UUID/versions, permission/read/deadline/cancellation rules, exact wire fields and unknown-progress handling.",
+      "identities": [
+        "Given wire aliases When validated Then UUIDs and Int64 counts remain exact",
+        "Given hostile progress When observed Then exact identity state chronology and expiry are required",
+        "Given recent jobs When observed Then bounded unique exact-expiry pages are required",
+        "Given acceptance When observed Then key target job ETag and Location must all match",
+        "Given current permission When explicitly confirmed Then one mutation carries original preconditions",
+        "Given enabled target or missing version When confirmed Then no mutation is sent",
+        "Given an incomplete job When recovery is confirmed Then only the stopped exact job can continue",
+        "Given lost acceptance When explicitly checked Then the same key and immutable intent are sent again",
+        "Given an unresolved original acceptance When recovery is denied Then original uncertainty survives",
+        "Given fresh or ambiguous intent When CSRF fails Then no send occurs and prior uncertainty is retained",
+        "Given actual read failures When checked Then permissions are hidden and raw data is never published",
+        "Given a pending request When hidden expired or disposed Then late acceptance cannot restore output",
+        "Given overlapping status reads When an older response arrives Then only the current observation is published",
+        "Given malformed acceptance When submitted Then no progress is invented and recovery stays explicit",
+        "Given generated transport When used Then routes headers cookies and single sends remain bounded",
+        "Given polling When queued progress changes Then automatic work remains read-only",
+        "Given accepted progress When polling runs Then no mutation is repeated",
+        "Given original display deadline When either timer expires Then progress and pending keys are cleared",
+        "Given terminal recovered acceptance When status is reauthorized Then continuation or a new request is actionable",
+        "Given default key generation When confirmed Then a fresh canonical UUID binds acceptance",
+        "Given an encoded opaque application When accepted Then transport and observation agree on its exact segment"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": [
+        "administrator-ui/grants.xml"
+      ]
+    },
+    "ordinaryAspire": {
+      "identitySource": "Historical run531 native AppHost LocalDemo TRX definitions (archive hashes in inputs); current planned group eng/test-matrix.json apphost_native_groups.LocalDemo.",
+      "topology": "Ordinary disposable Aspire container graph on PostgreSql/SqlServer; LocalDemoBrowser launches Chromium only.",
+      "oracle": "Actual Worker container starts after migrator and completes UI submit/progress/success/separate re-enable; full demo lifecycle/restart and navigation controls. Recovery has separate retained browser-fixture evidence, not a demonstrated ordinary-Aspire recovery run.",
+      "portableNames": [
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_RedirectChainBeyondActionBudget_When_SubmittedWithOwnedNavigation_Then_ExactDestinationCompletesWithoutResubmission(provider: \"PostgreSql\")",
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_UnavailableActionOrUnfinishedNavigation_When_SubmittedOnce_Then_OriginalDeadlinesDenyAndBothWaitersAreObserved(provider: \"PostgreSql\")",
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoRuntimeTests.Given_DisposableContainerDemo_When_RealBrowserJourneysAndRestartRun_Then_AuthorityAndLifecycleRemainBounded(provider: \"PostgreSql\")",
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_RedirectChainBeyondActionBudget_When_SubmittedWithOwnedNavigation_Then_ExactDestinationCompletesWithoutResubmission(provider: \"SqlServer\")",
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_UnavailableActionOrUnfinishedNavigation_When_SubmittedOnce_Then_OriginalDeadlinesDenyAndBothWaitersAreObserved(provider: \"SqlServer\")",
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoRuntimeTests.Given_DisposableContainerDemo_When_RealBrowserJourneysAndRestartRun_Then_AuthorityAndLifecycleRemainBounded(provider: \"SqlServer\")"
+      ],
+      "supportingSource": [
+        "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalDemoCompositionTests.cs",
+        "tests/aspire/IdentityPlatform.AppHost.Tests/Features/LocalDemoBrowser.cs"
+      ],
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "acceptedReportBindings": {
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_RedirectChainBeyondActionBudget_When_SubmittedWithOwnedNavigation_Then_ExactDestinationCompletesWithoutResubmission(provider: \"PostgreSql\")": [
+          "PostgreSql-apphost-localdemo/AppHost"
+        ],
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_UnavailableActionOrUnfinishedNavigation_When_SubmittedOnce_Then_OriginalDeadlinesDenyAndBothWaitersAreObserved(provider: \"PostgreSql\")": [
+          "PostgreSql-apphost-localdemo/AppHost"
+        ],
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoRuntimeTests.Given_DisposableContainerDemo_When_RealBrowserJourneysAndRestartRun_Then_AuthorityAndLifecycleRemainBounded(provider: \"PostgreSql\")": [
+          "PostgreSql-apphost-localdemo/AppHost"
+        ],
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_RedirectChainBeyondActionBudget_When_SubmittedWithOwnedNavigation_Then_ExactDestinationCompletesWithoutResubmission(provider: \"SqlServer\")": [
+          "SqlServer-apphost-localdemo/AppHost"
+        ],
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoNavigationTests.Given_UnavailableActionOrUnfinishedNavigation_When_SubmittedOnce_Then_OriginalDeadlinesDenyAndBothWaitersAreObserved(provider: \"SqlServer\")": [
+          "SqlServer-apphost-localdemo/AppHost"
+        ],
+        "IdentityPlatform.AppHost.Tests.Features.LocalDemo.LocalDemoRuntimeTests.Given_DisposableContainerDemo_When_RealBrowserJourneysAndRestartRun_Then_AuthorityAndLifecycleRemainBounded(provider: \"SqlServer\")": [
+          "SqlServer-apphost-localdemo/AppHost"
+        ]
+      }
+    },
+    "contracts": {
+      "identitySource": "/workspace/grant-t018-discovery-Contracts.json",
+      "topology": "Generated API and BFF OpenAPI documents from production hosts plus independent GrantContractAssertions.",
+      "supportingSource": [
+        "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/ApplicationDocumentTests.cs",
+        "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/BrowserSessionDocumentTests.cs",
+        "tests/contracts/IdentityPlatform.Api.Contracts.Tests/Features/Generation/GrantContractAssertions.cs"
+      ],
+      "oracle": "Both route collections, read permissions/mutating MFA, key/version/CSRF, accepted status/Location/no-cache, finite enum/string counts/latest10 and strict unknown-field rules.",
+      "runtimeStatus": "Accepted within the stated topology in CI545; exact report and artifact hashes in t018-evidence.json",
+      "portableNames": [
+        "IdentityPlatform.Api.Contracts.Tests.Features.Generation.ApplicationDocumentTests.Given_ApplicationCollection_When_NativeContractGenerated_Then_ExplicitSafeVersionedOperationIsDescribed",
+        "IdentityPlatform.Api.Contracts.Tests.Features.Generation.BrowserSessionDocumentTests.Given_DormantProductStatus_When_NativeContractIsGenerated_Then_OnlyMinimalVersionedMetadataIsExported"
+      ],
+      "acceptedReportBindings": {
+        "IdentityPlatform.Api.Contracts.Tests.Features.Generation.ApplicationDocumentTests.Given_ApplicationCollection_When_NativeContractGenerated_Then_ExplicitSafeVersionedOperationIsDescribed": [
+          "contracts-core/Contracts"
+        ],
+        "IdentityPlatform.Api.Contracts.Tests.Features.Generation.BrowserSessionDocumentTests.Given_DormantProductStatus_When_NativeContractIsGenerated_Then_OnlyMinimalVersionedMetadataIsExported": [
+          "contracts-core/Contracts"
+        ]
+      },
+      "additionalRetainedViewerArtifacts": [
+        "foundation-contracts-chromium",
+        "foundation-contracts-webkit"
+      ]
+    }
+  },
+  "requirements": {
+    "GR-001": {
+      "statement": "Revocation MUST be an explicit action separate from disable/re-enable, identifying the exact application, current version and bounded reason before acceptance.",
+      "tasks": [
+        "T002",
+        "T005",
+        "T006",
+        "T008",
+        "T010",
+        "T011"
+      ],
+      "evidenceSets": [
+        "core",
+        "admission",
+        "selection",
+        "ui",
+        "contracts"
+      ]
+    },
+    "GR-002": {
+      "statement": "Acceptance and explicit continuation MUST require current account eligibility, current `grants.revoke` and fresh MFA. No other application permission implies revocation.",
+      "tasks": [
+        "T005",
+        "T006",
+        "T008",
+        "T010",
+        "T012",
+        "T015"
+      ],
+      "evidenceSets": [
+        "admission",
+        "authority",
+        "recovery",
+        "transport"
+      ]
+    },
+    "GR-003": {
+      "statement": "The system MUST protect administrator/pilot and unmanaged applications by durable identity as well as reserved names; expired credentials alone MUST NOT exclude cleanup.",
+      "tasks": [
+        "T005",
+        "T006"
+      ],
+      "evidenceSets": [
+        "admission",
+        "selection"
+      ]
+    },
+    "GR-004": {
+      "statement": "Submission MUST require an already disabled application. It MUST remain disabled while any revocation job is incomplete, including stopped/failed work. Only successful reconciliation permits a separate explicit re-enable; completion MUST NOT automatically enable it. No submission implicitly exercises disable permission.",
+      "tasks": [
+        "T006",
+        "T007",
+        "T009",
+        "T011"
+      ],
+      "evidenceSets": [
+        "selection",
+        "admissionRaces",
+        "browser",
+        "ordinaryAspire"
+      ]
+    },
+    "GR-005": {
+      "statement": "The selected scope MUST include eligible stored authorizations and tokens independently, including tokens without an authorization link. Already invalid records MUST NOT become valid. Other applications and target credentials/configuration are preserved.",
+      "tasks": [
+        "T003",
+        "T004",
+        "T005",
+        "T007"
+      ],
+      "evidenceSets": [
+        "selection",
+        "persistence",
+        "nativeValidation"
+      ]
+    },
+    "GR-006": {
+      "statement": "Acceptance MUST persist immutable intent, approving actor, reason, target, scope, time and correlation, returning a durable job reference and protected status location. Recorded approval MUST NOT retain or replay sign-in credentials or bearer tokens.",
+      "tasks": [
+        "T003",
+        "T006",
+        "T008",
+        "T010",
+        "T015"
+      ],
+      "evidenceSets": [
+        "admission",
+        "atomicity",
+        "replayScope",
+        "recovery",
+        "status",
+        "persistence"
+      ]
+    },
+    "GR-007": {
+      "statement": "Accepted work MUST continue after sign-out or original MFA expiry while rechecking current account eligibility and actual revocation permission for every batch. The actor of the currently effective acceptance/continuation approval is checked; earlier approvers remain immutable history. Concurrent authority changes and commits MUST have a proved serial order.",
+      "tasks": [
+        "T007",
+        "T012",
+        "T013",
+        "T015"
+      ],
+      "evidenceSets": [
+        "selection",
+        "authority",
+        "worker",
+        "recovery"
+      ]
+    },
+    "GR-008": {
+      "statement": "Each bounded batch MUST commit native changes, exact progress and its audit together. A failed batch MUST NOT erase or misreport earlier committed progress.",
+      "tasks": [
+        "T003",
+        "T005",
+        "T007",
+        "T015"
+      ],
+      "evidenceSets": [
+        "selection",
+        "atomicity",
+        "authority",
+        "recovery",
+        "replayScope"
+      ]
+    },
+    "GR-009": {
+      "statement": "Restart and competing workers MUST preserve exactly accounted committed progress. Unknown commit outcomes MUST be reconciled against durable state before further work.",
+      "tasks": [
+        "T007",
+        "T013",
+        "T015"
+      ],
+      "evidenceSets": [
+        "worker",
+        "atomicity",
+        "recovery"
+      ]
+    },
+    "GR-010": {
+      "statement": "Repeated identical submissions MUST recover the same accepted operation within the documented idempotency window, scoped to actor, action and exact target. Duplicate recovery MUST recheck current account/access and MUST NOT disclose another actor's job. Reuse for different intent MUST conflict. Submission retries MUST NOT create duplicate work or duplicate acceptance audit records.",
+      "tasks": [
+        "T006",
+        "T008",
+        "T015",
+        "T016"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "replayScope",
+        "replayExpiry",
+        "atomicity",
+        "recovery",
+        "browser"
+      ]
+    },
+    "GR-011": {
+      "statement": "Status MUST show committed authorization/token counts, pending/completed/stopped state and bounded safe errors. Unknown totals MUST NOT be shown as exact percentages. Reads MUST require current `applications.read` and `grants.revoke`, not identifier possession.",
+      "tasks": [
+        "T008",
+        "T010",
+        "T011",
+        "T016"
+      ],
+      "evidenceSets": [
+        "admission",
+        "status",
+        "transport",
+        "ui",
+        "contracts",
+        "browser"
+      ]
+    },
+    "GR-012": {
+      "statement": "Durably stopped authority-denied or failed work MUST require explicit fresh confirmation to continue its fixed remaining scope; no silent revival after authority restoration. Recovery MUST preserve approval history, completed batches and target restrictions. Process restart alone is not an authority failure and may resume work still eligible under GR-007. If storage prevents recording a stop, report unavailable/unknown rather than claiming it stopped. Late failure recording stops incomplete work under the same approval even when progress advanced, but never overwrites a later approval or terminal success.",
+      "tasks": [
+        "T007",
+        "T012",
+        "T013",
+        "T015",
+        "T016"
+      ],
+      "evidenceSets": [
+        "authority",
+        "selection",
+        "worker",
+        "atomicity",
+        "recovery",
+        "browser",
+        "ui"
+      ]
+    },
+    "GR-013": {
+      "statement": "The UI MUST distinguish acceptance from completion and explain that revoking stored authority cannot erase offline tokens or sessions owned by other applications.",
+      "tasks": [
+        "T010",
+        "T011",
+        "T016"
+      ],
+      "evidenceSets": [
+        "ui",
+        "browser",
+        "contracts"
+      ]
+    },
+    "GR-014": {
+      "statement": "Committed-entry revocation enforcement MUST meet the existing five-second platform boundary requirement where that entry is validated. This does not promise whole-job completion within five seconds or invent a supported resource audience.",
+      "tasks": [
+        "T007",
+        "T009",
+        "T014"
+      ],
+      "evidenceSets": [
+        "nativeValidation",
+        "admissionRaces"
+      ]
+    },
+    "GR-015": {
+      "statement": "The existing local-demo entry point MUST support the complete action/status journey. Keyboard, focus, light/dark and retained browser behavior remain required.",
+      "tasks": [
+        "T011",
+        "T013",
+        "T016",
+        "T017"
+      ],
+      "evidenceSets": [
+        "ordinaryAspire",
+        "browser",
+        "ui"
+      ]
+    },
+    "SC-001": {
+      "statement": "Every accepted operation has a recoverable reference; every duplicate matching submission by the same currently authorized actor in the documented window returns that same operation, with no cross-actor disclosure.",
+      "tasks": [
+        "T006",
+        "T008",
+        "T010",
+        "T015",
+        "T016"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "replayScope",
+        "replayExpiry",
+        "atomicity",
+        "recovery",
+        "browser"
+      ]
+    },
+    "SC-002": {
+      "statement": "At completion, 100% of eligible records in the fixed scope are revoked; zero unrelated records, credentials or application configuration fields are changed.",
+      "tasks": [
+        "T005",
+        "T007",
+        "T014",
+        "T017"
+      ],
+      "evidenceSets": [
+        "selection",
+        "nativeValidation",
+        "browser",
+        "ordinaryAspire"
+      ]
+    },
+    "SC-003": {
+      "statement": "Sign-out and original MFA expiry do not interrupt eligible accepted work; account/permission loss prevents the next batch after that change takes effect.",
+      "tasks": [
+        "T007",
+        "T012",
+        "T013",
+        "T015"
+      ],
+      "evidenceSets": [
+        "selection",
+        "authority",
+        "worker",
+        "recovery"
+      ]
+    },
+    "SC-004": {
+      "statement": "Across injected failures and restart scenarios, reported counts match independently observed committed changes, with zero uncommitted successes reported.",
+      "tasks": [
+        "T005",
+        "T007",
+        "T013",
+        "T015",
+        "T016"
+      ],
+      "evidenceSets": [
+        "atomicity",
+        "worker",
+        "recovery",
+        "authority",
+        "browser"
+      ]
+    },
+    "SC-005": {
+      "statement": "Relevant platform validation rejects committed revoked entries within five seconds, measured from batch commit, while unaffected control entries remain usable.",
+      "tasks": [
+        "T007",
+        "T014"
+      ],
+      "evidenceSets": [
+        "nativeValidation"
+      ]
+    },
+    "SC-006": {
+      "statement": "The local demonstration completes submission, progress, recovery and result journeys through the ordinary application UI without scripts or manual database changes.",
+      "tasks": [
+        "T011",
+        "T013",
+        "T016",
+        "T017"
+      ],
+      "evidenceSets": [
+        "ordinaryAspire",
+        "browser",
+        "ui"
+      ]
+    }
+  },
+  "tasks": {
+    "T001": {
+      "requirements": [
+        "GR-001",
+        "GR-002",
+        "GR-003",
+        "GR-004",
+        "GR-005",
+        "GR-006",
+        "GR-007",
+        "GR-008",
+        "GR-009",
+        "GR-010",
+        "GR-011",
+        "GR-012",
+        "GR-013",
+        "GR-014",
+        "GR-015",
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006"
+      ],
+      "evidenceSets": [],
+      "documentaryBasis": [
+        "docs/approval.md",
+        "specs/021-application-grant-revocation/spec.md",
+        "specs/021-application-grant-revocation/plan.md",
+        "specs/021-application-grant-revocation/research.md",
+        "specs/021-application-grant-revocation/data-model.md",
+        "specs/021-application-grant-revocation/contracts/revocation.md"
+      ],
+      "limit": "Design authorization/review is documentary; test identities alone cannot establish it."
+    },
+    "T002": {
+      "requirements": [
+        "GR-001"
+      ],
+      "evidenceSets": [
+        "admission",
+        "contracts",
+        "core",
+        "selection",
+        "ui"
+      ]
+    },
+    "T003": {
+      "requirements": [
+        "GR-005",
+        "GR-006",
+        "GR-008"
+      ],
+      "evidenceSets": [
+        "admission",
+        "atomicity",
+        "authority",
+        "nativeValidation",
+        "persistence",
+        "recovery",
+        "replayScope",
+        "selection",
+        "status"
+      ]
+    },
+    "T004": {
+      "requirements": [
+        "GR-005"
+      ],
+      "evidenceSets": [
+        "nativeValidation",
+        "persistence",
+        "selection"
+      ]
+    },
+    "T005": {
+      "requirements": [
+        "GR-001",
+        "GR-002",
+        "GR-003",
+        "GR-005",
+        "GR-008",
+        "SC-002",
+        "SC-004"
+      ],
+      "evidenceSets": [
+        "admission",
+        "atomicity",
+        "authority",
+        "browser",
+        "contracts",
+        "core",
+        "nativeValidation",
+        "ordinaryAspire",
+        "persistence",
+        "recovery",
+        "replayScope",
+        "selection",
+        "transport",
+        "ui",
+        "worker"
+      ]
+    },
+    "T006": {
+      "requirements": [
+        "GR-001",
+        "GR-002",
+        "GR-003",
+        "GR-004",
+        "GR-006",
+        "GR-010",
+        "SC-001"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "atomicity",
+        "authority",
+        "browser",
+        "contracts",
+        "core",
+        "ordinaryAspire",
+        "persistence",
+        "recovery",
+        "replayExpiry",
+        "replayScope",
+        "selection",
+        "status",
+        "transport",
+        "ui"
+      ]
+    },
+    "T007": {
+      "requirements": [
+        "GR-004",
+        "GR-005",
+        "GR-007",
+        "GR-008",
+        "GR-009",
+        "GR-012",
+        "GR-014",
+        "SC-002",
+        "SC-003",
+        "SC-004",
+        "SC-005"
+      ],
+      "evidenceSets": [
+        "admissionRaces",
+        "atomicity",
+        "authority",
+        "browser",
+        "nativeValidation",
+        "ordinaryAspire",
+        "persistence",
+        "recovery",
+        "replayScope",
+        "selection",
+        "ui",
+        "worker"
+      ]
+    },
+    "T008": {
+      "requirements": [
+        "GR-001",
+        "GR-002",
+        "GR-006",
+        "GR-010",
+        "GR-011",
+        "SC-001"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "atomicity",
+        "authority",
+        "browser",
+        "contracts",
+        "core",
+        "persistence",
+        "recovery",
+        "replayExpiry",
+        "replayScope",
+        "selection",
+        "status",
+        "transport",
+        "ui"
+      ]
+    },
+    "T009": {
+      "requirements": [
+        "GR-004",
+        "GR-014"
+      ],
+      "evidenceSets": [
+        "admissionRaces",
+        "browser",
+        "nativeValidation",
+        "ordinaryAspire",
+        "selection"
+      ]
+    },
+    "T010": {
+      "requirements": [
+        "GR-001",
+        "GR-002",
+        "GR-006",
+        "GR-011",
+        "GR-013",
+        "SC-001"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "atomicity",
+        "authority",
+        "browser",
+        "contracts",
+        "core",
+        "persistence",
+        "recovery",
+        "replayExpiry",
+        "replayScope",
+        "selection",
+        "status",
+        "transport",
+        "ui"
+      ]
+    },
+    "T011": {
+      "requirements": [
+        "GR-001",
+        "GR-004",
+        "GR-011",
+        "GR-013",
+        "GR-015",
+        "SC-006"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "browser",
+        "contracts",
+        "core",
+        "ordinaryAspire",
+        "selection",
+        "status",
+        "transport",
+        "ui"
+      ]
+    },
+    "T012": {
+      "requirements": [
+        "GR-002",
+        "GR-007",
+        "GR-012",
+        "SC-003"
+      ],
+      "evidenceSets": [
+        "admission",
+        "atomicity",
+        "authority",
+        "browser",
+        "recovery",
+        "selection",
+        "transport",
+        "ui",
+        "worker"
+      ]
+    },
+    "T013": {
+      "requirements": [
+        "GR-007",
+        "GR-009",
+        "GR-012",
+        "GR-015",
+        "SC-003",
+        "SC-004",
+        "SC-006"
+      ],
+      "evidenceSets": [
+        "atomicity",
+        "authority",
+        "browser",
+        "ordinaryAspire",
+        "recovery",
+        "selection",
+        "ui",
+        "worker"
+      ]
+    },
+    "T014": {
+      "requirements": [
+        "GR-014",
+        "SC-002",
+        "SC-005"
+      ],
+      "evidenceSets": [
+        "admissionRaces",
+        "browser",
+        "nativeValidation",
+        "ordinaryAspire",
+        "selection"
+      ]
+    },
+    "T015": {
+      "requirements": [
+        "GR-002",
+        "GR-006",
+        "GR-007",
+        "GR-008",
+        "GR-009",
+        "GR-010",
+        "GR-012",
+        "SC-001",
+        "SC-003",
+        "SC-004"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "atomicity",
+        "authority",
+        "browser",
+        "persistence",
+        "recovery",
+        "replayExpiry",
+        "replayScope",
+        "selection",
+        "status",
+        "transport",
+        "ui",
+        "worker"
+      ]
+    },
+    "T016": {
+      "requirements": [
+        "GR-010",
+        "GR-011",
+        "GR-012",
+        "GR-013",
+        "GR-015",
+        "SC-001",
+        "SC-004",
+        "SC-006"
+      ],
+      "evidenceSets": [
+        "admission",
+        "admissionRaces",
+        "atomicity",
+        "authority",
+        "browser",
+        "contracts",
+        "ordinaryAspire",
+        "recovery",
+        "replayExpiry",
+        "replayScope",
+        "selection",
+        "status",
+        "transport",
+        "ui",
+        "worker"
+      ]
+    },
+    "T017": {
+      "requirements": [
+        "GR-015",
+        "SC-002",
+        "SC-006"
+      ],
+      "evidenceSets": [
+        "browser",
+        "nativeValidation",
+        "ordinaryAspire",
+        "selection",
+        "ui"
+      ]
+    }
+  },
+  "limits": [
+    "Ordinary Aspire native demo uses Chromium on both providers. Chromium/WebKit recovery cells use BrowserHttpsFixture plus production Worker host, not the ordinary Aspire container graph. SC-006 combines these scopes and must not be stated as ordinary-Aspire recovery proven on all four cells.",
+    "Worker restart tests exercise host lifecycle and durable state; do not describe them as killed-OS-process recovery.",
+    "The isolated native handler cases use a prevalidated synthetic principal. Genuine signed issuer journeys and measured committed-entry enforcement are separate GrantIssuerLifecycleTests evidence.",
+    "Initial-replay/late-issuance window remains unresolved; refresh disabled. Historical manual, Firefox, A-009, vendor, production and public-release gates are unchanged.",
+    "This representative map complements the exhaustive t018-evidence.json ledger. Historical input files remain provenance, not substituted current-run evidence."
+  ],
+  "authoredAgainst": "09654e2bff5524262d3064e51e9d405c91515fed"
+}

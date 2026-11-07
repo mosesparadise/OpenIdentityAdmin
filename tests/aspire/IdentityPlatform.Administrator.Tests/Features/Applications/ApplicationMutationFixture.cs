@@ -33,7 +33,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     internal CancellationToken Token { get; } = TestContext.Current.CancellationToken;
 
     /// <summary>Owns only the existing real provider/journey fixture and an independent API root without issuer private keys or factor codecs.</summary>
-    internal static async Task<ApplicationMutationFixture> CreateAsync(BootstrapFixture fixture, string provider, SaveChangesInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+    internal static async Task<ApplicationMutationFixture> CreateAsync(BootstrapFixture fixture, string provider, IInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
     {
         var material = new NativeAssertionMaterial(browser: true);
         AdministratorProtocolScenario? scenario = null;
@@ -43,7 +43,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
             scenario = await AdministratorProtocolScenario.CreateAsync(fixture, provider, material.Policy);
             api = BuildApi(scenario, material, provider, fault, cleanup);
             var result = new ApplicationMutationFixture(material, scenario, api);
-            await result.SeedNativeAsync();
+            result.Identity = await result.NativeIdentityAsync(scenario.Account.ActorId, scenario.Account.Grant.SessionId);
             return result;
         }
         catch
@@ -62,7 +62,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
     }
 
     /// <summary>Creates native lifecycle records through managers, explicitly identifying this seam as component setup rather than a signed token acceptance test.</summary>
-    private async Task SeedNativeAsync()
+    internal async Task<ApiIdentity> NativeIdentityAsync(string actor, string session)
     {
         await using var scope = Scope();
         var services = scope.ServiceProvider;
@@ -72,7 +72,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
         var authorization = await authorizations.CreateAsync(new OpenIddictAuthorizationDescriptor
         {
             ApplicationId = profile.ApplicationId,
-            Subject = scenario.Account.ActorId,
+            Subject = actor,
             Status = OpenIddictConstants.Statuses.Valid,
             Type = OpenIddictConstants.AuthorizationTypes.Permanent
         }, Token);
@@ -83,21 +83,22 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
         {
             ApplicationId = profile.ApplicationId,
             AuthorizationId = authorizationId,
-            Subject = scenario.Account.ActorId,
+            Subject = actor,
             Type = OpenIddictConstants.TokenTypeIdentifiers.AccessToken,
             Status = OpenIddictConstants.Statuses.Valid,
             CreationDate = Clock.Now.UtcDateTime,
             ExpirationDate = expiry.UtcDateTime
         }, Token);
-        Identity = new(scenario.Account.ActorId, scenario.Account.Grant.SessionId, (await tokens.GetIdAsync(token, Token))!, authorizationId, expiry);
+        return new(actor, session, (await tokens.GetIdAsync(token, Token))!, authorizationId, expiry);
     }
 
     /// <summary>Builds an independent API service root sharing only the actual database and immutable identity profile, without reseeding authority.</summary>
-    internal ServiceProvider Peer(string provider) => BuildApi(scenario, material, provider);
+    internal ServiceProvider Peer(string provider, IInterceptor? fault = null, Action<IServiceCollection>? configure = null) =>
+        BuildApi(scenario, material, provider, fault, configure: configure);
 
     /// <summary>Uses identical production registrations for every independent root; test faults remain scoped to the requested node.</summary>
     private static ServiceProvider BuildApi(AdministratorProtocolScenario scenario, NativeAssertionMaterial material, string provider,
-        SaveChangesInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null)
+        IInterceptor? fault = null, ApplicationMutationCleanupFault? cleanup = null, Action<IServiceCollection>? configure = null)
     {
         var services = new ServiceCollection().AddLogging(logging => logging.ClearProviders())
             .AddIdentityPersistence(DatabaseProviderParser.Parse(provider), scenario.Account.Journey.Lease.RuntimeConnection)
@@ -107,6 +108,7 @@ internal sealed class ApplicationMutationFixture(NativeAssertionMaterial materia
             services.AddDbContext<PlatformDbContext>((_, options) => options.AddInterceptors(fault));
         }
         cleanup?.Configure(services);
+        configure?.Invoke(services);
         return services.BuildServiceProvider(validateScopes: true);
     }
 
