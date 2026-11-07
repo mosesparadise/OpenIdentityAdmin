@@ -3644,36 +3644,6 @@
       "Finding": {
         "Rule": "CQ002",
         "Path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/KeyRotation/Activation/GenerationGuardTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation.GenerationGuardTests.LateIdentityFailureAsync(IssuerEnvironment)",
-        "Fingerprint": "163C491613AE3C05E84AE6DC09488AF3DBCC075ACB419E5E5DDAFADD4471E200"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/KeyRotation/Activation/GenerationGuardTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation.GenerationGuardTests.LateIdentityFailureAsync(IssuerEnvironment)",
-        "Fingerprint": "163C491613AE3C05E84AE6DC09488AF3DBCC075ACB419E5E5DDAFADD4471E200"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/KeyRotation/Activation/GenerationGuardTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation.GenerationGuardTests.LateIdentityFailureAsync(IssuerEnvironment)",
-        "Fingerprint": "163C491613AE3C05E84AE6DC09488AF3DBCC075ACB419E5E5DDAFADD4471E200"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/KeyRotation/Activation/GenerationGuardTests.cs",
         "Symbol": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.KeyRotation.Activation.GenerationGuardTests.RequestOverrideAsync(KeyRotationEnvironment)",
         "Fingerprint": "B6406238841C9EBB5B12AA0F10EC5D342D7B29706AB8CCD8557FA0418591116D"
       },
@@ -10116,46 +10086,6 @@
         "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/OperationsAcceptanceTests.cs",
         "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Native_issuance_failure_keeps_code_redemption_and_real_process_logs_secret_free(string)",
         "Fingerprint": "3745A03380CE590426A9BCB0BD183DB45C57300C31D531AA438CB9FDD9782D52"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ001",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/OperationsAcceptanceTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(string,bool)",
-        "Fingerprint": "3C6405D1C78EA78A83C8E71EFDC310BE247CD1C5CFD77AD7F6BCAF70064B4D17"
-      },
-      "Task": "T013",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ002",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/OperationsAcceptanceTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(string,bool)",
-        "Fingerprint": "3C6405D1C78EA78A83C8E71EFDC310BE247CD1C5CFD77AD7F6BCAF70064B4D17"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ004",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/OperationsAcceptanceTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(string,bool)",
-        "Fingerprint": "3C6405D1C78EA78A83C8E71EFDC310BE247CD1C5CFD77AD7F6BCAF70064B4D17"
-      },
-      "Task": "T015",
-      "Owner": "Implementation lead"
-    },
-    {
-      "Finding": {
-        "Rule": "CQ006",
-        "Path": "tests/aspire/IdentityPlatform.Issuer.Tests/Features/Protocol/OperationsAcceptanceTests.cs",
-        "Symbol": "IdentityPlatform.Issuer.Tests.Features.Protocol.OperationsAcceptanceTests.Actual_database_contention_is_bounded_and_client_cancellation_drains_native_work(string,bool)",
-        "Fingerprint": "3C6405D1C78EA78A83C8E71EFDC310BE247CD1C5CFD77AD7F6BCAF70064B4D17"
       },
       "Task": "T015",
       "Owner": "Implementation lead"

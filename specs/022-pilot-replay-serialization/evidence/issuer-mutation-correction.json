@@ -1,0 +1,22 @@
+{
+  "job": "Critical mutations PostgreSql",
+  "suite": "issuer",
+  "provider": "PostgreSql",
+  "artifact": "local-issuer-PostgreSql",
+  "report": "evidence.json",
+  "sha256": "6690ed23a1492946e6a94fe8c4a9a60f6897cfcf2a2a351462774c6e01898022",
+  "kills": 7,
+  "baselinePassed": 7,
+  "restoredPassed": 7,
+  "nativeIdentityBound": true,
+  "scope": "Local exact-head receipt validation only; not clean hosted full-run acceptance",
+  "head": "413a3d40a96da6b1d84335e5a7c8732a3c45aed8",
+  "receiptPath": "/workspace/pilot-replay-mutation-checkout/artifacts/mutations/PostgreSql/evidence.json",
+  "restoredFilesRehashed": true,
+  "logSha256": "caa36c5a8107b50197d46faeaeae5a1d120f5c8afc92edaeabc596d28b720ad2",
+  "limits": [
+    "Earlier local baseline build failure remains failed; this separate completed attempt does not erase it.",
+    "Raw mutant TRXs were ephemeral; verdicts are bounded runner receipts, source hashes, and exact discovery identities.",
+    "CI552 independently has a failed job and cannot qualify as acceptance."
+  ]
+}

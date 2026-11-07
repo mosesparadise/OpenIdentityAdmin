@@ -20,10 +20,11 @@ class LifecycleSelectionTests(unittest.TestCase):
             administrator = select_projects(matrix, provider, partition='administrator')
             self.assertFalse(administrator.keys() & (standard.keys() | lifecycle.keys()))
             self.assertEqual(complete, standard | lifecycle | administrator)
-            self.assertEqual(338, sum(standard.values()))
-            self.assertEqual({'Issuer.Lifecycle': 41}, lifecycle)
-            expected_administrator = {'PostgreSql': 1208, 'SqlServer': 1313}
-            expected_total = {'PostgreSql': 1587, 'SqlServer': 1692}
+            self.assertEqual(343, sum(standard.values()))
+            expected_lifecycle = {'PostgreSql': 43, 'SqlServer': 45}
+            self.assertEqual({'Issuer.Lifecycle': expected_lifecycle[provider]}, lifecycle)
+            expected_administrator = {'PostgreSql': 1259, 'SqlServer': 1364}
+            expected_total = {'PostgreSql': 1645, 'SqlServer': 1752}
             self.assertEqual({'Administrator': expected_administrator[provider]}, administrator)
             self.assertEqual(expected_total[provider], sum(complete.values()))
         self.assertEqual(matrix['profiles']['unit'], select_projects(matrix, 'unit'))
@@ -54,7 +55,7 @@ class LifecycleSelectionTests(unittest.TestCase):
         matrix = json.loads((Path(__file__).resolve().parents[1] / 'eng/test-matrix.json').read_text())
         self.assertEqual(matrix['projects']['Issuer.Lifecycle'], {'group': 'aspire'})
         for provider in ('PostgreSql', 'SqlServer'):
-            self.assertEqual(matrix['profiles'][provider]['Issuer.Lifecycle'], 41)
+            self.assertEqual(matrix['profiles'][provider]['Issuer.Lifecycle'], {'PostgreSql': 43, 'SqlServer': 45}[provider])
         self.assertNotIn('Issuer.Lifecycle', matrix['profiles']['unit'])
         self.assertNotIn('Issuer.Lifecycle', matrix['browser'])
 
@@ -75,7 +76,8 @@ class LifecycleSelectionTests(unittest.TestCase):
                     uid = f'{story}-{provider}-{i}'
                     tests[uid] = (uid, provider, False, 'IdentityPlatform.Issuer.Lifecycle.Tests.Features.' + story)
         for provider in ('PostgreSql', 'SqlServer'):
-            self.assertEqual([('Restart', 13), ('Distribution', 23), ('KeyRotation.Activation', 3), ('KeyRotation.Retirement', 2)], lifecycle_invocations(matrix, provider))
+            distribution_count = {'PostgreSql': 25, 'SqlServer': 27}[provider]
+            self.assertEqual([('Restart', 13), ('Distribution', distribution_count), ('KeyRotation.Activation', 3), ('KeyRotation.Retirement', 2)], lifecycle_invocations(matrix, provider))
             subsets = []
             for story in matrix['lifecycle_stories']:
                 selected = {uid: t for uid, t in tests.items() if t[1] == provider and t[3].endswith('.' + story)}

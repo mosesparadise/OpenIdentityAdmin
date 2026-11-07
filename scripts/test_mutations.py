@@ -700,6 +700,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(5, len(manifest(ROOT, "managed-applications")))
         self.assertEqual(4, len(manifest(ROOT, "application-lifecycle")))
         self.assertEqual(6, len(manifest(ROOT, "application-grants")))
+        self.assertEqual(5, len(manifest(ROOT, "pilot-replay")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 
@@ -709,7 +710,8 @@ class MutationEvidenceTests(unittest.TestCase):
         for suite, filename in (('applications', 'application-mutations.json'),
                                 ('managed-applications', 'managed-application-mutations.json'),
                                 ('application-lifecycle', 'application-lifecycle-mutations.json'),
-                                ('application-grants', 'application-grant-mutations.json')):
+                                ('application-grants', 'application-grant-mutations.json'),
+                                ('pilot-replay', 'pilot-replay-mutations.json')):
             path = ROOT / 'eng' / filename
             reviewed = json.loads(reader(path))
             for defect in ('missing', 'duplicate', 'outside', 'anchor'):
@@ -804,6 +806,42 @@ class MutationEvidenceTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "outside the permitted source boundary"):
                     manifest(ROOT, 'browser-session')
 
+
+    def test_Given_PilotMutations_When_TargetsEscapeTwoReviewedFiles_Then_ValidNeighborAnchorsRemainForbidden(self):
+        """Permit only the reviewed phase/consumption targets, never test changes or adjacent native safety fences."""
+        path = ROOT / 'eng/pilot-replay-mutations.json'
+        reader = Path.read_text
+        reviewed = json.loads(reader(path))
+        for target in (
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotStorageFence.cs',
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/PilotHttpBoundary.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/ProtocolStorage/ProtocolStorageOwner.cs',
+            'tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/PilotGateMutationTests.cs',
+        ):
+            candidate = json.loads(json.dumps(reviewed))
+            source = reader(ROOT / target)
+            anchor = next(line for line in source.splitlines() if line.strip() and source.count(line) == 1)
+            candidate['mutations'][0].update(path=target, before=anchor, after=anchor + ' // seeded boundary probe')
+            def substitute(current, *arguments, **keywords):
+                """Keep candidate anchors real so only the exact production-file boundary can reject them."""
+                return json.dumps(candidate) if current == path else reader(current, *arguments, **keywords)
+            with self.subTest(target=target), patch.object(Path, 'read_text', substitute):
+                with self.assertRaisesRegex(verifier.MutationError, 'outside the permitted source boundary'):
+                    manifest(ROOT, 'pilot-replay')
+
+    def test_Given_PilotSuite_When_Parsed_Then_AdministratorNativeProjectOwnsItsWitnesses(self):
+        """Exercise real CLI routing while blocking at manifest validation before any build, discovery or provider execution."""
+        with tempfile.TemporaryDirectory() as directory, patch.object(verifier, 'ROOT', Path(directory)), \
+                patch.object(verifier, 'PROJECT', verifier.PROJECT), patch.object(verifier.signal, 'signal'), \
+                patch.object(verifier, 'manifest', side_effect=verifier.MutationError('seeded routing stop')) as load, \
+                patch.object(verifier, 'build') as build, patch.object(verifier, 'execute') as execute, \
+                patch.object(sys, 'argv', ['verify_mutations', 'PostgreSql', '--suite', 'pilot-replay', '--disposable-checkout']):
+            with self.assertRaisesRegex(verifier.MutationError, 'seeded routing stop'):
+                verifier.main()
+            self.assertEqual('tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj', verifier.PROJECT)
+            load.assert_called_once_with(Path(directory), 'pilot-replay')
+            build.assert_not_called()
+            execute.assert_not_called()
 
     def test_Given_AdministratorMutantDiscovery_When_MetadataDiffers_Then_IdentityCatalogueCannotAcceptIt(self):
         """Bind administrator mutant discovery to the reviewed metadata before the existing UID checks."""

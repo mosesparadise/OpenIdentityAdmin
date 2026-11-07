@@ -1,5 +1,379 @@
 # Pilot replay correction evidence
 
+## Corrected SQL conformance and final candidate — 7 November 2026
+
+[Focused SQL run42398907537](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42398907537)
+at `ce3d9a441aea8b368d003c724bd9fb43d949dd23` passes27/27 with no skips or errors.
+The [source/report receipt](evidence/sql-ordering-conformance.json) binds all native
+identities and the actual witness in each ordered case. Both synthetic directions
+observe the same winner across both fixture phases and explicitly pass
+`NativeTokenReadMatched`. The ordinary primary-to-secondary case also observes that
+matched native-read conflict; the opposite ordinary direction uses `GateWait`.
+This supplies actual SQL execution of both observation paths and preserves all
+final first-replay, cryptographic, native-state, recovery and cleanup assertions.
+The deliberate extra lock belongs only to the two named conformance controls.
+
+The integrated candidate has identical `src`, `tests`, `eng` and `scripts` subtrees
+to the focused source; the isolated diagnostic workflow is absent. Required final
+acceptance remains126 jobs,120 artifacts,103 native reports/5,899 executions,
+120 demonstrated mutation kills,100 original coverage inputs,15 unchanged module
+floors,83 UI cases and44 Node contracts. Focused success and the failed-run coverage
+diagnostic do not substitute for a clean exact-head full run and independent final
+reconciliation. T008/T009 remain open and PR126 remains draft until those gates pass.
+All historical/manual/refresh/production/public-release gates remain unchanged.
+
+## CI552 and SQL ordering witness — 7 November 2026
+
+[CI552](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42394874564)
+at `413a3d40a96da6b1d84335e5a7c8732a3c45aed8` finishes with 123 successful jobs,
+two failures and one skipped job. The only failed producer is SQL Distribution:
+24/25 pass, with the secondary-to-primary pilot replay case timing out during the
+second, gate-specific observation. Final acceptance fails and coverage aggregation
+is skipped. The [failed-run receipt](evidence/ci552-failed.json) retains all126 job
+outcomes, exact merge/tree binding and the selected archive/native failure. All
+earlier response, native-error, gate-loss and mutation producer jobs now succeed;
+that does not make this a clean acceptance run.
+
+A separate [original-report coverage diagnostic](evidence/ci552-coverage-diagnostic.json)
+streams all100 original reports and finds all15 unchanged90% line/80% branch floors
+satisfied using conservative original-method branch bounds. AuthServer is closest
+at5,363/6,700 proved branches (80.0448%). Only99 after-bindings are complete: the
+failed SQL Distribution cell lacks its after-binding. This preliminary gap check
+does not replace clean full-run provenance, the skipped coverage job or acceptance;
+no merged branch-summary percentage is treated as authoritative.
+
+The [isolated diagnostic](evidence/sql-ordering-diagnostic.json) at
+`83d63db414e4b93d38184c89e842f7ada77e3f36`,
+[run42396589720](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42396589720),
+preserves the original success predicate, pinned image,25-case Distribution suite,
+coverage instrumentation and deadlines. It also fails24/25, this time in the
+primary-to-secondary direction. Its80 polls retain two distinct safe summaries:
+the replay is observed directly blocked in a native token SELECT, while the winner
+is still fixture-blocked and its current transaction owns an exclusive pilot-gate
+lock. These adjacent DMV observations do not prove the exact conflicting resource;
+no frequency or ordering of the deduplicated summaries is inferred.
+
+The corrected test keeps the gate-wait branch and adds an explicitly named native
+read witness. It requires a known replay-process session directly blocked by the
+known winner, an active native token SELECT, and a waiting S/IS lock that exactly
+matches a granted X lock owned by the winner's current transaction. Database,
+resource type/subtype, associated entity, description and partition must match and
+resolve to the native token object/index. That same transaction must also own a
+granted exclusive gate lock while the winner remains blocked by the fixture.
+This proves database ordering under a gate-owning generation, not observation of
+the replay's gate UPDATE. Successful evidence names the actual witness. The
+original two-second budget, unique waiter, durable consumption, independent token
+validation, first-replay revocation, unrelated flow, process generations and real
+drain/cleanup remain mandatory. No product behavior, isolation setting or schema
+changes. Independent architecture/test source review passes conditionally; actual
+corrected hosted execution and clean exact-head full acceptance remain required.
+
+The first [corrected focused SQL run](evidence/sql-ordering-focused.json),
+[run42397559266](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42397559266)
+at `e75c43a33bd2d589b29768aedc921dfac2f14c1f`, passes25/25 with no skips or errors.
+Both ordinary directions report `GateWait`, so this run does not establish execution
+of `NativeTokenReadMatched`. Two separate SQL observer-conformance cases retain the
+ordinary cases and explicitly require that alternative. They add a test-only native
+row lock after independently proving durable consumption; this fixture-induced lock
+must not be described as an ordinary product write or as a changed isolation policy.
+Actual conformance execution and full final-source acceptance remain required.
+
+Conformance source `22ee253719ba119f3d39d8fc5a7c0987f946d399` uses a SELECT assignment
+with `XLOCK, ROWLOCK, HOLDLOCK` on the exact code/authorization in Redeemed state,
+requiring one row and returning no result set. Phase one proves durable consumption
+before that lock is taken. Phase two must retain the original session, physical
+connection and transaction; transition and replay observation share the original
+two-second observer budget. Both holders release before actual requests join and
+drain; the trigger is removed before the second fixture table. No native values or
+product request/generation budgets change. Independent architecture/test review
+accepts this source conditionally. After formatting corrections, the local lifecycle
+build and quality checks pass. Discovery preserves all86 previous identities and
+semantic metadata and adds exactly two SQL cases:88 total,43 PostgreSQL/45 SQL,
+Distribution25/27. All seven selector controls pass. These are build/discovery
+results, not provider execution or full acceptance.
+
+The [local repaired issuer mutation receipt](evidence/issuer-mutation-correction.json)
+at `413a3d4` independently verifies seven baseline passes, seven demonstrated
+behavioral kills, seven restored passes and restored source hashes. It preserves
+the earlier local build failure and is not a substitute for hosted acceptance.
+T008/T009, PR126 delivery and all historical/manual/public-release gates remain open.
+
+## CI551 regression corrections — 7 November 2026
+
+[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126) remains draft.
+[CI551](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42390767562)
+at `0159cc26e0005284534e9fc98133b9bf433f06ce` is a failed acceptance attempt, retained
+without rerunning or relabeling it. The final run has 126 jobs: 115 succeeded,
+nine producer jobs failed, the final acceptance gate failed, and coverage was skipped.
+The [failed-attempt receipt](evidence/ci551-failed.json) binds the tested merge tree,
+all job outcomes and ten retained selected archives to their exact remote sizes and
+digests. It preserves failed native cases and both pilot mutation receipts without
+claiming acceptance or replacing the required original coverage inputs.
+Hosted SQL starts successfully with the unchanged
+pinned image. Both new pilot mutation jobs pass all five behavioral kills, so the
+local SQL startup limitation does not prevent hosted provider validation. A successful
+subset does not close T008/T009 or the required SQL cells.
+
+The broader run exposed these concrete integration issues:
+
+- The pilot boundary returned empty 503 instead of the established fixed sign-in
+  failure, independent incident header and safe event1001. It now reuses the account
+  formatter only after staged callbacks join and original HTTP features are restored.
+  The original watchdog remains active through fallback completion; cancellation,
+  expiry, already-started output or fallback failure aborts. Mixed hosting returns
+  after this boundary instead of rechecking a deliberately failed request. New pilot
+  assertions require the exact established fixed response, incident identifier and
+  absence of staged headers/cookies/redirects. The pre-existing real-process outage
+  and secret-free logging assertions remain intact.
+- The contention fixture labels SQL verbs, not native handler ownership. Its observed
+  UPDATE now belongs to the earlier conditional Valid-row acquisition. Noncancelled
+  contention therefore requires the exact infrastructure 503 for either read/update;
+  it no longer incorrectly assumes every UPDATE is native `TryRedeemAsync`. Actual
+  blocker/session drain, original budget, fresh unconsumed code, unchanged native/
+  application/audit state and fresh recovery remain required. The same four cases
+  now use `Given_ObservedNativeContention_When_RequestExpiresOrCallerCancels_Then_WorkDrainsAndFreshAuthorizationRecovers`;
+  their historical name remains in earlier evidence. Four exact obsolete quality
+  allowances were removed after splitting this touched test into documented bounded
+  helpers; no allowance was added or rebound.
+- Native signing-key generation rejection must retain its existing 500 `server_error`.
+  The pilot admits this only after generation starts and storage closes, with a live
+  original request and an actual handled native error. Its sealed JSON must contain
+  only exact scalar native error fields; credentials, duplicate fields, malformed
+  JSON, cookies and redirects are rejected. Existing400/401 and administrator-owned
+  handling remain unchanged. Twenty-two Host publication controls cover safe errors,
+  independent missing receipts and contaminated output; the existing certificate-tail
+  expiry/native-state/recovery test retains its original assertions. Its later
+  non-HTTP component probe now explicitly restores the original native redemption
+  descriptor in its isolated provider, before any dispatch, and uses the concrete
+  native dispatcher. This preserves the existing unsupported-ID-lifetime timing,
+  consumed code, exact earlier access entry and fresh HTTPS recovery evidence. It
+  does not change host options or relax the production requirement for a pilot HTTP
+  boundary. Three resolved legacy helper allowances were removed after extraction.
+- The SQL cross-process barrier executes its trigger as owner. Its observer must bind
+  `original_login_name`, which retains the authenticated runtime identity across that
+  context switch, instead of current `login_name`. Exact database/blocker/lock wait,
+  uniqueness, timing, both directions and native issuance/revocation assertions remain.
+  This is a source-supported observer correction; only the corrected hosted run can
+  establish its actual outcome.
+- Six SQL gate-loss cases timed out awaiting the contender observer signal. The
+  probe previously required a different SQL session number after `KILL`, although
+  SQL can recycle that number. It now requires a distinct nonempty physical
+  `ClientConnectionId`, context and transaction after an actual one-row gate UPDATE;
+  PostgreSQL retains its distinct process ID check. Observer assertions now fault
+  the waiting signal directly instead of becoming a later timeout. CI551 did not
+  retain the observed connection IDs, so reuse is a source-supported hypothesis,
+  not a demonstrated root cause. Actual termination, held old continuation, native
+  state and no-late-output oracles remain mandatory in the corrected SQL run.
+- The old `native-replay` descriptor-removal mutant became inert when the pilot began
+  explicitly invoking native redemption and registering its adapter. Its replacement
+  reactivates the same consumed code through the native manager within the still-held
+  generation transaction after the final Redeemed check. The existing witness still
+  emits its marker only after two independently validated 200 credential responses.
+  Identity, marker, method and kill count are unchanged; every other old mutant is
+  byte-identical. Exact old/new manifest hashes are pinned in the independent evidence
+  validator, which rejects unrelated changes. Both-provider behavioral execution is
+  required; a build failure or generic denial cannot count as a kill.
+
+[Iterative local correction reports](evidence/corrections-local.json) retain the
+passed and failed attempts without treating overlapping cases as a new acceptance
+total. The focused final key-policy case passes, including native500, consumed-code
+and fresh HTTPS recovery. The corrected solution builds without warnings; quality
+checks pass with seven obsolete allowances removed. Full Host1,874, PostgreSQL
+protocol162 and the focused operations/contention/gate-loss/publication runs are
+recorded at their actual working-tree boundaries. They do not establish SQL acceptance.
+
+The corrected source requires fresh exact-head CI, native discovery and artifact
+reconciliation. Host inventory is now 1,874 (+22), with 2,771 administrator cases and
+unchanged provider/browser partitions. Historical findings and manual/release gates
+remain open. The following candidate section records the earlier source boundary.
+
+## T008 acceptance candidate — 7 November 2026
+
+The user selected **T008, SQL Server validation, and T009** for this batch. Branch
+`132-pilot-replay-acceptance` preserves the prior handoff `2b5990d79fa89b152bf6b2c382bf70e089efb705`.
+Source `71ab8e319ab183b8af21b0405f4a2ac565a93894` adds five behavioral mutation controls,
+their real-provider witnesses, portable native inventory and mandatory hosted jobs.
+Production behavior and migrations remain the reviewed T003–T007 implementation;
+subsequent style cleanup only orders imports and removes unnecessary directives.
+
+The controls independently omit gate acquisition, roll back native consumption,
+release the gate through a savepoint while generation remains active, omit generation
+commit, and omit actual scope cleanup. Each kill marker requires an observed protocol/
+native-storage violation. Setup failures, timeouts and unrelated errors cannot count
+as kills. The cleanup witness explicitly drains all actual scopes, including its
+fresh-flow positive control. Architecture/test review accepts these source boundaries
+conditionally; actual provider execution remains required.
+
+Native discovery is now **2,771 administrator cases**, adding exactly five per provider.
+All 2,761 previous identities, metadata and relative order remain. Each provider's
+ProtocolAdmission partition has 162 cases; browser cases remain 74/provider. No
+production gate, native validation, response rule, browser deferral or coverage floor
+was relaxed. All 74 selector controls and 62 mutation-verifier controls pass; the
+five PostgreSQL baseline witnesses pass. Initial formatting-only build errors were
+corrected; the rebuilt project and code-quality gate pass without allowances.
+
+Both provider mutation jobs are mandatory in the fail-closed final acceptance gate.
+Source-derived full-run obligations are 126 jobs, 103 native reports/5,875 executions,
+120 mutation kills, 120 artifacts, 100 original coverage inputs, 15 unchanged module
+floors, 83 UI cases and 44 Node contract identities. These are required counts, not
+completed hosted evidence. [Isolated PostgreSQL mutation evidence](evidence/mutation-candidate.json)
+passes all five baseline cases, demonstrates all five intended behavioral kills,
+then passes all five restored cases with source hashes restored. Independent review
+recomputes all mutation hashes and verifies exact identities, traits and clean
+restoration. Raw mutation TRXs are intentionally ephemeral; this is receipt plus
+reviewed strict-runner validation, not independent raw-report reparsing. The savepoint
+mutation demonstrably releases exclusion on PostgreSQL; its SQL behavior remains
+unverified until the hosted run. Exact-head hosted acceptance is pending.
+
+CI551 at `0159cc26e0005284534e9fc98133b9bf433f06ce` caught a missing expected-job
+entry in `test_prepare_native_image.py`: the new pilot mutation job already prepares
+the correct pinned image, but the independent job inventory did not include it.
+The failure was reproduced locally. Adding the exact new entry preserves set,
+ordering and timeout assertions; all 22 related controls pass. The hosted run is
+retained as a failed attempt, and its other provider results do not establish full
+acceptance. The next candidate requires its own complete clean run.
+
+Provider/Aspire review found no verified local PAL configuration correction. Both
+retained HOME/workdir probes already reached the pinned sqlservr binary and failed
+creating `/.system`; neither is repeated. The unchanged pinned image and required
+SQL cells will run in the authorized hosted matrix. Local startup failure remains
+an environment limitation; it is not SQL or schema acceptance. Both-provider schema/
+transaction review is source-only until the actual required tests succeed.
+
+T008/T009 and outstanding both-provider acceptance remain open. Preserve all previous
+failed attempts, source receipts and frozen producer files. Historical findings,
+refresh activation and manual/Firefox/A-009/vendor/production/public-release gates
+remain open.
+
+
+## T005–T007 implementation checkpoint — 7 November 2026
+
+Source `6860a6b7b155d931b8d7e7757992ddceb1b428a4` is pushed on
+`131-pilot-replay-coordination`, based on branch130 handoff
+`f9da6414ac187bbfc1c0e0eb7f918edfd54da2cb`. Remote main remains PR125's planning squash
+`8f840f5a22836efd4b74ee5883ec98d04d3c6cec`; no PR, full CI, merge or production action
+was performed. Earlier sections below are historical checkpoints.
+
+Implemented and independently reviewed boundaries:
+
+- **T005:** standalone and mixed native token requests retain the original bounded
+  response capture. Initial lifecycle/replay validation commits in a fresh gate
+  phase. Generation reacquires that gate and owns every generated native entry in
+  the same context/transaction. Only a freshly bound Valid code enters a separately
+  committed native-redemption child; that child never runs replay cleanup. A
+  conditional Valid-row lock prevents native bulk revocation, which does not change
+  its concurrency token, from racing the tracked redemption update. Fresh authority
+  and original expiry are rechecked after consumption and before commit. Command,
+  connection and commit fences deny replacement contexts, reconnect/autocommit and
+  late continuation; unsafe storage attempts latch request failure. Native output
+  remains captured through callbacks, confirmed commit and actual scope disposal.
+  Pilot remains LegacyPilot; `ProtocolStorageOwner.BeginChild()` was not relaxed.
+- **T006:** real HTTPS tests cover actual INSERT rollback, commit acknowledgment loss,
+  disposal failure, real native backend termination, both competing-code and native
+  bulk-revocation continuations, caller cancellation, exact five-second generation
+  and original ten-second request deadlines, missing gate without repair, post-wait
+  account/session/application/scope/authorization restrictions, original code expiry,
+  and committed replay revocation followed by formatting/OnStarting failure. Tests
+  identify the reached native boundary and persisted result; arbitrary HTTP failure
+  is insufficient. The old permissive ordering fixture is replaced by explicit
+  historical revoked-code/valid-access state, preserving its 12 binding negatives,
+  cleanup-failure and unrelated-success controls.
+- **T007:** a disposable database-only INSERT barrier targets the exact native
+  access-token type and authorization. Each direction proves distinct live issuer
+  process generations and pinned transports, durable consumption, the real
+  holder→winner→replay database wait chain, exactly one independently verified
+  success, and every winning entry Revoked before any further replay. All actual
+  exchanges and database sessions are drained before fixture objects are dropped.
+
+The native inventory is 2,761 administrator cases: 1,328 PostgreSQL and 1,433 SQL
+Server, including the unchanged 74 browser cases per provider. HTTP counts are
+1,254/1,359 and ProtocolAdmission is 157/provider. Exactly 2,677 prior identities
+retain their metadata and relative order; two historical ordering names are
+explicitly replaced with four seeded-history identities, and 80 other cases are
+added. Host discovery is 1,852; Lifecycle is 43/provider, including Distribution 25.
+All 74 Python selection tests pass after correcting stale count expectations. No
+coverage floor, browser deferral or legacy quality allowance was expanded.
+
+### Final-source scoped verification
+
+All four clean runs below use source `6860a6b7b155d931b8d7e7757992ddceb1b428a4`;
+AuthServer and each test assembly carry that informational version. The
+[coordination receipt](evidence/coordination.json) records the complete source archive,
+DLL/PDB/report/log hashes, native discovery, actual execution IDs and case outcomes.
+Discovery and executed display-name multisets match, retaining native truncated-name
+collisions as distinct test IDs. These are scoped local results, not full CI.
+
+| Scope | Passed | Failed / skipped |
+| --- | ---: | ---: |
+| PostgreSQL administrator ProtocolAdmission | 157 | 0 / 0 |
+| Host regression suite | 1,852 | 0 / 0 |
+| PostgreSQL lifecycle Distribution | 25 | 0 / 0 |
+| PostgreSQL persistence | 29 | 0 / 0 |
+
+The 157-case run includes all 47 focused pilot cases in one clean final-source run;
+the 25-case run includes both new real two-process directions and existing distribution
+regressions. The final persistence run verifies fresh/upgrade compatibility using the
+preserved producer from `38eb41e06d40b6addbe57e3af839f912645e6dea`; all 77 files match
+its original manifest. The historical producer was not rebuilt or replaced.
+
+Two failed final-source persistence attempts remain in the receipt: concurrent test
+collections exhausted local Docker vfs storage (5 passed / 24 failed), then serial
+collections passed 28 with one failure because the frozen producer environment paths
+were unset. The final 29-case run supplies the verified paths and disables collection
+parallelism with `--parallel none --max-threads 1`; competing operations inside the
+concurrency tests remain intact. No product source changed between these runs.
+
+Exact-source serial builds pass with zero warnings/errors. The code-quality check,
+74 selection tests, instruction integrity, 345-control register integrity and source
+secret scan pass. All 345 controls remain `not_assessed`. New mutation controls,
+coverage acceptance, SQL cells and full exact-head CI remain outstanding.
+
+Independent final evidence review verifies all 2,063 passing executions, exact native
+name multisets and unique linked TRX identities, all 43 receipt file hashes, all
+2,882 source-archive blobs against the committed tree, assembly source versions and
+the 77 frozen-producer files. It accepts this bounded evidence checkpoint only;
+SQL Server, T008/T009 and broader acceptance remain open.
+
+### Evidence and review limits
+
+Initial focused PostgreSQL evidence is **45 passed / 2 failed**; the corrected
+native-bulk observer run passes exactly those two failed identities. The combined
+observations cover all 47 focused cases but are not one clean final-source run.
+The ordered two-process run passes 2/2. Retain these reports and their actual failed
+attempts; final-source broader results are recorded separately below.
+
+Initial test implementation failures were corrected without weakening acceptance:
+EF original-value metadata was replaced with a same-transaction persisted Valid
+read; bulk fixture execution now has the explicit transaction its observer requires;
+the standalone recovery observer no longer requires mixed-host-only registration;
+and the cross-process trigger now uses the pinned native full token-type URN rather
+than the short JSON response field name. The initial replay old-source failure in
+`evidence/t002-baseline.json` remains unchanged.
+
+Architecture/security review identified and resolved the Valid-read/update race and
+the accidental non-token watchdog scope. Four host controls prove ordinary routes
+keep their existing lifetime. Further independent source/test review at 6860a6b finds
+no blocking implementation/oracle issue, while explicitly retaining SQL,
+mutation/coverage and CI obligations. The final-source scoped runs above subsequently
+passed; they do not discharge those broader obligations. AI review is not external security acceptance.
+
+SQL Server remains blocked **before readiness** by `/.system` access denial,
+`LinuxDirectory.cpp:420`, errno13, exit1. The pinned image's actual non-root UID/GID
+is 10001 and `/var/opt/mssql` is writable. One workdir-only and one HOME-only startup
+probe each retained the same failure, then removed its container. No SQL queries,
+migrations, ports, image changes, root-user workaround or production operations
+were used. Neither override is justified as a repository fix. No identical startup
+attempt is reclassified as provider/schema/replay acceptance; a changed,
+evidence-based runtime condition is needed before executing the pending SQL cells.
+
+T003–T007 therefore remain unchecked for required both-provider verification.
+T008 still requires new gate/publication mutation controls, original coverage inputs,
+all unchanged regressions and exact-head full CI. T009 still requires final integrated
+review and delivery. The correction and all six historical findings remain open;
+refresh activation and Windows/manual/Firefox/A-009/vendor/production/public-release
+gates remain unchanged. Do not redo the implemented phases at the next handoff.
+
+
 ## Verified starting checkpoint — 7 November 2026
 
 Remote PR124 is merged with squash `e44667c45d103cdc3d70427577f89b77539f6f22`.
@@ -38,9 +412,9 @@ credential output. Exact terminal status and usability are separate observations
 
 ## Open acceptance
 
-All C01–C12 runtime cells, fresh/upgrade migrations, exact-source failure/correction
-proof, mutation controls and final-head implementation CI remain unexecuted for
-feature022. The initial pilot window remains open. Refresh stays disabled. All six
+Integrated C01–C12 acceptance, both-provider correction proof, mutation controls
+and final-head implementation CI remain open. The foundation evidence below is
+partial and does not close those cells. The initial pilot window remains open. Refresh stays disabled. All six
 historical findings and Windows/manual/Firefox/A-009/vendor/production/public-release
 gates remain open.
 
@@ -61,7 +435,113 @@ gates remain open.
   trailing spaces detected during staging. Spec Kit setup-plan/setup-tasks/prerequisite resolution
   succeeds for feature022; no extension hooks file exists.
 
-T001 is complete for planning. T002–T009 and every runtime acceptance cell remain
-open. The planning PR's exact-head documentation CI and merge state are its delivery
+At the planning checkpoint T001 alone was complete; the later foundation checkpoint
+below supersedes that task status. Every integrated runtime acceptance cell remains open. The planning PR's exact-head documentation CI and merge state are its delivery
 record, not implementation verification. Next: retain and run T002's baseline safety
 regression, then implement the reviewed persistence/runtime correction.
+
+## T002–T004 foundation — 7 November 2026
+
+Main is now PR125's planning squash `8f840f5a22836efd4b74ee5883ec98d04d3c6cec`.
+Implementation branch `130-pilot-replay-foundation` starts there, preserving the
+prior worktrees, feature021 evidence and frozen compatibility producer. T002 is
+complete as a regression checkpoint. T003–T004 code is implemented, but their
+both-provider verification remains open. This branch must not merge as a completed
+security correction: T005 still has to bind generation to the gate transaction.
+
+Implemented boundaries:
+
+- **T002 / C01, C08:** `InitialPilotReplayTests` pauses a genuine winning HTTPS
+  exchange after native redemption, then requires the *initial* completed replay
+  to cover all winning entries before any additional replay. The winner's public
+  token cryptography and an unrelated successful authorization are checked. Actual
+  database contention is required when a live generation gate exists; an absent
+  or already committed validation gate never counts as contention. Existing
+  `PilotReplayOrderingTests`, its 12 binding guards and cleanup-fault control remain.
+- **T003 / C09:** dedicated bounded `PilotProtocolGate`, seeded by PostgreSQL
+  `20261107135812_PilotProtocolGate` and SQL Server
+  `20261107140026_PilotProtocolGate`. No existing migration is edited. Upgrade
+  witnesses preserve every old physical value/history, including populated grant
+  jobs, approvals, progress and audit provenance. Independent catalog checks cover
+  required bounded ID, key and absence of foreign keys. Fresh least-privilege
+  acquisition works without bootstrapping a pilot; missing coordination fails
+  without runtime repair.
+- **T004 / C07, C10 foundation:** one original native validation slot in standalone
+  and mixed hosts, fresh LegacyPilot selection before manager resolution, exact
+  native/manifest binding, native token and authorization lifecycle validation,
+  existing replay cleanup and commit inside one gate transaction. Actual scope,
+  transaction and connection cleanup finishes before returning. Request
+  cancellation is retained and the original five-second phase lifetime is checked
+  after native work/commit/cleanup. `ProtocolStorageOwner.BeginChild()` is unchanged.
+  Native early redemption and generated-token storage remain unchanged until T005.
+
+### Retained baseline and local limits
+
+The complete baseline source is commit `8a724a6833b7f49ed7b8bdb38603e0f515727f0c`.
+[SHA-256 receipts](evidence/t002-baseline.json) bind its full source archive, exact
+patch, logs and native TRX reports. PostgreSQL fails **1/1 at the required safety
+oracle**, after the unrelated positive control succeeds. The fixed diagnostic is:
+“Initial pilot replay completed but a winning native token entry remains usable
+before any additional replay.” Later observer-lifecycle/deadline and safe diagnostic
+refinements preserve this oracle; the T004 foundation still demonstrates it.
+
+The first PostgreSQL attempt failed during migration because the workspace filled;
+it supplies no defect evidence. Historical artifacts and reproducible build outputs
+were moved to the separate temporary volume after byte verification, retaining their
+original paths. The corrected run above reached the actual assertion. SDK10.0.403 /
+runtime10.0.14 was restored from verified official distribution metadata; package
+locks and the repository SDK policy were unchanged. Development HTTPS trust was
+restored without disabling TLS verification.
+
+The current pinned SQL Server image downloads successfully. Both actual Aspire and
+plain Testcontainers attempts then exit1 before readiness, with native error
+`LinuxDirectory.cpp:420`, `0xC0000022`, errno13, system directory `/.system` access
+denied. This is **not** a migration, grant or replay behavior result. No root-user
+container workaround, altered image, production correction or expired diagnostic
+approval was used. SQL runtime acceptance remains unverified; repeated identical
+runs are not reported as progress.
+
+### Independent review dispositions
+
+Architecture/security review found and root fixed standalone service registration:
+OpenIddict removes a handler's service when removing its descriptor, so native
+registration must follow removal. Standalone's adapter is registered only once.
+Review also required fresh native authorization status validation in the same child.
+The old outer native check remains. Test review found and root fixed stale/disposed
+observer ownership, stop/timeout ordering, unsafe diagnostic comparisons, standalone
+fixture route composition and insufficient populated-grant/schema witnesses. The
+narrow source/test review accepts the corrected foundation; it does not establish
+SQL Server or integrated security acceptance. No production, refresh, historical
+finding, human/manual, Firefox, A-009, vendor or public-release gate is closed.
+
+The next implementation task is T005, retaining durable early consumption while
+putting generation and gate ownership in the same transaction and withholding
+publication through actual cleanup. SQL Server startup recovery and its outstanding
+foundation tests remain prerequisites to both-provider acceptance. Full CI,
+coverage/mutation and cross-process acceptance belong to the integrated correction;
+no full CI or merge is claimed for this intentionally incomplete branch.
+
+### Final local foundation checks
+
+Code checkpoint: `bcb3bd52180286021582444c6ba5ed4bba1fd0ee`.
+[Native report/source/log SHA-256 receipt](evidence/foundation.json) retains exact
+selected test identities, discovery and the complete source archive.
+
+| Check | Actual result | Scope/limit |
+| --- | --- | --- |
+| PostgreSQL persistence | **10/10 passed** | Gate fresh/populated upgrade, runtime privilege/missing row, actual contention, cancellation/expiry rollback, existing grant/lifecycle/browser-audit upgrade witnesses |
+| PostgreSQL HTTPS | **5 passed, 1 failed** | Standalone+mixed native lifecycle and revoked-authorization cases pass; old cleanup/guards/fault pass; mandatory initial race oracle remains red pending T005 |
+| Native registration | **8/8 passed** | Existing server/client consumption and owner-lock guards plus both new pilot composition cases |
+| SQL Server | **1 setup failure per harness** | Both baseline Aspire and foundation Testcontainers fail before readiness; no runtime acceptance |
+| Administrator discovery | **2,669 retained + 10 added** | Exact existing metadata unchanged; 1,287 PostgreSQL / 1,392 SQL Server identities, including browser cases |
+| Persistence discovery | **48 retained + 10 added** | 29 identities per provider; no identity replaced or omitted |
+| Host discovery | **1,848 identities** | Prior 1,846 plus two composition cases |
+| Selection controls | **30 administrator + 6 persistence passed** | Portable metadata/inventory checks also pass |
+| Build and source quality | **Passed** | Three changed native test projects build with zero warnings/errors; unchanged size/literal/XML/naming allowances; eight skill/reviewer integrity checks |
+| Assurance integrity | **345 controls unchanged, all not_assessed** | No compliance or release claim |
+
+Intermediate local compilation/style failures and the initially incorrect standalone
+fixture/duplicate service-registration assertion were corrected before these results.
+Earlier attempts remain in local logs. Full CI is intentionally deferred until T005
+and the remaining integrated tasks remove the known security regression; the branch
+is pushed for continuation without opening a PR that would launch full CI now.

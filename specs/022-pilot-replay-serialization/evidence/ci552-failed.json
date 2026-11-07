@@ -1,0 +1,860 @@
+{
+  "schema": 1,
+  "scope": "Terminal failed CI552 receipt; not integrated acceptance",
+  "sourceCommit": "413a3d40a96da6b1d84335e5a7c8732a3c45aed8",
+  "testedMerge": "f0dd4674a6e562947f4057dace2b7331ef081f76",
+  "testedTree": "99f0dd7b375fcd61003a3729f5b71361b58e2f08",
+  "run": 42394874564,
+  "attempt": 1,
+  "url": "https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42394874564",
+  "conclusion": "failure",
+  "jobCounts": {
+    "success": 123,
+    "failure": 2,
+    "skipped": 1
+  },
+  "jobs": [
+    {
+      "id": 128469985740,
+      "name": "Assurance register integrity",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128469985922,
+      "name": "Source secret checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128469985960,
+      "name": "Change scope and documentation checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028262,
+      "name": "Critical mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028277,
+      "name": "Static analysis and formatting",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028280,
+      "name": "Dependency, license and secret checks",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028283,
+      "name": "Browser matrix selection",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028298,
+      "name": "Application mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028302,
+      "name": "Administrator mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028317,
+      "name": "Application mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028320,
+      "name": "Administrator mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028325,
+      "name": "Focused WebKit contrast experiment",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028330,
+      "name": "Governance mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028344,
+      "name": "Administrator UI",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028355,
+      "name": "Browser session mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028356,
+      "name": "Browser session mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028363,
+      "name": "Managed application mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028378,
+      "name": "Administrator protocol mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028382,
+      "name": "Administrator protocol mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028391,
+      "name": "Critical mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028407,
+      "name": "Managed application mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028436,
+      "name": "Governance mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028455,
+      "name": "Pilot replay mutations PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028516,
+      "name": "Pilot replay mutations SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028866,
+      "name": "PostgreSql",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028920,
+      "name": "SqlServer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028971,
+      "name": "SqlServer-apphost-localdemo",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028991,
+      "name": "administrator-SqlServer-ceremonies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470028998,
+      "name": "administrator-SqlServer-governance-failures",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029005,
+      "name": "administrator-SqlServer-security",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029019,
+      "name": "PostgreSql-apphost-foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029028,
+      "name": "administrator-PostgreSql-governance-commands",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029042,
+      "name": "administrator-PostgreSql-managedapplications-issuance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029046,
+      "name": "administrator-PostgreSql-ceremonies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029049,
+      "name": "administrator-SqlServer-browsersessions-foundations",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029061,
+      "name": "administrator-PostgreSql-browsersessions-foundations",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029063,
+      "name": "unit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029064,
+      "name": "issuer-PostgreSql-flows",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029068,
+      "name": "administrator-SqlServer-applicationgrants",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029069,
+      "name": "administrator-SqlServer-browsersessions-product",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029070,
+      "name": "administrator-PostgreSql-bootstrap",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029074,
+      "name": "issuer-PostgreSql-boundaries",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029076,
+      "name": "administrator-PostgreSql-governance-failures",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029077,
+      "name": "administrator-PostgreSql-browsersessions-product",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029078,
+      "name": "administrator-PostgreSql-accounts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029079,
+      "name": "administrator-SqlServer-browsersessions-lifecycle",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029082,
+      "name": "administrator-PostgreSql-sessionrefresh",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029092,
+      "name": "administrator-SqlServer-sessionrefresh",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029096,
+      "name": "administrator-SqlServer-governance-commands",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029110,
+      "name": "administrator-SqlServer-bootstrap",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029115,
+      "name": "issuer-SqlServer-boundaries",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029116,
+      "name": "PostgreSql-apphost-localdemo",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029120,
+      "name": "administrator-PostgreSql-applicationgrants",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029127,
+      "name": "administrator-SqlServer-accounts",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029134,
+      "name": "administrator-PostgreSql-governance-policy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029139,
+      "name": "SqlServer-lifecycle-distribution",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128470029143,
+      "name": "PostgreSql-lifecycle-restart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029146,
+      "name": "SqlServer-apphost-bffsessions",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029147,
+      "name": "SqlServer-apphost-foundation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029164,
+      "name": "administrator-SqlServer-factors",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029167,
+      "name": "administrator-PostgreSql-factors",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029170,
+      "name": "administrator-SqlServer-managedapplications-admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029171,
+      "name": "issuer-SqlServer-flows",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029177,
+      "name": "administrator-SqlServer-managedapplications-issuance",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029178,
+      "name": "administrator-PostgreSql-recovery",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029192,
+      "name": "administrator-SqlServer-governance-policy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029195,
+      "name": "administrator-PostgreSql-security",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029196,
+      "name": "PostgreSql-apphost-bffsessions",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029204,
+      "name": "SqlServer-lifecycle-keyrotation-retirement",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029210,
+      "name": "administrator-PostgreSql-managedapplications-admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029219,
+      "name": "administrator-PostgreSql-protocoladmission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029223,
+      "name": "administrator-SqlServer-recovery",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029233,
+      "name": "PostgreSql-lifecycle-distribution",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029236,
+      "name": "administrator-PostgreSql-applications",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029239,
+      "name": "administrator-PostgreSql-browsersessions-lifecycle",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029247,
+      "name": "SqlServer-lifecycle-keyrotation-activation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029270,
+      "name": "PostgreSql-lifecycle-keyrotation-retirement",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029276,
+      "name": "SqlServer-lifecycle-restart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029282,
+      "name": "PostgreSql-lifecycle-keyrotation-activation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029311,
+      "name": "administrator-SqlServer-protocoladmission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470029364,
+      "name": "administrator-SqlServer-applications",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470064866,
+      "name": "Contracts chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470064869,
+      "name": "Contracts core",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470064934,
+      "name": "Contracts webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065259,
+      "name": "Browser administrator ApplicationEditor / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065261,
+      "name": "Browser administrator BrowserLogin / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065262,
+      "name": "Browser administrator ApplicationLifecycle / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065263,
+      "name": "Browser administrator Security / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065264,
+      "name": "Browser administrator BrowserSessions / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065267,
+      "name": "Browser administrator Accounts / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065278,
+      "name": "Browser administrator ApplicationEditor / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065281,
+      "name": "Browser administrator BrowserSessions / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065290,
+      "name": "Browser administrator BrowserProtection / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065292,
+      "name": "Browser standard  / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065301,
+      "name": "Browser administrator ApplicationAuthority / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065302,
+      "name": "Browser administrator ManagedConsent / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065304,
+      "name": "Browser administrator ApplicationLifecycle / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065307,
+      "name": "Browser administrator ApplicationLifecycle / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065308,
+      "name": "Browser administrator Accounts / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065311,
+      "name": "Browser administrator BrowserSessions / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065312,
+      "name": "Browser administrator ApplicationAuthority / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065313,
+      "name": "Browser standard  / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065318,
+      "name": "Browser administrator BrowserProtection / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065320,
+      "name": "Browser administrator ApplicationAuthority / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065324,
+      "name": "Browser administrator ManagedConsent / PostgreSql / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065335,
+      "name": "Browser administrator ApplicationAuthority / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065338,
+      "name": "Browser administrator ApplicationEditor / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065345,
+      "name": "Browser administrator BrowserProtection / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065347,
+      "name": "Browser administrator BrowserProtection / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065352,
+      "name": "Browser administrator ManagedConsent / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065360,
+      "name": "Browser administrator Accounts / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065370,
+      "name": "Browser administrator Security / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065372,
+      "name": "Browser standard  / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065385,
+      "name": "Browser administrator Security / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065391,
+      "name": "Browser administrator BrowserLogin / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065397,
+      "name": "Browser administrator Security / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065403,
+      "name": "Browser administrator ManagedConsent / SqlServer / chromium",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065406,
+      "name": "Browser administrator BrowserSessions / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065418,
+      "name": "Browser administrator ApplicationLifecycle / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065421,
+      "name": "Browser administrator BrowserLogin / PostgreSql / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065422,
+      "name": "Browser administrator Accounts / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065425,
+      "name": "Browser standard  / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065477,
+      "name": "Browser administrator BrowserLogin / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128470065482,
+      "name": "Browser administrator ApplicationEditor / SqlServer / webkit",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128477516024,
+      "name": "Verification acceptance",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128477517503,
+      "name": "Per-module coverage",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ],
+  "remoteArtifactCount": 119,
+  "missingExpectedArtifacts": [
+    "foundation-coverage"
+  ],
+  "metadataPath": "/workspace/pilot552-evidence/metadata-final.json",
+  "metadataSha256": "1432b6a91f5667b408d95d656669fdf5eb06ad05580d3ce8a2c39c2b1ccc6f42",
+  "retainedArtifacts": [
+    {
+      "artifactId": 13583083137,
+      "name": "foundation-SqlServer-lifecycle-distribution",
+      "bytes": 268635,
+      "sha256": "196989d4a02d9623926244eb3185fe4b904da2ad22da75ed9df33502fcf3a8cc",
+      "localPath": "/workspace/attachments/25776404-eb1c-439a-ab4d-78957d556cdf/pilot552-foundation-SqlServer-lifecycle-distribution.zip",
+      "members": [
+        {
+          "name": "tests/SqlServer-lifecycle-distribution/Issuer.Lifecycle.trx",
+          "sha256": "9ccda2b194def5b308d2c1cb47e01a8a95e0675559a0f384cc3ad18213675504",
+          "bytes": 54640
+        },
+        {
+          "name": "coverage/SqlServer-lifecycle-distribution.build.json",
+          "sha256": "c1f9a4f65f965bbd78e9a985664d5a50ed22534167aa6246aa47835a554e2435",
+          "bytes": 4171
+        },
+        {
+          "name": "coverage/SqlServer-lifecycle-distribution.cobertura.xml",
+          "sha256": "236df77dcfa7631e2cd704d89ad6bebf8b60a66cfcd0b6b1fe382de18c9b3b5a",
+          "bytes": 6242993
+        }
+      ],
+      "reports": [
+        {
+          "name": "tests/SqlServer-lifecycle-distribution/Issuer.Lifecycle.trx",
+          "sha256": "9ccda2b194def5b308d2c1cb47e01a8a95e0675559a0f384cc3ad18213675504",
+          "counters": {
+            "total": "25",
+            "executed": "25",
+            "passed": "24",
+            "failed": "1",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "failures": [
+            {
+              "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+              "message": "System.Threading.Tasks.TaskCanceledException : A task was canceled."
+            }
+          ],
+          "allReportIdentitiesMatchCandidateDiscovery": true
+        }
+      ]
+    }
+  ],
+  "selectedDecodedLog": {
+    "jobId": 128470029139,
+    "path": "/workspace/pilot552-evidence/sql-distribution-job128470029139.log",
+    "sha256": "c560df139f57a382e15ca89117aa437c90b69a90de4e1d5b1b6d098dbf0ba711"
+  },
+  "separateReviews": [
+    {
+      "path": "/workspace/pilot552-evidence/supply-review.json",
+      "sha256": "f31f83114e774988c128a7342353b1e3990cb29537014c68f21ededbdc52d965"
+    },
+    {
+      "path": "/workspace/pilot552-evidence/local-issuer-mutation-review.json",
+      "sha256": "08a2d630563771e3e3d735cd46fc3582baadb5b37e5a46e67f0d53d519f0972d"
+    }
+  ],
+  "limits": [
+    "This is a failed full run, not acceptance; every job outcome is retained.",
+    "Only selected failure archives/logs and the separately reviewed NuGet artifact were downloaded; complete remote metadata is retained.",
+    "No full coverage reconciliation, successful-artifact reconciliation or complete-log binding is claimed.",
+    "Source-bound local issuer mutation receipts do not replace hosted full-run acceptance and do not erase the earlier local build failure.",
+    "Diagnostic branch133 is separate; no diagnostic outcome is included here.",
+    "Corrected source requires its own clean exact-head full run."
+  ]
+}

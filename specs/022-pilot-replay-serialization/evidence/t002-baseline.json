@@ -1,0 +1,37 @@
+{
+  "source_sha": "8a724a6833b7f49ed7b8bdb38603e0f515727f0c",
+  "postgres": "1 failed at required initial-replay safety oracle; unrelated successful control ran first",
+  "sql": "setup failure: SQL Server system directory /.system access denied; no defect evidence",
+  "artifacts": [
+    {
+      "path": "/workspace/pilot-t002-baseline-source-8a724a6.tar.gz",
+      "bytes": 4892667,
+      "sha256": "42cc6b903b8602c65f09a172bcc928ad6f2dd1cdb6d628690f99025039371240"
+    },
+    {
+      "path": "/workspace/pilot-t002-baseline.patch",
+      "bytes": 18620,
+      "sha256": "326f7903785572129441aeb68b691763d571f00e11374e658a214d827a87f43f"
+    },
+    {
+      "path": "/workspace/pilot-t002-baseline-postgres-valid.log",
+      "bytes": 38911,
+      "sha256": "01e17eb29398c146d77dc5884016e0913c3a0e322e9d9f7edd750ce927320842"
+    },
+    {
+      "path": "/workspace/pilot-t002-baseline-postgres-valid/baseline.trx",
+      "bytes": 6045,
+      "sha256": "9e925e8ed236f79d98d18e181797c92d3cacd4480029e010310e981a99ab16ee"
+    },
+    {
+      "path": "/workspace/pilot-t002-baseline-sql.log",
+      "bytes": 24764,
+      "sha256": "6401d4f1943986f427f61020756df8ce09b91722e15e029620101250cfe0408f"
+    },
+    {
+      "path": "/workspace/pilot-t002-baseline-sql/baseline.trx",
+      "bytes": 9020,
+      "sha256": "df5b2ea66b735321ce14d3260fec3bcb3ac2ecc623ff5a45ae637d079b64756d"
+    }
+  ]
+}

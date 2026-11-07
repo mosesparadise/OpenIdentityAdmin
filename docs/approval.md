@@ -1,5 +1,15 @@
 # Documentation approval
 
+**Pilot replay acceptance selection (7 November 2026):** the user selected
+“T008, SQL Server validation, and T009” for the three-item batch in
+[feature022](../specs/022-pilot-replay-serialization/tasks.md). This continues the
+approved LIFE-003/006 correction, including its required provider tests, unchanged
+full verification gates, independent review and T009's normal reviewed squash
+delivery. Targeted hosted SQL observation and observer-conformance controls are
+verification dependencies, not production experiments or a renewal of historical
+diagnostic approvals. Production, refresh activation, all six historical findings
+and existing manual/public-release gates remain unchanged.
+
 **Application grant-revocation scope selection (5 November 2026):** the user selected
 “Continue under recorded approval; recheck account and permission” and then “Follow your
 recommendation” to require the application to remain disabled until revocation succeeds.

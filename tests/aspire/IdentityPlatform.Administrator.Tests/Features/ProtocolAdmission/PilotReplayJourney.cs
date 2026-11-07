@@ -62,7 +62,7 @@ internal static class PilotReplayJourney
     private static async Task BindIdentityAsync(BrowserHttpsFixture environment, TestRelyingParty client, TestFlow flow)
     {
         await using var scope = environment.IssuerServices.CreateAsyncScope();
-        scope.ServiceProvider.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.LegacyPilot);
+        scope.ServiceProvider.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.LegacyPilot);
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var token = TestContext.Current.CancellationToken;
         var interaction = await database.Set<LoginInteraction>().AsNoTracking().SingleAsync(row => row.Id == flow.InteractionId, token);

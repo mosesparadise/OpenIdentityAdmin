@@ -1,5 +1,32 @@
 # Delivery roadmap and task register
 
+**SQL ordering validated — 7 November 2026:** focused run42398907537 passes27/27,
+including both deterministic native-read conformance directions and both ordinary
+process directions. The actual matched native lock and gate-wait paths are both
+observed. Feature022's remaining step is clean exact-head full acceptance and
+independent reconciliation before PR126 can leave draft and be squash-merged.
+Required inventory is5,899 native executions with every prior mutation/coverage/
+browser gate retained. [Current evidence](../specs/022-pilot-replay-serialization/verification.md).
+
+**Latest feature022 validation — 7 November 2026:** CI552 passes123 jobs; the sole
+failed producer is SQL cross-process Distribution, followed by failed acceptance
+and skipped coverage aggregation. Earlier response/gate-loss/mutation regressions
+now pass on both providers. Retained diagnostics show native token-read blocking
+before replay reaches the gate UPDATE; the test correction verifies the exact
+conflicting native lock under a gate-owning generation. Focused hosted validation,
+clean exact-head full acceptance and PR126 delivery remain pending. Main is still
+`8f840f5`; no defect closure or merge is claimed. [Evidence](../specs/022-pilot-replay-serialization/verification.md).
+
+**Current feature022 acceptance batch — 7 November 2026:** the user selected T008,
+SQL Server validation and T009. Branch132 adds five pilot replay mutation controls,
+both-provider required CI jobs and 2,771-case native inventory, preserving every
+earlier administrator identity. [PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126)
+is draft. Hosted SQL starts and both providers pass the new mutation controls;
+CI551 exposed response-contract and test-observer regressions being corrected.
+Twenty-two new native-error publication controls bring Host inventory to 1,874.
+Required clean exact-head full verification and integrated review remain open; no merge or correction acceptance is claimed by this candidate. See the
+[current evidence](../specs/022-pilot-replay-serialization/verification.md).
+
 **Current delivery — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)
 is squash-merged into main as `e44667c45d103cdc3d70427577f89b77539f6f22`.
 Both post-merge workflows report success. Durable application grant revocation,
@@ -11,8 +38,17 @@ development; the older draft/checkpoint notices below are historical.
 Next correction: [feature022 pilot replay serialization](../specs/022-pilot-replay-serialization/spec.md).
 Its [tasks](../specs/022-pilot-replay-serialization/tasks.md) separate reviewed design,
 regression, both-provider persistence/runtime work and integrated acceptance. The
-initial replay/late-issuance defect remains open until that evidence passes. T001
-planning is reviewed; T002–T009 remain open. Refresh,
+initial replay/late-issuance defect remains open until integrated acceptance.
+T001 is reviewed and T002 retains the demonstrated old-source failure. T003–T007
+are implemented through branch131 source `6860a6b7b155d931b8d7e7757992ddceb1b428a4`:
+gate-owned generation, separately durable consumption, failure/deadline/authority
+regressions and both real process directions. PostgreSQL demonstrates the corrected
+initial-replay invariant. Final-source scoped runs pass 157 protocol, 1,852 host,
+25 distribution and 29 persistence cases, with no skips. Required SQL Server execution is still blocked before
+container readiness, so these tasks remain unchecked. Native inventory is reconciled;
+T008/T009 mutation/coverage/full CI and integrated delivery remain open. Main remains
+PR125's planning squash `8f840f5a22836efd4b74ee5883ec98d04d3c6cec`; no new merge is claimed.
+See [current evidence](../specs/022-pilot-replay-serialization/verification.md). Refresh,
 all six historical findings and Windows/manual/Firefox/A-009/vendor/production/
 public-release gates remain open.
 

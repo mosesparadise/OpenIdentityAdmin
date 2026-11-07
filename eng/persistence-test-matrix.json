@@ -916,6 +916,200 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateContentionTests.Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateContentionTests",
+        "methodName": "Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateContentionTests.Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateContentionTests",
+        "methodName": "Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateLifetimeTests",
+        "methodName": "Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateLifetimeTests",
+        "methodName": "Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"SqlServer\", cancel: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateLifetimeTests",
+        "methodName": "Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"SqlServer\", cancel: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateLifetimeTests",
+        "methodName": "Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateSchemaTests",
+        "methodName": "Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateSchemaTests",
+        "methodName": "Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateSchemaTests",
+        "methodName": "Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "PilotGateSchemaTests",
+        "methodName": "Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -942,7 +1136,12 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateContentionTests.Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: False)",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"PostgreSql\", cancel: True)",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -968,6 +1167,11 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.LifecycleSchemaTests.Given_PopulatedManagedPredecessor_When_LifecycleUpgradeRunsTwice_Then_ExistingDataAndCredentialRemainWithEnabledDefault(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_InvalidStateOrProvenanceIsSaved_Then_TheWholeInsertIsRejected(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantSchemaTests.Given_GrantSchema_When_MaximumIdentitiesAndConcurrentUpdatesPersist_Then_ProvenanceAndRevisionAreEnforced(provider: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.GrantUpgradeTests.Given_PopulatedLifecyclePredecessor_When_GrantUpgradeRunsTwice_Then_AllPriorStateAndHistoryRemainExact(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateContentionTests.Given_HeldPilotGate_When_AnotherPhaseWaits_Then_DatabaseSerializesWithoutBlockingAuthorityReads(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"SqlServer\", cancel: False)",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateLifetimeTests.Given_GatePhaseWithNativeWrite_When_OriginalLifetimeEnds_Then_ActualCleanupRollsBackBeforeReturn(provider: \"SqlServer\", cancel: True)",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_FreshUnbootstrappedSchema_When_RuntimeAcquiresThenGateIsMissing_Then_LockWorksAndMissingStateDenies(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.PilotGateSchemaTests.Given_PopulatedGrantPredecessor_When_PilotGateUpgradeRunsTwice_Then_OnlyInertCoordinationIsAdded(provider: \"SqlServer\")"
   ]
 }

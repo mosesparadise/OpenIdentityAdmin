@@ -10,6 +10,11 @@ public sealed class PilotRequestProtection(RequestDelegate next, ILogger<PilotRe
     /// <example><code>app.UseMiddleware&lt;PilotRequestProtection&gt;();</code></example>
     public Task InvokeAsync(HttpContext context) => AccountRequestGuard.InvokeAsync(context, next, incident => RequestFailed(logger, incident));
 
+    /// <summary>Retains the pilot's fixed failure contract and safe event while the caller keeps its original transport deadline active.</summary>
+    internal static Task WriteUnavailableAsync(HttpContext context, CancellationToken token) =>
+        AccountRequestGuard.WriteUnavailableAsync(context,
+            incident => RequestFailed(context.RequestServices.GetRequiredService<ILogger<PilotRequestProtection>>(), incident), token);
+
     private const int FailureEvent = 1001;
     private const string FailureTemplate = "Pilot request failed. Incident {IncidentId}.";
     private static readonly Action<ILogger, string, Exception?> Failure = LoggerMessage.Define<string>(

@@ -1,0 +1,272 @@
+{
+  "schema": 1,
+  "scope": "Diagnostic-only failed SQL distribution run; not acceptance, not a changed assertion, and not proof of the exact resource on which replay waited.",
+  "source": {
+    "head": "83d63db414e4b93d38184c89e842f7ada77e3f36",
+    "tree": "0b85e51a1fda59bc7202fe8d4b2778e159179b83",
+    "branch": "133-pilot-sql-observation",
+    "originalSqlWaitPredicateUnchangedFrom": "413a3d40a96da6b1d84335e5a7c8732a3c45aed8"
+  },
+  "run": {
+    "id": 42396589720,
+    "attempt": 1,
+    "event": "push",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobId": 128475189226,
+    "jobConclusion": "failure",
+    "jobCount": 1
+  },
+  "apiProvenance": {
+    "method": "Raw GitHub REST JSON retrieved through github_fetch connector; normalized connector metadata retained separately. Direct gh network attempt was Forbidden and not retried.",
+    "raw": [
+      {
+        "path": "/workspace/pilot-sql-observation-run1-run.json",
+        "sha256": "a5edc5d1e12e45b9b0056d8b30037a4b5addbf1c68eef4c464f9049373e01c68",
+        "bytes": 15105
+      },
+      {
+        "path": "/workspace/pilot-sql-observation-run1-jobs.json",
+        "sha256": "8d50a7ae017d5ebd3c32ea99e7c2dfd0f735993d70635dd69a2752a447033899",
+        "bytes": 5622
+      },
+      {
+        "path": "/workspace/pilot-sql-observation-run1-artifacts.json",
+        "sha256": "2ed8f44169d2a2d8eade3f5dd0713c884a16a444177a3517d388bb0f49f569f2",
+        "bytes": 952
+      }
+    ],
+    "normalized": [
+      {
+        "path": "/workspace/pilot-sql-observation-run1-jobs-connector.json",
+        "sha256": "6f49e2a8cbc6e2eac0d5c3f78f041054b7006d3d3f5b1141aef779b6d0dd9022",
+        "bytes": 3404
+      },
+      {
+        "path": "/workspace/pilot-sql-observation-run1-artifacts-connector.json",
+        "sha256": "6a5340c3999da88fb07ab229259d018c466f8afe6fbdc370cdb91271a8f09aa3",
+        "bytes": 1058
+      }
+    ]
+  },
+  "artifact": {
+    "id": 13582754972,
+    "name": "diagnostic-pilot-sql-distribution",
+    "githubDigest": "sha256:e6601f6823396254a7bd162b5195dac09aa1777c2d88b0dd13063e4e4161de05",
+    "archive": {
+      "path": "/workspace/attachments/e2a755a8-40d7-474d-bf2c-0f429815eed7/pilot-sql-observation-run1.zip",
+      "sha256": "e6601f6823396254a7bd162b5195dac09aa1777c2d88b0dd13063e4e4161de05",
+      "bytes": 268750
+    },
+    "entries": [
+      {
+        "name": "tests/SqlServer-lifecycle-distribution/Issuer.Lifecycle.trx",
+        "bytes": 56034,
+        "sha256": "e8e0162d7e608256dbb122dee228268eba8a0b2b468f6e9cf7590fbac676cabd"
+      },
+      {
+        "name": "coverage/SqlServer-lifecycle-distribution.build.json",
+        "bytes": 4171,
+        "sha256": "bf4fd511b82f0701ae02254846478657ca18446f8e578a7c283ffc815dd2cccc"
+      },
+      {
+        "name": "coverage/SqlServer-lifecycle-distribution.cobertura.xml",
+        "bytes": 6242992,
+        "sha256": "58876e80fc9129996e54f78f0b64bb31c886fd256579d7ebd98a275797ad9cf9"
+      }
+    ]
+  },
+  "report": {
+    "file": {
+      "path": "/workspace/pilot-sql-observation-run1.trx",
+      "sha256": "e8e0162d7e608256dbb122dee228268eba8a0b2b468f6e9cf7590fbac676cabd",
+      "bytes": 56034
+    },
+    "summary": "Failed",
+    "counters": {
+      "total": 25,
+      "executed": 25,
+      "passed": 24,
+      "failed": 1,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "uniqueResultDefinitionEntryIdsMatched": true,
+    "tests": [
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Failed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.TransportDistributionTests.Selected_socket_preserves_certificate_validation_and_canonical_authority(provider: \"SqlServer\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.ProtectionDistributionTests.Unsuitable_secondary_material_fails_safely_while_original_cookie_survives(provider: \"SqlServer\", kind: \"missing\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.ProtectionDistributionTests.Unsuitable_secondary_material_fails_safely_while_original_cookie_survives(provider: \"SqlServer\", kind: \"wrapper\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.ProtectionDistributionTests.Healthy_but_incompatible_encryption_denies_then_exact_original_code_recovers(provider: \"SqlServer\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.CodeDistributionTests.Concurrent_node_redemptions_have_one_native_winner_and_replay_revokes_issued_tokens(provider: \"SqlServer\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.CodeDistributionTests.Exact_live_code_crosses_nodes_with_original_proof_and_single_use(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.CodeDistributionTests.Exact_live_code_crosses_nodes_with_original_proof_and_single_use(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Surviving_node_uses_original_state_while_opposite_process_is_stopped(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Surviving_node_uses_original_state_while_opposite_process_is_stopped(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_form_crosses_nodes_with_antiforgery_and_browser_binding(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_form_crosses_nodes_with_antiforgery_and_browser_binding(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_completed_continuation_crosses_nodes_once_for_its_owner(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_completed_continuation_crosses_nodes_once_for_its_owner(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_cookie_silently_crosses_nodes_without_reauthentication(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.SessionDistributionTests.Original_cookie_silently_crosses_nodes_without_reauthentication(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"scope\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"session\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"scope\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"account\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"account\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"client\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth-secondary\", target: \"auth\", restriction: \"client\")",
+        "outcome": "Passed"
+      },
+      {
+        "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.EligibilityDistributionTests.Other_warm_node_enforces_committed_restrictions_at_authorization_and_exchange(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\", restriction: \"session\")",
+        "outcome": "Passed"
+      }
+    ]
+  },
+  "failure": {
+    "name": "IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\", source: \"auth\", target: \"auth-secondary\")",
+    "category": "TaskCanceledException",
+    "phase": "WaitForReplay; original gate observer remains unsatisfied",
+    "sourceFrames": [
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDatabaseBarrier.ReadWaiterAsync(Int32 blocker, Boolean gate, PilotReplaySqlWaitDiagnostics diagnostics, CancellationToken token) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDatabaseBarrier.cs:line 145",
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDatabaseBarrier.ReadWaiterAsync(Int32 blocker, Boolean gate, PilotReplaySqlWaitDiagnostics diagnostics, CancellationToken token) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDatabaseBarrier.cs:line 154",
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDatabaseBarrier.ReadWaiterAsync(Int32 blocker, Boolean gate, PilotReplaySqlWaitDiagnostics diagnostics, CancellationToken token) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDatabaseBarrier.cs:line 154",
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDatabaseBarrier.WaitAsync(Int32 blocker, Boolean gate, Task`1[] pending, CancellationToken token) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDatabaseBarrier.cs:line 111",
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(String provider, String source, String target) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDistributionTests.cs:line 43",
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionCleanup.CompleteAsync(IssuerEnvironment environment, PilotReplayDatabaseBarrier barrier, Task`1 winner, Task`1 replay, ExceptionDispatchInfo failure) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDistributionCleanup.cs:line 36",
+      "at IdentityPlatform.Issuer.Lifecycle.Tests.Features.Distribution.PilotReplayDistributionTests.Given_DurablyConsumedPilotCodeOnOneProcess_When_InitialReplayWaitsOnAnother_Then_NoWinningEntrySurvivesReplay(String provider, String source, String target) in /_/tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/PilotReplayDistributionTests.cs:line 52"
+    ]
+  },
+  "diagnostics": {
+    "source": "Failed case TRX StdOut; independently matched retained job log",
+    "gatePhase": true,
+    "adjacentSamples": 80,
+    "distinctOverflow": false,
+    "distinctSnapshots": [
+      {
+        "runtimeRequests": 1,
+        "directBlockers": 0,
+        "lockWaiters": 0,
+        "Gate": 0,
+        "NativeTokenRead": 0,
+        "Other": 0,
+        "winnerFixtureBlocked": true,
+        "winnerGateTransactionX": true
+      },
+      {
+        "runtimeRequests": 2,
+        "directBlockers": 1,
+        "lockWaiters": 1,
+        "Gate": 0,
+        "NativeTokenRead": 1,
+        "Other": 0,
+        "winnerFixtureBlocked": true,
+        "winnerGateTransactionX": true
+      }
+    ],
+    "lines": [
+      "pilot-sql-wait gate-phase=True samples=80 distinct-overflow=False",
+      "pilot-sql-wait runtime-requests=1 direct-blockers=0 lock-waiters=0 Gate=0 NativeTokenRead=0 Other=0 winner-fixture-blocked=True winner-gate-transaction-X=True",
+      "pilot-sql-wait runtime-requests=2 direct-blockers=1 lock-waiters=1 Gate=0 NativeTokenRead=1 Other=0 winner-fixture-blocked=True winner-gate-transaction-X=True"
+    ],
+    "limits": [
+      "Snapshots are deduplicated; frequencies and ordering of the 80 individual samples are not retained.",
+      "One retained snapshot has one native-token read directly lock-blocked by the winning session while winner remains fixture-blocked and its current transaction holds an X lock on the gate.",
+      "The adjacent query does not match the replay wait resource to the winner gate resource; these data alone do not prove that the token read is waiting on the gate.",
+      "No production failure cause or passing SQL correction is asserted."
+    ]
+  },
+  "log": {
+    "path": "/workspace/pilot-sql-observation-run1.log",
+    "sha256": "c836eb5b539d35e5b54a0deffe579ecc32a957186804b244765d7a9b12bc71fa",
+    "bytes": 211897
+  },
+  "coverage": {
+    "buildReceiptSourceBound": true,
+    "postExecutionCoverageBindingStep": "skipped",
+    "coverageAcceptance": false
+  },
+  "review": "PASS for truthful diagnostic receipt integrity only; run itself failed 24/25 and required acceptance remains open."
+}

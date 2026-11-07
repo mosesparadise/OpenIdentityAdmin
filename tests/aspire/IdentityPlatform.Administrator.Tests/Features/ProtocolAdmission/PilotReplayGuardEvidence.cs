@@ -47,7 +47,7 @@ internal static class PilotReplayGuardEvidence
         foreach (var change in Invalid)
         {
             await using var scope = environment.IssuerServices.CreateAsyncScope();
-            scope.ServiceProvider.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.LegacyPilot);
+            scope.ServiceProvider.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.LegacyPilot);
             var context = new OpenIddictServerEvents.ValidateTokenContext(new OpenIddictServerTransaction
             {
                 EndpointType = OpenIddictServerEndpointType.Token,
@@ -72,7 +72,7 @@ internal static class PilotReplayGuardEvidence
     private static async Task<string> SnapshotAsync(BrowserHttpsFixture environment)
     {
         await using var scope = environment.IssuerServices.CreateAsyncScope();
-        scope.ServiceProvider.GetRequiredService<ProtocolStorageSelection>().Select(ProtocolStorageMode.LegacyPilot);
+        scope.ServiceProvider.GetService<ProtocolStorageSelection>()?.Select(ProtocolStorageMode.LegacyPilot);
         return await ManagedJourneyEvidence.NativeAsync(scope.ServiceProvider.GetRequiredService<PlatformDbContext>());
     }
 }

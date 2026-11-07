@@ -1,5 +1,127 @@
 # OpenIdentityAdmin new-task handoff
 
+**SQL conformance passes — 7 November 2026:** isolated run42398907537 at `ce3d9a4`
+passes27/27. Both synthetic cases explicitly observe `NativeTokenReadMatched`;
+ordinary primary-to-secondary also uses that path, while the opposite direction
+uses `GateWait`. All existing final assertions pass. The source/report receipt in
+[current evidence](../../specs/022-pilot-replay-serialization/verification.md) binds
+this focused result without claiming full acceptance. Branch132 contains equivalent
+executable source and excludes branch133's isolated workflow. Required final scope:
+126 jobs,120 artifacts,103 native reports/5,899 executions,120 mutation kills,
+100 original coverage inputs,15 floors,83 UI cases and44 Node contracts. Run clean
+exact-head full verification and independent reconciliation before T008/T009 close
+or PR126 leaves draft/merges. No historical/manual/refresh/release gate changes.
+
+**Latest SQL witness correction — 7 November 2026:** CI552 at `413a3d4` finished
+123success/2failure/1skipped. SQL Distribution is the only failed producer; final
+acceptance fails and coverage aggregation is skipped. All earlier correction jobs
+pass. Branch133 retains the isolated diagnostic at `83d63db` and the reviewed
+matching-resource witness at `e75c43a`; its branch-only workflow must not be merged
+or counted as full acceptance. Branch132 integrates only the test-source changes.
+The diagnostic observed native token SELECT contention before replay's gate UPDATE;
+the correction requires exact conflicting native-resource ownership, current winner
+transaction/gate ownership, known process identities and every original final
+oracle. Its focused hosted run and clean final-head full acceptance remain pending.
+See [current evidence](../../specs/022-pilot-replay-serialization/verification.md).
+PR126 stays draft/unmerged; preserve both failed full runs and the failed diagnostic.
+All historical/manual/refresh/production/public-release gates remain open.
+
+The first corrected focused run passes25/25, but both directions use `GateWait`.
+Do not claim it validates `NativeTokenReadMatched`. Branch132 source `22ee253`
+adds two explicitly synthetic SQL controls that require that witness, retain the
+same winning session/connection/transaction across two fixture phases, and share
+the original replay observation budget. Discovery preserves all86 earlier cases
+and adds two SQL cases; required SQL Distribution is now27. Build/quality/selection
+checks pass; actual conformance execution and clean full acceptance remain pending.
+
+**Current acceptance batch — 7 November 2026:** the user selected feature022 T008,
+SQL Server validation and T009. Work continues on `132-pilot-replay-acceptance`, based
+on `2b5990d79fa89b152bf6b2c382bf70e089efb705`; preserve branches130/131 and their
+source/evidence. Source `71ab8e319ab183b8af21b0405f4a2ac565a93894` adds five pilot
+mutation controls and both-provider mandatory CI jobs. Native inventory is 2,771,
+preserving all 2,761 earlier identities, with ProtocolAdmission162/provider.
+PR126 is draft at the acceptance candidate. CI551 is retained as a failed full run:
+hosted SQL starts and both pilot mutation jobs pass, but response-contract, old-mutant
+and SQL observer failures require correction. The next candidate adds 22 native-error
+publication controls (Host 1,874) and preserves all existing acceptance obligations.
+See [current acceptance evidence](../../specs/022-pilot-replay-serialization/verification.md).
+
+The batch authorizes required exact-head hosted verification and normal reviewed
+delivery; it does not renew historical diagnostic approvals or authorize production.
+Use the unchanged pinned SQL image on the hosted runner for required validation.
+Local HOME/workdir startup probes already failed; no verified corrective setting was
+found, so do not repeat them or add a root/permissions workaround. All historical,
+manual, refresh and public-release gates remain unchanged. Earlier notices below
+are historical checkpoints.
+
+
+**Current implementation checkpoint — 7 November 2026:** the next three tasks,
+feature022 T005–T007, are implemented on `131-pilot-replay-coordination`, source
+`6860a6b7b155d931b8d7e7757992ddceb1b428a4`, worktree
+`/workspace/pilot-replay-serialization`. Branch131 is pushed; remote main remains
+`8f840f5a22836efd4b74ee5883ec98d04d3c6cec`. Existing worktrees, baseline/foundation
+evidence and frozen provider producers are preserved. Earlier checkpoint notices
+below are historical.
+
+The coordinator keeps generation in the gate transaction, commits native consumption
+separately under a Valid-row lock, fences late/replacement storage, and withholds
+output through commit and actual cleanup. PostgreSQL now proves the initial-replay
+invariant and both real process directions. Faults, original deadlines, fresh
+post-wait authority, historic cleanup and post-revocation publication failure have
+permanent tests. See the [current evidence](../../specs/022-pilot-replay-serialization/verification.md)
+for exact reports, failed attempts and final-source limits.
+
+Final-source scoped runs pass **157 PostgreSQL ProtocolAdmission, 1,852 host,
+25 PostgreSQL Distribution and 29 PostgreSQL persistence cases**, with no skips.
+The [source/report receipt](../../specs/022-pilot-replay-serialization/evidence/coordination.json)
+retains exact native identities, hashes and failed attempts. Persistence runs in this
+storage-constrained environment require serial collections and the preserved frozen
+producer/manifest paths recorded there; do not rebuild that historical producer.
+
+**Next: T008/T009 acceptance and outstanding SQL cells.** Native inventory/selection
+is reconciled; do not repeat the implementation. T003–T007 remain unchecked pending
+required SQL verification. SQL2022 still exits before readiness with `/.system`
+access denied (errno13); both workdir-only and HOME-only non-root probes failed and
+were removed. Neither is a repository workaround. Registry access works; do not
+revive expired diagnostic approvals or repeat identical startup attempts without a
+changed, evidence-based condition. Full CI, new mutation controls, coverage and
+final integrated delivery remain open. No PR/merge/production action was performed.
+All six historical findings, refresh activation and manual/Firefox/A-009/vendor/
+production/public-release gates remain open.
+
+Use `/workspace/managed-env.sh` for the SDK, package cache and HTTPS trust. Retained
+artifacts/build outputs have verified symlinks into `/tmp`; preserve their targets.
+
+**Historical foundation checkpoint — 7 November 2026:** user requested the next three
+feature022 tasks, T002–T004. Worktree `/workspace/pilot-replay-serialization`, branch
+`130-pilot-replay-foundation`, code commit
+`bcb3bd52180286021582444c6ba5ed4bba1fd0ee`, based on PR125's planning squash
+`8f840f5a22836efd4b74ee5883ec98d04d3c6cec`. Main remains at that squash. Existing
+worktrees, complete evidence and frozen provider-compatibility producers are preserved.
+
+T002's full baseline source/report hashes and actual PostgreSQL initial-replay
+failure are retained. T003 adds the isolated migration-seeded gate on both providers;
+T004 integrates fresh gate-owned native token/authorization validation in both host
+graphs. [Current evidence](../../specs/022-pilot-replay-serialization/verification.md)
+records PostgreSQL persistence10/10, registration8/8, HTTPS5pass plus the mandatory
+initial-race failure. T003/T004 stay unchecked because SQL verification is blocked:
+both Aspire and direct Testcontainers SQL2022 exit1 before readiness, reporting
+`/.system` access denied (`LinuxDirectory.cpp:420`, errno13). Registry download works.
+Do not describe this startup failure as a schema/replay result or repeat identical
+SQL attempts without a changed, evidence-based condition.
+
+**Next implementation is T005**, followed by T006–T009. Keep generation and its gate
+in one transaction, retain separately durable native consumption, and withhold
+publication through actual cleanup. Do not weaken/skip the red safety regression or
+claim partial-runtime defect closure. No PR/full CI/merge is requested at this
+incomplete foundation checkpoint; the branch is retained remotely for continuation.
+All six historical findings, refresh activation and human/manual/Firefox/A-009/
+vendor/production/public-release gates remain open. Previous checkpoint notes below
+are historical. Runtime tools are sourced via `/workspace/managed-env.sh`; SDK and
+package caches are temporary. Archived artifacts/build outputs were byte-verified
+before relocation to `/tmp`, with original paths preserved by symlinks; preserve
+those targets during environment housekeeping.
+
 **Current checkpoint — 7 November 2026:** [PR124](https://github.com/mosesparadise/OpenIdentityAdmin/pull/124)
 is merged, not draft: main is `e44667c45d103cdc3d70427577f89b77539f6f22`.
 Post-merge runs42326203442 and42329191762 report success. Feature021 T001–T018
