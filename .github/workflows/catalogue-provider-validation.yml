@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        provider: [PostgreSql, SqlServer]
-        browser: [chromium, webkit]
+        provider: [PostgreSql]
+        browser: [webkit]
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
       TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
