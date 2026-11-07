@@ -1,5 +1,11 @@
 # Tasks: Pilot replay serialization
 
+**SQL witness validation complete:** focused run42398907537 passes27/27, including
+both explicit native-read conformance controls and the ordinary directions. The
+current final inventory requires5,899 native executions; full exact-head acceptance
+and independent reconciliation remain pending. Historical failed attempts below
+stay retained; no task or release gate is closed by a focused run alone.
+
 **Latest validation:** CI552 at `413a3d4` passes123 jobs but fails SQL Distribution
 and final acceptance; coverage aggregation is skipped. All earlier regression
 producer jobs now succeed. A separate failed diagnostic observes native token-read

@@ -1,5 +1,17 @@
 # OpenIdentityAdmin new-task handoff
 
+**SQL conformance passes — 7 November 2026:** isolated run42398907537 at `ce3d9a4`
+passes27/27. Both synthetic cases explicitly observe `NativeTokenReadMatched`;
+ordinary primary-to-secondary also uses that path, while the opposite direction
+uses `GateWait`. All existing final assertions pass. The source/report receipt in
+[current evidence](../../specs/022-pilot-replay-serialization/verification.md) binds
+this focused result without claiming full acceptance. Branch132 contains equivalent
+executable source and excludes branch133's isolated workflow. Required final scope:
+126 jobs,120 artifacts,103 native reports/5,899 executions,120 mutation kills,
+100 original coverage inputs,15 floors,83 UI cases and44 Node contracts. Run clean
+exact-head full verification and independent reconciliation before T008/T009 close
+or PR126 leaves draft/merges. No historical/manual/refresh/release gate changes.
+
 **Latest SQL witness correction — 7 November 2026:** CI552 at `413a3d4` finished
 123success/2failure/1skipped. SQL Distribution is the only failed producer; final
 acceptance fails and coverage aggregation is skipped. All earlier correction jobs

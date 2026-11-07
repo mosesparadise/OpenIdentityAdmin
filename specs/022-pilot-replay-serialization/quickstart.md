@@ -2,16 +2,12 @@
 
 The complete pilot replay implementation is under acceptance in
 [PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126). Hosted SQL Server
-starts with the unchanged pinned image, and both providers pass the five new mutation
-controls. CI552 confirms the earlier integration corrections but still fails the SQL
-cross-process ordering observer. The revised witness requires exact native read-lock
-contention under a gate-owning transaction; hosted validation, required exact-head
-full verification and T008/T009 review remain open. This candidate is not
-ready to merge or deploy. See [current evidence](verification.md).
-
-The first corrected SQL run passes25/25 through the gate-wait path. Two added
-observer-conformance cases must also prove the native-read path under a deliberately
-introduced test-only lock; they are not a product isolation or native-data change.
+starts with the unchanged pinned image. The corrected focused SQL suite passes27/27,
+including both ordinary process directions and two explicit native-read observer
+controls. Both matched native-read contention and gate waits are actually observed;
+the controls' extra fixture lock does not change product isolation or native values.
+Required exact-head full verification and T008/T009 final review remain open. This
+candidate is not ready to merge or deploy. See [current evidence](verification.md).
 
 The existing administrator UI and grant revocation are already delivered through
 PR124; use the [native Aspire grant walkthrough](../021-application-grant-revocation/quickstart.md)

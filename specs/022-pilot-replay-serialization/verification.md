@@ -1,5 +1,27 @@
 # Pilot replay correction evidence
 
+## Corrected SQL conformance and final candidate — 7 November 2026
+
+[Focused SQL run42398907537](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42398907537)
+at `ce3d9a441aea8b368d003c724bd9fb43d949dd23` passes27/27 with no skips or errors.
+The [source/report receipt](evidence/sql-ordering-conformance.json) binds all native
+identities and the actual witness in each ordered case. Both synthetic directions
+observe the same winner across both fixture phases and explicitly pass
+`NativeTokenReadMatched`. The ordinary primary-to-secondary case also observes that
+matched native-read conflict; the opposite ordinary direction uses `GateWait`.
+This supplies actual SQL execution of both observation paths and preserves all
+final first-replay, cryptographic, native-state, recovery and cleanup assertions.
+The deliberate extra lock belongs only to the two named conformance controls.
+
+The integrated candidate has identical `src`, `tests`, `eng` and `scripts` subtrees
+to the focused source; the isolated diagnostic workflow is absent. Required final
+acceptance remains126 jobs,120 artifacts,103 native reports/5,899 executions,
+120 demonstrated mutation kills,100 original coverage inputs,15 unchanged module
+floors,83 UI cases and44 Node contracts. Focused success and the failed-run coverage
+diagnostic do not substitute for a clean exact-head full run and independent final
+reconciliation. T008/T009 remain open and PR126 remains draft until those gates pass.
+All historical/manual/refresh/production/public-release gates remain unchanged.
+
 ## CI552 and SQL ordering witness — 7 November 2026
 
 [CI552](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42394874564)

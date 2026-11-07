@@ -1,5 +1,13 @@
 # Delivery roadmap and task register
 
+**SQL ordering validated — 7 November 2026:** focused run42398907537 passes27/27,
+including both deterministic native-read conformance directions and both ordinary
+process directions. The actual matched native lock and gate-wait paths are both
+observed. Feature022's remaining step is clean exact-head full acceptance and
+independent reconciliation before PR126 can leave draft and be squash-merged.
+Required inventory is5,899 native executions with every prior mutation/coverage/
+browser gate retained. [Current evidence](../specs/022-pilot-replay-serialization/verification.md).
+
 **Latest feature022 validation — 7 November 2026:** CI552 passes123 jobs; the sole
 failed producer is SQL cross-process Distribution, followed by failed acceptance
 and skipped coverage aggregation. Earlier response/gate-loss/mutation regressions
