@@ -28,8 +28,12 @@ internal sealed record CatalogueProxyResult(int Status, object? Output = null, s
         if (input.Action is CatalogueProxyAction.Delete or CatalogueProxyAction.Status)
         {
             var job = ApplicationJson.Parse<CatalogueDeletionDetails>(bytes);
+            if (!Job(job, input))
+            {
+                throw new InvalidDataException();
+            }
             var expected = input.Action == CatalogueProxyAction.Delete ? CataloguePaths.ApiRoot + CataloguePaths.Job(input.Kind, job.Id) : null;
-            return Job(job, input) && tag is null && location == expected ? new(status, job, null, job.ExpiresAt) : throw new InvalidDataException();
+            return tag is null && location == expected ? new(status, job, null, job.ExpiresAt) : throw new InvalidDataException();
         }
         return Details(bytes, input, status, tag, location);
     }

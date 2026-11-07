@@ -23,7 +23,8 @@ internal static class CatalogueHttpEvidence
         RespectRequiredConstructorParameters = true,
         NumberHandling = JsonNumberHandling.Strict
     };
-    private const string AccessType = "access_token";
+    private const string AccessType = "urn:ietf:params:oauth:token-type:access_token";
+    private const int IdleSeconds = 1800;
     private const int FreshSeconds = 300;
     private const string JsonType = "application/json";
     private const string Cookies = "Set-Cookie";
@@ -60,8 +61,8 @@ internal static class CatalogueHttpEvidence
         var token = TestContext.Current.CancellationToken;
         var native = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().SingleAsync(row => row.Type == AccessType, token);
         var source = await database.Set<AdministratorSession>().AsNoTracking().SingleAsync(row => row.PublicId == test.SourceSession, token);
-        var signed = DateTimeOffset.FromUnixTimeSeconds(new DateTimeOffset(native.ExpirationDate!.Value, TimeSpan.Zero).ToUnixTimeSeconds());
-        var ceiling = new[] { signed, DateTimeOffset.FromUnixTimeSeconds(source.ExpiresAt), DateTimeOffset.FromUnixTimeSeconds(source.FactorVerifiedAt + FreshSeconds) }.Min();
+        var nativeCeiling = DateTimeOffset.FromUnixTimeSeconds(new DateTimeOffset(native.ExpirationDate!.Value, TimeSpan.Zero).ToUnixTimeSeconds());
+        var ceiling = new[] { nativeCeiling, DateTimeOffset.FromUnixTimeSeconds(source.ExpiresAt), DateTimeOffset.FromUnixTimeSeconds(source.LastActivityAt + IdleSeconds), DateTimeOffset.FromUnixTimeSeconds(source.FactorVerifiedAt + FreshSeconds) }.Min();
         Assert.True(expiry > test.Now && expiry <= ceiling);
         if (browser)
         {

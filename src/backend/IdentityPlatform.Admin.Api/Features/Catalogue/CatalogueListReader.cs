@@ -20,7 +20,7 @@ internal static class CatalogueListReader
         ApplicationListQuery query, DateTimeOffset expiry, CancellationToken token)
     {
         var ordinal = database.GetDatabaseProvider().Model.SessionOrdinalCollation;
-        var source = Rows(database, kind);
+        var source = Rows(database, kind, ordinal);
         if (query.Search.Length != 0)
         {
             source = source.Where(row => EF.Functions.Collate(row.Name, ordinal).StartsWith(query.Search));
@@ -39,12 +39,12 @@ internal static class CatalogueListReader
     }
 
     /// <summary>Reads native scope identity joined to explicit policy; unknown kinds cannot select another catalogue accidentally.</summary>
-    private static IQueryable<Row> Rows(PlatformDbContext database, CatalogueResource kind) => kind switch
+    private static IQueryable<Row> Rows(PlatformDbContext database, CatalogueResource kind, string ordinal) => kind switch
     {
         CatalogueResource.Scope => from native in database.Set<OpenIddictEntityFrameworkCoreScope>().AsNoTracking()
-                                   join policy in database.Set<ScopePolicy>().AsNoTracking() on native.Id equals policy.ScopeId
-                                   where !database.Set<AdministratorProtocolProfile>().Any(row => row.ScopeId == native.Id) &&
-                                         !database.Set<PilotManifest>().Any(row => row.ScopeId == native.Id)
+                                   join policy in database.Set<ScopePolicy>().AsNoTracking() on EF.Functions.Collate(native.Id!, ordinal) equals EF.Functions.Collate(policy.ScopeId, ordinal)
+                                   where !database.Set<AdministratorProtocolProfile>().Any(row => EF.Functions.Collate(row.ScopeId, ordinal) == EF.Functions.Collate(native.Id!, ordinal)) &&
+                                         !database.Set<PilotManifest>().Any(row => EF.Functions.Collate(row.ScopeId, ordinal) == EF.Functions.Collate(native.Id!, ordinal))
                                    select new Row { Id = native.Id!, Name = native.Name!, DisplayName = native.DisplayName!, Enabled = policy.Enabled },
         CatalogueResource.Audience => database.Set<ApiAudience>().AsNoTracking().Select(row => new Row { Id = row.Id, Name = row.Resource, DisplayName = row.DisplayName, Enabled = row.Enabled }),
         _ => throw new InvalidOperationException()
