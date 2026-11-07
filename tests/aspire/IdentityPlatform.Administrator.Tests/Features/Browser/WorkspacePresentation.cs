@@ -110,7 +110,10 @@ internal static class WorkspacePresentation
         {
             await page.SetViewportSizeAsync(width, Height);
             var valid = await page.EvaluateAsync<bool>(Layout);
-            if (!valid) { TestContext.Current.TestOutputHelper?.WriteLine(await CatalogueLayoutProbe.ReadAsync(page)); }
+            if (!valid)
+            {
+                TestContext.Current.TestOutputHelper?.WriteLine(await CatalogueLayoutProbe.ReadAsync(page));
+            }
             Assert.True(valid, await page.EvaluateAsync<string>(LayoutEvidence));
             await BrowserAccessibility.RequireNoViolationsAsync(page);
         }
