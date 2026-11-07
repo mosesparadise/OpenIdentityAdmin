@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Net;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using System.Text.Json.Serialization;
 using IdentityPlatform.Core.Features.Catalogue;
@@ -30,6 +31,24 @@ internal static class CatalogueHttpEvidence
     private const string Cookies = "Set-Cookie";
     private const string NoSniff = "X-Content-Type-Options";
     private const string NoSniffValue = "nosniff";
+    private const string StatusField = "status";
+    private const string TitleField = "title";
+    private const string SignIn = "Sign in again to manage the catalogue.";
+    private const string Unavailable = "The catalogue result is unavailable. Check its status before submitting again.";
+    private static readonly string[] ProblemFields = ["type", "title", StatusField, "correlationId", "traceId"];
+
+    /// <summary>Requires the exact catalogue recovery title and safe problem schema; application-management titles are a separate contract.</summary>
+    internal static async Task ProblemAsync(HttpResponseMessage response, HttpStatusCode status)
+    {
+        Assert.Equal(status, response.StatusCode);
+        Assert.True(response.Headers.CacheControl?.NoStore == true);
+        Assert.Null(response.Headers.ETag);
+        Assert.Null(response.Headers.Location);
+        using var json = JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        Assert.Equal((int)status, json.RootElement.GetProperty(StatusField).GetInt32());
+        Assert.All(json.RootElement.EnumerateObject(), field => Assert.Contains(field.Name, ProblemFields));
+        Assert.Equal(status == HttpStatusCode.Unauthorized ? SignIn : Unavailable, json.RootElement.GetProperty(TitleField).GetString());
+    }
 
     /// <summary>Reads only the independently expected safe audience schema and validates native no-store/publication headers.</summary>
     internal static async Task<AudienceDetails> AudienceAsync(HttpResponseMessage response) =>

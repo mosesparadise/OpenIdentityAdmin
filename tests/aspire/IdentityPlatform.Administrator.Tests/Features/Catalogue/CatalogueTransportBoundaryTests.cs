@@ -35,6 +35,7 @@ public sealed class CatalogueTransportBoundaryTests(BootstrapFixture fixture)
     private const int ExtendedSeconds = 60;
     private const string GuidFormat = "D";
     private const string Admitted = "CatalogueDeletionAdmitted";
+    private const string GenerationMarker = "catalogue-original-browser-generation-bypass";
 
     /// <summary>One native successful GET cannot publish after cancellation, generation replacement or its original deadline, even when persisted expiry is extended.</summary>
     [Theory]
@@ -62,7 +63,7 @@ public sealed class CatalogueTransportBoundaryTests(BootstrapFixture fixture)
         var now = test.Now;
         var started = Stopwatch.GetTimestamp();
         using var response = await CrossBoundaryAsync(test, probe, boundary);
-        await ApplicationHttpTests.ProblemAsync(response, boundary == Deadline ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.Unauthorized);
+        await CatalogueHttpEvidence.ProblemAsync(response, boundary == Deadline ? HttpStatusCode.ServiceUnavailable : HttpStatusCode.Unauthorized);
         await GrantTransportTests.SafeAsync(response);
         Assert.Null(response.Headers.ETag);
         Assert.Null(response.Headers.Location);
@@ -80,7 +81,7 @@ public sealed class CatalogueTransportBoundaryTests(BootstrapFixture fixture)
     }
 
     /// <summary>A genuinely committed DELETE with a withheld response is recovered explicitly without another approval, audit or authority extension.</summary>
-    [Theory]
+    [Theory, Trait("CriticalDecision", "catalogue-original-browser-generation")]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public async Task Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(string provider)
@@ -98,7 +99,19 @@ public sealed class CatalogueTransportBoundaryTests(BootstrapFixture fixture)
         probe.Version = audience.Version;
         probe.Fault = GrantTransportFaults.Hold;
         using var response = await CrossBoundaryAsync(test, probe, Generation, proof);
-        await ApplicationHttpTests.ProblemAsync(response, HttpStatusCode.Unauthorized);
+        if (response.StatusCode == HttpStatusCode.Accepted)
+        {
+            var published = await CatalogueHttpEvidence.JobAsync(response);
+            await using var observer = test.Environment.Api!.Services.CreateAsyncScope();
+            var actual = await observer.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<CatalogueDeletion>().AsNoTracking()
+                .SingleAsync(TestContext.Current.CancellationToken);
+            Assert.Equal(actual.Id, published.Id);
+            Assert.Equal(audience.Id, published.TargetId);
+            Assert.Equal(CatalogueDeletionState.Queued, actual.State);
+            Assert.Equal(actual.TargetId, published.TargetId);
+            Assert.Fail(GenerationMarker);
+        }
+        await CatalogueHttpEvidence.ProblemAsync(response, HttpStatusCode.Unauthorized);
         await GrantTransportTests.SafeAsync(response);
         Assert.Null(response.Headers.ETag);
         Assert.Null(response.Headers.Location);

@@ -43,3 +43,12 @@ No runtime task is declared independently parallel before its prerequisites exis
 
 Deliver coherent reviewed increments, preserving old application behavior at each
 boundary. Catalogue-only progress does not complete the selected M03-B/C tasks.
+
+## Current T004–T007 candidate
+
+The user explicitly selected T005–T007 including unfinished T004 prerequisites. Native
+reads/writes, deletion admission/status/worker, API/BFF contracts and Scopes/Audiences
+UI are implemented. Their completion remains contingent on corrected both-provider,
+Chromium/WebKit and full exact-head evidence. See [verification](verification.md).
+The current branch adds ordinary CI selection, native inventories, unchanged coverage
+floors and critical behavioral mutants for this increment; later T008–T014 stay open.

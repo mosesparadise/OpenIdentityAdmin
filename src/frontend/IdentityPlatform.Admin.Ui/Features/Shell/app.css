@@ -139,7 +139,7 @@
 
 @layer components {
   .application-editor-form > div { min-width: 0; }
-  .application-editor-form select { min-width: 0; max-width: 100%; }
+  .application-editor-form select { min-width: 0; max-width: 100%; height: 44px; }
   .catalogue-search { margin-block: 24px; }
   .catalogue-search .actions { margin-top: 8px; }
   .catalogue-search input { flex: 1 1 220px; width: auto; }

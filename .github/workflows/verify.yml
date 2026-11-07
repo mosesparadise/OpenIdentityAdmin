@@ -173,6 +173,8 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-SqlServer-managedapplications-issuance }
           - { profile: PostgreSql, partition: administrator, story: ApplicationGrants, label: administrator-PostgreSql-applicationgrants }
           - { profile: SqlServer, partition: administrator, story: ApplicationGrants, label: administrator-SqlServer-applicationgrants }
+          - { profile: PostgreSql, partition: administrator, story: Catalogue, label: administrator-PostgreSql-catalogue }
+          - { profile: SqlServer, partition: administrator, story: Catalogue, label: administrator-SqlServer-catalogue }
           - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
           - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }
@@ -631,6 +633,8 @@ jobs:
         run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite applications --disposable-checkout
       - name: Verify isolated grant critical-decision mutants
         run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite application-grants --disposable-checkout
+      - name: Verify isolated catalogue critical-decision mutants
+        run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite catalogue --disposable-checkout
       - name: Verify isolated lifecycle critical-decision mutants
         run: python3 scripts/verify_mutations.py ${{ matrix.provider }} --suite application-lifecycle --disposable-checkout
       - name: Retain only sanitized mutation evidence
@@ -641,6 +645,7 @@ jobs:
             artifacts/mutations/applications-${{ matrix.provider }}/evidence.json
             artifacts/mutations/application-lifecycle-${{ matrix.provider }}/evidence.json
             artifacts/mutations/application-grants-${{ matrix.provider }}/evidence.json
+            artifacts/mutations/catalogue-${{ matrix.provider }}/evidence.json
           retention-days: 7
           if-no-files-found: error
   managed-application-mutations:
