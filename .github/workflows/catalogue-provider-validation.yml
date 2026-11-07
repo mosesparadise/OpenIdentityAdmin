@@ -6,7 +6,7 @@ permissions:
   contents: read
 jobs:
   browser:
-    name: Cross-site logout observation (${{ matrix.provider }}, ${{ matrix.browser }})
+    name: Cross-site logout completion (${{ matrix.provider }}, ${{ matrix.browser }})
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -61,7 +61,7 @@ jobs:
           git rev-parse HEAD HEAD:src HEAD:tests HEAD:scripts HEAD:eng > artifacts/catalogue-browser/source.txt
           dotnet --info > artifacts/catalogue-browser/sdk.txt
           dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json > artifacts/catalogue-browser/discovery.json
-      - name: Execute unchanged cross-site logout scenario
+      - name: Execute corrected cross-site logout scenario
         run: >-
           dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj
           --no-build --no-restore --no-progress --pre-enumerate-theories on --parallel none

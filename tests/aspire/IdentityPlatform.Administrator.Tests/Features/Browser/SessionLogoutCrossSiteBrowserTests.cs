@@ -27,6 +27,7 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
     public Task Given_DistinctTrustedSites_When_RealFormsArePostedCrossSite_Then_NeitherLogoutMutatesAndOriginalFormsStillSucceed(string provider) =>
         AdministratorBrowserEvidence.RunAsync(async () =>
         {
+            CrossSitePostWitness.RequireControls();
             await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, distinctSites: true);
             await using var session = await BrowserSession.CreateAsync();
             var page = await session.Context.NewPageAsync();
@@ -57,18 +58,15 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
             Assert.Equal(1, environment.EndSessionGets);
             Assert.Equal(2, environment.EndSessionPosts);
             environment.RequirePolicies(ClientCounts, IssuerCounts);
-            Assert.Fail("Cross-site navigation diagnostic completed every original assertion.");
         });
 
     /// <summary>Copies the legitimate form into a real other-site document and submits natively without overriding headers, cookies or TLS.</summary>
     private static async Task AttackAsync(BrowserHttpsFixture fixture, IPage attacker, IPage original, Uri foreignOrigin, Uri destination, string button)
     {
         var form = await original.Locator(Form).EvaluateAsync<string>(CopyForm, destination.AbsoluteUri);
-        var staged = fixture.StageAttacker(foreignOrigin, form);
-        await attacker.GotoAsync(staged.AbsoluteUri);
-        using var trace = new CrossSiteNavigationTrace(attacker, destination, staged);
-        var response = await attacker.RunAndWaitForResponseAsync(() => attacker.Locator(button).ClickAsync(),
-            response => response.Request.Method == HttpMethods.Post);
+        await attacker.GotoAsync(fixture.StageAttacker(foreignOrigin, form).AbsoluteUri);
+        using var witness = new CrossSitePostWitness(attacker, destination);
+        var response = await witness.SubmitAsync(() => attacker.Locator(button).ClickAsync());
         if (destination.Host == fixture.Profile.Issuer.Host)
         {
             await BrowserLogoutJourney.RequireIssuerDeniedAsync(response);
@@ -76,17 +74,6 @@ public sealed class SessionLogoutCrossSiteBrowserTests(BootstrapFixture fixture)
         else
         {
             Assert.Equal(StatusCodes.Status400BadRequest, response.Status);
-        }
-        try
-        {
-            await attacker.WaitForURLAsync(url => Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.GetLeftPart(UriPartial.Path) == destination.AbsoluteUri, new()
-            {
-                WaitUntil = WaitUntilState.Commit
-            });
-        }
-        finally
-        {
-            trace.Report(response);
         }
     }
 }
