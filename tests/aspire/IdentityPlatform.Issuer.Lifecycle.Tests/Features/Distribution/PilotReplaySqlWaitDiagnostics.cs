@@ -9,7 +9,7 @@ internal sealed class PilotReplaySqlWaitDiagnostics
 {
     internal const string HolderParameter = "holder";
     private const int SnapshotLimit = 8;
-    private const string ReportFormat = "pilot-sql-wait gate-phase={0} samples={1} distinct-overflow={2}";
+    private const string ReportFormat = "pilot-sql-wait replay-phase={0} samples={1} distinct-overflow={2}";
     private const string Snapshot = "pilot-sql-wait runtime-requests={0} direct-blockers={1} lock-waiters={2} Gate={3} NativeTokenRead={4} Other={5} winner-fixture-blocked={6} winner-gate-transaction-X={7}";
     private const string RuntimeRequests = "RuntimeRequests";
     private const string DirectBlockers = "DirectBlockers";
@@ -24,7 +24,7 @@ internal sealed class PilotReplaySqlWaitDiagnostics
     private int samples;
     private bool overflow;
 
-    // The original waiter SELECT remains the sole success oracle; this adjacent sample is diagnostic only.
+    // The waiter SELECT remains the sole success oracle; this adjacent sample is diagnostic only.
     internal const string Query = """
         ;WITH runtime_requests AS (
           SELECT r.blocking_session_id, r.wait_type,
