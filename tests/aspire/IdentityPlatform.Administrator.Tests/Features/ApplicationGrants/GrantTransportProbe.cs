@@ -25,6 +25,10 @@ internal sealed class GrantTransportProbe : IStartupFilter
     private static readonly string[] ForbiddenHeaders = ["Cookie", "X-CSRF-TOKEN", "X-Identity"];
     private string access = string.Empty;
     internal string Path { get; set; } = string.Empty;
+    internal string? Method
+    {
+        get; set;
+    }
     internal string? Body
     {
         get; set;
@@ -114,7 +118,7 @@ internal sealed class GrantTransportProbe : IStartupFilter
     {
         Assert.True(http.Request.Headers.Authorization.ToString() == Bearer + access);
         Assert.All(ForbiddenHeaders, name => Assert.False(http.Request.Headers.ContainsKey(name)));
-        Assert.Equal(Body is null ? HttpMethods.Get : HttpMethods.Post, http.Request.Method);
+        Assert.Equal(Method ?? (Body is null ? HttpMethods.Get : HttpMethods.Post), http.Request.Method);
         Assert.Equal(string.Empty, http.Request.QueryString.Value ?? string.Empty);
         Assert.Equal(Version ?? string.Empty, http.Request.Headers.IfMatch.ToString());
         Assert.Equal(Key ?? string.Empty, http.Request.Headers[KeyHeader].ToString());

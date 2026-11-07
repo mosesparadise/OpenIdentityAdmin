@@ -19,6 +19,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 public sealed class CatalogueBrowserTests(BootstrapFixture fixture)
 {
     private const int InitialRevision = 1;
+    private const int EditedRevision = 2;
+    private const string UpdatedScope = "Read updated orders";
     private const int JobCount = 2;
     private const int TerminalRevision = 2;
     private const string Resource = "browser-orders-api";
@@ -52,7 +54,8 @@ public sealed class CatalogueBrowserTests(BootstrapFixture fixture)
         var scope = await database.Set<OpenIddictEntityFrameworkCoreScope>().AsNoTracking().SingleAsync(row => row.Name == Name, token);
         var policy = await database.Set<ScopePolicy>().AsNoTracking().SingleAsync(row => row.ScopeId == scope.Id, token);
         Assert.Equal(Resource, Assert.Single(System.Text.Json.JsonSerializer.Deserialize<string[]>(scope.Resources!)!));
-        Assert.Equal(InitialRevision, policy.Revision);
+        Assert.Equal(EditedRevision, policy.Revision);
+        Assert.Equal(UpdatedScope, scope.DisplayName);
         await CatalogueBrowserJourney.RequireReferencedAsync(page, environment.Profile.ClientUri);
         await using var worker = GrantWorkerTests.CreateHost(provider, environment.Issuer.Account.Journey.Lease.RuntimeConnection, clock);
         await worker.StartAsync(token);
