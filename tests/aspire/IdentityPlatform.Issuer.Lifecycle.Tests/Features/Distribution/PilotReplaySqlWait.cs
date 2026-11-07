@@ -27,7 +27,8 @@ internal static class PilotReplaySqlWait
             AND l.request_status='GRANT' AND l.request_mode='X'
         )
         SELECT CAST(r.session_id AS int),
-          CASE WHEN @gate=0 THEN 0 WHEN t.text LIKE '%PilotProtocolGate%' THEN 1 ELSE 2 END AS ObservedMode
+          CASE WHEN @gate=0 THEN 0 WHEN t.text LIKE '%PilotProtocolGate%' THEN 1 ELSE 2 END AS ObservedMode,
+          r.connection_id, r.transaction_id
         FROM sys.dm_exec_requests r JOIN sys.dm_exec_sessions s ON s.session_id=r.session_id
         CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
         CROSS APPLY (SELECT SUBSTRING(t.text, r.statement_start_offset/2+1,

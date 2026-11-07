@@ -14,6 +14,8 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     private const int ObserveSeconds = 2;
     private const int PollMilliseconds = 10;
     private const int CleanupSeconds = 15;
+    private const int WinnerConnectionOrdinal = 2;
+    private const int WinnerTransactionOrdinal = 3;
     private const string AuthorizationParameter = "authorization";
     private const string BlockerParameter = "blocker";
     private const string GateParameter = "gate";
@@ -22,6 +24,7 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     private const string DistinctSession = "The runtime waiter must own a distinct database session.";
     private const string AmbiguousWaiter = "The isolated barrier has more than one candidate runtime waiter.";
     private const string CleanupFailure = "Ordered pilot barrier cleanup failed.";
+    private const string SameWinner = "Both fixture phases must retain the exact winning physical connection and transaction.";
     private readonly string provider;
     private readonly int winnerProcess;
     private readonly int replayProcess;
@@ -32,6 +35,9 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
     private IDbContextTransaction? transaction;
     private readonly HashSet<int> sessions = [];
     private int holder;
+    private PilotReplayNativeReadBarrier? nativeRead;
+    private (Guid Connection, long Transaction)? winnerOwner;
+    private PilotReplaySqlWaitMode? replayMode;
 
     /// <summary>Uses independent privileged fixture connections without changing either issuer runtime principal.</summary>
     private PilotReplayDatabaseBarrier(IssuerEnvironment environment, string provider, int winnerProcess, int replayProcess)
@@ -47,13 +53,19 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
 
     /// <summary>Creates the finite barrier before either exchange, preserving native credentials and original expiry.</summary>
     internal static async Task<PilotReplayDatabaseBarrier> CreateAsync(IssuerEnvironment environment, string provider, string authorization,
-        int winnerProcess, int replayProcess)
+        int winnerProcess, int replayProcess, string? nativeCode = null)
     {
         Assert.True(winnerProcess > 0 && replayProcess > 0 && winnerProcess != replayProcess);
         var barrier = new PilotReplayDatabaseBarrier(environment, provider, winnerProcess, replayProcess);
         try
         {
             await barrier.InitializeAsync(authorization, TestContext.Current.CancellationToken);
+            if (nativeCode is not null)
+            {
+                Assert.Equal(PilotReplayNativeReadSql.Provider, provider);
+                barrier.nativeRead = new PilotReplayNativeReadBarrier(environment);
+                await barrier.nativeRead.InitializeAsync(nativeCode, TestContext.Current.CancellationToken);
+            }
             return barrier;
         }
         catch
@@ -95,8 +107,27 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
         WaitAsync(holder, gate: false, [winner], token);
 
     /// <summary>Requires a peer process blocked by the winner's gate or an exact native read lock in its still-gated generation transaction.</summary>
-    internal Task<int> WaitForReplayAsync(int winner, Task<HttpResponseMessage> issuance, Task<HttpResponseMessage> replay, CancellationToken token) =>
-        WaitAsync(winner, gate: true, [issuance, replay], token);
+    internal async Task<int> WaitForReplayAsync(int winner, Task<HttpResponseMessage> issuance, Task<HttpResponseMessage> replay, CancellationToken token)
+    {
+        var session = await WaitAsync(winner, gate: true, [issuance, replay], nativeRead?.ObservationToken ?? token);
+        if (nativeRead is not null)
+        {
+            Assert.Equal(PilotReplaySqlWaitMode.NativeTokenReadMatched, replayMode);
+        }
+        return session;
+    }
+
+    /// <summary>After independent durable consumption proof, enters the synthetic lock-only phase on the same winning owner.</summary>
+    internal async Task AdvanceNativeReadAsync(int winnerSession, Task<HttpResponseMessage> winner, CancellationToken token)
+    {
+        if (nativeRead is not null)
+        {
+            var deadline = nativeRead.BeginObservation(token);
+            await ReleaseInitialAsync(deadline);
+            holder = nativeRead.Session;
+            Assert.Equal(winnerSession, await WaitForWinnerAsync(winner, deadline));
+        }
+    }
 
     /// <summary>Propagates early HTTP or query failure; a timeout cannot masquerade as successful lock evidence.</summary>
     private async Task<int> WaitAsync(int blocker, bool gate, Task<HttpResponseMessage>[] pending, CancellationToken token)
@@ -156,8 +187,7 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
             session = rows.GetInt32(0);
             if (!postgres)
             {
-                mode = (PilotReplaySqlWaitMode)rows.GetInt32(1);
-                Assert.True(Enum.IsDefined(mode.Value));
+                mode = ReadMode(rows, gate);
             }
             Assert.False(await rows.ReadAsync(token), AmbiguousWaiter);
         }
@@ -172,8 +202,50 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
         return session;
     }
 
+    /// <summary>Retains the observed mode and requires both fixture phases to share their physical winning transaction.</summary>
+    private PilotReplaySqlWaitMode ReadMode(DbDataReader rows, bool gate)
+    {
+        var mode = (PilotReplaySqlWaitMode)rows.GetInt32(1);
+        Assert.True(Enum.IsDefined(mode));
+        if (gate)
+        {
+            replayMode = mode;
+        }
+        else
+        {
+            var current = (rows.GetGuid(WinnerConnectionOrdinal), rows.GetInt64(WinnerTransactionOrdinal));
+            Assert.True(current.Item1 != Guid.Empty && current.Item2 > 0, SameWinner);
+            Assert.True(winnerOwner is null || winnerOwner == current, SameWinner);
+            winnerOwner = current;
+        }
+        return mode;
+    }
+
     /// <summary>Releases the fixture transaction without cancelling either genuine exchange.</summary>
     internal async Task ReleaseAsync(CancellationToken token)
+    {
+        var errors = new List<Exception>();
+        try
+        {
+            await ReleaseInitialAsync(token);
+        }
+        catch (Exception error) { errors.Add(error); }
+        try
+        {
+            if (nativeRead is not null)
+            {
+                await nativeRead.ReleaseAsync(token);
+            }
+        }
+        catch (Exception error) { errors.Add(error); }
+        if (errors.Count != 0)
+        {
+            throw new AggregateException(CleanupFailure, errors);
+        }
+    }
+
+    /// <summary>Releases phase one independently while the synthetic second fixture lease remains held.</summary>
+    private async Task ReleaseInitialAsync(CancellationToken token)
     {
         if (transaction is { } held)
         {
@@ -240,6 +312,14 @@ internal sealed class PilotReplayDatabaseBarrier : IAsyncDisposable
         try
         {
             await ExecuteAsync(PilotReplayBarrierSql.Drop(provider), cleanup.Token);
+        }
+        catch (Exception error) { failures.Add(error); }
+        try
+        {
+            if (nativeRead is not null)
+            {
+                await nativeRead.DisposeAsync();
+            }
         }
         catch (Exception error) { failures.Add(error); }
         try
