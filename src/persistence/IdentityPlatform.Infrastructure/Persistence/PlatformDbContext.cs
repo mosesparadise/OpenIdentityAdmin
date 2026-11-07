@@ -29,6 +29,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         ManagedLoginModel.Configure(builder, ProviderOptions.Provider(options).Model);
         IssuerContinuationModel.Configure(builder, ProviderOptions.Provider(options).Model);
         LoginModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
+        PilotProtocolGate.Configure(builder, ProviderOptions.Provider(options).Model);
         AdministratorModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
         FactorModelConfiguration.Configure(builder, ProviderOptions.Provider(options).Model);
         AdministratorProtocolModel.ConfigurePlatform(builder, ProviderOptions.Provider(options).Model);

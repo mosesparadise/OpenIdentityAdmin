@@ -19,23 +19,13 @@ internal sealed class PilotReplayCleanup(PlatformDbContext database, IOpenIddict
     /// <summary>Never changes validation success or rejection; current native persisted bindings are required before idempotent cleanup.</summary>
     public async ValueTask HandleAsync(OpenIddictServerEvents.ValidateTokenContext context)
     {
-        var principal = context.Principal;
-        if (context.EndpointType != OpenIddictServerEndpointType.Token || context.Transaction.Request is not { } request ||
-            !request.IsAuthorizationCodeGrantType() || request.ClientId != PilotProfile.ClientId || principal is null ||
-            !principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode) ||
-            principal.GetPresenters() is not [PilotProfile.ClientId] || string.IsNullOrEmpty(context.TokenId) ||
-            string.IsNullOrEmpty(context.AuthorizationId) || context.TokenId != principal.GetTokenId() ||
-            context.AuthorizationId != principal.GetAuthorizationId() || string.IsNullOrEmpty(principal.GetClaim(OpenIddictConstants.Claims.Subject)))
-        {
-            return;
-        }
-        if (!await IsRevokedPilotCodeAsync(context))
+        if (!Matches(context) || !await IsBoundAsync(context, requireRevoked: true))
         {
             return;
         }
         try
         {
-            await tokens.RevokeByAuthorizationIdAsync(context.AuthorizationId, context.CancellationToken);
+            await tokens.RevokeByAuthorizationIdAsync(context.AuthorizationId!, context.CancellationToken);
         }
         catch (Exception error) when (error is DbException or DbUpdateException or InvalidOperationException or OperationCanceledException)
         {
@@ -44,14 +34,26 @@ internal sealed class PilotReplayCleanup(PlatformDbContext database, IOpenIddict
         }
     }
 
+    /// <summary>Requires the protected principal and resolved native IDs to describe exactly this pilot code exchange.</summary>
+    internal static bool Matches(OpenIddictServerEvents.ValidateTokenContext context)
+    {
+        var principal = context.Principal;
+        return context.EndpointType == OpenIddictServerEndpointType.Token && context.Transaction.Request is { } request &&
+            request.IsAuthorizationCodeGrantType() && request.ClientId == PilotProfile.ClientId && principal is not null &&
+            principal.HasTokenType(OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode) &&
+            principal.GetPresenters() is [PilotProfile.ClientId] && !string.IsNullOrEmpty(context.TokenId) &&
+            !string.IsNullOrEmpty(context.AuthorizationId) && context.TokenId == principal.GetTokenId() &&
+            context.AuthorizationId == principal.GetAuthorizationId() && !string.IsNullOrEmpty(principal.GetClaim(OpenIddictConstants.Claims.Subject));
+    }
+
     /// <summary>Binds the exact native code, authorization, subject and application to the persisted pilot manifest before any write.</summary>
-    private async Task<bool> IsRevokedPilotCodeAsync(OpenIddictServerEvents.ValidateTokenContext context)
+    internal async Task<bool> IsBoundAsync(OpenIddictServerEvents.ValidateTokenContext context, bool requireRevoked)
     {
         var cancellation = context.CancellationToken;
         var code = await tokens.FindByIdAsync(context.TokenId!, cancellation);
         if (code is null || await tokens.GetIdAsync(code, cancellation) != context.TokenId ||
             !await tokens.HasTypeAsync(code, OpenIddictConstants.TokenTypeIdentifiers.Private.AuthorizationCode, cancellation) ||
-            !await tokens.HasStatusAsync(code, OpenIddictConstants.Statuses.Revoked, cancellation) ||
+            (requireRevoked && !await tokens.HasStatusAsync(code, OpenIddictConstants.Statuses.Revoked, cancellation)) ||
             await tokens.GetAuthorizationIdAsync(code, cancellation) != context.AuthorizationId ||
             await tokens.GetSubjectAsync(code, cancellation) != context.Principal!.GetClaim(OpenIddictConstants.Claims.Subject))
         {

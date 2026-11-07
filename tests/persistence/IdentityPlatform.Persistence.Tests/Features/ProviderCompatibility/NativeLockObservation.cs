@@ -48,11 +48,14 @@ internal sealed class NativeLockObservation(string provider, string connection)
         command.Parameters.Add(blocking);
         while (true)
         {
+            deadline.Token.ThrowIfCancellationRequested();
             if (stop?.IsCompleted == true)
             {
                 return false;
             }
-            if (Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token), CultureInfo.InvariantCulture) == 1)
+            var observed = Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token), CultureInfo.InvariantCulture);
+            deadline.Token.ThrowIfCancellationRequested();
+            if (observed == 1)
             {
                 return true;
             }

@@ -9,6 +9,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 [Collection("administrator-bootstrap")]
 public sealed class InitialPilotReplayTests(BootstrapFixture fixture)
 {
+    private const string PrematureWinner = "The held winner completed before release.";
+
     /// <summary>Uses one common safety oracle on the old response-first trace and the corrected positively observed contention trace.</summary>
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
@@ -60,7 +62,7 @@ public sealed class InitialPilotReplayTests(BootstrapFixture fixture)
             if (first == winner)
             {
                 await winner;
-                Assert.Fail("The held winner completed before release.");
+                Assert.Fail(PrematureWinner);
             }
             if (observation.IsCompleted)
             {

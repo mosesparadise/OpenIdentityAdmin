@@ -28,23 +28,23 @@
   "profiles": {
     "unit": {
       "Core": 41,
-      "Host": 1846,
+      "Host": 1848,
       "Architecture": 5,
       "AppHost": 110
     },
     "PostgreSql": {
-      "Persistence": 24,
+      "Persistence": 29,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1208
+      "Administrator": 1213
     },
     "SqlServer": {
-      "Persistence": 24,
+      "Persistence": 29,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 41,
-      "Administrator": 1313
+      "Administrator": 1318
     }
   },
   "browser": {
@@ -107,8 +107,8 @@
       "SqlServer": 166
     },
     "ProtocolAdmission": {
-      "PostgreSql": 111,
-      "SqlServer": 111
+      "PostgreSql": 116,
+      "SqlServer": 116
     },
     "BrowserSessions": {
       "PostgreSql": 322,

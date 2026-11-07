@@ -1282,7 +1282,12 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.InitialPilotReplayTests.Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"PostgreSql\", standalone: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"PostgreSql\", standalone: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2671,7 +2676,12 @@
     "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationGrantRecoveryBrowserTests.Given_StoppedJobAndCompetingContinuation_When_UserReloadsAndConfirmsFreshVersions_Then_SameJobCompletesWithImmutableHistory(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedActorKey_When_AnotherAdministratorUsesIdenticalIntent_Then_OnlyItsOwnApprovalCanBeRecovered(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedSubmissionKey_When_FreshContinuationUsesTheSameUuid_Then_NewActionApprovalAndExactReplayRemainDistinct(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantReplayScopeTests.Given_RetainedTargetKey_When_AnotherDisabledApplicationUsesThatKey_Then_EachTargetRetainsItsOwnJobAndHistory(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.InitialPilotReplayTests.Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"SqlServer\", standalone: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"SqlServer\", standalone: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -57467,6 +57477,204 @@
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.InitialPilotReplayTests.Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "InitialPilotReplayTests",
+        "methodName": "Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.InitialPilotReplayTests.Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "InitialPilotReplayTests",
+        "methodName": "Given_DurablyConsumedPilotCode_When_InitialReplayCompetesWithIssuance_Then_NoWinningEntrySurvivesReplay",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"PostgreSql\", standalone: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"PostgreSql\", standalone: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"SqlServer\", standalone: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle(provider: \"SqlServer\", standalone: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_PilotHostComposition_When_CodeExchangesThenReplays_Then_FreshGateValidationPreservesNativeLifecycle",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"PostgreSql\", standalone: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotValidationTests.Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs(provider: \"SqlServer\", standalone: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission",
+        "typeName": "PilotValidationTests",
+        "methodName": "Given_ValidCodeWithRevokedAuthorization_When_FreshPilotValidationRuns_Then_NoConsumptionOrGenerationOccurs",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
         ]
       },
       "traits": [

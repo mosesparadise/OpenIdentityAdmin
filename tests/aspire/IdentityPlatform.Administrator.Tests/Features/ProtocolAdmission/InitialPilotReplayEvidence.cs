@@ -13,6 +13,9 @@ namespace IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
 /// <summary>Checks independent native status and public cryptography before any later replay can conceal late issuance.</summary>
 internal static class InitialPilotReplayEvidence
 {
+    private const string WrongAuthorization = "Winning access token has an unexpected authorization binding.";
+    private const string ReusedAuthorization = "The unrelated positive control reused the target authorization.";
+
     internal const string Failure = "Initial pilot replay completed but a winning native token entry remains usable before any additional replay.";
 
     /// <summary>Requires both real responses and every winning authorization entry to satisfy the same initial-replay safety oracle.</summary>
@@ -25,7 +28,8 @@ internal static class InitialPilotReplayEvidence
         Assert.Empty(await client.ValidateAsync(body.RootElement, flow, TestContext.Current.CancellationToken));
         var access = new JsonWebToken(body.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!);
         var authorization = original.GetAuthorizationId()!;
-        Assert.Equal(authorization, access.GetClaim(OpenIddictConstants.Claims.Private.AuthorizationId).Value);
+        Assert.True(string.Equals(authorization, access.GetClaim(OpenIddictConstants.Claims.Private.AuthorizationId).Value, StringComparison.Ordinal),
+            WrongAuthorization);
         await using var scope = Observer(environment);
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictTokenManager>();
         var issued = new Dictionary<string, bool>(StringComparer.Ordinal);
@@ -69,7 +73,8 @@ internal static class InitialPilotReplayEvidence
         using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken));
         Assert.Empty(await client.ValidateAsync(body.RootElement, control, TestContext.Current.CancellationToken));
         var access = new JsonWebToken(body.RootElement.GetProperty(OpenIddictConstants.Parameters.AccessToken).GetString()!);
-        Assert.NotEqual(original.GetAuthorizationId(), access.GetClaim(OpenIddictConstants.Claims.Private.AuthorizationId).Value);
+        Assert.False(string.Equals(original.GetAuthorizationId(), access.GetClaim(OpenIddictConstants.Claims.Private.AuthorizationId).Value, StringComparison.Ordinal),
+            ReusedAuthorization);
         await using var scope = Observer(environment);
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictTokenManager>();
         var entry = await manager.FindByIdAsync(access.GetClaim(OpenIddictConstants.Claims.Private.TokenId).Value, TestContext.Current.CancellationToken);

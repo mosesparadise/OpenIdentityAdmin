@@ -50,8 +50,8 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
     /// <summary>Runs the full native account/protocol pipeline over a retained real HTTPS listener and immutable BFF identity.</summary>
     internal static Task<BrowserIssuerHost> CreateHttpsAsync(JourneyScenario scenario, string provider,
         AdministratorRegistrationPolicy policy, Uri client, BrowserHttpsEndpoint endpoint, Action<IServiceCollection>? configure = null,
-        BrowserPilotClient? pilot = null, bool managed = false) =>
-        CreateCoreAsync(scenario, provider, pilot is not null, [], policy, configure, endpoint, client, pilot, managed);
+        BrowserPilotClient? pilot = null, bool managed = false, bool standalonePilot = false) =>
+        CreateCoreAsync(scenario, provider, pilot is not null, [], standalonePilot ? null : policy, configure, endpoint, client, pilot, managed);
 
     /// <summary>Composes one explicit account host and preserves cleanup ownership under failed startup.</summary>
     private static async Task<BrowserIssuerHost> CreateCoreAsync(JourneyScenario scenario, string provider, bool pilot, IInterceptor[] faults,
@@ -123,7 +123,14 @@ internal sealed class BrowserIssuerHost(WebApplication app, IssuerCredentials cr
         app.MapAccounts();
         if (endpoint is not null)
         {
-            app.MapSharedProtocol();
+            if (pilot && !logout)
+            {
+                app.MapProtocol();
+            }
+            else
+            {
+                app.MapSharedProtocol();
+            }
         }
     }
 
