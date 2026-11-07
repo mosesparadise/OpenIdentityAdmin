@@ -25,7 +25,11 @@ internal sealed class NativeLockObservation(string provider, string connection)
     };
 
     /// <summary>Requires an actual lock wait on that exact peer session within the unchanged five-second transaction budget.</summary>
-    internal async Task WaitAsync(int session, int blocker, CancellationToken token)
+    internal async Task WaitAsync(int session, int blocker, CancellationToken token) =>
+        Assert.True(await ObserveUntilAsync(session, blocker, null, token));
+
+    /// <summary>Allows an explicit response-first observation to stop polling without cancelling or masking an in-flight query failure.</summary>
+    internal async Task<bool> ObserveUntilAsync(int session, int blocker, Task? stop, CancellationToken token)
     {
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
         deadline.CancelAfter(TimeSpan.FromSeconds(ObserveSeconds));
@@ -42,8 +46,16 @@ internal sealed class NativeLockObservation(string provider, string connection)
         blocking.ParameterName = BlockerParameter;
         blocking.Value = blocker;
         command.Parameters.Add(blocking);
-        while (Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token), CultureInfo.InvariantCulture) != 1)
+        while (true)
         {
+            if (stop?.IsCompleted == true)
+            {
+                return false;
+            }
+            if (Convert.ToInt32(await command.ExecuteScalarAsync(deadline.Token), CultureInfo.InvariantCulture) == 1)
+            {
+                return true;
+            }
             await Task.Delay(TimeSpan.FromMilliseconds(PollMilliseconds), deadline.Token);
         }
     }
