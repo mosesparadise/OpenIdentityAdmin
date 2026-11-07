@@ -2,7 +2,7 @@
 
 **Branch**: `129-pilot-replay-serialization`
 **Created**: 7 November 2026
-**Status**: T003–T007 implemented within approved LIFE-003/006; T008/T009 integrated verification and both-provider acceptance in progress.
+**Status**: T001–T009 accepted for internal development; [PR126 delivery and exact evidence](acceptance.md).
 **Input**: Continue after PR124 delivery with the handoff's initial pilot replay/late-issuance defect.
 
 ## Authority and scope
@@ -13,7 +13,7 @@ This preserves its exactly-one successful concurrent exchange contract; it does 
 introduce a policy allowing two otherwise valid concurrent requests to fail merely
 because replay overtook issuance. No new product choice is required. Production,
 refresh activation, broader client profiles and existing historical/manual/release
-gates remain separate. This document is not a declaration that the defect is fixed.
+gates remain separate. Correction acceptance is recorded separately in [the delivery evidence](acceptance.md); it does not close those separate gates.
 
 ## User Scenarios & Testing
 

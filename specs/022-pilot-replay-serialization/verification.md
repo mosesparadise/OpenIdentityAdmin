@@ -1,5 +1,17 @@
 # Pilot replay correction evidence
 
+## Accepted delivery — 7 November 2026
+
+[Final acceptance](acceptance.md) records PR126 squash `c2e4152`, reviewed source
+`0be053e`, and CI553: all 126 jobs pass. Independent reconciliation accepts
+103 ordinary native reports / 5,899 passing executions, 120 mutation kills,
+83 UI cases, 44 Node contracts and all 100 original coverage reports / 15 floors.
+Both providers pass; T001–T009 are complete for internal development.
+
+The dated checkpoints below are historical, including their pending/draft language.
+Failed attempts remain failures. Existing historical, manual, refresh and release
+gates remain open; raw evidence retention limits are explicit in the final record.
+
 ## Corrected SQL conformance and final candidate — 7 November 2026
 
 [Focused SQL run42398907537](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42398907537)

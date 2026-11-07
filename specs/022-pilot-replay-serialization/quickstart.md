@@ -1,19 +1,18 @@
 # Pilot replay correction validation
 
-The complete pilot replay implementation is under acceptance in
-[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126). Hosted SQL Server
-starts with the unchanged pinned image. The corrected focused SQL suite passes27/27,
-including both ordinary process directions and two explicit native-read observer
-controls. Both matched native-read contention and gate waits are actually observed;
-the controls' extra fixture lock does not change product isolation or native values.
-Required exact-head full verification and T008/T009 final review remain open. This
-candidate is not ready to merge or deploy. See [current evidence](verification.md).
+The complete pilot replay correction is accepted for internal development and
+squash-merged in [PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126).
+CI553 passes all 126 jobs at reviewed source `0be053e`, including both real providers.
+SQL Distribution passes 27/27; both ordinary process directions and the two explicit
+native-read controls pass. The controls’ extra fixture lock does not change product
+isolation or native values. See [acceptance and evidence limits](acceptance.md).
+Production deployment and the existing manual/public-release gates remain separate.
 
 The existing administrator UI and grant revocation are already delivered through
 PR124; use the [native Aspire grant walkthrough](../021-application-grant-revocation/quickstart.md)
 for local testing. This correction adds no custom launch script.
 
-Implementation verification starts from the clean feature branch with the repository
+For future changes, implementation verification starts from a clean feature branch with the repository
 .NET10 SDK policy, locked dependencies, trusted development HTTPS and Docker ready.
 Use the existing test-matrix runner and native discovery tools; determine exact new
 case selectors from discovery rather than inventing names/counts in advance.

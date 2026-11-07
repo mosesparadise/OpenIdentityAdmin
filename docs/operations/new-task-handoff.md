@@ -1,5 +1,33 @@
 # OpenIdentityAdmin new-task handoff
 
+## Current delivery — 7 November 2026
+
+Feature022 T001–T009 are complete for internal development. The selected T008,
+SQL Server validation and T009 batch is squash-merged in
+[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126) as
+`c2e41521ece542a92fa7ddb8867834b3d81b9ee3`. CI553 passes all 126 jobs at reviewed
+source `0be053ea3ee09086634ecf981f3bfb1f01917608`; the tested merge and squash have
+the same source tree. Independent review verifies 5,899 native executions,
+120 mutation kills, 83 UI cases, 44 Node contracts and 100 original coverage inputs
+meeting all 15 unchanged module floors. Both providers pass; SQL Distribution
+passes 27/27. [Final acceptance, hashes and retention limits](../../specs/022-pilot-replay-serialization/acceptance.md).
+
+The initial pilot replay/late-issuance correction is accepted. The existing
+administrator UI, application editor, disable/re-enable and grant revocation remain
+available through native Aspire. All six historical findings, refresh activation
+and Windows/manual/Firefox/A-009/vendor/production/public-release gates remain open.
+
+Next: select the next approved roadmap slice; do not repeat feature022 implementation
+or SQL diagnostics. Preserve branches130–133, original failed-run receipts and the
+frozen provider-compatibility producer. Branch133’s isolated workflow is diagnostic
+only and must not be merged. This prose follow-up records accepted runtime evidence;
+its lighter documentation checks are not a new full runtime verification.
+
+## Historical checkpoints
+
+The dated notices below retain the state known at each checkpoint. Their pending,
+draft and next-step language is superseded by the current delivery above.
+
 **SQL conformance passes — 7 November 2026:** isolated run42398907537 at `ce3d9a4`
 passes27/27. Both synthetic cases explicitly observe `NativeTokenReadMatched`;
 ordinary primary-to-secondary also uses that path, while the opposite direction

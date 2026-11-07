@@ -1,44 +1,16 @@
 # Tasks: Pilot replay serialization
 
-**SQL witness validation complete:** focused run42398907537 passes27/27, including
-both explicit native-read conformance controls and the ordinary directions. The
-current final inventory requires5,899 native executions; full exact-head acceptance
-and independent reconciliation remain pending. Historical failed attempts below
-stay retained; no task or release gate is closed by a focused run alone.
+**Accepted — 7 November 2026:** T001–T009 are complete for internal development.
+The user-selected T008, SQL Server validation and T009 batch is delivered in
+[PR126](https://github.com/mosesparadise/OpenIdentityAdmin/pull/126), squash
+`c2e41521ece542a92fa7ddb8867834b3d81b9ee3`. Reviewed source `0be053e` passed
+all 126 CI553 jobs, including both providers. Independent reconciliation verifies
+5,899 native executions, 120 mutation kills, 100 original coverage inputs and all
+15 unchanged floors. See [acceptance and evidence limits](acceptance.md).
 
-**Latest validation:** CI552 at `413a3d4` passes123 jobs but fails SQL Distribution
-and final acceptance; coverage aggregation is skipped. All earlier regression
-producer jobs now succeed. A separate failed diagnostic observes native token-read
-blocking before the replay's gate UPDATE. The corrected test requires exact native
-lock-resource ownership under the winner's exclusive gate transaction and known
-issuer process identities. Its focused hosted execution and a clean final-head
-full run remain required. See `verification.md`; no task is accepted from a failed
-run. The older local startup limitation below does not describe hosted SQL readiness.
-
-The initial corrected SQL run passes25/25 but exercises only the existing gate
-witness. Two additional SQL controls now require the exact native-read witness
-under an explicitly synthetic lock. Lifecycle inventory is88 (43 PostgreSQL/45 SQL);
-Distribution is25/27, preserving every earlier case. Their execution is pending.
-
-**Current batch:** the user selected T008, SQL Server validation and T009. Branch132
-adds five pilot mutation witnesses per provider, mandatory hosted mutation jobs and
-updated native inventory at `71ab8e319ab183b8af21b0405f4a2ac565a93894`. T008/T009
-remain open until actual both-provider/full-CI evidence and integrated review pass.
-The prior implementation is preserved; local SQL startup is not repeated without
-a verified changed condition. See the current section in `verification.md`.
-
-T001 is the planning checkpoint. T002 retains a PostgreSQL old-source failure.
-T003–T004 are implemented on branch130; T005–T007 are implemented on
-`131-pilot-replay-coordination` at `6860a6b7b155d931b8d7e7757992ddceb1b428a4`.
-PostgreSQL now demonstrates the corrected initial-replay invariant, including both
-real process directions. These implementation tasks remain unchecked until their
-required SQL Server verification succeeds. SQL still exits before readiness; it is
-not a replay/schema test result. See `verification.md` for reports and limits.
-
-Next is T008/T009 integrated acceptance plus the outstanding SQL cells. Preserve
-existing source/evidence; do not repeat completed implementation or reopen expired
-diagnostic approvals. Native inventory reconciliation is already included; new
-mutation controls, coverage/full CI and final delivery acceptance remain open.
+Historical failures and intermediate unchecked states remain in [verification.md](verification.md).
+No implementation or SQL diagnostic needs repeating. All six historical findings,
+refresh activation and existing manual/production/public-release gates remain open.
 
 ## Setup
 
@@ -47,19 +19,19 @@ mutation controls, coverage/full CI and final delivery acceptance remain open.
 ## US1 — Serialized concurrent exchanges
 
 - [x] T002 [US1] Add the controlled initial-replay oracle under `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; retain complete baseline source/report hashes and demonstrate its old-source failure without a second replay. Preserve the existing later-cleanup/guard regressions in separate cases. C01/C08.
-- [ ] T003 [US1] Add `PilotProtocolGate` model/configuration under `src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/`, new migrations in both `src/migrations/IdentityPlatform.Migrations.*` projects and fresh/upgrade/least-privilege tests under `tests/persistence/IdentityPlatform.Persistence.Tests/Features/`. Preserve histories and native data; never activate or repair the pilot from HTTP. C09.
-- [ ] T004 [US1] Implement feature-local database gate ownership and fresh native validation under `src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/`; wire both host entry paths without weakening `ProtocolStorageOwner.BeginChild()` or other profile selection. C01/C07/C10.
+- [x] T003 [US1] Add `PilotProtocolGate` model/configuration under `src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Persistence/`, new migrations in both `src/migrations/IdentityPlatform.Migrations.*` projects and fresh/upgrade/least-privilege tests under `tests/persistence/IdentityPlatform.Persistence.Tests/Features/`. Preserve histories and native data; never activate or repair the pilot from HTTP. C09.
+- [x] T004 [US1] Implement feature-local database gate ownership and fresh native validation under `src/backend/IdentityPlatform.AuthServer/Features/Protocol/PilotReplay/`; wire both host entry paths without weakening `ProtocolStorageOwner.BeginChild()` or other profile selection. C01/C07/C10.
 
 ## US2 — Durable consumption and bounded publication
 
-- [ ] T005 [US2] Complete coordinator separately committed native consumption/replay, generation in the same transaction/context that holds the gate, and captured publication through commit and actual cleanup in `Features/Protocol/PilotReplay/`, reusing `ProtocolTransport` primitives. C03/C04/C05/C06.
-- [ ] T006 [US2] Add provider-backed faults and real gate-loss/late-continuation evidence in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; cover original deadlines, missing state, rollback/commit ambiguity, cancellation and cleanup. Retain native bindings and unrelated success. C03–C08/C11/C12.
+- [x] T005 [US2] Complete coordinator separately committed native consumption/replay, generation in the same transaction/context that holds the gate, and captured publication through commit and actual cleanup in `Features/Protocol/PilotReplay/`, reusing `ProtocolTransport` primitives. C03/C04/C05/C06.
+- [x] T006 [US2] Add provider-backed faults and real gate-loss/late-continuation evidence in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ProtocolAdmission/`; cover original deadlines, missing state, rollback/commit ambiguity, cancellation and cleanup. Retain native bindings and unrelated success. C03–C08/C11/C12.
 
 ## Cross-instance acceptance and delivery
 
-- [ ] T007 Add ordered two-process evidence under `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/`; prove distinct process/transport identities, real database contention, both directions and no late issuance before any additional replay. C02.
-- [ ] T008 Reconcile native discovery/selection, meaningful gate/publication mutation controls, original coverage inputs and existing full regression inventory in `eng/`, `scripts/` and `verification.md`; run all required exact-head CI with unchanged floors. C01–C12.
-- [ ] T009 Complete independent architecture/security, test/evidence and provider/Aspire reviews; document coordinated upgrade and current gaps in `quickstart.md`, `verification.md`, `docs/roadmap.md` and `docs/operations/new-task-handoff.md`; normally squash only after exact-head checks pass. PRS-001–006.
+- [x] T007 Add ordered two-process evidence under `tests/aspire/IdentityPlatform.Issuer.Lifecycle.Tests/Features/Distribution/`; prove distinct process/transport identities, real database contention, both directions and no late issuance before any additional replay. C02.
+- [x] T008 Reconcile native discovery/selection, meaningful gate/publication mutation controls, original coverage inputs and existing full regression inventory in `eng/`, `scripts/` and `verification.md`; run all required exact-head CI with unchanged floors. C01–C12.
+- [x] T009 Complete independent architecture/security, test/evidence and provider/Aspire reviews; document coordinated upgrade and current gaps in `quickstart.md`, `verification.md`, `docs/roadmap.md` and `docs/operations/new-task-handoff.md`; normally squash only after exact-head checks pass. PRS-001–006.
 
 Dependencies: T001→T002→T003→T004→T005→T006→T007→T008→T009.
 Architecture/test reviews may run independently; local provider runtimes remain
