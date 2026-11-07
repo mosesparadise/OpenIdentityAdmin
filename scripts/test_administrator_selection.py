@@ -154,8 +154,9 @@ class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
         verify = re.split(r'\n  [A-Za-z][\w-]*:', workflow.split('  verify:\n', 1)[1], maxsplit=1)[0]
         self.assertIn('    timeout-minutes: 20', verify)
         for provider in ('PostgreSql', 'SqlServer'):
-            cell = '{ profile: ' + provider + ', partition: administrator, story: ProtocolAdmission, label: administrator-' + provider + '-protocoladmission }'
-            self.assertEqual(1, verify.count(cell))
+            for group in ('Admission', 'Replay'):
+                cell = '{ profile: ' + provider + ', partition: administrator, story: ProtocolAdmission, protocol_admission_group: ' + group + ', label: administrator-' + provider + '-protocoladmission-' + group.lower() + ' }'
+                self.assertEqual(1, verify.count(cell))
         self.assertIn('timeout=180 if args.profile == "unit" else 660', (root / 'scripts/verify.py').read_text())
 
 
