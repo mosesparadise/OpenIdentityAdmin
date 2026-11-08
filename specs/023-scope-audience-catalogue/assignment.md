@@ -82,3 +82,11 @@ oracles, mutation evidence and provider-operation joining. The new observed
 assignment/deletion contention and corrected browser journey still require hosted
 execution. T008 remains open; no main merge or historical/external gate closure is
 claimed by this checkpoint.
+
+The corrected focused run42434975233 at isolated source `6687319` passes all six
+jobs: 26 exact selected cases per provider on Chromium, the browser journey on
+each provider on WebKit, and all five catalogue/assignment mutation controls on
+each provider with successful baseline/restored runs. Full CI567 at `c65d43d`
+rejects test import ordering and one unused import; the correction changes only
+those imports. Preserve that failed/superseded run. A fresh full run at the
+corrected head is required; the focused results alone do not complete T008.

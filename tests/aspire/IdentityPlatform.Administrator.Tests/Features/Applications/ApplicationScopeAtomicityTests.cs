@@ -1,5 +1,5 @@
-using IdentityPlatform.Administrator.Tests.Features.Catalogue;
 using IdentityPlatform.Admin.Api.Features.Applications;
+using IdentityPlatform.Administrator.Tests.Features.Catalogue;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Applications;
 
