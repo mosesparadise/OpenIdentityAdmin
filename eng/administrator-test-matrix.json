@@ -1383,7 +1383,32 @@
     "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"deadline\")",
     "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"expiry\")",
-    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"generation\")"
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeAssignmentTests.Given_PendingRequestAndCode_When_ScopesAreAssignedThenCleared_Then_OnlyFreshUnassignedProfilesCanIssue(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationScopeBrowserTests.Given_CurrentAdministrator_When_AssignmentUiSavesAndClears_Then_VisibleWarningsMatchNativePermissionsAndAccessibleRecovery(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"PostgreSql\", change: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"PostgreSql\", change: 1)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"PostgreSql\", change: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"PostgreSql\", denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"PostgreSql\", denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 1)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 3)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 4)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"PostgreSql\", expire: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"PostgreSql\", expire: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"PostgreSql\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"PostgreSql\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"PostgreSql\", edit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"PostgreSql\", edit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"PostgreSql\", deleteFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"PostgreSql\", deleteFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_EligibleScopes_When_AssignedReassignedAndRemoved_Then_OnlyExactPermissionsVersionAndAuditChange(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_DisabledAssignedScope_When_OrdinaryEditorActionsCommit_Then_AssignmentIsPreservedAndRemovable(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAssignedScopeTests.Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"PostgreSql\", write: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"PostgreSql\", write: True)"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2873,7 +2898,32 @@
     "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"deadline\")",
     "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"expiry\")",
-    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"generation\")"
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeAssignmentTests.Given_PendingRequestAndCode_When_ScopesAreAssignedThenCleared_Then_OnlyFreshUnassignedProfilesCanIssue(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationScopeBrowserTests.Given_CurrentAdministrator_When_AssignmentUiSavesAndClears_Then_VisibleWarningsMatchNativePermissionsAndAccessibleRecovery(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"SqlServer\", change: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"SqlServer\", change: 1)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"SqlServer\", change: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"SqlServer\", denyAudit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"SqlServer\", denyAudit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 0)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 1)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 2)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 3)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 4)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"SqlServer\", expire: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"SqlServer\", expire: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"SqlServer\", direct: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"SqlServer\", direct: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"SqlServer\", edit: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"SqlServer\", edit: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"SqlServer\", deleteFirst: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"SqlServer\", deleteFirst: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_EligibleScopes_When_AssignedReassignedAndRemoved_Then_OnlyExactPermissionsVersionAndAuditChange(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_DisabledAssignedScope_When_OrdinaryEditorActionsCommit_Then_AssignmentIsPreservedAndRemovable(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAssignedScopeTests.Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"SqlServer\", write: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"SqlServer\", write: True)"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -61813,6 +61863,1012 @@
         "parameterTypeFullNames": [
           "System.String",
           "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeAssignmentTests.Given_PendingRequestAndCode_When_ScopesAreAssignedThenCleared_Then_OnlyFreshUnassignedProfilesCanIssue(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeAssignmentTests",
+        "methodName": "Given_PendingRequestAndCode_When_ScopesAreAssignedThenCleared_Then_OnlyFreshUnassignedProfilesCanIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeAssignmentTests.Given_PendingRequestAndCode_When_ScopesAreAssignedThenCleared_Then_OnlyFreshUnassignedProfilesCanIssue(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeAssignmentTests",
+        "methodName": "Given_PendingRequestAndCode_When_ScopesAreAssignedThenCleared_Then_OnlyFreshUnassignedProfilesCanIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationScopeBrowserTests.Given_CurrentAdministrator_When_AssignmentUiSavesAndClears_Then_VisibleWarningsMatchNativePermissionsAndAccessibleRecovery(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationScopeBrowserTests",
+        "methodName": "Given_CurrentAdministrator_When_AssignmentUiSavesAndClears_Then_VisibleWarningsMatchNativePermissionsAndAccessibleRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.ApplicationScopeBrowserTests.Given_CurrentAdministrator_When_AssignmentUiSavesAndClears_Then_VisibleWarningsMatchNativePermissionsAndAccessibleRecovery(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "ApplicationScopeBrowserTests",
+        "methodName": "Given_CurrentAdministrator_When_AssignmentUiSavesAndClears_Then_VisibleWarningsMatchNativePermissionsAndAccessibleRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"PostgreSql\", change: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"PostgreSql\", change: 1)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"PostgreSql\", change: 2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"SqlServer\", change: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"SqlServer\", change: 1)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(provider: \"SqlServer\", change: 2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"PostgreSql\", denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"PostgreSql\", denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"SqlServer\", denyAudit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive(provider: \"SqlServer\", denyAudit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeAtomicityTests",
+        "methodName": "Given_PersistedAssignment_When_SaveOrAuditFails_Then_ExactOriginalStateAndVersionSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 1)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 3)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"PostgreSql\", denial: 4)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 0)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 1)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 2)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 3)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged(provider: \"SqlServer\", denial: 4)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_IneligibleScopePolicy_When_AssignmentRequested_Then_ApplicationCatalogueAndAuditAreUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Int32"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"PostgreSql\", expire: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"PostgreSql\", expire: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"SqlServer\", expire: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDenialTests.Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits(provider: \"SqlServer\", expire: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeDenialTests",
+        "methodName": "Given_CurrentAssignmentAuthority_When_GrantRemovedOrMfaExpires_Then_NoDeniedMutationCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"PostgreSql\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"PostgreSql\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"SqlServer\", direct: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeHttpTests.Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly(provider: \"SqlServer\", direct: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeHttpTests",
+        "methodName": "Given_GenuineAdministrator_When_HttpsAssignmentsAreChanged_Then_NativePermissionsVersionsAndAuditMatchExactly",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"PostgreSql\", edit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"PostgreSql\", edit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"SqlServer\", edit: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits(provider: \"SqlServer\", edit: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_IndependentNodesAndOneVersion_When_AssignmentContendsWithAssignmentOrEdit_Then_ExactlyOneWinnerCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"PostgreSql\", deleteFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"PostgreSql\", deleteFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"SqlServer\", deleteFirst: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeRaceTests.Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits(provider: \"SqlServer\", deleteFirst: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeRaceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_AssignmentAndWorkerRunInEitherOrder_Then_NoDanglingNativePermissionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_EligibleScopes_When_AssignedReassignedAndRemoved_Then_OnlyExactPermissionsVersionAndAuditChange(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeTests",
+        "methodName": "Given_EligibleScopes_When_AssignedReassignedAndRemoved_Then_OnlyExactPermissionsVersionAndAuditChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_EligibleScopes_When_AssignedReassignedAndRemoved_Then_OnlyExactPermissionsVersionAndAuditChange(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeTests",
+        "methodName": "Given_EligibleScopes_When_AssignedReassignedAndRemoved_Then_OnlyExactPermissionsVersionAndAuditChange",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_DisabledAssignedScope_When_OrdinaryEditorActionsCommit_Then_AssignmentIsPreservedAndRemovable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeTests",
+        "methodName": "Given_DisabledAssignedScope_When_OrdinaryEditorActionsCommit_Then_AssignmentIsPreservedAndRemovable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeTests.Given_DisabledAssignedScope_When_OrdinaryEditorActionsCommit_Then_AssignmentIsPreservedAndRemovable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopeTests",
+        "methodName": "Given_DisabledAssignedScope_When_OrdinaryEditorActionsCommit_Then_AssignmentIsPreservedAndRemovable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAssignedScopeTests.Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAssignedScopeTests",
+        "methodName": "Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAssignedScopeTests.Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants",
+        "typeName": "GrantAssignedScopeTests",
+        "methodName": "Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"PostgreSql\", write: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopePublicationTests",
+        "methodName": "Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"PostgreSql\", write: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopePublicationTests",
+        "methodName": "Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"SqlServer\", write: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopePublicationTests",
+        "methodName": "Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"SqlServer\", write: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationScopePublicationTests",
+        "methodName": "Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
         ]
       },
       "traits": [

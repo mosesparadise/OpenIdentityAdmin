@@ -1,0 +1,23 @@
+[
+  "Given assignment output When observed Then exact names identity versions and expiry are required",
+  "Given saved assignment When observed Then requested names and exact successor revision must match",
+  "Given current assignment When selected and confirmed Then one original-version write is sent",
+  "Given selected scopes When catalogue searches change Then hidden selections remain explicitly removable",
+  "Given unavailable catalogue permission When current assignments are read Then removal remains possible",
+  "Given disabled absent duplicate or excessive choices When selected Then no unsupported set is produced",
+  "Given stale denied malformed or failed reads When loaded Then no mutation becomes available",
+  "Given invalid or failed catalogue result When searched Then unsafe options cannot be selected",
+  "Given invalid search or initial state When commands are attempted Then no implicit work is dispatched",
+  "Given catalogue request in flight When save is attempted Then it cannot race an unfinished selection observation",
+  "Given rejected CSRF acquisition When saving Then no mutation is sent",
+  "Given dispatched save When response is denied lost or invalid Then recovery never repeats the write",
+  "Given changed lifecycle When read or search finishes late Then cleared data is never republished",
+  "Given changed lifecycle When proof or mutation finishes late Then no subsequent send or success is published",
+  "Given original deadline When expired before save Then state clears and no mutation is sent",
+  "Given already expired authority When its real timer fires Then the view clears without any request",
+  "Given asynchronous version validation When returned authority expires Then no ready or saved state is published",
+  "Given overlapping searches When an older result completes Then only the latest query owns the view",
+  "Given disposed owner When deferred failures arrive Then no unmounted state is published",
+  "Given generated browser client When reading and saving Then exact fixed routes carry only native proof and version",
+  "Given scope panel When first rendered Then staged sign-in consequences and loading status are accessible"
+]

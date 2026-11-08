@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Core.Features.Catalogue;
 
 namespace IdentityPlatform.Infrastructure.Features.Applications;
 
@@ -38,6 +39,8 @@ internal sealed class ApplicationMutationCommand
     {
         get;
     }
+
+    internal ImmutableArray<string> Scopes { get; private init; } = [];
 
     /// <summary>Captures only already validated immutable values; no caller-supplied permissions or plaintext credentials are accepted.</summary>
     private ApplicationMutationCommand(ApplicationMutationKind kind, string? id, string? version, string? clientId,
@@ -80,6 +83,17 @@ internal sealed class ApplicationMutationCommand
         Target(id, version) && ApplicationEditorRules.Validate(input, now).Count == 0 && ApplicationEditorRules.TryReadExpiry(input.CredentialExpiresAt, now, out var expiry)
             ? new(ApplicationMutationKind.Replace, id, version, null, null, [], expiry) : null;
 
+    /// <summary>Freezes the complete explicit assignment before waiting for current native authority; empty means removal.</summary>
+    internal static ApplicationMutationCommand? AssignScopes(string id, string version, ApplicationScopeInput input)
+    {
+        var names = input.Scopes?.ToArray();
+        return Target(id, version) && CatalogueRules.IsAssignment(names)
+            ? new(ApplicationMutationKind.AssignScopes, id, version, null, null, [], null)
+            {
+                Scopes = names!.Order(StringComparer.Ordinal).ToImmutableArray()
+            } : null;
+    }
+
     /// <summary>Rejects unsupported resource identifiers and precondition aliases before persistence.</summary>
     private static bool Target(string id, string version) => ApplicationEditorRules.IsText(id, ApplicationProjection.IdentifierLength) && ApplicationVersion.IsCanonical(version);
 
@@ -91,7 +105,7 @@ internal sealed class ApplicationMutationCommand
 
 internal enum ApplicationMutationKind
 {
-    Create, Edit, Replace, Disable, Enable
+    Create, Edit, Replace, Disable, Enable, AssignScopes
 }
 
 /// <summary>Reports only a finite rejection reason without exposing request values or native validation details.</summary>

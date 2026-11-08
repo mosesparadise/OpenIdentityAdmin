@@ -16,7 +16,7 @@ def main():
     inventory = inventory_toolchain(PACKAGE, ROOT / 'eng/admin-ui')
     for command in ('check', 'test'):
         execute(['npm', 'run', command, '--prefix', str(PACKAGE)], os.environ.copy(), timeout=120)
-    reports = {'session': 'test-identities.json', 'applications': 'application-test-identities.json', 'editor': 'editor-test-identities.json', 'grants': 'grant-test-identities.json', 'catalogue': 'catalogue-test-identities.json'}
+    reports = {'session': 'test-identities.json', 'applications': 'application-test-identities.json', 'editor': 'editor-test-identities.json', 'grants': 'grant-test-identities.json', 'catalogue': 'catalogue-test-identities.json', 'scopes': 'scopes-test-identities.json'}
     for report, inventory_file in reports.items():
         require_node_report(PACKAGE / f'test-results/{report}.xml', json.loads((ROOT / 'eng/admin-ui' / inventory_file).read_text()))
     audit = json.loads(execute(['npm', 'audit', '--prefix', str(PACKAGE), '--json'], os.environ.copy(), timeout=60, capture=True))

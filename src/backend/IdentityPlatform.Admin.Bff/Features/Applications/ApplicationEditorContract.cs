@@ -19,6 +19,10 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     private const string Replacement = Details + "/secret-replacements";
     private const string Disable = Details + ApplicationLifecycleRules.DisableSuffix;
     private const string Enable = Details + ApplicationLifecycleRules.EnableSuffix;
+    private const string ScopePath = Details + ApplicationScopeRules.Suffix;
+    private const string ReadScopesOperation = "GetBrowserApplicationScopes";
+    private const string AssignScopesOperation = "AssignBrowserApplicationScopes";
+    private const string ScopePrecondition = "One canonical strong application ETag; missing is 428, malformed is 400 and stale is 412.";
     private const string LifecyclePermission = "applications.disable";
     private const string DisableOperation = "DisableBrowserApplication";
     private const string EnableOperation = "EnableBrowserApplication";
@@ -60,6 +64,8 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Replacement, HttpMethod.Post, ReplacementOperation);
         Apply(document, Disable, HttpMethod.Post, DisableOperation);
         Apply(document, Enable, HttpMethod.Post, EnableOperation);
+        Apply(document, ScopePath, HttpMethod.Get, ReadScopesOperation);
+        Apply(document, ScopePath, HttpMethod.Put, AssignScopesOperation);
         LifecycleInput(document);
         return Task.CompletedTask;
     }
@@ -93,17 +99,17 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         operation.Security = [new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference(Scheme, document)] = [] }];
         operation.Extensions ??= new Dictionary<string, IOpenApiExtension>();
         operation.Extensions[Permission] = new JsonNodeExtension(JsonValue.Create(path is Disable or Enable ? LifecyclePermission : path == Replacement ? Credentials : read ? Read : Write));
-        if (path is Replacement or Disable or Enable)
+        if (path is Replacement or Disable or Enable || path == ScopePath && !read)
         {
             operation.Extensions[FreshMfa] = new JsonNodeExtension(JsonValue.Create(MfaSeconds));
         }
         operation.Extensions[Downstream] = new JsonNodeExtension(JsonValue.Create(1));
-        Parameters(operation, create, read);
-        Responses(operation, create, read);
+        Parameters(operation, create, read, path == ScopePath);
+        Responses(operation, create, read, path == ScopePath);
     }
 
     /// <summary>Documents exact resource identity, mandatory update precondition and each native browser mutation proof.</summary>
-    private static void Parameters(OpenApiOperation operation, bool create, bool read)
+    private static void Parameters(OpenApiOperation operation, bool create, bool read, bool assignment)
     {
         operation.Parameters = [];
         if (!create)
@@ -124,7 +130,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
                 Name = IfMatch,
                 In = ParameterLocation.Header,
                 Required = true,
-                Description = PreconditionDescription,
+                Description = assignment ? ScopePrecondition : PreconditionDescription,
                 Schema = new OpenApiSchema { Type = JsonSchemaType.String, MinLength = VersionMinimum, MaxLength = VersionMaximum }
             });
         }
@@ -142,7 +148,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
     }
 
     /// <summary>Requires no-store for every outcome and a strong version for every committed mutation.</summary>
-    private static void Responses(OpenApiOperation operation, bool create, bool read)
+    private static void Responses(OpenApiOperation operation, bool create, bool read, bool assignment)
     {
         foreach (var (status, entry) in operation.Responses!)
         {
@@ -157,7 +163,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
                 response.Headers[Version] = new OpenApiHeader
                 {
                     Description = VersionDescription,
-                    Required = !read,
+                    Required = !read || assignment,
                     Schema = new OpenApiSchema { Type = JsonSchemaType.String }
                 };
             }

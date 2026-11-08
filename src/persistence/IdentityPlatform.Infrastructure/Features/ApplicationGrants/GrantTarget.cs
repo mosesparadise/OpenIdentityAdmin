@@ -25,7 +25,7 @@ internal static class GrantTarget
         await ApplicationMutationWriter.RequireMutableAsync(scope, id, descriptor.ClientId!, token);
         var policy = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(row => row.ApplicationId == id, current), token);
-        if (policy is null || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile || !ManagedApplicationProfile.Matches(descriptor))
+        if (policy is null || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile || !ManagedApplicationProfile.MatchesManagement(descriptor))
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }

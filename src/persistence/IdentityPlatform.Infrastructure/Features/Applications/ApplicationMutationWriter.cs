@@ -25,6 +25,7 @@ internal static class ApplicationMutationWriter
     private const string Replaced = "ApplicationSecretReplaced";
     private const string Disabled = "ApplicationDisabled";
     private const string Enabled = "ApplicationEnabled";
+    private const string ScopesAssigned = "ApplicationScopesAssigned";
 
     /// <summary>Uses real managers for all native writes and leaves version/policy persistence inside the same original transaction.</summary>
     internal static async Task<ApplicationWriteState> StageAsync(ProtocolStorageScope scope, ApplicationMutationCommand command, CancellationToken token)
@@ -44,7 +45,7 @@ internal static class ApplicationMutationWriter
         }
         var application = await manager.FindByIdAsync(command.ApplicationId!, token)
             ?? throw new ApplicationMutationRejected(ApplicationMutationFailure.Missing);
-        if (await manager.GetIdAsync(application, token) != command.ApplicationId)
+        if (!await ProtocolStorageRows.ReloadAsync(scope, application, token) || await manager.GetIdAsync(application, token) != command.ApplicationId)
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Missing);
         }
@@ -53,7 +54,7 @@ internal static class ApplicationMutationWriter
         await RequireMutableAsync(scope, command.ApplicationId!, descriptor.ClientId!, token);
         var policy = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .SingleOrDefaultAsync(row => row.ApplicationId == command.ApplicationId, current), token);
-        if (policy is null || policy.ApplicationId != command.ApplicationId || policy.Profile != ApplicationEditorRules.Profile || !ManagedApplicationProfile.Matches(descriptor))
+        if (policy is null || policy.ApplicationId != command.ApplicationId || policy.Profile != ApplicationEditorRules.Profile || !ManagedApplicationProfile.MatchesManagement(descriptor))
         {
             throw new ApplicationMutationRejected(ApplicationMutationFailure.Unsupported);
         }
@@ -115,6 +116,10 @@ internal static class ApplicationMutationWriter
             }
             return ChangeLifecycle(application, descriptor, policy, command, now);
         }
+        if (command.Kind == ApplicationMutationKind.AssignScopes)
+        {
+            return await AssignScopesAsync(scope, manager, application, descriptor, policy, command, now, token);
+        }
         string? secret = null;
         policy.Revision = checked(policy.Revision + 1);
         policy.ObservedAt = now;
@@ -137,6 +142,21 @@ internal static class ApplicationMutationWriter
             throw ProtocolStorageOwner.Unavailable();
         }
         var expected = new ApplicationWriteState(application, descriptor, policy, secret);
+        await manager.UpdateAsync(application, descriptor, token);
+        return expected;
+    }
+
+    /// <summary>Replaces only additional scope permissions after resolving current catalogue eligibility under the existing governance transaction.</summary>
+    private static async Task<ApplicationWriteState> AssignScopesAsync(ProtocolStorageScope scope, IOpenIddictApplicationManager manager, object application,
+        OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, ApplicationMutationCommand command, long now, CancellationToken token)
+    {
+        var selection = await ApplicationScopeSelection.ReadAsync(scope, command.Scopes, token);
+        var prefix = OpenIddictConstants.Permissions.Prefixes.Scope;
+        descriptor.Permissions.RemoveWhere(value => value.StartsWith(prefix, StringComparison.Ordinal));
+        descriptor.Permissions.UnionWith(command.Scopes.Select(name => prefix + name));
+        policy.Revision = checked(policy.Revision + 1);
+        policy.ObservedAt = now;
+        var expected = new ApplicationWriteState(application, descriptor, policy, null, selection);
         await manager.UpdateAsync(application, descriptor, token);
         return expected;
     }
@@ -247,6 +267,7 @@ internal static class ApplicationMutationWriter
         ApplicationMutationKind.Replace => Replaced,
         ApplicationMutationKind.Disable => Disabled,
         ApplicationMutationKind.Enable => Enabled,
+        ApplicationMutationKind.AssignScopes => ScopesAssigned,
         _ => throw ProtocolStorageOwner.Unavailable()
     };
 }

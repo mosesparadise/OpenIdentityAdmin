@@ -701,7 +701,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(4, len(manifest(ROOT, "application-lifecycle")))
         self.assertEqual(6, len(manifest(ROOT, "application-grants")))
         self.assertEqual(5, len(manifest(ROOT, "pilot-replay")))
-        self.assertEqual(4, len(manifest(ROOT, "catalogue")))
+        self.assertEqual(5, len(manifest(ROOT, "catalogue")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 

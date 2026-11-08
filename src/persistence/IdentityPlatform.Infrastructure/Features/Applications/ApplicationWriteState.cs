@@ -15,6 +15,8 @@ internal sealed class ApplicationWriteState
     private readonly string clientId;
     private readonly string displayName;
     private readonly ImmutableArray<string> redirects;
+    private readonly ImmutableArray<string> permissions;
+    private readonly ApplicationScopeSelection? selection;
     private readonly long revision;
     private readonly long credentialRevision;
     private readonly long issuedAt;
@@ -30,9 +32,11 @@ internal sealed class ApplicationWriteState
     internal string Version => ApplicationVersion.Create(Id, revision);
 
     /// <summary>Copies native presentation and lifecycle values so later entity mutation cannot alter the expected commit.</summary>
-    internal ApplicationWriteState(object application, OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, string? secret)
+    internal ApplicationWriteState(object application, OpenIddictApplicationDescriptor descriptor, ApplicationPolicy policy, string? secret, ApplicationScopeSelection? selection = null)
     {
         this.application = application;
+        this.selection = selection;
+        permissions = descriptor.Permissions.Order(StringComparer.Ordinal).ToImmutableArray();
         clientId = descriptor.ClientId!;
         displayName = descriptor.DisplayName!;
         redirects = descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToImmutableArray();
@@ -57,13 +61,18 @@ internal sealed class ApplicationWriteState
         var manager = scope.Services.GetRequiredService<IOpenIddictApplicationManager>();
         var descriptor = new OpenIddictApplicationDescriptor();
         await manager.PopulateAsync(descriptor, application, token);
-        if (await manager.GetIdAsync(application, token) != Id || !ManagedApplicationProfile.Matches(descriptor) ||
+        if (await manager.GetIdAsync(application, token) != Id || !ManagedApplicationProfile.MatchesManagement(descriptor) ||
+            !descriptor.Permissions.Order(StringComparer.Ordinal).SequenceEqual(permissions, StringComparer.Ordinal) ||
             descriptor.ClientId != clientId || descriptor.DisplayName != displayName ||
             !descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).SequenceEqual(redirects) ||
             string.IsNullOrEmpty(descriptor.ClientSecret) || (secret is null && descriptor.ClientSecret != originalHash) ||
             (secret is not null && !await manager.ValidateClientSecretAsync(application, secret, token)))
         {
             throw ProtocolStorageOwner.Unavailable();
+        }
+        if (selection is not null)
+        {
+            await selection.VerifyAsync(scope, token);
         }
         await ApplicationMutationWriter.RequireMutableAsync(scope, Id, clientId, token);
         var row = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
@@ -78,6 +87,11 @@ internal sealed class ApplicationWriteState
     /// <summary>Builds only the fixed safe projection; callers publish it only after commit and real child cleanup.</summary>
     internal ApplicationDetails Details(DateTimeOffset authorityExpiry) => new(Id, clientId, displayName, redirects, ApplicationEditorRules.Profile,
         true, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), authorityExpiry, enabled);
+
+    /// <summary>Projects the exact persisted permission expectation only after commit and cleanup, without changing existing editor wire contracts.</summary>
+    internal ApplicationScopes Scopes(DateTimeOffset authorityExpiry) => new(Id, permissions
+        .Where(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal))
+        .Select(value => value[OpenIddictConstants.Permissions.Prefixes.Scope.Length..]).ToArray(), authorityExpiry);
 
     /// <summary>Returns the new credential only in the immediate successful response; no reusable plaintext receipt is persisted.</summary>
     internal ApplicationCredentialOutput? Credential(ApplicationDetails details) => secret is null ? null : new(details, secret);

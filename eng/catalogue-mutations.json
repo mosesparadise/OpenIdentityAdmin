@@ -32,6 +32,14 @@
       "after": "var current = state;",
       "marker": "catalogue-original-browser-generation-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval"
+    },
+    {
+      "id": "application-scope-permission-verification",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationWriteState.cs",
+      "before": "!descriptor.Permissions.Order(StringComparer.Ordinal).SequenceEqual(permissions, StringComparer.Ordinal) ||",
+      "after": "false ||",
+      "marker": "application-scope-permission-verification-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeAtomicityTests.Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack"
     }
   ]
 }

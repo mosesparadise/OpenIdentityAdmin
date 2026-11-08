@@ -24,6 +24,11 @@ internal sealed class GrantTransportProbe : IStartupFilter
     private const string KeyHeader = "Idempotency-Key";
     private static readonly string[] ForbiddenHeaders = ["Cookie", "X-CSRF-TOKEN", "X-Identity"];
     private string access = string.Empty;
+    internal int? SuccessStatus
+    {
+        get;
+        set;
+    }
     internal string Path { get; set; } = string.Empty;
     internal string? Method
     {
@@ -102,7 +107,7 @@ internal sealed class GrantTransportProbe : IStartupFilter
             await next(http);
         }
         finally { http.Response.Body = output; }
-        Assert.Equal(Body is null ? StatusCodes.Status200OK : StatusCodes.Status202Accepted, http.Response.StatusCode);
+        Assert.Equal(SuccessStatus ?? (Body is null ? StatusCodes.Status200OK : StatusCodes.Status202Accepted), http.Response.StatusCode);
         Assert.False(http.Response.HasStarted);
         Responses++;
         Original = Encoding.UTF8.GetString(buffer.ToArray());
