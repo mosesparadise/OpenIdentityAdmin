@@ -1,16 +1,34 @@
 # OpenIdentityAdmin new-task handoff
 
-## Active work — application scope assignment, 8 November 2026
+## Current delivery — application scope assignment, 8 November 2026
 
-T008 is implemented on branch138 and remains under validation. Both providers pass
-its first24 non-browser cases; the first browser run failed and is retained.
-The corrected candidate adds observed deletion contention, stronger mutation/race
-oracles and explicit browser recovery. Full acceptance and merge remain pending.
-Continue from the feature023 `assignment.md` checkpoint; do not repeat T001–T007 or
-merge branch139's isolated validation workflow. The accepted main delivery below
-and all existing external gates remain unchanged.
+Feature023 T001–T008 are complete for internal development. T008 is squash-merged
+in [PR130](https://github.com/mosesparadise/OpenIdentityAdmin/pull/130) as
+`41a93fd0e795c195670f4bb27299050e42b50ae2`. The existing Aspire application editor now supports explicit
+scope assignment/removal with current authority, version/audit atomicity, search,
+confirmation and deliberate recovery on both providers.
 
-## Current delivery — scope and audience catalogue, 8 November 2026
+CI568 at `7eb152a963bf780a7e1ffd428a69af5ccabdb43c` passes all 130 jobs: 107 native reports/6,157 executions,
+130 mutation kills, 132 UI cases, 46 Node cases and 104 original coverage inputs meeting
+all 15 unchanged floors. Independent reviews pass; the tested merge and squash share
+the reviewed source tree. [Acceptance and limits](../../specs/023-scope-audience-catalogue/assignment-acceptance.md).
+
+**Nonempty assignments currently pause that application's sign-in/token issuance.**
+The UI explains this before save. Clearing all additional scopes restores fresh-sign-in
+eligibility; untouched applications retain their original behavior. Extended scope
+consent/issuance and UserInfo are not yet available.
+
+**Next: T009 — current catalogue policy snapshots and managed-interaction bindings**,
+preserving legacy rows and both-provider upgrades. Then T010 consent and T011 issuance;
+T012–T014 cover UserInfo and integrated journeys. T009–T016 and M03-B/C remain open.
+
+Use the [ordinary Aspire walkthrough](../../specs/023-scope-audience-catalogue/quickstart.md). Preserve failed receipts and
+branches 135/136/138/139; never merge isolated workflows 136/139. Do not repeat completed
+SQL diagnostics. All six historical findings and human/Windows/Firefox/A-009/refresh/
+vendor/production/public-release gates remain open. This Markdown follow-up records
+accepted runtime evidence, not another full runtime run.
+
+## Previous delivery — scope and audience catalogue, 8 November 2026
 
 Feature023 T001–T007 and M03-A catalogue management are accepted for internal development.
 [PR128](https://github.com/mosesparadise/OpenIdentityAdmin/pull/128) is squash-merged as
@@ -25,7 +43,7 @@ the same tree. Independent evidence review reconciles 107 ordinary native report
 coverage inputs meeting all 15 unchanged floors. Both providers and retained Chromium/
 WebKit journeys pass. [Acceptance, source bindings and evidence limits](../../specs/023-scope-audience-catalogue/acceptance.md).
 
-**Next: T008 — explicit application scope assignment**, using an additive versioned
+**Historical next step, now delivered: T008 — explicit application scope assignment**, using an additive versioned
 subresource and the existing application editor. Preserve current application versions,
 fresh-MFA authority, native scope permissions, old editor behavior and governance ordering
 with catalogue deletion. Follow with T009 policy/interaction bindings and T010 consent;

@@ -5,7 +5,7 @@
 [Final acceptance](acceptance.md) binds CI563, the exact reviewed source, normal squash
 and evidence limits. All 130 required jobs pass, including both Admission/Replay groups
 on each provider and 104 original coverage inputs. T004–T007 are complete for internal
-development. T008–T016 and all historical/manual/public-release gates remain open.
+development. T008 was subsequently accepted in [PR130 assignment delivery](assignment-acceptance.md); T009–T016 and all historical/manual/public-release gates remain open.
 
 ## Historical implementation and verification record
 
@@ -414,3 +414,7 @@ Actual native discovery also preserves all2,871 prior administrator identities a
 complete metadata, SHA-256 `4b3a6cdf7b6abd31f0e50c94573baddcdbcf5a8554397407bb18f279c9085fab`.
 This focused result does not explain CI562's earlier timeout. Full exact-head CI563 and
 final independent evidence review remain required; earlier failures stay rejected.
+
+## T008 delivered — 8 November 2026
+
+[Assignment acceptance](assignment-acceptance.md) records PR130, CI568, the exact source/merge/squash bindings, 6,157 ordinary native executions, 130 mutation kills, 132 UI cases and unchanged coverage floors. The focused raw reports were independently reparsed; full-run hosted validation and local evidence limits are distinguished. Failed browser run42434182462 and superseded CI567 remain retained. T009–T016 remain open.
