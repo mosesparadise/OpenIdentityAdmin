@@ -1,5 +1,34 @@
 # OpenIdentityAdmin new-task handoff
 
+## Active batch — scope and audience catalogue, 7 November 2026
+
+The user selected feature023 T005–T007 with unfinished T004 prerequisites, continuing
+M03-A–M03-C and the approved consented email/email_verified policy. Branch
+`135-scope-audience-catalogue` implements the native catalogue, durable audited deletion,
+versioned Admin API, fixed BFF/native CSRF and visible Scopes/Audiences workspace. T001–T003
+are accepted; T004–T007 remain pending final integrated verification and reviewed delivery.
+
+Current source checkpointa77ffba builds successfully. Bounded run42417189419 passes
+schema13/provider and the complete Chromium catalogue journey on both providers.
+Component49/53 passes per provider; the four new held-response tests reach the correct
+safe status but use the old application-specific title oracle, now corrected to exact
+catalogue problem text. WebKit still fails the combined layout guard; retain the failed
+receipts and verify the explicit select height plus safe dimension diagnostics in the
+next run. Earlier provider failures and all corrections remain in feature023 verification.
+
+Next: finish this selected batch, including catalogue behavioral mutation controls,
+exact discovery/CI/coverage inventories, retained browser checks and full final-head
+acceptance. Do not treat implemented source or focused tests as acceptance. Keep
+branch136's isolated validation workflow out of the product branch. Preserve main
+7c458f4, all prior work and failed receipts. Local native database attempts are blocked
+by filesystem capacity; do not repeat PostgreSQL ENOSPC or old SQLPAL diagnostics.
+
+The ordinary Aspire `local-demo` launch remains the local UI entry point. Application
+scope assignment, consent integration, token claims and UserInfo are later T008–T014;
+creating a catalogue entry does not grant an application permission or change tokens.
+All historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/
+public-release gates remain open. Continue under existing selected-batch authorization.
+
 ## Current delivery — 7 November 2026
 
 Feature022 T001–T009 are complete for internal development. The selected T008,

@@ -2,6 +2,7 @@ using IdentityPlatform.Admin.Api.Features.ApiContracts;
 using IdentityPlatform.Admin.Api.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Admin.Api.Features.Authentication;
+using IdentityPlatform.Admin.Api.Features.Catalogue;
 using IdentityPlatform.Admin.Api.Features.Storage;
 using IdentityPlatform.Core.Features.Configuration;
 using IdentityPlatform.Infrastructure.Features.Protection;
@@ -38,7 +39,7 @@ internal static class Setup
             endpoints.MapPlatformHealthEndpoints();
             if (app.ApplicationServices.GetService<ApiResourceProfile>() is not null)
             {
-                endpoints.MapApplications().MapGrantRevocations();
+                endpoints.MapApplications().MapGrantRevocations().MapCatalogue();
             }
         });
         return app;
@@ -49,7 +50,7 @@ internal static class Setup
     {
         if (app.Services.GetService<ApiResourceProfile>() is not null)
         {
-            app.MapApplications().MapGrantRevocations();
+            app.MapApplications().MapGrantRevocations().MapCatalogue();
         }
         return app.MapPlatformHealthEndpoints();
     }

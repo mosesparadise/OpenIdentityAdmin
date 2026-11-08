@@ -2,6 +2,7 @@ using System.Text.Json.Nodes;
 using IdentityPlatform.Admin.Bff.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Bff.Features.Applications;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
+using IdentityPlatform.Admin.Bff.Features.Catalogue;
 using IdentityPlatform.Api.Contracts.Tests.Fixtures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
@@ -20,7 +21,7 @@ public sealed class BrowserSessionDocumentTests
     private const string TokenField = "requestToken";
     private const string TokenSchema = "ApplicationAntiforgeryToken";
 
-    private const int OperationCount = 10;
+    private const int OperationCount = 18;
     private const string ApplicationsPath = "/bff/api/v1/applications";
     private const string ListOperation = "ListBrowserApplications";
     private const string ReadPermission = "applications.read";
@@ -70,6 +71,7 @@ public sealed class BrowserSessionDocumentTests
         app.MapBrowserSessionStatus();
         app.MapApplicationProxy();
         app.MapGrantProxy();
+        app.MapCatalogueProxy();
         app.MapOpenApi(DocumentPath).WithDocumentPerVersion();
         await app.StartAsync(TestContext.Current.CancellationToken);
         using var client = app.GetTestClient();
@@ -107,6 +109,7 @@ public sealed class BrowserSessionDocumentTests
         Assert.Equal(OperationCount, document[Paths]!.AsObject().Count);
         ApplicationEditorAssertions.Require(document, browser: true);
         GrantContractAssertions.Require(document, browser: true);
+        CatalogueContractAssertions.Require(document, browser: true);
         var applications = document[Paths]![ApplicationsPath]![Get]!;
         Assert.Equal(ListOperation, applications[OperationId]!.GetValue<string>());
         Assert.Equal(ReadPermission, applications[Permission]!.GetValue<string>());

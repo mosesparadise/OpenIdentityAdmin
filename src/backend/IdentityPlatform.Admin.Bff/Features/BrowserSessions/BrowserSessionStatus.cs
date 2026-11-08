@@ -39,6 +39,10 @@ internal sealed class BrowserSessionReader(AdminSessionDbContext database, Brows
 /// <summary>Freezes an already authenticated read; later concurrent revocation does not promise cancellation of admitted reads.</summary>
 internal sealed class BrowserSessionRead(BrowserGenerationProof proof, BrowserContext browser, AdminSessionTicket ticket)
 {
+    /// <summary>Creates a catalogue-specific native antiforgery binding only from this current authenticated durable observation.</summary>
+    internal BrowserRequestBinding? CatalogueBinding(DateTimeOffset now) => Status(now).Authenticated
+        ? BrowserRequestBinding.ForCatalogue(proof.Digest, proof.Generation, browser, now) : null;
+
     /// <summary>Binds application antiforgery to the same authenticated browser/ticket observation used to release the server credential.</summary>
     internal BrowserRequestBinding? ApplicationBinding(DateTimeOffset now) => Status(now).Authenticated
         ? BrowserRequestBinding.ForApplications(proof.Digest, proof.Generation, browser, now) : null;

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "catalogue-original-approval",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionActor.cs",
+      "before": "return now >= job.ObservedAt && now >= job.CreatedAt && now < job.ApprovalUntil;",
+      "after": "return now >= job.ObservedAt && now >= job.CreatedAt;",
+      "marker": "catalogue-original-approval-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision"
+    },
+    {
+      "id": "catalogue-retained-reference",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionProcessor.cs",
+      "before": "return await target.ReferencedAsync(scope, token)",
+      "after": "return false",
+      "marker": "catalogue-retained-reference-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval"
+    },
+    {
+      "id": "catalogue-terminal-commit",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionProcessor.cs",
+      "before": "        await transaction.CommitAsync(token);",
+      "after": "        await Task.CompletedTask;",
+      "marker": "catalogue-terminal-commit-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted"
+    },
+    {
+      "id": "catalogue-original-browser-generation",
+      "path": "src/backend/IdentityPlatform.Admin.Bff/Features/Catalogue/CatalogueProxy.cs",
+      "before": "var current = await ApplicationBrowserState.ReadAsync(http, clock, catalogue: true);",
+      "after": "var current = state;",
+      "marker": "catalogue-original-browser-generation-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
+    <Compile Include="../Shared/Features/Catalogue/*.cs" Link="Features/Catalogue/Contracts/%(Filename)%(Extension)" />
     <Compile Include="../Shared/Features/ApplicationGrants/*.cs" Link="Features/ApplicationGrants/Contracts/%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>

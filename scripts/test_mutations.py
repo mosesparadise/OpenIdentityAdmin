@@ -701,6 +701,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(4, len(manifest(ROOT, "application-lifecycle")))
         self.assertEqual(6, len(manifest(ROOT, "application-grants")))
         self.assertEqual(5, len(manifest(ROOT, "pilot-replay")))
+        self.assertEqual(4, len(manifest(ROOT, "catalogue")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
 
@@ -711,7 +712,8 @@ class MutationEvidenceTests(unittest.TestCase):
                                 ('managed-applications', 'managed-application-mutations.json'),
                                 ('application-lifecycle', 'application-lifecycle-mutations.json'),
                                 ('application-grants', 'application-grant-mutations.json'),
-                                ('pilot-replay', 'pilot-replay-mutations.json')):
+                                ('pilot-replay', 'pilot-replay-mutations.json'),
+                                ('catalogue', 'catalogue-mutations.json')):
             path = ROOT / 'eng' / filename
             reviewed = json.loads(reader(path))
             for defect in ('missing', 'duplicate', 'outside', 'anchor'):

@@ -1,6 +1,7 @@
 using System.Text.Json.Nodes;
 using IdentityPlatform.Admin.Api.Features.ApplicationGrants;
 using IdentityPlatform.Admin.Api.Features.Applications;
+using IdentityPlatform.Admin.Api.Features.Catalogue;
 using IdentityPlatform.Api.Contracts.Tests.Fixtures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
@@ -15,7 +16,7 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 public sealed class ApplicationDocumentTests
 {
     private const int QueryFields = 3;
-    private const int PathCount = 8;
+    private const int PathCount = 14;
     private const int MaximumIdentifier = 400;
     private const int MaximumClientId = 100;
     private const int MaximumDisplayName = 200;
@@ -71,6 +72,7 @@ public sealed class ApplicationDocumentTests
         await using var app = builder.Build();
         app.MapApplications();
         app.MapGrantRevocations();
+        app.MapCatalogue();
         app.MapOpenApi(DocumentPath).WithDocumentPerVersion();
         await app.StartAsync(TestContext.Current.CancellationToken);
         using var client = app.GetTestClient();
@@ -85,6 +87,7 @@ public sealed class ApplicationDocumentTests
         Assert.Equal(PathCount, document[Paths]!.AsObject().Count);
         ApplicationEditorAssertions.Require(document, browser: false);
         GrantContractAssertions.Require(document, browser: false);
+        CatalogueContractAssertions.Require(document, browser: false);
         var operation = document[Paths]![CollectionPath]![Get]!;
         Assert.Equal(Operation, operation[OperationId]!.GetValue<string>());
         Assert.Equal(Permission, operation[PermissionExtension]!.GetValue<string>());

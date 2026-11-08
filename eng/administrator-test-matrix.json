@@ -1333,7 +1333,57 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.CatalogueBrowserTests.Given_CurrentAdministrator_When_CatalogueBrowserJourneyRuns_Then_RealAccessiblePolicyAndAuditedDeletionComplete(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_ExistingUnmanagedNativeScope_When_CatalogueCreationRequested_Then_DuplicateCannotAdoptOrRewriteIt(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_SuppressedCatalogueAudit_When_NativeScopeAndPolicyWereWritten_Then_NoPartialStateOrSuccessEscapes(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"PostgreSql\", substitute: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"PostgreSql\", substitute: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_ExactReplayReturnsOneUnchangedDurableApproval(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"PostgreSql\", after: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"PostgreSql\", after: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"disabled\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"permission\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"referenced\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"rollback\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"stale\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"PostgreSql\", cancelled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"PostgreSql\", cancelled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionQueueTests.Given_FullPageOfPoisonedJobs_When_ActualWorkerPolls_Then_NextHealthyCandidateIsNotStarved(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"PostgreSql\", sameKey: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"PostgreSql\", sameKey: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"PostgreSql\", change: \"expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"PostgreSql\", change: \"permission\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"PostgreSql\", change: \"stale\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"PostgreSql\", expired: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"PostgreSql\", expired: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"PostgreSql\", scope: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"PostgreSql\", scope: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionWorkerTests.Given_QueuedDeletion_When_TwoHostedWorkersActuallyContend_Then_OneDurableTerminalTransitionCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpDenialTests.Given_ActualSignedInBrowser_When_BearerOrCatalogueProofOrPermissionIsMissing_Then_NoCatalogueStateOrAuditChanges(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"PostgreSql\", browser: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"PostgreSql\", browser: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_CurrentCatalogueAuthority_When_CreateAndVersionedEditCommit_Then_NativePolicyAndAuditsAgree(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_IndependentCatalogueEditors_When_DuplicateAndStaleCommandsRace_Then_OnlyOneOfEachCommits(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_RemovedScopeGrantOrExpiredMfa_When_PolicyMutationRequested_Then_NoUnauthorizedRowsOrAuditsPersist(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CataloguePagingTests.Given_ManagedScopesAcrossPageBoundary_When_OrdinalPrefixAndLookaheadExecute_Then_ExactPagesExcludeSystemAliasesAndRejectOverflow(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CompletedDeletion_When_CurrentReaderChecksJob_Then_StatusSurvivesTargetAndRejectsWrongKind(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CurrentReadAuthority_When_MfaExpiresOrScopeReadGrantIsRemoved_Then_ReadsStayRollbackOnlyAndPermissionSpecific(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_NativeJsonWithIgnoredCollationCharacter_When_ScopeDetailsRead_Then_ExactProjectionRejectsItWithoutWrites(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_NativePermissionVariants_When_ReferencesRead_Then_DecodedOrdinalMembershipControlsResult(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_OverflowingNativeCandidates_When_ReferenceDecisionRequested_Then_UnavailableReplacesUnreferenced(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_UnmanagedEscapedResource_When_AudienceReferenceRead_Then_CurrentNativeDependencyIsVisible(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"PostgreSql\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"PostgreSql\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"generation\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2773,7 +2823,57 @@
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_HeldWinningGeneration_When_InitialReplayCompetes_Then_RevocationWaitsForGeneration(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotGateMutationTests.Given_IndependentGateOwner_When_GenuineExchangeCompetes_Then_NoCredentialPrecedesRelease(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_CommittedGenerationAndCleanupFault_When_ResponseCompletes_Then_NoCredentialPrecedesActualCleanup(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission.PilotPublicationMutationTests.Given_GeneratedPilotTokens_When_SuccessIsPublished_Then_TheirExactNativeEntriesAreCommitted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Browser.CatalogueBrowserTests.Given_CurrentAdministrator_When_CatalogueBrowserJourneyRuns_Then_RealAccessiblePolicyAndAuditedDeletionComplete(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_ExistingUnmanagedNativeScope_When_CatalogueCreationRequested_Then_DuplicateCannotAdoptOrRewriteIt(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_SuppressedCatalogueAudit_When_NativeScopeAndPolicyWereWritten_Then_NoPartialStateOrSuccessEscapes(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"SqlServer\", substitute: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"SqlServer\", substitute: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_ExactReplayReturnsOneUnchangedDurableApproval(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"SqlServer\", after: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"SqlServer\", after: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"disabled\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"generation\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"permission\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"referenced\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"rollback\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"stale\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"SqlServer\", cancelled: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"SqlServer\", cancelled: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionQueueTests.Given_FullPageOfPoisonedJobs_When_ActualWorkerPolls_Then_NextHealthyCandidateIsNotStarved(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"SqlServer\", sameKey: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"SqlServer\", sameKey: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"SqlServer\", change: \"expired\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"SqlServer\", change: \"permission\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"SqlServer\", change: \"stale\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"SqlServer\", expired: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"SqlServer\", expired: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"SqlServer\", scope: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"SqlServer\", scope: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionWorkerTests.Given_QueuedDeletion_When_TwoHostedWorkersActuallyContend_Then_OneDurableTerminalTransitionCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpDenialTests.Given_ActualSignedInBrowser_When_BearerOrCatalogueProofOrPermissionIsMissing_Then_NoCatalogueStateOrAuditChanges(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"SqlServer\", browser: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"SqlServer\", browser: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_CurrentCatalogueAuthority_When_CreateAndVersionedEditCommit_Then_NativePolicyAndAuditsAgree(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_IndependentCatalogueEditors_When_DuplicateAndStaleCommandsRace_Then_OnlyOneOfEachCommits(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_RemovedScopeGrantOrExpiredMfa_When_PolicyMutationRequested_Then_NoUnauthorizedRowsOrAuditsPersist(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CataloguePagingTests.Given_ManagedScopesAcrossPageBoundary_When_OrdinalPrefixAndLookaheadExecute_Then_ExactPagesExcludeSystemAliasesAndRejectOverflow(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CompletedDeletion_When_CurrentReaderChecksJob_Then_StatusSurvivesTargetAndRejectsWrongKind(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CurrentReadAuthority_When_MfaExpiresOrScopeReadGrantIsRemoved_Then_ReadsStayRollbackOnlyAndPermissionSpecific(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_NativeJsonWithIgnoredCollationCharacter_When_ScopeDetailsRead_Then_ExactProjectionRejectsItWithoutWrites(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_NativePermissionVariants_When_ReferencesRead_Then_DecodedOrdinalMembershipControlsResult(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_OverflowingNativeCandidates_When_ReferenceDecisionRequested_Then_UnavailableReplacesUnreferenced(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_UnmanagedEscapedResource_When_AudienceReferenceRead_Then_CurrentNativeDependencyIsVisible(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"SqlServer\", retained: False)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"SqlServer\", retained: True)",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"deadline\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"generation\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -59710,6 +59810,2012 @@
           "key": "CriticalDecision",
           "value": "pilot-publication-commit"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.CatalogueBrowserTests.Given_CurrentAdministrator_When_CatalogueBrowserJourneyRuns_Then_RealAccessiblePolicyAndAuditedDeletionComplete(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "CatalogueBrowserTests",
+        "methodName": "Given_CurrentAdministrator_When_CatalogueBrowserJourneyRuns_Then_RealAccessiblePolicyAndAuditedDeletionComplete",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Browser.CatalogueBrowserTests.Given_CurrentAdministrator_When_CatalogueBrowserJourneyRuns_Then_RealAccessiblePolicyAndAuditedDeletionComplete(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Browser",
+        "typeName": "CatalogueBrowserTests",
+        "methodName": "Given_CurrentAdministrator_When_CatalogueBrowserJourneyRuns_Then_RealAccessiblePolicyAndAuditedDeletionComplete",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "BrowserStory",
+          "value": "BrowserProtection"
+        },
+        {
+          "key": "Category",
+          "value": "Browser"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_ExistingUnmanagedNativeScope_When_CatalogueCreationRequested_Then_DuplicateCannotAdoptOrRewriteIt(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueAtomicityTests",
+        "methodName": "Given_ExistingUnmanagedNativeScope_When_CatalogueCreationRequested_Then_DuplicateCannotAdoptOrRewriteIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_ExistingUnmanagedNativeScope_When_CatalogueCreationRequested_Then_DuplicateCannotAdoptOrRewriteIt(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueAtomicityTests",
+        "methodName": "Given_ExistingUnmanagedNativeScope_When_CatalogueCreationRequested_Then_DuplicateCannotAdoptOrRewriteIt",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_SuppressedCatalogueAudit_When_NativeScopeAndPolicyWereWritten_Then_NoPartialStateOrSuccessEscapes(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueAtomicityTests",
+        "methodName": "Given_SuppressedCatalogueAudit_When_NativeScopeAndPolicyWereWritten_Then_NoPartialStateOrSuccessEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueAtomicityTests.Given_SuppressedCatalogueAudit_When_NativeScopeAndPolicyWereWritten_Then_NoPartialStateOrSuccessEscapes(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueAtomicityTests",
+        "methodName": "Given_SuppressedCatalogueAudit_When_NativeScopeAndPolicyWereWritten_Then_NoPartialStateOrSuccessEscapes",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"PostgreSql\", substitute: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionAtomicityTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"PostgreSql\", substitute: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionAtomicityTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"SqlServer\", substitute: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionAtomicityTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionAtomicityTests.Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack(provider: \"SqlServer\", substitute: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionAtomicityTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_TerminalSaveIsSuppressedOrApprovalSubstituted_Then_AllNativeProductAndAuditChangesRollBack",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_ExactReplayReturnsOneUnchangedDurableApproval(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionCommitTests",
+        "methodName": "Given_AdmissionCommit_When_AcknowledgementIsLost_Then_ExactReplayReturnsOneUnchangedDurableApproval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_AdmissionCommit_When_AcknowledgementIsLost_Then_ExactReplayReturnsOneUnchangedDurableApproval(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionCommitTests",
+        "methodName": "Given_AdmissionCommit_When_AcknowledgementIsLost_Then_ExactReplayReturnsOneUnchangedDurableApproval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"PostgreSql\", after: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionCommitTests",
+        "methodName": "Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"PostgreSql\", after: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionCommitTests",
+        "methodName": "Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"SqlServer\", after: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionCommitTests",
+        "methodName": "Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionCommitTests.Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome(provider: \"SqlServer\", after: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionCommitTests",
+        "methodName": "Given_QueuedScopeDeletion_When_CommitFailsBeforeOrAfterDurability_Then_FreshObservationDeterminesExactOutcome",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"disabled\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"permission\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"referenced\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"rollback\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"PostgreSql\", change: \"stale\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"disabled\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"permission\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"referenced\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"rollback\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionDenialTests.Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting(provider: \"SqlServer\", change: \"stale\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionDenialTests",
+        "methodName": "Given_AdmittedDeletion_When_OriginalAuthorityOrTargetChanges_Then_JobRejectsWithoutDeleting",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"PostgreSql\", cancelled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionFailureTests",
+        "methodName": "Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"PostgreSql\", cancelled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionFailureTests",
+        "methodName": "Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"SqlServer\", cancelled: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionFailureTests",
+        "methodName": "Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionFailureTests.Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery(provider: \"SqlServer\", cancelled: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionFailureTests",
+        "methodName": "Given_DeletedUncommittedScope_When_AuditWriteIsDeniedOrRequestCancelled_Then_ExactOriginalStateRollsBackBeforeRecovery",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionQueueTests.Given_FullPageOfPoisonedJobs_When_ActualWorkerPolls_Then_NextHealthyCandidateIsNotStarved(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionQueueTests",
+        "methodName": "Given_FullPageOfPoisonedJobs_When_ActualWorkerPolls_Then_NextHealthyCandidateIsNotStarved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionQueueTests.Given_FullPageOfPoisonedJobs_When_ActualWorkerPolls_Then_NextHealthyCandidateIsNotStarved(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionQueueTests",
+        "methodName": "Given_FullPageOfPoisonedJobs_When_ActualWorkerPolls_Then_NextHealthyCandidateIsNotStarved",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"PostgreSql\", sameKey: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"PostgreSql\", sameKey: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"SqlServer\", sameKey: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained(provider: \"SqlServer\", sameKey: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_ConcurrentAdmission_When_IndependentRequestsActuallyWait_Then_OneOriginalJobAndAuditAreRetained",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"PostgreSql\", change: \"expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"PostgreSql\", change: \"permission\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"PostgreSql\", change: \"stale\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"SqlServer\", change: \"expired\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"SqlServer\", change: \"permission\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRaceTests.Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget(provider: \"SqlServer\", change: \"stale\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRaceTests",
+        "methodName": "Given_QueuedDeletion_When_AuthorityOrVersionChangesDuringObservedWait_Then_NoStaleDecisionDeletesTheTarget",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"PostgreSql\", expired: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRestartTests",
+        "methodName": "Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"PostgreSql\", expired: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRestartTests",
+        "methodName": "Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"SqlServer\", expired: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRestartTests",
+        "methodName": "Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionRestartTests.Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion(provider: \"SqlServer\", expired: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionRestartTests",
+        "methodName": "Given_BlockedHostedDeletion_When_StopDrainsAndHostRestarts_Then_OnlyOriginalApprovalControlsCompletion",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"PostgreSql\", scope: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionTests",
+        "methodName": "Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"PostgreSql\", scope: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionTests",
+        "methodName": "Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"SqlServer\", scope: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionTests",
+        "methodName": "Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionTests.Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain(provider: \"SqlServer\", scope: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionTests",
+        "methodName": "Given_DurableDeletion_When_IndependentWorkerCompletesAndRequestReplays_Then_OneOriginalApprovalAndTerminalAuditRemain",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionWorkerTests.Given_QueuedDeletion_When_TwoHostedWorkersActuallyContend_Then_OneDurableTerminalTransitionCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionWorkerTests",
+        "methodName": "Given_QueuedDeletion_When_TwoHostedWorkersActuallyContend_Then_OneDurableTerminalTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueDeletionWorkerTests.Given_QueuedDeletion_When_TwoHostedWorkersActuallyContend_Then_OneDurableTerminalTransitionCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueDeletionWorkerTests",
+        "methodName": "Given_QueuedDeletion_When_TwoHostedWorkersActuallyContend_Then_OneDurableTerminalTransitionCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpDenialTests.Given_ActualSignedInBrowser_When_BearerOrCatalogueProofOrPermissionIsMissing_Then_NoCatalogueStateOrAuditChanges(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueHttpDenialTests",
+        "methodName": "Given_ActualSignedInBrowser_When_BearerOrCatalogueProofOrPermissionIsMissing_Then_NoCatalogueStateOrAuditChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpDenialTests.Given_ActualSignedInBrowser_When_BearerOrCatalogueProofOrPermissionIsMissing_Then_NoCatalogueStateOrAuditChanges(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueHttpDenialTests",
+        "methodName": "Given_ActualSignedInBrowser_When_BearerOrCatalogueProofOrPermissionIsMissing_Then_NoCatalogueStateOrAuditChanges",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"PostgreSql\", browser: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueHttpTests",
+        "methodName": "Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"PostgreSql\", browser: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueHttpTests",
+        "methodName": "Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"SqlServer\", browser: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueHttpTests",
+        "methodName": "Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueHttpTests.Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative(provider: \"SqlServer\", browser: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueHttpTests",
+        "methodName": "Given_RealAdministratorSignIn_When_CatalogueHttpJourneyRuns_Then_VersionsPermissionsAndDurableStatusRemainAuthoritative",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationControlTests",
+        "methodName": "Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-original-approval"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationControlTests",
+        "methodName": "Given_OriginalDeletionApproval_When_ExactDeadlineIsReached_Then_NativeScopeSurvivesExpiredDecision",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-original-approval"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationControlTests",
+        "methodName": "Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-retained-reference"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationControlTests",
+        "methodName": "Given_QueuedScopeDeletion_When_RetainedRevokedGrantAppears_Then_ReferencePreventsNativeRemoval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-retained-reference"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationControlTests",
+        "methodName": "Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-terminal-commit"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationControlTests.Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationControlTests",
+        "methodName": "Given_UnreferencedScope_When_DeletionReturnsSuccess_Then_TerminalNativeAndAuditStateIsCommitted",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-terminal-commit"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_CurrentCatalogueAuthority_When_CreateAndVersionedEditCommit_Then_NativePolicyAndAuditsAgree(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationTests",
+        "methodName": "Given_CurrentCatalogueAuthority_When_CreateAndVersionedEditCommit_Then_NativePolicyAndAuditsAgree",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_CurrentCatalogueAuthority_When_CreateAndVersionedEditCommit_Then_NativePolicyAndAuditsAgree(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationTests",
+        "methodName": "Given_CurrentCatalogueAuthority_When_CreateAndVersionedEditCommit_Then_NativePolicyAndAuditsAgree",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_IndependentCatalogueEditors_When_DuplicateAndStaleCommandsRace_Then_OnlyOneOfEachCommits(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationTests",
+        "methodName": "Given_IndependentCatalogueEditors_When_DuplicateAndStaleCommandsRace_Then_OnlyOneOfEachCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_IndependentCatalogueEditors_When_DuplicateAndStaleCommandsRace_Then_OnlyOneOfEachCommits(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationTests",
+        "methodName": "Given_IndependentCatalogueEditors_When_DuplicateAndStaleCommandsRace_Then_OnlyOneOfEachCommits",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_RemovedScopeGrantOrExpiredMfa_When_PolicyMutationRequested_Then_NoUnauthorizedRowsOrAuditsPersist(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationTests",
+        "methodName": "Given_RemovedScopeGrantOrExpiredMfa_When_PolicyMutationRequested_Then_NoUnauthorizedRowsOrAuditsPersist",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueMutationTests.Given_RemovedScopeGrantOrExpiredMfa_When_PolicyMutationRequested_Then_NoUnauthorizedRowsOrAuditsPersist(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueMutationTests",
+        "methodName": "Given_RemovedScopeGrantOrExpiredMfa_When_PolicyMutationRequested_Then_NoUnauthorizedRowsOrAuditsPersist",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CataloguePagingTests.Given_ManagedScopesAcrossPageBoundary_When_OrdinalPrefixAndLookaheadExecute_Then_ExactPagesExcludeSystemAliasesAndRejectOverflow(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CataloguePagingTests",
+        "methodName": "Given_ManagedScopesAcrossPageBoundary_When_OrdinalPrefixAndLookaheadExecute_Then_ExactPagesExcludeSystemAliasesAndRejectOverflow",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CataloguePagingTests.Given_ManagedScopesAcrossPageBoundary_When_OrdinalPrefixAndLookaheadExecute_Then_ExactPagesExcludeSystemAliasesAndRejectOverflow(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CataloguePagingTests",
+        "methodName": "Given_ManagedScopesAcrossPageBoundary_When_OrdinalPrefixAndLookaheadExecute_Then_ExactPagesExcludeSystemAliasesAndRejectOverflow",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CompletedDeletion_When_CurrentReaderChecksJob_Then_StatusSurvivesTargetAndRejectsWrongKind(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReadTests",
+        "methodName": "Given_CompletedDeletion_When_CurrentReaderChecksJob_Then_StatusSurvivesTargetAndRejectsWrongKind",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CompletedDeletion_When_CurrentReaderChecksJob_Then_StatusSurvivesTargetAndRejectsWrongKind(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReadTests",
+        "methodName": "Given_CompletedDeletion_When_CurrentReaderChecksJob_Then_StatusSurvivesTargetAndRejectsWrongKind",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CurrentReadAuthority_When_MfaExpiresOrScopeReadGrantIsRemoved_Then_ReadsStayRollbackOnlyAndPermissionSpecific(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReadTests",
+        "methodName": "Given_CurrentReadAuthority_When_MfaExpiresOrScopeReadGrantIsRemoved_Then_ReadsStayRollbackOnlyAndPermissionSpecific",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_CurrentReadAuthority_When_MfaExpiresOrScopeReadGrantIsRemoved_Then_ReadsStayRollbackOnlyAndPermissionSpecific(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReadTests",
+        "methodName": "Given_CurrentReadAuthority_When_MfaExpiresOrScopeReadGrantIsRemoved_Then_ReadsStayRollbackOnlyAndPermissionSpecific",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_NativeJsonWithIgnoredCollationCharacter_When_ScopeDetailsRead_Then_ExactProjectionRejectsItWithoutWrites(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReadTests",
+        "methodName": "Given_NativeJsonWithIgnoredCollationCharacter_When_ScopeDetailsRead_Then_ExactProjectionRejectsItWithoutWrites",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReadTests.Given_NativeJsonWithIgnoredCollationCharacter_When_ScopeDetailsRead_Then_ExactProjectionRejectsItWithoutWrites(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReadTests",
+        "methodName": "Given_NativeJsonWithIgnoredCollationCharacter_When_ScopeDetailsRead_Then_ExactProjectionRejectsItWithoutWrites",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_NativePermissionVariants_When_ReferencesRead_Then_DecodedOrdinalMembershipControlsResult(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReferenceTests",
+        "methodName": "Given_NativePermissionVariants_When_ReferencesRead_Then_DecodedOrdinalMembershipControlsResult",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_NativePermissionVariants_When_ReferencesRead_Then_DecodedOrdinalMembershipControlsResult(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReferenceTests",
+        "methodName": "Given_NativePermissionVariants_When_ReferencesRead_Then_DecodedOrdinalMembershipControlsResult",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_OverflowingNativeCandidates_When_ReferenceDecisionRequested_Then_UnavailableReplacesUnreferenced(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReferenceTests",
+        "methodName": "Given_OverflowingNativeCandidates_When_ReferenceDecisionRequested_Then_UnavailableReplacesUnreferenced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_OverflowingNativeCandidates_When_ReferenceDecisionRequested_Then_UnavailableReplacesUnreferenced(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReferenceTests",
+        "methodName": "Given_OverflowingNativeCandidates_When_ReferenceDecisionRequested_Then_UnavailableReplacesUnreferenced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_UnmanagedEscapedResource_When_AudienceReferenceRead_Then_CurrentNativeDependencyIsVisible(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReferenceTests",
+        "methodName": "Given_UnmanagedEscapedResource_When_AudienceReferenceRead_Then_CurrentNativeDependencyIsVisible",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueReferenceTests.Given_UnmanagedEscapedResource_When_AudienceReferenceRead_Then_CurrentNativeDependencyIsVisible(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueReferenceTests",
+        "methodName": "Given_UnmanagedEscapedResource_When_AudienceReferenceRead_Then_CurrentNativeDependencyIsVisible",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"PostgreSql\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueScopeDeletionReferenceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"PostgreSql\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueScopeDeletionReferenceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"SqlServer\", retained: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueScopeDeletionReferenceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueScopeDeletionReferenceTests.Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy(provider: \"SqlServer\", retained: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueScopeDeletionReferenceTests",
+        "methodName": "Given_AdmittedScopeDeletion_When_NativeReferenceCommitsDuringObservedWait_Then_WorkerRetainsScopeAndPolicy",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-original-browser-generation"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_CommittedCatalogueDeletion_When_BrowserGenerationChangesBeforePublication_Then_ExplicitRecoveryPreservesSingleOriginalApproval",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "catalogue-original-browser-generation"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"PostgreSql\", boundary: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"deadline\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueTransportBoundaryTests.Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue(provider: \"SqlServer\", boundary: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueTransportBoundaryTests",
+        "methodName": "Given_ValidCatalogueApiResult_When_OriginalBrowserBoundaryEnds_Then_OneSendCannotPublishOrChangeCatalogue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"

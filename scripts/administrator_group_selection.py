@@ -6,6 +6,7 @@ PROVIDERS = ('PostgreSql', 'SqlServer')
 DEFINITIONS = {
     'BrowserSessions': ('browser_session_groups', ('Foundations', 'Product', 'Lifecycle')),
     'ManagedApplications': ('managed_application_groups', ('Admission', 'Issuance')),
+    'ProtocolAdmission': ('protocol_admission_groups', ('Admission', 'Replay')),
 }
 NAMESPACE = 'IdentityPlatform.Administrator.Tests.Features.'
 
@@ -17,15 +18,17 @@ def definition(story):
     return DEFINITIONS[story]
 
 
-def administrator_execution_invocations(matrix, provider, story=None, group=None, managed_group=None):
+def administrator_execution_invocations(matrix, provider, story=None, group=None, managed_group=None, protocol_group=None):
     """Default and explicit story runs include every required nonoverlapping group."""
     if group is not None and story != 'BrowserSessions':
         raise ValueError('Browser-session group cannot select another story')
     if managed_group is not None and story != 'ManagedApplications':
         raise ValueError('Managed-application group cannot select another story')
+    if protocol_group is not None and story != 'ProtocolAdmission':
+        raise ValueError('Protocol-admission group cannot select another story')
     result = []
     for current, count in administrator_invocations(matrix, provider, story):
-        requested = group if current == 'BrowserSessions' else managed_group
+        requested = {'BrowserSessions': group, 'ManagedApplications': managed_group, 'ProtocolAdmission': protocol_group}.get(current)
         groups = group_invocations(matrix, provider, current, requested) if current in DEFINITIONS else [(None, count)]
         result.extend((current, selected, expected) for selected, expected in groups)
     return result

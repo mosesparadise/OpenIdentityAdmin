@@ -1,6 +1,7 @@
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.ApplicationGrants;
 using IdentityPlatform.Infrastructure.Features.Applications;
+using IdentityPlatform.Infrastructure.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Identity.BrowserCompletion;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Identity.Persistence;
@@ -23,6 +24,7 @@ public sealed class PlatformDbContext(DbContextOptions<PlatformDbContext> option
         const string PlatformSchema = "platform";
         base.OnModelCreating(builder);
         builder.HasDefaultSchema(PlatformSchema);
+        CatalogueModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationPolicyModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationLifecycleAuditModel.Configure(builder, ProviderOptions.Provider(options).Model);
         ApplicationGrantModel.Configure(builder, ProviderOptions.Provider(options).Model);

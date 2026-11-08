@@ -16,7 +16,7 @@ def main():
     inventory = inventory_toolchain(PACKAGE, ROOT / 'eng/admin-ui')
     for command in ('check', 'test'):
         execute(['npm', 'run', command, '--prefix', str(PACKAGE)], os.environ.copy(), timeout=120)
-    reports = {'session': 'test-identities.json', 'applications': 'application-test-identities.json', 'editor': 'editor-test-identities.json', 'grants': 'grant-test-identities.json'}
+    reports = {'session': 'test-identities.json', 'applications': 'application-test-identities.json', 'editor': 'editor-test-identities.json', 'grants': 'grant-test-identities.json', 'catalogue': 'catalogue-test-identities.json'}
     for report, inventory_file in reports.items():
         require_node_report(PACKAGE / f'test-results/{report}.xml', json.loads((ROOT / 'eng/admin-ui' / inventory_file).read_text()))
     audit = json.loads(execute(['npm', 'audit', '--prefix', str(PACKAGE), '--json'], os.environ.copy(), timeout=60, capture=True))
@@ -30,7 +30,7 @@ def main():
         for extension in ('xml', 'tap'):
             name = f'{report}.{extension}'
             (output / name).write_bytes((PACKAGE / 'test-results' / name).read_bytes())
-    print(f'PASS: UI source/shipped bytes, eleven session, nine application-list and reviewed editor/grant controls and {len(inventory)} locked dependency entries')
+    print(f'PASS: UI source/shipped bytes, eleven session, nine application-list and reviewed editor/grant/catalogue controls and {len(inventory)} locked dependency entries')
 
 
 if __name__ == '__main__':

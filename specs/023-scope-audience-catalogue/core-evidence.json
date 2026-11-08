@@ -1,0 +1,54 @@
+{
+  "scope": "T002 Core only",
+  "status": "pass",
+  "counts": {
+    "total": 94,
+    "passed": 94,
+    "failed": 0,
+    "skipped": 0
+  },
+  "review": "Independent test/source review PASS after actual administrator/pilot reserved-name correction; source450/email256 boundaries verified.",
+  "files": [
+    {
+      "path": "/workspace/catalogue-core-results-reserved/Core.trx",
+      "sha256": "b6682942b0dbea7e286fc00778a3a0aa4254e580e4269c3c28ab6ef1575da4c1"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/Features/Catalogue/CatalogueDetails.cs",
+      "sha256": "449bf3aafafef694bffcbba60e12320812ec35ba27e387e95dd0a84c65525b10"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/Features/Catalogue/ConsentedIdentity.cs",
+      "sha256": "fbc76d8feac2f4bd595461872f7c1fc11b1a9cbbcf70da80bbdc1c3c9843d86b"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/Features/Catalogue/CatalogueVersion.cs",
+      "sha256": "5cb91a7c5e7fab41481d7a0a440c4b89264f6a6b83209b066982ae8c9bb45d06"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/Features/Catalogue/CatalogueInput.cs",
+      "sha256": "b570af7030a569ec24849f73532b025dfee0faefee6a3ca6fe35ac672fb0bab5"
+    },
+    {
+      "path": "src/core/IdentityPlatform.Core/Features/Catalogue/CatalogueRules.cs",
+      "sha256": "a3a307420dc4393923fd8c63e4e8c7b55b0d17cefb3d6c9054ed74761476efaf"
+    },
+    {
+      "path": "tests/core/IdentityPlatform.Core.Tests/Features/Catalogue/CataloguePolicyTests.cs",
+      "sha256": "026833c3865e74b5ff2e1b795f2318cae4fc318a8f34aaa1c9194cdfffbd9656"
+    },
+    {
+      "path": "tests/core/IdentityPlatform.Core.Tests/Features/Catalogue/ConsentedIdentityTests.cs",
+      "sha256": "0d34ae5798da52d3428245364e4b1df945deaf0bf2e5f93e9f0db7106a8f8a36"
+    },
+    {
+      "path": "tests/core/IdentityPlatform.Core.Tests/Features/Catalogue/CatalogueVersionTests.cs",
+      "sha256": "05203a61256d0b535e3d07ddab04693bd911a52f69d0c4d1de13fd5296cf121f"
+    }
+  ],
+  "limits": [
+    "No catalogue endpoint/current-authority/native destination test claimed.",
+    "Build/quality pass with zero new allowances.",
+    "Earlier compile/analyzer failures and old-binary test invocation retained outside repository and not counted as final-source evidence."
+  ]
+}

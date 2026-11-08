@@ -44,11 +44,11 @@ class AdministratorSelectionTests(unittest.TestCase):
 
 class AdministratorStoryTests(unittest.TestCase):
     def setUp(self):
-        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications', 'ApplicationGrants')},
-                       'profiles': {p: {'Administrator': 15} for p in ('PostgreSql', 'SqlServer')}}
+        self.matrix = {'administrator_stories': {s: {p: 1 for p in ('PostgreSql', 'SqlServer')} for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications', 'ApplicationGrants', 'Catalogue')},
+                       'profiles': {p: {'Administrator': 16} for p in ('PostgreSql', 'SqlServer')}}
         self.catalogue = {p + s: (p + s, p, False, 'IdentityPlatform.Administrator.Tests.Features.' + s, None)
-                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications', 'ApplicationGrants')}
-        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications', 'ApplicationGrants')] for p in ('PostgreSql', 'SqlServer')}
+                          for p in ('PostgreSql', 'SqlServer') for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications', 'ApplicationGrants', 'Catalogue')}
+        self.inventory = {p: [p + s for s in ('Bootstrap', 'Factors', 'Ceremonies', 'Accounts', 'Recovery', 'Security', 'Governance.Policy', 'Governance.Commands', 'Governance.Failures', 'ProtocolAdmission', 'BrowserSessions', 'SessionRefresh', 'Applications', 'ManagedApplications', 'ApplicationGrants', 'Catalogue')] for p in ('PostgreSql', 'SqlServer')}
         self.selected = {'PostgreSqlFactors': self.catalogue['PostgreSqlFactors']}
 
     def verify(self):
@@ -56,7 +56,7 @@ class AdministratorStoryTests(unittest.TestCase):
 
     def test_control_and_invocation_isolation(self):
         self.verify()
-        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1), ('ProtocolAdmission', 1), ('BrowserSessions', 1), ('SessionRefresh', 1), ('Applications', 1), ('ManagedApplications', 1), ('ApplicationGrants', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
+        self.assertEqual([('Bootstrap', 1), ('Factors', 1), ('Ceremonies', 1), ('Accounts', 1), ('Recovery', 1), ('Security', 1), ('Governance.Policy', 1), ('Governance.Commands', 1), ('Governance.Failures', 1), ('ProtocolAdmission', 1), ('BrowserSessions', 1), ('SessionRefresh', 1), ('Applications', 1), ('ManagedApplications', 1), ('ApplicationGrants', 1), ('Catalogue', 1)], administrator_invocations(self.matrix, 'PostgreSql'))
         self.assertEqual([('Factors', 1)], administrator_invocations(self.matrix, 'PostgreSql', 'Factors'))
         for story in ('Restart', 'Unknown'):
             with self.assertRaises(ValueError): administrator_invocations(self.matrix, 'PostgreSql', story)
@@ -154,8 +154,9 @@ class ProtocolAdmissionSelectionTests(AdministratorStoryTests):
         verify = re.split(r'\n  [A-Za-z][\w-]*:', workflow.split('  verify:\n', 1)[1], maxsplit=1)[0]
         self.assertIn('    timeout-minutes: 20', verify)
         for provider in ('PostgreSql', 'SqlServer'):
-            cell = '{ profile: ' + provider + ', partition: administrator, story: ProtocolAdmission, label: administrator-' + provider + '-protocoladmission }'
-            self.assertEqual(1, verify.count(cell))
+            for group in ('Admission', 'Replay'):
+                cell = '{ profile: ' + provider + ', partition: administrator, story: ProtocolAdmission, protocol_admission_group: ' + group + ', label: administrator-' + provider + '-protocoladmission-' + group.lower() + ' }'
+                self.assertEqual(1, verify.count(cell))
         self.assertIn('timeout=180 if args.profile == "unit" else 660', (root / 'scripts/verify.py').read_text())
 
 

@@ -31,11 +31,11 @@ public sealed class PilotGateSchemaTests
         await SeedGrantAsync(fixture);
         var before = await fixture.SnapshotAsync(provider);
         Assert.Equal(0, await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token));
-        var after = await fixture.SnapshotAsync(provider);
+        var after = CatalogueUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider));
         PilotGateUpgradeWitness.Require(provider, before, after);
         PilotGateUpgradeWitness.RejectDefects(provider, before, after);
         Assert.Equal(0, await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token));
-        PilotGateUpgradeWitness.Require(provider, before, await fixture.SnapshotAsync(provider));
+        PilotGateUpgradeWitness.Require(provider, before, CatalogueUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider)));
     }
 
     /// <summary>A fresh runtime principal can lock but cannot recreate a missing singleton; neither install nor request creates pilot authority.</summary>

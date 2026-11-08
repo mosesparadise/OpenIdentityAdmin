@@ -13,7 +13,7 @@ internal static class ApplicationMutationInput
     private const string ContentEncoding = "Content-Encoding";
 
     /// <summary>Reads actual bytes once after path, method and header validation; caller retains strict action-specific DTO validation.</summary>
-    internal static async Task<(byte[] Bytes, string? Version)> ReadAsync(HttpContext http, string path, string method, bool precondition)
+    internal static async Task<(byte[] Bytes, string? Version)> ReadAsync(HttpContext http, string path, string method, bool precondition, Func<string?, bool>? canonical = null, int malformedStatus = StatusCodes.Status412PreconditionFailed)
     {
         var request = http.Request;
         if (!ApplicationHttpBoundary.Exact(http, path) || request.Method != method ||
@@ -23,7 +23,7 @@ internal static class ApplicationMutationInput
         {
             throw new ApplicationHttpRejected(StatusCodes.Status400BadRequest);
         }
-        var version = ReadVersion(http, precondition);
+        var version = ReadVersion(http, precondition, canonical ?? ApplicationVersion.IsCanonical, malformedStatus);
         var bytes = await ApplicationJson.ReadAsync(request.Body, BodyBytes, http.RequestAborted);
         if (request.ContentLength is { } length && length != bytes.Length)
         {
@@ -33,7 +33,7 @@ internal static class ApplicationMutationInput
     }
 
     /// <summary>Rejects aliases before persistence while leaving canonical resource/version comparison to the owned native writer.</summary>
-    private static string? ReadVersion(HttpContext http, bool required)
+    private static string? ReadVersion(HttpContext http, bool required, Func<string?, bool> canonical, int malformedStatus)
     {
         var values = http.Request.Headers.IfMatch;
         if (!required)
@@ -44,7 +44,7 @@ internal static class ApplicationMutationInput
         {
             throw new ApplicationHttpRejected(StatusCodes.Status428PreconditionRequired);
         }
-        return values.Count == 1 && ApplicationVersion.IsCanonical(values[0]) ? values[0] :
-            throw new ApplicationHttpRejected(StatusCodes.Status412PreconditionFailed);
+        return values.Count == 1 && canonical(values[0]) ? values[0] :
+            throw new ApplicationHttpRejected(malformedStatus);
     }
 }
