@@ -1,4 +1,5 @@
 using IdentityPlatform.Administrator.Tests.Features.Catalogue;
+using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Applications;
 
@@ -13,10 +14,10 @@ public sealed class ApplicationScopeAtomicityTests(BootstrapFixture fixture)
 
     /// <summary>Production exact permission and catalogue snapshot checks reject deliberate persisted substitution and roll back the complete transaction.</summary>
     [Theory]
-    [InlineData("PostgreSql", 0, Traits = ["Provider", "PostgreSql"])]
+    [InlineData("PostgreSql", 0, Traits = ["Provider", "PostgreSql", "CriticalDecision", "application-scope-permission-verification"])]
     [InlineData("PostgreSql", 1, Traits = ["Provider", "PostgreSql"])]
     [InlineData("PostgreSql", 2, Traits = ["Provider", "PostgreSql"])]
-    [InlineData("SqlServer", 0, Traits = ["Provider", "SqlServer"])]
+    [InlineData("SqlServer", 0, Traits = ["Provider", "SqlServer", "CriticalDecision", "application-scope-permission-verification"])]
     [InlineData("SqlServer", 1, Traits = ["Provider", "SqlServer"])]
     [InlineData("SqlServer", 2, Traits = ["Provider", "SqlServer"])]
     public async Task Given_PersistedAssignment_When_NativePermissionOrPolicyIsSubstituted_Then_VerificationRejectsAndAllRowsRollBack(string provider, int change)
@@ -31,10 +32,22 @@ public sealed class ApplicationScopeAtomicityTests(BootstrapFixture fixture)
         fault.ApplicationId = id;
         fault.ScopeId = scopes[1].Id;
         fault.AudienceId = scopes[1].AudienceId;
-        var error = await Record.ExceptionAsync(() => test.ExecuteAsync(ApplicationMutationCommand.AssignScopes(id, created.Version!, new([ApplicationScopeEvidence.Orders]))!));
+        ApplicationMutationResult? accepted = null;
+        var error = await Record.ExceptionAsync(async () => accepted = await test.ExecuteAsync(ApplicationMutationCommand.AssignScopes(id, created.Version!, new([ApplicationScopeEvidence.Orders]))!));
         Assert.NotNull(fault.PersistedPermissions);
         Assert.Contains(Permission, fault.PersistedPermissions);
-        Assert.True(error is InvalidOperationException, VerificationBypass);
+        if (error is null)
+        {
+            Assert.Equal(200, accepted!.Status);
+            var corrupted = await ApplicationScopeEvidence.ReadAsync(test, id);
+            Assert.Contains("scp:substituted", corrupted.Permissions);
+            Assert.DoesNotContain(Permission, corrupted.Permissions);
+            var committed = await ApplicationUpdateSnapshot.ReadAsync(test, id);
+            Assert.Equal(before.Policy.Revision + 1, committed.Policy.Revision);
+            Assert.Equal("ApplicationScopesAssigned", Assert.Single(committed.Audits, row => !before.Audits.Any(old => old.Id == row.Id)).Event);
+            Assert.True(error is InvalidOperationException, VerificationBypass);
+        }
+        Assert.IsType<InvalidOperationException>(error);
         Assert.Equal(before.Digest, (await ApplicationUpdateSnapshot.ReadAsync(test, id)).Digest);
         Assert.Equal(catalogue, await CatalogueMutationEvidence.SnapshotAsync(test));
         fault.ApplicationId = null;

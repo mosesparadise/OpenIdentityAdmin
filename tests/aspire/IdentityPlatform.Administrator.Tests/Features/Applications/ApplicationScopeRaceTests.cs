@@ -10,6 +10,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Applications;
 [Collection("administrator-bootstrap")]
 public sealed class ApplicationScopeRaceTests(BootstrapFixture fixture)
 {
+    private const string ScopePrefix = "scp:";
     private const string Edited = "Competing edit";
     private const string Callback = "https://competing.example.test/callback";
     private const string Audit = "ApplicationScopesAssigned";
@@ -32,6 +33,7 @@ public sealed class ApplicationScopeRaceTests(BootstrapFixture fixture)
         var created = await test.ExecuteAsync(test.Create());
         var id = created.Application!.Id;
         var before = await ApplicationUpdateSnapshot.ReadAsync(test, id);
+        var originalNative = await ApplicationScopeEvidence.ReadAsync(test, id);
         await using var peer = test.Peer(provider);
         var first = ApplicationMutationCommand.AssignScopes(id, created.Version!, new([ApplicationScopeEvidence.Email]))!;
         var second = edit ? ApplicationMutationCommand.Edit(id, created.Version!, new(Edited, [Callback]))!
@@ -51,8 +53,15 @@ public sealed class ApplicationScopeRaceTests(BootstrapFixture fixture)
         {
             var expected = winner == 0 ? first : second;
             Assert.Equal(expected.Scopes, outcomes[winner].Scopes!.Scopes);
+            var persisted = await ApplicationScopeEvidence.ReadAsync(test, id);
+            Assert.Equal(originalNative.Stable, persisted.Stable);
+            Assert.Equal(originalNative.Permissions.Concat(expected.Scopes.Select(name => ScopePrefix + name)).Order(StringComparer.Ordinal), persisted.Permissions);
             await CatalogueMutationEvidence.RequireAuditAsync(test, correlations[winner], Audit, Target, id, test.Clock.Now.ToUnixTimeSeconds());
         }
+        Assert.Null(outcomes[1 - winner].Version);
+        Assert.Null(outcomes[1 - winner].Application);
+        Assert.Null(outcomes[1 - winner].Scopes);
+        Assert.Null(outcomes[1 - winner].Credential);
         var after = await ApplicationUpdateSnapshot.ReadAsync(test, id);
         Assert.Equal(before.Policy.Revision + 1, after.Policy.Revision);
         Assert.Equal(before.Audits.Length + 1, after.Audits.Length);
