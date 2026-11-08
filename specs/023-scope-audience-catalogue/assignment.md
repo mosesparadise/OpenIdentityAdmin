@@ -1,5 +1,7 @@
 # T008 application scope assignment
 
+Delivered in PR130. [Final acceptance](assignment-acceptance.md) supersedes the pending validation checkpoints below while preserving their failed-attempt history.
+
 Continuation from main `6e015a4a7b6edf3fe119b1d8fbb78dd2c9f442dd`, 8 November 2026.
 The user requested the next recommended task. T008 implements explicit application
 assignment; T009–T014 protocol policy, consent, claims and UserInfo remain separate.
@@ -48,7 +50,7 @@ Host/contract/BFF tests cover strict framing, exact one-send destinations, origi
 browser authority and output binding. UI and retained browser journeys cover explicit
 selection/removal, saved-state warning, stale/denied/ambiguous results, themes, reflow,
 keyboard and accessibility. Existing discovery identities, mutation controls and module
-floors remain mandatory. Implementation and evidence are pending; T008 stays unchecked.
+floors remain mandatory. T008 is accepted; [final evidence](assignment-acceptance.md) records completion of these bounded obligations.
 
 ## Validation checkpoint — 8 November 2026
 
