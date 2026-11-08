@@ -1,0 +1,105 @@
+name: Validate scope assignment increment
+on:
+  push:
+    branches: [139-scope-assignment-validation]
+permissions:
+  contents: read
+jobs:
+  browser:
+    name: Assignment provider and browser scenarios (${{ matrix.provider }}, ${{ matrix.browser }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        provider: [PostgreSql, SqlServer]
+        browser: [chromium, webkit]
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      IDENTITY_TEST_BROWSER: ${{ matrix.browser }}
+      ASSIGNMENT_PROVIDER: ${{ matrix.provider }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet tool restore
+      - run: dotnet restore tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --locked-mode
+      - run: dotnet build tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-restore --nologo
+      - run: python3 scripts/prepare_native_image.py "${ASSIGNMENT_PROVIDER}"
+      - name: Trust local HTTPS certificate
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/identity-https-trust"
+          dotnet dev-certs https --export-path "$RUNNER_TEMP/identity-https-trust/localhost.pem" --format PEM
+          openssl rehash "$RUNNER_TEMP/identity-https-trust"
+          echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
+      - run: dotnet restore tests/tooling/IdentityPlatform.BrowserInstaller --locked-mode
+      - run: dotnet build tests/tooling/IdentityPlatform.BrowserInstaller --no-restore --nologo
+      - name: Select official Ubuntu archive for browser dependencies
+        run: sudo python3 scripts/prepare_browser_archive.py
+      - name: Install retained browser and synthetic certificate trust
+        shell: bash
+        run: |
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps ${{ matrix.browser }}
+          sudo apt-get install -y libnss3-tools
+          sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
+          sudo update-ca-certificates
+          echo "NODE_EXTRA_CA_CERTS=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
+          echo "IDENTITY_TEST_CERTIFICATE=$RUNNER_TEMP/identity-https-trust/localhost.pem" >> "$GITHUB_ENV"
+          mkdir -p "$HOME/.pki/nssdb"
+          certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
+          certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"
+      - name: Bind source and actual native discovery
+        shell: bash
+        run: |
+          mkdir -p artifacts/scope-assignment
+          git rev-parse HEAD HEAD:src HEAD:tests HEAD:scripts HEAD:eng > artifacts/scope-assignment/source.txt
+          dotnet --info > artifacts/scope-assignment/sdk.txt
+          dotnet run --project tests/aspire/IdentityPlatform.Administrator.Tests --no-build --no-restore -- --pre-enumerate-theories on --list-tests json > artifacts/scope-assignment/discovery.json
+      - name: Execute new assignment scenarios
+        shell: bash
+        run: |
+          if [ "$IDENTITY_TEST_BROWSER" = chromium ]; then
+            selected='FullyQualifiedName~.Features.Applications.ApplicationScope|FullyQualifiedName~.Features.ManagedApplications.ManagedScopeAssignmentTests|FullyQualifiedName~.Features.ApplicationGrants.GrantAssignedScopeTests|FullyQualifiedName~.Features.Browser.ApplicationScopeBrowserTests'
+          else
+            selected='FullyQualifiedName~.Features.Browser.ApplicationScopeBrowserTests'
+          fi
+          dotnet test --project tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj --no-build --no-restore --no-progress --pre-enumerate-theories on --parallel none --report-trx --report-trx-filename Assignment.trx --results-directory artifacts/scope-assignment --filter "Provider=${ASSIGNMENT_PROVIDER}&(${selected})"
+      - name: Reconcile original discovery and native results
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import collections, hashlib, json, os
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          root = Path('artifacts/scope-assignment')
+          tests = json.loads((root / 'discovery.json').read_text())['tests']
+          def included(t):
+              kind = t['type']['typeName']
+              namespace = t['type']['namespace']
+              browser = kind == 'ApplicationScopeBrowserTests' and namespace.endswith('.Browser')
+              ordinary = (kind.startswith('ApplicationScope') and namespace.endswith('.Applications') or kind == 'ManagedScopeAssignmentTests' and namespace.endswith('.ManagedApplications') or kind == 'GrantAssignedScopeTests' and namespace.endswith('.ApplicationGrants'))
+              return browser or os.environ['IDENTITY_TEST_BROWSER'] == 'chromium' and ordinary
+          selected = [t for t in tests if any(x['key'] == 'Provider' and x['value'] == os.environ['ASSIGNMENT_PROVIDER'] for x in t['traits']) and included(t)]
+          assert selected
+          trx = ET.parse(root / 'Assignment.trx')
+          results = trx.findall('.//{*}UnitTestResult')
+          assert collections.Counter(t['displayName'] for t in selected) == collections.Counter(r.attrib['testName'] for r in results)
+          assert all(r.attrib['outcome'] == 'Passed' for r in results)
+          receipt = {'provider': os.environ['ASSIGNMENT_PROVIDER'], 'selected': len(selected), 'passed': len(results), 'nativeIds': [t['uid'] for t in selected], 'sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in root.iterdir() if p.is_file()}}
+          (root / 'receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(f"Verified {len(results)} exact discovered cases; no skipped or unexpected result")
+          PY
+      - name: Preserve bounded validation evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: scope-assignment-${{ matrix.provider }}-${{ matrix.browser }}
+          path: artifacts/scope-assignment/
+          retention-days: 7
+          if-no-files-found: error
