@@ -1,15 +1,14 @@
 # Scope/audience catalogue validation
 
-The catalogue candidate is implemented on branch `135-scope-audience-catalogue`.
-Final provider/browser/full-CI acceptance and merge are pending. Existing application
-management remains available on main. Use the ordinary Aspire launch model:
+Catalogue management is delivered on `main` in [PR128](https://github.com/mosesparadise/OpenIdentityAdmin/pull/128).
+See [accepted scope and verification limits](acceptance.md). Use the ordinary Aspire launch model:
 
 ```sh
 dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-demo
 ```
 
 Use disposable synthetic data, the dashboard initialization link and genuine password/MFA.
-Open the administrator UI from the Aspire dashboard. The candidate adds **Audiences**
+Open the administrator UI from the Aspire dashboard. The workspace includes **Audiences**
 and **Scopes** to the navigation:
 
 1. Create an audience with resource `orders-api`, a display name and owner.

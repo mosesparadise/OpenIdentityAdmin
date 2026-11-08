@@ -1,20 +1,34 @@
 # Scope/audience catalogue evidence
 
-## Baseline — 7 November 2026
+## Current accepted catalogue management increment
+
+[Final acceptance](acceptance.md) binds CI563, the exact reviewed source, normal squash
+and evidence limits. All 130 required jobs pass, including both Admission/Replay groups
+on each provider and 104 original coverage inputs. T004–T007 are complete for internal
+development. T008–T016 and all historical/manual/public-release gates remain open.
+
+## Historical implementation and verification record
+
+The entries below preserve the evidence available at each checkpoint. Statements that
+implementation, tests or review were pending describe those historical checkpoints;
+they do not override the accepted catalogue-management slice above. Earlier failed
+attempts remain failed, including CI561's unexplained witness failure and CI562's cross-site logout timeout.
+
+### Baseline — 7 November 2026
 
 Verified remote main `7c458f4329b945a12ea913b3d79984a058390a80`; clean prior worktree
 at branch134. New branch135 preserves prior work. Feature022 PR126/127 are merged;
 its runtime CI553 and acceptance evidence are historical baselines, not tests of this
 feature. Current runtime source inventory and original tests must be retained.
 
-## User decisions and initial review
+### User decisions and initial review
 
 The user selected M03-A–M03-C and consented current Identity email/email_verified.
 Initial architecture review confirmed approved native ownership, ordinal IDs, blocked
 referenced deletion, current permissions, atomic audit, single audience and explicit
 consent. Claim choice is now resolved. No product/runtime test has run for feature023.
 
-## Required evidence
+### Required evidence
 
 C01–C14 in `contracts/catalogue.md` bind the acceptance obligations. Record actual
 commands/native discovered identities/source/report hashes, provider/browser scope,
@@ -24,7 +38,7 @@ mutation targets remain. New schema means both fresh and populated upgrade evide
 Independent packet review, final source review and runtime evidence are pending.
 No Windows/manual/Firefox/A-009/historical/public-release gate is closed by this packet.
 
-## Preparatory reviewer dispositions
+### Preparatory reviewer dispositions
 
 Architecture/security review requires one versioned bounded decision model, nullable
 legacy marker only for exactopenid, no public snapshot/secret destination, current
@@ -48,7 +62,7 @@ Cross-artifact analysis maps all13 requirements to C01–C14 and T002–T016; pr
 validate through the pinned Spec Kit script and diff whitespace passes. T001 is complete
 as design evidence only. Worker path corrected to the existing backend project.
 
-## T002 shared policy evidence
+### T002 shared policy evidence
 
 Core build passes with zero warnings/errors; all94 current Core cases pass, no skips
 (41 prior plus53 new). [Exact source/report bindings](core-evidence.json) record finite
@@ -58,7 +72,7 @@ identity-admin-bff and pilot_api with case-alias controls. Core-only review now 
 Quality checks pass without expanding allowances. T002 is complete; HTTP/current
 authority/native destinations and all user journeys remain pending.
 
-## T003 schema candidate
+### T003 schema candidate
 
 Generated additive migrations `20261107191539_ScopeAudienceCatalogue` (PostgreSQL)
 and `20261107191542_ScopeAudienceCatalogue` (SQL Server): audience, native-scope policy
@@ -97,7 +111,7 @@ these attempts; their7day retention is not permanent acceptance evidence. Test-r
 archive download through the connector succeeds, but local access to its temporary
 file URL is403; no local archive preservation is claimed.
 
-## T003 scoped acceptance
+### T003 scoped acceptance
 
 Correction run[42407104845](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42407104845)
 passes13/13 on each provider:26 total, zero failed/skipped, with exact original
@@ -109,7 +123,7 @@ remaining feature tasks and catalogue product activation remain pending. Origina
 archives remain hosted with7day retention; decoded job logs were reviewed locally,
 but no local archive/TRX-byte reparse is claimed.
 
-## T004 create/edit and native reference candidate
+### T004 create/edit and native reference candidate
 
 Current candidate adds finite immutable catalogue intents, governed create/edit
 coordination using the existing private one-use API authority receipt, fresh MFA and
@@ -134,7 +148,7 @@ audit fields and fresh full native-scope/product/audit snapshots around denials;
 are implemented for scope/audience actions. Correction source review, build and quality
 pass. Corrected native execution remains pending; no T004 acceptance is claimed.
 
-## Corrected T004 component checkpoint
+### Corrected T004 component checkpoint
 
 Run[42408239551](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42408239551)
 at isolated diagnostic65bf2ed passes all four jobs: schema13/13 and component8/8 on
@@ -154,7 +168,7 @@ consented native claims/UserInfo, full CI/coverage/mutation acceptance or merge 
 Original artifacts expire14November2026; decoded logs were inspected locally, while
 local archive/TRX-byte retrieval remains unavailable through the file-URL proxy route.
 
-## T004–T007 implementation candidate — 7 November 2026
+### T004–T007 implementation candidate — 7 November 2026
 
 User selection confirms T005–T007 with unfinished T004 prerequisites. Branch135 now
 implements permission-bound ordinal list/detail reads, native scope/audience writes,
@@ -198,7 +212,7 @@ preservation and the actual one-send DELETE recovery snapshot. Final runtime rev
 full exact-head checks and normal reviewed delivery remain pending. T004–T007 stay unchecked
 until that evidence is reconciled. Existing historical/manual/refresh/release gates remain open.
 
-## Corrected native/transport and mutation evidence
+### Corrected native/transport and mutation evidence
 
 Bounded run[42418041016](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42418041016)
 at isolatedf2fb586 (src/tests/scripts/eng identical to producta174f6d) passes all56
@@ -238,7 +252,7 @@ verification-tooling330 and code-quality checks pass. Full corrected-head CI and
 acceptance remain required before PR128 leaves draft or merges.
 
 
-## Retained-browser correction and source review — 7 November 2026
+### Retained-browser correction and source review — 7 November 2026
 
 Focused run [42419063699](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42419063699)
 passes both Chromium journeys but fails WebKit reflow. Diagnostic run
@@ -273,7 +287,7 @@ Full CI560 subsequently exceeds the existing SQL protocol-admission execution de
 It is rejected as integrated acceptance; focused browser success does not close T004–T007.
 
 
-## Bounded protocol suite partition — 7 November 2026
+### Bounded protocol suite partition — 7 November 2026
 
 CI560 job128549065485 starts the SQL ProtocolAdmission native runner, then exceeds
 its unchanged660-second process deadline without producing a completed native report.
@@ -296,7 +310,7 @@ old combined coverage replacement reject. Actual native discovery retains2,871 c
 four real filtered discoveries reconcile107/55 per provider as exact disjoint unions.
 Independent source review and clean final-head hosted acceptance remain required.
 
-## Pilot replay observer correction — 7 November 2026
+### Pilot replay observer correction — 7 November 2026
 
 Full CI561 [42422882155](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42422882155)
 at a75ade11444c89fc08cfef1aab12480b6d7b634a is rejected. PostgreSQL pilot replay
@@ -336,7 +350,7 @@ CI561's cause or accept the corrected source. Decoded log SHA-256:
 CI561 terminates with 60 successful, 68 cancelled and two failed jobs (the pilot witness
 and final acceptance); it remains rejected. Diagnostic branch136 is not merged.
 
-## Cross-site logout completion witness — 7 November 2026
+### Cross-site logout completion witness — 7 November 2026
 
 CI562 [42424175571](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42424175571)
 at 618c7f27b90c0064e8b99f37d4ddf4283eb21b4c is rejected: 127 jobs succeed, the
@@ -382,3 +396,21 @@ rejected by their specific negative controls. Receipt helper SHA-256:
 native witness SHA-256: `a36426afde77bf5677bc3d30aced6ea265711cac97dbe698f66b1331d7e15710`.
 Corrected four-cell browser and complete final-head acceptance
 remain required before T004–T007 close or PR128 merges.
+
+### Corrected cross-site logout focused verification — 8 November 2026
+
+[Run42427434039](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/42427434039)
+at 50ed6b9604b62bf16d436ebe587af5ab79fc94d8 passes all four PostgreSQL/SQL Server and
+Chromium/WebKit cells: one complete original cross-site logout scenario per cell, with
+zero failed or skipped cases. Every hosted job reconciles its original native discovery
+and TRX. The src/tests/eng trees equal product932a71d1e071c3b07abb81f03a9d91f2303c0750.
+The temporary trace and intentional final failure are removed. Earlier diagnostic-only
+mutation scripts still differ on branch136 but are not exercised; there is no claim of
+whole scripts-tree equality or local raw-archive reinspection.
+
+The retained decoded-log/source/API receipt SHA-256 is
+`8d671abdfd47deca492f83e2a8cd27fbc8fb740f33ca23cc0f53359de25e2012`.
+Actual native discovery also preserves all2,871 prior administrator identities and their
+complete metadata, SHA-256 `4b3a6cdf7b6abd31f0e50c94573baddcdbcf5a8554397407bb18f279c9085fab`.
+This focused result does not explain CI562's earlier timeout. Full exact-head CI563 and
+final independent evidence review remain required; earlier failures stay rejected.
