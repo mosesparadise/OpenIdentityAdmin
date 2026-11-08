@@ -16,7 +16,7 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 public sealed class ApplicationDocumentTests
 {
     private const int QueryFields = 3;
-    private const int PathCount = 14;
+    private const int PathCount = 15;
     private const int MaximumIdentifier = 400;
     private const int MaximumClientId = 100;
     private const int MaximumDisplayName = 200;
@@ -87,6 +87,7 @@ public sealed class ApplicationDocumentTests
         Assert.Equal(PathCount, document[Paths]!.AsObject().Count);
         ApplicationEditorAssertions.Require(document, browser: false);
         GrantContractAssertions.Require(document, browser: false);
+        ApplicationScopeContractAssertions.Require(document, browser: false);
         CatalogueContractAssertions.Require(document, browser: false);
         var operation = document[Paths]![CollectionPath]![Get]!;
         Assert.Equal(Operation, operation[OperationId]!.GetValue<string>());

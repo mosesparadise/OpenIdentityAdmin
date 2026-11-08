@@ -23,10 +23,17 @@ internal static class ApplicationDetailsReader
     /// <summary>Checks both native and policy IDs ordinally after provider lookup and never adopts native or system registrations.</summary>
     internal static async Task<(ApplicationDetails? Details, string? Version)> ReadAsync(PlatformDbContext database, string id, DateTimeOffset expiry, CancellationToken token)
     {
+        var state = await ReadStateAsync(database, id, expiry, token);
+        return (state.Details, state.Version);
+    }
+
+    /// <summary>Returns one bounded validated native snapshot for both ordinary details and the additive scope-assignment projection.</summary>
+    internal static async Task<ApplicationDetailsSnapshot> ReadStateAsync(PlatformDbContext database, string id, DateTimeOffset expiry, CancellationToken token)
+    {
         var row = await Rows(database, id).SingleOrDefaultAsync(token);
         if (row is null || row.Id != id)
         {
-            return (null, null);
+            return new(null, null, null);
         }
         if (!ApplicationProjection.IsValid(new(row.Id, row.ClientId, row.DisplayName, row.ClientType)))
         {
@@ -39,7 +46,7 @@ internal static class ApplicationDetailsReader
         }
         if (policy is null || await SystemAsync(database, id, row.ClientId, token))
         {
-            return (new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null);
+            return new(new(row.Id, row.ClientId, row.DisplayName, [], null, false, null, expiry), null, null);
         }
         if (policy.Profile != ApplicationEditorRules.Profile || policy.Revision < 1 || policy.CredentialRevision < 1 ||
             policy.CredentialIssuedAt < 0 || policy.CredentialExpiresAt <= policy.CredentialIssuedAt || policy.ObservedAt < policy.CredentialIssuedAt ||
@@ -50,13 +57,15 @@ internal static class ApplicationDetailsReader
             throw new InvalidDataException();
         }
         var descriptor = Descriptor(row);
-        if (!ManagedApplicationProfile.Matches(descriptor))
+        if (!ManagedApplicationProfile.MatchesManagement(descriptor))
         {
             throw new InvalidDataException();
         }
-        return (new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
+        return new(new(row.Id, row.ClientId, row.DisplayName, descriptor.RedirectUris.Select(uri => uri.OriginalString).Order(StringComparer.Ordinal).ToArray(),
             policy.Profile, true, new(DateTimeOffset.FromUnixTimeSeconds(policy.CredentialIssuedAt), DateTimeOffset.FromUnixTimeSeconds(policy.CredentialExpiresAt)), expiry, policy.Enabled),
-            ApplicationVersion.Create(row.Id, policy.Revision));
+            ApplicationVersion.Create(row.Id, policy.Revision), descriptor.Permissions
+                .Where(value => value.StartsWith(OpenIddictConstants.Permissions.Prefixes.Scope, StringComparison.Ordinal))
+                .Select(value => value[OpenIddictConstants.Permissions.Prefixes.Scope.Length..]).Order(StringComparer.Ordinal).ToArray());
     }
 
     /// <summary>Limits database output before materialization and computes profile flags without retrieving protected native columns.</summary>
@@ -110,3 +119,6 @@ internal static class ApplicationDetailsReader
     /// <summary>Contains only bounded presentation/profile metadata; no native credential or arbitrary object is retained.</summary>
     private sealed record Row(string Id, string ClientId, string? DisplayName, string? ClientType, string? Redirects, string? Permissions, string? Requirements, string? ApplicationType, string? ConsentType, bool NativeProfile);
 }
+
+/// <summary>Retains one bounded already validated native observation without exposing additional fields through existing editor contracts.</summary>
+internal sealed record ApplicationDetailsSnapshot(ApplicationDetails? Details, string? Version, IReadOnlyList<string>? Scopes);

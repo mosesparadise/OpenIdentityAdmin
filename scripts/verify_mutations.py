@@ -190,7 +190,7 @@ def manifest(root, suite='issuer'):
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
         'applications': (8, 'eng/application-mutations.json', None),
-        'catalogue': (4, 'eng/catalogue-mutations.json', None),
+        'catalogue': (5, 'eng/catalogue-mutations.json', None),
         'application-grants': (6, 'eng/application-grant-mutations.json', None),
         'application-lifecycle': (4, 'eng/application-lifecycle-mutations.json', None),
         'managed-applications': (5, 'eng/managed-application-mutations.json', None),
@@ -236,6 +236,7 @@ def manifest(root, suite='issuer'):
             'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs'
         }
         exact_paths = {'catalogue': {
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationWriteState.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionActor.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionProcessor.cs',
                            'src/backend/IdentityPlatform.Admin.Bff/Features/Catalogue/CatalogueProxy.cs'},

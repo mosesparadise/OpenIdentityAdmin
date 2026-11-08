@@ -55,7 +55,7 @@ internal sealed class ApiMutationAuthority
         ApiIdentity identity, ApplicationMutationCommand command, string callback, CancellationToken token)
     {
         var permission = Permission(command.Kind);
-        var fresh = command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable;
+        var fresh = command.Kind is ApplicationMutationKind.Replace or ApplicationMutationKind.Disable or ApplicationMutationKind.Enable or ApplicationMutationKind.AssignScopes;
         var observation = await ObserveAsync(scope, ownership, identity, permission, fresh, callback, token);
         return new(scope, ownership, identity, command, callback, observation.Source, observation.Deadline, permission, fresh);
     }
@@ -143,7 +143,7 @@ internal sealed class ApiMutationAuthority
     /// <summary>Selects only the named action's persisted grant; unknown actions cannot fall through to ordinary write permission.</summary>
     private static string Permission(ApplicationMutationKind kind) => kind switch
     {
-        ApplicationMutationKind.Create or ApplicationMutationKind.Edit => WritePermission,
+        ApplicationMutationKind.Create or ApplicationMutationKind.Edit or ApplicationMutationKind.AssignScopes => WritePermission,
         ApplicationMutationKind.Replace => CredentialPermission,
         ApplicationMutationKind.Disable or ApplicationMutationKind.Enable => LifecyclePermission,
         _ => throw ProtocolStorageOwner.Unavailable()

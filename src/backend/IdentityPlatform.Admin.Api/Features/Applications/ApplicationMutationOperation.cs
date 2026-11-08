@@ -21,7 +21,8 @@ internal static class ApplicationMutationOperation
             completed.Authority.RequirePublication(clock, budget);
             var details = completed.State.Details(completed.Authority.Deadline);
             return new(command.Kind == ApplicationMutationKind.Create ? StatusCodes.Status201Created : StatusCodes.Status200OK,
-                details, completed.State.Version, completed.State.Credential(details));
+                details, completed.State.Version, completed.State.Credential(details),
+                command.Kind == ApplicationMutationKind.AssignScopes ? completed.State.Scopes(completed.Authority.Deadline) : null);
         }
         catch (ApiMutationDenied denied) { return new(denied.Status, null, null, null); }
         catch (ApplicationMutationRejected rejected) { return new(Status(rejected.Failure), null, null, null); }
@@ -68,4 +69,4 @@ internal static class ApplicationMutationOperation
 }
 
 /// <summary>Contains only a safe projection or immediate one-time credential response; no plaintext record formatting is generated.</summary>
-internal sealed record ApplicationMutationResult(int Status, ApplicationDetails? Application, string? Version, ApplicationCredentialOutput? Credential);
+internal sealed record ApplicationMutationResult(int Status, ApplicationDetails? Application, string? Version, ApplicationCredentialOutput? Credential, ApplicationScopes? Scopes = null);

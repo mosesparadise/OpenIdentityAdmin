@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 1892,
+      "Host": 1905,
       "Architecture": 5,
       "AppHost": 110
     },
@@ -37,19 +37,19 @@
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1308
+      "Administrator": 1333
     },
     "SqlServer": {
       "Persistence": 38,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1413
+      "Administrator": 1438
     }
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 75
+    "Administrator": 76
   },
   "lifecycle_stories": {
     "Restart": {
@@ -119,16 +119,16 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 92,
-      "SqlServer": 92
+      "PostgreSql": 115,
+      "SqlServer": 115
     },
     "ManagedApplications": {
-      "PostgreSql": 118,
-      "SqlServer": 118
+      "PostgreSql": 119,
+      "SqlServer": 119
     },
     "ApplicationGrants": {
-      "PostgreSql": 93,
-      "SqlServer": 93
+      "PostgreSql": 94,
+      "SqlServer": 94
     },
     "Catalogue": {
       "PostgreSql": 49,
@@ -139,7 +139,7 @@
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 35,
+    "BrowserProtection": 36,
     "BrowserLogin": 9,
     "ApplicationEditor": 1,
     "ApplicationAuthority": 1,
@@ -359,11 +359,12 @@
         "ManagedTokenPublicationTests",
         "ManagedTokenRaceTests",
         "ManagedTokenReplayTests",
-        "ManagedUpdateJourneyTests"
+        "ManagedUpdateJourneyTests",
+        "ManagedScopeAssignmentTests"
       ],
       "counts": {
-        "PostgreSql": 64,
-        "SqlServer": 64
+        "PostgreSql": 65,
+        "SqlServer": 65
       }
     }
   },

@@ -21,6 +21,6 @@ public sealed record ScopeInput(
     [property: MaxLength(CatalogueRules.IdentifierLength)] string? AudienceId,
     [property: Required] string Disclosure);
 
-/// <summary>Requests the full explicit additional scope set; empty removes assignments while implicit OpenID behavior remains.</summary>
+/// <summary>Requests the full explicit additional scope set; empty removes added permissions. Implicit OpenID is never an editable assignment.</summary>
 /// <example><code>var assignment = new ApplicationScopeInput(new[] { "email", "orders.read" });</code></example>
 public sealed record ApplicationScopeInput([property: Required, MaxLength(CatalogueRules.MaximumScopes)] IReadOnlyList<string> Scopes);

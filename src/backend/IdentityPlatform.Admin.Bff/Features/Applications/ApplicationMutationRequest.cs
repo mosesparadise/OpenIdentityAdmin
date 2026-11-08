@@ -1,6 +1,7 @@
 using System.Text.Json;
 using IdentityPlatform.Admin.Bff.Features.BrowserSessions;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Core.Features.Catalogue;
 using Microsoft.AspNetCore.Http.Features;
 
 namespace IdentityPlatform.Admin.Bff.Features.Applications;
@@ -41,7 +42,7 @@ internal sealed class ApplicationMutationRequest
     }
     private readonly object input;
     internal string Path => ApiPath + ResourcePath(Action, Id);
-    internal HttpMethod Method => Action == ApplicationProxyAction.Edit ? HttpMethod.Put : HttpMethod.Post;
+    internal HttpMethod Method => Action is ApplicationProxyAction.Edit or ApplicationProxyAction.AssignScopes ? HttpMethod.Put : HttpMethod.Post;
 
     /// <summary>Keeps validated original bytes private to a newly parsed command; no request body or mutable DTO survives by reference.</summary>
     private ApplicationMutationRequest(ApplicationProxyAction action, string? id, string? version, byte[] body, object input)
@@ -62,7 +63,7 @@ internal sealed class ApplicationMutationRequest
         }
         var path = ApplicationProxyEndpoint.Path + ResourcePath(action, id);
         var request = http.Request;
-        var method = action == ApplicationProxyAction.Edit ? HttpMethods.Put : HttpMethods.Post;
+        var method = action is ApplicationProxyAction.Edit or ApplicationProxyAction.AssignScopes ? HttpMethods.Put : HttpMethods.Post;
         if (!ApplicationBrowserRequest.Origin(http, required: true) || !ApplicationBrowserRequest.Exact(http, path) || request.Method != method ||
             request.ContentType is not (JsonType or JsonUtf8) || request.ContentLength is < 0 or > BodyBytes ||
             request.Headers.ContainsKey(TransferEncoding) || request.Headers.ContainsKey(ContentEncoding) ||
@@ -105,7 +106,7 @@ internal sealed class ApplicationMutationRequest
         }
         if (values.Count != 1 || !ApplicationVersion.IsCanonical(values[0]))
         {
-            throw new ApplicationProxyRejected(StatusCodes.Status412PreconditionFailed);
+            throw new ApplicationProxyRejected(action == ApplicationProxyAction.AssignScopes ? StatusCodes.Status400BadRequest : StatusCodes.Status412PreconditionFailed);
         }
         return values[0];
     }
@@ -132,6 +133,11 @@ internal sealed class ApplicationMutationRequest
             var input = ApplicationJson.Parse<ApplicationSecretReplacement>(bytes);
             value = input;
             errors = ApplicationEditorRules.Validate(input, now);
+        }
+        else if (action == ApplicationProxyAction.AssignScopes)
+        {
+            var assignment = ApplicationJson.Parse<ApplicationScopeInput>(bytes);
+            return CatalogueRules.IsAssignment(assignment.Scopes) ? assignment : throw new InvalidDataException();
         }
         else if (action is ApplicationProxyAction.Disable or ApplicationProxyAction.Enable)
         {
@@ -171,6 +177,18 @@ internal sealed class ApplicationMutationRequest
         };
     }
 
+    /// <summary>Requires the exact requested assignment and one successor application revision without accepting unrelated success data.</summary>
+    internal bool Matches(ApplicationScopes scopes, long revision)
+    {
+        if (Action != ApplicationProxyAction.AssignScopes || input is not ApplicationScopeInput assignment || Id != scopes.ApplicationId)
+        {
+            return false;
+        }
+        var previous = long.Parse(Version!.AsSpan(RevisionOffset, Version!.Length - VersionPunctuation), System.Globalization.CultureInfo.InvariantCulture);
+        return previous < long.MaxValue && revision == previous + 1 && ApplicationVersion.Matches(Version, Id!, previous) &&
+            scopes.Scopes.SequenceEqual(assignment.Scopes.Order(StringComparer.Ordinal), StringComparer.Ordinal);
+    }
+
     /// <summary>Compares the exact callback set independently of native manager enumeration order.</summary>
     private static bool SameRedirects(ApplicationDetails details, IReadOnlyList<string> expected) =>
         details.RedirectUris.Order(StringComparer.Ordinal).SequenceEqual(expected.Order(StringComparer.Ordinal));
@@ -184,6 +202,7 @@ internal sealed class ApplicationMutationRequest
         PathSeparator + Uri.EscapeDataString(id!) + (action switch
         {
             ApplicationProxyAction.Edit => string.Empty,
+            ApplicationProxyAction.AssignScopes => ApplicationScopeRules.Suffix,
             ApplicationProxyAction.Replace => ReplacementSuffix,
             ApplicationProxyAction.Disable => ApplicationLifecycleRules.DisableSuffix,
             ApplicationProxyAction.Enable => ApplicationLifecycleRules.EnableSuffix,
@@ -194,7 +213,7 @@ internal sealed class ApplicationMutationRequest
 /// <summary>Closes the writable transport surface to the three reviewed application actions.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace, Disable, Enable
+    Create, Edit, Replace, Disable, Enable, AssignScopes
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

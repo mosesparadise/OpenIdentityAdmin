@@ -126,6 +126,10 @@ internal sealed class ApplicationProxyTransport : IDisposable
     internal Task<CatalogueProxyResult> CatalogueAsync(BrowserAccessCredential access, CatalogueProxyRequest input, CancellationToken token) =>
         CatalogueTransport.SendAsync(client, target, access, input, token);
 
+    /// <summary>Shares the fixed transport owner with the explicit scope-assignment subresource; no caller supplies a destination.</summary>
+    internal Task<ApplicationScopesResult> ScopesAsync(BrowserAccessCredential access, string id, ApplicationMutationRequest? mutation, CancellationToken token) =>
+        ApplicationScopesTransport.SendAsync(client, target, access, id, mutation, token);
+
     /// <summary>Disposes pooled transport when the owning host stops; response/request owners are joined by each awaited read.</summary>
     public void Dispose() => client.Dispose();
 
