@@ -11,10 +11,10 @@ accepted from planning alone. Feature022 and all preserved evidence remain compl
 
 ## US1 — Catalogue management (M03-A)
 
-- [ ] T004 [US1] Implement native-manager catalogue reads/writes, current authority, governance ordering, exact atomic audit, deletion admission/status and current/retained scope/audience reference checks in Infrastructure `Features/Catalogue/`; add real-provider fault/permission/concurrency cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Catalogue/`. Include the bounded durable deletion processor in `src/backend/IdentityPlatform.Worker/Features/` and existing Aspire composition; verify restart, expired/revoked approval, stale/reference conflict and atomic terminal audit. C01–04.
-- [ ] T005 [US1] Publish finite versioned catalogue Admin API endpoints and strict contracts in `src/backend/IdentityPlatform.Admin.Api/Features/Catalogue/`; preserve one-use owned commit and cleanup-before-publication. Test real HTTP/status/denial/preconditions/deadlines. Include202 admission and permission-bound job status. C01–04.
-- [ ] T006 [US1] Publish fixed catalogue BFF projections/native antiforgery in `src/backend/IdentityPlatform.Admin.Bff/Features/Catalogue/`; regenerate `eng/contracts/` and browser client, test original session/CSRF/one-send/JSON/contract compatibility. C01/C02/C13.
-- [ ] T007 [US1] Implement Scopes/Audiences navigation and list/detail/create/edit/delete-job status in `src/frontend/IdentityPlatform.Admin.Ui/Features/Catalogue/`; include all states, light/dark/reflow/keyboard/axe and real retained-engine/provider journeys. C13.
+- [x] T004 [US1] Implement native-manager catalogue reads/writes, current authority, governance ordering, exact atomic audit, deletion admission/status and current/retained scope/audience reference checks in Infrastructure `Features/Catalogue/`; add real-provider fault/permission/concurrency cases in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/Catalogue/`. Include the bounded durable deletion processor in `src/backend/IdentityPlatform.Worker/Features/` and existing Aspire composition; verify restart, expired/revoked approval, stale/reference conflict and atomic terminal audit. C01–04.
+- [x] T005 [US1] Publish finite versioned catalogue Admin API endpoints and strict contracts in `src/backend/IdentityPlatform.Admin.Api/Features/Catalogue/`; preserve one-use owned commit and cleanup-before-publication. Test real HTTP/status/denial/preconditions/deadlines. Include202 admission and permission-bound job status. C01–04.
+- [x] T006 [US1] Publish fixed catalogue BFF projections/native antiforgery in `src/backend/IdentityPlatform.Admin.Bff/Features/Catalogue/`; regenerate `eng/contracts/` and browser client, test original session/CSRF/one-send/JSON/contract compatibility. C01/C02/C13.
+- [x] T007 [US1] Implement Scopes/Audiences navigation and list/detail/create/edit/delete-job status in `src/frontend/IdentityPlatform.Admin.Ui/Features/Catalogue/`; include all states, light/dark/reflow/keyboard/axe and real retained-engine/provider journeys. C13.
 
 ## US2 — Assignment and claim policy (M03-B)
 
@@ -44,11 +44,11 @@ No runtime task is declared independently parallel before its prerequisites exis
 Deliver coherent reviewed increments, preserving old application behavior at each
 boundary. Catalogue-only progress does not complete the selected M03-B/C tasks.
 
-## Current T004–T007 candidate
+## Accepted T004–T007 increment
 
-The user explicitly selected T005–T007 including unfinished T004 prerequisites. Native
-reads/writes, deletion admission/status/worker, API/BFF contracts and Scopes/Audiences
-UI are implemented. Their completion remains contingent on corrected both-provider,
-Chromium/WebKit and full exact-head evidence. See [verification](verification.md).
-The current branch adds ordinary CI selection, native inventories, unchanged coverage
-floors and critical behavioral mutants for this increment; later T008–T014 stay open.
+The user-selected T005–T007 and required T004 prerequisites are delivered in PR128.
+[Final acceptance](acceptance.md) records the exact source, both-provider/browser/full-CI
+results, unchanged coverage floors, behavioral mutation controls and independent reviews.
+T001–T007 are complete for internal development. T008 is next; T008–T016 remain open.
+The T015/T016 obligations were applied to this increment and remain required for the
+later assignment/claims/UserInfo work. No historical/manual/public-release gate closes.

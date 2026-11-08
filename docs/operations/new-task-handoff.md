@@ -1,35 +1,35 @@
 # OpenIdentityAdmin new-task handoff
 
-## Active batch — scope and audience catalogue, 7 November 2026
+## Current delivery — scope and audience catalogue, 8 November 2026
 
-The user selected feature023 T005–T007 with unfinished T004 prerequisites, continuing
-M03-A–M03-C and the approved consented email/email_verified policy. Branch
-`135-scope-audience-catalogue` implements the native catalogue, durable audited deletion,
-versioned Admin API, fixed BFF/native CSRF and visible Scopes/Audiences workspace. T001–T003
-are accepted; T004–T007 remain pending final integrated verification and reviewed delivery.
+Feature023 T001–T007 and M03-A catalogue management are accepted for internal development.
+[PR128](https://github.com/mosesparadise/OpenIdentityAdmin/pull/128) is squash-merged as
+`57c11e395d92a3e7d62e64c48a5345fa5c5c0cd2`. **Scopes** and **Audiences** are available through the ordinary Aspire
+`local-demo` UI, with search, creation/editing, current references and explicit durable
+deletion/status/recovery. The versioned Admin API and fixed BFF enforce current authority,
+native CSRF, original approval deadlines and atomic audit on both relational providers.
 
-Current source checkpointa77ffba builds successfully. Bounded run42417189419 passes
-schema13/provider and the complete Chromium catalogue journey on both providers.
-Component49/53 passes per provider; the four new held-response tests reach the correct
-safe status but use the old application-specific title oracle, now corrected to exact
-catalogue problem text. WebKit still fails the combined layout guard; retain the failed
-receipts and verify the explicit select height plus safe dimension diagnostics in the
-next run. Earlier provider failures and all corrections remain in feature023 verification.
+CI563 passes all 130 jobs at reviewed source `932a71d1e071c3b07abb81f03a9d91f2303c0750`. Its tested merge and squash have
+the same tree. Independent evidence review reconciles 107 ordinary native reports with
+6,090 passing executions, 128 mutation kills, 111 UI cases, 46 Node contracts and 104 original
+coverage inputs meeting all 15 unchanged floors. Both providers and retained Chromium/
+WebKit journeys pass. [Acceptance, source bindings and evidence limits](../../specs/023-scope-audience-catalogue/acceptance.md).
 
-Next: finish this selected batch, including catalogue behavioral mutation controls,
-exact discovery/CI/coverage inventories, retained browser checks and full final-head
-acceptance. Do not treat implemented source or focused tests as acceptance. Keep
-branch136's isolated validation workflow out of the product branch. Preserve main
-7c458f4, all prior work and failed receipts. Local native database attempts are blocked
-by filesystem capacity; do not repeat PostgreSQL ENOSPC or old SQLPAL diagnostics.
+**Next: T008 — explicit application scope assignment**, using an additive versioned
+subresource and the existing application editor. Preserve current application versions,
+fresh-MFA authority, native scope permissions, old editor behavior and governance ordering
+with catalogue deletion. Follow with T009 policy/interaction bindings and T010 consent;
+claims and UserInfo remain T011–T014. Catalogue creation alone changes no application
+grants or token contents. M03-B/C and feature-wide T015/T016 remain open.
 
-The ordinary Aspire `local-demo` launch remains the local UI entry point. Application
-scope assignment, consent integration, token claims and UserInfo are later T008–T014;
-creating a catalogue entry does not grant an application permission or change tokens.
-All historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/
-public-release gates remain open. Continue under existing selected-batch authorization.
+Use the [Aspire catalogue walkthrough](../../specs/023-scope-audience-catalogue/quickstart.md); no custom PowerShell is required.
+Preserve the original failed receipts, branches 135/136 and frozen provider producer.
+Do not merge branch136's isolated workflow or repeat completed SQL diagnostics. All six
+historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/public-release
+gates remain open. This Markdown follow-up records accepted runtime evidence; its lighter
+checks are not another full runtime execution.
 
-## Current delivery — 7 November 2026
+## Previous delivery — pilot replay correction, 7 November 2026
 
 Feature022 T001–T009 are complete for internal development. The selected T008,
 SQL Server validation and T009 batch is squash-merged in
@@ -46,7 +46,7 @@ administrator UI, application editor, disable/re-enable and grant revocation rem
 available through native Aspire. All six historical findings, refresh activation
 and Windows/manual/Firefox/A-009/vendor/production/public-release gates remain open.
 
-Next: select the next approved roadmap slice; do not repeat feature022 implementation
+Historical next step, now superseded by feature023 above: select the next approved roadmap slice; do not repeat feature022 implementation
 or SQL diagnostics. Preserve branches130–133, original failed-run receipts and the
 frozen provider-compatibility producer. Branch133’s isolated workflow is diagnostic
 only and must not be merged. This prose follow-up records accepted runtime evidence;
