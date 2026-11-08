@@ -1,5 +1,15 @@
 # OpenIdentityAdmin new-task handoff
 
+## Active work — application scope assignment, 8 November 2026
+
+T008 is implemented on branch138 and remains under validation. Both providers pass
+its first24 non-browser cases; the first browser run failed and is retained.
+The corrected candidate adds observed deletion contention, stronger mutation/race
+oracles and explicit browser recovery. Full acceptance and merge remain pending.
+Continue from the feature023 `assignment.md` checkpoint; do not repeat T001–T007 or
+merge branch139's isolated validation workflow. The accepted main delivery below
+and all existing external gates remain unchanged.
+
 ## Current delivery — scope and audience catalogue, 8 November 2026
 
 Feature023 T001–T007 and M03-A catalogue management are accepted for internal development.

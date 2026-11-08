@@ -19,6 +19,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
 {
     private static readonly string[] Themes = ["light", "dark"];
+    private const int Ok = 200;
     private const string Resource = "browser-orders-api";
     private const string Permission = "scp:browser.orders.read";
     private const string Choice = "browser.orders.read — Read updated orders";
@@ -35,15 +36,16 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
     private const string Remove = "Remove browser.orders.read";
     private const string Assigned = "ApplicationScopesAssigned";
 
-    private const string Reload = "Reload current details";
+    private const string Applications = "/applications";
+    private const string DetailsPrefix = "View details for ";
     private const string NoMatches = "No matching scopes.";
     private const string ConfirmationError = "Confirm the scope change before saving.";
     private const string Put = "PUT";
     private const string Appearance = "Appearance";
-    private const int ClearedRevisionIncrement = 2;
+    private const int ClearedRevisionIncrement = 3;
     private const int AssignedPermissions = 5;
     private const int OriginalPermissions = 4;
-    private const int CompletedAudits = 2;
+    private const int CompletedAudits = 3;
 
     /// <summary>Real catalogue and application forms precede explicit checked assignment and removal; native rows, one-send counts, focus, storage, themes and reflow are verified.</summary>
     [Theory]
@@ -67,14 +69,12 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
             .SingleAsync(row => row.Resource == Resource, TestContext.Current.CancellationToken);
         await CatalogueBrowserJourney.CreateScopeAsync(page, environment.Profile.ClientUri, audience.Id);
         var registration = await ApplicationEditorJourney.RunAsync(page, environment.Profile.ClientUri, environment.Profile.Issuer, clock.GetUtcNow());
-        await page.GetByRole(AriaRole.Button, new()
-        {
-            Name = Reload,
-            Exact = true
-        }).ClickAsync();
+        await page.GotoAsync(new Uri(environment.Profile.ClientUri, Applications).AbsoluteUri);
+        await Button(page, DetailsPrefix + registration.ClientId).ClickAsync();
         var before = await ApplicationUpdateSnapshot.ReadAsync(database, registration.Id, TestContext.Current.CancellationToken);
         await AssignAsync(page, environment.Profile.ClientUri, registration.Id);
         await RequireAsync(database, registration.Id, before.Policy.Revision + 1, true);
+        await StaleAsync(page, environment.Profile.ClientUri, registration.Id);
         await Button(page, Remove).ClickAsync();
         await Assertions.Expect(page.Locator(Heading)).ToBeFocusedAsync();
         await SaveAsync(page, environment.Profile.ClientUri, registration.Id, Empty);
@@ -122,12 +122,45 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
         submissions.RequireOnce();
     }
 
+    /// <summary>An independent authenticated editor advances the same aggregate; the original explicit save then restores focus to actionable stale-state recovery.</summary>
+    private static async Task StaleAsync(IPage page, Uri origin, string id)
+    {
+        const string Details = "View details for browser-managed-editor";
+        const string ReloadAssignment = "Reload application details";
+        const string Stale = "The application changed. Reload its details and review the assignment before saving.";
+        await using var context = await ApplicationEditorJourney.ConcurrentAsync(page);
+        var peer = await context.NewPageAsync();
+        await peer.GotoAsync(new Uri(origin, Applications).AbsoluteUri);
+        await Button(peer, Details).ClickAsync();
+        await Assertions.Expect(peer.GetByText(Blocked, new()
+        {
+            Exact = false
+        })).ToBeVisibleAsync();
+        await SaveAsync(peer, origin, id, Blocked);
+        await Button(page, Remove).ClickAsync();
+        await page.Locator(Confirmation).CheckAsync();
+        await Button(page, Save).PressAsync(Enter);
+        await Assertions.Expect(page.GetByText(Stale, new()
+        {
+            Exact = true
+        })).ToBeVisibleAsync();
+        await Assertions.Expect(page.Locator(Heading)).ToBeFocusedAsync();
+        await PresentationAsync(page);
+        await Button(page, ReloadAssignment).PressAsync(Enter);
+        await Assertions.Expect(page.GetByText(Blocked, new()
+        {
+            Exact = false
+        })).ToBeVisibleAsync();
+    }
+
     /// <summary>Requires a single actual write and the subsequent independently read saved-state warning.</summary>
     private static async Task SaveAsync(IPage page, Uri origin, string id, string expected)
     {
         using var submissions = new ApplicationSubmission(page, Put, new Uri(origin, ApplicationScopeHttpTests.Path(id)).AbsoluteUri);
         await page.Locator(Confirmation).CheckAsync();
-        await Button(page, Save).PressAsync(Enter);
+        var response = await page.RunAndWaitForResponseAsync(() => Button(page, Save).PressAsync(Enter),
+            value => value.Request.Method == Put && value.Url == new Uri(origin, ApplicationScopeHttpTests.Path(id)).AbsoluteUri);
+        Assert.Equal(Ok, response.Status);
         await Assertions.Expect(page.GetByText(expected, new()
         {
             Exact = false

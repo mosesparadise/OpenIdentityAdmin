@@ -34,8 +34,8 @@ class ManagedApplicationSelectionTests(unittest.TestCase):
         require_group_selections(self.catalogue, self.groups[provider], provider, STORY, self.matrix, self.inventory)
 
     def test_Given_DefaultOrExplicitStory_When_Grouped_Then_EveryPriorIdentityRunsExactlyOnce(self):
-        self.assertEqual(2921, len(self.catalogue))
-        for provider, total in (('PostgreSql', 1332), ('SqlServer', 1437)):
+        self.assertEqual(2923, len(self.catalogue))
+        for provider, total in (('PostgreSql', 1333), ('SqlServer', 1438)):
             self.verify(provider)
             expected = [(STORY, 'Admission', 54), (STORY, 'Issuance', 65)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, STORY))

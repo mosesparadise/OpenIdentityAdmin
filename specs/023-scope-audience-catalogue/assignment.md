@@ -49,3 +49,36 @@ browser authority and output binding. UI and retained browser journeys cover exp
 selection/removal, saved-state warning, stale/denied/ambiguous results, themes, reflow,
 keyboard and accessibility. Existing discovery identities, mutation controls and module
 floors remain mandatory. Implementation and evidence are pending; T008 stays unchecked.
+
+## Validation checkpoint — 8 November 2026
+
+Source `ba8fb3456597c464d1c8a8afd52f66d21d8f8844` is preserved on branch138.
+Isolated branch139 adds only its validation workflow and must not be merged.
+Focused run42434182462 retains all four failed browser receipts: PostgreSQL and
+SQL Server each pass24 non-browser cases; the new browser journey times out on
+both retained engines. This is not acceptance. The reviewed correction reopens
+normal navigation after the reused secret-erasure helper clears the page's session
+view, adds explicit stale-save focus recovery, and improves bounded source-line
+failure diagnostics. The original failed run is retained.
+
+Local checks pass1,905 host cases,44 native contract cases,46 Node contracts and132
+UI cases. The new UI controller/client/validation modules meet unchanged95% line,
+90% branch and100% function floors. A first transport run correctly rejected an
+unknown JSON field but failed its incorrect exception expectation; the corrected
+13-case report passes. Initial Node execution lacked the pinned diff tool; after
+installing it from its SHA256-verified retained archive and updating the explicit
+additive operation inventory, all46 cases pass. No failed attempt is acceptance.
+
+Actual native discovery preserves all2,871 prior administrator cases and adds52,
+for2,923 total. Both-provider ordinary counts are1,333/1,438; the browser story adds
+one case per provider/engine, for76 per provider/engine. Host discovery preserves
+all1,892 prior identities and adds13. A new exact-permission mutant is included in
+the existing catalogue suite, with one explicitly selected control per provider;
+its runtime kill and every required full-CI/coverage gate remain pending.
+
+Architecture and UX source reviews closed the bounded-read, async expiry,
+unknown-commit wording and focus findings. Test review tightened persisted race
+oracles, mutation evidence and provider-operation joining. The new observed
+assignment/deletion contention and corrected browser journey still require hosted
+execution. T008 remains open; no main merge or historical/external gate closure is
+claimed by this checkpoint.

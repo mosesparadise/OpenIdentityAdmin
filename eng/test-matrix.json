@@ -37,14 +37,14 @@
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1332
+      "Administrator": 1333
     },
     "SqlServer": {
       "Persistence": 38,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1437
+      "Administrator": 1438
     }
   },
   "browser": {
@@ -119,8 +119,8 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 114,
-      "SqlServer": 114
+      "PostgreSql": 115,
+      "SqlServer": 115
     },
     "ManagedApplications": {
       "PostgreSql": 119,
