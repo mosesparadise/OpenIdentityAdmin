@@ -16,18 +16,18 @@ export function CreateForm({ submit, cancel }: { submit: (draft: Draft) => Promi
 }
 
 /** Renders the same linked field/error projection for initial and failed local submissions. */
-export function CreateFields({ draft, errors, setDraft, summary, mode = "create" }: { mode?: "create" | "edit" | "replace"; draft: Draft; errors: Errors; setDraft: React.Dispatch<React.SetStateAction<Draft>>; summary: React.RefObject<HTMLDivElement | null> }) {
+export function CreateFields({ draft, errors, setDraft, summary, mode = "create" }: { mode?: "create" | "edit" | "replace" | "clone"; draft: Draft; errors: Errors; setDraft: React.Dispatch<React.SetStateAction<Draft>>; summary: React.RefObject<HTMLDivElement | null> }) {
   const field = (name: keyof Draft) => ({ id: `editor-${name}`, name, value: draft[name],
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setDraft(value => ({ ...value, [name]: event.target.value })),
     "aria-invalid": !!errors[name], "aria-describedby": `editor-${name}-help${errors[name] ? ` editor-${name}-error` : ""}` });
   const error = (name: keyof Draft) => errors[name] && <p className="field-error" id={`editor-${name}-error`}>{errors[name]}</p>;
   return <>
-    {!!Object.keys(errors).length && <div className="editor-notice" role="alert" tabIndex={-1} ref={summary}><h3>Check these fields</h3><ul>{(Object.keys(errors) as (keyof Errors)[]).map(name => <li key={name}><a href={`#editor-${name}`}>{labels[name]}: {errors[name]}</a></li>)}</ul></div>}
-    {mode === "create" && <div><label htmlFor="editor-clientId">Client ID <span>(required)</span></label><input {...field("clientId")} maxLength={100} required spellCheck={false} />
+    {!!Object.keys(errors).length && <div className="editor-notice" role="alert" tabIndex={-1} ref={summary}><h3>Check these fields</h3><ul>{(Object.keys(errors) as (keyof Errors)[]).map(name => <li key={name}><a href={`#editor-${name}`}>{mode === "clone" && name === "confirmed" ? "Confirm cloning" : labels[name]}: {errors[name]}</a></li>)}</ul></div>}
+    {(mode === "create" || mode === "clone") && <div><label htmlFor="editor-clientId">Client ID <span>(required)</span></label><input {...field("clientId")} maxLength={100} required spellCheck={false} />
       <p id="editor-clientId-help">A unique, permanent identifier. Case-sensitive; no spaces. It cannot be renamed.</p>{error("clientId")}</div>}
     {mode !== "replace" && <><div><label htmlFor="editor-displayName">Display name <span>(required)</span></label><input {...field("displayName")} maxLength={200} required />
       <p id="editor-displayName-help">The application name shown during sign-in and consent.</p>{error("displayName")}</div>
-    <div><label htmlFor="editor-redirectUris">HTTPS callbacks <span>(required)</span></label><textarea {...field("redirectUris")} rows={4} maxLength={20489} required spellCheck={false} placeholder="https://app.example/callback" />
+    <div><label htmlFor="editor-redirectUris">HTTPS callbacks <span>(required)</span></label><textarea {...field("redirectUris")} readOnly={mode === "clone"} rows={4} maxLength={20489} required spellCheck={false} placeholder="https://app.example/callback" />
       <p id="editor-redirectUris-help">One exact HTTPS URL per line, up to 10. No spaces, credentials or fragments. Values are not trimmed or changed.</p>{error("redirectUris")}</div></>}
     {mode !== "edit" && <div><label htmlFor="editor-credentialExpiresAt">Secret expiry (UTC) <span>(required)</span></label><input {...field("credentialExpiresAt")} maxLength={20} required spellCheck={false} placeholder="2030-12-31T23:59:59Z" />
       <p id="editor-credentialExpiresAt-help">Choose a future time in UTC: YYYY-MM-DDTHH:mm:ssZ. There is no default expiry or local-time conversion.</p>{error("credentialExpiresAt")}</div>}

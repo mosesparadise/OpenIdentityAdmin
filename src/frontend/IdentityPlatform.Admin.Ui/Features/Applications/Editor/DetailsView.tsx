@@ -2,7 +2,7 @@ import type { Ref } from "react";
 import { Button } from "../../../Components/Button";
 import type { Details } from "./observation";
 /** Shows only checked registration metadata; callbacks remain inert text rather than external navigation. */
-export function DetailsView({ details, secret, dismiss, edit, replace, lifecycle, lifecycleRef }: { details: Details; secret?: string; dismiss: () => void; edit?: () => void; replace?: () => void; lifecycle?: () => void; lifecycleRef?: Ref<HTMLButtonElement> }) {
+export function DetailsView({ details, secret, dismiss, edit, replace, clone, cloneRef, lifecycle, lifecycleRef }: { details: Details; secret?: string; dismiss: () => void; edit?: () => void; replace?: () => void; clone?: () => void; cloneRef?: Ref<HTMLButtonElement>; lifecycle?: () => void; lifecycleRef?: Ref<HTMLButtonElement> }) {
   return <>
     {secret !== undefined && <section className="editor-secret" aria-labelledby="secret-heading"><h3 id="secret-heading">Save your client secret now</h3>
       <p>Store it in your application’s secret store. This is the only time it is shown. Switching tabs, hiding this page or session expiry clears this view.</p>
@@ -19,6 +19,6 @@ export function DetailsView({ details, secret, dismiss, edit, replace, lifecycle
         <div><dt>Secret expires (UTC)</dt><dd><time dateTime={details.credential.expiresAt}>{details.credential.expiresAt}</time>{Date.parse(details.credential.expiresAt) <= Date.now() && " — expired"}</dd></div></>}
     </dl>
     <p className="editor-help">{details.editable ? "Client ID cannot be changed. Details never return a previously issued secret." : "System-owned and unmanaged registrations cannot be changed through this editor."}</p>
-    {details.editable && <div className="actions"><Button onClick={edit}>Edit application</Button><Button secondary onClick={replace}>Replace secret</Button><Button secondary ref={lifecycleRef} onClick={lifecycle}>{details.enabled ? "Disable application" : "Re-enable application"}</Button></div>}
+    {details.editable && <div className="actions"><Button onClick={edit}>Edit application</Button><Button secondary onClick={replace}>Replace secret</Button><Button secondary ref={cloneRef} onClick={clone}>Clone application</Button><Button secondary ref={lifecycleRef} onClick={lifecycle}>{details.enabled ? "Disable application" : "Re-enable application"}</Button></div>}
   </>;
 }

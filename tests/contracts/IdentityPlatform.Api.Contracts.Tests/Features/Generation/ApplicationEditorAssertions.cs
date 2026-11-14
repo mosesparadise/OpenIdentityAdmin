@@ -43,6 +43,7 @@ internal static class ApplicationEditorAssertions
     internal static void Require(JsonNode document, bool browser)
     {
         ApplicationUpdateAssertions.Require(document, browser);
+        ApplicationCloneAssertions.Require(document, browser);
         var path = browser ? BrowserPath : ApiPath;
         var create = document[Paths]![path]![Post]!;
         var details = document[Paths]![path + Details]![Get]!;

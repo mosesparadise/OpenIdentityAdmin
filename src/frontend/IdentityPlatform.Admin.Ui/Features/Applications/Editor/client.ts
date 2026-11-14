@@ -1,6 +1,6 @@
 import createClient from "openapi-fetch";
 import type { paths } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
-import { addressable, type CreateInput, type EditInput, type ReplacementInput, type LifecycleInput } from "./input";
+import { addressable, type CloneInput, type CreateInput, type EditInput, type ReplacementInput, type LifecycleInput } from "./input";
 import type { Result } from "./observation";
 const collection = "/bff/api/v1/applications";
 /** Bounds successful JSON before parsing and discards all remote error bodies, cookies and exception text. */
@@ -38,6 +38,17 @@ export function editorClient() {
     async details(id: string, signal: AbortSignal): Promise<Result> {
       const path = target(id);
       const { data, response } = await client.GET("/bff/api/v1/applications/{id}", { ...options(signal), params: { path: { id } }, pathSerializer: () => path });
+      return { status: response.status, value: data, etag: response.headers.get("etag") };
+    },
+    async scopes(id: string, signal: AbortSignal): Promise<Result> {
+      const path = target(id) + "/scopes";
+      const { data, response } = await client.GET("/bff/api/v1/applications/{id}/scopes", { ...options(signal), params: { path: { id } }, pathSerializer: () => path });
+      return { status: response.status, value: data, etag: response.headers.get("etag") };
+    },
+    async clone(id: string, version: string, input: CloneInput, token: string, signal: AbortSignal): Promise<Result> {
+      const path = target(id) + "/clone";
+      const { data, response } = await client.POST("/bff/api/v1/applications/{id}/clone", { ...options(signal),
+        params: { path: { id }, header: { "If-Match": version, "X-CSRF-TOKEN": token } }, pathSerializer: () => path, body: input });
       return { status: response.status, value: data, etag: response.headers.get("etag") };
     },
     async edit(id: string, version: string, input: EditInput, token: string, signal: AbortSignal): Promise<Result> {

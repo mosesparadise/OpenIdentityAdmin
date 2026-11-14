@@ -6,6 +6,8 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 /// <summary>Composes one explicitly configured application proxy without a generic forwarding surface.</summary>
 internal static class Setup
 {
+    private const string CloneOperation = "CloneBrowserApplication";
+    private const string CloneSummary = "Clone current managed configuration into a disabled application with a new one-time secret";
     private const string DetailsPath = "/applications/{id}";
     private const string ReplacementPath = DetailsPath + "/secret-replacements";
     private const string DisableOperation = "DisableBrowserApplication";
@@ -73,7 +75,11 @@ internal static class Setup
             ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Enable, id))
             .WithName(EnableOperation).WithSummary(EnableSummary)
             .Accepts<ApplicationLifecycle>(JsonType).Produces<ApplicationDetails>();
-        foreach (var endpoint in new[] { edit, replace, disable, enable })
+        var clone = endpoints.MapManagementGroup().MapPost(DetailsPath + ApplicationCloneRules.Suffix, (HttpContext context, string id) =>
+            ApplicationMutationProxy.HandleAsync(context, ApplicationProxyAction.Clone, id))
+            .WithName(CloneOperation).WithSummary(CloneSummary).Accepts<ApplicationClone>(JsonType)
+            .Produces<ApplicationCredentialOutput>(StatusCodes.Status201Created);
+        foreach (var endpoint in new[] { edit, replace, disable, enable, clone })
         {
             endpoint.ProducesProblem(StatusCodes.Status400BadRequest).ProducesProblem(StatusCodes.Status401Unauthorized)
                 .ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status404NotFound)

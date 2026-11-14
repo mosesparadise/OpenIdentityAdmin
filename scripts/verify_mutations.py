@@ -191,7 +191,7 @@ def manifest(root, suite='issuer'):
         'issuer': (7, 'eng/critical-mutations.json', 'src/backend/IdentityPlatform.AuthServer/Features'),
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
-        'applications': (8, 'eng/application-mutations.json', None),
+        'applications': (10, 'eng/application-mutations.json', None),
         'catalogue': (5, 'eng/catalogue-mutations.json', None),
         'application-grants': (6, 'eng/application-grant-mutations.json', None),
         'application-lifecycle': (4, 'eng/application-lifecycle-mutations.json', None),
@@ -224,6 +224,8 @@ def manifest(root, suite='issuer'):
             'src/persistence/IdentityPlatform.Infrastructure/Features/Sessions/Browser/BrowserSessionPolicy.cs',
         }
         application_paths = {
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationCreation.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationWriteState.cs',
             'src/core/IdentityPlatform.Core/Features/Applications/ApplicationSummary.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Ceremonies/CeremonyTransaction.cs',
             'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs',
@@ -263,6 +265,7 @@ def manifest(root, suite='issuer'):
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs'},
                        'application-lifecycle': {
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationAudit.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs',
                            'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs'}}

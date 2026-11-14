@@ -122,6 +122,11 @@ internal sealed class ApplicationMutationRequest
             value = input;
             errors = ApplicationEditorRules.Validate(input, now);
         }
+        else if (action == ApplicationProxyAction.Clone)
+        {
+            var clone = ApplicationJson.Parse<ApplicationClone>(bytes);
+            return ApplicationCloneRules.IsValid(clone, now) ? clone : throw new InvalidDataException();
+        }
         else if (action == ApplicationProxyAction.Edit)
         {
             var input = ApplicationJson.Parse<ApplicationEdit>(bytes);
@@ -158,7 +163,7 @@ internal sealed class ApplicationMutationRequest
     /// <summary>Binds returned fields and exact successor revision to this immutable parsed action, without trusting response shape alone.</summary>
     internal bool Matches(ApplicationDetails details, long revision)
     {
-        if (Action != ApplicationProxyAction.Create)
+        if (Action is not (ApplicationProxyAction.Create or ApplicationProxyAction.Clone))
         {
             var previous = long.Parse(Version!.AsSpan(RevisionOffset, Version!.Length - VersionPunctuation), System.Globalization.CultureInfo.InvariantCulture);
             if (Id != details.Id || previous == long.MaxValue || revision != previous + 1 || !ApplicationVersion.Matches(Version, Id!, previous))
@@ -170,6 +175,8 @@ internal sealed class ApplicationMutationRequest
         {
             ApplicationCreate create => revision == 1 && details.ClientId == create.ClientId && details.DisplayName == create.DisplayName &&
                 SameRedirects(details, create.RedirectUris) && SameExpiry(details, create.CredentialExpiresAt) && details.Enabled == true,
+            ApplicationClone clone => revision == 1 && details.Id != Id && details.ClientId == clone.ClientId &&
+                details.DisplayName == clone.DisplayName && SameExpiry(details, clone.CredentialExpiresAt) && details.Enabled == false,
             ApplicationEdit edit => details.DisplayName == edit.DisplayName && SameRedirects(details, edit.RedirectUris),
             ApplicationSecretReplacement replacement => SameExpiry(details, replacement.CredentialExpiresAt),
             ApplicationLifecycle => details.Enabled == (Action == ApplicationProxyAction.Enable),
@@ -202,6 +209,7 @@ internal sealed class ApplicationMutationRequest
         PathSeparator + Uri.EscapeDataString(id!) + (action switch
         {
             ApplicationProxyAction.Edit => string.Empty,
+            ApplicationProxyAction.Clone => ApplicationCloneRules.Suffix,
             ApplicationProxyAction.AssignScopes => ApplicationScopeRules.Suffix,
             ApplicationProxyAction.Replace => ReplacementSuffix,
             ApplicationProxyAction.Disable => ApplicationLifecycleRules.DisableSuffix,
@@ -213,7 +221,7 @@ internal sealed class ApplicationMutationRequest
 /// <summary>Closes the writable transport surface to the three reviewed application actions.</summary>
 internal enum ApplicationProxyAction
 {
-    Create, Edit, Replace, Disable, Enable, AssignScopes
+    Create, Edit, Replace, Disable, Enable, AssignScopes, Clone
 }
 
 /// <summary>Contains only a finite public status, never submitted values or downstream exception details.</summary>

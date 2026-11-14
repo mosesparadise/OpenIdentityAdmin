@@ -64,8 +64,8 @@ export function inventory(document, surface, allowEmpty = false) {
       if (typeof op['x-required-permission'] !== 'string' || !op['x-required-permission']) throw new ContractViolation('Missing permission');
       if (surface === 'bff' && op['x-downstream-api-version'] !== 1) throw new ContractViolation('Missing explicit downstream mapping');
       if (['put', 'patch', 'delete', 'post'].includes(method)) {
-        const replacement = route === prefix + 'applications/{id}/secret-replacements';
-        const names = method === 'post' && !replacement ? [] : ['If-Match'];
+        const versionedPost = ['applications/{id}/secret-replacements', 'applications/{id}/clone'].some(path => route === prefix + path);
+        const names = method === 'post' && !versionedPost ? [] : ['If-Match'];
         if (surface === 'bff') names.push('X-CSRF-TOKEN');
         for (const name of names) {
           if (!op.parameters?.some(p => p.in === 'header' && p.name.toLowerCase() === name.toLowerCase() && p.required === true)) throw new ContractViolation('Missing concurrency/antiforgery precondition');

@@ -3,13 +3,13 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
-import { validate, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
-import { observe, created, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
+import { validate, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
 import { editorClient } from './client.mjs';
 import { bindLifecycle } from './lifecycle.mjs';
 import { focusList } from "./focus.mjs";
-import { CreateForm, CreateFields, UpdateForm, LifecycleForm, DetailsView, ProblemView } from './views.mjs';
+import { CloneForm, CreateForm, CreateFields, UpdateForm, LifecycleForm, DetailsView, ProblemView } from './views.mjs';
 const now=Date.parse('2026-11-01T12:00:00Z');
 const draft={clientId:'example-web',displayName:'Example',redirectUris:'https://client.example/callback',credentialExpiresAt:'2030-01-01T00:00:00Z'};
 const input=validate(draft,now).input;
@@ -469,4 +469,59 @@ test('Given_lifecycle_views_When_rendered_Then_state_expiry_effects_confirmation
    assert.ok(problem.includes('current lifecycle permission and a recent MFA sign-in'));assert.ok(problem.includes('href="/bff/login"'));assert.equal(problem.includes('undisplayed secret'),false);assert.ok(problem.includes(outcome==='unknown'?'application status may have changed':'No lifecycle request'));
   }
  }
+});
+
+const cloneDraft={confirmed:true,clientId:'separate-client',displayName:'Separate client',credentialExpiresAt:'2030-01-01T00:00:00Z'};
+const clonedDetails={...details,id:'clone-id',clientId:cloneDraft.clientId,displayName:cloneDraft.displayName,enabled:false};
+const cloneSuccess={status:201,value:{application:clonedDetails,clientSecret:secret},etag:tag(clonedDetails.id)};
+const scopeRead={status:200,value:{applicationId:details.id,scopes:['email'],expiresAt:details.expiresAt},etag:read.etag};
+const cloneBase={details,expires:now+60000,etag:read.etag};
+function cloneSetup(t,overrides={},clock=()=>now){return setup(t,{scopes:async()=>scopeRead,clone:async()=>cloneSuccess,...overrides},clock)}
+
+test('Given_clone_confirmation_When_validated_Then_only_new_identity_and_expiry_are_sent',()=>{
+ assert.deepEqual(validateClone(cloneDraft,details.redirectUris,now),{input:cloneDraft,errors:{}});
+ assert.ok(validateClone({...cloneDraft,confirmed:false},details.redirectUris,now).errors.confirmed);
+ assert.ok(validateClone({...cloneDraft,clientId:''},details.redirectUris,now).errors.clientId);
+});
+test('Given_clone_output_When_identity_state_or_configuration_is_substituted_Then_only_exact_disabled_destination_is_accepted',async()=>{
+ assert.equal((await cloned(cloneSuccess,cloneBase,cloneDraft,now)).secret,secret);
+ for(const result of [{...cloneSuccess,status:200},{...cloneSuccess,value:null},{...cloneSuccess,value:{...cloneSuccess.value,clientSecret:'bad'}},{...cloneSuccess,value:{...cloneSuccess.value,clientSecret:secret.slice(0,-2)+'B='}},{...cloneSuccess,etag:tag(clonedDetails.id).replace('-1"','-2"')}]) assert.equal(await cloned(result,cloneBase,cloneDraft,now),null);
+ for(const changed of [{...clonedDetails,id:details.id},{...clonedDetails,enabled:true},{...clonedDetails,editable:false},{...clonedDetails,clientId:'foreign'},{...clonedDetails,displayName:'foreign'},{...clonedDetails,redirectUris:['https://foreign.example/callback']},{...clonedDetails,credential:{...clonedDetails.credential,expiresAt:'2031-01-01T00:00:00Z'}}]) assert.equal(await cloned({...cloneSuccess,value:{...cloneSuccess.value,application:changed},etag:tag(changed.id)},cloneBase,cloneDraft,now),null);
+ assert.equal(await cloned(cloneSuccess,{...cloneBase,expires:now},cloneDraft,now),null);
+ assert.equal(await cloned(cloneSuccess,{...cloneBase,details:{...details,editable:false}},cloneDraft,now),null);
+ assert.equal(await cloned(cloneSuccess,cloneBase,{...cloneDraft,confirmed:false},now),null);
+ const expired='2026-11-01T11:59:59Z';assert.equal(await cloned({...cloneSuccess,value:{...cloneSuccess.value,application:{...clonedDetails,credential:{issuedAt:'2026-11-01T11:00:00Z',expiresAt:expired}}}},cloneBase,{...cloneDraft,credentialExpiresAt:expired},now),null);
+});
+test('Given_current_source_preview_When_cloning_twice_Then_one_frozen_request_and_new_secret_are_published',async t=>{
+ let posts=0;const gate=deferred();const {owner,states}=cloneSetup(t,{clone:async(id,etag,body,csrf)=>{posts++;assert.equal(id,details.id);assert.equal(etag,read.etag);assert.deepEqual(body,cloneDraft);assert.equal(csrf,proof.value.requestToken);return gate.promise}});
+ await owner.clone(cloneDraft);await owner.openClone();await owner.details(details.id);await owner.openClone();assert.equal(states.at(-1).kind,'clone-form');assert.deepEqual(states.at(-1).scopes,['email']);
+ assert.ok((await owner.clone({...cloneDraft,confirmed:false})).confirmed);owner.cancelForm();assert.equal(states.at(-1).kind,'details');await owner.openClone();
+ const first=owner.clone(cloneDraft);await new Promise(resolve=>setImmediate(resolve));await owner.clone(cloneDraft);assert.equal(posts,1);gate.resolve(cloneSuccess);await first;
+ assert.equal(states.at(-1).kind,'cloned');assert.equal(states.at(-1).secret,secret);owner.dismiss();assert.equal(states.at(-1).details.id,clonedDetails.id);assert.equal(JSON.stringify(states.at(-1)).includes(secret),false);owner.suspend();assert.equal(states.at(-1).outcome,'cloned');owner.dispose();await owner.openClone();await owner.clone(cloneDraft);
+});
+test('Given_clone_preview_When_read_fails_or_source_version_changes_Then_no_clone_form_or_request_survives',async t=>{
+ for(const result of [{status:403},{status:200,value:null},{...scopeRead,etag:read.etag.replace('-1"','-2"')}]){
+  const {owner,states}=cloneSetup(t,{scopes:async()=>result});await owner.details(details.id);await owner.openClone();assert.equal(states.at(-1).kind,'problem');assert.equal(states.at(-1).outcome,'not-sent');owner.dispose();
+ }
+ const failure=cloneSetup(t,{scopes:async()=>{throw Error('unavailable')}});await failure.owner.details(details.id);await failure.owner.openClone();assert.equal(failure.states.at(-1).reason,'unavailable');
+ const pending=deferred();const stale=cloneSetup(t,{scopes:()=>pending.promise});await stale.owner.details(details.id);const wait=stale.owner.openClone();stale.owner.suspend();pending.resolve(scopeRead);await wait;assert.equal(stale.states.at(-1).reason,'cleared');
+});
+test('Given_clone_dispatch_When_output_is_unknown_or_hidden_Then_no_retry_or_secret_replay_occurs',async t=>{
+ for(const result of [{status:403},{status:503},{status:201,value:null}]){
+  let posts=0;const {owner,states}=cloneSetup(t,{clone:async()=>{posts++;return result}});await owner.details(details.id);await owner.openClone();await owner.clone(cloneDraft);assert.equal(states.at(-1).outcome,'unknown');assert.equal(states.at(-1).target.clientId,cloneDraft.clientId);await owner.clone(cloneDraft);assert.equal(posts,1);owner.dispose();
+ }
+ const pending=deferred();const {owner,states}=cloneSetup(t,{clone:()=>pending.promise});await owner.details(details.id);await owner.openClone();const waiting=owner.clone(cloneDraft);await new Promise(resolve=>setImmediate(resolve));owner.suspend();pending.resolve(cloneSuccess);await waiting;assert.equal(states.at(-1).outcome,'unknown');assert.equal(JSON.stringify(states.at(-1)).includes(secret),false);
+});
+test('Given_generated_clone_transport_When_dispatched_Then_source_path_precondition_and_native_CSRF_are_fixed',async()=>{
+ const originalFetch=globalThis.fetch, originalWindow=globalThis.window;const sent=[];globalThis.window={location:{origin:'https://bff.example.test'}};
+ globalThis.fetch=async request=>{sent.push(request);return new Response(JSON.stringify(request.method==='GET'?scopeRead.value:cloneSuccess.value),{status:request.method==='GET'?200:201,headers})};
+ try{const client=editorClient();const signal=new AbortController().signal;await client.scopes('source /!',signal);await client.clone('source /!',read.etag,cloneDraft,proof.value.requestToken,signal);
+  assert.equal(sent[0].url,'https://bff.example.test/bff/api/v1/applications/source%20%2F%21/scopes');assert.equal(sent[1].url,'https://bff.example.test/bff/api/v1/applications/source%20%2F%21/clone');assert.equal(sent[1].headers.get('if-match'),read.etag);assert.equal(sent[1].headers.get('x-csrf-token'),proof.value.requestToken);assert.deepEqual(await sent[1].json(),cloneDraft);
+ }finally{globalThis.fetch=originalFetch;globalThis.window=originalWindow}
+});
+test('Given_clone_views_When_rendered_Then_configuration_confirmation_disabled_state_and_recovery_are_explicit',()=>{
+ const form=renderToStaticMarkup(createElement(CloneForm,{base:{...cloneBase,scopes:['email']},submit:async()=>({}),cancel:()=>{}}));assert.match(form,/starts disabled/);assert.match(form,/email/);assert.match(form,/readOnly=""/);assert.match(form,/editor-confirmed/);
+ const empty=renderToStaticMarkup(createElement(CloneForm,{base:{...cloneBase,scopes:[]},submit:async()=>({}),cancel:()=>{}}));assert.match(empty,/No additional scopes/);
+ const problem=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'forbidden',outcome:'unknown',target:{id:details.id,action:'clone',clientId:cloneDraft.clientId}}}));assert.match(problem,/recent MFA/);assert.match(problem,/Check the applications list/);assert.doesNotMatch(problem,/>Reload current details</);
+ const known=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'cleared',outcome:'cloned'}}));assert.match(known,/application was cloned/);
 });

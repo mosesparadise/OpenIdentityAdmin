@@ -16,7 +16,7 @@ namespace IdentityPlatform.Api.Contracts.Tests.Features.Generation;
 public sealed class ApplicationDocumentTests
 {
     private const int QueryFields = 3;
-    private const int PathCount = 15;
+    private const int PathCount = 16;
     private const int MaximumIdentifier = 400;
     private const int MaximumClientId = 100;
     private const int MaximumDisplayName = 200;

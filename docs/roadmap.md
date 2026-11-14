@@ -1,6 +1,17 @@
 # Delivery roadmap and task register
 
-## Current delivery — interactive Aspire sample, 14 November 2026
+## Active work — application cloning and permanent retirement, 14 November 2026
+
+The requesting user selected the next M04-A increment and chose permanent retirement
+with history retained: stop issuance, revoke grants, hide from normal listings, preserve
+native/audit history and reserve the client ID. [Feature025 specification](../specs/025-application-clone-retirement/spec.md)
+and [task register](../specs/025-application-clone-retirement/tasks.md) separate clone and
+retirement delivery checkpoints. Clone implementation is in local verification;
+retirement implementation, full exact-head acceptance and normal reviewed squashes remain
+open. [Current evidence and limits](../specs/025-application-clone-retirement/verification.md).
+All existing manual, historical and external gates below remain open.
+
+## Latest completed delivery — interactive Aspire sample, 14 November 2026
 
 Feature024 is delivered for internal development. [PR136](https://github.com/mosesparadise/OpenIdentityAdmin/pull/136)
 is squash-merged as `f2cccffcf79c0dc40ff2adefd2a778d0ef6db032`; this reviewed documentation
@@ -24,8 +35,8 @@ The API's offline revocation limit and sample logout's local scope remain explic
 
 **Next practical activity:** perform the actual Windows Docker Desktop
 [walkthrough](../specs/024-aspire-sample-client-api/quickstart.md) and record observed results.
-No post-feature024 implementation batch is selected. M04-A clone/delete (after clarifying
-deletion/grant semantics) or M05-A general user administration are candidate slices.
+Feature025 now selects M04-A clone/permanent retirement as described above.
+M05-A general user administration remains a later candidate slice.
 Keep dormant refresh visible; do not activate it or repeat completed implementation.
 
 All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/

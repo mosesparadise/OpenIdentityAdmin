@@ -13,4 +13,10 @@ public sealed class SampleRuntimeTests
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public Task Given_OrdinaryAspire_When_SampleIntegrationRuns_Then_NativeAuthorityAndDisposalRemainBounded(string provider) =>
         SampleRuntimeScenario.RunAsync(provider, Engine);
+    /// <summary>Clones through the real UI, denies disabled issuance, then requires fresh native consent and independently validated API use.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public Task Given_ReviewedApplicationClone_When_EnabledAndSignedIn_Then_IndependentCredentialConsentAndApiAccessWork(string provider) =>
+        SampleCloneScenario.RunAsync(provider, Engine);
 }

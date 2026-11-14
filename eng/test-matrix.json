@@ -28,23 +28,23 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 2076,
+      "Host": 2088,
       "Architecture": 5,
       "AppHost": 118
     },
     "PostgreSql": {
-      "Persistence": 40,
-      "AppHost": 23,
+      "Persistence": 41,
+      "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1360
+      "Administrator": 1384
     },
     "SqlServer": {
-      "Persistence": 40,
-      "AppHost": 23,
+      "Persistence": 41,
+      "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1465
+      "Administrator": 1489
     }
   },
   "browser": {
@@ -119,8 +119,8 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 115,
-      "SqlServer": 115
+      "PostgreSql": 139,
+      "SqlServer": 139
     },
     "ManagedApplications": {
       "PostgreSql": 145,
@@ -195,12 +195,12 @@
       "SqlServer": 3
     },
     "SampleChromium": {
-      "PostgreSql": 1,
-      "SqlServer": 1
+      "PostgreSql": 2,
+      "SqlServer": 2
     },
     "SampleWebKit": {
-      "PostgreSql": 1,
-      "SqlServer": 1
+      "PostgreSql": 2,
+      "SqlServer": 2
     }
   },
   "browser_session_groups": {

@@ -43,7 +43,7 @@ internal static class ApplicationStateJourney
     private const int Unavailable = 503;
 
     /// <summary>Exercises cancel focus, required confirmation, finite reason selection and keyboard submission against the shipped fixed route.</summary>
-    internal static async Task ChangeAsync(IPage page, Uri origin, ApplicationEditorRegistration registration, bool enabled, Func<IPage, Task>? presentation = null)
+    internal static async Task ChangeAsync(IPage page, Uri origin, ApplicationEditorRegistration registration, bool enabled, Func<IPage, Task>? presentation = null, long? previousRevision = null)
     {
         await page.GotoAsync(new Uri(origin, Applications).AbsoluteUri);
         await Button(page, DetailsPrefix + registration.ClientId).ClickAsync();
@@ -61,11 +61,11 @@ internal static class ApplicationStateJourney
         await page.GetByRole(AriaRole.Alert).WaitForAsync();
         Assert.True(await page.GetByRole(AriaRole.Alert).EvaluateAsync<bool>(Focused));
         await PresentationAsync(page, presentation);
-        await SubmitAsync(page, origin, registration, enabled, presentation);
+        await SubmitAsync(page, origin, registration, enabled, presentation, previousRevision);
     }
 
     /// <summary>Submits one confirmed keyboard action and verifies committed output before checking success focus and presentation.</summary>
-    private static async Task SubmitAsync(IPage page, Uri origin, ApplicationEditorRegistration registration, bool enabled, Func<IPage, Task>? presentation)
+    private static async Task SubmitAsync(IPage page, Uri origin, ApplicationEditorRegistration registration, bool enabled, Func<IPage, Task>? presentation, long? previousRevision)
     {
         var action = enabled ? Enable : Disable;
         await page.Locator(Reason).SelectOptionAsync(Maintenance);
@@ -76,7 +76,7 @@ internal static class ApplicationStateJourney
         using var submissions = new ApplicationSubmission(page, Post, url);
         var response = await page.RunAndWaitForResponseAsync(() => page.Keyboard.PressAsync(Enter), item => item.Request.Method == Post && item.Url == url);
         Assert.Equal(Success, response.Status);
-        var previous = enabled ? BeforeEnableRevision : BeforeDisableRevision;
+        var previous = previousRevision ?? (enabled ? BeforeEnableRevision : BeforeDisableRevision);
         Assert.True(await response.Request.HeaderValueAsync(Precondition) == ApplicationEditorBinding.Version(registration.Id, previous));
         Assert.True(await ApplicationEditorBinding.HeadersAsync(response) == ApplicationEditorBinding.Version(registration.Id, previous + 1));
         await HeadingAsync(page, UpdatedTitle);
