@@ -2,7 +2,7 @@
 
 **Feature Branch**: `135-scope-audience-catalogue`
 **Created**: 7 November 2026
-**Status**: Selected for implementation; acceptance pending
+**Status**: Delivered for internal development in PR128/130/132/134; [qualified acceptance and external limits](consent-acceptance.md)
 **Input**: Implement M03-A–M03-C, including UI, dependencies and tests. The user selected consented email and email_verified from the current Identity account.
 
 ## User Scenarios & Testing

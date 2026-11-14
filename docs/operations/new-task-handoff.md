@@ -1,13 +1,33 @@
 # OpenIdentityAdmin new-task handoff
 
-## Active batch — consented issuance, 14 November 2026
+## Current delivery — consented scopes and UserInfo, 14 November 2026
 
-T010–T012 and required T013 compatibility are implemented on
-`143-managed-scope-consent` for full provider/browser validation.
-[Scope, scenarios and local evidence](../../specs/023-scope-audience-catalogue/consented-issuance.md). No task is accepted yet;
-T014–T016 and all historical/manual/public-release gates remain open.
-The accepted main baseline below still has the temporary assignment hold; the candidate
-branch replaces it with explicit consent, exact native scopes/audience and current UserInfo.
+Feature023 T001–T016 and the selected M03-A–M03-C managed-profile scope are complete
+for internal development. [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134)
+is squash-merged as `eb2458ad71a53e949ea8d7e715e66e0a8d5c84dd`. Explicit requested-scope consent, exact native
+scope/audience/consented-email issuance and current-authority GET/POST UserInfo are
+available on main. The temporary assignment hold is removed; fixed BFF login/logout
+and both no-UserInfo-send guards remain intact.
+
+[CI594](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43588408738)
+passes all 136 jobs: 113 native reports/6,300 executions, 140 mutation kills, 132 UI and 46
+Node cases, 110 original coverage inputs and all 15 unchanged floors. All 130 original
+archives are reconciled; source, tested merge and squash have the same tree.
+[Acceptance, reviews and limits](../../specs/023-scope-audience-catalogue/consent-acceptance.md).
+Acceptance retains CI590's unexplained demo restart and CI592's theme-contrast failures
+as reliability qualifications. Current original cases pass without weakening their
+assertions. No cause, fix or stable-suite claim is inferred. Preserve CI586–CI593.
+
+Run the [ordinary Aspire walkthrough](../../specs/023-scope-audience-catalogue/quickstart.md).
+**Recommended next visible increment:** an Aspire sample relying-party application
+and API exercising consent, tokens and UserInfo (M04-D), with a bounded specification.
+No further implementation or renewed SQL diagnostics are part of this completed batch.
+All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/public-release gates remain open.
+
+## Historical delivery checkpoints
+
+The pending, next-step and assignment-hold statements below describe their dated
+checkpoints and are superseded by the current delivery above.
 
 ## Accepted baseline — managed policy bindings, 14 November 2026
 

@@ -20,19 +20,19 @@ accepted from planning alone. Feature022 and all preserved evidence remain compl
 
 - [x] T008 [US2] Add explicit versioned native application scope assignment through Infrastructure/API/BFF `Features/Applications/` and existing React editor; verify unsupported/system/disabled policy, stale versions, delete races and old editor preservation. C04/C06/C07.
 - [x] T009 [US2] Add bounded current catalogue policy snapshots and additive managed-interaction bindings in Infrastructure `Features/Identity/ManagedApplications/`; preserve legacy rows, native permission/resource authority and both-provider upgrades. C05/C07/C08.
-- [ ] T010 [US2] Integrate requested/granted scope decisions and explicit consent disclosure in AuthServer `Features/Protocol/ManagedApplications/` and managed Razor pages; recheck after locks and invalidate stale cached/consented/code decisions. Add real cross-process policy/cache/race evidence. C07/C08.
-- [ ] T011 [US2] Extend managed native principal/prepared/issuance invariants for exact scopes, one audience and consented email ID-token destinations; preserve replay/consumption/commit/publication budgets. Add independent crypto/native-state tests on both providers. C07–09.
+- [x] T010 [US2] Integrate requested/granted scope decisions and explicit consent disclosure in AuthServer `Features/Protocol/ManagedApplications/` and managed Razor pages; recheck after locks and invalidate stale cached/consented/code decisions. Add real cross-process policy/cache/race evidence. C07/C08.
+- [x] T011 [US2] Extend managed native principal/prepared/issuance invariants for exact scopes, one audience and consented email ID-token destinations; preserve replay/consumption/commit/publication budgets. Add independent crypto/native-state tests on both providers. C07–09.
 
 ## US3 — Real token/UserInfo validation (M03-C)
 
-- [ ] T012 [US3] Add native authenticated GET/POST UserInfo and current-state projection under AuthServer `Features/Protocol/UserInfo/`, including current native token/authorization/account/client/policy checks, exactsubject, bounded responses and safe native errors. C10/C11.
-- [ ] T013 [US3] Update exact known UserInfo discovery compatibility in BFF `Features/Authentication/Protocol/` while preserving both no-send guards; test real fixed login/logout and hostile metadata. C12.
-- [ ] T014 [US3] Add full managed UI→scope assignment→native token→UserInfo scenarios in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/` and catalogue fixtures, including missing/unconfirmed/changed email, scope revocation and unrelated/system/machine negatives. C09–13.
+- [x] T012 [US3] Add native authenticated GET/POST UserInfo and current-state projection under AuthServer `Features/Protocol/UserInfo/`, including current native token/authorization/account/client/policy checks, exactsubject, bounded responses and safe native errors. C10/C11.
+- [x] T013 [US3] Update exact known UserInfo discovery compatibility in BFF `Features/Authentication/Protocol/` while preserving both no-send guards; test real fixed login/logout and hostile metadata. C12.
+- [x] T014 [US3] Add full managed UI→scope assignment→native token→UserInfo scenarios in `tests/aspire/IdentityPlatform.Administrator.Tests/Features/ManagedApplications/` and catalogue fixtures, including missing/unconfirmed/changed email, scope revocation and unrelated/system/machine negatives. C09–13.
 
 ## Integrated acceptance and delivery
 
-- [ ] T015 Bind actual discovery/selection, unchanged existing identities, new coverage and behavioral mutations in `scripts/`, `.github/workflows/`, `eng/` and `verification.md`; execute required both-provider/browser/full final-head checks and reconcile original reports/manifests. C14.
-- [ ] T016 Complete independent architecture/security/API/UX/test/provider reviews; update `quickstart.md`, `verification.md`, `docs/roadmap.md` and `docs/operations/new-task-handoff.md`, then normal reviewed squash after exact-head acceptance. FR-001–013.
+- [x] T015 Bind actual discovery/selection, unchanged existing identities, new coverage and behavioral mutations in `scripts/`, `.github/workflows/`, `eng/` and `verification.md`; execute required both-provider/browser/full final-head checks and reconcile original reports/manifests. C14.
+- [x] T016 Complete independent architecture/security/API/UX/test/provider reviews; update `quickstart.md`, `verification.md`, `docs/roadmap.md` and `docs/operations/new-task-handoff.md`, then normal reviewed squash after exact-head acceptance. FR-001–013.
 
 Dependencies: T001→T002→T003→T004→T005→T006→T007. T008 follows T004–T006;
 T009 follows T003/T008; T010 follows T009; T011 follows T010; T012 follows T011;
@@ -43,6 +43,11 @@ No runtime task is declared independently parallel before its prerequisites exis
 
 Deliver coherent reviewed increments, preserving old application behavior at each
 boundary. Catalogue-only progress does not complete the selected M03-B/C tasks.
+
+## Historical increment records
+
+Pending and next-step statements below describe their original checkpoints; the current
+acceptance at the end supersedes them.
 
 ## Accepted T004–T007 increment
 
@@ -61,6 +66,11 @@ Explicit application scope assignment is delivered in PR130. [Assignment accepta
 
 Managed current-policy snapshots and additive interaction bindings are delivered in PR132. [Policy acceptance](policy-acceptance.md) records both-provider full CI, original report/coverage/mutation reconciliation and independent reviews. T010 consent is next; nonempty assignments still block issuance. T010–T016, M03-B/C completion and all historical/manual/public-release gates remain open.
 
-## Active T010–T012 batch
+## Accepted T010–T012 batch and dependencies
 
-[Consented issuance](consented-issuance.md) records implementation and pending full validation, including required T013 compatibility. Tasks remain unchecked until both-provider/browser evidence, unchanged coverage floors, causal mutations and final independent review pass.
+[Consented-scope acceptance](consent-acceptance.md) records PR134, exact source/tree,
+all 136 successful CI594 jobs, original artifact reconciliation and independent reviews.
+T010–T012 plus required T013–T016 are complete for internal development. CI590 remains
+unexplained reliability evidence; current original demo assertions pass on both providers.
+CI592's theme-contrast failure also remains unresolved; the current original case passes.
+No historical/manual/public-release gate is closed and no suite-stability claim is made.
