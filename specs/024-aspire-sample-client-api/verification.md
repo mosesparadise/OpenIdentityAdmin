@@ -167,3 +167,19 @@ The complete report reconciles current discovery by name multiplicity and verifi
 unique native IDs, result IDs, definition links and execution bindings. Legacy
 duplicate display names prevent using the provider-only unique-name helper.
 This is local scheduling evidence, not an explanation of CI601 or hosted acceptance.
+
+## CI602 logout journey ordering
+
+[CI602](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43619134532)
+at7926e20 records a SQL Server/WebKit assertion failure in sample logout: after a
+keyboard press, the test immediately navigated home and still observed Signed in as.
+Safe source evidence identifies SampleBrowserJourney.LogoutAsync; decoded logs retain
+two successful callbacks followed by a home GET without a recorded logout endpoint.
+The test had not awaited the logout response before starting that competing navigation.
+
+The journey now waits for the exact visible server logout confirmation before its
+independent home navigation and existing signed-out/cookie-absence assertions. Keyboard
+operation, ordinary browser transport, action deadlines and all original authority
+assertions remain intact; there is no retry or production change. The four CI601
+sample passes remain historical evidence, not proof this ordering was reliable.
+CI602 is retained as failed evidence; unit scheduling acceptance is still pending.

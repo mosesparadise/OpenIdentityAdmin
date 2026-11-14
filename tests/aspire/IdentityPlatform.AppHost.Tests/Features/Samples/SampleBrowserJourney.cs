@@ -21,6 +21,7 @@ internal static class SampleBrowserJourney
     private const string Profile = "Fetch current profile";
     private const string Orders = "Call orders API";
     private const string Logout = "Sign out locally";
+    private const string SignedOut = "Signed out of this sample browser. Other applications and browsers are unchanged.";
     private const string ProfileSuccess = "Current profile received.";
     private const string OrdersSuccess = "Orders API accepted this token: sample-order-001 is Ready.";
     private const string SignedIn = "Signed in as";
@@ -120,6 +121,10 @@ internal static class SampleBrowserJourney
     internal static async Task LogoutAsync(IPage page)
     {
         await Button(page, Logout).PressAsync(Enter);
+        await page.GetByText(SignedOut, new()
+        {
+            Exact = true
+        }).WaitForAsync();
         await page.GotoAsync(Address);
         Assert.Equal(0, await page.GetByText(SignedIn, new()
         {
