@@ -51,16 +51,16 @@ public sealed class ManagedUserInfoDenialTests(BootstrapFixture fixture)
         using var control = await ManagedConsentTest.ReadAsync(test, access);
         await ManagedConsentTest.RequireAsync(control, subject, ManagedConsentTest.Address, true);
         await InvalidateAsync(test, change, subject);
-        var before = await ManagedJourneyEvidence.DigestAsync(test);
+        var before = await ManagedUserInfoEvidence.CaptureAsync(test);
         using var denied = await ManagedConsentTest.ReadAsync(test, access);
         if (change == UserInfoInvalidation.ConsentText && denied.StatusCode == HttpStatusCode.OK)
         {
             await ManagedConsentTest.RequireAsync(denied, subject, ManagedConsentTest.Address, true);
-            Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+            await before.RequireAsync(test, commits: 1);
             Assert.Fail(CurrentPolicyBypass);
         }
         await ManagedConsentTest.DeniedAsync(denied);
-        Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+        await before.RequireAsync(test, commits: 0);
     }
 
     /// <summary>Changes one independently persisted authority field without advancing revisions, exercising mandatory fresh current-state reads.</summary>

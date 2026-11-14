@@ -15,6 +15,7 @@ public sealed class ManagedConsentHttpTests(BootstrapFixture fixture)
     private const string EmailDescription = "Share your email";
     private const string OrdersDescription = "Read your orders";
     private const string EmailRequest = "email openid";
+    private const int SupportedTransports = 3;
 
     /// <summary>Unrequested assigned scopes grant nothing; current consented email appears only in ID token/UserInfo and access audience follows requested API scope.</summary>
     [Theory]
@@ -83,16 +84,23 @@ public sealed class ManagedConsentHttpTests(BootstrapFixture fixture)
     /// <summary>Exercises GET and both POST bearer transports, then checks current missing email without rewriting the immutable native token.</summary>
     private static async Task CurrentAsync(ManagedCacheTestContext test, string access, string subject, string? email, bool verified)
     {
-        var before = await ManagedJourneyEvidence.DigestAsync(test);
+        var before = await ManagedUserInfoEvidence.CaptureAsync(test);
         using var get = await ManagedConsentTest.ReadAsync(test, access);
         await ManagedConsentTest.RequireAsync(get, subject, email, verified);
         using var post = await ManagedConsentTest.ReadAsync(test, access, post: true);
         await ManagedConsentTest.RequireAsync(post, subject, email, verified);
         using var form = await ManagedConsentTest.ReadAsync(test, access, post: true, form: true);
         await ManagedConsentTest.RequireAsync(form, subject, email, verified);
-        Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+        await before.RequireAsync(test, commits: SupportedTransports);
+        await ManagedConsentTest.EmailAsync(test, ManagedConsentTest.Address, !verified);
+        var changedState = await ManagedUserInfoEvidence.CaptureAsync(test);
+        using var changed = await ManagedConsentTest.ReadAsync(test, access);
+        await ManagedConsentTest.RequireAsync(changed, subject, email is null ? null : ManagedConsentTest.Address, !verified);
+        await changedState.RequireAsync(test, commits: 1);
         await ManagedConsentTest.EmailAsync(test, null, false);
+        var missingState = await ManagedUserInfoEvidence.CaptureAsync(test);
         using var missing = await ManagedConsentTest.ReadAsync(test, access);
         await ManagedConsentTest.RequireAsync(missing, subject, null, false);
+        await missingState.RequireAsync(test, commits: 1);
     }
 }

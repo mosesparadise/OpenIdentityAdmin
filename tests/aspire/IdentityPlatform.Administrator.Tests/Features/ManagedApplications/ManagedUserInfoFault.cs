@@ -90,7 +90,7 @@ internal sealed class ManagedUserInfoFault(UserInfoPublicationFailure failure) :
         return ValueTask.FromResult(result);
     }
 
-    /// <summary>Fails acknowledgement only after the provider has actually committed; read-only state remains independently unchanged.</summary>
+    /// <summary>Fails acknowledgement only after actual commit; authority stays unchanged with exactly the portable lock-counter increments.</summary>
     public override Task TransactionCommittedAsync(DbTransaction transaction, TransactionEndEventData eventData, CancellationToken cancellationToken = default)
     {
         if (ReferenceEquals(database, eventData.Context))

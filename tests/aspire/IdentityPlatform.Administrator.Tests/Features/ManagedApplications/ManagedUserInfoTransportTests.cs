@@ -35,7 +35,7 @@ public sealed class ManagedUserInfoTransportTests(BootstrapFixture fixture)
         var access = body.RootElement.GetProperty(AccessField).GetString()!;
         var identity = body.RootElement.GetProperty(IdentityField).GetString()!;
         var subject = Assert.Single((await test.SnapshotAsync()).Interactions).UserId!;
-        var before = await ManagedJourneyEvidence.DigestAsync(test);
+        var before = await ManagedUserInfoEvidence.CaptureAsync(test);
         using var missing = await test.Http.IssuerClient.GetAsync(ManagedConsentTest.UserInfo, TestContext.Current.CancellationToken);
         await ErrorAsync(missing, HttpStatusCode.Unauthorized, null);
         foreach (var credential in new[] { Malformed, identity })
@@ -49,7 +49,8 @@ public sealed class ManagedUserInfoTransportTests(BootstrapFixture fixture)
         await AmbiguousAsync(test, access, form: true);
         using var control = await ManagedConsentTest.ReadAsync(test, access);
         await ManagedConsentTest.RequireAsync(control, subject, null, false);
-        Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+        await before.RequireAsync(test, commits: 1);
+        await ManagedUserInfoTokenEvidence.RequireAsync(test, access, subject);
         using var logout = await BrowserLogoutHttp.PostAsync(test.Http.Browser, await BrowserLogoutHttp.EntryAsync(test.Http.Browser));
         await BrowserLogoutHttp.CommittedAsync(logout);
     }

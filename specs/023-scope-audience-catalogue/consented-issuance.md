@@ -134,3 +134,36 @@ initial issuance group also finishes: 66 passed / 16 failed, with the same UserI
 its original assignment journey passes. Both initial provider receipts remain failures,
 not acceptance. UX review's referenced-deletion and offline-token wording corrections
 are incorporated in the candidate walkthrough.
+
+### Second hosted attempt — CI587
+
+[CI587](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43575678593)
+checks source `892c6809f1e93f8fb667a7e753ae02423c3bf04c`, merge
+`70f0e9997fc5b10109c2daf745e654b04efa48aa`, tree
+`39e8c690528402146c30e17ae5997e85fff2e2ec`. It is not acceptance. Both disclosure
+groups finish 8 passed / 8 failed; every failure is the final unchanged-state digest,
+after the expected native projection/error and fault-boundary checks. The managed
+mutation baselines each stop at 9 passed / 1 failed; no mutant kill is claimed.
+Both admission groups and the standalone SQL Server persistence job pass. The prior
+container startup failure remains retained and unexplained.
+
+Successful UserInfo reads commit the existing portable UPDATE locks. Independent source
+reviews agree that each committed projection advances governance revision by five and
+the bound admission/browser/authentication revisions by one each. The new assertion
+incorrectly expected those coordination fields to remain unchanged. Preserve production
+serialization and publication ownership. A UserInfo-specific oracle now clones the full
+before-state and applies only those exact expected increments, then compares every field
+against independent fresh reads. It additionally captures governance/admission/profile,
+user and enrollment rows. Profile revision, credentials, grants, consent, failure counts,
+clock watermarks, sessions and audits must remain unchanged. Callback/ordinary denials
+require zero increments; actual postcommit failures and mutation leaks require one set.
+The existing generic digest retains all its fields and metadata.
+
+Within the original native cases, additional controls prove unchanged re-signed/encrypted
+bearer acceptance before wrong client/presenter/subject, already-expired and absent-human
+subject denials. No machine grant is enabled. Present email and confirmation now change
+after issuance, followed by current UserInfo checks and exact committed-state comparisons.
+The full UI→assignment→browser consent→native tokens→UserInfo/Cancel chain is already
+implemented in ApplicationScopeBrowserTests; independent review confirmed its continuity.
+The administrator build and source/test review pass; corrected-head hosted validation,
+original report reconciliation and final evidence review remain mandatory.

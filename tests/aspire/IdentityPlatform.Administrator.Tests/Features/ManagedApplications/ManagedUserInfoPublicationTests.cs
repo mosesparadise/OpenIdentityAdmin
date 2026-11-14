@@ -38,7 +38,7 @@ public sealed class ManagedUserInfoPublicationTests(BootstrapFixture fixture)
         var access = body.RootElement.GetProperty(AccessField).GetString()!;
         var row = Assert.Single((await test.SnapshotAsync()).Interactions);
         fault.Advance = () => test.Http.Environment.Issuer.Account.Journey.Clock.Now = DateTimeOffset.FromUnixTimeSeconds(row.ExpiresAt);
-        var before = await ManagedJourneyEvidence.DigestAsync(test);
+        var before = await ManagedUserInfoEvidence.CaptureAsync(test);
         fault.Armed = true;
         using var response = await ManagedConsentTest.ReadAsync(test, access);
         if (failure == UserInfoPublicationFailure.Callback && response.StatusCode == HttpStatusCode.OK)
@@ -48,7 +48,7 @@ public sealed class ManagedUserInfoPublicationTests(BootstrapFixture fixture)
             Assert.Equal(1, fault.Faults);
             Assert.Equal(1, fault.Disposals);
             Assert.Equal(1, fault.Commits);
-            Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+            await before.RequireAsync(test, commits: 1);
             Assert.Fail(PublicationBypass);
         }
         await ManagedCacheTestContext.UnavailableAsync(response);
@@ -56,6 +56,6 @@ public sealed class ManagedUserInfoPublicationTests(BootstrapFixture fixture)
         Assert.Equal(1, fault.Faults);
         Assert.Equal(1, fault.Disposals);
         Assert.Equal(failure == UserInfoPublicationFailure.Callback ? 0 : 1, fault.Commits);
-        Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+        await before.RequireAsync(test, commits: failure == UserInfoPublicationFailure.Callback ? 0 : 1);
     }
 }
