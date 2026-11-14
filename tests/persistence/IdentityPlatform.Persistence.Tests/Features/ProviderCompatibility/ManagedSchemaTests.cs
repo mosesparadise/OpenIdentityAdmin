@@ -80,7 +80,7 @@ public sealed class ManagedSchemaTests
         database.ChangeTracker.Clear();
         var policy = await database.Set<ApplicationPolicy>().SingleAsync(fixture.Token);
         Assert.True(policy.ObservedAt > policy.CredentialExpiresAt);
-        ManagedSchemaColumns.Require(provider, (await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
+        ManagedSchemaColumns.Require(provider, ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider))[DatabaseSnapshot.Columns], lifecycle: true);
         await ManagedSchemaNegatives.RequireAsync(fixture);
     }
 

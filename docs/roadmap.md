@@ -1,5 +1,19 @@
 # Delivery roadmap and task register
 
+## Current work — managed policy bindings, 14 November 2026
+
+T009 is in progress on `141-managed-scope-policy`, based on accepted main
+`95777ca91a7556233ef8636667888df07d0032f8`. The candidate adds canonical policy
+snapshots, retained scope/audience references and additive provider migrations.
+Public issuance remains exact OpenID; T008's assignment hold remains in place.
+Aspire13.6.5 is a required advisory-fixing dependency prerequisite.
+[Candidate evidence and remaining validation](../specs/023-scope-audience-catalogue/policy-bindings.md).
+
+T009 is **not accepted**. Local provider startup and full solution copying hit disk
+exhaustion; preserve those receipts and use hosted both-provider/full verification.
+Do not repeat local SQL diagnostics or close historical/manual/release gates.
+The completed delivery below remains the latest accepted checkpoint.
+
 ## Current delivery — application scope assignment, 8 November 2026
 
 Feature023 T001–T008 are complete for internal development. T008 is squash-merged

@@ -28,12 +28,17 @@ internal static class ManagedHumanBinding
             {
                 throw ProtocolStorageOwner.Unavailable();
             }
+            if (!await ManagedScopeReferences.IsOpenIdAsync(scope.Owner.Database, row, current))
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
             return row;
         }, token);
 
     /// <summary>Uses native managers to reject revoked/detached requests and native registration drift without selecting alternate stores.</summary>
     internal static async ValueTask<ManagedRegistration> NativeAsync(ProtocolStorageScope scope, ManagedHumanRequest request, ManagedLoginInteraction row, CancellationToken token)
     {
+        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
         var registration = await ManagedRegistration.ReadAsync(scope, request.ClientId, token);
         if (registration is null || registration.ApplicationId != row.ApplicationId || registration.Revision != row.ApplicationRevision ||
             !registration.Redirects.Contains(request.Callback, StringComparer.Ordinal))

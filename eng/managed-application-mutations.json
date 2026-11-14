@@ -35,11 +35,27 @@
     },
     {
       "id": "managed-current-credential",
-      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs",
       "before": "policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
       "after": "policy.CredentialExpiresAt < ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt)",
       "marker": "managed-current-credential-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish"
+    },
+    {
+      "id": "managed-policy-binding",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopeBinding.cs",
+      "before": "return row.PolicySnapshot == expected && row.PolicyDigest == ManagedLoginRules.Digest(expected);",
+      "after": "return expected.Length > 0;",
+      "marker": "managed-policy-binding-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance"
+    },
+    {
+      "id": "managed-current-scope-policy",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopePolicy.cs",
+      "before": "if (expected != ManagedScopeCodec.Encode(actual))",
+      "after": "if (expected.Length == 0 && expected != ManagedScopeCodec.Encode(actual))",
+      "marker": "managed-current-scope-policy-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused"
     }
   ]
 }

@@ -21,6 +21,7 @@ internal sealed class ManagedIssuanceSource(CeremonyAccount account, Administrat
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
         var locks = await ManagedCeremonyLocks.AcquireAsync(scope, new CeremonyLockPlan(true, true, [row.BrowserBudgetId], [row.UserId]), token);
         return await scope.Owner.RunAsync(async current =>
         {

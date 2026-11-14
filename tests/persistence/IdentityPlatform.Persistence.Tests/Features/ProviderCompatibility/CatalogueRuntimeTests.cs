@@ -1,5 +1,6 @@
 using IdentityPlatform.Database;
 using IdentityPlatform.Infrastructure.Features.Catalogue;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,13 @@ public sealed class CatalogueRuntimeTests
         var policy = await read.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ScopePolicy>().AsNoTracking().SingleAsync(fixture.Token);
         Assert.Equal(id, policy.ScopeId);
         Assert.Equal(Identity, policy.Kind);
+        var databaseRead = read.ServiceProvider.GetRequiredService<PlatformDbContext>();
+        var retained = await databaseRead.Set<ManagedScopeReference>().AsNoTracking().SingleAsync(fixture.Token);
+        var interaction = await databaseRead.Set<ManagedLoginInteraction>().AsNoTracking().SingleAsync(fixture.Token);
+        Assert.Equal(id, retained.ScopeId);
+        Assert.Equal(interaction.SelectorDigest, retained.SelectorDigest);
+        Assert.Null(retained.AudienceId);
+        Assert.Equal(["openid", Name], ManagedScopeCodec.Decode(interaction.PolicySnapshot!, interaction.PolicyDigest!).Requested);
         Assert.Equal(None, policy.Disclosure);
         Assert.Equal(1, policy.Revision);
         var job = await read.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<CatalogueDeletion>().AsNoTracking().SingleAsync(fixture.Token);
@@ -61,9 +69,26 @@ public sealed class CatalogueRuntimeTests
         {
             CatalogueSchemaRows.Add(scope.Owner.Database);
             scope.Owner.Database.Add(new ScopePolicy { ScopeId = id, Kind = Identity, Disclosure = None, ConsentText = Consent });
+            var (interaction, decision) = Binding(id);
+            scope.Owner.Database.Add(interaction);
+            ManagedScopeReferences.Add(scope.Owner.Database, interaction, decision);
             await scope.Owner.Database.SaveChangesAsync(current);
+            await ManagedScopeReferences.VerifyAsync(scope.Owner.Database, interaction, decision, current);
         }, token, write: true);
         await transaction.CommitAsync(token);
         return id;
     }
+    /// <summary>Stages synthetic policy storage to verify runtime grants; this fixture is not evidence of extended public consent or issuance.</summary>
+    private static (ManagedLoginInteraction, ManagedScopeDecision) Binding(string id)
+    {
+        const string OpenId = "openid";
+        const int DigestLength = 64;
+        var row = ManagedSchemaRows.Reservation();
+        var binding = new string('A', DigestLength);
+        var decision = new ManagedScopeDecision(1, row.ApplicationId, row.ApplicationRevision, binding, [OpenId, Name], [OpenId],
+            [new(id, Name, 1, Identity, None, binding)], null);
+        ManagedScopeBinding.Attach(row, decision);
+        return (row, decision);
+    }
+
 }

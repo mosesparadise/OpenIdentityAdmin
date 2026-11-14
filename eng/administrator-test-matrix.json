@@ -1409,7 +1409,12 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAssignedScopeTests.Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"PostgreSql\", write: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"PostgreSql\", write: True)",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDeletionWaitTests.Given_QueuedDeletion_When_WorkerWaitsBehindCommittingAssignment_Then_CurrentNativeReferenceRejectsDeletion(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDeletionWaitTests.Given_QueuedDeletion_When_WorkerWaitsBehindCommittingAssignment_Then_CurrentNativeReferenceRejectsDeletion(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueManagedReferenceTests.Given_AdmittedCatalogueDeletion_When_ManagedReferenceAppears_Then_WorkerRetainsTargetAndReportsReferenced(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeCleanupTests.Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeLegacyTests.Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2925,7 +2930,12 @@
     "IdentityPlatform.Administrator.Tests.Features.ApplicationGrants.GrantAssignedScopeTests.Given_DisabledAssignedApplication_When_GrantCleanupRuns_Then_NativeGrantsAreRevokedAndExactPermissionsSurvive(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"SqlServer\", write: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopePublicationTests.Given_CompletedAssignmentApiWork_When_BrowserGenerationChanges_Then_OutputIsSuppressedAndExplicitReadRecoversCommit(provider: \"SqlServer\", write: True)",
-    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDeletionWaitTests.Given_QueuedDeletion_When_WorkerWaitsBehindCommittingAssignment_Then_CurrentNativeReferenceRejectsDeletion(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationScopeDeletionWaitTests.Given_QueuedDeletion_When_WorkerWaitsBehindCommittingAssignment_Then_CurrentNativeReferenceRejectsDeletion(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueManagedReferenceTests.Given_AdmittedCatalogueDeletion_When_ManagedReferenceAppears_Then_WorkerRetainsTargetAndReportsReferenced(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeCleanupTests.Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeLegacyTests.Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -62920,6 +62930,212 @@
         ]
       },
       "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueManagedReferenceTests.Given_AdmittedCatalogueDeletion_When_ManagedReferenceAppears_Then_WorkerRetainsTargetAndReportsReferenced(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueManagedReferenceTests",
+        "methodName": "Given_AdmittedCatalogueDeletion_When_ManagedReferenceAppears_Then_WorkerRetainsTargetAndReportsReferenced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Catalogue.CatalogueManagedReferenceTests.Given_AdmittedCatalogueDeletion_When_ManagedReferenceAppears_Then_WorkerRetainsTargetAndReportsReferenced(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Catalogue",
+        "typeName": "CatalogueManagedReferenceTests",
+        "methodName": "Given_AdmittedCatalogueDeletion_When_ManagedReferenceAppears_Then_WorkerRetainsTargetAndReportsReferenced",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeBindingTests",
+        "methodName": "Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-policy-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeBindingTests",
+        "methodName": "Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-policy-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeCleanupTests.Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeCleanupTests",
+        "methodName": "Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeCleanupTests.Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeCleanupTests",
+        "methodName": "Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeLegacyTests.Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeLegacyTests",
+        "methodName": "Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeLegacyTests.Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeLegacyTests",
+        "methodName": "Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopePolicyTests",
+        "methodName": "Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-current-scope-policy"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopePolicyTests",
+        "methodName": "Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-current-scope-policy"
+        },
         {
           "key": "Provider",
           "value": "SqlServer"

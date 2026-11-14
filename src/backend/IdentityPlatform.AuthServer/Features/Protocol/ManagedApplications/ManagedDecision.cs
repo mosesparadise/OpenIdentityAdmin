@@ -126,6 +126,7 @@ internal static class ManagedDecision
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var entry = await manager.FindByIdAsync(requestId, token);
         if (entry is null || !await ProtocolStorageRows.ReloadAsync(scope, entry, token) || await manager.GetIdAsync(entry, token) != requestId ||

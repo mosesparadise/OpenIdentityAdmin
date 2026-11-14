@@ -25,11 +25,11 @@ public sealed class CatalogueUpgradeTests
         await SeedAsync(fixture);
         var before = await fixture.SnapshotAsync(provider);
         Assert.Equal(0, await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token));
-        var after = await fixture.SnapshotAsync(provider);
+        var after = ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider));
         CatalogueUpgradeWitness.Require(provider, before, after);
         CatalogueUpgradeWitness.RejectDefects(provider, before, after);
         Assert.Equal(0, await DatabaseUpgrade.RunAsync(fixture.Services, fixture.Token));
-        var repeated = await fixture.SnapshotAsync(provider);
+        var repeated = ManagedScopeUpgradeWitness.Predecessor(provider, await fixture.SnapshotAsync(provider));
         CatalogueUpgradeWitness.Require(provider, before, repeated);
         foreach (var (query, rows) in after)
         {

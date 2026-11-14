@@ -661,6 +661,15 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.Property<long?>("PasswordVerifiedAt")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("PolicyDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("PolicySnapshot")
+                        .HasMaxLength(16384)
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<long?>("RequestExpiresAt")
                         .HasColumnType("bigint");
 
@@ -721,6 +730,8 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Native", "([RequestId] IS NULL AND [RequestExpiresAt] IS NULL AND [NativeDependencyCreatedAt] IS NULL AND [NativeDependencyExpiresAt] IS NULL) OR ([RequestId] IS NOT NULL AND [RequestExpiresAt] IS NOT NULL AND [NativeDependencyCreatedAt] IS NOT NULL AND [NativeDependencyExpiresAt] IS NOT NULL AND [RequestExpiresAt] >= [ExpiresAt] AND [NativeDependencyCreatedAt] >= [CreatedAt] AND [NativeDependencyExpiresAt] >= [RequestExpiresAt] AND [NativeDependencyExpiresAt] > [NativeDependencyCreatedAt] AND [RetainUntil] >= [NativeDependencyExpiresAt])");
 
+                            t.HasCheckConstraint("CK_ManagedLoginInteraction_Policy", "([PolicySnapshot] IS NULL AND [PolicyDigest] IS NULL) OR ([PolicySnapshot] IS NOT NULL AND [PolicyDigest] IS NOT NULL)");
+
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Proof", "[State] IN (6, 7) OR ([State] = 1 AND [CeremonyId] IS NULL AND [CeremonyBrowserDigest] IS NULL AND [BrowserBudgetId] IS NULL AND [UserId] IS NULL AND [SecurityStamp] IS NULL AND [AuthenticationGeneration] IS NULL AND [FactorGeneration] IS NULL AND [EnrollmentRevision] IS NULL AND [PasswordVerifiedAt] IS NULL AND [MfaVerifiedAt] IS NULL AND [ConsentVerifiedAt] IS NULL) OR ([RequestId] IS NOT NULL AND [CeremonyId] IS NOT NULL AND [CeremonyBrowserDigest] IS NOT NULL AND [BrowserBudgetId] IS NOT NULL AND [UserId] IS NOT NULL AND [SecurityStamp] IS NOT NULL AND [AuthenticationGeneration] IS NOT NULL AND [AuthenticationGeneration] > 0 AND [FactorGeneration] IS NOT NULL AND [FactorGeneration] > 0 AND [EnrollmentRevision] IS NOT NULL AND [EnrollmentRevision] >= 0 AND [PasswordVerifiedAt] IS NOT NULL AND [PasswordVerifiedAt] >= [CreatedAt] AND [PasswordVerifiedAt] < [ExpiresAt] AND (([State] = 2 AND [MfaVerifiedAt] IS NULL AND [ConsentVerifiedAt] IS NULL) OR ([State] = 3 AND [MfaVerifiedAt] IS NOT NULL AND [MfaVerifiedAt] >= [PasswordVerifiedAt] AND [MfaVerifiedAt] < [ExpiresAt] AND [ConsentVerifiedAt] IS NULL) OR ([State] IN (4, 5) AND [MfaVerifiedAt] IS NOT NULL AND [MfaVerifiedAt] >= [PasswordVerifiedAt] AND [MfaVerifiedAt] < [ExpiresAt] AND [ConsentVerifiedAt] IS NOT NULL AND [ConsentVerifiedAt] >= [MfaVerifiedAt] AND [ConsentVerifiedAt] < [ExpiresAt])))");
 
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Revision", "[Revision] > 0 AND [ApplicationRevision] > 0");
@@ -729,6 +740,30 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
 
                             t.HasCheckConstraint("CK_ManagedLoginInteraction_Time", "[CreatedAt] >= 0 AND [ExpiresAt] > [CreatedAt] AND [ExpiresAt] - [CreatedAt] <= 300 AND [ObservedAt] >= [CreatedAt] AND [RetainUntil] >= [ExpiresAt]");
                         });
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications.ManagedScopeReference", b =>
+                {
+                    b.Property<string>("SelectorDigest")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.Property<string>("ScopeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AudienceId")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("Latin1_General_100_BIN2");
+
+                    b.HasKey("SelectorDigest", "ScopeId");
+
+                    b.HasIndex("AudienceId");
+
+                    b.HasIndex("ScopeId");
+
+                    b.ToTable("ManagedScopeReference", "platform");
                 });
 
             modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.Persistence.AdministratorAdmission", b =>
@@ -2031,6 +2066,26 @@ namespace IdentityPlatform.Migrations.SqlServer.Platform
                     b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", null)
                         .WithOne()
                         .HasForeignKey("IdentityPlatform.Infrastructure.Features.Catalogue.ScopePolicy", "ScopeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications.ManagedScopeReference", b =>
+                {
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Catalogue.ApiAudience", null)
+                        .WithMany()
+                        .HasForeignKey("AudienceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", null)
+                        .WithMany()
+                        .HasForeignKey("ScopeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications.ManagedLoginInteraction", null)
+                        .WithMany()
+                        .HasForeignKey("SelectorDigest")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
