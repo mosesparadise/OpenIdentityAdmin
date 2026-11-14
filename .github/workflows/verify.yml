@@ -224,6 +224,7 @@ jobs:
       - run: python3 scripts/test_managed_application_selection.py
       - run: python3 scripts/test_protocol_admission_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
+      - run: python3 scripts/test_browser_protection_selection.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
@@ -273,7 +274,7 @@ jobs:
   browser:
     needs: [scope, browser-plan]
     if: needs.scope.outputs.scope == 'full'
-    name: Browser ${{ matrix.partition }} ${{ matrix.browser_story }} / ${{ matrix.provider }} / ${{ matrix.browser }}
+    name: Browser ${{ matrix.partition }} ${{ matrix.browser_story }}${{ matrix.browser_protection_group && format(' {0}', matrix.browser_protection_group) || '' }} / ${{ matrix.provider }} / ${{ matrix.browser }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     strategy:
@@ -304,6 +305,7 @@ jobs:
       - run: python3 scripts/test_managed_application_selection.py
       - run: python3 scripts/test_protocol_admission_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
+      - run: python3 scripts/test_browser_protection_selection.py
       - run: python3 scripts/test_verify_evidence.py
       - run: python3 scripts/test_mutations.py
       - run: python3 scripts/test_coverage_gate.py
@@ -351,7 +353,7 @@ jobs:
         run: python3 scripts/run_native_visibility.py ${{ matrix.provider }} ${{ matrix.browser }}
       - name: Test with child-process coverage
         if: matrix.browser_story != 'ApplicationLifecycle'
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.provider }} --partition ${{ matrix.partition }} --browser ${{ matrix.browser }} ${{ matrix.browser_story && format('--browser-story {0}', matrix.browser_story) || '' }} ${{ matrix.browser_protection_group && format('--browser-protection-group {0}', matrix.browser_protection_group) || '' }}
       - name: Bind original coverage report after execution
         run: python3 scripts/coverage_identity.py after ${{ matrix.label }}
       - name: Retain synthetic test and coverage evidence

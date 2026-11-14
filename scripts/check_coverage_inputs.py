@@ -11,20 +11,22 @@ def browser_labels(matrix):
     cells = matrix.get('include')
     if not isinstance(cells, list) or not cells:
         raise ValueError('Missing browser coverage obligations')
-    expected_keys = {'provider', 'browser', 'partition', 'label', 'browser_story'}
+    expected_keys = {'provider', 'browser', 'partition', 'label', 'browser_story', 'browser_protection_group'}
     if any(not isinstance(cell, dict) or set(cell) != expected_keys for cell in cells):
         raise ValueError('Unexpected browser coverage cell shape')
     engines = {cell['browser'] for cell in cells}
     if engines != set(ENGINES):
         raise ValueError('Unreviewed browser coverage engine set')
-    expected = {(provider, engine, partition, story) for provider in ('PostgreSql', 'SqlServer')
+    expected = {(provider, engine, partition, story, group) for provider in ('PostgreSql', 'SqlServer')
                 for engine in engines for partition in ('standard', 'administrator')
-                for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))}
-    actual = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story']) for cell in cells]
+                for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))
+                for group in (('Sessions', 'Applications') if story == 'BrowserProtection' else ('',))}
+    actual = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story'], cell['browser_protection_group']) for cell in cells]
     if len(actual) != len(expected) or set(actual) != expected:
         raise ValueError('Browser coverage provider/partition obligations are incomplete')
     for cell in cells:
         label = ('administrator-' if cell['partition'] == 'administrator' else '') + cell['provider'] + '-' + cell['browser'] + ('-' + cell['browser_story'].lower() if cell['browser_story'] else '')
+        label += '-' + cell['browser_protection_group'].lower() if cell['browser_protection_group'] else ''
         if cell['label'] != label:
             raise ValueError('Browser coverage label does not match its obligation')
     return [cell['label'] for cell in cells]

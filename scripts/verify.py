@@ -9,12 +9,12 @@ from verify_contrast_experiment import execute, install_cancellation_handler
 from verify_history_experiment import MODE_VARIABLE as HISTORY_MODE_VARIABLE
 from test_evidence import require_complete_trx
 from administrator_inventory import load_inventory, require_native_inventory, PROVIDERS
-from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, require_administrator_browser, administrator_browser_invocations
+from test_selection import catalogue, require_partition, require_execution_names, require_lifecycle_execution, select_projects, lifecycle_invocations, require_lifecycle_story, require_administrator_story, require_administrator_browser
 
 from apphost_selection import apphost_invocations, apphost_catalogue, apphost_filter, require_apphost_selections
 from issuer_selection import issuer_catalogue, issuer_invocations, issuer_filter, require_issuer_inventory, require_issuer_selections
 from browser_deferrals import CERTIFICATE_METHOD, select_required, receipt as browser_deferral_receipt
-from administrator_group_selection import administrator_execution_invocations, group_invocations, group_filter, require_group_selections
+from administrator_group_selection import administrator_execution_invocations, browser_execution_invocations, group_invocations, group_filter, require_group_selections
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
@@ -28,6 +28,7 @@ parser.add_argument("--apphost-group", choices=["Foundation", "BffSessions", "Lo
 parser.add_argument("--browser-session-group", choices=["Foundations", "Product", "Lifecycle"])
 parser.add_argument("--managed-application-group", choices=["Admission", "Issuance", "Disclosure"])
 parser.add_argument("--protocol-admission-group", choices=["Admission", "Replay"])
+parser.add_argument("--browser-protection-group", choices=["Sessions", "Applications"])
 args = parser.parse_args()
 if HISTORY_MODE_VARIABLE in os.environ:
     parser.error("Ordinary acceptance cannot run with a history diagnostic mode")
@@ -43,6 +44,8 @@ if args.protocol_admission_group and (args.partition != "administrator" or args.
     parser.error("Protocol-admission group requires its ordinary administrator provider story")
 if args.browser_story and (not args.browser or args.partition != "administrator"):
     parser.error("Browser story requires an administrator browser invocation")
+if args.browser_protection_group and (not args.browser or args.partition != "administrator" or args.browser_story != "BrowserProtection"):
+    parser.error("Browser-protection group requires its original administrator browser story")
 install_cancellation_handler()
 if args.story and (args.partition not in ("lifecycle", "administrator") or
                    (args.story in ("Bootstrap", "Factors", "Ceremonies", "Accounts", "Recovery", "Security", "Governance.Policy", "Governance.Commands", "Governance.Failures", "ProtocolAdmission", "BrowserSessions", "SessionRefresh", "Applications", "ManagedApplications", "ApplicationGrants", "Catalogue")) != (args.partition == "administrator")):
@@ -68,7 +71,8 @@ for project, count in projects.items():
         invocations.extend((project, count, story, None, group) for story, group, count in
                            administrator_execution_invocations(matrix, args.profile, args.story, args.browser_session_group, args.managed_application_group, args.protocol_admission_group))
     elif project == "Administrator":
-        invocations.extend((project, expected, None, browser_story, None) for browser_story, expected in administrator_browser_invocations(matrix, args.browser_story))
+        invocations.extend((project, expected, None, browser_story, group) for browser_story, group, expected in
+                           browser_execution_invocations(matrix, args.profile, args.browser_story, args.browser_protection_group))
     else:
         invocations.append((project, count, None, None, None))
 for project, expected_count, story, browser_story, administrator_group in invocations:
@@ -117,9 +121,16 @@ for project, expected_count, story, browser_story, administrator_group in invoca
         elif project == "Administrator":
             inventory = {provider: native_inventory[provider] for provider in PROVIDERS}
             if args.browser:
-                expression = f"Provider={args.profile}&Category=Browser&BrowserStory={browser_story}"
-                selected = discover(expression)
-                require_administrator_browser(all_tests, selected, args.profile, matrix, inventory, browser_story)
+                if administrator_group:
+                    groups = {group: discover(group_filter(matrix, args.profile, browser_story, group))
+                              for group, _ in group_invocations(matrix, args.profile, browser_story)}
+                    require_group_selections(all_tests, groups, args.profile, browser_story, matrix, native_inventory)
+                    selected = groups[administrator_group]
+                    expression = group_filter(matrix, args.profile, browser_story, administrator_group)
+                else:
+                    expression = f"Provider={args.profile}&Category=Browser&BrowserStory={browser_story}"
+                    selected = discover(expression)
+                    require_administrator_browser(all_tests, selected, args.profile, matrix, inventory, browser_story)
             elif administrator_group:
                 groups = {group: discover(group_filter(matrix, args.profile, story, group))
                           for group, _ in group_invocations(matrix, args.profile, story)}

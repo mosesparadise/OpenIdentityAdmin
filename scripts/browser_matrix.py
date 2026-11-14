@@ -13,12 +13,13 @@ PHASE_NOTICE = ('A-009 internal roadmap development: Chromium and WebKit require
 
 def select():
     """Require both active engines and every provider/story on all full verification runs."""
-    return {'include': [{'provider': provider, 'browser': browser, 'partition': partition, 'browser_story': story,
+    return {'include': [{'provider': provider, 'browser': browser, 'partition': partition, 'browser_story': story, 'browser_protection_group': group,
                          'label': ('administrator-' if partition == 'administrator' else '') + provider + '-' + browser +
-                                  ('-' + story.lower() if story else '')}
+                                  ('-' + story.lower() if story else '') + ('-' + group.lower() if group else '')}
                         for browser in ENGINES for provider in PROVIDERS
                         for partition in ('standard', 'administrator')
-                        for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))]}
+                        for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))
+                        for group in (('Sessions', 'Applications') if story == 'BrowserProtection' else ('',))]}
 
 
 def main():

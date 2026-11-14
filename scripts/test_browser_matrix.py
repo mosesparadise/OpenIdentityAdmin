@@ -33,9 +33,10 @@ class BrowserMatrixTests(unittest.TestCase):
 
     def require_cells(self, actual, browsers):
         """Verify exact phase obligations independently of selector implementation constants."""
-        expected = {(provider, browser, partition, story) for provider in ('PostgreSql', 'SqlServer') for browser in browsers for partition in ('standard', 'administrator')
-                    for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))}
-        pairs = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story']) for cell in actual['include']]
+        expected = {(provider, browser, partition, story, group) for provider in ('PostgreSql', 'SqlServer') for browser in browsers for partition in ('standard', 'administrator')
+                    for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))
+                    for group in (('Sessions', 'Applications') if story == 'BrowserProtection' else ('',))}
+        pairs = [(cell['provider'], cell['browser'], cell['partition'], cell['browser_story'], cell['browser_protection_group']) for cell in actual['include']]
         self.assertEqual(len(pairs), len(set(pairs)))
         self.assertEqual(expected, set(pairs))
 
@@ -62,7 +63,7 @@ class BrowserMatrixTests(unittest.TestCase):
             catalogue('invalid')
 
     def test_Given_RequiredCoverageCells_When_AnyReportIsMissingEmptyOrDuplicated_Then_AcceptanceFails(self):
-        """Independently enumerate all 106 current obligations and reject omission or empty evidence for each."""
+        """Independently enumerate all 110 current obligations and reject omission or empty evidence for each."""
         matrix = select()
         labels = ['administrator-PostgreSql-catalogue', 'administrator-SqlServer-catalogue', 'administrator-PostgreSql-applicationgrants', 'administrator-SqlServer-applicationgrants', 'administrator-PostgreSql-managedapplications-admission', 'administrator-PostgreSql-managedapplications-issuance', 'administrator-PostgreSql-managedapplications-disclosure', 'administrator-SqlServer-managedapplications-admission', 'administrator-SqlServer-managedapplications-issuance', 'administrator-SqlServer-managedapplications-disclosure', 'administrator-PostgreSql-applications', 'administrator-SqlServer-applications', 'administrator-PostgreSql-sessionrefresh', 'administrator-SqlServer-sessionrefresh', 'PostgreSql-apphost-localdemo', 'SqlServer-apphost-localdemo', 'PostgreSql-apphost-foundation', 'SqlServer-apphost-foundation', 'PostgreSql-apphost-bffsessions', 'SqlServer-apphost-bffsessions', 'administrator-PostgreSql-browsersessions-foundations', 'administrator-PostgreSql-browsersessions-product', 'administrator-PostgreSql-browsersessions-lifecycle', 'administrator-SqlServer-browsersessions-foundations', 'administrator-SqlServer-browsersessions-product', 'administrator-SqlServer-browsersessions-lifecycle', 'administrator-PostgreSql-protocoladmission-admission', 'administrator-PostgreSql-protocoladmission-replay', 'administrator-SqlServer-protocoladmission-admission', 'administrator-SqlServer-protocoladmission-replay', 'issuer-PostgreSql-flows', 'issuer-SqlServer-flows', 'issuer-PostgreSql-boundaries', 'issuer-SqlServer-boundaries', 'administrator-PostgreSql-recovery', 'administrator-SqlServer-recovery', 'administrator-PostgreSql-security', 'administrator-SqlServer-security', 'administrator-PostgreSql-accounts', 'administrator-SqlServer-accounts', 'administrator-PostgreSql-ceremonies', 'administrator-SqlServer-ceremonies', 'administrator-PostgreSql-bootstrap', 'administrator-SqlServer-bootstrap', 'administrator-PostgreSql-factors', 'administrator-SqlServer-factors', 'administrator-PostgreSql-governance-policy', 'administrator-PostgreSql-governance-commands', 'administrator-PostgreSql-governance-failures', 'administrator-SqlServer-governance-policy', 'administrator-SqlServer-governance-commands', 'administrator-SqlServer-governance-failures', 'contracts-core', 'contracts-chromium', 'contracts-webkit', 'unit', 'PostgreSql', 'SqlServer', 'PostgreSql-lifecycle-restart', 'SqlServer-lifecycle-restart',
                       'PostgreSql-lifecycle-distribution', 'SqlServer-lifecycle-distribution',
@@ -74,7 +75,7 @@ class BrowserMatrixTests(unittest.TestCase):
                 path = root / ('foundation-' + label) / 'coverage' / (label + '.cobertura.xml')
                 path.parent.mkdir(parents=True)
                 path.write_text('<coverage/>')
-            self.assertEqual(106, require_inputs(root, matrix))
+            self.assertEqual(110, require_inputs(root, matrix))
             for provider in ('PostgreSql', 'SqlServer'):
                 for story in ('managedapplications', 'protocoladmission'):
                     old = 'administrator-' + provider + '-' + story
@@ -97,8 +98,8 @@ class BrowserMatrixTests(unittest.TestCase):
         """Verify exact phase obligations independently of selector implementation constants."""
         import copy
         matrix = select()
-        self.assertEqual(40, len(browser_labels(matrix)))
-        for change in ('missing', 'relabel', 'duplicate', 'unknown', 'partial-engine', 'extra-field', 'deferred-engine', 'chromium-only'):
+        self.assertEqual(44, len(browser_labels(matrix)))
+        for change in ('missing', 'relabel', 'duplicate', 'unknown', 'partial-engine', 'extra-field', 'deferred-engine', 'chromium-only', 'unsplit', 'cross-story-group'):
             with self.subTest(change=change):
                 invalid = copy.deepcopy(matrix)
                 if change == 'missing': invalid['include'] = [cell for cell in invalid['include'] if cell['partition'] != 'administrator']
@@ -109,6 +110,12 @@ class BrowserMatrixTests(unittest.TestCase):
                 elif change == 'chromium-only': invalid['include'] = [cell for cell in invalid['include'] if cell['browser'] == 'chromium']
                 elif change == 'deferred-engine': invalid['include'][0]['browser'] = 'firefox'
                 elif change == 'extra-field': invalid['include'][0]['optional'] = True
+                elif change == 'unsplit':
+                    for cell in invalid['include']:
+                        if cell['browser_story'] == 'BrowserProtection':
+                            cell['browser_protection_group'] = ''
+                            cell['label'] = cell['label'].rsplit('-', 1)[0]
+                elif change == 'cross-story-group': invalid['include'][0]['browser_protection_group'] = 'Sessions'
                 with self.assertRaises(ValueError): browser_labels(invalid)
 
     def test_execution_rejects_equal_count_wrong_identity_and_duplicates(self):

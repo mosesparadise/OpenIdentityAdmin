@@ -8,6 +8,75 @@ Existing M03-B/C and consented current email/email_verified approval governs sco
 
 ## Implementation boundaries
 
+### CI592 rejection and bounded browser scheduling correction
+
+[CI592](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43584891145),
+source `8d84d1534f638f5b5a0cc1931036ea372a482744`, tested merge
+`3c8ec8949c9bfa14de09acd49addfc0915a0f5f2`, tree
+`ab44bcb8beb8675d3acb4643199c469d1450589a`, finishes **128 successful jobs,
+two failed producers, failed final acceptance and skipped aggregate coverage**.
+All 125 original archives are retained. Both ordinary demos pass their original
+three cases; both providers pass Admission63, Issuance66 and Disclosure16. All 140
+mutation kills reconcile from the original 16 archives/22 sanitized receipts.
+These successes do not accept the failed run.
+
+PostgreSQL/WebKit Security passes four of five cases; dark/320 recovery-code entry
+reports black theme-label/select text against the dark page. Immediate finite style
+evidence shows missing inherited subtree tokens/font/scheme while root/body/siblings
+and loaded stylesheets are healthy, with document readiness complete. This resembles
+the earlier recorded subtree symptom, not the resolved historical body-ownership
+defect. No product cause, scanner false positive, pixel state or CSS correction is
+established. The original failure remains unresolved reliability evidence.
+
+The independent synthetic comparison in
+[CI593](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43587467030),
+source `c08f1682071bf1b53c3d925d27dacf299a7bbf07`, tree
+`69083e2b35ce186544d422ae23b7bfbc5a35c10d`, completes 40 fresh contexts with zero
+findings. Four rotated arms compare original/direct theme token-and-font ownership
+with no-scan inheritance observations or unchanged full axe scans. Each context uses
+ten synthetic recovery-form documents; this does not model the entire authenticated
+redirect/history journey. Original and candidate both pass, so the result is
+**inconclusive**, not a fix or runtime acceptance. No candidate CSS is adopted.
+The single original TRX and observations/source receipts match artifact SHA-256
+`7a6f109e321247fbf3b93f448a50eb356d8d07b8e6f833d4c9cc0981c1a74c2b` (4,041 bytes).
+Preserve branch `144-theme-subtree-diagnostic` and its local source checkpoint;
+**never merge its isolated workflow**. Local WebKit installation was blocked by
+HTTP403 from the official download endpoints; the hosted pinned engine ran normally.
+
+SQL Server/WebKit BrowserProtection exceeds the unchanged 660-second invocation
+deadline, retaining no final TRX. Its original 58,981-byte partial stream decodes
+using the pinned MTP2.5.2 serializer into 31 complete Passed terminal records with
+no truncated tail. The scope-assignment case passes in 118.793 seconds. Those 31
+cases occupy 642.403 seconds of wall time/642.293 seconds summed duration; the same
+31 took 449.253 seconds in CI591. That predecessor's full 36 passed cases totaled
+492.405 seconds, including 43.152 seconds for the five cases now lacking terminal
+outcomes. Slowdown is distributed. This supports aggregate scheduling pressure;
+it neither identifies an unfinished case nor rules out a hang or establishes an
+infrastructure cause. Partial records are never a substitute for the final report.
+
+The correction splits this story into mandatory **Sessions15** and **Applications21**
+invocations per provider/engine, keeping its 36 native identities and full metadata,
+all original assertions and each 660-second budget unchanged. Default and explicit
+ungrouped invocation execute both. Native selection of either group first discovers
+both and proves exact disjoint union against the unchanged original story inventory.
+Positive filters retain provider, browser category, original story and full class;
+classes containing other stories cannot bring unrelated cases into the group.
+Unique reports and coverage labels require all 44 retained-browser cells and 110
+coverage inputs; unsplit old reports cannot substitute. Expected full-run totals
+become 136 jobs, 113 native reports/6,300 executions and 130 original archives;
+140 mutation kills, 132 UI cases, 46 Node cases and all 15 floors remain unchanged.
+
+Actual compiled discovery verifies all 2,977 portable identities/metadata and exact
+15/21 selections on both providers without starting databases. All 125 targeted
+Python selection/coverage/CLI/regression controls pass, including omitted groups,
+overlap, equal-count substitution, metadata drift, invalid combinations and legacy
+coverage-label rejection. Independent source review passes. Full validation remains
+pending. This scheduling correction does not resolve or waive the separate contrast
+failure or CI590's unexplained demo restart failure; their original assertions remain
+required. Do not rerun unchanged failures merely to accumulate passing results.
+
+### Runtime implementation
+
 - Freeze bounded ordinal requested scopes; reject duplicate, reserved, unassigned,
   disabled and conflicting-audience scopes. The existing explicit Allow/Cancel form
   approves all requested eligible scopes or none; no silent downscoping or inferred

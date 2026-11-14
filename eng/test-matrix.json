@@ -447,5 +447,42 @@
         "SqlServer": 55
       }
     }
+  },
+  "browser_protection_groups": {
+    "Sessions": {
+      "classes": [
+        "SessionCredentialBrowserTests",
+        "SessionHistoryBrowserTests",
+        "SessionLoginPresentationBrowserTests",
+        "SessionOriginBrowserTests",
+        "SessionSecrecyBrowserTests",
+        "SessionStatusBrowserTests",
+        "WorkspaceBrowserTests"
+      ],
+      "counts": {
+        "PostgreSql": 15,
+        "SqlServer": 15
+      }
+    },
+    "Applications": {
+      "classes": [
+        "ApplicationApiBrowserTests",
+        "ApplicationAuthorityBrowserTests",
+        "ApplicationDeadlineBrowserTests",
+        "ApplicationEditorBrowserTests",
+        "ApplicationGrantBrowserTests",
+        "ApplicationGrantRecoveryBrowserTests",
+        "ApplicationListBrowserTests",
+        "ApplicationMutationBrowserTests",
+        "ApplicationPresentationBrowserTests",
+        "ApplicationProxyBrowserTests",
+        "ApplicationScopeBrowserTests",
+        "CatalogueBrowserTests"
+      ],
+      "counts": {
+        "PostgreSql": 21,
+        "SqlServer": 21
+      }
+    }
   }
 }

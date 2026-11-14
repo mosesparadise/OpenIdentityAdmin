@@ -28,14 +28,16 @@ def fixture_matrix():
     cells = []
     for provider in ('PostgreSql', 'SqlServer'):
         for browser in ('chromium', 'webkit'):
-            cells.append({'provider': provider, 'browser': browser, 'partition': 'standard', 'browser_story': '', 'label': provider + '-' + browser})
+            cells.append({'provider': provider, 'browser': browser, 'partition': 'standard', 'browser_story': '', 'browser_protection_group': '', 'label': provider + '-' + browser})
             for story in ('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent'):
-                cells.append({'provider': provider, 'browser': browser, 'partition': 'administrator', 'browser_story': story, 'label': 'administrator-' + provider + '-' + browser + '-' + story.lower()})
+                for group in (('Sessions', 'Applications') if story == 'BrowserProtection' else ('',)):
+                    cells.append({'provider': provider, 'browser': browser, 'partition': 'administrator', 'browser_story': story, 'browser_protection_group': group,
+                                  'label': 'administrator-' + provider + '-' + browser + '-' + story.lower() + ('-' + group.lower() if group else '')})
     return {'include': cells}
 
 
 def fixture_labels(matrix):
-    """The current106 required cells, built without gate helper imports."""
+    """The current 110 required cells, built without gate helper imports."""
     labels = ['unit', 'contracts-core', 'contracts-chromium', 'contracts-webkit']
     for provider in ('PostgreSql', 'SqlServer'):
         labels += [provider, provider + '-lifecycle-restart']
@@ -56,7 +58,7 @@ class CoverageIdentityControls(unittest.TestCase):
         self.merged.write_bytes(XML)
         self.matrix = fixture_matrix()
         self.labels = fixture_labels(self.matrix)
-        self.assertEqual(106, len(set(self.labels)))
+        self.assertEqual(110, len(set(self.labels)))
         self.expected = {'commit': 'a' * 40, 'tree': 'b' * 40, 'runId': '12345', 'runAttempt': '1', 'configuration': 'Debug', 'framework': 'net10.0', 'format': 'cobertura', 'collectorSettingsSha256': 'c' * 64, 'toolManifestSha256': 'd' * 64}
         self.build = {**self.expected, 'sdk': '10.0.114', 'collector': '18.12.0+test', 'collectorPackageSha256': '9' * 64, 'modules': {MODULE: {'dllSha256': 'e' * 64, 'pdbSha256': 'f' * 64}}}
         for label in self.labels:
@@ -83,7 +85,7 @@ class CoverageIdentityControls(unittest.TestCase):
 
     def test_complete_handcrafted_current_run_passes_exact_bounds_and_hashes(self):
         result = self.evaluate()
-        self.assertEqual(106, len(result['inputs']))
+        self.assertEqual(110, len(result['inputs']))
         self.assertEqual(set(self.labels), {row['cell'] for row in result['inputs']})
         self.assertEqual({'module': MODULE, 'linesCovered': 1, 'linesTotal': 1, 'branchesCoveredLowerBound': 2, 'branchesTotal': 2, 'lineRate': 1, 'branchRateLowerBound': 1, 'zeroBranchPopulation': False}, result['modules'][0])
         for item in result['inputs']:
@@ -229,7 +231,7 @@ class CoverageIdentityControls(unittest.TestCase):
     def test_cli_publishes_only_current_complete_bound_evidence(self):
         output = self.cli()
         result = json.loads(output.read_text())
-        self.assertEqual(106, len(result['inputs']))
+        self.assertEqual(110, len(result['inputs']))
         self.assertEqual('12345', result['build']['runId'])
         self.assertEqual(2, result['modules'][0]['branchesTotal'])
 
