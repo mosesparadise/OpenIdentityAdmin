@@ -1,5 +1,10 @@
 # T009 managed catalogue policy bindings
 
+**Accepted delivery:** T009 is squash-merged in PR132 after CI581 and independent
+original-evidence review. [Final acceptance](policy-acceptance.md) supersedes the
+pending language in the historical checkpoints below. T010 is next; extended issuance
+and all historical/manual/public-release gates remain open.
+
 Continuation from accepted main `95777ca91a7556233ef8636667888df07d0032f8`,
 13 November 2026. The user requested the next recommended task. Existing M03-B/C
 approval covers this prerequisite, both-provider verification and reviewed delivery.

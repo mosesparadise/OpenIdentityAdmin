@@ -1,30 +1,35 @@
 # OpenIdentityAdmin new-task handoff
 
-## Current work — managed policy bindings, 14 November 2026
+## Current delivery — managed policy bindings, 14 November 2026
 
-T009 is in progress on `141-managed-scope-policy`, based on accepted main
-`95777ca91a7556233ef8636667888df07d0032f8`. The candidate adds canonical policy
-snapshots, retained scope/audience references and additive provider migrations.
-Public issuance remains exact OpenID; T008's assignment hold remains in place.
-Aspire13.6.5 is a required advisory-fixing dependency prerequisite.
-[Candidate evidence and remaining validation](../../specs/023-scope-audience-catalogue/policy-bindings.md).
+Feature023 T001–T009 are complete for internal development. T009 is squash-merged in
+[PR132](https://github.com/mosesparadise/OpenIdentityAdmin/pull/132) as
+`7d4fe56e163f4a6c6133842aa7d4e7c69bdd093f`. Managed interactions now retain bounded current-policy snapshots,
+digests and scope/audience references, with additive migrations preserving legacy
+rows and histories on both providers. Aspire 13.6.5 fixes the restore-blocking advisories.
 
-The implementation is published in [draft PR132](https://github.com/mosesparadise/OpenIdentityAdmin/pull/132).
-CI578 exposed missing migration catalog entries and a historical fixture mismatch;
-CI579 verifies the catalog correction but exposes a nullable fixture parameter bug.
-The fixture correction preserves all original fields and requires a new exact-head run.
-CI580 confirms 40/40 persistence cases on both providers, but an existing PostgreSQL/
-WebKit foreign-account setup times out before the browser-login substitution check.
-A reviewed protected-page readiness correction preserves the original authority
-assertions and requires fresh full CI. Original artifacts are accessible through the
-connector file-reference/native-download route; no network settings change is needed.
+[CI581](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43542395165)
+passes all 130 jobs at `4ae6c03e56ab9ca6377b6dea2537f7f405e6b146`: 107 native reports /
+6,181 passing executions, 134 mutation kills, 132 UI cases, 46 Node cases and 104
+original coverage inputs meeting all 15 unchanged floors. All 124 original archives
+were downloaded and reconciled. Independent source/evidence reviews pass; the source,
+tested merge and squash share one tree. [Acceptance and limits](../../specs/023-scope-audience-catalogue/policy-acceptance.md).
 
-T009 is **not accepted**. Local provider startup and full solution copying hit disk
-exhaustion; preserve those receipts and use hosted both-provider/full verification.
-Do not repeat local SQL diagnostics or close historical/manual/release gates.
-The completed delivery below remains the latest accepted checkpoint.
+**Nonempty scope assignments still pause application sign-in/token issuance.**
+Public managed flows remain exact OpenID-only. **Next: T010 — requested/granted scope
+decisions and explicit consent disclosure**, with current-policy and real cache/race
+checks. T011 extends issuance; T012–T014 add UserInfo and integrated journeys.
+T010–T016 and M03-B/C completion remain open.
 
-## Current delivery — application scope assignment, 8 November 2026
+Use the [ordinary Aspire walkthrough](../../specs/023-scope-audience-catalogue/quickstart.md).
+Preserve failed CI578–580 receipts and branches 135/136/138/139; never merge isolated
+workflows 136/139 or repeat completed SQL diagnostics. Native artifact downloads work;
+no network settings change is needed. Local disk-capacity failures remain failed
+receipts. All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/
+production/public-release gates remain open. This Markdown follow-up records runtime
+acceptance; its lighter checks are not another full runtime execution.
+
+## Previous delivery — application scope assignment, 8 November 2026
 
 Feature023 T001–T008 are complete for internal development. T008 is squash-merged
 in [PR130](https://github.com/mosesparadise/OpenIdentityAdmin/pull/130) as
@@ -42,9 +47,9 @@ The UI explains this before save. Clearing all additional scopes restores fresh-
 eligibility; untouched applications retain their original behavior. Extended scope
 consent/issuance and UserInfo are not yet available.
 
-**Next: T009 — current catalogue policy snapshots and managed-interaction bindings**,
+**Historical next step, now delivered: T009 — current catalogue policy snapshots and managed-interaction bindings**,
 preserving legacy rows and both-provider upgrades. Then T010 consent and T011 issuance;
-T012–T014 cover UserInfo and integrated journeys. T009–T016 and M03-B/C remain open.
+T012–T014 cover UserInfo and integrated journeys. T010–T016 and M03-B/C remain open.
 
 Use the [ordinary Aspire walkthrough](../../specs/023-scope-audience-catalogue/quickstart.md). Preserve failed receipts and
 branches 135/136/138/139; never merge isolated workflows 136/139. Do not repeat completed

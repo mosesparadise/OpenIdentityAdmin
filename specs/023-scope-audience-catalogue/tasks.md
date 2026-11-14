@@ -19,7 +19,7 @@ accepted from planning alone. Feature022 and all preserved evidence remain compl
 ## US2 — Assignment and claim policy (M03-B)
 
 - [x] T008 [US2] Add explicit versioned native application scope assignment through Infrastructure/API/BFF `Features/Applications/` and existing React editor; verify unsupported/system/disabled policy, stale versions, delete races and old editor preservation. C04/C06/C07.
-- [ ] T009 [US2] Add bounded current catalogue policy snapshots and additive managed-interaction bindings in Infrastructure `Features/Identity/ManagedApplications/`; preserve legacy rows, native permission/resource authority and both-provider upgrades. C05/C07/C08.
+- [x] T009 [US2] Add bounded current catalogue policy snapshots and additive managed-interaction bindings in Infrastructure `Features/Identity/ManagedApplications/`; preserve legacy rows, native permission/resource authority and both-provider upgrades. C05/C07/C08.
 - [ ] T010 [US2] Integrate requested/granted scope decisions and explicit consent disclosure in AuthServer `Features/Protocol/ManagedApplications/` and managed Razor pages; recheck after locks and invalidate stale cached/consented/code decisions. Add real cross-process policy/cache/race evidence. C07/C08.
 - [ ] T011 [US2] Extend managed native principal/prepared/issuance invariants for exact scopes, one audience and consented email ID-token destinations; preserve replay/consumption/commit/publication budgets. Add independent crypto/native-state tests on both providers. C07–09.
 
@@ -49,10 +49,14 @@ boundary. Catalogue-only progress does not complete the selected M03-B/C tasks.
 The user-selected T005–T007 and required T004 prerequisites are delivered in PR128.
 [Final acceptance](acceptance.md) records the exact source, both-provider/browser/full-CI
 results, unchanged coverage floors, behavioral mutation controls and independent reviews.
-T001–T007 are complete for internal development. T008 was subsequently delivered in PR130; T009–T016 remain open.
+T001–T007 are complete for internal development. T008 and T009 were subsequently delivered in PR130 and PR132; T010–T016 remain open.
 The T015/T016 obligations were applied to this increment and remain required for the
 later assignment/claims/UserInfo work. No historical/manual/public-release gate closes.
 
 ## Accepted T008 increment
 
-Explicit application scope assignment is delivered in PR130. [Assignment acceptance](assignment-acceptance.md) records full exact-head CI, both providers and retained browsers, independent reviews and the explicit temporary sign-in hold. T009 policy bindings are next; no consent, extended issuance, UserInfo or historical/manual gate is declared complete.
+Explicit application scope assignment is delivered in PR130. [Assignment acceptance](assignment-acceptance.md) records full exact-head CI, both providers and retained browsers, independent reviews and the explicit temporary sign-in hold. T009 policy bindings were subsequently delivered in PR132; no consent, extended issuance, UserInfo or historical/manual gate is declared complete.
+
+## Accepted T009 increment
+
+Managed current-policy snapshots and additive interaction bindings are delivered in PR132. [Policy acceptance](policy-acceptance.md) records both-provider full CI, original report/coverage/mutation reconciliation and independent reviews. T010 consent is next; nonempty assignments still block issuance. T010–T016, M03-B/C completion and all historical/manual/public-release gates remain open.
