@@ -142,3 +142,32 @@ known persistence-fixture failures. Both managed issuance groups, the PostgreSQL
 catalogue/admission groups, retained Chromium journeys and WebKit contracts passed.
 The existing concurrency policy may cancel unfinished jobs when this correction is
 published; CI579 is not treated as a completed passing run.
+
+### Protected-page readiness correction
+
+CI580 at `61f44b2b9e7660791a069ab4e595e48ab52c466d` passes all 40 persistence cases on
+each provider. Its PostgreSQL/WebKit BrowserLogin job132275702893 reports 8/9 passing
+cases; the foreign-account setup in `BrowserOtherAccount.SignInAsync` times out at
+its exact-security-URL `Load` wait before the B3 cookie-substitution scenario starts.
+The failed original archive/log is retained. This observation does not establish
+whether the URL transition or full-load event failed, or prove an upstream browser
+regression. The same SQL Server/WebKit case passes.
+
+Architecture and test review support a bounded semantic-readiness correction. The
+helper waits for DOM readiness at the same exact protected security URL and performs
+its existing single reload. It retains HTTP 200 and additionally requires the exact
+reload response/final page URL and visible fixed Account security heading. Existing
+distinct-account, live-session and native-cookie proofs, and every subsequent
+substitution/503/no-ticket/no-exchange assertion remain. Navigation deadlines and
+test identities are unchanged; no retry, skipped case or new deferral is introduced.
+Fresh exact-head full validation remains required.
+
+Artifact access is resolved: connector-provided Sediment file references download
+through the native file tool. Direct URL HTTP403 receipts remain, but no environment
+allowlist change is needed. Original ZIP digests are now checked and native TRX and
+coverage payloads reparsed locally; source-bound hosted identity validation remains
+an additional requirement. Earlier notes about blocked retrieval are superseded.
+
+The readiness correction builds with zero warnings/errors and passes code-quality
+and SDK formatting checks. Both independent reviewers found no assertion loss.
+All four unchanged BrowserLogin cells (nine cases each) remain required in fresh CI.

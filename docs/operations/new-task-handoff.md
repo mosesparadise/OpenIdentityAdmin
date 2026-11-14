@@ -13,8 +13,11 @@ The implementation is published in [draft PR132](https://github.com/mosesparadis
 CI578 exposed missing migration catalog entries and a historical fixture mismatch;
 CI579 verifies the catalog correction but exposes a nullable fixture parameter bug.
 The fixture correction preserves all original fields and requires a new exact-head run.
-Original CI artifact download is currently blocked by the workspace network policy
-for `sdmntprnortheu.oaiusercontent.com`; do not claim unavailable reports reconciled.
+CI580 confirms 40/40 persistence cases on both providers, but an existing PostgreSQL/
+WebKit foreign-account setup times out before the browser-login substitution check.
+A reviewed protected-page readiness correction preserves the original authority
+assertions and requires fresh full CI. Original artifacts are accessible through the
+connector file-reference/native-download route; no network settings change is needed.
 
 T009 is **not accepted**. Local provider startup and full solution copying hit disk
 exhaustion; preserve those receipts and use hosted both-provider/full verification.

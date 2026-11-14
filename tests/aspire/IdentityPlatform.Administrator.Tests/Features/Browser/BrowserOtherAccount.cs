@@ -17,6 +17,7 @@ internal static class BrowserOtherAccount
     private const string Password = "#password";
     private const string Code = "#code";
     private const string Submit = "#submit";
+    private const string SecurityHeading = "Account security";
     private const string IssuerCookie = "__Host-identity-administrator";
 
     /// <summary>Creates a native synthetic nominee, exercises its actual standalone forms and retains only its real cookie in memory.</summary>
@@ -36,13 +37,7 @@ internal static class BrowserOtherAccount
         await page.Locator(Code).FillAsync(await account.UnusedCodeAsync(user, FactorScenario.Seed));
         await page.Locator(Submit).ClickAsync();
         var security = new Uri(fixture.Profile.Issuer, AdministratorJourney.Security).AbsoluteUri;
-        await page.WaitForURLAsync(security, new()
-        {
-            WaitUntil = WaitUntilState.Load
-        });
-        Assert.True(page.Url == security);
-        var proof = await page.ReloadAsync();
-        Assert.Equal(StatusCodes.Status200OK, proof!.Status);
+        await RequireSecurityAsync(page, security);
         Assert.True(user != account.ActorId);
         Assert.Equal(1, await database.Set<AdministratorSession>().CountAsync(row => row.UserId == user && !row.Revoked, TestContext.Current.CancellationToken));
         var matches = (await page.Context.CookiesAsync()).Where(item => item.Name == IssuerCookie).ToArray();
@@ -60,6 +55,27 @@ internal static class BrowserOtherAccount
             SameSite = cookie.SameSite,
             Expires = cookie.Expires
         }, user);
+    }
+
+    /// <summary>Requires the actual protected security document and one independently authenticated reload within the existing browser deadlines.</summary>
+    private static async Task RequireSecurityAsync(IPage page, string security)
+    {
+        await page.WaitForURLAsync(security, new()
+        {
+            WaitUntil = WaitUntilState.DOMContentLoaded
+        });
+        Assert.True(page.Url == security);
+        var proof = await page.ReloadAsync(new()
+        {
+            WaitUntil = WaitUntilState.DOMContentLoaded
+        });
+        Assert.Equal(StatusCodes.Status200OK, proof!.Status);
+        Assert.True(proof.Url == security && page.Url == security);
+        Assert.True(await page.GetByRole(AriaRole.Heading, new()
+        {
+            Name = SecurityHeading,
+            Exact = true
+        }).IsVisibleAsync());
     }
 
     /// <summary>Checks the independent source remains live after the rejected B3 substitution.</summary>
