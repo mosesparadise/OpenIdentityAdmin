@@ -1,23 +1,39 @@
 # Delivery roadmap and task register
 
-## Active next task — interactive sample client/API, 14 November 2026
+## Current delivery — interactive Aspire sample, 14 November 2026
 
-The user requested the next task after PR134/135 delivery. Feature024's
-[bounded draft specification](../specs/024-aspire-sample-client-api/spec.md) is on `146-aspire-sample-client-api`,
-based on main `91c7070700e8f746e74d9114f881b0005a039b3a`. Source investigation
-and independent architecture review confirm a separate managed confidential client,
-server-held tokens and native reference-state protection; the administrator BFF
-remains unchanged. This increment targets M04-D's integration example.
+Feature024 is delivered for internal development. [PR136](https://github.com/mosesparadise/OpenIdentityAdmin/pull/136)
+is squash-merged as `f2cccffcf79c0dc40ff2adefd2a778d0ef6db032`; this reviewed documentation
+follow-up completes T014. The ordinary Aspire `local-demo` includes a separate managed
+sample client and synthetic orders API. Manual administrator UI registration, protected
+dashboard configuration, fresh password/MFA consent, current UserInfo, offline JWT API
+access and local sample logout are available on main. No custom PowerShell is required.
 
-The user’s subsequent “Please proceed” accepts the stated recommendations: manual
-administrator UI registration followed by protected local sample setup, and offline
-JWT API validation with explicit expiry limits. UserInfo demonstrates current-state
-checks separately. Design and implementation now proceed under that authorization;
-no further preference confirmation is pending. Sample runtime acceptance is still
-incomplete. Managed issuer-assisted logout, refresh/machine activation, production
-and all existing external gates remain separate.
+[CI603](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43620484227)
+passes all 141 jobs. Independent reconciliation verifies all 135 original archives,
+117 ordinary native reports / 6,398 passing executions, 143 mutation kills, 132 UI and
+46 Node cases, and 114 coverage inputs meeting all 17 module floors. All four real
+PostgreSQL/SQL Server × Chromium/WebKit sample journeys pass. Source, tested merge and
+squash share tree `ddf5e4a8aa9ae988ff9673c097ba567dd4b17c83`.
+[Acceptance, original receipts and limits](../specs/024-aspire-sample-client-api/acceptance.md).
 
-## Current delivery — consented scopes and UserInfo, 14 November 2026
+Host runtime 177.315 seconds against its unchanged 180-second bound is a reliability
+qualification, not a stability or CI601 root-cause claim. Preserve CI599–CI602,
+feature023's unexplained CI590/CI592 failures and the consumed-callback restart limit.
+The API's offline revocation limit and sample logout's local scope remain explicit.
+
+**Next practical activity:** perform the actual Windows Docker Desktop
+[walkthrough](../specs/024-aspire-sample-client-api/quickstart.md) and record observed results.
+No post-feature024 implementation batch is selected. M04-A clone/delete (after clarifying
+deletion/grant semantics) or M05-A general user administration are candidate slices.
+Keep dormant refresh visible; do not activate it or repeat completed implementation.
+
+All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/
+public-release gates remain open. Draft PR69 is preserved. No expired diagnostic
+approval is renewed. Hosted originals begin expiring on 21 November; local/task copies
+are not a permanent external archive.
+
+## Previous delivery — consented scopes and UserInfo, 14 November 2026
 
 Feature023 T001–T016 and the selected M03-A–M03-C managed-profile scope are complete
 for internal development. [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134)
@@ -36,8 +52,8 @@ as reliability qualifications. Current original cases pass without weakening the
 assertions. No cause, fix or stable-suite claim is inferred. Preserve CI586–CI593.
 
 Run the [ordinary Aspire walkthrough](../specs/023-scope-audience-catalogue/quickstart.md).
-**Recommended next visible increment:** an Aspire sample relying-party application
-and API exercising consent, tokens and UserInfo (M04-D), with a bounded specification.
+**Historical recommendation, now delivered above:** the Aspire sample relying-party
+application and API exercising consent, tokens and UserInfo (M04-D).
 No further implementation or renewed SQL diagnostics are part of this completed batch.
 All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/public-release gates remain open.
 
@@ -736,7 +752,7 @@ Prerequisites: issuer flow and durable session/key behavior; minimum administrat
 | M02-D | Protected application-read authority delivered in PR118; PR120 adds current independently authorized create/edit/credential replacement, exact JSON/CSRF transport and original bounded publication on both providers. Remaining management APIs and release acceptance stay open. |
 | M02-E | Native Aspire React workspace delivered in PR116, protected Applications list in PR118 and create/details/edit/secret replacement in PR120. Retained browser/theme/reflow/automated accessibility and both provider demos pass. Qualified manual/Windows acceptance remains open. |
 
-## Milestone 003 — Scope and audience catalogue (feature023 in progress)
+## Milestone 003 — Scopes, audiences and claims (approved managed-profile scope delivered)
 
 Prerequisite: milestone 002. Real UserInfo needed for this milestone's approved claim-policy exit must be implemented here; milestone 007 later completes the surface.
 
@@ -755,7 +771,7 @@ Prerequisites: milestones 002–003 and the actual protocol capabilities being o
 | M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. PR124 delivers durable bulk grant revocation, current batch authority, progress and explicit recovery while the application stays disabled. Clone/delete remain open. |
 | M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit consent; PR134 adds explicitly assigned requested scopes, finite email policy and UserInfo. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
 | M04-C | PR120 delivers manager-hashed one-time shared secrets, enforced expiry, immediate explicit replacement and lost-output recovery with no plaintext reread. Asymmetric public-key registration and remaining credential lifecycle remain open. |
-| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
+| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. PR136 adds the ordinary Aspire managed client/API integration example with reviewed CI603 acceptance. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
 | M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. Broader client profiles, clone/delete and manual/external acceptance remain open; the separate legacy pilot replay correction is accepted in [feature022](../specs/022-pilot-replay-serialization/acceptance.md) via PR126. |
 
 ## Milestone 005 — Accounts and strong authentication (planned)
@@ -823,30 +839,30 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 
 | Requirement | Owning tasks | Current product status |
 | --- | --- | --- |
-| FR-01 applications | M04-A/E | Partial: catalogue/search/paging in PR118, managed details/create/edit in PR120 and disable/re-enable with issuer enforcement in PR122; clone/delete and separate grant revocation remain open |
+| FR-01 applications | M04-A/E | Partial: catalogue/search/paging, managed create/edit, disable/re-enable and durable grant revocation delivered through PR118/PR120/PR122/PR124; clone/delete remain open |
 | FR-02 client profiles | M01-D, M02-B, M04-B/E, M07-A/B/D | Partial: fixed pilot plus managed confidential web code/S256 profile in PR120; other profiles remain planned |
 | FR-03 credentials | M04-C/E, M07-A | Partial: native-hashed expiring one-time shared secrets and explicit replacement in PR120; asymmetric and broader lifecycle remain open |
 | FR-04 scopes/audiences/claims | M01-D, M03-A/B/C, M06-A/B | Approved managed-profile scope delivered in PR128/PR130/PR132/PR134: catalogue, assignment, current policy, explicit consent, finite email claims and UserInfo; broader profile/release gates remain open |
 | FR-05 users | M05-A/B, M06-B/C | Planned |
 | FR-06 roles/permissions | M02-A/D, M05-A | Planned |
 | FR-07 account/authenticator journeys | M01-D, M02-A, M05-B/C, M07-C | Partial: pilot login/lockout and administrator TOTP enrollment/login/restricted recovery accepted; full account/passkey lifecycle remains planned |
-| FR-08 consent/grants | M06-A/C | Planned |
-| FR-09 protocol | M01-D/E, M02-B/C, M03-C, M06-B, M07-A/B/C/D | Partial: genuine pilot code/S256 flow and denials; M01-E and broader protocols remain |
-| FR-10 access visibility/revocation | M06-C | Planned |
-| FR-11 BFF/API protection | M02-A/B/C/D/E | Partial: native B3 login/session/logout, visible workspace and independent application-read API/BFF authority accepted; refresh activation and remaining management actions stay open |
-| FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: pilot security transitions have atomic audit evidence; administration audit remains planned |
+| FR-08 consent/grants | M06-A/C | Partial: explicit requested-scope managed consent in PR134 and application-wide grant revocation in PR124; broader consent/grant lifecycle remains open |
+| FR-09 protocol | M01-D/E, M02-B/C, M03-C, M06-B, M07-A/B/C/D | Partial: native pilot/managed code/S256, administrator login/logout and current-authority managed UserInfo delivered; refresh and broader protocol completion remain open |
+| FR-10 access visibility/revocation | M06-C | Partial: application-wide durable grant revocation and progress in PR124; user-owned grants, broader token/session visibility and subject revocation remain open |
+| FR-11 BFF/API protection | M02-A/B/C/D/E | Partial: B3 session flows and protected application/catalogue/assignment/grant operations delivered; refresh activation and remaining management resources stay open |
+| FR-12 audit/logging | Every mutation, M08-A, M09-E | Partial: atomic audit accompanies implemented pilot/administrator/application/catalogue mutations; operational search/export/retention and broader audit delivery remain open |
 | FR-13 rules/dashboard | M08-B | Planned |
 | FR-14 federation | M05-D | Planned |
 | FR-15 keys/inventory | M01-B/E, M08-C, M09-B | Partial: credential/protection adapter |
-| FR-16 API/docs/contracts | M01-F, M04-D | Partial: contract foundation in PR20 and application list/details/write contracts in PR118/PR120; authenticated docs, remaining resources and vendor activation evidence remain open |
+| FR-16 API/docs/contracts | M01-F, M04-D | Partial: versioned/generated contracts for delivered management resources and PR136 Aspire client/API example; protected docs, remaining resources and vendor activation remain open |
 | FR-17 provider equivalence | M01-A, every affected feature, M09-B/F | Partial: implemented scope tested |
 | FR-18 installation/recovery | M01-A/B/E, M02-A, M09-B | Partial: local schemas/provisioning and DP; production operations unfinished |
-| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared-token React workspace, protected Applications list and Razor flows delivered; remaining management screens and qualified manual acceptance stay open |
+| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared-token React workspace, application/catalogue/assignment/grant screens, Razor flows and PR136 sample delivered; remaining screens and qualified manual acceptance stay open |
 | FR-20 later parity | M10-A | Outside R1 |
-| FR-21 comprehensive tests | Every task, M09-F | Partial: feature018 accepts 4,869 ordinary executions plus 20 frontend cases with explicit mixed-attempt provenance; full product/manual matrix remains |
+| FR-21 comprehensive tests | Every task, M09-F | Partial: current bounded feature024 CI603 evidence covers 6,398 ordinary native executions, 132 UI cases, 46 Node cases and 143 mutations; full product/manual matrix remains open |
 | FR-22 engineering | Every task, M01-G | Ongoing |
 | FR-23 AI instructions | M01-A; evaluation per feature | Initial install/evaluation done; ongoing use |
-| FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: native disposable UI demo accepted on both providers; actual Windows walkthrough, mail and federation remain |
+| FR-24 Aspire | M01-A, M02-E, M05-D, M09-F | Partial: native disposable administrator UI and PR136 client/API example accepted on both providers; actual Windows walkthrough, mail and federation remain open |
 | FR-25 assurance | M01-C, M07-D, M09-D/E/F | Register baseline verified; no assessed controls or certification |
 | NFR-01 security findings | M01-C, feature controls/reviews, M09-D | Scoped checks exist; independent assessment pending |
 | NFR-02 equal providers | Every persistence/E2E task, M09-F | Partial |

@@ -2,7 +2,7 @@
 
 **Feature Branch**: `146-aspire-sample-client-api`
 **Created**: 14 November 2026
-**Status**: Selected for implementation; design and runtime verification in progress
+**Status**: Delivered for internal development in PR136; [acceptance and limits](acceptance.md)
 **Input**: The user requested the next task after the recommendation to add an Aspire
 sample client and API for interactive consent, token and UserInfo testing. Product
 FR-02/04/08/09/16/17/19/21/24; roadmap M04-D integration examples.

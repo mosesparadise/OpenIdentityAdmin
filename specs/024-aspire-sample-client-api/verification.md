@@ -1,4 +1,28 @@
-# Feature024 implementation checkpoint
+# Feature024 verification
+
+## Accepted internal delivery — 14 November 2026
+
+[PR136](https://github.com/mosesparadise/OpenIdentityAdmin/pull/136) is normally
+squash-merged as `f2cccffcf79c0dc40ff2adefd2a778d0ef6db032`.
+[Acceptance](acceptance.md) records all 135 original CI603 archives, 141 successful
+jobs, 117 ordinary native reports / 6,398 passing executions, 143 mutation kills,
+114 original coverage inputs / 17 unchanged module floors, 132 UI and 46 Node cases,
+and independent final reviews. Source, tested merge and squash share one tree.
+
+Original archive access is now verified through the updated enforced environment
+policy. The earlier download failures and partial checkpoints below are historical.
+No implementation or full CI rerun was needed for this evidence continuation.
+Host runtime 177.315 seconds against 180 seconds remains a reliability qualification;
+CI601 causation and the earlier CI590/CI592 causes remain unproved. Preserve the
+restart test's consumed-callback limitation and all manual/browser/release gates.
+
+## Historical implementation and failed-run checkpoints
+
+The following records retain their original dates and evidence limits. Their draft,
+remaining-acceptance and network-blocked statements are superseded by the acceptance
+above; their failures and qualifications are not erased.
+
+### Initial implementation checkpoint
 
 14 November 2026. PR136 remains draft. This records local implementation and focused
 verification, not both-provider/browser acceptance or a merged feature.

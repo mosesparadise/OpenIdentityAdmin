@@ -1,7 +1,9 @@
-# Planned interactive sample walkthrough
+# Interactive sample walkthrough
 
-Implementation/verification are in progress. These steps describe the intended result,
-not a claim that the sample is delivered.
+The Development-only sample is available on main through PR136.
+[Accepted CI603 evidence and limits](acceptance.md) cover both providers and retained
+browsers. The actual Windows Docker Desktop walkthrough and qualified manual
+acceptance remain open; record observations from that machine separately.
 
 1. Follow the existing [local demo prerequisites](../014-local-b3-demo/quickstart.md)
    and run `dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-demo`.

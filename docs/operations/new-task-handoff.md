@@ -1,30 +1,39 @@
 # OpenIdentityAdmin new-task handoff
 
-## Active next task — interactive sample client/API, 14 November 2026
+## Current delivery — interactive Aspire sample, 14 November 2026
 
-The user requested the next task after PR134/135 delivery. Feature024's
-[bounded draft specification](../../specs/024-aspire-sample-client-api/spec.md) is on `146-aspire-sample-client-api`,
-based on main `91c7070700e8f746e74d9114f881b0005a039b3a`. Source investigation
-and independent architecture review confirm a separate managed confidential client,
-server-held tokens and native reference-state protection; the administrator BFF
-remains unchanged. This increment targets M04-D's integration example.
+Feature024 is delivered for internal development. [PR136](https://github.com/mosesparadise/OpenIdentityAdmin/pull/136)
+is squash-merged as `f2cccffcf79c0dc40ff2adefd2a778d0ef6db032`; this reviewed documentation
+follow-up completes T014. The ordinary Aspire `local-demo` includes a separate managed
+sample client and synthetic orders API. Manual administrator UI registration, protected
+dashboard configuration, fresh password/MFA consent, current UserInfo, offline JWT API
+access and local sample logout are available on main. No custom PowerShell is required.
 
-The user’s subsequent “Please proceed” accepts the stated recommendations: manual
-administrator UI registration followed by protected local sample setup, and offline
-JWT API validation with explicit expiry limits. UserInfo demonstrates current-state
-checks separately. Design and implementation now proceed under that authorization;
-no further preference confirmation is pending. Sample runtime acceptance is still
-incomplete. Managed issuer-assisted logout, refresh/machine activation, production
-and all existing external gates remain separate.
+[CI603](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43620484227)
+passes all 141 jobs. Independent reconciliation verifies all 135 original archives,
+117 ordinary native reports / 6,398 passing executions, 143 mutation kills, 132 UI and
+46 Node cases, and 114 coverage inputs meeting all 17 module floors. All four real
+PostgreSQL/SQL Server × Chromium/WebKit sample journeys pass. Source, tested merge and
+squash share tree `ddf5e4a8aa9ae988ff9673c097ba567dd4b17c83`.
+[Acceptance, original receipts and limits](../../specs/024-aspire-sample-client-api/acceptance.md).
 
-The sample implementation is now local on this branch, with 2,076 passing Host
-cases (86 sample), 118 Aspire Harness, 94 Core and 5 Architecture checks. Both sample
-modules exceed unchanged90/80 floors in focused native coverage. Full exact-head
-provider/browser/mutation/coverage acceptance remains required; PR136 stays draft.
-[Current implementation evidence and failed-receipt limits](../../specs/024-aspire-sample-client-api/verification.md).
-Continue verification and normal reviewed delivery; do not repeat completed feature023.
+Host runtime 177.315 seconds against its unchanged 180-second bound is a reliability
+qualification, not a stability or CI601 root-cause claim. Preserve CI599–CI602,
+feature023's unexplained CI590/CI592 failures and the consumed-callback restart limit.
+The API's offline revocation limit and sample logout's local scope remain explicit.
 
-## Current delivery — consented scopes and UserInfo, 14 November 2026
+**Next practical activity:** perform the actual Windows Docker Desktop
+[walkthrough](../../specs/024-aspire-sample-client-api/quickstart.md) and record observed results.
+No post-feature024 implementation batch is selected. M04-A clone/delete (after clarifying
+deletion/grant semantics) or M05-A general user administration are candidate slices.
+Keep dormant refresh visible; do not activate it or repeat completed implementation.
+
+All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/
+public-release gates remain open. Draft PR69 is preserved. No expired diagnostic
+approval is renewed. Hosted originals begin expiring on 21 November; local/task copies
+are not a permanent external archive.
+
+## Previous delivery — consented scopes and UserInfo, 14 November 2026
 
 Feature023 T001–T016 and the selected M03-A–M03-C managed-profile scope are complete
 for internal development. [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134)
@@ -43,8 +52,8 @@ as reliability qualifications. Current original cases pass without weakening the
 assertions. No cause, fix or stable-suite claim is inferred. Preserve CI586–CI593.
 
 Run the [ordinary Aspire walkthrough](../../specs/023-scope-audience-catalogue/quickstart.md).
-**Recommended next visible increment:** an Aspire sample relying-party application
-and API exercising consent, tokens and UserInfo (M04-D), with a bounded specification.
+**Historical recommendation, now delivered above:** the Aspire sample relying-party
+application and API exercising consent, tokens and UserInfo (M04-D).
 No further implementation or renewed SQL diagnostics are part of this completed batch.
 All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/public-release gates remain open.
 
