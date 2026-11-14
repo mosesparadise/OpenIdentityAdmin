@@ -1,7 +1,6 @@
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
-using Microsoft.EntityFrameworkCore;
 
 namespace IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 

@@ -2,8 +2,8 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Abstractions;
 

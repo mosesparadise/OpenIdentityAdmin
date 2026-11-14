@@ -1,6 +1,6 @@
 using IdentityPlatform.Database;
-using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.Catalogue;
+using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;

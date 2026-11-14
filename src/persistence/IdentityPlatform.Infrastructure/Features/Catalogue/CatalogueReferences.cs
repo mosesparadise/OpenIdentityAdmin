@@ -1,7 +1,7 @@
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Infrastructure.Features.Catalogue;

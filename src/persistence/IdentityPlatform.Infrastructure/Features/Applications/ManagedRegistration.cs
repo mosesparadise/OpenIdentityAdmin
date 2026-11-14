@@ -1,11 +1,6 @@
-using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
-using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.Infrastructure.Features.Applications;
 

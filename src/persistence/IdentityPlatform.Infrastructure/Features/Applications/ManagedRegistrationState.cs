@@ -1,8 +1,7 @@
+using System.Collections.Immutable;
 using IdentityPlatform.Core.Features.Applications;
-using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
-using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;

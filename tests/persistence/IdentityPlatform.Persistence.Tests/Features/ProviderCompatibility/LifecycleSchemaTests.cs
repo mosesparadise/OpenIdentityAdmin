@@ -72,8 +72,10 @@ public sealed class LifecycleSchemaTests
             await database.Database.ExecuteSqlRawAsync(LegacyPolicy, [id!, Profile, PriorRevision, PriorCredentialRevision,
                 ManagedSchemaRows.Created, ManagedSchemaRows.Expires, ManagedSchemaRows.Expires + 1], fixture.Token);
         }
-        database.AddRange(Enum.GetValues<ManagedLoginState>().Select(ManagedSchemaRows.Interaction));
-        await database.SaveChangesAsync(fixture.Token);
+        foreach (var state in Enum.GetValues<ManagedLoginState>())
+        {
+            await ManagedLegacyRows.InsertAsync(database, ManagedSchemaRows.Interaction(state), fixture.Token);
+        }
         await BrowserAuditMigrationRows.SeedAsync(database, services.GetRequiredService<IdentityPlatform.Infrastructure.Features.Sessions.Persistence.AdminSessionDbContext>(), fixture.Token);
     }
 

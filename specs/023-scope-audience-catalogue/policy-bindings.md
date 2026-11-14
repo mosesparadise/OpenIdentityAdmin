@@ -89,3 +89,30 @@ all unchanged browser/contract/operations obligations. No local SQL experiment r
 
 Acceptance, T009 completion and merge remain pending. Existing human/release gates
 remain open. Source review and local compilation are not substitutes for full CI.
+
+### First hosted candidate and corrections
+
+PR132 source `16b7d9b3b6b40c91dd36f5e0b4c526229ae0e069` ran
+[CI578](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43534915618)
+and failed. Both persistence jobs reported 34 passes / 6 failures: one historical
+lifecycle fixture wrote the current EF interaction shape against the old schema;
+the other five failures exposed missing new migration IDs in the providers' explicit
+history catalogs. Architecture checks independently caught the catalog mismatch.
+Several startup-dependent mutation baselines timed out and produced no acceptance
+evidence. Static analysis also rejected import ordering and unused imports.
+
+Corrections append the exact generated migration IDs to both authoritative catalogs,
+seed all 29 original interaction fields through parameterized historical SQL, and
+apply SDK import formatting. Architecture and test reviewers independently checked
+the fixes and found no further blocking source issue. Focused Persistence and
+Architecture builds pass without warnings; all five Architecture tests pass,
+including both native runtime/design-time migration checks. SDK whitespace/import
+verification and the code-quality gate pass without allowance growth. Existing historical row
+fingerprints and negative controls remain intact. No timeout or gate is relaxed.
+
+CI578 remains a failed candidate, not acceptance evidence. Publishing the corrected
+candidate may automatically supersede unfinished jobs under the existing workflow
+concurrency policy. Its completed failure logs and run remain available. Original
+artifact ZIP retrieval from this workspace was denied HTTP403, so no unavailable
+artifact is claimed inspected. Corrected exact-head full CI and original-report
+reconciliation are still required before T009 completion or squash.
