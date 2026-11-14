@@ -42,11 +42,11 @@
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish"
     },
     {
-      "id": "managed-policy-binding",
+      "id": "managed-displayed-policy-binding",
       "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanBinding.cs",
       "before": "!ManagedScopeBinding.MatchesDigest(row, request.PolicyDigest)",
       "after": "false",
-      "marker": "managed-policy-binding-bypass",
+      "marker": "managed-displayed-policy-binding-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentBindingTests.Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove"
     },
     {
@@ -75,9 +75,9 @@
     },
     {
       "id": "managed-userinfo-publication",
-      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/UserInfo/UserInfoCoordinator.cs",
-      "before": "        projection.RequireCurrent(http);",
-      "after": "        // Synthetic mutation: omit the post-callback output check.",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/UserInfo/UserInfoResponse.cs",
+      "before": "capture.Headers.Any(pair => !Owned(pair.Key) && (!headers.TryGetValue(pair.Key, out var original) || !pair.Value.ToArray().SequenceEqual(original)))",
+      "after": "false",
       "marker": "managed-userinfo-publication-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged"
     }

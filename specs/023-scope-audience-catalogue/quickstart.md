@@ -16,7 +16,8 @@ and **Scopes** to the navigation:
    description. An identity scope can select the finite `email` disclosure policy.
 3. Open and edit either entry. Stale versions require reloading before another explicit
    submission. Scope audience selection remains visible when search results change.
-4. Try deleting the referenced audience; the operation must report a reference conflict.
+4. Inspect the referenced audience: its Delete control remains disabled and its current
+   references explain why deletion is unavailable. Direct API deletion also rejects references.
 5. Explicitly confirm scope deletion and follow its durable job status. After completion,
    delete the now-unreferenced audience. Status remains readable after the target is gone.
 
@@ -26,7 +27,10 @@ the original request; the UI does not blindly repeat a write. A changed or expir
 session clears observed data and requires sign-in again.
 
 Application assignment is delivered; see [assignment acceptance](assignment-acceptance.md).
-Consent integration, extended token claim emission and UserInfo remain T009–T014.
+The consented-scope and UserInfo candidate is [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134),
+branch `143-managed-scope-consent`. Its provider/browser acceptance is still pending;
+use [consented issuance](consented-issuance.md) for the current evidence status.
+The steps below describe that candidate; accepted main still has the temporary assignment hold until it merges.
 Creating a catalogue entry alone does not grant an application scope
 permission or change token contents. Do not manually alter the database to bypass these
 boundaries. Administrator bearer tokens stay server-side.
@@ -45,16 +49,49 @@ In **Applications**, open the application's details and find **Application scope
 2. Confirm replacing the additional scopes, then select **Save scope assignment**.
    Current application write permission and fresh MFA are required. The application
    details reload with the new version and saved assignment.
-3. Observe the saved warning: **additional scopes currently block this application's
-   sign-in and token issuance, including OpenID-only requests**. This is the staged
-   T008 boundary while policy/consent/issuance work remains open. Existing grants are
-   not revoked by assignment.
-4. Remove every additional scope, confirm and save again to restore eligibility for
-   a fresh original OpenID-only sign-in, subject to current credential/lifecycle checks.
+3. Read the saved consent notice. Assignment permits a client to request those scopes;
+   it does not grant them automatically. Each sign-in requires fresh password/MFA and
+   explicit consent. Assignment changes invalidate pending sign-ins and codes; start a
+   fresh sign-in after a change. Existing grants are not revoked by assignment.
+4. Remove scopes, confirm and save again to narrow future eligible requests. An
+   `openid`-only request remains possible even when additional scopes are assigned,
+   subject to current credential/lifecycle checks.
 5. If a save is stale or its result is uncertain, explicitly reload the details and
    inspect the current assignment before deciding to save again. Recovery never
    silently repeats the mutation. Catalogue read permission is needed to browse new
    scopes, but current assignments remain removable without it.
 
-Do not use assignment as grant revocation or assume that token claims/UserInfo are
-implemented. Untouched applications keep their existing behavior.
+Do not use assignment as grant revocation. Untouched applications keep their existing behavior.
+
+## Try consented tokens and UserInfo on the candidate branch
+
+Use an integrating confidential client registered through the existing application editor,
+with an exact HTTPS callback, Basic client authentication, S256 PKCE, nonce and state.
+Continue using native discovery and signature/issuer/subject/audience validation. The
+administrator BFF is not a general-purpose relying party and never sends UserInfo requests.
+
+1. Request `openid orders.read` after explicitly assigning `orders.read`. The issuer
+   shows the scope's current name, label, consent description and `orders-api` audience.
+   **Allow sign-in** grants the entire displayed eligible request; **Cancel** grants none.
+2. Exchange the code once. The native access token has exactly the granted scopes and
+   the one mapped API audience. The ID token identifies the client audience. Email,
+   administrator roles and management permissions do not appear in the API access token.
+3. Call the discovered `/connect/userinfo` over HTTPS with that access token in one
+   `Authorization: Bearer` header. GET and POST are supported; POST may instead use one
+   form `access_token` field. Do not combine transports or put tokens in query strings.
+   The response contains the exact opaque `sub`; compare it to the validated ID token.
+4. To request email, create an enabled identity scope with the finite email disclosure,
+   assign it explicitly, then request it alongside `openid` in a fresh sign-in. Only after
+   consent may the ID token and UserInfo contain current `email` and boolean
+   `email_verified`. If the Identity account has no email, both fields are omitted.
+   UserInfo reads current account data; the earlier signed ID token does not change.
+5. Disable the application or the requested scope, or revoke its grant through the existing
+   explicit workflow. UserInfo must stop disclosing the profile. Metadata changes also
+   invalidate earlier policy-bound requests/codes and make UserInfo reject the old token;
+   begin a new sign-in after correcting policy. Already-issued tokens validated offline
+   and sessions in other applications are not erased. No automatic retries or additional
+   grant types are enabled.
+
+This batch adds no sample external application or API resource server. The permanent
+browser/HTTP tests run real relying-party exchange and independent native-token validation.
+The ordinary Aspire administrator UI remains the place to create and assign the catalogue.

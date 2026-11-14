@@ -711,6 +711,20 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(5, len(manifest(ROOT, "catalogue")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
+    def test_Given_ManagedMutationTraits_When_ReviewedAgainstInventory_Then_EachProviderHasOneExactDistinctWitness(self):
+        """Retained historical traits cannot collide with the current mutation's exact native witness."""
+        records = json.loads((ROOT / 'eng/administrator-test-matrix.json').read_text())['metadata']
+        for provider in ('PostgreSql', 'SqlServer'):
+            witnesses = set()
+            for item in manifest(ROOT, 'managed-applications'):
+                selected = [name for name, record in records.items()
+                            if {'key': 'Provider', 'value': provider} in record['traits']
+                            and {'key': 'CriticalDecision', 'value': item['id']} in record['traits']]
+                self.assertEqual(1, len(selected), item['id'])
+                self.assertTrue(selected[0].startswith(item['method'] + '('), item['id'])
+                self.assertNotIn(selected[0], witnesses)
+                witnesses.add(selected[0])
+
 
     def test_Given_ApplicationManifests_When_InventoryOrBoundaryChanges_Then_GateRejectsDrift(self):
         """New write/issuer controls cannot disappear or mutate adjacent unreviewed source."""

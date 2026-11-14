@@ -1,6 +1,6 @@
-using IdentityPlatform.Core.Features.Identity.Governance;
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Catalogue;
+using IdentityPlatform.Core.Features.Identity.Governance;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 
 namespace IdentityPlatform.Governance.Driver.Features.Protocol;

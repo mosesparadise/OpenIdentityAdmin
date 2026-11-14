@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 1967,
+      "Host": 1974,
       "Architecture": 5,
       "AppHost": 110
     },
@@ -367,15 +367,23 @@
         "ManagedTokenReplayTests",
         "ManagedUpdateJourneyTests",
         "ManagedScopeAssignmentTests",
-        "ManagedScopeLegacyTests",
+        "ManagedScopeLegacyTests"
+      ],
+      "counts": {
+        "PostgreSql": 66,
+        "SqlServer": 66
+      }
+    },
+    "Disclosure": {
+      "classes": [
         "ManagedConsentHttpTests",
         "ManagedUserInfoDenialTests",
         "ManagedUserInfoPublicationTests",
         "ManagedUserInfoTransportTests"
       ],
       "counts": {
-        "PostgreSql": 82,
-        "SqlServer": 82
+        "PostgreSql": 16,
+        "SqlServer": 16
       }
     }
   },

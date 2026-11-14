@@ -2,10 +2,9 @@ using IdentityPlatform.AuthServer.Features.Protocol.Denials;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using OpenIddict.Server;
-using OpenIddict.Server.AspNetCore;
-using static OpenIddict.Server.OpenIddictServerEvents;
-using static OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreHandlers;
 using static OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreHandlerFilters;
+using static OpenIddict.Server.AspNetCore.OpenIddictServerAspNetCoreHandlers;
+using static OpenIddict.Server.OpenIddictServerEvents;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.UserInfo;
 

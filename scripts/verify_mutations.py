@@ -232,7 +232,7 @@ def manifest(root, suite='issuer'):
         managed_paths = {
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanBinding.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedEmailProjection.cs',
-            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/UserInfo/UserInfoCoordinator.cs',
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/UserInfo/UserInfoResponse.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopeBinding.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopePolicy.cs',
             'src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs',

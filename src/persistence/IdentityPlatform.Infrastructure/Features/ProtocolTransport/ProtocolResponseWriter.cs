@@ -10,6 +10,10 @@ internal sealed class ProtocolResponseWriter(ProtocolStorageRequest request, Pro
     private int length;
     private bool completed;
     private int flushing;
+    /// <summary>Supports native asynchronous JSON serialization's bounded pending-byte accounting contract.</summary>
+    public override bool CanGetUnflushedBytes => true;
+    /// <summary>Reports only bytes actually advanced into this finite staging buffer, never its reserved capacity.</summary>
+    public override long UnflushedBytes => Volatile.Read(ref length);
     /// <summary>Reserves only memory within the fixed protocol response staging limit.</summary>
     public override Memory<byte> GetMemory(int sizeHint = 0)
     {

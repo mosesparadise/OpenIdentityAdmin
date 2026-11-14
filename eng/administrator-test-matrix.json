@@ -63201,7 +63201,7 @@
       "traits": [
         {
           "key": "CriticalDecision",
-          "value": "managed-policy-binding"
+          "value": "managed-displayed-policy-binding"
         },
         {
           "key": "Provider",
@@ -63224,7 +63224,7 @@
       "traits": [
         {
           "key": "CriticalDecision",
-          "value": "managed-policy-binding"
+          "value": "managed-displayed-policy-binding"
         },
         {
           "key": "Provider",

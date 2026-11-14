@@ -1,7 +1,6 @@
 using System.Net.Http.Headers;
 using IdentityPlatform.Administrator.Tests.Features.BrowserSessions;
 using IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
-using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using Microsoft.Playwright;
 

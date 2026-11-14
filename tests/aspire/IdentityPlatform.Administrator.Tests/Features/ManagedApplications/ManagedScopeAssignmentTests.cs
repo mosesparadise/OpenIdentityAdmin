@@ -35,7 +35,8 @@ public sealed class ManagedScopeAssignmentTests(BootstrapFixture fixture)
         using var assigned = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), ApplicationScopeHttpTests.Assign,
             ApplicationVersion.Create(test.Id, 1), direct: false, csrf: proof);
         Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
-        await CompleteAsync(test);
+        var freshAssigned = new ManagedTokenFlow(test);
+        await freshAssigned.CacheAsync();
         await RejectOldAsync(test, cached, old, code);
         await CompleteAsync(other);
         using var cleared = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), ApplicationScopeHttpTests.Clear,

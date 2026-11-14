@@ -15,12 +15,12 @@ public sealed class ManagedConsentBindingTests(BootstrapFixture fixture)
     private const string Requested = "email openid";
     private const string IdentityKind = "identity";
     private const string Changed = "Different current consent";
-    private const string Bypass = "managed-policy-binding-bypass";
+    private const string Bypass = "managed-displayed-policy-binding-bypass";
     private static readonly string[] Names = ["email", "openid"];
 
     /// <summary>A valid new stored decision cannot replace the exact policy digest protected in an earlier displayed consent form.</summary>
     [Theory]
-    [Trait("CriticalDecision", "managed-policy-binding")]
+    [Trait("CriticalDecision", "managed-displayed-policy-binding")]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
     public async Task Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove(string provider)

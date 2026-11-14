@@ -5,7 +5,7 @@ from test_selection import administrator_invocations, require_administrator_stor
 PROVIDERS = ('PostgreSql', 'SqlServer')
 DEFINITIONS = {
     'BrowserSessions': ('browser_session_groups', ('Foundations', 'Product', 'Lifecycle')),
-    'ManagedApplications': ('managed_application_groups', ('Admission', 'Issuance')),
+    'ManagedApplications': ('managed_application_groups', ('Admission', 'Issuance', 'Disclosure')),
     'ProtocolAdmission': ('protocol_admission_groups', ('Admission', 'Replay')),
 }
 NAMESPACE = 'IdentityPlatform.Administrator.Tests.Features.'

@@ -37,18 +37,22 @@ class ManagedApplicationSelectionTests(unittest.TestCase):
         self.assertEqual(2977, len(self.catalogue))
         for provider, total in (('PostgreSql', 1360), ('SqlServer', 1465)):
             self.verify(provider)
-            expected = [(STORY, 'Admission', 63), (STORY, 'Issuance', 82)]
+            expected = [(STORY, 'Admission', 63), (STORY, 'Issuance', 66), (STORY, 'Disclosure', 16)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, STORY))
             all_stories = administrator_execution_invocations(self.matrix, provider)
             self.assertEqual(expected, [row for row in all_stories if row[0] == STORY])
             self.assertEqual(total, sum(row[2] for row in all_stories))
             self.assertEqual(set(self.matrix['administrator_stories']), {row[0] for row in all_stories})
-            self.assertFalse(self.groups[provider]['Admission'].keys() & self.groups[provider]['Issuance'].keys())
-            for group, count in (('Admission', 63), ('Issuance', 82)):
+            groups = list(self.groups[provider].values())
+            for index, group in enumerate(groups):
+                for other in groups[index + 1:]:
+                    self.assertFalse(group.keys() & other.keys())
+            for group, count in (('Admission', 63), ('Issuance', 66), ('Disclosure', 16)):
                 self.assertEqual([(STORY, group, count)], administrator_execution_invocations(self.matrix, provider, STORY, managed_group=group))
                 self.assertEqual([(group, count)], group_invocations(self.matrix, provider, STORY, group))
         self.assertEqual(26, len(self.matrix['managed_application_groups']['Admission']['classes']))
-        self.assertEqual(21, len(self.matrix['managed_application_groups']['Issuance']['classes']))
+        self.assertEqual(17, len(self.matrix['managed_application_groups']['Issuance']['classes']))
+        self.assertEqual(4, len(self.matrix['managed_application_groups']['Disclosure']['classes']))
 
     def test_Given_ManifestDrift_When_Grouped_Then_MissingOverlapSubstitutionAndRedistributionFail(self):
         for change in ('missing', 'extra', 'empty', 'overlap', 'cross-story', 'injection', 'provider', 'bool', 'redistribution'):
@@ -99,7 +103,7 @@ class ManagedApplicationSelectionTests(unittest.TestCase):
 
     def test_Given_ReviewedClasses_When_Filtered_Then_OnlyPositiveExactClassClausesAreUsed(self):
         for provider in ('PostgreSql', 'SqlServer'):
-            for group in ('Admission', 'Issuance'):
+            for group in ('Admission', 'Issuance', 'Disclosure'):
                 expression = group_filter(self.matrix, provider, STORY, group)
                 self.assertTrue(expression.startswith('Provider=' + provider + '&Category!=Browser&('))
                 self.assertEqual(['FullyQualifiedName~' + NAMESPACE + '.' + name + '.' for name in sorted(self.matrix['managed_application_groups'][group]['classes'])], expression.split('&(', 1)[1][:-1].split('|'))
@@ -123,9 +127,9 @@ class ManagedApplicationSelectionTests(unittest.TestCase):
         workflow = (ROOT / '.github/workflows/verify.yml').read_text()
         rows = re.findall(r'- \{ profile: (\w+), partition: administrator, story: ManagedApplications, managed_application_group: (\w+), label: ([\w-]+) \}', workflow)
         expected = [(provider, group, 'administrator-' + provider + '-managedapplications-' + group.lower())
-                    for provider in ('PostgreSql', 'SqlServer') for group in ('Admission', 'Issuance')]
+                    for provider in ('PostgreSql', 'SqlServer') for group in ('Admission', 'Issuance', 'Disclosure')]
         self.assertEqual(expected, rows)
-        self.assertEqual(4, workflow.count('story: ManagedApplications,'))
+        self.assertEqual(6, workflow.count('story: ManagedApplications,'))
         self.assertIn("format('--managed-application-group {0}', matrix.managed_application_group)", workflow)
         self.assertIn('timeout=180 if args.profile == "unit" else 660', (ROOT / 'scripts/verify.py').read_text())
 

@@ -26,7 +26,7 @@ parser.add_argument("--browser-story", choices=["Accounts", "Security", "Browser
 parser.add_argument("--issuer-group", choices=["Flows", "Boundaries"])
 parser.add_argument("--apphost-group", choices=["Foundation", "BffSessions", "LocalDemo"])
 parser.add_argument("--browser-session-group", choices=["Foundations", "Product", "Lifecycle"])
-parser.add_argument("--managed-application-group", choices=["Admission", "Issuance"])
+parser.add_argument("--managed-application-group", choices=["Admission", "Issuance", "Disclosure"])
 parser.add_argument("--protocol-admission-group", choices=["Admission", "Replay"])
 args = parser.parse_args()
 if HISTORY_MODE_VARIABLE in os.environ:

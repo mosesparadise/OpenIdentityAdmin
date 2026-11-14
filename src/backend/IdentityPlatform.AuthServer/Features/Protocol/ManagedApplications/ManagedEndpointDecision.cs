@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using IdentityPlatform.AuthServer.Features.Protocol.Hosting;
-using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using Microsoft.AspNetCore.Authentication;
 using OpenIddict.Abstractions;

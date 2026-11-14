@@ -61,7 +61,7 @@ Local .NET 10.0.404 builds of Host and Administrator tests succeed without warni
 The entire Host suite passes **1,967/1,967**, zero skipped. Actual native discovery adds
 44 administrator cases while preserving every earlier 2,933 identity and full portable
 metadata: 2,977 total (HTTP 1,360 PostgreSQL / 1,465 SQL Server; browser inventory
-unchanged). Managed Admission/Issuance partitions are 63/82 per provider.
+unchanged). The initial Managed Admission/Issuance partitions were 63/82 per provider.
 All **337 Python tooling controls** pass. Code-quality checks pass with unchanged
 allowances, and the eight-skill/eight-reviewer instruction check passes. UI type checking
 and deterministic asset verification pass. All 132 UI cases pass across the six suites
@@ -75,7 +75,62 @@ profile (plus actual callback/commit/disposal witnesses for publication), rather
 arbitrary unexpected status. Review acceptance remains conditional on runtime evidence.
 
 Late current-authority changes fail closed: ordinary invalidation before projection is a
-native bearer denial; ownership/storage/final source-snapshot faults remain safe503.
+native bearer denial; ownership/storage/final source-snapshot faults remain safe 503.
 The separate-process test exercises real production policy reads with caches disabled,
 not a fabricated cache hit. No local provider startup experiment was run. Earlier local
 build/disk failures and superseded test receipts remain retained outside the repository.
+
+## First hosted attempt — CI586
+
+[CI586](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43573605329)
+checks source `407676440f64522221577355ff14782264d5ab3a` / merge
+`b68d1d512460473e15087ffc5f8f0761fb311e64`, tree
+`987eb2354fc36c57948bb294af5feb18e898fe6e`. It is not an acceptance run.
+Both managed mutation jobs stopped at discovery ordinal6 because the retained historical
+case and replacement displayed-consent case shared an identifier. The replacement now
+has a distinct `managed-displayed-policy-binding` identifier; the old case/metadata and
+strict one-witness runner remain intact. A permanent inventory control catches collisions.
+The SDK format gate also identified import ordering and three unused imports; these are
+corrected without changing runtime logic. Corrected local tooling passes 338 controls.
+
+The PostgreSQL managed-admission group passes all 63 cases, including real cross-process
+contention and displayed-consent drift. The SQL Server persistence job failed before one
+migration test could run: the pinned container exited 18 after access denied opening
+`/var/opt/mssql/data/tempdb.mdf`. Other SQL Server jobs have passed, but that startup
+failure remains retained and unexplained. No diagnostic approval is revived or test skipped.
+Remaining runtime/retained-browser results and a complete corrected-head run are required.
+
+### Runtime correction and bounded partition
+
+Both providers pass the 63-case admission group. PostgreSQL's first 82-case issuance group
+finishes with 65 passed / 17 failed: sixteen new UserInfo cases return safe 503, and the old
+assignment regression's newly added fourth managed ceremony exhausts the native OTP
+window. Native extended token cryptographic assertions pass before UserInfo is called.
+
+A real Minimal API JSON result against the actual bounded capture reproduces all three
+positive projection failures locally: .NET 10 throws because ProtocolResponseWriter does
+not implement PipeWriter.UnflushedBytes. Reporting its existing pending advanced-byte
+count fixes all three cases without changing buffer limits or flush/callback ownership.
+Permanent tests additionally cover reserved versus advanced bytes, successful completion,
+failed/cancelled flushes and callback-added headers. The publication mutant targets the
+extra-header predicate rather than a redundant later call: actual JSON flush executes
+OnStarting before FormatAsync returns. Both production checks remain in place.
+
+The assignment test now checks fresh assigned-request admission without adding another
+MFA ceremony; its original old-artifact, unrelated-client and cleared-assignment journeys
+remain intact. The dedicated requested-subset cases prove complete fresh assigned sign-in.
+
+The accepted CI581 SQL issuance group took 9m36s for 66 cases under the original 660-second
+command budget. Preserve that group unchanged in membership and put the 16 new disclosure
+cases into a third explicit group: Admission 63, Issuance 66, Disclosure 16 per provider.
+Strict native identity unions, positive class filters and default routing retain every
+case. Add both mandatory hosted cells and coverage inputs (106 total), preserving every
+coverage floor, timeout and retry policy. No acceptance is inferred from this partition.
+
+The corrected local Host build and all **1,974 tests** pass with zero failures/skips,
+including the seven real formatter/accounting controls. All 338 tooling controls pass
+with the new partition and independently enumerated 106 coverage cells. SQL Server's
+initial issuance group also finishes: 66 passed / 16 failed, with the same UserInfo 503 defect;
+its original assignment journey passes. Both initial provider receipts remain failures,
+not acceptance. UX review's referenced-deletion and offline-token wording corrections
+are incorporated in the candidate walkthrough.

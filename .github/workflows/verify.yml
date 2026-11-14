@@ -169,8 +169,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: Governance.Failures, label: administrator-SqlServer-governance-failures }
           - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-PostgreSql-managedapplications-admission }
           - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-PostgreSql-managedapplications-issuance }
+          - { profile: PostgreSql, partition: administrator, story: ManagedApplications, managed_application_group: Disclosure, label: administrator-PostgreSql-managedapplications-disclosure }
           - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Admission, label: administrator-SqlServer-managedapplications-admission }
           - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Issuance, label: administrator-SqlServer-managedapplications-issuance }
+          - { profile: SqlServer, partition: administrator, story: ManagedApplications, managed_application_group: Disclosure, label: administrator-SqlServer-managedapplications-disclosure }
           - { profile: PostgreSql, partition: administrator, story: ApplicationGrants, label: administrator-PostgreSql-applicationgrants }
           - { profile: SqlServer, partition: administrator, story: ApplicationGrants, label: administrator-SqlServer-applicationgrants }
           - { profile: PostgreSql, partition: administrator, story: Catalogue, label: administrator-PostgreSql-catalogue }
