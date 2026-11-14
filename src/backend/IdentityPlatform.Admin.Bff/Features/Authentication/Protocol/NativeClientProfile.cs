@@ -13,6 +13,7 @@ internal sealed class NativeClientProfile
 {
     internal const string AuthorizePath = "/connect/authorize";
     internal const string TokenPath = "/connect/token";
+    internal const string UserInfoPath = "/connect/userinfo";
     internal const string ParPath = "/connect/par";
     internal const string KeysPath = "/connect/jwks";
     internal const string ConfigurationPath = ".well-known/openid-configuration";
@@ -34,6 +35,7 @@ internal sealed class NativeClientProfile
     internal Uri Callback => new(Registration.RedirectUri);
     internal Uri AuthorizationEndpoint => new(Issuer, AuthorizePath);
     internal Uri TokenEndpoint => new(Issuer, TokenPath);
+    internal Uri UserInfoEndpoint => new(Issuer, UserInfoPath);
     internal Uri ParEndpoint => new(Issuer, ParPath);
     internal Uri KeysEndpoint => new(Issuer, KeysPath);
     internal Uri ConfigurationEndpoint => new(Issuer.AbsoluteUri.TrimEnd('/') + PathSeparator + ConfigurationPath);

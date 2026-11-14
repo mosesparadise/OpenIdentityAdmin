@@ -9,6 +9,11 @@ namespace IdentityPlatform.Testing;
 /// <summary>Checks actual managed ID tokens using only the issuer's public discovery and signing keys.</summary>
 internal static class ManagedIdentityTokenOracle
 {
+    private const string Email = "email";
+    private const string EmailVerified = "email_verified";
+    private const string True = "true";
+    private const string False = "false";
+
     private const string DiscoveryPath = "/.well-known/openid-configuration";
     private const string JwksUri = "jwks_uri";
     private const string IdentityType = "JWT";
@@ -22,16 +27,23 @@ internal static class ManagedIdentityTokenOracle
     private static readonly string[] IdentityClaims = ["iss", Subject, "aud", AuthorizedParty, "iat", "exp", "nbf", "jti", Nonce, AccessHash, "oi_au_id", "oi_tkn_id"];
 
     /// <summary>Requires the original client, subject, nonce and access-token hash after native signature, issuer, audience, type and lifetime validation.</summary>
-    internal static async Task<ManagedIdentityTokenEvidence> ValidateAsync(HttpClient transport, Uri issuer, string clientId, string nonce, string subject, JsonElement body)
+    internal static async Task<ManagedIdentityTokenEvidence> ValidateAsync(HttpClient transport, Uri issuer, string clientId, string nonce, string subject, JsonElement body, ManagedTokenProjection? projection = null)
     {
         var keys = await ReadKeysAsync(transport, issuer);
         var parameters = ManagedTokenValidation.Parameters(issuer, keys, IdentityType);
         parameters.ValidAudience = clientId;
-        var principal = await ManagedTokenValidation.ValidateAsync(body.GetProperty(IdentityField).GetString()!, parameters, IdentityClaims);
+        var principal = await ManagedTokenValidation.ValidateAsync(body.GetProperty(IdentityField).GetString()!, parameters, projection?.Email is null ? IdentityClaims : [.. IdentityClaims, Email, EmailVerified]);
         var access = body.GetProperty(AccessField).GetString()!;
         var expectedHash = Base64UrlEncoder.Encode(SHA256.HashData(Encoding.ASCII.GetBytes(access)).AsSpan(0, HalfDigestBytes).ToArray());
         Assert.True(principal.GetClaim(Subject) == subject && principal.GetClaim(Nonce) == nonce && principal.GetClaim(AccessHash) == expectedHash);
         Assert.True(principal.GetClaim(AuthorizedParty) == clientId);
+        if (projection?.Email is not null)
+        {
+            Assert.True(principal.GetClaim(Email) == projection.Email);
+            var verified = principal.FindFirst(EmailVerified);
+            Assert.True(verified is not null && verified.ValueType == System.Security.Claims.ClaimValueTypes.Boolean &&
+                verified.Value == (projection.EmailVerified == true ? True : False));
+        }
         return new(principal, keys);
     }
 

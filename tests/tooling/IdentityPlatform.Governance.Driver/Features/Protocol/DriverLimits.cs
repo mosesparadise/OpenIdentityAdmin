@@ -19,5 +19,6 @@ internal static class DriverLimits
     internal const string Newline = "\n";
     internal const string Read = "Read";
     internal const string Execute = "Execute";
+    internal const string ManagedPolicy = "ManagedPolicy";
     internal const string Acknowledgement = "ack";
 }

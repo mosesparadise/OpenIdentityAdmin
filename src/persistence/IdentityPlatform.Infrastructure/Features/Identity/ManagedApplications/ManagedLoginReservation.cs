@@ -18,6 +18,8 @@ internal sealed class ManagedLoginReservation
     private string? attached;
     internal long ExpiresAt => row.ExpiresAt;
     internal long CreatedAt => row.CreatedAt;
+    internal string PolicyDigest => row.PolicyDigest!;
+    private string clientId = string.Empty;
 
     /// <summary>Captures immutable ownership after the reserved interaction has actually saved before native creation.</summary>
     private ManagedLoginReservation(ProtocolStorageScope scope, ManagedLoginInteraction row, ManagedNativeBudget budget, long cutoff, TimeSpan skew)
@@ -33,7 +35,7 @@ internal sealed class ManagedLoginReservation
 
     /// <summary>Runs bounded safe cleanup then independently reserves browser, global, retained and native capacity.</summary>
     internal static async ValueTask<ManagedLoginReservation?> CreateAsync(ProtocolStorageScope scope, ManagedRegistration registration,
-        string selector, string browser, string demand, TimeSpan skew, CancellationToken token)
+        string selector, string browser, string demand, TimeSpan skew, CancellationToken token, ManagedScopeDecision? policy = null)
     {
         var now = ManagedLoginRules.Observe(scope.Owner.Clock, registration.ObservedAt);
         var expiry = Math.Min(checked(now + ManagedLoginRules.LifetimeSeconds), registration.ExpiresAt);
@@ -61,11 +63,12 @@ internal sealed class ManagedLoginReservation
             RetainUntil = ManagedLoginRules.RetainUntil(now, expiry, skew),
             CorrelationId = Guid.NewGuid()
         };
-        ManagedScopeBinding.Attach(row, ManagedScopeBinding.OpenId(registration.ApplicationId, registration.Revision));
-        var reservation = new ManagedLoginReservation(scope, row, budget, cutoff, skew);
+        ManagedScopeBinding.Attach(row, policy ?? ManagedScopeBinding.OpenId(registration.ApplicationId, registration.Revision));
+        var reservation = new ManagedLoginReservation(scope, row, budget, cutoff, skew) { clientId = registration.ClientId };
         await scope.Owner.RunAsync(async current =>
         {
             scope.Owner.Database.Add(row);
+            ManagedScopeReferences.Add(scope.Owner.Database, row, ManagedScopeBinding.Read(row));
             await scope.Owner.Database.SaveChangesAsync(current);
         }, token, write: true);
         await reservation.VerifyRowAsync(reservation.initial, token);
@@ -126,7 +129,7 @@ internal sealed class ManagedLoginReservation
     {
         var actual = await scope.Owner.RunAsync(current => new ValueTask<ManagedLoginInteraction>(scope.Owner.Database.Set<ManagedLoginInteraction>()
             .AsNoTracking().SingleAsync(value => value.SelectorDigest == row.SelectorDigest, current)), token);
-        await ManagedScopeBinding.RequireOpenIdAsync(scope, actual, token);
+        await ManagedScopeBinding.RequireAsync(scope, actual, clientId, token);
         if (FactorBinding.Digest(actual) != expected || FactorBinding.Digest(row) != expected)
         {
             throw ProtocolStorageOwner.Unavailable();

@@ -42,6 +42,14 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
     internal string SourceSession { get; private set; } = string.Empty;
     internal string Access { private get; set; } = string.Empty;
 
+    /// <summary>Uses the genuine fixed-administrator credential only against the supplied issuer route for wrong-profile protocol controls.</summary>
+    internal async Task<HttpResponseMessage> FixedIssuerBearerAsync(string path)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, path);
+        request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, Access);
+        return await issuer.SendAsync(request, TestContext.Current.CancellationToken);
+    }
+
     /// <summary>Owns actual three-host TLS composition and runs the real ceremony before obtaining any protected API credential.</summary>
     internal static async Task<ApplicationHttpFixture> CreateAsync(BootstrapFixture fixture, string provider, ApplicationWriteFault? fault = null, bool managed = false,
         Action<IServiceCollection>? configureIssuer = null, bool workspace = false, Action<IServiceCollection>? configureApi = null)

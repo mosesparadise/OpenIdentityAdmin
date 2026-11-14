@@ -96,15 +96,23 @@ internal sealed class ManagedAuthentication(PlatformDbContext database, UserMana
     /// <summary>Rechecks the exact password/MFA account generations before displaying or accepting consent; issuer cookies play no role.</summary>
     internal void RequireAccount(CeremonyTransaction transaction, CeremonyAccount account, ManagedLoginInteraction row)
     {
-        account.RequireCurrent(transaction);
-        if (!account.IsActive || !clock.Observe(account.Authentication, out var now) || !CeremonyBudget.IsAvailable(account.User, account.Authentication, now) || row.UserId != account.User.Id ||
-            row.SecurityStamp != account.User.SecurityStamp || row.AuthenticationGeneration != account.Authentication.Generation ||
-            row.FactorGeneration != account.Enrollment.FactorGeneration || row.EnrollmentRevision != account.Enrollment.Revision ||
-            row.PasswordVerifiedAt is not { } password || password > now || now >= row.ExpiresAt ||
-            row.MfaVerifiedAt is { } mfa && (mfa < password || mfa > now))
+        if (!CanUseAccount(transaction, account, row, observe: true))
         {
             throw new FactorUnavailableException();
         }
+    }
+
+    /// <summary>Checks current account authority without throwing for ordinary invalidation; read-only callers do not advance watermarks.</summary>
+    internal bool CanUseAccount(CeremonyTransaction transaction, CeremonyAccount account, ManagedLoginInteraction row, bool observe)
+    {
+        account.RequireCurrent(transaction);
+        long now;
+        var current = observe ? clock.Observe(account.Authentication, out now) : clock.TryRead(account.Authentication, out now);
+        return current && account.IsActive && CeremonyBudget.IsAvailable(account.User, account.Authentication, now) && row.UserId == account.User.Id &&
+            row.SecurityStamp == account.User.SecurityStamp && row.AuthenticationGeneration == account.Authentication.Generation &&
+            row.FactorGeneration == account.Enrollment.FactorGeneration && row.EnrollmentRevision == account.Enrollment.Revision &&
+            row.PasswordVerifiedAt is { } password && password <= now && now < row.ExpiresAt &&
+            (row.MfaVerifiedAt is not { } mfa || mfa >= password && mfa <= now);
     }
 
     /// <summary>Requires every retained ceremony field, excluding unrelated administrator completion, staging and session families.</summary>

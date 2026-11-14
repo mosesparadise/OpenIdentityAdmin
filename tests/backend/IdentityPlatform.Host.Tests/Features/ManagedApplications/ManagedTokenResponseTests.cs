@@ -24,6 +24,7 @@ public sealed class ManagedTokenResponseTests
     {
         var now = DateTimeOffset.UtcNow;
         var principal = new ClaimsPrincipal(new ClaimsIdentity());
+        principal.SetScopes(Scope);
         principal.SetCreationDate(missingCreation ? null : now);
         principal.SetExpirationDate(missingExpiration ? null : now.AddSeconds(PreparedSeconds));
         var transaction = new OpenIddictServerTransaction
@@ -33,6 +34,7 @@ public sealed class ManagedTokenResponseTests
         };
         var context = new OpenIddictServerEvents.ProcessSignInContext(transaction)
         {
+            Principal = principal,
             AccessToken = Access,
             IdentityToken = Identity,
             AccessTokenPrincipal = principal

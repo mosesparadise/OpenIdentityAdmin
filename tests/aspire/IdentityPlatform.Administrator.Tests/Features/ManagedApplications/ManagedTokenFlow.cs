@@ -9,7 +9,7 @@ using OpenIddict.Abstractions;
 namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 
 /// <summary>Retains the real independent verifier/state/nonce and drives genuine protected managed human forms before native issuance.</summary>
-internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
+internal sealed class ManagedTokenFlow(ManagedCacheTestContext test, string requestedScopes = "openid")
 {
     private const string Grant = "grant_type";
     private const string CodeGrant = "authorization_code";
@@ -41,6 +41,7 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     internal async Task CacheAsync()
     {
         initial = NativeCacheFlow.Initial(verifier, test.ClientIdentifier, test.CallbackUri);
+        initial[OpenIddictConstants.Parameters.Scope] = requestedScopes;
         using var cached = await test.SendAsync(initial);
         Resume = await test.ResumeAsync(cached);
         await using var scope = test.Http.Scope();
@@ -54,17 +55,9 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
     }
 
     /// <summary>Completes fresh native password/MFA and the explicit chosen consent decision for the retained original request.</summary>
-    internal async Task DecideAsync(bool approve = true)
+    internal async Task DecideAsync(bool approve = true, Action<string>? inspectConsent = null)
     {
-        using var entry = await test.SendAsync(Resume);
-        await ManagedHumanHttp.EntryAsync(entry);
-        var form = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, entry.Headers.Location!);
-        using var password = await ManagedHumanHttp.PasswordAsync(test, form);
-        await ManagedHumanHttp.EntryAsync(password);
-        var mfa = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, password.Headers.Location!);
-        using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
-        await ManagedHumanHttp.EntryAsync(factor);
-        var consent = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri);
+        var consent = await ConsentAsync(inspectConsent);
         using var decision = await ManagedHumanHttp.DecideAsync(test, consent, approve);
         if (approve)
         {
@@ -75,6 +68,20 @@ internal sealed class ManagedTokenFlow(ManagedCacheTestContext test)
             await ManagedHumanHttp.EntryAsync(decision);
             await ManagedHumanHttp.TerminalAsync(test, decision.Headers.Location!);
         }
+    }
+
+    /// <summary>Retains the actually rendered consent form after fresh password/MFA so tests can independently invalidate displayed policy before Allow.</summary>
+    internal async Task<Dictionary<string, string>> ConsentAsync(Action<string>? inspectConsent = null)
+    {
+        using var entry = await test.SendAsync(Resume);
+        await ManagedHumanHttp.EntryAsync(entry);
+        var form = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, entry.Headers.Location!);
+        using var password = await ManagedHumanHttp.PasswordAsync(test, form);
+        await ManagedHumanHttp.EntryAsync(password);
+        var mfa = await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, password.Headers.Location!);
+        using var factor = await ManagedHumanHttp.MfaAsync(test, mfa);
+        await ManagedHumanHttp.EntryAsync(factor);
+        return await ManagedHumanHttp.FormAsync(test.Http.IssuerClient, factor.Headers.Location!, test.CallbackUri, inspectConsent);
     }
 
     /// <summary>Requires the exact original issuer-local native request redirect with no body or new authority cookie.</summary>

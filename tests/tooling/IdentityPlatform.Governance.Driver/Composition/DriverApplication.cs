@@ -24,7 +24,7 @@ internal static class DriverApplication
             using var input = Console.OpenStandardInput();
             var request = await DriverProtocol.ReadAsync(input, deadline.Token);
             stage = DriverStage.Composition;
-            var result = await ExecuteAsync(request, value => stage = value, deadline.Token);
+            var result = await ExecuteAsync(request, input, value => stage = value, deadline.Token);
             stage = DriverStage.Delivery;
             if (result.AcceptedCommit)
             {
@@ -57,9 +57,14 @@ internal static class DriverApplication
     };
 
     /// <summary>Emits readiness only after valid issuer protection, and releases scopes before indicating completion.</summary>
-    private static async Task<DriverResult> ExecuteAsync(DriverInput request, Action<DriverStage> observe, CancellationToken token)
+    private static async Task<DriverResult> ExecuteAsync(DriverInput request, Stream input, Action<DriverStage> observe, CancellationToken token)
     {
         await using var runtime = request.ConfigureServices(observe);
+        if (request.Operation == DriverLimits.ManagedPolicy)
+        {
+            observe(DriverStage.Operation);
+            return await Features.ManagedPolicy.ManagedPolicyOperation.RunAsync(runtime.Provider, request, input, token);
+        }
         await using var scope = runtime.Provider.CreateAsyncScope();
         observe(DriverStage.Operation);
         await DriverProtocol.ReadyAsync(token);

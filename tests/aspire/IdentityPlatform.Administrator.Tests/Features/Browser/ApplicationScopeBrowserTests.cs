@@ -31,7 +31,7 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
     private const string Search = "Search scopes";
     private const string Missing = "absent";
     private const string Selected = "Selected additional scopes (1/32)";
-    private const string Blocked = "Saved assignment: sign-in and token issuance are blocked";
+    private const string Blocked = "Saved assignment: additional scopes require explicit user consent";
     private const string Empty = "Saved assignment: no additional scopes.";
     private const string Remove = "Remove browser.orders.read";
     private const string Assigned = "ApplicationScopesAssigned";
@@ -60,6 +60,8 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
         var clock = new FactorClock(TimeProvider.System);
         await using var environment = await BrowserHttpsFixture.CreateAsync(fixture, provider, workspace: true, applications: true, managed: true, clock: clock);
         await using var browser = await BrowserSession.CreateAsync();
+        await using var relyingParty = new ManagedBrowserRelyingParty();
+        await relyingParty.StartAsync(environment.Profile.Issuer);
         var page = await browser.Context.NewPageAsync();
         await ApplicationAccessFixture.SignInAsync(environment, page);
         await CatalogueBrowserJourney.CreateAudienceAsync(page, environment.Profile.ClientUri);
@@ -68,12 +70,15 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
         var audience = await database.Set<IdentityPlatform.Infrastructure.Features.Catalogue.ApiAudience>().AsNoTracking()
             .SingleAsync(row => row.Resource == Resource, TestContext.Current.CancellationToken);
         await CatalogueBrowserJourney.CreateScopeAsync(page, environment.Profile.ClientUri, audience.Id);
-        var registration = await ApplicationEditorJourney.RunAsync(page, environment.Profile.ClientUri, environment.Profile.Issuer, clock.GetUtcNow());
+        var registration = await ApplicationEditorJourney.RunAsync(page, environment.Profile.ClientUri, environment.Profile.Issuer, clock.GetUtcNow(), callback: relyingParty.Callback);
         await page.GotoAsync(new Uri(environment.Profile.ClientUri, Applications).AbsoluteUri);
         await Button(page, DetailsPrefix + registration.ClientId).ClickAsync();
         var before = await ApplicationUpdateSnapshot.ReadAsync(database, registration.Id, TestContext.Current.CancellationToken);
         await AssignAsync(page, environment.Profile.ClientUri, registration.Id);
         await RequireAsync(database, registration.Id, before.Policy.Revision + 1, true);
+        await ApplicationScopeConsentEvidence.RunAsync(environment, page, relyingParty, registration);
+        await page.GotoAsync(new Uri(environment.Profile.ClientUri, Applications).AbsoluteUri);
+        await Button(page, DetailsPrefix + registration.ClientId).ClickAsync();
         await StaleAsync(page, environment.Profile.ClientUri, registration.Id);
         await Button(page, Remove).ClickAsync();
         await Assertions.Expect(page.Locator(Heading)).ToBeFocusedAsync();

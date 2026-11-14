@@ -36,6 +36,11 @@ internal static class ManagedDecision
             registration = await registration!.ObserveAsync(scope, token);
             var row = await RequireInteractionAsync(scope, admission, registration, principal.GetClaim(ManagedDemand.SelectorClaim)!, browser,
                 principal.GetTokenId()!, principal.GetExpirationDate()?.ToUnixTimeSeconds(), token);
+            if (!ManagedScopeBinding.MatchesDigest(row, principal.GetClaim(ManagedDemand.PolicyClaim)) ||
+                !ManagedScopeBinding.Read(row).Requested.SequenceEqual(admission.Demand.Scopes, StringComparer.Ordinal))
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
             ProtocolStorageAmbient.Current!.Request.RestrictPublication(DateTimeOffset.FromUnixTimeSeconds(Math.Min(row.ExpiresAt, registration.ExpiresAt)));
             if (row.State == ManagedLoginState.Approved)
             {
@@ -82,6 +87,7 @@ internal static class ManagedDecision
             ClientId = admission.Demand.ClientId,
             Callback = admission.Demand.Callback,
             DemandDigest = row.DemandDigest,
+            PolicyDigest = row.PolicyDigest,
             RequestId = row.RequestId!,
             RequestUri = outer.Transaction.Request!.RequestUri!,
             Correlation = CeremonySecrets.Create(),
@@ -126,7 +132,7 @@ internal static class ManagedDecision
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
+        await ManagedScopeBinding.RequireAsync(scope, row, registration.ClientId, token);
         var manager = scope.Services.GetRequiredService<IOpenIddictTokenManager>();
         var entry = await manager.FindByIdAsync(requestId, token);
         if (entry is null || !await ProtocolStorageRows.ReloadAsync(scope, entry, token) || await manager.GetIdAsync(entry, token) != requestId ||

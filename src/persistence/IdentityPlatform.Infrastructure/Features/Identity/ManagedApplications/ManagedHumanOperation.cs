@@ -25,6 +25,7 @@ internal static class ManagedHumanOperation
             var registration = await ManagedHumanBinding.NativeAsync(scope, request, row, token);
             registration = await registration.ObserveAsync(scope, token);
             ProtocolStorageAmbient.Current!.Request.RestrictPublication(DateTimeOffset.FromUnixTimeSeconds(Math.Min(row.ExpiresAt, registration.ExpiresAt)));
+            var disclosure = await ManagedScopeDisclosure.ReadAsync(scope, row, token);
             var transition = await scope.Owner.RunAsync(current => ExecuteAsync(scope, locks, request, row, action, browser, proof, current), token, write: true);
             if (!registration.Matches(await ManagedHumanBinding.NativeAsync(scope, request, row, token)))
             {
@@ -36,7 +37,7 @@ internal static class ManagedHumanOperation
                 throw ProtocolStorageOwner.Unavailable();
             }
             await transaction.CommitAsync(token);
-            result = new(transition.Accepted, row.State, row.Revision, registration.ClientId, row.ExpiresAt, transition.NeedsDummyWork);
+            result = new(transition.Accepted, row.State, row.Revision, registration.ClientId, row.ExpiresAt, transition.NeedsDummyWork, disclosure);
         }
         return result;
     }

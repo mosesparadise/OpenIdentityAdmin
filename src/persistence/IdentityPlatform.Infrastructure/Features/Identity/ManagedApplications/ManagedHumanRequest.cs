@@ -8,6 +8,10 @@ internal sealed class ManagedHumanRequest
     public string ClientId { get; init; } = string.Empty;
     public string Callback { get; init; } = string.Empty;
     public string DemandDigest { get; init; } = string.Empty;
+    public string? PolicyDigest
+    {
+        get; init;
+    }
     public string RequestId { get; init; } = string.Empty;
     public string RequestUri { get; init; } = string.Empty;
     public string Correlation { get; init; } = string.Empty;
@@ -32,4 +36,4 @@ internal enum ManagedHumanAction
 }
 
 /// <summary>Returns finite presentation and transition data only after the owning coordinator has committed and released the transaction.</summary>
-internal sealed record ManagedHumanResult(bool Accepted, ManagedLoginState State, long Revision, string ClientId, long ExpiresAt, bool NeedsDummyWork = false);
+internal sealed record ManagedHumanResult(bool Accepted, ManagedLoginState State, long Revision, string ClientId, long ExpiresAt, bool NeedsDummyWork = false, ManagedScopeDisclosure? Disclosure = null);

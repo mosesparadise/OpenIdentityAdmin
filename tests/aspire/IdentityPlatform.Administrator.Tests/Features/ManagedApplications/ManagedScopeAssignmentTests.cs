@@ -15,7 +15,7 @@ public sealed class ManagedScopeAssignmentTests(BootstrapFixture fixture)
 
     private const string ScopeCollection = "/api/v1/scopes";
 
-    /// <summary>Additional native scopes close the legacy issuer profile; clearing restores only fresh journeys without reviving older artifacts or affecting unrelated clients.</summary>
+    /// <summary>Additional native scopes permit fresh explicit OpenID consent; assignment changes never revive older artifacts or affect unrelated clients.</summary>
     [Theory]
     [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
     [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
@@ -35,10 +35,7 @@ public sealed class ManagedScopeAssignmentTests(BootstrapFixture fixture)
         using var assigned = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), ApplicationScopeHttpTests.Assign,
             ApplicationVersion.Create(test.Id, 1), direct: false, csrf: proof);
         Assert.Equal(HttpStatusCode.OK, assigned.StatusCode);
-        var before = await ManagedJourneyEvidence.DigestAsync(test);
-        using var admission = await test.SendAsync(ManagedCacheTestContext.Initial());
-        await ManagedCacheTestContext.UnavailableAsync(admission);
-        Assert.Equal(before, await ManagedJourneyEvidence.DigestAsync(test));
+        await CompleteAsync(test);
         await RejectOldAsync(test, cached, old, code);
         await CompleteAsync(other);
         using var cleared = await test.Http.CatalogueAsync(HttpMethod.Put, ApplicationScopeHttpTests.Path(test.Id), ApplicationScopeHttpTests.Clear,

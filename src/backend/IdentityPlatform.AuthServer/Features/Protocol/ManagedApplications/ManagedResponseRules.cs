@@ -6,7 +6,7 @@ using OpenIddict.Server;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 
-/// <summary>Admits only native code/query or identity-only access/ID JSON output, never refresh or administrator authority.</summary>
+/// <summary>Admits only native code/query or consent-bound access/ID JSON output, never refresh or administrator authority.</summary>
 internal static class ManagedResponseRules
 {
     private static readonly HashSet<string> Fields = new(StringComparer.Ordinal)
@@ -24,11 +24,11 @@ internal static class ManagedResponseRules
         }
         var response = context.Response;
         var parameters = response.GetParameters();
-        return context.EndpointType == OpenIddictServerEndpointType.Token && Fields.SetEquals(parameters.Keys) &&
+        return context.EndpointType == OpenIddictServerEndpointType.Token && context.Principal is not null && Fields.SetEquals(parameters.Keys) &&
             String(response, OpenIddictConstants.Parameters.AccessToken, context.AccessToken) &&
             String(response, OpenIddictConstants.Parameters.IdToken, context.IdentityToken) &&
             String(response, OpenIddictConstants.Parameters.TokenType, OpenIddictConstants.TokenTypes.Bearer) &&
-            String(response, OpenIddictConstants.Parameters.Scope, OpenIddictConstants.Scopes.OpenId) &&
+            String(response, OpenIddictConstants.Parameters.Scope, string.Join(' ', context.Principal.GetScopes())) &&
             (JsonElement)parameters[OpenIddictConstants.Parameters.ExpiresIn] is { ValueKind: JsonValueKind.Number } value &&
             value.TryGetInt64(out var seconds) && seconds is > 0 and <= ManagedLoginRules.LifetimeSeconds &&
             context.AccessTokenPrincipal?.GetExpirationDate() is { } expiration && context.AccessTokenPrincipal.GetCreationDate() is { } creation &&

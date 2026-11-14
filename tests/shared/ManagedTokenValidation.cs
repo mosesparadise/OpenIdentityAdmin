@@ -7,6 +7,7 @@ namespace IdentityPlatform.Testing;
 /// <summary>Shares the existing strict native token validation and public claim cardinality oracle.</summary>
 internal static class ManagedTokenValidation
 {
+    private const string ProjectionBypass = "managed-email-consent-bypass";
     /// <summary>Requires native signed credentials with exact issuer/type and strict current expiry.</summary>
     internal static TokenValidationParameters Parameters(Uri issuer, JsonWebKeySet keys, string type) => new()
     {
@@ -28,7 +29,7 @@ internal static class ManagedTokenValidation
         var result = await new JsonWebTokenHandler { MapInboundClaims = false }.ValidateTokenAsync(token, parameters);
         Assert.True(result.IsValid, result.Exception?.GetType().FullName);
         var principal = new ClaimsPrincipal(result.ClaimsIdentity);
-        Assert.True(principal.Claims.All(claim => allowed.Contains(claim.Type, StringComparer.Ordinal)));
+        Assert.True(principal.Claims.All(claim => allowed.Contains(claim.Type, StringComparer.Ordinal)), ProjectionBypass);
         Assert.True(principal.Claims.GroupBy(claim => claim.Type).All(group => group.Count() == 1));
         return principal;
     }

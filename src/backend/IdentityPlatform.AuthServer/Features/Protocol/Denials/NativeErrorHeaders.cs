@@ -12,6 +12,7 @@ internal static class NativeErrorHeaders
     private const string NoStore = "no-store";
     private const string NoCache = "no-cache";
     private const string Basic = "Basic";
+    private const string Bearer = "Bearer";
     private const string Quote = "\"";
     private const string EscapedQuote = "\\\"";
 
@@ -22,6 +23,8 @@ internal static class NativeErrorHeaders
         var native = context.Transaction.Response!;
         var expectedStatus = format == NativeErrorFormat.Query ? StatusCodes.Status302Found : native.Error switch
         {
+            OpenIddictConstants.Errors.InvalidToken or OpenIddictConstants.Errors.MissingToken when format == NativeErrorFormat.Bearer => StatusCodes.Status401Unauthorized,
+            OpenIddictConstants.Errors.InsufficientAccess or OpenIddictConstants.Errors.InsufficientScope when format == NativeErrorFormat.Bearer => StatusCodes.Status403Forbidden,
             OpenIddictConstants.Errors.InvalidClient => StatusCodes.Status401Unauthorized,
             OpenIddictConstants.Errors.ServerError => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status400BadRequest
@@ -37,17 +40,31 @@ internal static class NativeErrorHeaders
     private static bool Challenge(ProtocolResponseCapture capture, OpenIddictServerEvents.BaseRequestContext context, NativeErrorFormat format)
     {
         var response = context.Transaction.Response!;
+        if (format == NativeErrorFormat.Bearer)
+        {
+            var challenge = response.Error == OpenIddictConstants.Errors.MissingToken ? Bearer : Bearer + Parameters(response);
+            return capture.Headers.WWWAuthenticate.Count == 1 && capture.Headers.WWWAuthenticate[0] == challenge;
+        }
         if (format != NativeErrorFormat.Json || response.Error != OpenIddictConstants.Errors.InvalidClient)
         {
             return !capture.Headers.ContainsKey(HeaderNames.WWWAuthenticate);
         }
-        var expected = Basic + string.Join(',', response.GetParameters().Select(pair => $" {pair.Key}=\"{((string?)pair.Value)?.Replace(Quote, EscapedQuote)}\""));
+        var expected = Basic + Parameters(response);
         return capture.Headers.WWWAuthenticate.Count == 1 && capture.Headers.WWWAuthenticate[0] == expected;
     }
+
+    /// <summary>Mirrors the native scalar challenge ordering after the independent finite response-field check.</summary>
+    private static string Parameters(OpenIddictResponse response) => string.Join(',', response.GetParameters()
+        .Select(pair => $" {pair.Key}=\"{((string?)pair.Value)?.Replace(Quote, EscapedQuote)}\""));
 
     /// <summary>Checks local/JSON body metadata or the exact callback and independently bound query fields.</summary>
     private static bool Representation(ProtocolResponseCapture capture, OpenIddictServerEvents.BaseRequestContext context, NativeErrorFormat format)
     {
+        if (format == NativeErrorFormat.Bearer)
+        {
+            return capture.Bytes.IsEmpty && !capture.Headers.ContainsKey(HeaderNames.Location) &&
+                !capture.Headers.ContainsKey(HeaderNames.ContentType) && !capture.Headers.ContainsKey(HeaderNames.ContentLength);
+        }
         if (format != NativeErrorFormat.Query)
         {
             return !capture.Headers.ContainsKey(HeaderNames.Location) && capture.Headers.ContentType ==

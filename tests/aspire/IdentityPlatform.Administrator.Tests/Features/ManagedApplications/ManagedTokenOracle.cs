@@ -15,6 +15,8 @@ namespace IdentityPlatform.Administrator.Tests.Features.ManagedApplications;
 /// <summary>Retains full native access-token decryption and persisted lifetime/binding checks after shared public ID-token verification.</summary>
 internal static class ManagedTokenOracle
 {
+    private const string Audience = "aud";
+
     private const string AccessType = "at+jwt";
     private const string AccessField = "access_token";
     private const string Subject = "sub";
@@ -34,24 +36,26 @@ internal static class ManagedTokenOracle
 
 
     /// <summary>Retains the original native caller contract while borrowing its already-created registration and flow bindings.</summary>
-    internal static Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject, bool applicationOnly = false, bool multipleFlows = false) =>
-        ValidateAsync(ManagedTokenEvidenceContext.Borrow(test), flow.Nonce, flow.RequestId, body, subject, applicationOnly, multipleFlows);
+    internal static Task ValidateAsync(ManagedCacheTestContext test, ManagedTokenFlow flow, JsonElement body, string subject, bool applicationOnly = false, bool multipleFlows = false, ManagedTokenProjection? projection = null) =>
+        ValidateAsync(ManagedTokenEvidenceContext.Borrow(test), flow.Nonce, flow.RequestId, body, subject, applicationOnly, multipleFlows, projection);
 
     /// <summary>Checks signatures, lifetime, issuer, ID-token recipient and nonce/hash bindings without printing credential contents.</summary>
-    internal static async Task ValidateAsync(ManagedTokenEvidenceContext test, string nonce, string requestId, JsonElement body, string subject, bool applicationOnly = false, bool multipleFlows = false)
+    internal static async Task ValidateAsync(ManagedTokenEvidenceContext test, string nonce, string requestId, JsonElement body, string subject, bool applicationOnly = false, bool multipleFlows = false, ManagedTokenProjection? projection = null)
     {
         var verified = await ManagedIdentityTokenOracle.ValidateAsync(test.Transport, test.Environment.Profile.Issuer,
-            test.ClientIdentifier, nonce, subject, body);
+            test.ClientIdentifier, nonce, subject, body, projection);
         var identity = verified.Principal;
         var keys = verified.SigningKeys;
         var access = body.GetProperty(AccessField).GetString()!;
         var accessParameters = ManagedTokenValidation.Parameters(test.Environment.Profile.Issuer, keys, AccessType);
-        accessParameters.ValidateAudience = false; // The explicit public claim allowlist below rejects every audience claim.
+        accessParameters.ValidateAudience = projection?.Resource is not null;
+        accessParameters.ValidAudience = projection?.Resource; // Absent resource still has the original audience-free claim allowlist.
         var credentials = test.Environment.IssuerServices.GetRequiredService<IssuerCredentials>();
         accessParameters.TokenDecryptionKeys = credentials.EncryptionKeys.All.Select(certificate => new X509SecurityKey(certificate));
-        var principal = await ManagedTokenValidation.ValidateAsync(access, accessParameters, AccessClaims);
-        Assert.True(principal.GetClaim(Subject) == subject && principal.GetClaim(ClientId) == test.ClientIdentifier && principal.GetClaim(Scope) == OpenId);
+        var principal = await ManagedTokenValidation.ValidateAsync(access, accessParameters, projection?.Resource is null ? AccessClaims : [.. AccessClaims, Audience]);
+        Assert.True(principal.GetClaim(Subject) == subject && principal.GetClaim(ClientId) == test.ClientIdentifier && principal.GetClaim(Scope) == (projection?.Scope ?? OpenId));
         Assert.True(principal.GetClaim(Presenter) == test.ClientIdentifier);
+        Assert.True(principal.GetClaim(Audience) == projection?.Resource);
         var all = await test.SnapshotAsync(applicationOnly);
         var interaction = Assert.Single(all.Interactions, row => row.RequestId == requestId);
         Assert.NotNull(interaction.AuthorizationId);

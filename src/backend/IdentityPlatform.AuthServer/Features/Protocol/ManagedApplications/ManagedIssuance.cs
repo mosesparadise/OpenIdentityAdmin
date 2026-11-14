@@ -26,6 +26,7 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
     private long cutoff;
     private string? selector;
     private ClaimsPrincipal? principal;
+    private ManagedEmailProjection? email;
     private const string CodeEvent = "managed-code-issued";
     private const string TokenEvent = "managed-token-issued";
     private const string Account = "account";
@@ -63,6 +64,12 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
         principal = context.Principal;
         RequirePrincipal();
         source = await ManagedIssuanceSource.OpenAsync(scope, row, token);
+        if (!Authorization)
+        {
+            email = source.Email(row);
+            ManagedEmailClaims.Attach(principal!, email);
+            RequirePrincipal();
+        }
         initial = source.Snapshot(row);
         await SaveAsync(initial, token);
         ProtocolStorageAmbient.Current!.Request.RestrictPublication(DateTimeOffset.FromUnixTimeSeconds(Math.Min(row.ExpiresAt, registration.ExpiresAt)));
@@ -179,6 +186,7 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
     {
         RequirePrincipal();
         await scope.Owner.RunAsync(current => new ValueTask(snapshot.VerifyAsync((PlatformDbContext)scope.Owner.Database, scope.Owner.Clock, current)), token);
+        await ManagedScopeBinding.RequireAsync(scope, row!, registration!.ClientId, token);
         var actual = await ManagedNativeBudget.ReadAsync(scope, cutoff, token);
         if (actual.Tokens != budget.Tokens + (Authorization ? 1 : ExchangeTokens) || actual.Authorizations != budget.Authorizations + (Authorization ? 1 : 0) ||
             actual.Requests != budget.Requests || actual.LiveRequests != budget.LiveRequests || !await proof!.VerifyAsync(registration!.ApplicationId, token) ||
@@ -201,7 +209,7 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
     private void RequirePrincipal()
     {
         if (row is null || principal is null || !ReferenceEquals(principal, context.Principal) ||
-            !ManagedPrincipal.Matches(principal, row, context.ClientId!, selector!) ||
+            !ManagedPrincipal.Matches(principal, row, context.ClientId!, selector!, email: email) ||
             !Authorization && (ManagedConsumption.Original(context) is not { } original || !ManagedPrincipal.Restored(principal, original)))
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -215,7 +223,7 @@ internal sealed class ManagedIssuance(ProtocolStorageScope scope, OpenIddictServ
     {
         RequirePrincipal();
         var maximum = Math.Min(Math.Min(row!.ExpiresAt, registration!.ExpiresAt), binding!.Expiration.ToUnixTimeSeconds());
-        if (!ManagedPreparedPrincipal.Matches(context, value, type, row, selector!, maximum))
+        if (!ManagedPreparedPrincipal.Matches(context, value, type, row, selector!, maximum, email))
         {
             throw ProtocolStorageOwner.Unavailable();
         }

@@ -1,4 +1,6 @@
 using IdentityPlatform.Core.Features.Identity.Governance;
+using IdentityPlatform.Core.Features.Applications;
+using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Identity.Journeys;
 
 namespace IdentityPlatform.Governance.Driver.Features.Protocol;
@@ -19,6 +21,14 @@ internal sealed class DriverInput
         get; init;
     }
     public required Dictionary<string, string?> IssuerSettings
+    {
+        get; init;
+    }
+    public string? ClientId
+    {
+        get; init;
+    }
+    public string? ScopeName
     {
         get; init;
     }
@@ -56,6 +66,19 @@ internal sealed class DriverInput
             throw new InvalidOperationException();
         }
         DriverIssuerSettings.RequireAllowed(IssuerSettings);
+        if (Operation == DriverLimits.ManagedPolicy)
+        {
+            if (!ApplicationEditorRules.IsClientId(ClientId) || !CatalogueRules.IsName(ScopeName) || ActorId is not null ||
+                Command is not null || Candidate is not null || Password is not null || Code is not null || !AwaitAcknowledgement)
+            {
+                throw new InvalidOperationException();
+            }
+            return;
+        }
+        if (ClientId is not null || ScopeName is not null)
+        {
+            throw new InvalidOperationException();
+        }
         if (Operation == DriverLimits.Read)
         {
             RequireBound(ActorId, DriverLimits.IdentifierCharacters);

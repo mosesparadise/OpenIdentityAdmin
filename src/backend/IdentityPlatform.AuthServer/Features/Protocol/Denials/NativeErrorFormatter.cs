@@ -35,7 +35,12 @@ internal sealed class NativeErrorFormatter(OpenIddictServerEvents.BaseRequestCon
         }
         RequireParameters(context);
         await native();
-        var expectedUri = context.EndpointType == OpenIddictServerEndpointType.Authorization ? NativeErrorPolicy.AuthorizationDefaultUri : NativeErrorPolicy.TokenDefaultUri;
+        var expectedUri = context.EndpointType switch
+        {
+            OpenIddictServerEndpointType.Authorization => NativeErrorPolicy.AuthorizationDefaultUri,
+            OpenIddictServerEndpointType.UserInfo => NativeErrorPolicy.UserInfoDefaultUri,
+            _ => NativeErrorPolicy.TokenDefaultUri
+        };
         if (context.Response.ErrorUri != expectedUri)
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -108,6 +113,7 @@ internal sealed class NativeErrorFormatter(OpenIddictServerEvents.BaseRequestCon
     /// <summary>Restricts each observer to its actual installed endpoint formatter; invalid authorization redirects remain local.</summary>
     private static bool Expected(OpenIddictServerEvents.BaseRequestContext context, NativeErrorFormat format) => (context, format) switch
     {
+        (OpenIddictServerEvents.ApplyUserInfoResponseContext, NativeErrorFormat.Bearer) => true,
         (OpenIddictServerEvents.ApplyTokenResponseContext, NativeErrorFormat.Json) => true,
         (OpenIddictServerEvents.ApplyPushedAuthorizationResponseContext, NativeErrorFormat.Json) => true,
         (OpenIddictServerEvents.ApplyAuthorizationResponseContext authorization, NativeErrorFormat.Query) => !string.IsNullOrEmpty(authorization.RedirectUri),
@@ -142,5 +148,5 @@ internal sealed class NativeErrorFormatter(OpenIddictServerEvents.BaseRequestCon
 /// <summary>Names only the three formatters installed on the fixed profile's actual native endpoint descriptors.</summary>
 internal enum NativeErrorFormat
 {
-    Json, Query, Local
+    Json, Query, Local, Bearer
 }

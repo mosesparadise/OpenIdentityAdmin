@@ -1,6 +1,15 @@
 # Delivery roadmap and task register
 
-## Current delivery — managed policy bindings, 14 November 2026
+## Active batch — consented issuance, 14 November 2026
+
+T010–T012 and required T013 compatibility are implemented on
+`143-managed-scope-consent` for full provider/browser validation.
+[Scope, scenarios and local evidence](../specs/023-scope-audience-catalogue/consented-issuance.md). No task is accepted yet;
+T014–T016 and all historical/manual/public-release gates remain open.
+The accepted main baseline below still has the temporary assignment hold; the candidate
+branch replaces it with explicit consent, exact native scopes/audience and current UserInfo.
+
+## Accepted baseline — managed policy bindings, 14 November 2026
 
 Feature023 T001–T009 are complete for internal development. T009 is squash-merged in
 [PR132](https://github.com/mosesparadise/OpenIdentityAdmin/pull/132) as

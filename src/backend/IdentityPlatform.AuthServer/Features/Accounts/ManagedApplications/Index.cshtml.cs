@@ -15,6 +15,10 @@ namespace IdentityPlatform.AuthServer.Features.Accounts.ManagedApplications;
 /// <example><code>// Follow the issuer's native managed authorization cache redirect, then submit only its protected rendered form.</code></example>
 public sealed class IndexModel : PageModel
 {
+    internal ManagedScopeDisclosure? Disclosure
+    {
+        get; private set;
+    }
     public string? Flow
     {
         get; private set;
@@ -44,6 +48,7 @@ public sealed class IndexModel : PageModel
         }
         var result = await ExecuteAsync(request, ManagedHumanAction.Read, null, null);
         ClientId = result.ClientId;
+        Disclosure = result.Disclosure;
         Phase = (int)result.State;
         ManagedFormPolicy.Apply(HttpContext, request, result);
         return Page();
@@ -81,6 +86,7 @@ public sealed class IndexModel : PageModel
             return LocalRedirect(QueryHelpers.AddQueryString(ManagedFormProof.Path, ManagedFormProof.Field, Flow));
         }
         ClientId = result.ClientId;
+        Disclosure = result.Disclosure;
         Phase = (int)result.State;
         Error = AdministratorBrowser.Denied;
         Response.StatusCode = StatusCodes.Status400BadRequest;

@@ -9,6 +9,7 @@ using IdentityPlatform.AuthServer.Features.Protocol.Ownership;
 using IdentityPlatform.AuthServer.Features.Protocol.PilotReplay;
 using IdentityPlatform.AuthServer.Features.Protocol.Protection;
 using IdentityPlatform.AuthServer.Features.Protocol.Token;
+using IdentityPlatform.AuthServer.Features.Protocol.UserInfo;
 using IdentityPlatform.Infrastructure.Features.ProtocolStorage.Administrator;
 using OpenIddict.Abstractions;
 
@@ -60,7 +61,7 @@ internal static class Setup
                 options.AddProtocolHosting();
                 if (profiles.Managed)
                 {
-                    options.AddManagedApplications();
+                    options.AddManagedApplications().AddManagedUserInfo();
                 }
             }
             options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough();

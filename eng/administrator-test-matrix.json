@@ -1414,7 +1414,29 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeCleanupTests.Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected(provider: \"PostgreSql\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeLegacyTests.Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid(provider: \"PostgreSql\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentBindingTests.Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Approved)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Cached)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Code)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Displayed)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"email openid orders.read\", verified: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"email openid\", verified: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"openid orders.read\", verified: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"openid\", verified: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_EmailConsentWithoutCurrentEmail_When_NativeExchangeRuns_Then_IdentityTokenAndUserInfoOmitBothFields(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeProcessTests.Given_SecondProcessCapturedPolicy_When_NativeMetadataChangesDuringObservedGovernanceWait_Then_CurrentReadRejectsOriginalDecision(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Account)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Application)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: ConsentText)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Grant)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Scope)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Token)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Callback)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Cleanup)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Commit)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -2935,7 +2957,29 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeCleanupTests.Given_ExpiredAndRetainedReferences_When_RealCacheCleansEligibleParents_Then_EqualityAndOriginalAudienceRemainProtected(provider: \"SqlServer\")",
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeLegacyTests.Given_GenuineLegacyCachedRequest_When_OriginalHumanJourneyCompletes_Then_OpenIdNativeExchangeRemainsValid(provider: \"SqlServer\")",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentBindingTests.Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Approved)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Cached)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Code)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Displayed)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"email openid orders.read\", verified: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"email openid\", verified: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"openid orders.read\", verified: True)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"openid\", verified: False)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_EmailConsentWithoutCurrentEmail_When_NativeExchangeRuns_Then_IdentityTokenAndUserInfoOmitBothFields(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeProcessTests.Given_SecondProcessCapturedPolicy_When_NativeMetadataChangesDuringObservedGovernanceWait_Then_CurrentReadRejectsOriginalDecision(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Account)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Application)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: ConsentText)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Grant)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Scope)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Token)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Callback)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Cleanup)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Commit)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Expired)",
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"SqlServer\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -63136,6 +63180,918 @@
           "key": "CriticalDecision",
           "value": "managed-current-scope-policy"
         },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentBindingTests.Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentBindingTests",
+        "methodName": "Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-policy-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentBindingTests.Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentBindingTests",
+        "methodName": "Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-policy-binding"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Approved)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Cached)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Code)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"PostgreSql\", boundary: Displayed)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Approved)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Cached)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Code)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentDriftTests.Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue(provider: \"SqlServer\", boundary: Displayed)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentDriftTests",
+        "methodName": "Given_BoundConsentPolicy_When_TextChangesWithoutRevisionAdvance_Then_EarlierCachedConsentOrCodeCannotIssue",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ConsentBoundary"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"email openid orders.read\", verified: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"email openid\", verified: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"openid orders.read\", verified: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"PostgreSql\", requested: \"openid\", verified: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-email-consent"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"email openid orders.read\", verified: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"email openid\", verified: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"openid orders.read\", verified: True)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset(provider: \"SqlServer\", requested: \"openid\", verified: False)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String",
+          "System.Boolean"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-email-consent"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_EmailConsentWithoutCurrentEmail_When_NativeExchangeRuns_Then_IdentityTokenAndUserInfoOmitBothFields(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_EmailConsentWithoutCurrentEmail_When_NativeExchangeRuns_Then_IdentityTokenAndUserInfoOmitBothFields",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_EmailConsentWithoutCurrentEmail_When_NativeExchangeRuns_Then_IdentityTokenAndUserInfoOmitBothFields(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedConsentHttpTests",
+        "methodName": "Given_EmailConsentWithoutCurrentEmail_When_NativeExchangeRuns_Then_IdentityTokenAndUserInfoOmitBothFields",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeProcessTests.Given_SecondProcessCapturedPolicy_When_NativeMetadataChangesDuringObservedGovernanceWait_Then_CurrentReadRejectsOriginalDecision(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeProcessTests",
+        "methodName": "Given_SecondProcessCapturedPolicy_When_NativeMetadataChangesDuringObservedGovernanceWait_Then_CurrentReadRejectsOriginalDecision",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeProcessTests.Given_SecondProcessCapturedPolicy_When_NativeMetadataChangesDuringObservedGovernanceWait_Then_CurrentReadRejectsOriginalDecision(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedScopeProcessTests",
+        "methodName": "Given_SecondProcessCapturedPolicy_When_NativeMetadataChangesDuringObservedGovernanceWait_Then_CurrentReadRejectsOriginalDecision",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Account)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Application)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: ConsentText)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-userinfo-current-policy"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Grant)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Scope)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"PostgreSql\", change: Token)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Account)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Application)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: ConsentText)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-userinfo-current-policy"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Grant)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Scope)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial(provider: \"SqlServer\", change: Token)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoDenialTests",
+        "methodName": "Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoInvalidation"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Callback)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-userinfo-publication"
+        },
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Cleanup)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Commit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"PostgreSql\", failure: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Callback)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "CriticalDecision",
+          "value": "managed-userinfo-publication"
+        },
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Cleanup)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Commit)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged(provider: \"SqlServer\", failure: Expired)": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoPublicationTests",
+        "methodName": "Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.UserInfoPublicationFailure"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoTransportTests",
+        "methodName": "Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoTransportTests.Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications",
+        "typeName": "ManagedUserInfoTransportTests",
+        "methodName": "Given_UsableManagedAccess_When_MissingWrongProfileOrAmbiguousCredentialsArrive_Then_OnlyOriginalBearerRemainsUsable",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
         {
           "key": "Provider",
           "value": "SqlServer"

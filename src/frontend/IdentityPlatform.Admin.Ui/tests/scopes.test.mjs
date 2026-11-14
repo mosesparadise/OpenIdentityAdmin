@@ -175,6 +175,7 @@ test('Given generated browser client When reading and saving Then exact fixed ro
 });
 test('Given scope panel When first rendered Then staged sign-in consequences and loading status are accessible', () => {
   const html = renderToStaticMarkup(React.createElement(ScopePanel, { base, reload: () => {} }));
-  assert.match(html, /Application scopes/); assert.match(html, /blocks this application/); assert.match(html, /including OpenID-only requests/);
+  assert.match(html, /Application scopes/); assert.match(html, /Users review and approve each request after password and MFA/);
+  assert.match(html, /Assignment changes invalidate pending sign-ins and codes/); assert.match(html, /Existing grants are not revoked/);
   assert.match(html, /aria-labelledby="application-scopes-heading"/); assert.match(html, /role="status"/); assert.match(html, /aria-busy="true"/);
 });

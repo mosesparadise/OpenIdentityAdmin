@@ -9,3 +9,6 @@ internal sealed class ManagedIdentityTokenEvidence(ClaimsPrincipal principal, Js
     internal ClaimsPrincipal Principal => principal;
     internal JsonWebKeySet SigningKeys => signingKeys;
 }
+
+/// <summary>Explicitly opts new consent scenarios into exact extended expectations; every existing caller retains the strict OpenID-only oracle.</summary>
+internal sealed record ManagedTokenProjection(string Scope, string? Resource = null, string? Email = null, bool? EmailVerified = null);

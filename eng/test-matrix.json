@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 1915,
+      "Host": 1967,
       "Architecture": 5,
       "AppHost": 110
     },
@@ -37,14 +37,14 @@
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1338
+      "Administrator": 1360
     },
     "SqlServer": {
       "Persistence": 40,
       "AppHost": 21,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1443
+      "Administrator": 1465
     }
   },
   "browser": {
@@ -123,8 +123,8 @@
       "SqlServer": 115
     },
     "ManagedApplications": {
-      "PostgreSql": 123,
-      "SqlServer": 123
+      "PostgreSql": 145,
+      "SqlServer": 145
     },
     "ApplicationGrants": {
       "PostgreSql": 94,
@@ -339,11 +339,14 @@
         "NativeCacheTests",
         "ManagedScopeBindingTests",
         "ManagedScopeCleanupTests",
-        "ManagedScopePolicyTests"
+        "ManagedScopePolicyTests",
+        "ManagedConsentDriftTests",
+        "ManagedConsentBindingTests",
+        "ManagedScopeProcessTests"
       ],
       "counts": {
-        "PostgreSql": 57,
-        "SqlServer": 57
+        "PostgreSql": 63,
+        "SqlServer": 63
       }
     },
     "Issuance": {
@@ -364,11 +367,15 @@
         "ManagedTokenReplayTests",
         "ManagedUpdateJourneyTests",
         "ManagedScopeAssignmentTests",
-        "ManagedScopeLegacyTests"
+        "ManagedScopeLegacyTests",
+        "ManagedConsentHttpTests",
+        "ManagedUserInfoDenialTests",
+        "ManagedUserInfoPublicationTests",
+        "ManagedUserInfoTransportTests"
       ],
       "counts": {
-        "PostgreSql": 66,
-        "SqlServer": 66
+        "PostgreSql": 82,
+        "SqlServer": 82
       }
     }
   },

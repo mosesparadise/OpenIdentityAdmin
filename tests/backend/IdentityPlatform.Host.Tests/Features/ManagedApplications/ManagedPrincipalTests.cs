@@ -25,7 +25,7 @@ public sealed class ManagedPrincipalTests
     [InlineData(ManagedPrincipalDefect.Destination)]
     public void Given_ManagedIdentity_When_ExtraAuthorityOrDelegationIsAdded_Then_OnlyOriginalSubjectProjectionMatches(ManagedPrincipalDefect defect)
     {
-        var row = new ManagedLoginInteraction { UserId = Subject, ApplicationRevision = 1 };
+        var row = new ManagedLoginInteraction { ApplicationId = Client, UserId = Subject, ApplicationRevision = 1 };
         var principal = ManagedPrincipal.Create(row, Client, Selector);
         switch (defect)
         {

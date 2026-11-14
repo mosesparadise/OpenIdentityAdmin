@@ -51,12 +51,11 @@ internal sealed class ManagedEndpointDecision
         var authentication = await http.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         var original = authentication.Principal;
         if (!authentication.Succeeded || original is null || !ManagedTokenBinding.Candidate(original) ||
-            !long.TryParse(original.GetClaim(ManagedDemand.RevisionClaim), out var revision))
+            !long.TryParse(original.GetClaim(ManagedDemand.RevisionClaim), out var revision) || revision <= 0)
         {
             throw ProtocolStorageOwner.Unavailable();
         }
-        var row = new ManagedLoginInteraction { UserId = original.GetClaim(OpenIddictConstants.Claims.Subject), ApplicationRevision = revision };
-        var principal = ManagedPrincipal.Create(row, original.GetPresenters().Single(), original.GetClaim(ManagedDemand.SelectorClaim)!);
+        var principal = ManagedPrincipal.Exchange(original);
         return Attach(http, principal);
     }
 
