@@ -1,7 +1,5 @@
 using System.Net;
-using IdentityPlatform.Sample.Client.Features.Sessions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.Host.Tests.Features.Samples;

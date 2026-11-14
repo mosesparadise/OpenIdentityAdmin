@@ -1,11 +1,11 @@
 using System.Net;
-using Microsoft.Extensions.DependencyInjection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IdentityPlatform.AppHost.Tests.Features;
 

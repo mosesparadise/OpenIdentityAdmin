@@ -1,4 +1,3 @@
-using OpenIddict.Validation;
 using OpenIddict.Validation.SystemNetHttp;
 using static OpenIddict.Validation.OpenIddictValidationEvents;
 

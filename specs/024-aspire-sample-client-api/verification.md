@@ -28,9 +28,11 @@ full. Previous artifacts and working branches are preserved. Locked whole-soluti
 restore and whole-solution build pass; no package upgrade or coverage exclusion.
 
 - `/tmp/sample024-allhost2`: all2,076 native Host cases passed, zero skips; includes
- 86 sample cases. `/tmp/sample024-realhost7` separately passes86/86 after stronger
- native denial and publication/cancellation assertions. The subsequently added
- publication mutation witness requires its own final baseline/mutant/restored run.
+ 86 sample cases. `/tmp/sample024-realhost8` separately passes86/86 after stronger
+ native denial and publication/cancellation assertions. The isolated
+ snapshot315df022 (same tree70fa218 as published8781cbe) passes all three actual
+ sample mutants, with baseline/restored3/3 and restored source hashes. Original
+ receipt: `/tmp/sample024-mutations/artifacts/mutations/sample-unit/evidence.json`.
 - `/tmp/sample024-harness-all2`: all118 Aspire Harness cases pass. The earlier
  `/tmp/sample024-harness-all1` failed one source-location lookup because artifacts
  live outside the repository; temporary source links restore the ordinary lookup
@@ -82,3 +84,19 @@ reports and independent final evidence before checking T004–T014 or normal squ
 Windows/manual, Firefox/A-009, all six historical findings, unknown CI590/CI592 causes,
 refresh/vendor/production/public-release gates remain open. No old SQL diagnostic is
 renewed and no isolated diagnostic branch is included.
+
+## CI599 preflight correction
+
+[CI599](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43615154596)
+at8781cbe exposed stale independent provider totals in lifecycle/issuer selection
+controls, stopping the affected provider/sample jobs before runtime execution. Standard
+provider count is356, including23 AppHost cases; totals are1759 PostgreSQL/1866 SQL
+Server. Corrected constants retain exact/disjoint checks. All28 workflow Python control
+scripts pass locally. Native sample mutation CI already passes all three decisions.
+Static analysis also identified import ordering/unused directives; the formatter fixes
+only those directives. Preserve this failed run; no absent runtime artifact is a pass.
+
+Original archive download through the GitHub connector succeeded, but the returned
+file-service host `sdmntprnortheu.oaiusercontent.com` received proxy CONNECT403 on this
+executor. Current enforced environment policy lacks that host. Decoded GitHub logs remain
+readable; raw archive reconciliation is still pending, not replaced by a log-only claim.

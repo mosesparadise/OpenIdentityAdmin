@@ -3,8 +3,8 @@ using IdentityPlatform.Sample.Client.Features.Sessions;
 using IdentityPlatform.Sample.Client.Features.State;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Client;
 

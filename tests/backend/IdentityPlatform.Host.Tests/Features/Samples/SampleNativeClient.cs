@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using IdentityPlatform.Sample.Client.Composition;
 using IdentityPlatform.Sample.Client.Features.Configuration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

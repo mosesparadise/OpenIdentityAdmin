@@ -1,4 +1,3 @@
-using OpenIddict.Client;
 using OpenIddict.Client.SystemNetHttp;
 using static OpenIddict.Client.OpenIddictClientEvents;
 
