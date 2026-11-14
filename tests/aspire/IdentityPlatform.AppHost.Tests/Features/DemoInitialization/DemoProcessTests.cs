@@ -158,10 +158,7 @@ public sealed class DemoProcessTests
             {
                 return true;
             }
-            const string processRoot = "/proc/";
-            const string statusFile = "/stat";
-            var status = processRoot + id.ToString(System.Globalization.CultureInfo.InvariantCulture) + statusFile;
-            return OperatingSystem.IsLinux() && File.Exists(status) && File.ReadAllText(status).Split(')')[1].TrimStart().StartsWith('Z');
+            return OperatingSystem.IsLinux() && ProcessTreeEvidence.Read(id) is null or { State: 'Z' or 'X' };
         }
         catch (ArgumentException) { return true; }
         catch (FileNotFoundException) { return true; }

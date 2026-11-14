@@ -159,7 +159,7 @@ clock watermarks, sessions and audits must remain unchanged. Callback/ordinary d
 require zero increments; actual postcommit failures and mutation leaks require one set.
 The existing generic digest retains all its fields and metadata.
 
-Within the original native cases, additional controls prove unchanged re-signed/encrypted
+Within the original native cases, additional controls prove unchanged re-signed
 bearer acceptance before wrong client/presenter/subject, already-expired and absent-human
 subject denials. No machine grant is enabled. Present email and confirmation now change
 after issuance, followed by current UserInfo checks and exact committed-state comparisons.
@@ -167,3 +167,25 @@ The full UI→assignment→browser consent→native tokens→UserInfo/Cancel cha
 implemented in ApplicationScopeBrowserTests; independent review confirmed its continuity.
 The administrator build and source/test review pass; corrected-head hosted validation,
 original report reconciliation and final evidence review remain mandatory.
+
+### Third hosted attempt — CI588
+
+[CI588](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43577257368)
+checks source `0bc0ba1bb2d7e20e32d71a43de032b56a296a6c7`, merge
+`8338a03a9e413690a4257160cd23b197d12fb10b`, tree
+`b06f0cd24cb12b729ba7516568ef4d5c8c0e24dc`. PostgreSQL passes all ten managed
+behavioral mutations with clean baseline/restored controls and exact source restoration.
+Its disclosure group passes 15/16, confirming the strict lock-state oracle; the new
+reconstructed-token positive fails cryptographic validation because the fixture encrypted
+an access token while the actual managed profile explicitly uses signed unencrypted tokens.
+The fixture now reproduces that exact RS256 JWS profile and retains signature/type/payload
+verification before all native negative cases. A local actual IdentityModel reproduction
+rejects the former encrypted construction and accepts the corrected signed construction.
+
+The unit group also exposes an existing process-observer race: Linux removes a child
+between existence checking and reading `/proc/<pid>/stat`, producing ESRCH. Reuse the
+existing shared ProcessTreeEvidence reader, which narrowly handles that native race and
+propagates other I/O/access failures. Its permanent real open-file/process-exit control
+and all 110 AppHost harness cases pass locally, as do the clean build and independent
+review. No production process behavior, timeout, retry, test identity or assertion is
+relaxed. Earlier failed receipts remain rejected; full corrected-head acceptance is pending.

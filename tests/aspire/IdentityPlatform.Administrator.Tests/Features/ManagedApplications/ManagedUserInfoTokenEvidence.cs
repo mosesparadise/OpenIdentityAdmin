@@ -39,7 +39,7 @@ internal static class ManagedUserInfoTokenEvidence
         await negativeState.RequireAsync(test, commits: 0);
     }
 
-    /// <summary>Checks the real native denial after independently verifying encryption, signature and the exact intended replacement payload.</summary>
+    /// <summary>Checks the real native denial after independently verifying signature and the exact intended replacement payload.</summary>
     private static async Task DeniedAsync(ManagedCacheTestContext test, JsonObject payload, IssuerCredentials credentials)
     {
         using var denied = await ManagedConsentTest.ReadAsync(test, await SignAsync(test, payload, credentials));
@@ -51,19 +51,17 @@ internal static class ManagedUserInfoTokenEvidence
     {
         var signed = new JsonWebTokenHandler { SetDefaultTimesOnTokenCreation = false }.CreateToken(payload.ToJsonString(),
             new SigningCredentials(new X509SecurityKey(credentials.Signing), SecurityAlgorithms.RsaSha256),
-            new EncryptingCredentials(new X509SecurityKey(credentials.Encryption), SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512),
             new Dictionary<string, object> { [JwtHeaderParameterNames.Typ] = AccessType });
         Assert.True(JsonNode.DeepEquals(payload, await PayloadAsync(test, signed, credentials)));
         return signed;
     }
 
-    /// <summary>Validates signatures and decrypts actual bytes independently; lifetime is inspected by the real native endpoint in negative cases.</summary>
+    /// <summary>Validates actual signed access-token bytes independently; lifetime is inspected by the real native endpoint in negative cases.</summary>
     private static async Task<JsonObject> PayloadAsync(ManagedCacheTestContext test, string access, IssuerCredentials credentials)
     {
         var result = await new JsonWebTokenHandler { MapInboundClaims = false }.ValidateTokenAsync(access, new TokenValidationParameters
         {
             IssuerSigningKeys = credentials.SigningKeys.All.Select(certificate => new X509SecurityKey(certificate)),
-            TokenDecryptionKeys = credentials.EncryptionKeys.All.Select(certificate => new X509SecurityKey(certificate)),
             ValidIssuer = test.Http.Environment.Profile.Issuer.AbsoluteUri,
             ValidTypes = [AccessType],
             ValidAlgorithms = [SecurityAlgorithms.RsaSha256],
@@ -75,6 +73,7 @@ internal static class ManagedUserInfoTokenEvidence
         });
         Assert.True(result.IsValid, result.Exception?.GetType().FullName);
         var token = Assert.IsType<JsonWebToken>(result.SecurityToken);
-        return JsonNode.Parse(Base64UrlEncoder.Decode((token.InnerToken ?? token).EncodedPayload))!.AsObject();
+        Assert.Null(token.InnerToken);
+        return JsonNode.Parse(Base64UrlEncoder.Decode(token.EncodedPayload))!.AsObject();
     }
 }
