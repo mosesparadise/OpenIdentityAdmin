@@ -91,14 +91,6 @@
           "Microsoft.IdentityModel.Tokens": "8.19.2"
         }
       },
-      "OpenIddict.Core": {
-        "type": "Transitive",
-        "resolved": "7.7.2",
-        "contentHash": "VsPYuXWx1YtbKFyW/O2vV/egJtTXmAOUE7AJq+I/laT3WIroeiDqHT8jDnhjIhDjHcjfNupR/u5nhWD6t5ocqg==",
-        "dependencies": {
-          "OpenIddict.Abstractions": "7.7.2"
-        }
-      },
       "OpenIddict.EntityFrameworkCore.Models": {
         "type": "Transitive",
         "resolved": "7.7.2",
@@ -120,6 +112,15 @@
         "contentHash": "Ut0kgtfoKX9QElQVEXSEAgdQc79jISWStVWSOhfPDDHNSKMwFzSXG3gtdYFTAbsBoV+8NtXdVaj4xwdqeky8UA==",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "10.0.14"
+        }
+      },
+      "OpenIddict.Core": {
+        "type": "CentralTransitive",
+        "requested": "[7.7.2, )",
+        "resolved": "7.7.2",
+        "contentHash": "VsPYuXWx1YtbKFyW/O2vV/egJtTXmAOUE7AJq+I/laT3WIroeiDqHT8jDnhjIhDjHcjfNupR/u5nhWD6t5ocqg==",
+        "dependencies": {
+          "OpenIddict.Abstractions": "7.7.2"
         }
       }
     }

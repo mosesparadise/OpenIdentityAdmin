@@ -10,7 +10,7 @@ from ci_scope import ALWAYS_JOBS, FULL_JOBS, changed_paths, event_paths, require
 
 EXPECTED_ALWAYS = frozenset(('scope', 'assurance', 'source-secrets'))
 EXPECTED_FULL = frozenset(('browser-plan', 'static-analysis', 'supply-chain', 'verify', 'browser',
-                           'contrast-experiment', 'mutations', 'administrator-mutations', 'governance-mutations', 'administrator-protocol-mutations', 'pilot-replay-mutations', 'browser-session-mutations', 'application-mutations', 'managed-application-mutations', 'contracts', 'admin-ui', 'coverage'))
+                           'contrast-experiment', 'mutations', 'administrator-mutations', 'governance-mutations', 'administrator-protocol-mutations', 'pilot-replay-mutations', 'sample-mutations', 'browser-session-mutations', 'application-mutations', 'managed-application-mutations', 'contracts', 'admin-ui', 'coverage'))
 
 
 class ScopeTests(unittest.TestCase):

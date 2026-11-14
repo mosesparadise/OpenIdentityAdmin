@@ -1,4 +1,4 @@
-"""Seed omissions and substitutions against the three mandatory native AppHost groups."""
+"""Seed omissions and substitutions against the five mandatory native AppHost groups."""
 import copy
 import json
 from pathlib import Path
@@ -21,7 +21,7 @@ class AppHostSelectionTests(unittest.TestCase):
         self.rows = {}
         for provider in ('PostgreSql', 'SqlServer'):
             self.rows[provider] = []
-            for group, namespace, count in [('Foundation', BASE, 8), ('BffSessions', BASE + '.BffSessions', 10), ('LocalDemo', BASE + '.LocalDemo', 3)]:
+            for group, namespace, count in [('Foundation', BASE, 8), ('BffSessions', BASE + '.BffSessions', 10), ('LocalDemo', BASE + '.LocalDemo', 3), ('SampleChromium', BASE + '.SampleChromium', 1), ('SampleWebKit', BASE + '.SampleWebKit', 1)]:
                 for index in range(count):
                     self.rows[provider].append({'uid': provider + group + str(index),
                         'displayName': f'{namespace}.FixtureTests.Case{index}({provider})',
@@ -37,13 +37,15 @@ class AppHostSelectionTests(unittest.TestCase):
         tests = self.catalogue(provider)
         return {'Foundation': {uid: test for uid, test in tests.items() if test[3] == BASE},
                 'BffSessions': {uid: test for uid, test in tests.items() if test[3] == BASE + '.BffSessions'},
-                'LocalDemo': {uid: test for uid, test in tests.items() if test[3] == BASE + '.LocalDemo'}}
+                'LocalDemo': {uid: test for uid, test in tests.items() if test[3] == BASE + '.LocalDemo'},
+                'SampleChromium': {uid: test for uid, test in tests.items() if test[3] == BASE + '.SampleChromium'},
+                'SampleWebKit': {uid: test for uid, test in tests.items() if test[3] == BASE + '.SampleWebKit'}}
 
-    def test_Given_current_matrix_When_grouping_Then_all_twenty_one_cases_remain_mandatory(self):
-        """Both providers retain eight-plus-ten-plus-three obligations including the browser deadline regressions."""
+    def test_Given_current_matrix_When_grouping_Then_all_twenty_three_cases_remain_mandatory(self):
+        """Both providers retain eight-plus-ten-plus-three plus both sample engines obligations including the browser deadline regressions."""
         for provider in self.rows:
-            self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3)], apphost_invocations(self.matrix, provider))
-            self.assertEqual(21, self.matrix['profiles'][provider]['AppHost'])
+            self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3), ('SampleChromium', 1), ('SampleWebKit', 1)], apphost_invocations(self.matrix, provider))
+            self.assertEqual(23, self.matrix['profiles'][provider]['AppHost'])
             require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
 
     def test_Given_manifest_drift_When_grouping_Then_missing_groups_and_invalid_counts_fail(self):
@@ -101,7 +103,7 @@ class AppHostSelectionTests(unittest.TestCase):
 
     def test_Given_provider_groups_When_filtering_Then_nested_bff_namespace_is_excluded_from_foundation(self):
         """Native filter syntax explicitly separates nested namespaces without arbitrary arguments."""
-        self.assertEqual(f'Provider=SqlServer&FullyQualifiedName~{BASE}.&FullyQualifiedName!~{BASE}.BffSessions.&FullyQualifiedName!~{BASE}.LocalDemo.', apphost_filter('SqlServer', 'Foundation'))
+        self.assertEqual(f'Provider=SqlServer&FullyQualifiedName~{BASE}.&FullyQualifiedName!~{BASE}.BffSessions.&FullyQualifiedName!~{BASE}.LocalDemo.&FullyQualifiedName!~{BASE}.SampleChromium.&FullyQualifiedName!~{BASE}.SampleWebKit.', apphost_filter('SqlServer', 'Foundation'))
         self.assertEqual(f'Provider=PostgreSql&FullyQualifiedName~{BASE}.BffSessions.', apphost_filter('PostgreSql', 'BffSessions'))
         self.assertEqual(f'Provider=PostgreSql&FullyQualifiedName~{BASE}.LocalDemo.', apphost_filter('PostgreSql', 'LocalDemo'))
         for provider, group in [('unit', 'Foundation'), ('SqlServer', 'Other')]:
@@ -112,9 +114,9 @@ class AppHostSelectionTests(unittest.TestCase):
         workflow = (ROOT / '.github/workflows/verify.yml').read_text()
         for provider in ('PostgreSql', 'SqlServer'):
             self.assertEqual({'Persistence': 40}, select_projects(self.matrix, provider, partition='foundation'))
-            self.assertEqual({'AppHost': 21}, select_projects(self.matrix, provider, partition='apphost'))
-            self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3)], apphost_invocations(self.matrix, provider))
-            for group, count in (('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3)):
+            self.assertEqual({'AppHost': 23}, select_projects(self.matrix, provider, partition='apphost'))
+            self.assertEqual([('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3), ('SampleChromium', 1), ('SampleWebKit', 1)], apphost_invocations(self.matrix, provider))
+            for group, count in (('Foundation', 8), ('BffSessions', 10), ('LocalDemo', 3), ('SampleChromium', 1), ('SampleWebKit', 1)):
                 self.assertEqual([(group, count)], apphost_invocations(self.matrix, provider, group))
                 require_apphost_selections(self.catalogue(provider), self.selections(provider), provider, self.matrix)
                 cell = '{ profile: ' + provider + ', partition: apphost, apphost_group: ' + group + ', label: ' + provider + '-apphost-' + group.lower() + ' }'

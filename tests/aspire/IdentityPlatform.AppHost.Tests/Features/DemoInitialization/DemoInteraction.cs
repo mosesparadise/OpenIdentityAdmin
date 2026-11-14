@@ -6,6 +6,16 @@ namespace IdentityPlatform.AppHost.Tests.Features.DemoInitialization;
 /// <summary>Supplies controlled dashboard inputs while preserving the production native command and transport.</summary>
 internal sealed class DemoInteraction : IInteractionService
 {
+    private const string SampleIdField = "clientId";
+    private const string SampleSecretField = "clientSecret";
+    internal string? SampleId
+    {
+        get; set;
+    }
+    internal string? SampleSecret
+    {
+        get; set;
+    }
     private const string UsernameField = "username";
     private const string PasswordField = "password";
     private const int InputCount = 2;
@@ -37,6 +47,17 @@ internal sealed class DemoInteraction : IInteractionService
         LastInputs = inputs;
         Assert.Equal(InputCount, inputs.Count);
         Assert.All(inputs, input => Assert.True(string.IsNullOrEmpty(input.Value)));
+        if (inputs.Any(input => input.Name == SampleIdField))
+        {
+            Assert.NotNull(SampleId);
+            Assert.NotNull(SampleSecret);
+            var id = Assert.Single(inputs, input => input.Name == SampleIdField);
+            var secret = Assert.Single(inputs, input => input.Name == SampleSecretField);
+            Assert.Equal(InputType.SecretText, secret.InputType);
+            id.Value = SampleId;
+            secret.Value = SampleSecret;
+            return InteractionResult.Ok(new InteractionInputCollection(inputs));
+        }
         var user = Assert.Single(inputs, input => input.Name == UsernameField);
         var password = Assert.Single(inputs, input => input.Name == PasswordField);
         Assert.Equal(InputType.SecretText, password.InputType);

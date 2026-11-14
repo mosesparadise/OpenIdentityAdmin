@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <Compile Include="../Shared/SampleProfile.cs" Link="Features/Configuration/SampleProfile.cs" />
+    <PackageReference Include="OpenIddict.Validation.AspNetCore" />
+    <PackageReference Include="OpenIddict.Validation.SystemNetHttp" />
+    <ProjectReference Include="../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+  </ItemGroup>
+</Project>

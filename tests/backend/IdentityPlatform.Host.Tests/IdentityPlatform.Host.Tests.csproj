@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="../../../src/samples/IdentityPlatform.Sample.Client/IdentityPlatform.Sample.Client.csproj" />
+    <ProjectReference Include="../../../src/samples/IdentityPlatform.Sample.Api/IdentityPlatform.Sample.Api.csproj" />
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
     <ProjectReference Include="../../../src/migrations/IdentityPlatform.Migrator/IdentityPlatform.Migrator.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" />

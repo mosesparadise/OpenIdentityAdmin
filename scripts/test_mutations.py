@@ -709,6 +709,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(6, len(manifest(ROOT, "application-grants")))
         self.assertEqual(5, len(manifest(ROOT, "pilot-replay")))
         self.assertEqual(5, len(manifest(ROOT, "catalogue")))
+        self.assertEqual(3, len(manifest(ROOT, "sample")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
 
     def test_Given_ManagedMutationTraits_When_ReviewedAgainstInventory_Then_EachProviderHasOneExactDistinctWitness(self):

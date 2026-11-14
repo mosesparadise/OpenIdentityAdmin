@@ -4,6 +4,7 @@
     <PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
     <PackageReference Include="Aspire.Hosting.Testing" />
     <PackageReference Include="Microsoft.Playwright" />
+    <PackageReference Include="Deque.AxeCore.Playwright" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../../src/aspire/IdentityPlatform.AppHost/IdentityPlatform.AppHost.csproj" />
@@ -54,5 +55,10 @@
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserDiagnostic.cs" Link="Features/LocalDemo/ManagedBrowserDiagnostic.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserRelyingParty.cs" Link="Features/LocalDemo/ManagedBrowserRelyingParty.cs" />
     <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/ManagedBrowserJourney.cs" Link="Features/LocalDemo/ManagedBrowserJourney.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../IdentityPlatform.Administrator.Tests/Features/Browser/BrowserLoginPresentation.cs" Link="Features/Samples/BrowserLoginPresentation.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserAccessibility.cs" Link="Features/Samples/BrowserAccessibility.cs" />
+    <Compile Include="../IdentityPlatform.Issuer.Tests/Features/Browser/BrowserStyleEvidence.cs" Link="Features/Samples/BrowserStyleEvidence.cs" />
   </ItemGroup>
 </Project>

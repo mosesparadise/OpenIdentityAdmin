@@ -16,7 +16,9 @@
     "IdentityPlatform.Database.SqlServer",
     "IdentityPlatform.Database.Hosting",
     "IdentityPlatform.Database.PostgreSql.Hosting",
-    "IdentityPlatform.Database.SqlServer.Hosting"
+    "IdentityPlatform.Database.SqlServer.Hosting",
+    "IdentityPlatform.Sample.Client",
+    "IdentityPlatform.Sample.Api"
   ],
   "exclusions": {
     "IdentityPlatform.Migrations.*": "Generated EF migration/snapshot code; native integration and model-parity tests verify behavior on both providers.",

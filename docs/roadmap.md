@@ -1,5 +1,22 @@
 # Delivery roadmap and task register
 
+## Active next task — interactive sample client/API, 14 November 2026
+
+The user requested the next task after PR134/135 delivery. Feature024's
+[bounded draft specification](../specs/024-aspire-sample-client-api/spec.md) is on `146-aspire-sample-client-api`,
+based on main `91c7070700e8f746e74d9114f881b0005a039b3a`. Source investigation
+and independent architecture review confirm a separate managed confidential client,
+server-held tokens and native reference-state protection; the administrator BFF
+remains unchanged. This increment targets M04-D's integration example.
+
+The user’s subsequent “Please proceed” accepts the stated recommendations: manual
+administrator UI registration followed by protected local sample setup, and offline
+JWT API validation with explicit expiry limits. UserInfo demonstrates current-state
+checks separately. Design and implementation now proceed under that authorization;
+no further preference confirmation is pending. Sample runtime acceptance is still
+incomplete. Managed issuer-assisted logout, refresh/machine activation, production
+and all existing external gates remain separate.
+
 ## Current delivery — consented scopes and UserInfo, 14 November 2026
 
 Feature023 T001–T016 and the selected M03-A–M03-C managed-profile scope are complete

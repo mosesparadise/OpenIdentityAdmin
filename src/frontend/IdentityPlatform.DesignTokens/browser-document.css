@@ -13,3 +13,6 @@ a { color: var(--accent); display: inline-block; padding-block: .65rem; overflow
 .skip-link { position: absolute; top: -6rem; left: 1rem; padding: .75rem; background: var(--surface); color: var(--text); z-index: 2; }
 .skip-link:focus { top: 1rem; }
 [hidden] { display: none !important; }
+
+/* Finite sample identity values may be long opaque identifiers or email addresses. */
+.sample-profile dd { overflow-wrap: anywhere; min-width: 0; margin-inline-start: 0; }
