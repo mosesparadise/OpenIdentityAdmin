@@ -8,10 +8,9 @@
 - [x] Allow/deny, expiry, replay, setup, secrecy and lifecycle cases are included.
 - [x] Existing BFF and managed-profile boundaries are preserved.
 - [x] Development and external acceptance are distinguished.
-- [ ] No clarification markers remain: FR-002 and FR-006 await user choices.
-- [ ] Design/test matrix is complete and consistent with those choices.
-- [ ] Independent specification/design review is complete.
+- [x] No clarification markers remain: both recommended choices are accepted.
+- [x] Design/test matrix is complete for implementation; contracts map C01–C13.
+- [x] Independent architecture/test design review completed; findings resolved in the packet.
 
-Not ready for affected implementation. Resolve the two product questions, then finish
-plan/contracts/tasks and focused review. This is not a new permission request for
-ordinary work already authorized by the user's roadmap continuation.
+Ready for implementation under the recorded continuation. This checklist assesses
+requirements quality, not runtime completion. Actual tests and delivery remain open.

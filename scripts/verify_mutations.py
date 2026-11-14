@@ -16,6 +16,7 @@ import time
 import xml.etree.ElementTree as ET
 
 from test_selection import catalogue
+from sample_mutation_selection import sample_catalogue, sample_filter, sample_identity
 from administrator_inventory import load_inventory, require_native_inventory
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -186,6 +187,7 @@ class MutationError(ValueError):
 
 def manifest(root, suite='issuer'):
     suites = {
+        'sample': (3, 'eng/sample-mutations.json', None),
         'issuer': (7, 'eng/critical-mutations.json', 'src/backend/IdentityPlatform.AuthServer/Features'),
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
@@ -240,7 +242,11 @@ def manifest(root, suite='issuer'):
             'src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs'
         }
-        exact_paths = {'catalogue': {
+        exact_paths = {'sample': {
+                           'src/samples/IdentityPlatform.Sample.Client/Features/State/StateLedger.cs',
+                           'src/samples/IdentityPlatform.Sample.Client/Features/Sessions/SampleTickets.cs',
+                           'src/samples/IdentityPlatform.Sample.Client/Features/Presentation/Endpoints.cs'},
+                       'catalogue': {
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationWriteState.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionActor.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Catalogue/CatalogueDeletionProcessor.cs',
@@ -389,6 +395,8 @@ def discover(expression, environment):
         raise MutationError('Mutation discovery failed')
     if 'Administrator' in PROJECT:
         require_native_inventory(output, load_inventory(ROOT / 'eng/administrator-test-matrix.json'))
+    if PROJECT.endswith('IdentityPlatform.Host.Tests.csproj'):
+        return sample_catalogue(output)
     return catalogue(output, project='Administrator' if 'Administrator' in PROJECT else 'Issuer')
 
 
@@ -417,11 +425,15 @@ def require_clean_checkout(environment):
 def main():
     global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('provider', choices=['PostgreSql', 'SqlServer'])
-    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue'], default='issuer')
+    parser.add_argument('provider', choices=['PostgreSql', 'SqlServer', 'unit'])
+    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue', 'sample'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
+    if (args.suite == 'sample') != (args.provider == 'unit'):
+        raise MutationError('Sample mutations require the unit profile; database suites retain both native providers')
+    if args.suite == 'sample':
+        PROJECT = 'tests/backend/IdentityPlatform.Host.Tests/IdentityPlatform.Host.Tests.csproj'
     if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue'):
         PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
@@ -452,12 +464,13 @@ def main():
             perform('baseline', 'build', build, environment)
             selections = {}
             for ordinal, item in enumerate(items, start=1):
-                expression = f"Provider={args.provider}&CriticalDecision={item['id']}"
+                expression = sample_filter(item['id']) if args.suite == 'sample' else f"Provider={args.provider}&CriticalDecision={item['id']}"
                 selection = perform('baseline', 'discovery', discover, expression, environment, ordinal=ordinal)
-                if len(selection) != 1 or any(test[1] != args.provider or test[2] or not test[0].startswith(item['method'] + '(') for test in selection.values()):
+                if (not sample_identity(selection, item) if args.suite == 'sample' else
+                    len(selection) != 1 or any(test[1] != args.provider or test[2] or not test[0].startswith(item['method'] + '(') for test in selection.values())):
                     raise MutationError('Mutation target identity or provider differs from the reviewed manifest')
                 selections[item['id']] = (expression, selection)
-            expression = f"Provider={args.provider}&(" + '|'.join('CriticalDecision=' + item['id'] for item in items) + ')'
+            expression = ("(" if args.suite == 'sample' else f"Provider={args.provider}&(") + '|'.join('CriticalDecision=' + item['id'] for item in items) + ')'
             selected = {test[0] for _, values in selections.values() for test in values.values()}
             if len(selected) != len(items):
                 raise MutationError('Mutation targets overlap')

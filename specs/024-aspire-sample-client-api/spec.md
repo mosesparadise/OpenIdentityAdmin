@@ -2,7 +2,7 @@
 
 **Feature Branch**: `146-aspire-sample-client-api`
 **Created**: 14 November 2026
-**Status**: Draft; two product choices pending, no runtime implementation claimed
+**Status**: Selected for implementation; design and runtime verification in progress
 **Input**: The user requested the next task after the recommendation to add an Aspire
 sample client and API for interactive consent, token and UserInfo testing. Product
 FR-02/04/08/09/16/17/19/21/24; roadmap M04-D integration examples.
@@ -86,8 +86,8 @@ secrets in logs/telemetry/HTML/errors/storage; dark/light and narrow viewport st
 - **FR-001**: Start separate sample application/API resources through ordinary Aspire
   under the existing explicit disposable local-demo lifecycle. No custom PowerShell,
   persistent default data or production activation.
-- **FR-002**: Configure registrations through [NEEDS CLARIFICATION: existing admin UI
-  then protected local sample credential entry, or automatic disposable provisioning?].
+- **FR-002**: Configure registrations through the existing administrator UI, followed by
+  protected local sample credential entry.
   Preserve native manager ownership, authorization/audit rules and secret handling.
 - **FR-003**: Use the supported managed confidential code/S256 profile, exact HTTPS
   callback and native authentication/state/nonce/issuer/signature validation. Each
@@ -101,9 +101,8 @@ secrets in logs/telemetry/HTML/errors/storage; dark/light and narrow viewport st
   field when email is absent. Clear stale profile data on denial/logout/expiry. Email
   is not API authorization. Distinguish current profile from issuance-time ID-token claims.
 - **FR-006**: Independently validate exact issuer, token kind, signature, audience,
-  lifetime and scope at the API. Its authority contract is [NEEDS CLARIFICATION:
-  ordinary public-key JWT validation with expiry limits, or live issuer authority
-  checks on every request?].
+  lifetime and scope at the API. Use ordinary public-key JWT validation with explicit expiry limits; it does not
+  perform live issuer authority checks on every request.
 - **FR-007**: Use fixed trusted destinations, bounded responses/deadlines and no
   automatic security-operation retries. Both user input and discovered metadata must
   be unable to redirect transport to untrusted discovery, JWKS, token, UserInfo or API
@@ -152,8 +151,10 @@ secrets in logs/telemetry/HTML/errors/storage; dark/light and narrow viewport st
 
 ## Assumptions and boundaries
 
-The next-task instruction authorizes M04-D integration-example continuation. The two
-product choices remain unanswered; this draft does not select their answers. Existing
+The next-task instruction authorizes M04-D integration-example continuation. On
+14 November 2026 the user replied “Please proceed” to the two stated recommendations:
+manual administrator registration and public-key JWT API validation. Both recommendations
+are now selected; no further confirmation is needed for routine implementation. Existing
 synthetic administrator accounts supply the supported human sign-in. Shared design
 and the disposable local lifecycle remain applicable. Windows/manual/Firefox/A-009,
 six historical findings, reliability qualifications, refresh/vendor/production/public

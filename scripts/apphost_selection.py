@@ -8,6 +8,8 @@ NAMESPACES = {
     'Foundation': 'IdentityPlatform.AppHost.Tests.Features',
     'BffSessions': 'IdentityPlatform.AppHost.Tests.Features.BffSessions',
     'LocalDemo': 'IdentityPlatform.AppHost.Tests.Features.LocalDemo',
+    'SampleChromium': 'IdentityPlatform.AppHost.Tests.Features.SampleChromium',
+    'SampleWebKit': 'IdentityPlatform.AppHost.Tests.Features.SampleWebKit',
 }
 
 

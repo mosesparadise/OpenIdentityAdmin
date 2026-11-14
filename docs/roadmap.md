@@ -9,12 +9,13 @@ and independent architecture review confirm a separate managed confidential clie
 server-held tokens and native reference-state protection; the administrator BFF
 remains unchanged. This increment targets M04-D's integration example.
 
-Two user questions are pending: manual administrator registration versus automatic
-disposable provisioning, and offline JWT API validation versus live issuer checks.
-Recommendations are recorded, not selected. Drafting/review may continue; affected
-implementation waits for those answers. No sample runtime, tests or acceptance are
-claimed. Managed issuer-assisted logout, refresh/machine activation, production and
-all existing external gates remain separate. Local sample logout is the bounded scope.
+The user’s subsequent “Please proceed” accepts the stated recommendations: manual
+administrator UI registration followed by protected local sample setup, and offline
+JWT API validation with explicit expiry limits. UserInfo demonstrates current-state
+checks separately. Design and implementation now proceed under that authorization;
+no further preference confirmation is pending. Sample runtime acceptance is still
+incomplete. Managed issuer-assisted logout, refresh/machine activation, production
+and all existing external gates remain separate.
 
 ## Current delivery — consented scopes and UserInfo, 14 November 2026
 

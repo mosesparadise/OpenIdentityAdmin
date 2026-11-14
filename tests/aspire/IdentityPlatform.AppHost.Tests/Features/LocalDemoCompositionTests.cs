@@ -1,3 +1,5 @@
+using System.Net;
+using Microsoft.Extensions.DependencyInjection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
@@ -11,6 +13,16 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 [Trait("Category", "Harness")]
 public sealed class LocalDemoCompositionTests
 {
+    private const string SampleClientResource = "sample-client";
+    private const string SampleApiResource = "sample-api";
+    private const string SampleClientHost = "sample.dev.localhost";
+    private const string SampleApiHost = "orders.dev.localhost";
+    private const int SampleClientPort = 17446;
+    private const int SampleApiPort = 17447;
+    private const string SampleConfigure = "configure-sample";
+    private const string SampleClientAuthority = "sample.dev.localhost:17446";
+    private const string SampleApiAuthority = "orders.dev.localhost:17447";
+    private const string LoopbackProbe = "https://127.0.0.1/health";
     private const string InitializationCommand = "initialize-administrator";
     private const string PlatformConnection = "ConnectionStrings__platform";
     private const string SessionsConnection = "ConnectionStrings__adminsessions";
@@ -61,7 +73,7 @@ public sealed class LocalDemoCompositionTests
         Assert.Empty(builder.Resources.OfType<ProjectResource>());
         RequireMaterial(environments[IssuerResource], IssuerRoles);
         RequireMaterial(environments[ClientResource], ClientRoles);
-        foreach (var name in new[] { InitializerResource, MigratorResource, ApiResource })
+        foreach (var name in new[] { InitializerResource, MigratorResource, ApiResource, SampleClientResource, SampleApiResource })
         {
             Assert.DoesNotContain(environments[name].Keys, key => key.StartsWith(MaterialPrefix, StringComparison.Ordinal));
         }
@@ -81,12 +93,47 @@ public sealed class LocalDemoCompositionTests
         }
         Assert.Equal(RoleTotal, fingerprints.Count);
         RequireEndpoints(builder);
+        await RequireSampleProbesAsync(builder, environments);
         RequireWorker(builder, environments);
         RequirePublicRegistration(environments);
         var commands = builder.Resources.SelectMany(resource => resource.Annotations.OfType<ResourceCommandAnnotation>()
             .Where(command => command.Name == InitializationCommand).Select(command => (resource.Name, Command: command))).ToArray();
         Assert.Equal("initializer", Assert.Single(commands).Name);
         Assert.Empty(commands[0].Command.Arguments);
+    }
+
+    /// <summary>Checks native named probe HTTP authority and verifies samples receive no platform connections or credential literals.</summary>
+    private static async Task RequireSampleProbesAsync(IDistributedApplicationTestingBuilder builder, Dictionary<string, Dictionary<string, object>> environments)
+    {
+        foreach (var (name, authority) in new[] { (SampleClientResource, SampleClientAuthority), (SampleApiResource, SampleApiAuthority) })
+        {
+            var resource = Assert.Single(builder.Resources.OfType<ContainerResource>(), value => value.Name == name);
+            var key = Assert.Single(resource.Annotations.OfType<HealthCheckAnnotation>()).Key;
+            Assert.False(environments[name].ContainsKey(PlatformConnection));
+            Assert.False(environments[name].ContainsKey(SessionsConnection));
+            builder.Services.AddHttpClient(key).AddHttpMessageHandler(() => new ProbeHostWitness(authority));
+            await using var services = builder.Services.BuildServiceProvider();
+            using var client = services.GetRequiredService<IHttpClientFactory>().CreateClient(key);
+            using var response = await client.GetAsync(LoopbackProbe, TestContext.Current.CancellationToken);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            if (name == SampleClientResource)
+            {
+                var command = Assert.Single(resource.Annotations.OfType<ResourceCommandAnnotation>(), command => command.Name == SampleConfigure);
+                Assert.Empty(command.Arguments);
+            }
+        }
+    }
+
+    /// <summary>Observes the actual native named-client request while leaving endpoint allocation and TLS policy unchanged.</summary>
+    private sealed class ProbeHostWitness(string expected) : DelegatingHandler
+    {
+        /// <summary>Requires the canonical HTTP authority even when the native health URI connects to loopback.</summary>
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            Assert.Equal(expected, request.Headers.Host);
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK));
+        }
     }
 
     /// <summary>Requires the real processor after schema completion with only Platform runtime access and no published endpoint or issuer keys.</summary>
@@ -140,7 +187,7 @@ public sealed class LocalDemoCompositionTests
     /// <summary>Requires exact same host/container HTTPS ports and canonical Docker aliases, with no explicit persistent mounts.</summary>
     private static void RequireEndpoints(IDistributedApplicationTestingBuilder builder)
     {
-        foreach (var (name, alias, port) in new[] { (IssuerResource, IssuerHost, IssuerPort), (ClientResource, ClientHost, ClientPort), (ApiResource, ApiHost, ApiPort) })
+        foreach (var (name, alias, port) in new[] { (IssuerResource, IssuerHost, IssuerPort), (ClientResource, ClientHost, ClientPort), (ApiResource, ApiHost, ApiPort), (SampleClientResource, SampleClientHost, SampleClientPort), (SampleApiResource, SampleApiHost, SampleApiPort) })
         {
             var resource = Assert.Single(builder.Resources.OfType<ContainerResource>(), value => value.Name == name);
             var endpoint = Assert.Single(resource.Annotations.OfType<EndpointAnnotation>());

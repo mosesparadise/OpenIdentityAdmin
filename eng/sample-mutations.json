@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "sample-state-cas",
+      "path": "src/samples/IdentityPlatform.Sample.Client/Features/State/StateLedger.cs",
+      "before": " && current.Version == record.Version",
+      "after": "",
+      "marker": "sample-state-cas-bypass",
+      "method": "IdentityPlatform.Host.Tests.Features.Samples.SampleStateTests.Given_OneNativeState_When_ConcurrentManagersRedeem_Then_ExactlyOneSucceeds"
+    },
+    {
+      "id": "sample-ticket-removal",
+      "path": "src/samples/IdentityPlatform.Sample.Client/Features/Sessions/SampleTickets.cs",
+      "before": "            admissions.Remove(current.Browser);",
+      "after": "            // Seeded defect: retain removed-ticket creation admission.",
+      "marker": "sample-ticket-removal-bypass",
+      "method": "IdentityPlatform.Host.Tests.Features.Samples.SampleSessionTests.Given_RemovedNativeTicket_When_StoreRepeats_Then_AdmissionIsTerminal"
+    },
+    {
+      "id": "sample-publication-gate",
+      "path": "src/samples/IdentityPlatform.Sample.Client/Features/Presentation/Endpoints.cs",
+      "before": "        await SamplePage.WriteAsync(context, configured: true, subject, result);",
+      "after": "        lease.Dispose();\n        await SamplePage.WriteAsync(context, configured: true, subject, result);",
+      "marker": "sample-publication-gate-bypass",
+      "method": "IdentityPlatform.Host.Tests.Features.Samples.SamplePublicationTests.Given_ProfilePublicationOwnsGate_When_LogoutArrives_Then_ResultFinishesBeforeTerminalLogout"
+    }
+  ]
+}

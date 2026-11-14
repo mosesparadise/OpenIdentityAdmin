@@ -739,17 +739,6 @@
           "OpenIddict.Abstractions": "7.7.2"
         }
       },
-      "OpenIddict.Core": {
-        "type": "Transitive",
-        "resolved": "7.7.2",
-        "contentHash": "VsPYuXWx1YtbKFyW/O2vV/egJtTXmAOUE7AJq+I/laT3WIroeiDqHT8jDnhjIhDjHcjfNupR/u5nhWD6t5ocqg==",
-        "dependencies": {
-          "Microsoft.Extensions.Caching.Memory": "10.0.11",
-          "Microsoft.Extensions.Logging": "10.0.11",
-          "Microsoft.Extensions.Options": "10.0.11",
-          "OpenIddict.Abstractions": "7.7.2"
-        }
-      },
       "OpenIddict.EntityFrameworkCore.Models": {
         "type": "Transitive",
         "resolved": "7.7.2",
@@ -1051,6 +1040,23 @@
           "Microsoft.Extensions.Hosting": "[10.0.14, )"
         }
       },
+      "identityplatform.sample.api": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.ServiceDefaults": "[1.0.0, )",
+          "OpenIddict.Validation.AspNetCore": "[7.7.2, )",
+          "OpenIddict.Validation.SystemNetHttp": "[7.7.2, )"
+        }
+      },
+      "identityplatform.sample.client": {
+        "type": "Project",
+        "dependencies": {
+          "IdentityPlatform.ServiceDefaults": "[1.0.0, )",
+          "OpenIddict.Client.AspNetCore": "[7.7.2, )",
+          "OpenIddict.Client.SystemNetHttp": "[7.7.2, )",
+          "OpenIddict.Core": "[7.7.2, )"
+        }
+      },
       "identityplatform.servicedefaults": {
         "type": "Project",
         "dependencies": {
@@ -1228,6 +1234,18 @@
           "Microsoft.Extensions.Http.Polly": "10.0.11",
           "Microsoft.Extensions.Http.Resilience": "10.8.0",
           "OpenIddict.Client": "7.7.2"
+        }
+      },
+      "OpenIddict.Core": {
+        "type": "CentralTransitive",
+        "requested": "[7.7.2, )",
+        "resolved": "7.7.2",
+        "contentHash": "VsPYuXWx1YtbKFyW/O2vV/egJtTXmAOUE7AJq+I/laT3WIroeiDqHT8jDnhjIhDjHcjfNupR/u5nhWD6t5ocqg==",
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "10.0.11",
+          "Microsoft.Extensions.Logging": "10.0.11",
+          "Microsoft.Extensions.Options": "10.0.11",
+          "OpenIddict.Abstractions": "7.7.2"
         }
       },
       "OpenIddict.EntityFrameworkCore": {

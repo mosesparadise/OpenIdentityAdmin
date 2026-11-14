@@ -35,13 +35,13 @@ on 14 November 2026. PR134/135 are merged. This is source investigation, not exe
    design assets are reuse seams. New hosts need readiness, teardown, telemetry
    redaction, per-module coverage and actual provider/browser evidence.
 
-## Pending product decisions
+## Product decisions selected on continuation
 
 - Recommend administrator UI registration then protected local credential entry;
-  automatic disposable provisioning changes initializer/audit ownership. Neither is
-  selected. A setup screen must have explicit run ownership, authorization and CSRF,
+  automatic disposable provisioning changes initializer/audit ownership. The user
+  subsequently instructed “Please proceed”; the manual recommendation is selected. A setup screen must have explicit run ownership, authorization and CSRF,
   not an unauthenticated credential-administration endpoint.
-- Recommend public-key JWT API validation with visible expiry limits, paired with
+- Selected: public-key JWT API validation with visible expiry limits, paired with
   explicit current-state UserInfo. A live-check option needs a supported authority
   contract; do not silently activate introspection or treat profile success as scope
   authorization.
@@ -51,8 +51,8 @@ on 14 November 2026. PR134/135 are merged. This is source investigation, not exe
 Independent architecture source review confirms these boundaries and the need for a
 sample-owned native reference-state store. It does not approve pending product choices,
 prove runtime behavior or require the user to reapprove routine implementation details.
-After clarification, finish storage/lifetimes, setup authorization, origin/callback map,
-finite contracts, threat boundaries and tests through pinned plan/tasks/analyze workflows.
+The continuation resolves clarification. The concrete plan/data-model/contracts now
+define storage/lifetimes, dashboard setup, fixed origins, finite contracts and tests.
 
 CI594 belongs to feature023, not this unimplemented sample. CI590 restart and CI592
 contrast remain unexplained; CI593 is inconclusive and branch144 must never merge.
@@ -64,6 +64,16 @@ Independent test review found three precision gaps, corrected in the draft: loca
 logout now explicitly isolates the current browser from other sessions and shared
 configuration; finite email_verified behavior includes false and missing-email cases;
 fixed-destination checks cover hostile discovered metadata/JWKS and HTTP redirects.
-No pending choice was selected and no runtime test was executed. Documentation checks
+At that draft-review checkpoint no choice had been selected and no runtime test was
+executed. The later continuation above resolves both product choices. Documentation checks
 passed: 8 CI-scope tests, 27 assurance tests, instruction/assurance integrity and diff
 whitespace. These checks do not validate the unimplemented sample.
+
+## Concrete design review disposition
+
+Architecture review passes for implementation with required lazy-authentication gating,
+trusted native lifetime, exact UserInfo projection and logout/publication ordering. Test
+review found retained-terminal-state capacity and publication-order ambiguities: the
+data model now caps all128 retained states and defines an exclusive publication gate
+with explicit logout-first/publish-first outcomes. C08 includes query/form/duplicate/
+mixed bearer denials. These are required tests, not claims of existing behavior.

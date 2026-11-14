@@ -98,6 +98,7 @@ internal static class Setup
         auth.WithEnvironment(PublicKeyVariable, assertion.PublicKey);
         AddInitializer(builder, database, migrator, run, assertion.PublicKey);
         AddWorker(builder, database, migrator, run);
+        builder.AddSample(auth, run);
         return builder;
     }
 
