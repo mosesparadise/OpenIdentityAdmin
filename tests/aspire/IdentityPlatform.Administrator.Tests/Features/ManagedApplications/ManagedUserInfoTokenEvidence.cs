@@ -31,18 +31,19 @@ internal static class ManagedUserInfoTokenEvidence
             var changed = payload.DeepClone().AsObject();
             Assert.True(changed.ContainsKey(binding));
             changed[binding] = binding == Expiration ? JsonValue.Create(payload[Issued]!.GetValue<long>()) : JsonValue.Create(Changed);
-            await DeniedAsync(test, changed, credentials);
+            await DeniedAsync(test, changed, credentials, binding);
         }
         var nonhuman = payload.DeepClone().AsObject();
         Assert.True(nonhuman.Remove(Subject));
-        await DeniedAsync(test, nonhuman, credentials);
+        await DeniedAsync(test, nonhuman, credentials, Subject);
         await negativeState.RequireAsync(test, commits: 0);
     }
 
     /// <summary>Checks the real native denial after independently verifying signature and the exact intended replacement payload.</summary>
-    private static async Task DeniedAsync(ManagedCacheTestContext test, JsonObject payload, IssuerCredentials credentials)
+    private static async Task DeniedAsync(ManagedCacheTestContext test, JsonObject payload, IssuerCredentials credentials, string binding)
     {
         using var denied = await ManagedConsentTest.ReadAsync(test, await SignAsync(test, payload, credentials));
+        Assert.True(denied.StatusCode == System.Net.HttpStatusCode.Unauthorized, binding);
         await ManagedConsentTest.DeniedAsync(denied);
     }
 

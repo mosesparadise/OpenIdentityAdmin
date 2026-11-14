@@ -189,3 +189,53 @@ propagates other I/O/access failures. Its permanent real open-file/process-exit 
 and all 110 AppHost harness cases pass locally, as do the clean build and independent
 review. No production process behavior, timeout, retry, test identity or assertion is
 relaxed. Earlier failed receipts remain rejected; full corrected-head acceptance is pending.
+
+### Fourth hosted attempt — CI589
+
+[CI589](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43578290934)
+checks source `2e49e092d5fb68c66d1190a91e7a68f0c221d954`, merge
+`db591c9d04ce99d762ea4acaa192041480f83b5a`, tree
+`d897c59f34091da328c3cf1e33f12413f95afabd`. The unit group passes, including the
+corrected process observer. Both providers pass disclosure 15/16; a re-signed negative
+bearer unexpectedly returns 200. The reconstructed signed positive now passes its
+cryptographic and real UserInfo controls. This run is rejected as acceptance.
+
+OpenIddict 7.7.2 restores private expiration from the native token entry after deriving
+it from the signed public `exp`. Comparing only that restored value with the same row
+can lose an earlier signed expiration. UserInfo now separately requires one canonical
+integral public `exp` and retains the earlier signed/native deadline through current
+state verification, commit and publication. Missing, ambiguous, malformed, overflowing,
+wrong-type or already-expired values fail closed through the native 401 response.
+An explicit ordinal claim-type check also prevents case-insensitive identity lookup
+from treating `EXP` as the required public claim. No native cryptography, current-state
+check or publication ownership is bypassed. The existing provider regression keeps an
+unchanged signed positive before wrong-client/presenter/subject/expiry denials; its
+failure message now identifies only the finite binding label, never token contents.
+
+Sixteen permanent Host regressions reproduce restored future private metadata alongside
+an independently earlier/missing/invalid public expiration, test both minimum branches,
+strict equality and both native integer types, and reject aliases and duplicate expiry.
+The expected Host inventory is 1,990 and the complete ordinary execution inventory is
+6,300. Full corrected-source validation and final original-evidence review remain required.
+
+The corrected local Host build passes all **1,990/1,990** cases with no failures or
+skips. Administrator build, changed-source SDK style checks and repository code-quality
+checks pass without new allowances. Independent security review passes after the
+canonical claim-type regression; test review confirms the independent signed/native
+bounds and retained provider positive/negative controls. Hosted evidence remains pending.
+
+CI589 additionally exposes an existing PostgreSQL pilot-wait evidence gap. The exact
+blocked `PilotProtocolGate` UPDATE terminates with the configured five-second native
+lock timeout, but the test's provider-timeout classifier recognizes SQL Server only.
+The response and exact-command termination assertions pass; deadline classification
+fails. The shared test helper now also requires PostgreSQL SQLSTATE `55P03`, the exact
+lock-timeout message, invariant `ERROR` severity and no inner failure. Positive and
+negative controls reject same-code NOWAIT, query cancellation, wrong severity, wrong
+provider, unrelated exceptions and null. The independent observed waiter/holder,
+no-caller, elapsed-budget, unchanged-state and no-late-issuance assertions remain intact.
+Independent test review supports this narrow correction; no production deadline,
+provider configuration, retry or required scenario changes. The failed run remains
+retained and corrected-source execution is mandatory.
+The final Administrator build passes with zero warnings/errors. A local invocation of
+that built classifier passes the exact PostgreSQL positive, wrong-provider negative,
+and all embedded SQL/PostgreSQL controls without starting a database.

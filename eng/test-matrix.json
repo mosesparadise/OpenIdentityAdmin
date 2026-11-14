@@ -28,7 +28,7 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 1974,
+      "Host": 1990,
       "Architecture": 5,
       "AppHost": 110
     },

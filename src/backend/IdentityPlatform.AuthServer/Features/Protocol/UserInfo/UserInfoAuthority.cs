@@ -82,7 +82,8 @@ internal sealed class UserInfoAuthority(ManagedRegistration registration, Manage
             await authorizations.GetSubjectAsync(authorization, token) == principal.GetClaim(OpenIddictConstants.Claims.Subject) &&
             await authorizations.HasStatusAsync(authorization, OpenIddictConstants.Statuses.Valid, token) &&
             await authorizations.HasTypeAsync(authorization, OpenIddictConstants.AuthorizationTypes.AdHoc, token) &&
-            (await authorizations.GetScopesAsync(authorization, token)).SequenceEqual(principal.GetScopes(), StringComparer.Ordinal) ? expiration : null;
+            (await authorizations.GetScopesAsync(authorization, token)).SequenceEqual(principal.GetScopes(), StringComparer.Ordinal)
+            ? UserInfoLifetime.Bound(principal, expiration.Value, scope.Owner.Clock.GetUtcNow()) : null;
     }
 
     /// <summary>Rechecks independent persisted account/ceremony/consent state and fresh native policy after formatter callbacks, before committing the read phase.</summary>
