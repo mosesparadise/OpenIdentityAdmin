@@ -857,7 +857,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-16 API/docs/contracts | M01-F, M04-D | Partial: versioned/generated contracts for delivered management resources and PR136 Aspire client/API example; protected docs, remaining resources and vendor activation remain open |
 | FR-17 provider equivalence | M01-A, every affected feature, M09-B/F | Partial: implemented scope tested |
 | FR-18 installation/recovery | M01-A/B/E, M02-A, M09-B | Partial: local schemas/provisioning and DP; production operations unfinished |
-| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: shared-token React workspace, application/catalogue/assignment/grant screens, Razor flows and PR136 sample delivered; remaining screens and qualified manual acceptance stay open |
+| FR-19 UI/theme | M01-D, M02-E, every UI, M09-A | Partial: React workspace, application, catalogue, scope assignment and grant screens, Razor flows and PR136 sample use the shared design; remaining screens and qualified manual acceptance stay open |
 | FR-20 later parity | M10-A | Outside R1 |
 | FR-21 comprehensive tests | Every task, M09-F | Partial: current bounded feature024 CI603 evidence covers 6,398 ordinary native executions, 132 UI cases, 46 Node cases and 143 mutations; full product/manual matrix remains open |
 | FR-22 engineering | Every task, M01-G | Ongoing |

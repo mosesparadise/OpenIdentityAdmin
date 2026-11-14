@@ -166,3 +166,13 @@ The next practical activity is the actual Windows Docker Desktop walkthrough. No
 post-feature024 implementation batch has been selected. Application clone/delete
 (M04-A, with deletion/grant semantics clarified) and general user administration
 (M05-A) are candidate future slices; dormant refresh is not silently activated.
+
+## Documentation verification correction
+
+[CI605](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43649296172)
+failed its source-secret check on the documentation follow-up. The exact pinned
+Gitleaks 8.30.1 binary reproduced one generic-api-key match on roadmap FR-19's
+ordinary UI description, where token terminology preceded a slash-separated list
+of screen names. Rewording that sentence as a plain list removes the match; no
+credential, runtime code, scanner rule or exclusion is changed. The failed run
+remains distinct from corrected documentation verification and CI603 acceptance.
