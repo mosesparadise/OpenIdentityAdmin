@@ -9,6 +9,13 @@ Public issuance remains exact OpenID; T008's assignment hold remains in place.
 Aspire13.6.5 is a required advisory-fixing dependency prerequisite.
 [Candidate evidence and remaining validation](../../specs/023-scope-audience-catalogue/policy-bindings.md).
 
+The implementation is published in [draft PR132](https://github.com/mosesparadise/OpenIdentityAdmin/pull/132).
+CI578 exposed missing migration catalog entries and a historical fixture mismatch;
+CI579 verifies the catalog correction but exposes a nullable fixture parameter bug.
+The fixture correction preserves all original fields and requires a new exact-head run.
+Original CI artifact download is currently blocked by the workspace network policy
+for `sdmntprnortheu.oaiusercontent.com`; do not claim unavailable reports reconciled.
+
 T009 is **not accepted**. Local provider startup and full solution copying hit disk
 exhaustion; preserve those receipts and use hosted both-provider/full verification.
 Do not repeat local SQL diagnostics or close historical/manual/release gates.

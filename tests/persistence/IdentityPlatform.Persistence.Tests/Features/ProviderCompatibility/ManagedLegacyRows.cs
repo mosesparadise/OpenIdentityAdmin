@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using IdentityPlatform.Infrastructure.Features.Identity.ManagedApplications;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,11 @@ internal static class ManagedLegacyRows
 
     /// <summary>Preserves all original phase, proof, lineage and retention fields using provider-parameterized values.</summary>
     internal static Task<int> InsertAsync(PlatformDbContext database, ManagedLoginInteraction row, CancellationToken token) =>
-        database.Database.ExecuteSqlRawAsync(Insert,
-            new object?[] { row.SelectorDigest, row.BrowserDigest, row.ApplicationId, row.DemandDigest, row.RequestId,
+        database.Database.ExecuteSqlInterpolatedAsync(FormattableStringFactory.Create(Insert,
+            row.SelectorDigest, row.BrowserDigest, row.ApplicationId, row.DemandDigest, row.RequestId,
              row.ApplicationRevision, row.Revision, (int)row.State, row.CreatedAt, row.ExpiresAt,
              row.ObservedAt, row.RetainUntil, row.RequestExpiresAt, row.NativeDependencyExpiresAt, row.NativeDependencyCreatedAt,
              row.CorrelationId, row.CeremonyId, row.CeremonyBrowserDigest, row.BrowserBudgetId, row.UserId,
              row.SecurityStamp, row.AuthenticationGeneration, row.FactorGeneration, row.EnrollmentRevision, row.PasswordVerifiedAt,
-             row.MfaVerifiedAt, row.ConsentVerifiedAt, row.AuthorizationId, row.CodeId }.Select(value => value ?? DBNull.Value), token);
+             row.MfaVerifiedAt, row.ConsentVerifiedAt, row.AuthorizationId, row.CodeId), token);
 }

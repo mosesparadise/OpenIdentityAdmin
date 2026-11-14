@@ -116,3 +116,29 @@ concurrency policy. Its completed failure logs and run remain available. Origina
 artifact ZIP retrieval from this workspace was denied HTTP403, so no unavailable
 artifact is claimed inspected. Corrected exact-head full CI and original-report
 reconciliation are still required before T009 completion or squash.
+
+### Nullable historical fixture correction
+
+The second candidate, `5ef6d1a1f9cff5e3a630cb92387f9971c89010cd`, is tested by
+[CI579](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43536556419)
+against merge `799260960de8633e9f1eca9b3cd174c285d7c74f`. Each provider's persistence
+job reports 39 passes and one failure in the historical lifecycle fixture: EF does
+not map the CLR type `DBNull`. The fixture now preserves CLR null arguments through
+`ExecuteSqlInterpolatedAsync` and a fixed `FormattableStringFactory` template. All
+29 original fields remain parameterized in the same order. Independent test review
+checked the EF10.0.14 implementation's null mapping and the frozen provider schemas.
+The corrected Persistence project builds with no warnings; formatting and code-quality
+checks pass. Actual corrected-fixture runtime validation remains pending.
+
+CI579's managed-application mutation jobs pass all seven behavioral controls on each
+provider, including the new policy-binding and current-policy mutations. Its unit
+and hosted static-analysis jobs also pass. These results establish only their
+observed candidate scope; they do not make CI579 or the subsequent correction an
+accepted full run. Original artifact retrieval and complete exact-head evidence
+reconciliation remain required.
+
+Before publishing the nullable correction, CI579 had 72 successful jobs and the two
+known persistence-fixture failures. Both managed issuance groups, the PostgreSQL
+catalogue/admission groups, retained Chromium journeys and WebKit contracts passed.
+The existing concurrency policy may cancel unfinished jobs when this correction is
+published; CI579 is not treated as a completed passing run.
