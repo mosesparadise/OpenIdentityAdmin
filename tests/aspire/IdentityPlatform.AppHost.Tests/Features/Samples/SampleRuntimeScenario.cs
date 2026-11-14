@@ -7,8 +7,12 @@ internal static class SampleRuntimeScenario
 {
     private const int DeadlineMinutes = 9;
     private const string Startup = "sample process readiness";
+    private const string Browser = "sample browser creation";
+    private const string Navigation = "sample waiting-page navigation";
+    private const string WaitingPage = "sample waiting-page assertion";
     private const string Setup = "administrator catalogue and protected sample setup";
-    private const string Authentication = "sample password, MFA and consent";
+    private const string CancelAuthentication = "sample password, MFA and cancelled consent";
+    private const string AllowAuthentication = "sample password, MFA and allowed consent";
     private const string Resource = "sample profile and API";
     private const string Isolation = "sample browser isolation";
     private const string Restart = "fresh disposable sample run";
@@ -41,9 +45,9 @@ internal static class SampleRuntimeScenario
                 Exact = false
             }).CountAsync());
         }
-        catch (Exception)
+        catch (Exception error)
         {
-            throw new InvalidOperationException(FailurePrefix + phase + FailureSuffix);
+            throw new InvalidOperationException(FailurePrefix + phase + FailureSuffix + LocalDemoFailureEvidence.Describe(error));
         }
     }
 
@@ -52,8 +56,11 @@ internal static class SampleRuntimeScenario
     {
         await using var runtime = await LocalDemoRuntime.StartAsync(provider, token);
         await runtime.WaitForSamplesAsync(token);
+        phase(Browser);
         await using var browser = await LocalDemoBrowser.CreateAsync(engine);
+        phase(Navigation);
         await browser.Page.GotoAsync(SampleBrowserJourney.Address);
+        phase(WaitingPage);
         await browser.Page.GetByText(Waiting, new()
         {
             Exact = true
@@ -64,8 +71,9 @@ internal static class SampleRuntimeScenario
         await browser.SignInAsync(runtime);
         var registration = await SampleCatalogueJourney.CreateAsync(browser.Page);
         await runtime.ConfigureSampleAsync(registration.ClientId, registration.Secret, token);
-        phase(Authentication);
+        phase(CancelAuthentication);
         await SampleBrowserJourney.SignInAsync(browser.Page, runtime, browser.SampleFactorAsync, allow: false);
+        phase(AllowAuthentication);
         await SampleBrowserJourney.SignInAsync(browser.Page, runtime, browser.SampleFactorAsync, allow: true);
         phase(Resource);
         await SampleBrowserJourney.ResourcesAsync(browser.Page, registration.Secrets);
@@ -78,7 +86,12 @@ internal static class SampleRuntimeScenario
         await SampleBrowserJourney.ResourcesAsync(second, registration.Secrets);
         await SampleCatalogueJourney.RemoveEmailAsync(browser.Page, registration.ClientId);
         await SampleBrowserJourney.ChangedPolicyAsync(second);
-        return (await independent.CookiesAsync()).Select(cookie => new Cookie
+        return await CookiesAsync(independent);
+    }
+
+    /// <summary>Copies actual protected browser cookies in memory for replay only after the original disposable graph closes.</summary>
+    private static async Task<Cookie[]> CookiesAsync(IBrowserContext context) =>
+        (await context.CookiesAsync()).Select(cookie => new Cookie
         {
             Name = cookie.Name,
             Value = cookie.Value,
@@ -89,5 +102,4 @@ internal static class SampleRuntimeScenario
             SameSite = cookie.SameSite,
             Expires = cookie.Expires
         }).ToArray();
-    }
 }

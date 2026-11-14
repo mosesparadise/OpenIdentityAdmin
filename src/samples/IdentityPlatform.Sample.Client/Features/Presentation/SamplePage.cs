@@ -12,6 +12,7 @@ internal static class SamplePage
     private const string NoStorePolicy = "no-store";
     private const string ReferrerPolicyHeader = "Referrer-Policy";
     private const string NoReferrerPolicy = "no-referrer";
+    private const string FormReferrerPolicy = "strict-origin";
     private const string ContentTypeOptionsHeader = "X-Content-Type-Options";
     private const string NoSniffPolicy = "nosniff";
     private const string ContentSecurityPolicy = "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://issuer.dev.localhost:17443; object-src 'none'";
@@ -50,11 +51,11 @@ internal static class SamplePage
     private const string DefinitionListEndMarkup = "</dl>";
     private const string SectionEndMarkup = "</section>";
 
-    /// <summary>Sets strict response policy before any sample response, including native challenge/callback redirects.</summary>
-    internal static void Headers(HttpContext context)
+    /// <summary>Preserves browser Origin on actionable forms while suppressing referrers on inert responses and native redirects.</summary>
+    internal static void Headers(HttpContext context, bool actionable = false)
     {
         context.Response.Headers.CacheControl = NoStorePolicy;
-        context.Response.Headers[ReferrerPolicyHeader] = NoReferrerPolicy;
+        context.Response.Headers[ReferrerPolicyHeader] = actionable ? FormReferrerPolicy : NoReferrerPolicy;
         context.Response.Headers[ContentTypeOptionsHeader] = NoSniffPolicy;
         context.Response.Headers.ContentSecurityPolicy = ContentSecurityPolicy + BrowserDocument.AssetPolicy;
     }
@@ -62,7 +63,7 @@ internal static class SamplePage
     /// <summary>Writes only encoded bounded identity projections; forms contain native antiforgery, never OAuth credentials.</summary>
     internal static async Task WriteAsync(HttpContext context, bool configured, string? subject = null, ResourceResult? result = null)
     {
-        Headers(context);
+        Headers(context, actionable: configured);
         var body = IntroductionMarkup;
         if (!configured)
         {

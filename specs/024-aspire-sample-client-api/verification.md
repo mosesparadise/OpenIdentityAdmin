@@ -100,3 +100,33 @@ Original archive download through the GitHub connector succeeded, but the return
 file-service host `sdmntprnortheu.oaiusercontent.com` received proxy CONNECT403 on this
 executor. Current enforced environment policy lacks that host. Decoded GitHub logs remain
 readable; raw archive reconciliation is still pending, not replaced by a log-only claim.
+
+## CI600 browser integration correction
+
+[CI600](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43615830444)
+atd7451a3 passes static analysis and the three sample mutations. All four new sample
+browser cells fail: both Chromium cells during authentication and both WebKit cells
+during the broad startup phase. Original decoded job logs are retained under
+`/tmp/sample024-ci600-evidence/logs/`; original archives remain inaccessible as above.
+
+Independent source review identifies two concrete integration defects. The sample
+WebKit lane omitted OS trust for the exact public development certificate, unlike the
+established WebKit lane. Actionable sample forms used no-referrer, which yields a null
+browser Origin while server mutations correctly require the exact sample Origin.
+The correction provisions the same public leaf in the ephemeral runner's OS trust
+bundle and uses strict-origin on actionable forms, retaining no-referrer for inert
+responses/native redirects. Exact Origin, native antiforgery, TLS validation, assertions
+and deadlines are unchanged. Native form/redirect tests assert both header policies.
+
+The prior exception wrapper discarded causal locations. Startup now distinguishes
+browser creation, waiting-page navigation and page assertions; consent distinguishes
+Allow from Cancel. The existing safe diagnostic formatter retains only closed error
+categories and allowlisted source filenames/line numbers. No URL, browser body,
+credential, protocol parameter or raw exception is retained. Independent test review
+passes this bounded correction. CI600's precise failure causes remain unproven until
+new runtime evidence; transient database startup warnings are not causal evidence.
+
+Local correction verification: whole-solution build passes with zero warnings/errors;
+86 sample Host cases and118 Aspire Harness cases pass. Syntax-aware quality and
+retained browser-matrix controls pass without changing allowances or required counts.
+Full provider/browser acceptance and original archive reconciliation remain pending.

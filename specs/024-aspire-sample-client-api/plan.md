@@ -74,7 +74,9 @@ production persistence, trust, review or release policy is introduced.
    then exact orders.read scope. Returns fixed synthetic orders. No live status checks:
    a revoked grant may remain acceptable until expiry, while UserInfo denies current state.
 7. Render finite encoded fields with shared light/dark assets and strict CSP/no-store/
-   referrer policy. POST actions require exact Origin and native antiforgery. Bound
+   referrer policy: strict-origin on actionable forms preserves browser Origin;
+   no-referrer on inert responses and native redirects. POST actions require exact
+   Origin and native antiforgery. Bound
    request bodies, headers, token/profile size, concurrency, store count and lifetimes.
 
 ## Implementation and verification

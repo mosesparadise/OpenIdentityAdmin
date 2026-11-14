@@ -255,6 +255,9 @@ jobs:
           sudo python3 scripts/prepare_browser_archive.py
           dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps ${{ matrix.apphost_group == 'SampleWebKit' && 'webkit' || 'chromium' }}
           sudo apt-get install -y libnss3-tools
+          # WebKit uses the ephemeral runner's OS bundle; trust only this public synthetic leaf.
+          sudo cp "$RUNNER_TEMP/identity-https-trust/localhost.pem" /usr/local/share/ca-certificates/identityplatform-development.crt
+          sudo update-ca-certificates
           mkdir -p "$HOME/.pki/nssdb"
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
           certutil -A -d "sql:$HOME/.pki/nssdb" -n identityplatform-development -t "P,," -i "$RUNNER_TEMP/identity-https-trust/localhost.pem"

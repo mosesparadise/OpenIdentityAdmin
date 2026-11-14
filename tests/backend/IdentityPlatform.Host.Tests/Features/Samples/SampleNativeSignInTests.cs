@@ -28,6 +28,8 @@ public sealed class SampleNativeSignInTests
     private const string SyntheticCodeText = "synthetic-code";
     private const string TokenEndpoint = "/connect/token";
     private const string IssuerParameter = "iss";
+    private const string ReferrerPolicy = "Referrer-Policy";
+    private const string InertReferrer = "no-referrer";
 
     /// <summary>Waiting and process health do not initialize native options; setup later enables a complete sign-in and terminal logout.</summary>
     [Fact]
@@ -42,12 +44,14 @@ public sealed class SampleNativeSignInTests
         }
         using (var waiting = await browser.SendAsync(HttpMethod.Get, HomePath))
         {
+            RequireInertReferrer(waiting);
             Assert.Contains("Configure this sample", await waiting.Content.ReadAsStringAsync(TestContext.Current.CancellationToken), StringComparison.Ordinal);
         }
         await browser.ConfigureAsync();
         var callback = await ChallengeAsync(browser, issuer);
         using var signedIn = await browser.SendAsync(HttpMethod.Get, callback);
         Assert.Equal(HttpStatusCode.Redirect, signedIn.StatusCode);
+        RequireInertReferrer(signedIn);
         Assert.Equal("/", signedIn.Headers.Location!.OriginalString);
         Assert.Equal(1, issuer.TokenCalls);
         Assert.Equal(0, issuer.UserInfoCalls);
@@ -129,11 +133,16 @@ public sealed class SampleNativeSignInTests
         Assert.All(cookies.Where(value => value.StartsWith(prefix, StringComparison.Ordinal)), value => Assert.StartsWith(deletion, value, StringComparison.Ordinal));
     }
 
+    /// <summary>Waiting and native redirect responses have no actionable forms and suppress referrer disclosure.</summary>
+    private static void RequireInertReferrer(HttpResponseMessage response) =>
+        Assert.Equal(InertReferrer, Assert.Single(response.Headers.GetValues(ReferrerPolicy)));
+
     /// <summary>Captures only synthetic native authorization values and requires compact reference state and exact fixed request profile.</summary>
     internal static async Task<string> ChallengeAsync(SampleNativeClient browser, SampleNativeIssuer issuer)
     {
         using var response = await browser.PostAsync(LoginPath);
         Assert.Equal(HttpStatusCode.Redirect, response.StatusCode);
+        RequireInertReferrer(response);
         var location = response.Headers.Location!;
         Assert.Equal(SampleNativeIssuer.Issuer + AuthorizationEndpoint, location.GetLeftPart(UriPartial.Path));
         Assert.Contains(FormActionSelfHttpsIssuerDevLocalhost17443Text, response.Headers.GetValues(ContentSecurityPolicyHeader).Single(), StringComparison.Ordinal);

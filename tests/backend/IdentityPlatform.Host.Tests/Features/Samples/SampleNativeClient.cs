@@ -24,6 +24,8 @@ internal sealed class SampleNativeClient : IAsyncDisposable
     private const string OriginHeader = "Origin";
     private const string SetCookieHeader = "Set-Cookie";
     private const string HomePath = "/";
+    private const string ReferrerPolicy = "Referrer-Policy";
+    private const string FormReferrer = "strict-origin";
     private const string AntiforgeryPattern = "name=\"([^\"]+)\" value=\"([^\"]+)\"";
     private const int TokenValueGroup = 2;
 
@@ -100,6 +102,7 @@ internal sealed class SampleNativeClient : IAsyncDisposable
     internal async Task<FormUrlEncodedContent> FormAsync()
     {
         using var page = await SendAsync(HttpMethod.Get, HomePath);
+        Assert.Equal(FormReferrer, Assert.Single(page.Headers.GetValues(ReferrerPolicy)));
         var body = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var match = Regex.Match(body, AntiforgeryPattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(1));
         Assert.True(match.Success);
