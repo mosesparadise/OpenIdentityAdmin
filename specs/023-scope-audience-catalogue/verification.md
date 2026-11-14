@@ -1,11 +1,19 @@
 # Scope/audience catalogue evidence
 
-## Current accepted catalogue management increment
+## Current accepted policy-binding increment
+
+[Policy acceptance](policy-acceptance.md) binds CI581, the reviewed source and normal
+PR132 squash. All 130 jobs pass: 6,181 native executions, 134 mutation kills and 104
+original coverage inputs meeting all 15 unchanged floors. Independent reviews and
+original-archive reconciliation pass. T009 is complete; T010 consent is next. Extended
+issuance, UserInfo and all historical/manual/public-release gates remain open.
+
+## Accepted catalogue management increment
 
 [Final acceptance](acceptance.md) binds CI563, the exact reviewed source, normal squash
 and evidence limits. All 130 required jobs pass, including both Admission/Replay groups
 on each provider and 104 original coverage inputs. T004–T007 are complete for internal
-development. T008 was subsequently accepted in [PR130 assignment delivery](assignment-acceptance.md); T009–T016 and all historical/manual/public-release gates remain open.
+development. T008 was subsequently accepted in [PR130 assignment delivery](assignment-acceptance.md); T009 was subsequently accepted in [PR132 policy delivery](policy-acceptance.md); T010–T016 and all historical/manual/public-release gates remain open.
 
 ## Historical implementation and verification record
 
