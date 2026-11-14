@@ -61,6 +61,7 @@ internal sealed class ManagedLoginReservation
             RetainUntil = ManagedLoginRules.RetainUntil(now, expiry, skew),
             CorrelationId = Guid.NewGuid()
         };
+        ManagedScopeBinding.Attach(row, ManagedScopeBinding.OpenId(registration.ApplicationId, registration.Revision));
         var reservation = new ManagedLoginReservation(scope, row, budget, cutoff, skew);
         await scope.Owner.RunAsync(async current =>
         {
@@ -125,6 +126,7 @@ internal sealed class ManagedLoginReservation
     {
         var actual = await scope.Owner.RunAsync(current => new ValueTask<ManagedLoginInteraction>(scope.Owner.Database.Set<ManagedLoginInteraction>()
             .AsNoTracking().SingleAsync(value => value.SelectorDigest == row.SelectorDigest, current)), token);
+        await ManagedScopeBinding.RequireOpenIdAsync(scope, actual, token);
         if (FactorBinding.Digest(actual) != expected || FactorBinding.Digest(row) != expected)
         {
             throw ProtocolStorageOwner.Unavailable();

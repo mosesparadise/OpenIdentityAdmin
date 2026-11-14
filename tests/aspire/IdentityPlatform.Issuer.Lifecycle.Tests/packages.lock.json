@@ -4,13 +4,13 @@
     "net10.0": {
       "Aspire.Hosting.Testing": {
         "type": "Direct",
-        "requested": "[13.6.4, )",
-        "resolved": "13.6.4",
-        "contentHash": "9uRiuuhVYZw6FC86fm/aDlDubZM/+kFi4ij3pcm9E4mEFcv+sm2EVB2x6HRy0xi7ZJB4+tA9LBswHsjzYaep2g==",
+        "requested": "[13.6.5, )",
+        "resolved": "13.6.5",
+        "contentHash": "b73ZNXUClMOLpwSHsesPy93mu58jD2Ca1lwyNOII8+sImH3jMkI5TtsPdY19kpNgawxnaqq3O1MO1Fw0LqDJUw==",
         "dependencies": {
           "AspNetCore.HealthChecks.Uris": "9.0.0",
-          "Aspire.Hosting": "13.6.4",
-          "Aspire.Hosting.AppHost": "13.6.4",
+          "Aspire.Hosting": "13.6.5",
+          "Aspire.Hosting.AppHost": "13.6.5",
           "Google.Protobuf": "3.36.1",
           "Grpc.AspNetCore": "2.83.0",
           "Grpc.Net.ClientFactory": "2.83.0",
@@ -28,7 +28,7 @@
           "Polly.Extensions": "8.7.0",
           "Semver": "3.0.0",
           "StreamJsonRpc": "2.25.29",
-          "System.IO.Hashing": "10.0.12",
+          "System.IO.Hashing": "10.0.14",
           "YamlDotNet": "18.1.0"
         }
       },
@@ -64,13 +64,13 @@
       },
       "Aspire.Dashboard.Sdk.linux-x64": {
         "type": "Transitive",
-        "resolved": "13.6.4",
-        "contentHash": "BjJNFnK20CVhdI6DBOsrdeCzW9TkzwS1gkohWRDdzZVuSrIjA9vV556n9q0n/W0NlWZnwv2ncTLqL+DOYUqYHA=="
+        "resolved": "13.6.5",
+        "contentHash": "5AbO2pEYAqkC757VKj/89ie16jF3K8tpQHBYlNJKZBVLQTUQVd951/Q3VnU1x3UkXVyxb7zR7el/iRtQMyJXEw=="
       },
       "Aspire.Hosting.Orchestration.linux-x64": {
         "type": "Transitive",
-        "resolved": "13.6.4",
-        "contentHash": "tAdGnGqpJ/rZUlPW6977cYOXhgfGhElOsZ6bIRNc1MAHsgOJoaZHZj/AwpgDuHNCmsrK17UjgL+GtmD8Lj5lCQ=="
+        "resolved": "13.6.5",
+        "contentHash": "sAQXnHRMarxvm05YfpdNhRuWm+CZTJvnrU+vOobgQaUCGNCpsfYtNPSrjhIuoo9sJ3P5tAqE9cEtfSUVKvhAIw=="
       },
       "AspNetCore.HealthChecks.NpgSql": {
         "type": "Transitive",
@@ -203,8 +203,8 @@
       },
       "Microsoft.Bcl.Cryptography": {
         "type": "Transitive",
-        "resolved": "10.0.12",
-        "contentHash": "gRMy9aW3sAZxKGQwfIh5i/sB7gqCLnhRowjyuCYnZEqM3LyZ+SUi9MlMc4pq3a+ddUflo86yp7vJ9lOy3u0xBw=="
+        "resolved": "10.0.14",
+        "contentHash": "FiQloJinjQXRpkeHgihmbKnPD8DxJQTmwro5Qa5yHxNULxrIPy9HCEOx1U8F5AwL5WVkAccSI0veFM/iYrttUg=="
       },
       "Microsoft.Data.SqlClient": {
         "type": "Transitive",
@@ -612,8 +612,8 @@
       },
       "System.IO.Hashing": {
         "type": "Transitive",
-        "resolved": "10.0.12",
-        "contentHash": "jDix4bBMYnpZdSPcnY+KDV6ik3SRMzpMKby/bZl/XUwIiflwRNAFZ0oOl61R/pSaveIJ8t1gs2BUlrGsPs/bcg=="
+        "resolved": "10.0.14",
+        "contentHash": "lVqovhCt3HlZe7ONG5ydaj6BYwYI004gldVfMMkJl/lR5ueeCtWNpW4nejOX75sPmzm8vXCxB69GqwHaYCnyUQ=="
       },
       "System.Security.AccessControl": {
         "type": "Transitive",
@@ -691,9 +691,9 @@
       "identityplatform.apphost": {
         "type": "Project",
         "dependencies": {
-          "Aspire.Dashboard.Sdk.linux-x64": "[13.6.4, )",
-          "Aspire.Hosting.AppHost": "[13.6.4, )",
-          "Aspire.Hosting.Orchestration.linux-x64": "[13.6.4, )",
+          "Aspire.Dashboard.Sdk.linux-x64": "[13.6.5, )",
+          "Aspire.Hosting.AppHost": "[13.6.5, )",
+          "Aspire.Hosting.Orchestration.linux-x64": "[13.6.5, )",
           "IdentityPlatform.Core": "[1.0.0, )",
           "IdentityPlatform.Database.PostgreSql.Hosting": "[1.0.0, )",
           "IdentityPlatform.Database.SqlServer.Hosting": "[1.0.0, )",
@@ -724,7 +724,7 @@
       "identityplatform.database.hosting": {
         "type": "Project",
         "dependencies": {
-          "Aspire.Hosting": "[13.6.4, )",
+          "Aspire.Hosting": "[13.6.5, )",
           "IdentityPlatform.Database.Abstractions": "[1.0.0, )",
           "MessagePack": "[3.1.12, )"
         }
@@ -739,7 +739,7 @@
       "identityplatform.database.postgresql.hosting": {
         "type": "Project",
         "dependencies": {
-          "Aspire.Hosting.PostgreSQL": "[13.6.4, )",
+          "Aspire.Hosting.PostgreSQL": "[13.6.5, )",
           "IdentityPlatform.Database.Hosting": "[1.0.0, )",
           "IdentityPlatform.Database.PostgreSql": "[1.0.0, )"
         }
@@ -755,7 +755,7 @@
       "identityplatform.database.sqlserver.hosting": {
         "type": "Project",
         "dependencies": {
-          "Aspire.Hosting.SqlServer": "[13.6.4, )",
+          "Aspire.Hosting.SqlServer": "[13.6.5, )",
           "IdentityPlatform.Database.Hosting": "[1.0.0, )",
           "IdentityPlatform.Database.SqlServer": "[1.0.0, )"
         }
@@ -782,9 +782,9 @@
       },
       "Aspire.Hosting": {
         "type": "CentralTransitive",
-        "requested": "[13.6.4, )",
-        "resolved": "13.6.4",
-        "contentHash": "B9H7ttsmjUB+6dbkPTZ6yck25+RRj7gAGWRlqPbeWnn1FtoENET3QFgx8NZ8McFzTzSyPcmgy7OmsaYepEJ3GQ==",
+        "requested": "[13.6.5, )",
+        "resolved": "13.6.5",
+        "contentHash": "bhK3KRbXiKLLzwK+ikz4o5ZMahWQYZbV1d2jUh7pzilFlVIQ66bxJnVKsqb3Y1MPcjPOk9QTIf+F8gS6zjngNA==",
         "dependencies": {
           "AspNetCore.HealthChecks.Uris": "9.0.0",
           "Google.Protobuf": "3.36.1",
@@ -801,18 +801,18 @@
           "Polly.Core": "8.7.0",
           "Semver": "3.0.0",
           "StreamJsonRpc": "2.25.29",
-          "System.IO.Hashing": "10.0.12",
+          "System.IO.Hashing": "10.0.14",
           "YamlDotNet": "18.1.0"
         }
       },
       "Aspire.Hosting.AppHost": {
         "type": "CentralTransitive",
-        "requested": "[13.6.4, )",
-        "resolved": "13.6.4",
-        "contentHash": "bHDwJmvFRVsOTFhgaIUDIQO8Qqq22ZcnUfDflTiaq95rDBBiNjattsAATkwpHDp6/JuKHF0dBB/nF22V0/rUtA==",
+        "requested": "[13.6.5, )",
+        "resolved": "13.6.5",
+        "contentHash": "GP32tRjPx2VCincmWXrLYvwN9RQJD6KG44YY/5oaAO9wLj09bP9W4gwIkHQeR//7QOJAezMAlZNlmNuAP1JVDA==",
         "dependencies": {
           "AspNetCore.HealthChecks.Uris": "9.0.0",
-          "Aspire.Hosting": "13.6.4",
+          "Aspire.Hosting": "13.6.5",
           "Google.Protobuf": "3.36.1",
           "Grpc.AspNetCore": "2.83.0",
           "Grpc.Net.ClientFactory": "2.83.0",
@@ -827,19 +827,19 @@
           "Polly.Core": "8.7.0",
           "Semver": "3.0.0",
           "StreamJsonRpc": "2.25.29",
-          "System.IO.Hashing": "10.0.12",
+          "System.IO.Hashing": "10.0.14",
           "YamlDotNet": "18.1.0"
         }
       },
       "Aspire.Hosting.PostgreSQL": {
         "type": "CentralTransitive",
-        "requested": "[13.6.4, )",
-        "resolved": "13.6.4",
-        "contentHash": "ps9k26WrErB3VXaFQznIm9VMVgWSGYlrISUOkAVMPSNDbhT9pzLqrDh7yt2Jcb2Qz3X4TtkIgJFFxSgHu7l42A==",
+        "requested": "[13.6.5, )",
+        "resolved": "13.6.5",
+        "contentHash": "QZff/93X9GVC6nFW/qqLbiiqpXyi2VDY4WkUhZbK9ctfZ4mzq0rkl0ANJbnzXBOzCs17eH57pE4dFY2f6CyfAw==",
         "dependencies": {
           "AspNetCore.HealthChecks.NpgSql": "9.0.0",
           "AspNetCore.HealthChecks.Uris": "9.0.0",
-          "Aspire.Hosting": "13.6.4",
+          "Aspire.Hosting": "13.6.5",
           "Google.Protobuf": "3.36.1",
           "Grpc.AspNetCore": "2.83.0",
           "Grpc.Net.ClientFactory": "2.83.0",
@@ -854,19 +854,19 @@
           "Polly.Core": "8.7.0",
           "Semver": "3.0.0",
           "StreamJsonRpc": "2.25.29",
-          "System.IO.Hashing": "10.0.12",
+          "System.IO.Hashing": "10.0.14",
           "YamlDotNet": "18.1.0"
         }
       },
       "Aspire.Hosting.SqlServer": {
         "type": "CentralTransitive",
-        "requested": "[13.6.4, )",
-        "resolved": "13.6.4",
-        "contentHash": "f/ny1jXbU+2W06Dn+4lcYdyP7cF7wjfN/Cod/KCGIXzZbSV++yZR6EuOEnj8tIqGH07kaKyPi30LLd09V+VERA==",
+        "requested": "[13.6.5, )",
+        "resolved": "13.6.5",
+        "contentHash": "6Fn8JozBOYI3ajbNGm9VKi1pd7c8r9PViNf/zr8BRJFOutsvumdGLNVPt++w+oLzzM4kMLmNAGmkNpvJ9H3Yng==",
         "dependencies": {
           "AspNetCore.HealthChecks.SqlServer": "9.0.0",
           "AspNetCore.HealthChecks.Uris": "9.0.0",
-          "Aspire.Hosting": "13.6.4",
+          "Aspire.Hosting": "13.6.5",
           "Google.Protobuf": "3.36.1",
           "Grpc.AspNetCore": "2.83.0",
           "Grpc.Net.ClientFactory": "2.83.0",
@@ -874,7 +874,7 @@
           "Hex1b": "0.168.0",
           "KubernetesClient": "19.0.2",
           "MessagePack": "2.5.307",
-          "Microsoft.Bcl.Cryptography": "10.0.12",
+          "Microsoft.Bcl.Cryptography": "10.0.14",
           "Microsoft.Data.SqlClient": "7.0.2",
           "ModelContextProtocol": "1.4.1",
           "Newtonsoft.Json": "13.0.4",
@@ -883,8 +883,8 @@
           "Polly.Core": "8.7.0",
           "Semver": "3.0.0",
           "StreamJsonRpc": "2.25.29",
-          "System.IO.Hashing": "10.0.12",
-          "System.Security.Cryptography.Pkcs": "10.0.12",
+          "System.IO.Hashing": "10.0.14",
+          "System.Security.Cryptography.Pkcs": "10.0.14",
           "YamlDotNet": "18.1.0"
         }
       },

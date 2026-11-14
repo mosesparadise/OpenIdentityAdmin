@@ -1,5 +1,6 @@
 using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Catalogue;
+using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.Infrastructure.Features.Applications;
@@ -11,6 +12,7 @@ internal static class ManagedApplicationProfile
         OpenIddictConstants.Permissions.Endpoints.Token, OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
         OpenIddictConstants.Permissions.ResponseTypes.Code];
     private static readonly string[] Requirements = [OpenIddictConstants.Requirements.Features.ProofKeyForCodeExchange];
+    internal static string OpenIdPermissionsDigest => FactorBinding.Digest(Permissions.Order(StringComparer.Ordinal).ToArray());
 
     /// <summary>Builds a native descriptor from immutable validated intent without allowing arbitrary grants, scopes or settings.</summary>
     internal static OpenIddictApplicationDescriptor Create(ApplicationMutationCommand command, string secret)

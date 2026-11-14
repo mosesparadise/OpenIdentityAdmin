@@ -24,7 +24,7 @@ internal sealed class ManagedHumanInvariant(ManagedLoginInteraction row, Ceremon
     internal async Task RequireAsync(PlatformDbContext database, ManagedHumanAction action, bool accepted, CeremonyTransaction ceremony, ManagedPasswordUpdate? update, CancellationToken token)
     {
         var actual = await database.Set<ManagedLoginInteraction>().AsNoTracking().SingleAsync(value => value.SelectorDigest == row.SelectorDigest, token);
-        if (original != Immutable(row) || persisted != FactorBinding.Digest(actual) || row.Revision != revision ||
+        if (!await ManagedScopeReferences.IsOpenIdAsync(database, row, token) || original != Immutable(row) || persisted != FactorBinding.Digest(actual) || row.Revision != revision ||
             phase != ManagedLoginState.PendingPassword && password != Password(row) ||
             mfa is not null && row.MfaVerifiedAt != mfa || consent is not null && row.ConsentVerifiedAt != consent ||
             row.State != (accepted ? Next(phase, action) : phase))
@@ -56,6 +56,8 @@ internal sealed class ManagedHumanInvariant(ManagedLoginInteraction row, Ceremon
         value.ApplicationId,
         value.ApplicationRevision,
         value.DemandDigest,
+        value.PolicySnapshot,
+        value.PolicyDigest,
         value.RequestId,
         value.CreatedAt,
         value.ExpiresAt,

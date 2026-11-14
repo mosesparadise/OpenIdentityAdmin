@@ -32,8 +32,8 @@ internal sealed record CatalogueDeleteTarget(CatalogueScope? Scope, CatalogueAud
 
     /// <summary>Checks all current native dependencies, including retained revoked authorizations and unmanaged native mappings.</summary>
     internal Task<bool> ReferencedAsync(ProtocolStorageScope scope, CancellationToken token) => Scope is not null
-        ? CatalogueNativeReferences.ScopeAsync(scope.Services, Scope.Name, token)
-        : CatalogueNativeReferences.AudienceAsync(scope.Services, Audience!.Resource, token);
+        ? CatalogueReferences.ScopeAsync(scope, Scope.Id, Scope.Name, token)
+        : CatalogueReferences.AudienceAsync(scope, Audience!.Id, Audience!.Resource, token);
 
     /// <summary>Verifies the entire original native/product snapshot again before deletion rather than comparing only its identifier.</summary>
     internal Task VerifyAsync(ProtocolStorageScope scope, CancellationToken token) => Scope is not null

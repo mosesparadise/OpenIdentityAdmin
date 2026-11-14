@@ -193,7 +193,7 @@ def manifest(root, suite='issuer'):
         'catalogue': (5, 'eng/catalogue-mutations.json', None),
         'application-grants': (6, 'eng/application-grant-mutations.json', None),
         'application-lifecycle': (4, 'eng/application-lifecycle-mutations.json', None),
-        'managed-applications': (5, 'eng/managed-application-mutations.json', None),
+        'managed-applications': (7, 'eng/managed-application-mutations.json', None),
         'browser-session': (8, 'eng/browser-session-mutations.json', None),
         'pilot-replay': (5, 'eng/pilot-replay-mutations.json', None),
         'governance': (6, 'eng/governance-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance')
@@ -230,10 +230,12 @@ def manifest(root, suite='issuer'):
             'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs'
         }
         managed_paths = {
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopeBinding.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopePolicy.cs',
             'src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs',
             'src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedPreparedPrincipal.cs',
             'src/backend/IdentityPlatform.AuthServer/Features/Protocol/ManagedApplications/ManagedDurableToken.cs',
-            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs'
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs'
         }
         exact_paths = {'catalogue': {
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationWriteState.cs',
@@ -252,7 +254,7 @@ def manifest(root, suite='issuer'):
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs'},
                        'application-lifecycle': {
-                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistration.cs',
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs',
                            'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs'}}
         if suite in exact_paths:

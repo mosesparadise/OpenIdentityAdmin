@@ -13,6 +13,7 @@ internal sealed class ManagedHumanSaveFault : SaveChangesInterceptor
     private const int DigestLength = 64;
     private const string EventPrefix = "managed-";
     private const string Failure = "Synthetic managed human save failure.";
+    private const string Whitespace = " ";
     private const string ForeignPurpose = "Login";
     internal ManagedHumanSaveDefect? Selected
     {
@@ -48,11 +49,18 @@ internal sealed class ManagedHumanSaveFault : SaveChangesInterceptor
         var database = eventData.Context!;
         var row = database.ChangeTracker.Entries<ManagedLoginInteraction>().SingleOrDefault()?.Entity;
         var final = database.ChangeTracker.Entries<SecurityAuditIntent>().Any(entry => entry.Entity.Event.StartsWith(EventPrefix, StringComparison.Ordinal));
-        if (Selected is not { } defect || Fired || row is null || (defect is ManagedHumanSaveDefect.InternalBinding or ManagedHumanSaveDefect.Ceremony) == final)
+        if (Selected is not { } defect || Fired || row is null || (defect is ManagedHumanSaveDefect.InternalBinding or ManagedHumanSaveDefect.InternalPolicy or ManagedHumanSaveDefect.InternalLegacy or ManagedHumanSaveDefect.Ceremony) == final)
         {
             return result;
         }
         Fired = true;
+        await MutateAsync(database, row, defect, cancellationToken);
+        MutationCompleted = true;
+        return result;
+    }
+    /// <summary>Applies a single witnessed mutation after the real save without widening production transaction authority.</summary>
+    private async Task MutateAsync(DbContext database, ManagedLoginInteraction row, ManagedHumanSaveDefect defect, CancellationToken cancellationToken)
+    {
         switch (defect)
         {
             case ManagedHumanSaveDefect.Throw:
@@ -66,6 +74,18 @@ internal sealed class ManagedHumanSaveFault : SaveChangesInterceptor
                 Assert.Equal(1, await database.Set<ManagedLoginInteraction>().Where(value => value.SelectorDigest == row.SelectorDigest)
                     .ExecuteUpdateAsync(setter => setter.SetProperty(value => value.BrowserDigest, row.BrowserDigest), cancellationToken));
                 break;
+            case ManagedHumanSaveDefect.InternalLegacy:
+            case ManagedHumanSaveDefect.FinalLegacy:
+            case ManagedHumanSaveDefect.InternalPolicy:
+            case ManagedHumanSaveDefect.FinalPolicy:
+                await PolicyAsync(database, row, defect, cancellationToken);
+                break;
+            case ManagedHumanSaveDefect.FinalReference:
+                var scopeId = await database.Set<OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope>()
+                    .Select(value => value.Id).FirstAsync(cancellationToken);
+                database.Add(new ManagedScopeReference { SelectorDigest = row.SelectorDigest, ScopeId = scopeId! });
+                await database.SaveChangesAsync(cancellationToken);
+                break;
             case ManagedHumanSaveDefect.Ceremony:
                 var ceremony = Assert.Single(database.ChangeTracker.Entries<AdministratorInteraction>()).Entity;
                 ceremony.Purpose = ForeignPurpose;
@@ -73,13 +93,23 @@ internal sealed class ManagedHumanSaveFault : SaveChangesInterceptor
                     .ExecuteUpdateAsync(setter => setter.SetProperty(value => value.Purpose, ForeignPurpose), cancellationToken));
                 break;
         }
-        MutationCompleted = true;
-        return result;
     }
+
+    /// <summary>Distinguishes malformed canonical bytes from a constraint-valid downgrade that only the immutable original binding can reject.</summary>
+    private static async Task PolicyAsync(DbContext database, ManagedLoginInteraction row, ManagedHumanSaveDefect defect, CancellationToken token)
+    {
+        var legacy = defect is ManagedHumanSaveDefect.InternalLegacy or ManagedHumanSaveDefect.FinalLegacy;
+        row.PolicySnapshot = legacy ? null : row.PolicySnapshot + Whitespace;
+        row.PolicyDigest = legacy ? null : ManagedLoginRules.Digest(row.PolicySnapshot!);
+        Assert.Equal(1, await database.Set<ManagedLoginInteraction>().Where(value => value.SelectorDigest == row.SelectorDigest)
+            .ExecuteUpdateAsync(setter => setter.SetProperty(value => value.PolicySnapshot, row.PolicySnapshot)
+                .SetProperty(value => value.PolicyDigest, row.PolicyDigest), token));
+    }
+
 }
 
 /// <summary>Names causal faults before final snapshot adoption and after the final durable save.</summary>
 public enum ManagedHumanSaveDefect
 {
-    InternalBinding, Ceremony, Throw, FinalBinding, Expired
+    InternalBinding, Ceremony, Throw, FinalBinding, Expired, InternalPolicy, FinalPolicy, FinalReference, InternalLegacy, FinalLegacy
 }

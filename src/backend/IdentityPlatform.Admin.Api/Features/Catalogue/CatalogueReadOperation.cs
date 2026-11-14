@@ -75,7 +75,7 @@ internal static class CatalogueReadOperation
         if (kind == CatalogueResource.Scope)
         {
             var scope = await CatalogueScopeReader.ReadAsync(services, database, id, token);
-            return new(scope.Details(await CatalogueNativeReferences.ScopeAsync(services, scope.Name, token), expiry), scope.Version, expiry);
+            return new(scope.Details(await CatalogueReferences.ScopeAsync(services, scope.Id, scope.Name, token), expiry), scope.Version, expiry);
         }
         var audience = await database.Set<ApiAudience>().AsNoTracking().SingleOrDefaultAsync(value => value.Id == id, token);
         if (audience is null || audience.Id != id)
@@ -83,7 +83,7 @@ internal static class CatalogueReadOperation
             throw new CatalogueRejected(CatalogueFailure.Missing);
         }
         var snapshot = CatalogueAudience.Capture(audience);
-        return new(snapshot.Details(await CatalogueNativeReferences.AudienceAsync(services, snapshot.Resource, token), expiry), snapshot.Version, expiry);
+        return new(snapshot.Details(await CatalogueReferences.AudienceAsync(services, snapshot.Id, snapshot.Resource, token), expiry), snapshot.Version, expiry);
     }
 }
 

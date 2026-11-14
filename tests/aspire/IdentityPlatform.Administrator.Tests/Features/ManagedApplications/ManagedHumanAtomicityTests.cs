@@ -40,7 +40,7 @@ public sealed class ManagedHumanAtomicityTests(BootstrapFixture fixture)
     {
         var before = await ManagedHumanEvidence.DigestAsync(test);
         var now = test.Http.Now;
-        foreach (var defect in Enum.GetValues<ManagedHumanSaveDefect>().Where(value => internalSaves || value is not (ManagedHumanSaveDefect.InternalBinding or ManagedHumanSaveDefect.Ceremony)))
+        foreach (var defect in Enum.GetValues<ManagedHumanSaveDefect>().Where(value => internalSaves || value is not (ManagedHumanSaveDefect.InternalBinding or ManagedHumanSaveDefect.InternalPolicy or ManagedHumanSaveDefect.InternalLegacy or ManagedHumanSaveDefect.Ceremony)))
         {
             fault.Arm(defect);
             try

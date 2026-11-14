@@ -41,6 +41,7 @@ internal static class ManagedLoginModel
     /// <summary>Preserves full native account bounds and independent replay retention without any foreign-key deletion cascade.</summary>
     internal static void Configure(ModelBuilder builder, IDatabaseModelDialect dialect)
     {
+        ManagedScopeModel.Configure(builder, dialect);
         var row = builder.Entity<ManagedLoginInteraction>();
         row.HasKey(value => value.SelectorDigest);
         foreach (var name in new[] { nameof(ManagedLoginInteraction.SelectorDigest), nameof(ManagedLoginInteraction.BrowserDigest),

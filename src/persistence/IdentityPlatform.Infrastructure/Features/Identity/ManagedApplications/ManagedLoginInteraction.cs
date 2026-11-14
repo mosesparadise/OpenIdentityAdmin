@@ -7,6 +7,14 @@ internal sealed class ManagedLoginInteraction
     public string BrowserDigest { get; set; } = string.Empty;
     public string ApplicationId { get; set; } = string.Empty;
     public string DemandDigest { get; set; } = string.Empty;
+    public string? PolicySnapshot
+    {
+        get; set;
+    }
+    public string? PolicyDigest
+    {
+        get; set;
+    }
     public string? RequestId
     {
         get; set;

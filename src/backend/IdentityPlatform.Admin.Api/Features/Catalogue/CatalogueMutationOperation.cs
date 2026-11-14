@@ -51,8 +51,8 @@ internal static class CatalogueMutationOperation
         {
             await native.VerifyAsync(scope, token);
         }
-        var referenced = native is not null ? await CatalogueNativeReferences.ScopeAsync(scope.Services, native.Name, token) :
-            await CatalogueNativeReferences.AudienceAsync(scope.Services, audience!.Resource, token);
+        var referenced = native is not null ? await CatalogueReferences.ScopeAsync(scope, native.Id, native.Name, token) :
+            await CatalogueReferences.AudienceAsync(scope, audience!.Id, audience!.Resource, token);
         await authority.VerifyAsync(scope, intent, token);
         budget.RequireCurrent();
         authority.Consume(scope, intent, token);

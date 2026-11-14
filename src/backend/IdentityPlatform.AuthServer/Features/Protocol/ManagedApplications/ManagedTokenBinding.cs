@@ -39,6 +39,7 @@ internal sealed class ManagedTokenBinding(ManagedRegistration registration, Mana
         {
             return null;
         }
+        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
         var expiration = await AdministratorNativeToken.ExpirationAsync(scope, principal, principal.GetTokenType()!, registration.ApplicationId, token);
         return expiration is { } expires ? new(registration, row, expires) : null;
     }

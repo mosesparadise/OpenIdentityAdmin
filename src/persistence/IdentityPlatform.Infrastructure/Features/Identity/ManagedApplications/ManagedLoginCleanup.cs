@@ -37,6 +37,7 @@ internal static class ManagedLoginCleanup
             }
             await scope.Owner.RunAsync(async current =>
             {
+                await scope.Owner.Database.Set<ManagedScopeReference>().Where(value => value.SelectorDigest == row.SelectorDigest).ExecuteDeleteAsync(current);
                 scope.Owner.Database.Remove(row);
                 await scope.Owner.Database.SaveChangesAsync(current);
             }, token, write: true);

@@ -24,6 +24,7 @@ internal static class ManagedHumanEvidence
             Browsers = await database.Set<AdministratorBrowserBudget>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Requests = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(row => row.Id).Select(row => new { row.Id, row.Status, row.Type, row.ExpirationDate, row.RedemptionDate }).ToArrayAsync(token),
             Managed = await database.Set<ManagedLoginInteraction>().AsNoTracking().OrderBy(row => row.SelectorDigest).ToArrayAsync(token),
+            ScopeReferences = await database.Set<ManagedScopeReference>().AsNoTracking().OrderBy(row => row.SelectorDigest).ThenBy(row => row.ScopeId).ToArrayAsync(token),
             Ceremonies = await database.Set<AdministratorInteraction>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Replay = await database.Set<AdministratorReplay>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Authentication = await database.Set<AdministratorAuthentication>().AsNoTracking().OrderBy(row => row.UserId).ToArrayAsync(token),

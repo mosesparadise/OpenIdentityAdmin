@@ -697,7 +697,7 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
         self.assertEqual(8, len(manifest(ROOT, "browser-session")))
         self.assertEqual(8, len(manifest(ROOT, "applications")))
-        self.assertEqual(5, len(manifest(ROOT, "managed-applications")))
+        self.assertEqual(7, len(manifest(ROOT, "managed-applications")))
         self.assertEqual(4, len(manifest(ROOT, "application-lifecycle")))
         self.assertEqual(6, len(manifest(ROOT, "application-grants")))
         self.assertEqual(5, len(manifest(ROOT, "pilot-replay")))
