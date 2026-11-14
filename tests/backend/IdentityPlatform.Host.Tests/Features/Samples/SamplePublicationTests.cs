@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Host.Tests.Features.Samples;
 
 /// <summary>Orders native authenticated HTTP publication against original expiry and terminal logout.</summary>
+[Collection(SampleNativeIsolation.Name)]
 public sealed class SamplePublicationTests
 {
     private const string Profile = "/profile";

@@ -130,3 +130,40 @@ Local correction verification: whole-solution build passes with zero warnings/er
 86 sample Host cases and118 Aspire Harness cases pass. Syntax-aware quality and
 retained browser-matrix controls pass without changing allowances or required counts.
 Full provider/browser acceptance and original archive reconciliation remain pending.
+
+## CI601 runtime result and Host scheduling
+
+[CI601](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43617510791)
+at8701511 passes all four real sample journeys: PostgreSQL Chromium/WebKit and SQL
+Server Chromium/WebKit, with one complete native case and zero skips per cell. These
+cover the actual UI registration/setup, fresh password/MFA, Cancel/Allow, native
+callback, UserInfo/API, both themes and layouts, local logout, browser isolation,
+policy change and fresh disposable run. Static analysis and all three sample mutations
+also pass. Original decoded logs are retained in `/tmp/sample024-ci601-evidence/logs/`;
+archive reconciliation remains blocked, so this is not full acceptance.
+
+The unit job fails: the first configured GET in the native sample lifecycle case
+aborts at the unchanged10-second request deadline, and the Host process subsequently
+exceeds its unchanged180-second suite deadline without a complete report. Its cause
+is not established. Native ephemeral RSA initialization and concurrent host tests are
+a possible contributor, not a proven diagnosis. Whole Host reproduction under coverage
+passes2076/2076 in57.431s; an additional run restricted to two CPUs and processor
+count2 passes2076/2076 in105.229s, within the same180-second outer bound. Neither
+local pass explains the hosted failure.
+
+Independent test review recommends a bounded scheduling change: the five classes
+using the real native sample host share a nonparallel xUnit collection, so other test
+collections cannot compete during cold initialization. No native options prewarming,
+request/suite deadline extension, skipped case, scenario-name/count change or production
+change is made. Deliberate concurrent redemption/logout/publication operations inside
+each case remain concurrent. Preserve CI601 as failed evidence; new exact-head
+verification is required and no stable-suite/root-cause claim follows from isolation.
+
+After isolation, the same two-CPU covered Host run passes2076/2076, zero skips,
+in113.554s within the unchanged180-second bound. Build/style/quality checks pass.
+Native discovery preserves the complete2076 scenario/type/trait multiset. Sample
+TRX IDs change with collection identity; scenario names and counts remain intact.
+The complete report reconciles current discovery by name multiplicity and verifies
+unique native IDs, result IDs, definition links and execution bindings. Legacy
+duplicate display names prevent using the provider-only unique-name helper.
+This is local scheduling evidence, not an explanation of CI601 or hosted acceptance.

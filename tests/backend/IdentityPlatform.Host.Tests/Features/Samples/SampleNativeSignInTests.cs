@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.WebUtilities;
 namespace IdentityPlatform.Host.Tests.Features.Samples;
 
 /// <summary>Proves real sample middleware, reference state, S256, token validation and server-held native cookies as one HTTP journey.</summary>
+[Collection(SampleNativeIsolation.Name)]
 public sealed class SampleNativeSignInTests
 {
     private const string HealthPath = "/health";

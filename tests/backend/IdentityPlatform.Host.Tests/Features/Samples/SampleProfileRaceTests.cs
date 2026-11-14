@@ -3,6 +3,7 @@ using System.Net;
 namespace IdentityPlatform.Host.Tests.Features.Samples;
 
 /// <summary>Orders real explicit profile HTTP completion against browser logout without holding a gate over remote work.</summary>
+[Collection(SampleNativeIsolation.Name)]
 public sealed class SampleProfileRaceTests
 {
     private const string ProfilePath = "/profile";

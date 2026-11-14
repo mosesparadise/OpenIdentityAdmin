@@ -3,6 +3,7 @@ using System.Net;
 namespace IdentityPlatform.Host.Tests.Features.Samples;
 
 /// <summary>Proves native trust and ephemeral browser authority independently of the waiting setup screen.</summary>
+[Collection(SampleNativeIsolation.Name)]
 public sealed class SampleNativeLifecycleTests
 {
     private const string Home = "/";

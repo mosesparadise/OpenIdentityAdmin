@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace IdentityPlatform.Host.Tests.Features.Samples;
 
 /// <summary>Forces failures in actual cookie publication after native callback validation and proves server authority is removed.</summary>
+[Collection(SampleNativeIsolation.Name)]
 public sealed class SampleCallbackFailureTests
 {
     private const string CookieFailureMessage = "Synthetic cookie publication failure.";
