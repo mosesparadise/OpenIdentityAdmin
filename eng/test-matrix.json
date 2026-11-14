@@ -28,20 +28,20 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 1990,
+      "Host": 2076,
       "Architecture": 5,
-      "AppHost": 110
+      "AppHost": 118
     },
     "PostgreSql": {
       "Persistence": 40,
-      "AppHost": 21,
+      "AppHost": 23,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
       "Administrator": 1360
     },
     "SqlServer": {
       "Persistence": 40,
-      "AppHost": 21,
+      "AppHost": 23,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
       "Administrator": 1465
@@ -193,6 +193,14 @@
     "LocalDemo": {
       "PostgreSql": 3,
       "SqlServer": 3
+    },
+    "SampleChromium": {
+      "PostgreSql": 1,
+      "SqlServer": 1
+    },
+    "SampleWebKit": {
+      "PostgreSql": 1,
+      "SqlServer": 1
     }
   },
   "browser_session_groups": {

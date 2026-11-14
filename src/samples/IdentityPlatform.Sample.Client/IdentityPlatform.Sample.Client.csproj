@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <Compile Include="../Shared/SampleProfile.cs" Link="Features/Configuration/SampleProfile.cs" />
+    <PackageReference Include="OpenIddict.Core" />
+    <PackageReference Include="OpenIddict.Client.AspNetCore" />
+    <PackageReference Include="OpenIddict.Client.SystemNetHttp" />
+    <ProjectReference Include="../../aspire/IdentityPlatform.ServiceDefaults/IdentityPlatform.ServiceDefaults.csproj" />
+    <InternalsVisibleTo Include="IdentityPlatform.Host.Tests" />
+    <InternalsVisibleTo Include="IdentityPlatform.Administrator.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../frontend/IdentityPlatform.DesignTokens/BrowserDocument.cs" Link="Features/Presentation/BrowserDocument.cs" />
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/tokens.css" LogicalName="IdentityPlatform.Sample.tokens.css" />
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/browser-document.css" LogicalName="IdentityPlatform.Sample.browser-document.css" />
+    <EmbeddedResource Include="../../frontend/IdentityPlatform.DesignTokens/theme.js" LogicalName="IdentityPlatform.Sample.theme.js" />
+  </ItemGroup>
+</Project>

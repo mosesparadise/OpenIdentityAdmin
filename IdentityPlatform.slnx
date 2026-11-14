@@ -33,6 +33,10 @@
 
     <Project Path="src/persistence/IdentityPlatform.Infrastructure/IdentityPlatform.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/samples/">
+    <Project Path="src/samples/IdentityPlatform.Sample.Api/IdentityPlatform.Sample.Api.csproj" />
+    <Project Path="src/samples/IdentityPlatform.Sample.Client/IdentityPlatform.Sample.Client.csproj" />
+  </Folder>
   <Folder Name="/tests/" />
   <Folder Name="/tests/architecture/">
     <Project Path="tests/architecture/IdentityPlatform.Architecture.Tests/IdentityPlatform.Architecture.Tests.csproj" />

@@ -8,6 +8,11 @@ namespace IdentityPlatform.AppHost.Tests.Features;
 /// <summary>Exercises normal demo pages over real browser TLS without authority fixtures, certificate overrides or screenshots.</summary>
 internal sealed class LocalDemoBrowser : IAsyncDisposable
 {
+    private const string ChromiumEngine = "chromium";
+    private const string WebKitEngine = "webkit";
+    private const string UnsupportedEngine = "Unsupported retained browser.";
+    internal IPage Page => page;
+    internal IBrowserContext Context => context;
     private const string ApplicationsPhase = "protected application list";
     private const string RelyingPartyPhase = "managed test-client HTTPS startup";
     private const string EditorPhase = "application creation, edit and replacement";
@@ -87,6 +92,13 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
         return Task.FromResult(code);
     }
 
+    /// <summary>Prepares a genuinely unused authenticator value for the sample's independent fresh ceremony.</summary>
+    internal async Task<string> SampleFactorAsync()
+    {
+        await FactorOracle.PrepareUnusedCodeAsync(seed!, usedCodes, TestContext.Current.CancellationToken);
+        return await ManagedFactorAsync();
+    }
+
     /// <summary>Retains sensitive browser state only in memory until the context closes.</summary>
     private LocalDemoBrowser(IPlaywright playwright, IBrowser browser, IBrowserContext context, IPage page)
     {
@@ -97,13 +109,18 @@ internal sealed class LocalDemoBrowser : IAsyncDisposable
     }
 
     /// <summary>Launches Chromium with ordinary certificate validation, the engine available to the Windows demo audience.</summary>
-    internal static async Task<LocalDemoBrowser> CreateAsync()
+    internal static async Task<LocalDemoBrowser> CreateAsync(string engine = ChromiumEngine)
     {
         var playwright = await Playwright.CreateAsync();
         IBrowser? browser = null;
         try
         {
-            browser = await playwright.Chromium.LaunchAsync();
+            browser = await (engine switch
+            {
+                ChromiumEngine => playwright.Chromium,
+                WebKitEngine => playwright.Webkit,
+                _ => throw new InvalidOperationException(UnsupportedEngine)
+            }).LaunchAsync();
             var context = await browser.NewContextAsync();
             LocalDemoNavigation.Configure(context);
             return new(playwright, browser, context, await context.NewPageAsync());

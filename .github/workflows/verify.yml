@@ -145,6 +145,10 @@ jobs:
           - { profile: SqlServer, partition: apphost, apphost_group: BffSessions, label: SqlServer-apphost-bffsessions }
           - { profile: PostgreSql, partition: apphost, apphost_group: LocalDemo, label: PostgreSql-apphost-localdemo }
           - { profile: SqlServer, partition: apphost, apphost_group: LocalDemo, label: SqlServer-apphost-localdemo }
+          - { profile: PostgreSql, partition: apphost, apphost_group: SampleChromium, label: PostgreSql-apphost-samplechromium }
+          - { profile: SqlServer, partition: apphost, apphost_group: SampleChromium, label: SqlServer-apphost-samplechromium }
+          - { profile: PostgreSql, partition: apphost, apphost_group: SampleWebKit, label: PostgreSql-apphost-samplewebkit }
+          - { profile: SqlServer, partition: apphost, apphost_group: SampleWebKit, label: SqlServer-apphost-samplewebkit }
           - { profile: PostgreSql, partition: issuer, issuer_group: Flows, label: issuer-PostgreSql-flows }
           - { profile: SqlServer, partition: issuer, issuer_group: Flows, label: issuer-SqlServer-flows }
           - { profile: PostgreSql, partition: issuer, issuer_group: Boundaries, label: issuer-PostgreSql-boundaries }
@@ -245,11 +249,11 @@ jobs:
           openssl rehash "$RUNNER_TEMP/identity-https-trust"
           echo "SSL_CERT_DIR=$RUNNER_TEMP/identity-https-trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
       - name: Prepare real local demo browser
-        if: matrix.partition == 'apphost' && matrix.apphost_group == 'LocalDemo'
+        if: matrix.partition == 'apphost' && (matrix.apphost_group == 'LocalDemo' || startsWith(matrix.apphost_group, 'Sample'))
         shell: bash
         run: |
           sudo python3 scripts/prepare_browser_archive.py
-          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps chromium
+          dotnet run --project tests/tooling/IdentityPlatform.BrowserInstaller --no-build -- install --with-deps ${{ matrix.apphost_group == 'SampleWebKit' && 'webkit' || 'chromium' }}
           sudo apt-get install -y libnss3-tools
           mkdir -p "$HOME/.pki/nssdb"
           certutil -N -d "sql:$HOME/.pki/nssdb" --empty-password
@@ -656,6 +660,35 @@ jobs:
             artifacts/mutations/catalogue-${{ matrix.provider }}/evidence.json
           retention-days: 7
           if-no-files-found: error
+  sample-mutations:
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
+    name: Sample authority mutations
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      TESTINGPLATFORM_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.x'
+      - run: dotnet restore --locked-mode
+      - run: python3 scripts/test_mutations.py
+      - run: python3 scripts/test_sample_mutation_selection.py
+      - name: Verify isolated provider-independent sample decisions
+        run: python3 scripts/verify_mutations.py unit --suite sample --disposable-checkout
+      - name: Retain only sanitized sample mutation evidence
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sample-mutations-unit
+          path: artifacts/mutations/sample-unit/evidence.json
+          retention-days: 7
+          if-no-files-found: error
   managed-application-mutations:
     needs: scope
     if: needs.scope.outputs.scope == 'full'
@@ -876,7 +909,7 @@ jobs:
   acceptance:
     name: Verification acceptance
     if: always()
-    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, administrator-protocol-mutations, pilot-replay-mutations, browser-session-mutations, application-mutations, managed-application-mutations, contracts, admin-ui, coverage]
+    needs: [scope, assurance, source-secrets, browser-plan, static-analysis, supply-chain, verify, browser, contrast-experiment, mutations, administrator-mutations, governance-mutations, administrator-protocol-mutations, pilot-replay-mutations, browser-session-mutations, application-mutations, managed-application-mutations, sample-mutations, contracts, admin-ui, coverage]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

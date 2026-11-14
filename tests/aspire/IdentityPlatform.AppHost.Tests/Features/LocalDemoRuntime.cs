@@ -94,6 +94,34 @@ internal sealed class LocalDemoRuntime : IAsyncDisposable
         }
     }
 
+    /// <summary>Requires both real sample processes healthy before any private sample credential setup occurs.</summary>
+    internal async Task WaitForSamplesAsync(CancellationToken token)
+    {
+        const string api = "sample-api";
+        const string client = "sample-client";
+        await application.ResourceNotifications.WaitForResourceHealthyAsync(api, token);
+        await application.ResourceNotifications.WaitForResourceHealthyAsync(client, token);
+    }
+
+    /// <summary>Transfers the UI-issued client credential through the actual authenticated resource command and clears fixture input immediately.</summary>
+    internal async Task ConfigureSampleAsync(string clientId, string secret, CancellationToken token)
+    {
+        const string resourceName = "sample-client";
+        const string commandName = "configure-sample";
+        interaction.SampleId = clientId;
+        interaction.SampleSecret = secret;
+        try
+        {
+            Assert.True(application.ResourceNotifications.TryGetCurrentState(resourceName, out var current));
+            var commands = application.Services.GetRequiredService<ResourceCommandService>();
+            var result = await commands.ExecuteCommandAsync(current.ResourceId, commandName, token);
+            Assert.True(result.Success, InitializationFailure);
+            Assert.All(interaction.LastInputs, input => Assert.True(string.IsNullOrEmpty(input.Value)));
+            Assert.False(result.Message?.Contains(secret, StringComparison.Ordinal) == true);
+        }
+        finally { interaction.SampleId = null; interaction.SampleSecret = null; }
+    }
+
     /// <summary>Creates only a pending administrator and performs separate public registration and revision-one upgrade operations.</summary>
     internal async Task InitializeAsync(CancellationToken token)
     {

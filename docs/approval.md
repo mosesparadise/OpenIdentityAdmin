@@ -1,5 +1,14 @@
 # Documentation approval
 
+**Sample integration continuation (14 November 2026):** the user replied “Please
+proceed” after the recommended manual administrator UI registration/protected local
+sample setup and offline JWT sample-API validation were presented. This continues
+[feature024](../specs/024-aspire-sample-client-api/spec.md) under M04-D, including its
+native client/session protection, ordinary Aspire integration, required tests and
+reviewed squash delivery. The sample API documents expiry-based revocation limits;
+UserInfo separately demonstrates current state. Managed issuer-assisted logout,
+refresh/machine activation, production and existing external gates remain separate.
+
 **Catalogue UI batch selection (7 November 2026):** the user selected “T005–T007,
 including T004 prerequisites” for the next three tasks. Complete catalogue reads and
 durable deletion, then the Admin API, BFF and Scopes/Audiences UI with their required
