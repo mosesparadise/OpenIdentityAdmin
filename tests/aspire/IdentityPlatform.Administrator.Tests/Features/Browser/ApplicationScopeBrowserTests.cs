@@ -158,12 +158,17 @@ public sealed class ApplicationScopeBrowserTests(BootstrapFixture fixture)
         })).ToBeVisibleAsync();
     }
 
-    /// <summary>Requires a single actual write and the subsequent independently read saved-state warning.</summary>
+    /// <summary>Waits for catalogue readiness inside the original response budget before one keyboard write and its independently read saved-state warning.</summary>
     private static async Task SaveAsync(IPage page, Uri origin, string id, string expected)
     {
         using var submissions = new ApplicationSubmission(page, Put, new Uri(origin, ApplicationScopeHttpTests.Path(id)).AbsoluteUri);
         await page.Locator(Confirmation).CheckAsync();
-        var response = await page.RunAndWaitForResponseAsync(() => Button(page, Save).PressAsync(Enter),
+        var response = await page.RunAndWaitForResponseAsync(async () =>
+        {
+            var save = Button(page, Save);
+            await Assertions.Expect(save).ToBeEnabledAsync();
+            await save.PressAsync(Enter);
+        },
             value => value.Request.Method == Put && value.Url == new Uri(origin, ApplicationScopeHttpTests.Path(id)).AbsoluteUri);
         Assert.Equal(Ok, response.Status);
         await Assertions.Expect(page.GetByText(expected, new()

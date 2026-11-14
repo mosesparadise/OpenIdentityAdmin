@@ -271,3 +271,41 @@ realistic network positives, private-data redaction, extended/unknown/ambiguous 
 and nonbrowser negatives. Code-quality checks pass without allowances. SQL Server
 also finishes disclosure 16/16 in CI590. Both providers therefore exercise the signed
 expiry correction successfully; the failed demo receipt still prevents acceptance.
+
+### Sixth hosted attempt — CI591
+
+[CI591](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43581385821)
+checks source `6795edccf10bb1ec987b9762d5ceae296ecbe239`, merge
+`3871c0e093d65c40f97f29465d1675cf255bca01`, tree
+`d2d7cb8d25fed10b867633a51716339c95772932`. It finishes with 129 successful jobs,
+two failed jobs (one browser group and final acceptance), and skipped coverage aggregation.
+Both ordinary demos pass 3/3. Independent review reparses their original archives,
+source-derived identities and every outcome counter, and confirms readiness, restart,
+status and cookie assertions are byte-identical to accepted main. CI590's earlier
+navigation failure remains unexplained reliability evidence, not a demonstrated fix.
+
+The SQL Server/Chromium BrowserProtection group fails its application-scope journey
+while awaiting the concurrent editor's scope-assignment PUT. The source-line chain is
+SaveAsync → StaleAsync → RunAsync, after the genuine Allow/token/UserInfo and Cancel
+journeys. The Cancel diagnostic normally remains at Started with no callback/exchange;
+it does not mean that the Cancel journey failed. Other required groups and all 140
+behavioral mutation controls pass; their results do not override this failed case.
+
+Source review identifies a concrete readiness gap: ScopeController publishes the saved
+assignment before its initial catalogue search finishes. The warning remains visible,
+but Save is disabled while searching. Locator.PressAsync does not wait for enabled
+actionability. The test could therefore send Enter to a disabled control and await a PUT
+that never occurred. The permanent scenario now explicitly requires Save enabled inside
+the original response waiter before one keyboard activation. Existing response, status,
+one-send, stale-state, focus, audit, version and database assertions remain unchanged;
+there is no retry, product change or timeout extension.
+
+A bounded local native-browser reproduction invokes the actual compiled SaveAsync on
+a synthetic HTTP form, with the same two-second disabled interval and five-second
+investigation budget before and after. Playwright 1.63 with separately labelled system
+Chromium 151.0.7922.173 records the original keyboard activation before enablement,
+zero PUTs and timeout; corrected code records activation after enablement, exactly one
+PUT and success. The administrator build passes with zero warnings/errors. This proves
+the source readiness gap and its correction, not the unavailable original DOM/network
+state in CI591. The original failure stays rejected; all four real retained-engine/provider
+scope journeys and complete corrected-source acceptance remain required.
