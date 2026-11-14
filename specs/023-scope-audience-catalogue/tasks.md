@@ -60,3 +60,7 @@ Explicit application scope assignment is delivered in PR130. [Assignment accepta
 ## Accepted T009 increment
 
 Managed current-policy snapshots and additive interaction bindings are delivered in PR132. [Policy acceptance](policy-acceptance.md) records both-provider full CI, original report/coverage/mutation reconciliation and independent reviews. T010 consent is next; nonempty assignments still block issuance. T010–T016, M03-B/C completion and all historical/manual/public-release gates remain open.
+
+## Active T010–T012 batch
+
+[Consented issuance](consented-issuance.md) records implementation and pending full validation, including required T013 compatibility. Tasks remain unchecked until both-provider/browser evidence, unchanged coverage floors, causal mutations and final independent review pass.

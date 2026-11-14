@@ -98,7 +98,7 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
     }
 
     /// <summary>Binds exactly the client and current secret returned by the actual editor; it never creates a replacement registration.</summary>
-    internal ManagedBrowserFlow Prepare(ApplicationEditorRegistration registration, string subject)
+    internal ManagedBrowserFlow Prepare(ApplicationEditorRegistration registration, string subject, ManagedTokenProjection? projection = null)
     {
         if (flow is not null)
         {
@@ -107,7 +107,7 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
             Assert.Equal(1, flow.Exchanges);
         }
         Assert.True(registration.Callback == Callback);
-        flow = new(registration, subject, repeated: flow is not null);
+        flow = new(registration, subject, repeated: flow is not null, projection);
         flow.Initialize();
         return flow;
     }
@@ -166,9 +166,9 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
             Assert.True(response.StatusCode == HttpStatusCode.OK && response.Headers.CacheControl?.NoStore == true &&
                 response.Content.Headers.ContentType?.MediaType == JsonMediaType && !response.Headers.Contains(SetCookie));
             using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync(context.RequestAborted));
-            RequireResponse(body.RootElement);
+            RequireResponse(body.RootElement, current.Projection);
             current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.TokenShapeAccepted;
-            await ManagedIdentityTokenOracle.ValidateAsync(transport, Issuer, current.Registration.ClientId, current.Nonce, current.Subject, body.RootElement);
+            await ManagedIdentityTokenOracle.ValidateAsync(transport, Issuer, current.Registration.ClientId, current.Nonce, current.Subject, body.RootElement, current.Projection);
             current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.IdentityValidated;
             current.Complete(body.RootElement);
             current.Diagnostic.Current = ManagedBrowserDiagnostic.Stage.Completed;
@@ -209,10 +209,10 @@ internal sealed class ManagedBrowserRelyingParty : IAsyncDisposable
     }
 
     /// <summary>Rejects every missing, duplicated or extra token-response member before cryptographic verification.</summary>
-    private static void RequireResponse(JsonElement body)
+    private static void RequireResponse(JsonElement body, ManagedTokenProjection? projection)
     {
         Assert.True(body.EnumerateObject().Select(field => field.Name).Order(StringComparer.Ordinal).SequenceEqual(TokenFields));
-        Assert.True(body.GetProperty(TypeField).GetString() == Bearer && body.GetProperty(ScopeField).GetString() == OpenId &&
+        Assert.True(body.GetProperty(TypeField).GetString() == Bearer && body.GetProperty(ScopeField).GetString() == (projection?.Scope ?? OpenId) &&
             body.GetProperty(ExpiryField).GetInt64() is > 0 and <= LifetimeSeconds);
     }
 

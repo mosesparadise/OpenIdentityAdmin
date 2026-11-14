@@ -25,6 +25,27 @@
       else
       {
         <p>Allow this application to receive your stable sign-in identifier (<code>openid</code>)? Administrator permissions are not shared.</p>
+        @if (Model.Disclosure is { Scopes.IsEmpty: false } disclosure)
+        {
+          <ul id="requested-scopes">
+            @foreach (var scope in disclosure.Scopes)
+            {
+              <li>
+                <strong>@scope.DisplayName</strong> (<code>@scope.Name</code>)
+                <p>@scope.Description</p>
+                @if (scope.Resource is not null)
+                {
+                  <p>API access: <code>@scope.Resource</code></p>
+                }
+                @if (scope.Email)
+                {
+                  <p>Shares your current email address and whether it has been verified. If no email is set, neither value is shared.</p>
+                }
+              </li>
+            }
+          </ul>
+          <p>Allowing sign-in also approves every scope listed above. Cancel to share none.</p>
+        }
         <button id="consent-approve" class="primary" type="submit" name="Decision" value="approve">Allow sign-in</button>
         <button id="consent-deny" class="secondary" type="submit" name="Decision" value="deny">Cancel</button>
       }

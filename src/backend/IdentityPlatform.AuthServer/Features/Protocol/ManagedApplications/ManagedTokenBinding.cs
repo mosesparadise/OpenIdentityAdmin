@@ -34,12 +34,12 @@ internal sealed class ManagedTokenBinding(ManagedRegistration registration, Mana
         var row = await scope.Owner.RunAsync(current => new ValueTask<ManagedLoginInteraction?>(scope.Owner.Database.Set<ManagedLoginInteraction>()
             .AsNoTracking().SingleOrDefaultAsync(value => value.SelectorDigest == digest, current)), token);
         if (registration is null || row is null || row.SelectorDigest != digest || row.ApplicationId != registration.ApplicationId ||
-            row.ApplicationRevision != registration.Revision || principal.GetClaim(ManagedDemand.RevisionClaim) != registration.Revision.ToString(CultureInfo.InvariantCulture) ||
+            row.ApplicationRevision != registration.Revision || !ManagedScopeBinding.MatchesDigest(row, principal.GetClaim(ManagedDemand.PolicyClaim)) || principal.GetClaim(ManagedDemand.RevisionClaim) != registration.Revision.ToString(CultureInfo.InvariantCulture) ||
             ManagedLoginRules.Observe(scope.Owner.Clock, Math.Max(row.ObservedAt, registration.ObservedAt)) >= row.ExpiresAt || !Bound(principal, row, client, selector!))
         {
             return null;
         }
-        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
+        await ManagedScopeBinding.RequireAsync(scope, row, client, token);
         var expiration = await AdministratorNativeToken.ExpirationAsync(scope, principal, principal.GetTokenType()!, registration.ApplicationId, token);
         return expiration is { } expires ? new(registration, row, expires) : null;
     }

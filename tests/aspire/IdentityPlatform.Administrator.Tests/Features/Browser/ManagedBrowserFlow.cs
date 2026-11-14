@@ -3,9 +3,10 @@ using System.Text.Json;
 namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 
 /// <summary>Owns one test relying-party ceremony without serializing private proof or credential values in diagnostics.</summary>
-internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registration, string subject, bool repeated = false)
+internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registration, string subject, bool repeated = false, ManagedTokenProjection? projection = null)
 {
     private const string MissingExchange = "The managed browser exchange did not complete.";
+    private const string ScopeField = "scope";
     private const string StateField = "state";
     private const string NonceField = "nonce";
     private const string AccessField = "access_token";
@@ -17,6 +18,7 @@ internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registrat
     private JsonElement? body;
     internal ApplicationEditorRegistration Registration => registration;
     internal string Subject => subject;
+    internal ManagedTokenProjection? Projection => projection;
     internal ManagedBrowserDiagnostic Diagnostic { get; } = new() { Repeated = repeated };
     internal string Verifier { get; } = ManagedAuthorizationRequest.Random();
     internal string BrowserSecret { get; } = ManagedAuthorizationRequest.Random();
@@ -32,7 +34,14 @@ internal sealed class ManagedBrowserFlow(ApplicationEditorRegistration registrat
     internal string[] Secrets => body is { } value ? [.. registration.Secrets, value.GetProperty(AccessField).GetString()!, value.GetProperty(IdentityField).GetString()!] : registration.Secrets;
 
     /// <summary>Fixes the exact current UI callback and independent PKCE/state/nonce before opening the browser entry.</summary>
-    internal void Initialize() => Initial = ManagedAuthorizationRequest.Initial(Verifier, registration.ClientId, registration.Callback);
+    internal void Initialize()
+    {
+        Initial = ManagedAuthorizationRequest.Initial(Verifier, registration.ClientId, registration.Callback);
+        if (projection is not null)
+        {
+            Initial[ScopeField] = projection.Scope;
+        }
+    }
 
     /// <summary>Allows one start within the original relying-party correlation deadline.</summary>
     internal bool TryStart() => ExpiresAt > DateTimeOffset.UtcNow && Interlocked.Exchange(ref started, 1) == 0;

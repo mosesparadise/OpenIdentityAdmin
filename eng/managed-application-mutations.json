@@ -42,12 +42,12 @@
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedTokenDriftTests.Given_ApprovedManagedProof_When_CurrentPolicyOrAccountAuthorityChanges_Then_NativeIssuanceCannotPublish"
     },
     {
-      "id": "managed-policy-binding",
-      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopeBinding.cs",
-      "before": "return row.PolicySnapshot == expected && row.PolicyDigest == ManagedLoginRules.Digest(expected);",
-      "after": "return expected.Length > 0;",
-      "marker": "managed-policy-binding-bypass",
-      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopeBindingTests.Given_GenuineManagedForm_When_PersistedPolicyIsSubstituted_Then_PasswordProofCannotAdvance"
+      "id": "managed-displayed-policy-binding",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanBinding.cs",
+      "before": "!ManagedScopeBinding.MatchesDigest(row, request.PolicyDigest)",
+      "after": "false",
+      "marker": "managed-displayed-policy-binding-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentBindingTests.Given_RenderedConsent_When_CurrentDecisionIsReboundWithoutNewHumanApproval_Then_OriginalFormCannotApprove"
     },
     {
       "id": "managed-current-scope-policy",
@@ -56,6 +56,30 @@
       "after": "if (expected.Length == 0 && expected != ManagedScopeCodec.Encode(actual))",
       "marker": "managed-current-scope-policy-bypass",
       "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedScopePolicyTests.Given_CapturedCataloguePolicy_When_CurrentNativeOrMetadataDrifts_Then_OriginalDecisionCannotBeReused"
+    },
+    {
+      "id": "managed-email-consent",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedEmailProjection.cs",
+      "before": "!decision.DisclosesEmail || string.IsNullOrEmpty(user.Email)",
+      "after": "string.IsNullOrEmpty(user.Email)",
+      "marker": "managed-email-consent-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedConsentHttpTests.Given_AssignedScopes_When_UserConsentsToRequestedSubset_Then_NativeTokensAndCurrentUserInfoDiscloseOnlyThatSubset"
+    },
+    {
+      "id": "managed-userinfo-current-policy",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopePolicy.cs",
+      "before": "return actual is not null && expected == ManagedScopeCodec.Encode(actual);",
+      "after": "return actual is not null && expected.Length > 0;",
+      "marker": "managed-userinfo-current-policy-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoDenialTests.Given_ConsentedNativeAccessToken_When_CurrentAuthorityIsInvalidated_Then_UserInfoReturnsNativeBearerDenial"
+    },
+    {
+      "id": "managed-userinfo-publication",
+      "path": "src/backend/IdentityPlatform.AuthServer/Features/Protocol/UserInfo/UserInfoResponse.cs",
+      "before": "capture.Headers.Any(pair => !Owned(pair.Key) && (!headers.TryGetValue(pair.Key, out var original) || !pair.Value.ToArray().SequenceEqual(original)))",
+      "after": "false",
+      "marker": "managed-userinfo-publication-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedUserInfoPublicationTests.Given_ConsentedUserInfo_When_ActualLatePublicationBoundaryFails_Then_NoProfileEscapesAndStateRemainsUnchanged"
     }
   ]
 }

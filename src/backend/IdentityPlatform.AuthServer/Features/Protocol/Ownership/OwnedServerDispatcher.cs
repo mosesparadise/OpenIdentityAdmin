@@ -67,6 +67,10 @@ internal sealed class OwnedServerDispatcher(OpenIddictServerDispatcher native, P
             services.GetService<ProtocolHostRequest>()?.Track(request);
             return NativeErrorOrigin.TrackAsync(request, () => AdministratorPassthrough.TrackAsync(request, () => native.DispatchAsync(request)));
         }
+        if (context is OpenIddictServerEvents.ValidateUserInfoRequestContext userInfo && services.GetService<ProtocolProfiles>() is { Managed: true })
+        {
+            return UserInfo.UserInfoAdmission.ValidateAsync(userInfo, () => native.DispatchAsync(userInfo));
+        }
         if (ManagedApplications.Setup.Managed(context, services))
         {
             if (context is OpenIddictServerEvents.ValidateAuthorizationRequestContext managedValidation)

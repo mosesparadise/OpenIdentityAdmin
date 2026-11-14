@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using Microsoft.Data.SqlClient;
+using Npgsql;
 
 namespace IdentityPlatform.Administrator.Tests.Fixtures;
 
@@ -72,12 +73,56 @@ internal static class CeremonyCancellation
             errors[0] == (LockTimeout, LockClass) && inner is null);
     }
 
-    /// <summary>Recognizes only the exact independently configured SQL command or lock timeout, never managed cancellation.</summary>
+    /// <summary>Recognizes only exact independently configured native command or lock timeouts, never managed cancellation or NOWAIT contention.</summary>
     internal static bool IsProviderTimeout(Exception? failure, bool sqlAllowed)
     {
         RequireTimeoutControls();
+        RequirePostgreSqlTimeoutControls();
+        return MatchesProviderTimeout(failure, sqlAllowed);
+    }
+
+    /// <summary>Keeps provider identity explicit; a PostgreSQL error cannot satisfy the independent SQL Server branch.</summary>
+    private static bool MatchesProviderTimeout(Exception? failure, bool sqlAllowed)
+    {
+        if (!sqlAllowed)
+        {
+            return IsPostgreSqlLockTimeout(failure);
+        }
         return sqlAllowed && failure is SqlException sql &&
             MatchesTimeout(sql.Errors.Cast<SqlError>().Select(error => (error.Number, error.Class)).ToArray(), sql.InnerException);
+    }
+
+    /// <summary>The pinned English PostgreSQL fixture must identify a lock deadline, not another error sharing its SQLSTATE.</summary>
+    private static bool IsPostgreSqlLockTimeout(Exception? failure)
+    {
+        const string LockTimeout = "canceling statement due to lock timeout";
+        const string LockNotAvailable = "55P03";
+        const string ErrorSeverity = "ERROR";
+        return failure is PostgresException
+        {
+            SqlState: LockNotAvailable, MessageText: LockTimeout,
+            InvariantSeverity: ErrorSeverity, InnerException: null
+        };
+    }
+
+    /// <summary>Reproduces the observed native timeout and rejects same-code NOWAIT, query cancellation, other severity and unrelated failures.</summary>
+    private static void RequirePostgreSqlTimeoutControls()
+    {
+        const string Timeout = "canceling statement due to lock timeout";
+        const string Nowait = "could not obtain lock on relation";
+        const string Error = "ERROR";
+        const string Fatal = "FATAL";
+        const string LockCode = "55P03";
+        const string CanceledCode = "57014";
+        var observed = new PostgresException(Timeout, Error, Error, LockCode);
+        Assert.True(MatchesProviderTimeout(observed, sqlAllowed: false));
+        Assert.False(MatchesProviderTimeout(observed, sqlAllowed: true));
+        Assert.False(IsPostgreSqlLockTimeout(new PostgresException(Nowait, Error, Error, LockCode)));
+        Assert.False(IsPostgreSqlLockTimeout(new PostgresException(Timeout, Error, Error, CanceledCode)));
+        Assert.False(IsPostgreSqlLockTimeout(new PostgresException(Timeout, Fatal, Fatal, LockCode)));
+        Assert.False(IsPostgreSqlLockTimeout(new OperationCanceledException()));
+        Assert.False(IsPostgreSqlLockTimeout(new InvalidOperationException()));
+        Assert.False(IsPostgreSqlLockTimeout(null));
     }
 
     /// <summary>Proves companion errors, wrong causes/classes and unrelated provider failures never count as deadline evidence.</summary>

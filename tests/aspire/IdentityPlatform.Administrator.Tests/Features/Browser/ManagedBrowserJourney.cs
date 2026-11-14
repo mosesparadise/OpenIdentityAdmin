@@ -30,10 +30,10 @@ internal static class ManagedBrowserJourney
     /// <summary>Requires fresh proof despite existing issuer authority, explicit consent and unchanged administrator cookies.</summary>
     internal static async Task<ManagedBrowserFlow> RunAsync(IPage page, ManagedBrowserRelyingParty relyingParty,
         ApplicationEditorRegistration registration, string username, string password, Func<Task<string>> factor,
-        string subject, bool approve = true, Func<IPage, Task>? presentation = null)
+        string subject, bool approve = true, Func<IPage, Task>? presentation = null, ManagedTokenProjection? projection = null)
     {
         var authority = await AuthorityAsync(page);
-        var flow = relyingParty.Prepare(registration, subject);
+        var flow = relyingParty.Prepare(registration, subject, projection);
         try
         {
             await page.GotoAsync(relyingParty.Start.AbsoluteUri);

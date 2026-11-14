@@ -5,6 +5,7 @@ using IdentityPlatform.Governance.Driver.Features.Protocol;
 using IdentityPlatform.Infrastructure.Features.Identity.Ceremonies;
 using IdentityPlatform.Infrastructure.Features.Identity.Factors;
 using IdentityPlatform.Infrastructure.Features.Identity.Governance;
+using IdentityPlatform.Infrastructure.Features.ProtocolStorage;
 using IdentityPlatform.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,10 @@ internal static class DriverApplicationExtensions
         {
             services.AddAdministratorFactors(credentials.Issuer).AddAdministratorCeremonies()
                 .AddAdministratorGovernance().AddFeatures();
+            if (input.Operation == DriverLimits.ManagedPolicy)
+            {
+                services.AddProtocolStorageOwnership();
+            }
             observe(DriverStage.ServiceValidation);
             provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = true, ValidateOnBuild = true });
             observe(DriverStage.Protection);

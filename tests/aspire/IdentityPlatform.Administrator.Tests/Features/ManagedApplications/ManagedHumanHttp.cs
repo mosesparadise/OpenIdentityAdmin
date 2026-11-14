@@ -49,13 +49,14 @@ internal static class ManagedHumanHttp
     }
 
     /// <summary>Reads actual native form fields, verifying the same-origin security headers without retaining markup in failure output.</summary>
-    internal static async Task<Dictionary<string, string>> FormAsync(HttpClient browser, Uri location, string? callback = null)
+    internal static async Task<Dictionary<string, string>> FormAsync(HttpClient browser, Uri location, string? callback = null, Action<string>? inspect = null)
     {
         using var page = await browser.GetAsync(location, TestContext.Current.CancellationToken);
         Assert.Equal(HttpStatusCode.OK, page.StatusCode);
         await BrowserFormHeaders.AccountAsync(page, mfa: callback is not null, client: callback is null ? null : new Uri(callback));
         NoAuthorityCookie(page);
         var html = await page.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        inspect?.Invoke(html);
         return new(StringComparer.Ordinal)
         {
             [Flow] = AdministratorJourney.Input(html, Flow),

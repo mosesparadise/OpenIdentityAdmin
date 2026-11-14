@@ -23,8 +23,9 @@ internal sealed class ManagedHumanInvariant(ManagedLoginInteraction row, Ceremon
     /// <summary>Rejects adopted internal-save mutations in tracked and separately queried durable state before constructing a transition receipt.</summary>
     internal async Task RequireAsync(PlatformDbContext database, ManagedHumanAction action, bool accepted, CeremonyTransaction ceremony, ManagedPasswordUpdate? update, CancellationToken token)
     {
+        await ManagedScopeReferences.VerifyBoundAsync(database, row, token);
         var actual = await database.Set<ManagedLoginInteraction>().AsNoTracking().SingleAsync(value => value.SelectorDigest == row.SelectorDigest, token);
-        if (!await ManagedScopeReferences.IsOpenIdAsync(database, row, token) || original != Immutable(row) || persisted != FactorBinding.Digest(actual) || row.Revision != revision ||
+        if (original != Immutable(row) || persisted != FactorBinding.Digest(actual) || row.Revision != revision ||
             phase != ManagedLoginState.PendingPassword && password != Password(row) ||
             mfa is not null && row.MfaVerifiedAt != mfa || consent is not null && row.ConsentVerifiedAt != consent ||
             row.State != (accepted ? Next(phase, action) : phase))

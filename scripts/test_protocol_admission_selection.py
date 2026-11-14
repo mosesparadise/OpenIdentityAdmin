@@ -34,7 +34,7 @@ class ProtocolAdmissionGroupTests(unittest.TestCase):
         require_group_selections(self.native, self.groups[provider], provider, STORY, self.matrix, self.inventory)
 
     def test_Given_DefaultOrExplicitStory_When_Grouped_Then_All162OriginalCasesRunOncePerProvider(self):
-        for provider, total in (('PostgreSql', 1338), ('SqlServer', 1443)):
+        for provider, total in (('PostgreSql', 1360), ('SqlServer', 1465)):
             self.verify(provider)
             expected = [(STORY, 'Admission', 107), (STORY, 'Replay', 55)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, STORY))

@@ -16,6 +16,8 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
     private ProtocolResponseCapture? response;
     private ProtocolResponseOutput? errorOutput;
     private ProtocolStorageCheckpoint? errorCheckpoint;
+    private ProtocolResponseOutput? userInfoOutput;
+    private ProtocolStorageCheckpoint? userInfoCheckpoint;
     private JourneyLogout.Receipt? logout;
     private ProtocolResponseOutput? logoutOutput;
     private int active;
@@ -159,7 +161,7 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         RequireCurrent();
         lock (sync)
         {
-            if (errorOutput is not null || response is null || !checkpoint.Matches(this, phases))
+            if (errorOutput is not null || userInfoOutput is not null || logout is not null || response is null || !checkpoint.Matches(this, phases))
             {
                 Fail();
                 throw ProtocolStorageOwner.Unavailable();
@@ -176,7 +178,7 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         receipt.RequireCurrent(this);
         lock (sync)
         {
-            if (logout is not null || errorOutput is not null || response is null || phases.Count != 0)
+            if (logout is not null || errorOutput is not null || userInfoOutput is not null || response is null || phases.Count != 0)
             {
                 Fail();
                 throw ProtocolStorageOwner.Unavailable();
@@ -184,6 +186,39 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
             output.RequireFrozenCapture(this, response);
             logout = receipt;
             logoutOutput = output;
+        }
+    }
+
+    /// <summary>Recognizes exactly one completed UserInfo read transaction; extra phases cannot be hidden by a success enum.</summary>
+    internal ProtocolStorageCheckpoint CaptureUserInfoCheckpoint(ProtocolStoragePhase phase)
+    {
+        RequireCurrent();
+        lock (sync)
+        {
+            if (phases.Count != 1 || !ReferenceEquals(phases[0], phase) || !phase.Committed)
+            {
+                Fail();
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            return new(this, phases);
+        }
+    }
+
+    /// <summary>Admits one immutable UserInfo output only after its native proof and exact transaction checkpoint were verified.</summary>
+    internal void AdmitUserInfo(ProtocolResponseOutput output, ProtocolStorageCheckpoint checkpoint)
+    {
+        RequireCurrent();
+        lock (sync)
+        {
+            if (userInfoOutput is not null || errorOutput is not null || logout is not null || response is null ||
+                phases.Count != 1 || !phases[0].Committed || !checkpoint.Matches(this, phases))
+            {
+                Fail();
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            output.RequireFrozenCapture(this, response);
+            userInfoOutput = output;
+            userInfoCheckpoint = checkpoint;
         }
     }
 
@@ -212,6 +247,12 @@ internal sealed class ProtocolStorageRequest(TimeProvider clock, CancellationTok
         catch { Fail(); throw; }
         lock (sync)
         {
+            if (outcome == ProtocolResponseOutcome.VerifiedUserInfo && userInfoOutput is not null && response is not null &&
+                errorOutput is null && logout is null && userInfoCheckpoint?.Matches(this, phases) == true)
+            {
+                userInfoOutput.RequireFrozenCapture(this, response);
+                return;
+            }
             if (outcome == ProtocolResponseOutcome.VerifiedIssuerLogout && logout is not null && logoutOutput is not null &&
                 response is not null && phases.Count == 0 && errorOutput is null)
             {

@@ -33,7 +33,7 @@ public sealed class ManagedPreparedTests
     public void Given_PreparedManagedClone_When_AuthorityIsInjected_Then_EveryTokenTypeEnforcesItsExactProjection(string type, ManagedPrincipalDefect defect)
     {
         var now = DateTimeOffset.FromUnixTimeSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
-        var row = new ManagedLoginInteraction { UserId = Subject, ApplicationRevision = 1, ExpiresAt = now.AddSeconds(Lifetime).ToUnixTimeSeconds() };
+        var row = new ManagedLoginInteraction { ApplicationId = Client, UserId = Subject, ApplicationRevision = 1, ExpiresAt = now.AddSeconds(Lifetime).ToUnixTimeSeconds() };
         var original = ManagedPrincipal.Create(row, Client, Selector).SetClaim(Claims.Private.Nonce, Nonce).SetAuthorizationId(Authorization);
         var transaction = new OpenIddictServerTransaction
         {

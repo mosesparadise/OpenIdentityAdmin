@@ -44,6 +44,7 @@ internal static class ManagedFormProof
         ClientId = prior.ClientId,
         Callback = prior.Callback,
         DemandDigest = prior.DemandDigest,
+        PolicyDigest = prior.PolicyDigest,
         RequestId = prior.RequestId,
         RequestUri = prior.RequestUri,
         Correlation = prior.Correlation,

@@ -20,6 +20,21 @@ internal static class ManagedScopeReferences
             .Any(entry => entry.Entity.SelectorDigest == row.SelectorDigest) &&
         !await database.Set<ManagedScopeReference>().AsNoTracking().AnyAsync(value => value.SelectorDigest == row.SelectorDigest, token);
 
+    /// <summary>Validates canonical policy and exact retained references, allowing null legacy pairs only with no dependencies.</summary>
+    internal static async ValueTask VerifyBoundAsync(DbContext database, ManagedLoginInteraction row, CancellationToken token)
+    {
+        var decision = ManagedScopeBinding.Read(row);
+        if (row.PolicySnapshot is null && row.PolicyDigest is null)
+        {
+            if (!await IsOpenIdAsync(database, row, token))
+            {
+                throw ProtocolStorageOwner.Unavailable();
+            }
+            return;
+        }
+        await VerifyAsync(database, row, decision, token);
+    }
+
     /// <summary>Compares complete bounded persisted and tracked reference sets after native saves, detecting omitted, inserted or substituted identities.</summary>
     internal static async ValueTask VerifyAsync(DbContext database, ManagedLoginInteraction row, ManagedScopeDecision decision, CancellationToken token)
     {

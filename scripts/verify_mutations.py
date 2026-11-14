@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT = 'tests/aspire/IdentityPlatform.Issuer.Tests/IdentityPlatform.Issuer.Tests.csproj'
 FAILURE_DIAGNOSTIC = "Exit code indicates failure: '2'. Please refer to https://aka.ms/testingplatform/exitcodes for more information."
 
-MAXIMUM_MUTATION_ORDINAL = 8
+MAXIMUM_MUTATION_ORDINAL = 10
 DIAGNOSTIC_PREFIX = 'mutation-diagnostic '
 REPORT_DIAGNOSTIC_PREFIX = 'mutation-report-diagnostic '
 PHASE = ContextVar('mutation_phase', default=('control', 'command', 0))
@@ -193,7 +193,7 @@ def manifest(root, suite='issuer'):
         'catalogue': (5, 'eng/catalogue-mutations.json', None),
         'application-grants': (6, 'eng/application-grant-mutations.json', None),
         'application-lifecycle': (4, 'eng/application-lifecycle-mutations.json', None),
-        'managed-applications': (7, 'eng/managed-application-mutations.json', None),
+        'managed-applications': (10, 'eng/managed-application-mutations.json', None),
         'browser-session': (8, 'eng/browser-session-mutations.json', None),
         'pilot-replay': (5, 'eng/pilot-replay-mutations.json', None),
         'governance': (6, 'eng/governance-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/Governance')
@@ -230,6 +230,9 @@ def manifest(root, suite='issuer'):
             'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs'
         }
         managed_paths = {
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedHumanBinding.cs',
+            'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedEmailProjection.cs',
+            'src/backend/IdentityPlatform.AuthServer/Features/Protocol/UserInfo/UserInfoResponse.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopeBinding.cs',
             'src/persistence/IdentityPlatform.Infrastructure/Features/Identity/ManagedApplications/ManagedScopePolicy.cs',
             'src/backend/IdentityPlatform.AuthServer/Features/Accounts/ManagedApplications/Index.cshtml.cs',

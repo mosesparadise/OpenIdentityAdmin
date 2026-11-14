@@ -61,7 +61,10 @@ internal sealed class CeremonyAccount
     }
     /// <summary>Reloads native and product state only after account serialization, rejecting provider padding aliases.</summary>
     internal static async Task<CeremonyAccount> LoadAsync(PlatformDbContext database, CeremonyTransaction transaction,
-        string userId)
+        string userId) => await TryLoadAsync(database, transaction, userId) ?? throw new FactorUnavailableException();
+
+    /// <summary>Returns no current account for removed identity state while keeping transaction and lock violations exceptional.</summary>
+    internal static async Task<CeremonyAccount?> TryLoadAsync(PlatformDbContext database, CeremonyTransaction transaction, string userId)
     {
         transaction.RequireContext(database);
         transaction.RequireAccountOperation();
@@ -75,7 +78,7 @@ internal sealed class CeremonyAccount
         if (user is null || enrollment is null || authentication is null || user.Id != userId ||
             enrollment.UserId != userId || authentication.UserId != userId || string.IsNullOrEmpty(user.SecurityStamp))
         {
-            throw new FactorUnavailableException();
+            return null;
         }
         return new CeremonyAccount(database, transaction, user, enrollment, authentication);
     }

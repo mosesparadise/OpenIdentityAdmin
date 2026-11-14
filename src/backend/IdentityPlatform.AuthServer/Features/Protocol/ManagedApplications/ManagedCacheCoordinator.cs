@@ -48,8 +48,9 @@ internal sealed class ManagedCacheCoordinator(IServiceScopeFactory factory)
         var http = context.Transaction.GetHttpRequest()!.HttpContext;
         var browser = ManagedBrowser.GetOrCreate(http);
         var selector = ManagedLoginRules.CreateSecret();
+        var policy = await ManagedScopePolicy.CaptureAsync(scope, registration.ClientId, admission.Demand.Scopes, admission.Demand.Scopes, token);
         var reservation = await ManagedLoginReservation.CreateAsync(scope, registration!, selector, browser, admission.Demand.Digest,
-            context.Options.TokenValidationParameters.ClockSkew, token) ?? throw ProtocolStorageOwner.Unavailable();
+            context.Options.TokenValidationParameters.ClockSkew, token, policy) ?? throw ProtocolStorageOwner.Unavailable();
         ProtocolStorageAmbient.Current!.Request.RestrictPublication(DateTimeOffset.FromUnixTimeSeconds(reservation.ExpiresAt));
         var session = new ManagedCacheSession(scope, context, admission, registration!, reservation, selector);
         context.Transaction.SetProperty(typeof(ManagedCacheSession).FullName!, session);

@@ -28,7 +28,7 @@ internal sealed class NativeClientMetadata(NativeClientProfile profile) : IOpenI
         if (!Exact(configuration.Issuer, profile.Issuer) || !Exact(configuration.AuthorizationEndpoint, profile.AuthorizationEndpoint) ||
             !Exact(configuration.TokenEndpoint, profile.TokenEndpoint) || !Exact(configuration.PushedAuthorizationEndpoint, profile.ParEndpoint) ||
             !Exact(configuration.JsonWebKeySetUri, profile.KeysEndpoint) ||
-            configuration.UserInfoEndpoint is not null || configuration.MtlsUserInfoEndpoint is not null ||
+            configuration.UserInfoEndpoint is not null && !Exact(configuration.UserInfoEndpoint, profile.UserInfoEndpoint) || configuration.MtlsUserInfoEndpoint is not null ||
             !configuration.GrantTypesSupported.Contains(OpenIddictConstants.GrantTypes.AuthorizationCode) ||
             !configuration.ResponseTypesSupported.Contains(OpenIddictConstants.ResponseTypes.Code) ||
             !configuration.ResponseModesSupported.Contains(OpenIddictConstants.ResponseModes.Query) ||

@@ -36,6 +36,7 @@ internal sealed class ManagedCacheSession(ProtocolStorageScope scope, OpenIddict
         principal.SetCreationDate(DateTimeOffset.FromUnixTimeSeconds(reservation.CreatedAt));
         principal.SetExpirationDate(DateTimeOffset.FromUnixTimeSeconds(reservation.ExpiresAt));
         principal.SetClaim(ManagedDemand.SelectorClaim, selector);
+        principal.SetClaim(ManagedDemand.PolicyClaim, reservation.PolicyDigest);
         principal.SetClaim(ManagedDemand.RevisionClaim, registration.Revision.ToString(CultureInfo.InvariantCulture));
     }
 
@@ -44,7 +45,7 @@ internal sealed class ManagedCacheSession(ProtocolStorageScope scope, OpenIddict
     {
         var principal = context.RequestTokenPrincipal;
         if (!admission.Allows(context.Transaction, registration) || !await Proof.VerifyAsync(registration.ApplicationId, token) || principal is null ||
-            principal.GetClaim(ManagedDemand.SelectorClaim) != selector || principal.GetClaim(ManagedDemand.RevisionClaim) != registration.Revision.ToString(CultureInfo.InvariantCulture) ||
+            principal.GetClaim(ManagedDemand.PolicyClaim) != reservation.PolicyDigest || principal.GetClaim(ManagedDemand.SelectorClaim) != selector || principal.GetClaim(ManagedDemand.RevisionClaim) != registration.Revision.ToString(CultureInfo.InvariantCulture) ||
             principal.GetCreationDate()?.ToUnixTimeSeconds() != reservation.CreatedAt || principal.GetExpirationDate()?.ToUnixTimeSeconds() != reservation.ExpiresAt ||
             principal.GetClaim(OpenIddictConstants.Claims.Subject) is not null || principal.GetAuthorizationId() is not null ||
             !registration.Matches(await ManagedRegistration.ReadAsync(scope, registration.ClientId, token)))

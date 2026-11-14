@@ -98,6 +98,10 @@ internal static class ProtocolHosting
         {
             return ProtocolResponseOutcome.Committed;
         }
+        if (UserInfo.UserInfoCoordinator.Claim(http, outer))
+        {
+            return ProtocolResponseOutcome.VerifiedUserInfo;
+        }
         if (NativeErrorCoordinator.Claim(http, outer))
         {
             return ProtocolResponseOutcome.VerifiedNativeError;

@@ -105,7 +105,7 @@ internal sealed class NativeErrorOrigin
         var transaction = http.Features.Get<OpenIddictServerAspNetCoreFeature>()?.Transaction ?? throw ProtocolStorageOwner.Unavailable();
         var source = Find(transaction) ?? throw ProtocolStorageOwner.Unavailable();
         source.RequireReturned();
-        if (source.denial is not null || source.signIn is not null || source.error is not null || !NativeErrorPolicy.Allows(code))
+        if (source.denial is not null || source.signIn is not null || source.error is not null || !NativeErrorPolicy.Allows(code, transaction.EndpointType))
         {
             throw source.Reject();
         }
@@ -151,7 +151,7 @@ internal sealed class NativeErrorOrigin
         var source = signIn is null ? (OpenIddictServerEvents.BaseValidatingContext)outer : signIn;
         if (denial is not null || !source.IsRejected || source.IsRequestHandled || source.IsRequestSkipped ||
             (signIn is not null && !issuanceReturned) || context.Error != (source.Error ?? OpenIddictConstants.Errors.InvalidRequest) ||
-            !NativeErrorPolicy.Allows(context.Error))
+            !NativeErrorPolicy.Allows(context.Error, context.EndpointType))
         {
             throw Reject();
         }

@@ -12,11 +12,11 @@ internal sealed record ManagedRegistration(string ApplicationId, string ClientId
     internal static ValueTask LockAsync(ProtocolStorageScope scope, CancellationToken token) => scope.Owner.RunAsync(current =>
         new ValueTask(new CeremonyLocks((PlatformDbContext)scope.Owner.Database).AcquireAsync(new CeremonyLockPlan(true, false, [], []), current)), token, write: true);
 
-    /// <summary>Retains exact OpenID-only issuer eligibility independently of the catalogue policy reader.</summary>
+    /// <summary>Reads managed issuer eligibility; each consuming operation independently verifies its bound requested policy.</summary>
     internal static async ValueTask<ManagedRegistration?> ReadAsync(ProtocolStorageScope scope, string clientId, CancellationToken token)
     {
         var current = await ManagedRegistrationState.ReadAsync(scope, clientId, token);
-        return current is { IsOpenId: true } ? current.Registration : null;
+        return current?.Registration;
     }
 
     /// <summary>Persists the original registration watermark through the same current-state authority used by native reads.</summary>

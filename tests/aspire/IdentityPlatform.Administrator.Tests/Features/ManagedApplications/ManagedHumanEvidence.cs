@@ -15,11 +15,15 @@ internal static class ManagedHumanEvidence
 {
     /// <summary>Hashes exact ordered managed proof, ceremony, replay, budget, session and audit rows from a fresh provider context.</summary>
     internal static async Task<string> DigestAsync(ManagedCacheTestContext test)
+        => FactorBinding.Digest(await ReadAsync(test));
+
+    /// <summary>Retains the complete ordered snapshot for exact expected-state comparisons without omitting coordination revisions.</summary>
+    internal static async Task<object> ReadAsync(ManagedCacheTestContext test)
     {
         await using var scope = test.Http.Scope();
         var database = scope.ServiceProvider.GetRequiredService<PlatformDbContext>();
         var token = TestContext.Current.CancellationToken;
-        return FactorBinding.Digest(new
+        return new
         {
             Browsers = await database.Set<AdministratorBrowserBudget>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Requests = await database.Set<OpenIddictEntityFrameworkCoreToken>().AsNoTracking().OrderBy(row => row.Id).Select(row => new { row.Id, row.Status, row.Type, row.ExpirationDate, row.RedemptionDate }).ToArrayAsync(token),
@@ -30,7 +34,7 @@ internal static class ManagedHumanEvidence
             Authentication = await database.Set<AdministratorAuthentication>().AsNoTracking().OrderBy(row => row.UserId).ToArrayAsync(token),
             Sessions = await database.Set<AdministratorSession>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token),
             Audit = await database.Set<SecurityAuditIntent>().AsNoTracking().OrderBy(row => row.Id).ToArrayAsync(token)
-        });
+        };
     }
 
     /// <summary>Hashes unchanged administrator sessions, issuer completion grants and BFF tickets across their actual separate databases.</summary>

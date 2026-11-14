@@ -109,7 +109,8 @@ internal sealed class AdministratorPassthrough
         ReferenceEquals(context.Transaction, outer.Transaction) && ReferenceEquals(http, context.Transaction.GetHttpRequest()?.HttpContext) &&
         (context.EndpointType, context) is
             (OpenIddictServerEndpointType.Authorization, OpenIddictServerEvents.HandleAuthorizationRequestContext) or
-            (OpenIddictServerEndpointType.Token, OpenIddictServerEvents.HandleTokenRequestContext);
+            (OpenIddictServerEndpointType.Token, OpenIddictServerEvents.HandleTokenRequestContext) or
+            (OpenIddictServerEndpointType.UserInfo, OpenIddictServerEvents.HandleUserInfoRequestContext);
 
     /// <summary>Consumes the private handoff only after the outer native handler has returned to its application endpoint.</summary>
     internal static AdministratorPassthrough Claim(OpenIddictServerEvents.ProcessSignInContext context) => ClaimCore(context);
@@ -150,7 +151,8 @@ internal sealed class AdministratorPassthrough
         (!parent || OwnsParent()) && ReferenceEquals(request, ProtocolStorageAmbient.Current?.Request) && ReferenceEquals(parameters, outer.Transaction.Request) &&
         parameters is not null && digest == Parameters(parameters) &&
         inner is not OpenIddictServerEvents.HandleAuthorizationRequestContext { IsRejected: true } &&
-        inner is not OpenIddictServerEvents.HandleTokenRequestContext { IsRejected: true };
+        inner is not OpenIddictServerEvents.HandleTokenRequestContext { IsRejected: true } &&
+        inner is not OpenIddictServerEvents.HandleUserInfoRequestContext { IsRejected: true };
 
     /// <summary>Rejects another child or another response capture even when it shares the same original request budget.</summary>
     private bool OwnsParent() => ReferenceEquals(request, ProtocolStorageAmbient.Current?.Request) &&

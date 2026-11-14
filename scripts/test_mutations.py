@@ -508,11 +508,18 @@ class MutationEvidenceTests(unittest.TestCase):
     def test_Given_InvalidPhase_When_Requested_Then_NoCommandRuns(self):
         """Reject arbitrary diagnostic labels and out-of-range ordinals before execution."""
         for role, operation, ordinal in [('secret', 'build', 0), ('baseline', 'secret', 0), ('mutant', 'build', -1),
-                                         ('mutant', 'build', 9), ('mutant', 'build', True)]:
+                                         ('mutant', 'build', 11), ('mutant', 'build', True)]:
             action = Mock()
             with self.assertRaises(verifier.MutationError):
                 verifier.perform(role, operation, action, ordinal=ordinal)
             action.assert_not_called()
+        self.assertEqual(('control', 'command', 0), verifier.PHASE.get())
+
+    def test_Given_LastManagedMutant_When_PhaseRuns_Then_FiniteUpperBoundIsIncluded(self):
+        """The tenth reviewed mutant executes inside the original finite phase envelope."""
+        observed = []
+        verifier.perform('mutant', 'execution', lambda: observed.append(verifier.PHASE.get()), ordinal=10)
+        self.assertEqual([('mutant', 'execution', 10)], observed)
         self.assertEqual(('control', 'command', 0), verifier.PHASE.get())
 
     def test_Given_OperationWrappers_When_Invoked_Then_OriginalBudgetsArePreserved(self):
@@ -697,12 +704,26 @@ class MutationEvidenceTests(unittest.TestCase):
         self.assertEqual(3, len(manifest(ROOT, "administrator-protocol")))
         self.assertEqual(8, len(manifest(ROOT, "browser-session")))
         self.assertEqual(8, len(manifest(ROOT, "applications")))
-        self.assertEqual(7, len(manifest(ROOT, "managed-applications")))
+        self.assertEqual(10, len(manifest(ROOT, "managed-applications")))
         self.assertEqual(4, len(manifest(ROOT, "application-lifecycle")))
         self.assertEqual(6, len(manifest(ROOT, "application-grants")))
         self.assertEqual(5, len(manifest(ROOT, "pilot-replay")))
         self.assertEqual(5, len(manifest(ROOT, "catalogue")))
         with self.assertRaises(ValueError): manifest(ROOT, "unknown")
+
+    def test_Given_ManagedMutationTraits_When_ReviewedAgainstInventory_Then_EachProviderHasOneExactDistinctWitness(self):
+        """Retained historical traits cannot collide with the current mutation's exact native witness."""
+        records = json.loads((ROOT / 'eng/administrator-test-matrix.json').read_text())['metadata']
+        for provider in ('PostgreSql', 'SqlServer'):
+            witnesses = set()
+            for item in manifest(ROOT, 'managed-applications'):
+                selected = [name for name, record in records.items()
+                            if {'key': 'Provider', 'value': provider} in record['traits']
+                            and {'key': 'CriticalDecision', 'value': item['id']} in record['traits']]
+                self.assertEqual(1, len(selected), item['id'])
+                self.assertTrue(selected[0].startswith(item['method'] + '('), item['id'])
+                self.assertNotIn(selected[0], witnesses)
+                witnesses.add(selected[0])
 
 
     def test_Given_ApplicationManifests_When_InventoryOrBoundaryChanges_Then_GateRejectsDrift(self):

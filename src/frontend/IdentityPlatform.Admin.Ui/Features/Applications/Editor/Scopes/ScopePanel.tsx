@@ -6,7 +6,7 @@ import { bindLifecycle } from "../lifecycle";
 import { scopeClient } from "./client";
 import { ScopeController, type ScopeState } from "./controller";
 
-/** Keeps deliberate scope assignment in the existing editor with explicit staged-issuance consequences and safe recovery. */
+/** Keeps deliberate scope assignment in the existing editor with explicit consent consequences and safe recovery. */
 export function ScopePanel({ base, reload }: { base: Observed; reload: () => void }) {
   const [state, setState] = useState<ScopeState>({ kind: "loading" });
   const [search, setSearch] = useState("");
@@ -31,14 +31,14 @@ export function ScopePanel({ base, reload }: { base: Observed; reload: () => voi
   const ready = state.kind === "ready" ? state : null;
   return <section className="editor-notice" aria-labelledby="application-scopes-heading" aria-busy={state.kind === "loading" || state.kind === "sending" || ready?.searching}>
     <h3 id="application-scopes-heading" tabIndex={-1} ref={heading}>Application scopes</h3>
-    <p id="scope-assignment-warning">Extended scope sign-in is not available yet. Saving any additional scopes blocks this application’s sign-in and token issuance, including OpenID-only requests. Clearing all assignments restores eligibility for a fresh sign-in if the application and credential are otherwise valid.</p>
+    <p id="scope-assignment-warning">Assigned scopes may be requested during sign-in. Users review and approve each request after password and MFA. Assignment changes invalidate pending sign-ins and codes; applications must start a fresh sign-in.</p>
     <p>Scope changes require current application write permission and a fresh MFA sign-in. Existing grants are not revoked.</p>
     <div role="status" aria-live="polite" aria-atomic="true">
       {state.kind === "loading" && <p>Reading current scope assignments…</p>}
       {state.kind === "sending" && <p>Saving your scope assignment once. If interrupted, check current state before submitting again.</p>}
       {state.kind === "saved" && <p>Scope assignment saved. Reloading current application details…</p>}
       {state.kind === "cleared" && <p>Scope assignments were cleared from this view. Reload application details to continue.</p>}
-      {ready && <p>{ready.assignment.scopes.length ? "Saved assignment: sign-in and token issuance are blocked until extended scope support is available or assignments are cleared." : "Saved assignment: no additional scopes. The original OpenID-only profile remains eligible."}</p>}
+      {ready && <p>{ready.assignment.scopes.length ? "Saved assignment: additional scopes require explicit user consent at sign-in." : "Saved assignment: no additional scopes. The original OpenID-only profile remains eligible."}</p>}
     </div>
     {state.kind === "problem" && <div role="alert"><p>{state.reason === "forbidden" ? "Current permissions and fresh MFA are required. Sign in again if needed." : state.reason === "expired" ? "Sign in again to manage scope assignments." : state.reason === "stale" ? "The application changed. Reload its details and review the assignment before saving." : state.reason === "conflict" ? "The application or selected scope policy cannot be assigned. Review enabled scopes and audiences, then reload." : "The scope assignment could not be confirmed."}</p>
       {state.uncertain && <p>Your change may have committed. Reload to read the current assignment; this will not repeat the write.</p>}

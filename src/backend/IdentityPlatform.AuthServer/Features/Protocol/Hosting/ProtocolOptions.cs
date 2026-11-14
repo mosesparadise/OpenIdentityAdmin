@@ -10,6 +10,7 @@ internal static class ProtocolOptions
 {
     internal const string AuthorizePath = "/connect/authorize";
     internal const string TokenPath = "/connect/token";
+    internal const string UserInfoPath = "/connect/userinfo";
     internal const string KeysPath = "/connect/jwks";
     internal const string ParPath = "/connect/par";
 

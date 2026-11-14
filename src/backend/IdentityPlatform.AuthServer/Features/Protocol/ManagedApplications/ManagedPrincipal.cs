@@ -6,7 +6,7 @@ using OpenIddict.Abstractions;
 
 namespace IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 
-/// <summary>Constructs identity-only managed principals and admits only the native private code metadata required for exchange.</summary>
+/// <summary>Constructs exactly consent-bound managed principals and admits only the native private code metadata required for exchange.</summary>
 internal static class ManagedPrincipal
 {
     private const string AuthenticationType = "managed-web";
@@ -14,7 +14,8 @@ internal static class ManagedPrincipal
     private const int SubjectDestinations = 2;
     private static readonly HashSet<string> NativeClaims = new(StringComparer.Ordinal)
     {
-        OpenIddictConstants.Claims.Subject, ManagedDemand.SelectorClaim, ManagedDemand.RevisionClaim,
+        OpenIddictConstants.Claims.Subject, ManagedDemand.SelectorClaim, ManagedDemand.RevisionClaim, ManagedDemand.PolicyClaim,
+        OpenIddictConstants.Claims.Private.Resource,
         OpenIddictConstants.Claims.Private.AuthorizationId, OpenIddictConstants.Claims.Private.CodeChallenge,
         OpenIddictConstants.Claims.Private.CodeChallengeMethod, OpenIddictConstants.Claims.Private.CreationDate,
         OpenIddictConstants.Claims.Private.ExpirationDate, OpenIddictConstants.Claims.Private.Issuer,
@@ -24,14 +25,30 @@ internal static class ManagedPrincipal
         OpenIddictConstants.Claims.JwtId
     };
 
-    /// <summary>Starts a new identity without any administrator principal, session, role, audience or permission claim.</summary>
+    /// <summary>Projects only the bound consent decision; email is read separately from current Identity state at exchange.</summary>
     internal static ClaimsPrincipal Create(ManagedLoginInteraction row, string client, string selector)
     {
+        var decision = ManagedScopeBinding.Read(row);
+        return Create(row.UserId, client, selector, row.ApplicationRevision.ToString(CultureInfo.InvariantCulture), row.PolicyDigest,
+            decision.Granted, decision.Resources);
+    }
+
+    /// <summary>Copies narrow authenticated code provenance provisionally; locked issuance must independently match the current interaction.</summary>
+    internal static ClaimsPrincipal Exchange(ClaimsPrincipal original) => Create(original.GetClaim(OpenIddictConstants.Claims.Subject),
+        original.GetPresenters().Single(), original.GetClaim(ManagedDemand.SelectorClaim)!, original.GetClaim(ManagedDemand.RevisionClaim)!,
+        original.GetClaim(ManagedDemand.PolicyClaim), original.GetScopes(), original.GetResources());
+
+    /// <summary>Creates a fresh managed identity with finite destinations and no copied account or administrator principal.</summary>
+    private static ClaimsPrincipal Create(string? subject, string client, string selector, string revision, string? digest,
+        System.Collections.Immutable.ImmutableArray<string> scopes, System.Collections.Immutable.ImmutableArray<string> resources)
+    {
         var principal = new ClaimsPrincipal(new ClaimsIdentity(AuthenticationType));
-        principal.SetClaim(OpenIddictConstants.Claims.Subject, row.UserId);
+        principal.SetClaim(OpenIddictConstants.Claims.Subject, subject);
         principal.SetClaim(ManagedDemand.SelectorClaim, selector);
-        principal.SetClaim(ManagedDemand.RevisionClaim, row.ApplicationRevision.ToString(CultureInfo.InvariantCulture));
-        principal.SetScopes(OpenIddictConstants.Scopes.OpenId);
+        principal.SetClaim(ManagedDemand.RevisionClaim, revision);
+        principal.SetClaim(ManagedDemand.PolicyClaim, digest);
+        principal.SetScopes(scopes);
+        principal.SetResources(resources);
         principal.SetPresenters(client);
         principal.SetDestinations(claim => claim.Type == OpenIddictConstants.Claims.Subject
             ? [OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken] : []);
@@ -39,14 +56,16 @@ internal static class ManagedPrincipal
     }
 
     /// <summary>Rejects extra public/private provenance after native internal-claim restoration and binds every permitted managed value.</summary>
-    internal static bool Matches(ClaimsPrincipal principal, ManagedLoginInteraction row, string client, string selector, bool protectedCode = false) =>
+    internal static bool Matches(ClaimsPrincipal principal, ManagedLoginInteraction row, string client, string selector, bool protectedCode = false, ManagedEmailProjection? email = null) =>
         principal.Identities.Count() == Multiplicity && principal.Identity is ClaimsIdentity { IsAuthenticated: true, Actor: null } &&
-        principal.Claims.All(claim => NativeClaims.Contains(claim.Type) || Destinations(claim) || protectedCode && Metadata(claim)) &&
-        principal.Claims.GroupBy(claim => claim.Type, StringComparer.OrdinalIgnoreCase).All(group => group.Count() == Multiplicity) &&
+        principal.Claims.All(claim => NativeClaims.Contains(claim.Type) || ManagedEmailClaims.Allows(claim, email) || Destinations(claim) || protectedCode && Metadata(claim)) &&
+        MultiplicityValid(principal) &&
         principal.GetClaim(OpenIddictConstants.Claims.Subject) == row.UserId && principal.GetClaim(ManagedDemand.SelectorClaim) == selector &&
         principal.GetClaim(ManagedDemand.RevisionClaim) == row.ApplicationRevision.ToString(CultureInfo.InvariantCulture) &&
-        principal.GetScopes().SequenceEqual([OpenIddictConstants.Scopes.OpenId], StringComparer.Ordinal) &&
-        principal.GetPresenters().SequenceEqual([client], StringComparer.Ordinal) && principal.GetResources().IsEmpty &&
+        ManagedScopeBinding.MatchesDigest(row, principal.GetClaim(ManagedDemand.PolicyClaim)) &&
+        principal.GetScopes().SequenceEqual(ManagedScopeBinding.Read(row).Granted, StringComparer.Ordinal) &&
+        principal.GetPresenters().SequenceEqual([client], StringComparer.Ordinal) && principal.GetResources().SequenceEqual(ManagedScopeBinding.Read(row).Resources, StringComparer.Ordinal) &&
+        ManagedEmailClaims.Matches(principal, email, destinations: true) &&
         principal.FindFirst(OpenIddictConstants.Claims.Subject)!.GetDestinations().ToHashSet(StringComparer.Ordinal)
             .SetEquals([OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken]) &&
         principal.Claims.Where(claim => claim.Type.StartsWith(OpenIddictConstants.Claims.Prefixes.Private, StringComparison.Ordinal)).All(claim => claim.GetDestinations().IsEmpty);
@@ -70,6 +89,13 @@ internal static class ManagedPrincipal
         }
         catch (JsonException) { return false; }
     }
+
+    /// <summary>Allows native repeated scope members only when each is an exact distinct string; every other claim remains single-valued.</summary>
+    internal static bool MultiplicityValid(ClaimsPrincipal principal) => principal.Claims.GroupBy(claim => claim.Type, StringComparer.OrdinalIgnoreCase)
+        .All(group => group.Key == OpenIddictConstants.Claims.Private.Scope
+            ? group.All(claim => claim.Type == group.Key && claim.ValueType == ClaimValueTypes.String) &&
+                group.Select(claim => claim.Value).Distinct(StringComparer.Ordinal).Count() == group.Count()
+            : group.Count() == Multiplicity);
 
     /// <summary>Binds every restored private value to the already authenticated code, preventing mutable nonce or source substitution.</summary>
     internal static bool Restored(ClaimsPrincipal principal, ClaimsPrincipal original)

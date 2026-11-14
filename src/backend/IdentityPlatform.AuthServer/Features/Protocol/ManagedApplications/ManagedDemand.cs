@@ -11,9 +11,14 @@ namespace IdentityPlatform.AuthServer.Features.Protocol.ManagedApplications;
 internal sealed class ManagedDemand
 {
     internal const string SelectorClaim = "oi_managed_selector";
+    internal const string PolicyClaim = "oi_managed_policy";
     internal const string RevisionClaim = "oi_managed_revision";
     private const int CorrelationLength = 512;
     private readonly OpenIddictRequest request;
+    internal System.Collections.Immutable.ImmutableArray<string> Scopes
+    {
+        get;
+    }
     internal string ClientId
     {
         get;
@@ -39,6 +44,7 @@ internal sealed class ManagedDemand
         Callback = request.RedirectUri!;
         Digest = Binding(request);
         Cached = request.RequestUri is not null;
+        Scopes = ManagedRequestedScopes.Read(request.Scope)!.Value;
     }
 
     /// <summary>Reserves both fixed client names case-insensitively before selecting any managed policy.</summary>
@@ -46,9 +52,9 @@ internal sealed class ManagedDemand
         !string.Equals(client, PilotProfile.ClientId, StringComparison.OrdinalIgnoreCase) &&
         !string.Equals(client, AdministratorProtocolIdentity.ClientId, StringComparison.OrdinalIgnoreCase);
 
-    /// <summary>Accepts only code/query/S256, exact openid and bounded state/nonce; a native request URI never grants human authority.</summary>
+    /// <summary>Accepts only code/query/S256, bounded unique scopes and state/nonce; a native request URI never grants human authority.</summary>
     internal static ManagedDemand? Read(OpenIddictRequest request) => Candidate(request.ClientId) &&
-        request.ResponseType == OpenIddictConstants.ResponseTypes.Code && request.Scope == OpenIddictConstants.Scopes.OpenId &&
+        request.ResponseType == OpenIddictConstants.ResponseTypes.Code && ManagedRequestedScopes.Read(request.Scope) is not null &&
         request.ResponseMode is null or OpenIddictConstants.ResponseModes.Query &&
         request.Prompt is null or OpenIddictConstants.PromptValues.Login &&
         request.CodeChallengeMethod == OpenIddictConstants.CodeChallengeMethods.Sha256 && ProofKeyPolicy.IsChallenge(request.CodeChallenge) &&

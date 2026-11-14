@@ -22,23 +22,20 @@ internal static class ManagedHumanBinding
             var digest = ManagedLoginRules.Digest(request.Selector);
             var row = await scope.Owner.Database.Set<ManagedLoginInteraction>().SingleOrDefaultAsync(value => value.SelectorDigest == digest, current);
             if (row is null || row.SelectorDigest != digest || row.BrowserDigest != request.BrowserDigest || row.State != request.State ||
-                row.Revision != request.Revision || row.DemandDigest != request.DemandDigest || row.RequestId != request.RequestId ||
+                row.Revision != request.Revision || row.DemandDigest != request.DemandDigest || !ManagedScopeBinding.MatchesDigest(row, request.PolicyDigest) || row.RequestId != request.RequestId ||
                 row.RequestExpiresAt != request.ExpiresAt || row.ExpiresAt != request.ExpiresAt || row.State == ManagedLoginState.Consumed ||
                 row.State == ManagedLoginState.Expired || ManagedLoginRules.Observe(scope.Owner.Clock, row.ObservedAt) >= row.ExpiresAt)
             {
                 throw ProtocolStorageOwner.Unavailable();
             }
-            if (!await ManagedScopeReferences.IsOpenIdAsync(scope.Owner.Database, row, current))
-            {
-                throw ProtocolStorageOwner.Unavailable();
-            }
+            await ManagedScopeReferences.VerifyBoundAsync(scope.Owner.Database, row, current);
             return row;
         }, token);
 
     /// <summary>Uses native managers to reject revoked/detached requests and native registration drift without selecting alternate stores.</summary>
     internal static async ValueTask<ManagedRegistration> NativeAsync(ProtocolStorageScope scope, ManagedHumanRequest request, ManagedLoginInteraction row, CancellationToken token)
     {
-        await ManagedScopeBinding.RequireOpenIdAsync(scope, row, token);
+        await ManagedScopeBinding.RequireAsync(scope, row, request.ClientId, token);
         var registration = await ManagedRegistration.ReadAsync(scope, request.ClientId, token);
         if (registration is null || registration.ApplicationId != row.ApplicationId || registration.Revision != row.ApplicationRevision ||
             !registration.Redirects.Contains(request.Callback, StringComparer.Ordinal))

@@ -9,6 +9,7 @@ namespace IdentityPlatform.AuthServer.Features.Protocol.Denials;
 internal static class NativeErrorPolicy
 {
     internal const string AuthorizationDefaultUri = "https://documentation.openiddict.com/errors/ID2015";
+    internal const string UserInfoDefaultUri = "https://documentation.openiddict.com/errors/ID2025";
     internal const string TokenDefaultUri = "https://documentation.openiddict.com/errors/ID2024";
     internal const string Description = "The request could not be completed.";
     internal const int DenialPropertyCount = 2;
@@ -17,7 +18,8 @@ internal static class NativeErrorPolicy
     internal const string ExpiredCache = "Thu, 01 Jan 1970 00:00:00 GMT";
 
     /// <summary>Allows only standard errors used by the fixed code/PAR profile; arbitrary error text never becomes output.</summary>
-    internal static bool Allows(string? error) => error is OpenIddictConstants.Errors.InvalidRequest or OpenIddictConstants.Errors.InvalidClient or
+    internal static bool Allows(string? error, OpenIddictServerEndpointType endpoint = OpenIddictServerEndpointType.Unknown) =>
+        endpoint == OpenIddictServerEndpointType.UserInfo && error is OpenIddictConstants.Errors.MissingToken or OpenIddictConstants.Errors.InsufficientScope or OpenIddictConstants.Errors.InsufficientAccess || error is OpenIddictConstants.Errors.InvalidRequest or OpenIddictConstants.Errors.InvalidClient or
         OpenIddictConstants.Errors.InvalidGrant or OpenIddictConstants.Errors.InvalidScope or OpenIddictConstants.Errors.InvalidToken or
         OpenIddictConstants.Errors.UnauthorizedClient or OpenIddictConstants.Errors.UnsupportedGrantType or OpenIddictConstants.Errors.UnsupportedResponseType or
         OpenIddictConstants.Errors.RequestNotSupported or OpenIddictConstants.Errors.RequestUriNotSupported or OpenIddictConstants.Errors.LoginRequired or

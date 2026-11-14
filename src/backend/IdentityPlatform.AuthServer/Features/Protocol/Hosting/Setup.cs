@@ -26,6 +26,10 @@ internal static class Setup
     {
         app.MapMethods(ProtocolOptions.AuthorizePath, [HttpMethods.Get, HttpMethods.Post], (Delegate)ProtocolDecisions.AuthorizeAsync);
         app.MapPost(ProtocolOptions.TokenPath, (Delegate)ProtocolDecisions.ExchangeAsync);
+        if (app.Services.GetRequiredService<ProtocolProfiles>().Managed)
+        {
+            app.MapMethods(ProtocolOptions.UserInfoPath, [HttpMethods.Get, HttpMethods.Post], (Delegate)UserInfo.UserInfoCoordinator.ReadAsync);
+        }
         return app;
     }
 }

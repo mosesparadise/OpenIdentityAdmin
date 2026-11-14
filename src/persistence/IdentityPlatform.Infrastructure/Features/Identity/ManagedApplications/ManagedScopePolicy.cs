@@ -15,6 +15,11 @@ internal static class ManagedScopePolicy
     /// <summary>Freezes bounded caller input before awaiting locks and resolves only exact currently assigned, enabled managed scopes.</summary>
     internal static async ValueTask<ManagedScopeDecision> CaptureAsync(ProtocolStorageScope scope, string clientId,
         IReadOnlyCollection<string> requested, IReadOnlyCollection<string> granted, CancellationToken token)
+        => await TryCaptureAsync(scope, clientId, requested, granted, token) ?? throw ProtocolStorageOwner.Unavailable();
+
+    /// <summary>Returns no authority for ordinary missing or disabled policy without converting storage failures into protocol denials.</summary>
+    internal static async ValueTask<ManagedScopeDecision?> TryCaptureAsync(ProtocolStorageScope scope, string clientId,
+        IReadOnlyCollection<string> requested, IReadOnlyCollection<string> granted, CancellationToken token)
     {
         var request = Freeze(requested);
         var grant = Freeze(granted);
@@ -23,7 +28,11 @@ internal static class ManagedScopePolicy
             throw ProtocolStorageOwner.Unavailable();
         }
         await ManagedRegistration.LockAsync(scope, token);
-        var application = await ManagedRegistrationState.ReadAsync(scope, clientId, token) ?? throw ProtocolStorageOwner.Unavailable();
+        var application = await ManagedRegistrationState.ReadAsync(scope, clientId, token);
+        if (application is null)
+        {
+            return null;
+        }
         try
         {
             var (entries, audience) = await ResolveAsync(scope, application.Permissions, request, token);
@@ -32,7 +41,7 @@ internal static class ManagedScopePolicy
             _ = ManagedScopeCodec.Encode(decision);
             return decision;
         }
-        catch (CatalogueRejected) { throw ProtocolStorageOwner.Unavailable(); }
+        catch (CatalogueRejected) { return null; }
     }
 
     /// <summary>Reconstructs authority from current native/product state; a stored snapshot never authorizes its own continued use.</summary>
@@ -44,6 +53,14 @@ internal static class ManagedScopePolicy
         {
             throw ProtocolStorageOwner.Unavailable();
         }
+    }
+
+    /// <summary>Distinguishes current policy invalidation from infrastructure faults for a bounded bearer-token denial.</summary>
+    internal static async ValueTask<bool> TryVerifyAsync(ProtocolStorageScope scope, string clientId, ManagedScopeDecision decision, CancellationToken token)
+    {
+        var expected = ManagedScopeCodec.Encode(decision);
+        var actual = await TryCaptureAsync(scope, clientId, decision.Requested, decision.Granted, token);
+        return actual is not null && expected == ManagedScopeCodec.Encode(actual);
     }
 
     /// <summary>Rejects duplicate or malformed members before sorting, preserving ordinal semantics and a fixed input bound.</summary>
@@ -67,7 +84,7 @@ internal static class ManagedScopePolicy
         {
             if (!permissions.Contains(OpenIddictConstants.Permissions.Prefixes.Scope + name, StringComparer.Ordinal))
             {
-                throw ProtocolStorageOwner.Unavailable();
+                throw new CatalogueRejected(CatalogueFailure.Unsupported);
             }
             var policy = await ReadScopeAsync(scope, name, token);
             if (policy.AudienceId is not null)
@@ -76,7 +93,7 @@ internal static class ManagedScopePolicy
                 var captured = new ManagedScopeAudience(current.Id, current.Resource, current.Revision, FactorBinding.Digest(current));
                 if (!current.Enabled || current.Resource != policy.Resource || audience is not null && audience != captured)
                 {
-                    throw ProtocolStorageOwner.Unavailable();
+                    throw new CatalogueRejected(CatalogueFailure.Unsupported);
                 }
                 audience = captured;
             }
@@ -89,9 +106,9 @@ internal static class ManagedScopePolicy
     private static async ValueTask<CatalogueScope> ReadScopeAsync(ProtocolStorageScope scope, string name, CancellationToken token)
     {
         var manager = scope.Services.GetRequiredService<IOpenIddictScopeManager>();
-        var native = await manager.FindByNameAsync(name, token) ?? throw ProtocolStorageOwner.Unavailable();
-        var id = await manager.GetIdAsync(native, token) ?? throw ProtocolStorageOwner.Unavailable();
+        var native = await manager.FindByNameAsync(name, token) ?? throw new CatalogueRejected(CatalogueFailure.Unsupported);
+        var id = await manager.GetIdAsync(native, token) ?? throw new CatalogueRejected(CatalogueFailure.Unsupported);
         var current = await CatalogueScope.ReadAsync(scope, id, token);
-        return current.Name == name && current.Enabled ? current : throw ProtocolStorageOwner.Unavailable();
+        return current.Name == name && current.Enabled ? current : throw new CatalogueRejected(CatalogueFailure.Unsupported);
     }
 }
