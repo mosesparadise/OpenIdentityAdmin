@@ -8,8 +8,10 @@ dotnet run --project src/aspire/IdentityPlatform.AppHost --launch-profile local-
 ```
 
 Use disposable synthetic data, the dashboard initialization link and genuine password/MFA.
-Open the administrator UI from the Aspire dashboard. The workspace includes **Audiences**
-and **Scopes** to the navigation:
+After initialization, open the administrator UI at <https://bff.dev.localhost:17444/>;
+dashboard resource links may lead to health endpoints. Follow the
+[local demo prerequisites and enrollment steps](../014-local-b3-demo/quickstart.md).
+The workspace includes **Audiences** and **Scopes** in the navigation:
 
 1. Create an audience with resource `orders-api`, a display name and owner.
 2. Create an API scope named `orders.read`, choose that audience and enter its consent
@@ -27,10 +29,9 @@ the original request; the UI does not blindly repeat a write. A changed or expir
 session clears observed data and requires sign-in again.
 
 Application assignment is delivered; see [assignment acceptance](assignment-acceptance.md).
-The consented-scope and UserInfo candidate is [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134),
-branch `143-managed-scope-consent`. Its provider/browser acceptance is still pending;
-use [consented issuance](consented-issuance.md) for the current evidence status.
-The steps below describe that candidate; accepted main still has the temporary assignment hold until it merges.
+Consented scopes and UserInfo are delivered on main in [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134).
+See [qualified acceptance and reliability limits](consent-acceptance.md). The temporary
+assignment hold is removed; the steps below use the ordinary main branch.
 Creating a catalogue entry alone does not grant an application scope
 permission or change token contents. Do not manually alter the database to bypass these
 boundaries. Administrator bearer tokens stay server-side.
@@ -42,6 +43,7 @@ Windows/manual/Firefox/A-009 and existing external gates remain open.
 ## Try application scope assignment
 
 Use a disposable application and keep an enabled scope/audience from steps 1–2 above.
+If you completed the deletion exercise, create another scope and audience first.
 In **Applications**, open the application's details and find **Application scopes**.
 
 1. Search for the scope name, select it and read the sign-in warning. Selection remains
@@ -63,7 +65,7 @@ In **Applications**, open the application's details and find **Application scope
 
 Do not use assignment as grant revocation. Untouched applications keep their existing behavior.
 
-## Try consented tokens and UserInfo on the candidate branch
+## Try consented tokens and UserInfo
 
 Use an integrating confidential client registered through the existing application editor,
 with an exact HTTPS callback, Basic client authentication, S256 PKCE, nonce and state.

@@ -1,5 +1,20 @@
 # Scope/audience catalogue evidence
 
+## Current accepted consent/token/UserInfo increment
+
+[Consented-scope acceptance](consent-acceptance.md) binds PR134/CI594, the exact reviewed
+source and squash tree, original artifacts and independent reviews. All 136 jobs pass;
+6,300 native executions, 140 mutation kills and 110 coverage inputs meet every unchanged
+floor. T010–T016 and the approved M03-B/C managed-profile scope are delivered internally.
+CI590 restart and CI592 theme-contrast failures remain unexplained reliability evidence;
+no cause, fix or suite-stability claim is made. All historical/manual/public-release
+gates remain open.
+
+## Historical implementation and evidence checkpoints
+
+Pending, candidate and next-step statements below retain their dated meaning and are
+superseded by the current acceptance above. Failed attempts remain failed evidence.
+
 ## Current accepted policy-binding increment
 
 [Policy acceptance](policy-acceptance.md) binds CI581, the reviewed source and normal

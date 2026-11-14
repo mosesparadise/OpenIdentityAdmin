@@ -1,13 +1,33 @@
 # Delivery roadmap and task register
 
-## Active batch — consented issuance, 14 November 2026
+## Current delivery — consented scopes and UserInfo, 14 November 2026
 
-T010–T012 and required T013 compatibility are implemented on
-`143-managed-scope-consent` for full provider/browser validation.
-[Scope, scenarios and local evidence](../specs/023-scope-audience-catalogue/consented-issuance.md). No task is accepted yet;
-T014–T016 and all historical/manual/public-release gates remain open.
-The accepted main baseline below still has the temporary assignment hold; the candidate
-branch replaces it with explicit consent, exact native scopes/audience and current UserInfo.
+Feature023 T001–T016 and the selected M03-A–M03-C managed-profile scope are complete
+for internal development. [PR134](https://github.com/mosesparadise/OpenIdentityAdmin/pull/134)
+is squash-merged as `eb2458ad71a53e949ea8d7e715e66e0a8d5c84dd`. Explicit requested-scope consent, exact native
+scope/audience/consented-email issuance and current-authority GET/POST UserInfo are
+available on main. The temporary assignment hold is removed; fixed BFF login/logout
+and both no-UserInfo-send guards remain intact.
+
+[CI594](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43588408738)
+passes all 136 jobs: 113 native reports/6,300 executions, 140 mutation kills, 132 UI and 46
+Node cases, 110 original coverage inputs and all 15 unchanged floors. All 130 original
+archives are reconciled; source, tested merge and squash have the same tree.
+[Acceptance, reviews and limits](../specs/023-scope-audience-catalogue/consent-acceptance.md).
+Acceptance retains CI590's unexplained demo restart and CI592's theme-contrast failures
+as reliability qualifications. Current original cases pass without weakening their
+assertions. No cause, fix or stable-suite claim is inferred. Preserve CI586–CI593.
+
+Run the [ordinary Aspire walkthrough](../specs/023-scope-audience-catalogue/quickstart.md).
+**Recommended next visible increment:** an Aspire sample relying-party application
+and API exercising consent, tokens and UserInfo (M04-D), with a bounded specification.
+No further implementation or renewed SQL diagnostics are part of this completed batch.
+All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/public-release gates remain open.
+
+## Historical delivery checkpoints
+
+The pending, next-step and assignment-hold statements below describe their dated
+checkpoints and are superseded by the current delivery above.
 
 ## Accepted baseline — managed policy bindings, 14 November 2026
 
@@ -706,8 +726,8 @@ Prerequisite: milestone 002. Real UserInfo needed for this milestone's approved 
 | Task | Deliverable and acceptance |
 | --- | --- |
 | M03-A | Delivered in PR128: scope/audience search/create/edit and durable deletion, current permissions, safe references, concurrency and atomic audits on both databases. See [feature023 acceptance](../specs/023-scope-audience-catalogue/acceptance.md). |
-| M03-B | Partial: finite claim policy and explicit application scope assignment delivered in PR128/PR130. Policy/consent/issuance integration remains T009–T011, including requested/allowed/consented intersection and one approved audience. |
-| M03-C | Prove scope policy with real tokens and scope-filtered UserInfo, exact subject, machine restrictions and current-state changes. |
+| M03-B | Delivered for the approved managed profile in PR128/PR130/PR132/PR134: finite claim policy, explicit assignment, current-policy bindings, requested/allowed/consented scopes and at most one mapped API audience. See [qualified internal acceptance](../specs/023-scope-audience-catalogue/consent-acceptance.md). |
+| M03-C | Delivered in PR134: independently validated native tokens and current-authority scope-filtered UserInfo, exact subject, consented current email, wrong-profile rejection and policy/revocation changes on both providers. Machine activation remains separate. |
 
 ## Milestone 004 — Application lifecycle (catalogue, editing, enablement and grant revocation delivered)
 
@@ -716,7 +736,7 @@ Prerequisites: milestones 002–003 and the actual protocol capabilities being o
 | Task | Deliverable and acceptance |
 | --- | --- |
 | M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. PR124 delivers durable bulk grant revocation, current batch authority, progress and explicit recovery while the application stays disabled. Clone/delete remain open. |
-| M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit OpenID-only consent. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
+| M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit consent; PR134 adds explicitly assigned requested scopes, finite email policy and UserInfo. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
 | M04-C | PR120 delivers manager-hashed one-time shared secrets, enforced expiry, immediate explicit replacement and lost-output recovery with no plaintext reread. Asymmetric public-key registration and remaining credential lifecycle remain open. |
 | M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
 | M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. Broader client profiles, clone/delete and manual/external acceptance remain open; the separate legacy pilot replay correction is accepted in [feature022](../specs/022-pilot-replay-serialization/acceptance.md) via PR126. |
@@ -789,7 +809,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 | FR-01 applications | M04-A/E | Partial: catalogue/search/paging in PR118, managed details/create/edit in PR120 and disable/re-enable with issuer enforcement in PR122; clone/delete and separate grant revocation remain open |
 | FR-02 client profiles | M01-D, M02-B, M04-B/E, M07-A/B/D | Partial: fixed pilot plus managed confidential web code/S256 profile in PR120; other profiles remain planned |
 | FR-03 credentials | M04-C/E, M07-A | Partial: native-hashed expiring one-time shared secrets and explicit replacement in PR120; asymmetric and broader lifecycle remain open |
-| FR-04 scopes/audiences/claims | M01-D, M03-A/B/C, M06-A/B | Partial: catalogue management delivered in PR128 and application assignment in PR130; policy/consent, extended claims and UserInfo remain feature023 T009–T014 |
+| FR-04 scopes/audiences/claims | M01-D, M03-A/B/C, M06-A/B | Approved managed-profile scope delivered in PR128/PR130/PR132/PR134: catalogue, assignment, current policy, explicit consent, finite email claims and UserInfo; broader profile/release gates remain open |
 | FR-05 users | M05-A/B, M06-B/C | Planned |
 | FR-06 roles/permissions | M02-A/D, M05-A | Planned |
 | FR-07 account/authenticator journeys | M01-D, M02-A, M05-B/C, M07-C | Partial: pilot login/lockout and administrator TOTP enrollment/login/restricted recovery accepted; full account/passkey lifecycle remains planned |
