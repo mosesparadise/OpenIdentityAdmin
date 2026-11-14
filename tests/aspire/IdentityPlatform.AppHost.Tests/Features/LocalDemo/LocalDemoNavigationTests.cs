@@ -110,6 +110,29 @@ public sealed class LocalDemoNavigationTests
                 RequireNavigationLocation(result);
             }
         }
+        RequireClosedBrowserFailure();
+    }
+
+    /// <summary>Known native error identifiers remain finite; private suffixes, unknown codes, ambiguity and nonbrowser text never escape.</summary>
+    private static void RequireClosedBrowserFailure()
+    {
+        const string Private = "https://example.invalid/?code=synthetic-private-demo-canary";
+        const string Network = "net::ERR_CONNECTION_RESET";
+        const string OtherNetwork = "net::ERR_EMPTY_RESPONSE";
+        const string UnknownNetwork = "net::ERR_SYNTHETIC_PRIVATE";
+        const string Expected = "browser=ERR_CONNECTION_RESET.";
+        const string Unknown = "browser=Unknown.";
+        const string NotBrowser = "browser=NotBrowser.";
+        const string At = " at ";
+        const string Extension = "_PRIVATE";
+        var known = LocalDemoFailureEvidence.Describe(new Microsoft.Playwright.PlaywrightException(Network + At + Private));
+        Assert.EndsWith(Expected, known, StringComparison.Ordinal);
+        Assert.DoesNotContain(Private, known, StringComparison.Ordinal);
+        Assert.EndsWith(Expected, LocalDemoFailureEvidence.Describe(new Microsoft.Playwright.PlaywrightException(Network)), StringComparison.Ordinal);
+        Assert.EndsWith(Unknown, LocalDemoFailureEvidence.Describe(new Microsoft.Playwright.PlaywrightException(Network + Extension)), StringComparison.Ordinal);
+        Assert.EndsWith(Unknown, LocalDemoFailureEvidence.Describe(new Microsoft.Playwright.PlaywrightException(UnknownNetwork + Private)), StringComparison.Ordinal);
+        Assert.EndsWith(Unknown, LocalDemoFailureEvidence.Describe(new Microsoft.Playwright.PlaywrightException(Network + At + OtherNetwork)), StringComparison.Ordinal);
+        Assert.EndsWith(NotBrowser, LocalDemoFailureEvidence.Describe(new InvalidOperationException(Network + Private)), StringComparison.Ordinal);
     }
 
     /// <summary>Rejects a sanitizer that suppresses every source location instead of retaining the actual owned-navigation failure.</summary>

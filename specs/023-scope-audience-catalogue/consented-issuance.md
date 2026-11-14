@@ -239,3 +239,35 @@ retained and corrected-source execution is mandatory.
 The final Administrator build passes with zero warnings/errors. A local invocation of
 that built classifier passes the exact PostgreSQL positive, wrong-provider negative,
 and all embedded SQL/PostgreSQL controls without starting a database.
+
+### Fifth hosted attempt — CI590
+
+[CI590](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43580181755)
+checks source `c11b99a142e05e18b20fc399e3a4f2ce3d38a13d`, merge
+`aec6dd65e5840c43a89d4c40e9e478471f3997d4`, tree
+`77628c1b1bbdd3d4e93836a27c18b1ab8762a752`. The unit suite, PostgreSQL disclosure
+16/16 and both protocol replay groups 55/55 pass. Original PostgreSQL disclosure TRX
+counters/outcomes and archive/source bindings were independently reparsed. Earlier
+signed-expiry and PostgreSQL timeout corrections are exercised successfully.
+
+The PostgreSQL ordinary local-demo group fails during its final disposable-restart
+check at LocalDemoBrowser's single navigation to `/bff/session`. Both complete managed
+journeys report successful callbacks/exchanges before restart. The failure occurs before
+HTTP 200 and authenticated=false assertions; the retained sanitizer reports only Browser
+and the source line, so network cause and product causation remain unverified. A fresh
+graph's anonymous session status does not require administrator initialization. No
+production/readiness change, assertion removal, retry or browser waiver is justified.
+
+Retain the failed run. Add only a closed native Chromium network-error category to the
+existing sanitized failure receipt, with exact token boundaries and unknown/ambiguous
+fallback. URLs, response bodies, cookies, form values and exception messages are never
+emitted. Permanent controls reject private suffixes, unknown extended identifiers,
+multiple categories and nonbrowser text while preserving actual source locations. All
+existing navigation, lifecycle, status, cookie-replay and timeout assertions stay intact.
+This improves future evidence; it does not claim to fix or explain the prior failure.
+The diagnostic change builds cleanly; all 110 local AppHost harness cases pass.
+A separate local invocation of the actual built classifier passes its exact-end and
+realistic network positives, private-data redaction, extended/unknown/ambiguous code
+and nonbrowser negatives. Code-quality checks pass without allowances. SQL Server
+also finishes disclosure 16/16 in CI590. Both providers therefore exercise the signed
+expiry correction successfully; the failed demo receipt still prevents acceptance.
