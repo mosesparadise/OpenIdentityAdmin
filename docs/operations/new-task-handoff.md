@@ -1,6 +1,38 @@
 # OpenIdentityAdmin new-task handoff
 
-## Current delivery — interactive Aspire sample, 14 November 2026
+## Current delivery — application cloning and permanent retirement, 15 November 2026
+
+Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed
+confidential web profile. The user selected permanent retirement with history retained.
+[PR138](https://github.com/mosesparadise/OpenIdentityAdmin/pull/138) delivers cloning;
+[PR139](https://github.com/mosesparadise/OpenIdentityAdmin/pull/139) delivers retirement,
+squash-merged as `92849d2bb7ec37c13d9e7f6be8f7abf3f23b1466`. Retirement stops new issuance/current UserInfo, hides
+the application from the ordinary list, reserves its client ID and preserves native/audit
+history. Durable grant revocation remains observable through Retired applications after
+reload/re-login or response loss; stopped work requires explicit fresh approval.
+
+[CI618](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43680949577) and
+[retirement acceptance](../../specs/025-application-clone-retirement/retirement-acceptance.md)
+record the actual reviewed source, original artifacts and qualifications. All 36 feature tasks
+are complete for internal development after this reviewed documentation follow-up. Existing
+offline JWTs can remain valid until expiry, and remote relying-party sessions are not erased.
+
+The current implementation batch is complete. The Windows Docker Desktop walkthrough remains
+a human activity; M05-A general user administration is a later engineering candidate. Broader
+M04-B/C profiles and credentials and protected documentation remain separate work. All existing
+manual, Firefox/A-009, historical, dormant-refresh, vendor and external release gates stay open.
+
+Resume from current remote main after verifying its actual head. Feature025 has no remaining
+implementation task; this documentation follow-up records its completed delivery. Preserve
+PR139's accepted source/tree and [failed-run history](../../specs/025-application-clone-retirement/verification.md),
+including CI617's unexplained PostgreSQL/WebKit navigation timeout and blocked local comparison.
+CI618 passed on unchanged executable source; do not claim a timeout fix or general stability.
+No post-feature025 engineering slice is selected automatically. M05-A general user administration
+is a later candidate, while broader M04-B/C work remains visible in the roadmap. Keep draft PR69,
+all six historical findings, human/Windows/Firefox/A-009/refresh/vendor/production/public-release
+gates and finite artifact-retention limitations. No expired diagnostic approval is renewed.
+
+## Previous delivery — interactive Aspire sample, 14 November 2026
 
 Feature024 is delivered for internal development. [PR136](https://github.com/mosesparadise/OpenIdentityAdmin/pull/136)
 is squash-merged as `f2cccffcf79c0dc40ff2adefd2a778d0ef6db032`; this reviewed documentation
@@ -24,8 +56,8 @@ The API's offline revocation limit and sample logout's local scope remain explic
 
 **Next practical activity:** perform the actual Windows Docker Desktop
 [walkthrough](../../specs/024-aspire-sample-client-api/quickstart.md) and record observed results.
-No post-feature024 implementation batch is selected. M04-A clone/delete (after clarifying
-deletion/grant semantics) or M05-A general user administration are candidate slices.
+The former M04-A clone/delete candidate is now delivered by feature025 with user-selected
+permanent retirement and retained history. M05-A remains a later candidate slice.
 Keep dormant refresh visible; do not activate it or repeat completed implementation.
 
 All six historical findings and human/Windows/Firefox/A-009/refresh/vendor/production/
