@@ -55,7 +55,7 @@ internal static class SampleCloneJourney
         await Button(page, Clone).ClickAsync();
         await HeadingAsync(page, Clone);
         await Button(page, Cancel).ClickAsync();
-        await HeadingAsync(page, Details);
+        await HeadingAsync(page, Details, focused: false);
         await Assertions.Expect(Button(page, Clone)).ToBeFocusedAsync();
         await Button(page, Clone).ClickAsync();
         await HeadingAsync(page, Clone);
@@ -136,14 +136,17 @@ internal static class SampleCloneJourney
     /// <summary>Uses semantic visible actions rather than internal controller calls.</summary>
     private static ILocator Button(IPage page, string name) => page.GetByRole(AriaRole.Button, new() { Name = name, Exact = true });
 
-    /// <summary>Requires each user-visible state to finish before continuing.</summary>
-    private static async Task HeadingAsync(IPage page, string name)
+    /// <summary>Requires each user-visible state to finish, including heading focus except when cancel restores the initiating button.</summary>
+    private static async Task HeadingAsync(IPage page, string name, bool focused = true)
     {
         await page.GetByRole(AriaRole.Heading, new()
         {
             Name = name,
             Exact = true
         }).WaitForAsync();
-        await Assertions.Expect(page.Locator(EditorHeading)).ToBeFocusedAsync();
+        if (focused)
+        {
+            await Assertions.Expect(page.Locator(EditorHeading)).ToBeFocusedAsync();
+        }
     }
 }

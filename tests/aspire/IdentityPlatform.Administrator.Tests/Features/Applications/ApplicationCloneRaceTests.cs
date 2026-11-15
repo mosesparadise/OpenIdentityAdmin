@@ -2,7 +2,6 @@ using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.ApplicationGrants;
 using IdentityPlatform.Administrator.Tests.Features.Catalogue;
 using IdentityPlatform.Administrator.Tests.Fixtures;
-using IdentityPlatform.Core.Features.Applications;
 using IdentityPlatform.Core.Features.Catalogue;
 using IdentityPlatform.Infrastructure.Features.Applications;
 using IdentityPlatform.Infrastructure.Features.Catalogue;

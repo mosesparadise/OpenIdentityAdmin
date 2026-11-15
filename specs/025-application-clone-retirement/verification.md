@@ -119,3 +119,37 @@ focus/error/foreign-secret refinements. Generated TypeScript regeneration/check 
 76 locked npm entries and exact renderer archive supply checks pass. Staged gitleaks scan
 finds no secrets. Full ordinary unit verification and the strengthened two-provider source
 isolation case are running; required hosted browser/coverage/mutation acceptance remains open.
+
+### PR 138 first CI feedback and corrections
+
+The final ordinary local unit verifier completed successfully: Core 94, Host 2,088,
+Architecture 5 and AppHost 118; no failed or skipped required cases. The strengthened
+source-isolation case also passed on both providers (2/2, 1m45s).
+
+CI 608 (`43655695701`, head `c30cb4e`) exposed stale independent selection totals in
+the shared pre-test checks. The first failure was standard partition 356 versus 359;
+the new cases account for +1 persistence and +2 AppHost cases per provider. Further
+inspection found old administrator and combined totals in five selection-control files.
+Independent review confirms all 2,977 previous administrator and 80 persistence identities
+and metadata are unchanged; the additions are 48 and 2 respectively. The corrected totals
+are standard 359, administrator 1,384/1,489, combined 1,786/1,893, and full administrator
+catalogue 3,025. Existing group obligations and fail-closed controls remain intact.
+The first local run of all 28 workflow Python control scripts caught the remaining issuer
+partition assertions; after their correction its nine controls pass, and the other 27
+scripts had passed. These failures occurred before the affected native/browser tests and
+must not be interpreted as executed test results.
+
+CI's exact static gate also rejected three unused imports; these were removed. An
+independent browser review caught a contradictory test helper requiring heading focus
+after Cancel while the next assertion correctly required restored Clone-button focus.
+Cancel alone now checks visible details and the initiating button; entry, success,
+post-hide and reloaded details retain heading-focus assertions. A local build rejected
+the initial correction's missing braces; the correction now follows the enforced style.
+The reviewer confirms the final focus semantics and finds no further concrete UI/assertion
+contradiction in the inspected journey. The exact static gate and new hosted CI remain
+required; no merge or full acceptance is claimed for CI 608.
+
+Corrected exact local static gate (`scripts/check-static-analysis.py --self-test`) passes:
+zero-warning/error build, whitespace and IDE0005 verification, code-quality checks with
+unchanged legacy baseline, and all three seeded analyzer/style negative controls. The
+cancel-focus correction is independently source-reviewed. Full hosted acceptance remains open.
