@@ -14,7 +14,7 @@ from test_selection import catalogue
 ROOT = Path(__file__).resolve().parents[1]
 STORY = 'Applications'
 NAMESPACE = 'IdentityPlatform.Administrator.Tests.Features.Applications'
-EXPECTED = [('Registration', 140), ('Retirement', 36)]
+EXPECTED = [('Registration', 140), ('Retirement', 39)]
 
 
 class ApplicationSelectionTests(unittest.TestCase):
@@ -38,7 +38,7 @@ class ApplicationSelectionTests(unittest.TestCase):
 
     def test_Given_DefaultAndExplicitStory_When_Grouped_Then_AllOldAndRetirementCasesRunExactlyOnce(self):
         """Check both default and explicit execution preserve every original and retirement identity."""
-        for provider, total in (('PostgreSql', 1426), ('SqlServer', 1531)):
+        for provider, total in (('PostgreSql', 1429), ('SqlServer', 1534)):
             self.verify(provider)
             expected = [(STORY, group, count) for group, count in EXPECTED]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, STORY))
@@ -53,7 +53,7 @@ class ApplicationSelectionTests(unittest.TestCase):
                     name = self.inventory['metadata'][test[0]]['type']['typeName']
                     self.assertEqual(group == 'Retirement', name.startswith('ApplicationRetirement'))
         self.assertEqual(34, len(self.matrix['application_groups']['Registration']['classes']))
-        self.assertEqual(12, len(self.matrix['application_groups']['Retirement']['classes']))
+        self.assertEqual(13, len(self.matrix['application_groups']['Retirement']['classes']))
 
     def test_Given_ManifestDrift_When_Validated_Then_MissingOverlappingAndSubstitutedClassesFail(self):
         """Seed independent manifest defects without changing actual native discovery."""

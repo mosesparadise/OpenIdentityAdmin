@@ -1504,7 +1504,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"PostgreSql\", exchange: True, issuanceFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"enable\", retirementFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"PostgreSql\", operation: \"enable\", retirementFirst: True)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"PostgreSql\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"PostgreSql\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"control\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"SqlServer\")",
@@ -3115,7 +3118,10 @@
     "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_ConsumedManagedProof_When_RetirementAndIssuanceCommitInEitherObservedOrder_Then_OnlyPriorIssuanceCanPublish(provider: \"SqlServer\", exchange: True, issuanceFirst: True)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"enable\", retirementFirst: False)",
     "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementMutationRaceTests.Given_ConcurrentSourceMutation_When_RetirementCommitOrderIsObserved_Then_NoPostRetirementWriteOrCloneCanCommit(provider: \"SqlServer\", operation: \"enable\", retirementFirst: True)",
-    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"SqlServer\")"
+    "IdentityPlatform.Administrator.Tests.Features.ManagedApplications.ManagedRetirementRaceTests.Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(provider: \"SqlServer\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"control\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"expiry\")",
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")"
   ],
   "metadata": {
     "IdentityPlatform.Administrator.Tests.Features.Accounts.AdmissionTests.Given_AbandonedEnrollment_When_NewPasswordAdmissionSucceeds_Then_DestinationIsNeverReused(provider: \"PostgreSql\")": {
@@ -67018,6 +67024,126 @@
         "methodArity": 0,
         "returnTypeFullName": "System.Threading.Tasks.Task",
         "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"control\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"PostgreSql\", boundary: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"control\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"expiry\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
+    },
+    "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementPublicationTests.Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives(provider: \"SqlServer\", boundary: \"generation\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Administrator.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Administrator.Tests.Features.Applications",
+        "typeName": "ApplicationRetirementPublicationTests",
+        "methodName": "Given_AcceptedRetirement_When_BrowserAuthorityIsRecheckedBeforePublication_Then_OutputFollowsOriginalBoundsAndCommittedHistorySurvives",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String",
           "System.String"
         ]
       },

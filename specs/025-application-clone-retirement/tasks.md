@@ -84,3 +84,7 @@ SC-004 T014/015/027/028; SC-005 T015/028/029.
 
 - [ ] T034 Preserve the original native retirement baseline through real logout/relogin while independently admitting only the exact new administrator sign-in rows; verify both recovery journeys on both providers/engines per FR-009 / FR-013 / SC-003 (partial).
 - [ ] T035 Partition BrowserProtection into Sessions15, existing Applications21 and Retirement2 per provider/engine; preserve exact native identities, all mandatory cells and unchanged660-second deadlines per FR-013 / SC-004 (partial).
+
+## Phase 11: Convergence
+
+- [ ] T036 Prove the retirement BFF withholds successful publication after genuine upstream commit when browser generation changes or the original useful lifetime expires; retain the exact committed receipt/job/history, one send and explicit authorized recovery on both providers per FR-012 / FR-013 / Constitution10/13 (partial).

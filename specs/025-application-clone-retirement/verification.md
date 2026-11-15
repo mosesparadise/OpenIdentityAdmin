@@ -530,3 +530,62 @@ cells and120 coverage obligations. The retirement oracle source review accepts p
 original target/peer checks and explicit administrator-only additions, including ordinal client
 identity after database lookup. It proves row population, not an additional token-family linkage
 claim. These local/source checks do not replace corrected hosted browser or full-run evidence.
+
+### CI616 passing execution and remaining publication-boundary verification
+
+[CI616](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43673381686), attempt1,
+passes all149 jobs at head `5a829f4d7ebe51e1e4891e9ec82e9243793005a9`, tested merge
+`35e1bc011e376f3cf0ed3253129dae1495b37e67`, tree `f13e4d7d2c183970a9753a8814b185b81d9c6bc4`,
+against unchanged base `0366f5f1ebdca7797edd6dfd6954715b0545dd63`. All143 original archives
+are retained with authenticated hash/size/CRC reconciliation. Independent scoped reviews pass
+123 native TRXs/6,593 executions,149 UI/47 Node cases,120 coverage inputs and all17 unchanged
+floors, and19 mutation archives/25 receipts/161 baseline, causal-kill and restored passes.
+Host passes2,123 cases in149.067542s with peak8 and zero exclusive overlaps. Both application
+groups/provider and all eight retirement browser executions pass. The two retained browser
+regressions pass. SQL registration140 takes571.186s; SQL/WebKit retained Applications21 takes
+525.977s, both under the unchanged660s bound. No historical failure cause or general stability
+claim is inferred from these scoped results.
+
+Final independent path review found one missing adversarial verification obligation despite
+passing numeric coverage: the retirement-specific BFF's post-upstream authority-loss denial
+in `ApplicationRetirementProxy.cs` had no executed negative. Transport parser and precommit
+authority tests did not establish what happens after a real API commit but before successful
+BFF publication. No production defect was demonstrated. The final reviewer recorded
+`RETIREMENT-PUBLICATION-01` and withheld holistic/convergence acceptance; PR139 was not merged.
+CI616 remains passing historical execution evidence, not a completed delivery checkpoint.
+
+T036 adds a real held-response positive control plus browser-generation and original-lifetime
+negatives on both providers. The existing response probe observes genuine202 after API work;
+the tests independently require terminal policy, receipt, linked approval/job and audit before
+changing browser state. Exact401 denial must suppress acceptance identifiers/ETag/Location and
+private upstream data without retry, while the committed native/grant/receipt/audit snapshot
+survives and an explicit authorized direct status read recovers the same job. The lifetime case
+extends current durable expiry, confirms current authentication and expires only the original
+held request. Production code, request deadlines and coverage policy remain unchanged. Fresh
+local execution, inventory verification and a complete exact-head hosted run remain required.
+
+Publication1 now passes all six cases on real PostgreSQL/SQL Server, zero skips (113.459s
+native /114.012s command), with the original TRX retained. The held positive controls prove
+the probe itself permits genuine202 publication. Both negatives require exact401 and preserved
+committed snapshots; the expiry control separately proves current-session authentication.
+The oracle independently resolves the receipt's retirement audit and linked grant history.
+Build19 passed (82.70s). Build20 ended with MSB4166 child-node termination; its suggested
+temporary diagnostics were unavailable, so no cause is asserted. The separate quality20
+check identified an oversized test method. Extracting its coherent recovery assertions fixed
+that finding without an allowance. Sequential Build21 passes with zero warnings/errors
+(38.87s), and quality21 passes.
+
+Native discovery retains every prior3,113 identity/metadata record and adds exactly six
+publication cases:3,119 total, ordinary1,429 PostgreSQL/1,534 SQL Server. Applications now has
+179 cases/provider, split Registration140 and Retirement39, with the same deadlines. The first
+tooling run (controls6) correctly rejected one stale combined-provider total; updating both
+independent totals yields controls7 **352/352** passing (24.713s). Expected complete hosted
+executions become6,599;149 jobs/143 archives/123 native reports/120 coverage inputs and all
+floors remain unchanged. Independent local source/report review and fresh full CI remain
+required before T036 or delivery acceptance closes.
+
+Both independent local reviews now pass the exact six-case original TRX and source boundary,
+including the retirement audit linkage and all native discovery/selection identities. The
+inventory preserves prior ordering as well as values and adds only six records. Full whitespace
+and style verification passes. This closes the local finding; historical CI616 remains unchanged
+and complete fresh hosted execution and final delivery review are still required.
