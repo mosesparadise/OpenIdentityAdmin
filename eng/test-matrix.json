@@ -28,28 +28,28 @@
   "profiles": {
     "unit": {
       "Core": 94,
-      "Host": 2088,
+      "Host": 2123,
       "Architecture": 5,
       "AppHost": 118
     },
     "PostgreSql": {
-      "Persistence": 41,
+      "Persistence": 42,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 43,
-      "Administrator": 1385
+      "Administrator": 1423
     },
     "SqlServer": {
-      "Persistence": 41,
+      "Persistence": 42,
       "AppHost": 25,
       "Issuer": 293,
       "Issuer.Lifecycle": 45,
-      "Administrator": 1490
+      "Administrator": 1528
     }
   },
   "browser": {
     "Issuer": 30,
-    "Administrator": 76
+    "Administrator": 78
   },
   "lifecycle_stories": {
     "Restart": {
@@ -119,12 +119,12 @@
       "SqlServer": 27
     },
     "Applications": {
-      "PostgreSql": 140,
-      "SqlServer": 140
+      "PostgreSql": 174,
+      "SqlServer": 174
     },
     "ManagedApplications": {
-      "PostgreSql": 145,
-      "SqlServer": 145
+      "PostgreSql": 149,
+      "SqlServer": 149
     },
     "ApplicationGrants": {
       "PostgreSql": 94,
@@ -139,7 +139,7 @@
     "Accounts": 8,
     "Security": 5,
     "BrowserSessions": 13,
-    "BrowserProtection": 36,
+    "BrowserProtection": 38,
     "BrowserLogin": 9,
     "ApplicationEditor": 1,
     "ApplicationAuthority": 1,
@@ -375,11 +375,12 @@
         "ManagedTokenReplayTests",
         "ManagedUpdateJourneyTests",
         "ManagedScopeAssignmentTests",
-        "ManagedScopeLegacyTests"
+        "ManagedScopeLegacyTests",
+        "ManagedRetirementRaceTests"
       ],
       "counts": {
-        "PostgreSql": 66,
-        "SqlServer": 66
+        "PostgreSql": 70,
+        "SqlServer": 70
       }
     },
     "Disclosure": {
@@ -485,11 +486,12 @@
         "ApplicationPresentationBrowserTests",
         "ApplicationProxyBrowserTests",
         "ApplicationScopeBrowserTests",
-        "CatalogueBrowserTests"
+        "CatalogueBrowserTests",
+        "ApplicationRetirementBrowserTests"
       ],
       "counts": {
-        "PostgreSql": 21,
-        "SqlServer": 21
+        "PostgreSql": 23,
+        "SqlServer": 23
       }
     }
   }

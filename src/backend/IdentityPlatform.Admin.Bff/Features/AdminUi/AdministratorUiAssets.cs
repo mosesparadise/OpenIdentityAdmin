@@ -14,6 +14,7 @@ internal static class AdministratorUiAssets
     private const string Root = "/";
     private const string Session = "/session";
     private const string Applications = "/applications";
+    private const string RetiredApplications = "/retired-applications";
     private const string Scopes = "/scopes";
     private const string Audiences = "/audiences";
     private const string Prefix = "/admin-assets/";
@@ -75,6 +76,7 @@ internal static class AdministratorUiAssets
             [Root] = document,
             [Session] = document,
             [Applications] = document,
+            [RetiredApplications] = document,
             [Scopes] = document,
             [Audiences] = document,
             [Prefix + AppScript] = Read(AppScript, JavaScript),

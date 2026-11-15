@@ -67,6 +67,7 @@ internal sealed class ApplicationEditorContract : IOpenApiDocumentTransformer
         Apply(document, Enable, HttpMethod.Post, EnableOperation);
         Apply(document, ScopePath, HttpMethod.Get, ReadScopesOperation);
         Apply(document, ScopePath, HttpMethod.Put, AssignScopesOperation);
+        IdentityPlatform.Management.Features.Applications.ApplicationRetirementContract.Apply(document, browser: false);
         LifecycleInput(document);
         CloneInput(document);
         return Task.CompletedTask;

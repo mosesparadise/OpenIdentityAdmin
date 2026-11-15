@@ -1,17 +1,34 @@
 # Delivery roadmap and task register
 
-## Active work — application cloning and permanent retirement, 14 November 2026
+## Active work — permanent application retirement, 15 November 2026
 
 The requesting user selected the next M04-A increment and chose permanent retirement
 with history retained: stop issuance, revoke grants, hide from normal listings, preserve
 native/audit history and reserve the client ID. [Feature025 specification](../specs/025-application-clone-retirement/spec.md)
 and [task register](../specs/025-application-clone-retirement/tasks.md) separate clone and
-retirement delivery checkpoints. Clone implementation is in local verification;
-retirement implementation, full exact-head acceptance and normal reviewed squashes remain
-open. [Current evidence and limits](../specs/025-application-clone-retirement/verification.md).
+retirement delivery checkpoints. Clone is accepted and merged as recorded below.
+Permanent retirement, durable recovery, exact-head acceptance and its separate reviewed
+squash remain open. [Current evidence and limits](../specs/025-application-clone-retirement/verification.md).
 All existing manual, historical and external gates below remain open.
 
-## Latest completed delivery — interactive Aspire sample, 14 November 2026
+## Latest completed delivery — managed application cloning, 15 November 2026
+
+[PR138](https://github.com/mosesparadise/OpenIdentityAdmin/pull/138) is squash-merged as
+`0366f5f1ebdca7797edd6dfd6954715b0545dd63`. Administrators can review and clone supported
+configuration into a separate disabled application with a fresh one-time secret and no
+copied grants, consent or history. Explicit enablement and fresh sign-in remain separate.
+[CI611](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43658815612)
+passes all 141 jobs. Independent original-evidence reconciliation verifies 135 archives,
+117 ordinary reports / 6,466 native passes, 139 UI and 46 Node cases, 147 mutation kills,
+and 114 coverage inputs meeting all 17 unchanged module floors. Four actual clone journeys
+pass across PostgreSQL/SQL Server and Chromium/WebKit. Source, tested merge and squash
+share tree `3c8c42e678a1c886ae568c8552912594933eb864`.
+[Clone acceptance and limitations](../specs/025-application-clone-retirement/clone-acceptance.md).
+The covered Host suite passes in 136.721 seconds against its unchanged 180-second bound,
+with eight conservative slots and preserved exclusive groups. Earlier failed attempts
+and their diagnostic limits remain recorded. Retirement is not delivered by this increment.
+
+## Previous delivery — interactive Aspire sample, 14 November 2026
 
 Feature024 is delivered for internal development. [PR136](https://github.com/mosesparadise/OpenIdentityAdmin/pull/136)
 is squash-merged as `f2cccffcf79c0dc40ff2adefd2a778d0ef6db032`; this reviewed documentation

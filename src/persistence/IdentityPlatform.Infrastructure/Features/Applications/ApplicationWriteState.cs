@@ -24,6 +24,7 @@ internal sealed class ApplicationWriteState
     private readonly long expiresAt;
     private readonly long observedAt;
     private readonly bool enabled;
+    private readonly bool retired;
     private readonly string? secret;
     private readonly string? originalHash;
     internal string Id
@@ -50,6 +51,7 @@ internal sealed class ApplicationWriteState
         expiresAt = policy.CredentialExpiresAt;
         observedAt = policy.ObservedAt;
         enabled = policy.Enabled;
+        retired = policy.Retired;
         this.secret = secret;
         originalHash = secret is null ? descriptor.ClientSecret : null;
     }
@@ -84,7 +86,7 @@ internal sealed class ApplicationWriteState
         await ApplicationMutationWriter.RequireMutableAsync(scope, Id, clientId, token);
         var row = await scope.Owner.RunAsync(async current => await ((PlatformDbContext)scope.Owner.Database).Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(value => value.ApplicationId == Id, current), token);
-        if (row is null || row.Enabled != enabled || row.Profile != ApplicationEditorRules.Profile || row.Revision != revision || row.CredentialRevision != credentialRevision ||
+        if (row is null || row.Retired != retired || row.Enabled != enabled || row.Profile != ApplicationEditorRules.Profile || row.Revision != revision || row.CredentialRevision != credentialRevision ||
             row.CredentialIssuedAt != issuedAt || row.CredentialExpiresAt != expiresAt || row.ObservedAt != observedAt)
         {
             throw ProtocolStorageOwner.Unavailable();
@@ -93,7 +95,7 @@ internal sealed class ApplicationWriteState
 
     /// <summary>Builds only the fixed safe projection; callers publish it only after commit and real child cleanup.</summary>
     internal ApplicationDetails Details(DateTimeOffset authorityExpiry) => new(Id, clientId, displayName, redirects, ApplicationEditorRules.Profile,
-        true, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), authorityExpiry, enabled);
+        !retired, new(DateTimeOffset.FromUnixTimeSeconds(issuedAt), DateTimeOffset.FromUnixTimeSeconds(expiresAt)), authorityExpiry, enabled, retired);
 
     /// <summary>Projects the exact persisted permission expectation only after commit and cleanup, without changing existing editor wire contracts.</summary>
     internal ApplicationScopes Scopes(DateTimeOffset authorityExpiry) => new(Id, permissions

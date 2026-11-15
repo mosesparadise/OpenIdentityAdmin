@@ -12,6 +12,8 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 /// <summary>Sends one bounded request to the fixed HTTPS API with only the protected session's credential.</summary>
 internal sealed class ApplicationProxyTransport : IDisposable
 {
+    private const string VersionRoot = "/api/v1";
+
     private const string RootPath = "/";
     private const string InvalidDestination = "Invalid management API destination.";
     private const string ApiPath = "/api/v1/applications";
@@ -37,9 +39,9 @@ internal sealed class ApplicationProxyTransport : IDisposable
     }
 
     /// <summary>Injects only a retained credential and finite encoded query, then projects the bounded response without forwarding headers.</summary>
-    internal async Task<(int Status, ApplicationPage? Page)> ReadAsync(BrowserAccessCredential access, ApplicationListQuery query, CancellationToken token)
+    internal async Task<(int Status, ApplicationPage? Page)> ReadAsync(BrowserAccessCredential access, ApplicationListQuery query, CancellationToken token, bool retired = false)
     {
-        var uri = QueryHelpers.AddQueryString(target.AbsoluteUri, new Dictionary<string, string?>
+        var uri = QueryHelpers.AddQueryString(retired ? new Uri(target, VersionRoot + ApplicationRetirementRules.ListPath).AbsoluteUri : target.AbsoluteUri, new Dictionary<string, string?>
         {
             [ApplicationListQuery.SearchParameter] = query.Search,
             [ApplicationListQuery.PageParameter] = query.Page.ToString(System.Globalization.CultureInfo.InvariantCulture),
@@ -75,6 +77,10 @@ internal sealed class ApplicationProxyTransport : IDisposable
     /// <summary>Forwards only code-owned method/path/media, current server bearer and canonical precondition; neither cookies nor retries are enabled.</summary>
     internal async Task<ApplicationProxyResult> WriteAsync(BrowserAccessCredential access, ApplicationMutationRequest mutation, CancellationToken token)
     {
+        if (mutation.Action == ApplicationProxyAction.Retire)
+        {
+            throw new InvalidDataException();
+        }
         using var request = new HttpRequestMessage(mutation.Method, new Uri(target, mutation.Path));
         request.Headers.Authorization = new AuthenticationHeaderValue(Bearer, access.Value);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(JsonType));
@@ -129,6 +135,10 @@ internal sealed class ApplicationProxyTransport : IDisposable
     /// <summary>Shares the fixed transport owner with the explicit scope-assignment subresource; no caller supplies a destination.</summary>
     internal Task<ApplicationScopesResult> ScopesAsync(BrowserAccessCredential access, string id, ApplicationMutationRequest? mutation, CancellationToken token) =>
         ApplicationScopesTransport.SendAsync(client, target, access, id, mutation, token);
+
+    /// <summary>Sends the distinct terminal admission through the same fixed redirect-free owner with its own exact acceptance contract.</summary>
+    internal Task<ApplicationRetirementProxyResult> RetireAsync(BrowserAccessCredential access, ApplicationMutationRequest input, CancellationToken token) =>
+        ApplicationRetirementTransport.SendAsync(client, target, access, input, token);
 
     /// <summary>Disposes pooled transport when the owning host stops; response/request owners are joined by each awaited read.</summary>
     public void Dispose() => client.Dispose();

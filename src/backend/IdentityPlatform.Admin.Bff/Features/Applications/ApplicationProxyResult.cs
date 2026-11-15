@@ -1,3 +1,4 @@
+using IdentityPlatform.Core.Features.ApplicationGrants;
 using IdentityPlatform.Core.Features.Applications;
 
 namespace IdentityPlatform.Admin.Bff.Features.Applications;
@@ -5,6 +6,8 @@ namespace IdentityPlatform.Admin.Bff.Features.Applications;
 /// <summary>Holds only validated finite response data; default diagnostic formatting cannot disclose a one-time credential.</summary>
 internal sealed class ApplicationProxyResult(int status, ApplicationDetails? details, ApplicationCredentialOutput? credential, string? version)
 {
+    private const int RetiredMinimumRevision = 2;
+
     private const int SecretBytes = 32;
     private const int RevisionStart = 66;
     internal int Status => status;
@@ -35,20 +38,21 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
         {
             throw new InvalidDataException();
         }
-        if (details.Editable)
+        if (details.Editable || details.Retired)
         {
-            if (!Valid(details) || !ApplicationVersion.IsCanonical(tag))
+            if (!(details.Retired ? Terminal(details) : Valid(details)) || !ApplicationVersion.IsCanonical(tag))
             {
                 throw new InvalidDataException();
             }
             var revision = long.Parse(tag!.AsSpan(RevisionStart, tag!.Length - RevisionStart - 1), System.Globalization.CultureInfo.InvariantCulture);
-            if (!ApplicationVersion.Matches(tag, id, revision))
+            if (!ApplicationVersion.Matches(tag, id, revision) || details.Retired && revision < RetiredMinimumRevision)
             {
                 throw new InvalidDataException();
             }
         }
         else if (!ApplicationProjection.IsValid(new(details.Id, details.ClientId, details.DisplayName, null)) ||
-            details.RedirectUris is not { Count: 0 } || details.Profile is not null || details.Credential is not null || details.Enabled is not null || tag is not null)
+            details.RedirectUris is not { Count: 0 } || details.Profile is not null || details.Credential is not null || details.Enabled is not null ||
+            details.Retired || details.Retirement is not null || tag is not null)
         {
             throw new InvalidDataException();
         }
@@ -56,11 +60,19 @@ internal sealed class ApplicationProxyResult(int status, ApplicationDetails? det
     }
 
     /// <summary>Requires the selected managed profile and exact finite lifecycle/presentation fields, excluding native protected state.</summary>
-    private static bool Valid(ApplicationDetails details) => ApplicationEditorRules.IsText(details.Id, ApplicationProjection.IdentifierLength) &&
+    private static bool Valid(ApplicationDetails details) => Managed(details) && details.Editable && !details.Retired && details.Retirement is null;
+
+    /// <summary>Retains managed profile/credential metadata for terminal read-only targets without accepting protected-native shapes.</summary>
+    private static bool Managed(ApplicationDetails details) => ApplicationEditorRules.IsText(details.Id, ApplicationProjection.IdentifierLength) &&
         ApplicationEditorRules.IsClientId(details.ClientId) && ApplicationEditorRules.Validate(new ApplicationEdit(details.DisplayName!, details.RedirectUris)).Count == 0 &&
-        details.Profile == ApplicationEditorRules.Profile && details.Enabled is not null && details.Editable && details.ExpiresAt.Offset == TimeSpan.Zero &&
+        details.Profile == ApplicationEditorRules.Profile && details.Enabled is not null && details.ExpiresAt.Offset == TimeSpan.Zero &&
         details.Credential is { } dates && dates.IssuedAt.Offset == TimeSpan.Zero && dates.ExpiresAt.Offset == TimeSpan.Zero &&
         dates.IssuedAt.Ticks % TimeSpan.TicksPerSecond == 0 && dates.ExpiresAt.Ticks % TimeSpan.TicksPerSecond == 0 && dates.ExpiresAt > dates.IssuedAt;
+
+    /// <summary>Accepts only a disabled irreversible managed projection and canonical bounded linked-job reference.</summary>
+    private static bool Terminal(ApplicationDetails details) => Managed(details) && details.Retired && !details.Editable && details.Enabled == false &&
+        details.Retirement is { } retirement && GrantRevocationRules.TryKey(retirement.JobId, out _) && retirement.RetiredAt.Offset == TimeSpan.Zero &&
+        retirement.RetiredAt.Ticks % TimeSpan.TicksPerSecond == 0 && retirement.RetiredAt >= details.Credential!.IssuedAt && retirement.RetiredAt < details.ExpiresAt;
 
     /// <summary>Accepts only the canonical finite native-generated secret shape, never arbitrary downstream credential text.</summary>
     private static bool ValidSecret(string secret)

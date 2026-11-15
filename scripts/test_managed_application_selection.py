@@ -34,10 +34,10 @@ class ManagedApplicationSelectionTests(unittest.TestCase):
         require_group_selections(self.catalogue, self.groups[provider], provider, STORY, self.matrix, self.inventory)
 
     def test_Given_DefaultOrExplicitStory_When_Grouped_Then_EveryPriorIdentityRunsExactlyOnce(self):
-        self.assertEqual(3027, len(self.catalogue))
-        for provider, total in (('PostgreSql', 1385), ('SqlServer', 1490)):
+        self.assertEqual(3107, len(self.catalogue))
+        for provider, total in (('PostgreSql', 1423), ('SqlServer', 1528)):
             self.verify(provider)
-            expected = [(STORY, 'Admission', 63), (STORY, 'Issuance', 66), (STORY, 'Disclosure', 16)]
+            expected = [(STORY, 'Admission', 63), (STORY, 'Issuance', 70), (STORY, 'Disclosure', 16)]
             self.assertEqual(expected, administrator_execution_invocations(self.matrix, provider, STORY))
             all_stories = administrator_execution_invocations(self.matrix, provider)
             self.assertEqual(expected, [row for row in all_stories if row[0] == STORY])
@@ -47,11 +47,11 @@ class ManagedApplicationSelectionTests(unittest.TestCase):
             for index, group in enumerate(groups):
                 for other in groups[index + 1:]:
                     self.assertFalse(group.keys() & other.keys())
-            for group, count in (('Admission', 63), ('Issuance', 66), ('Disclosure', 16)):
+            for group, count in (('Admission', 63), ('Issuance', 70), ('Disclosure', 16)):
                 self.assertEqual([(STORY, group, count)], administrator_execution_invocations(self.matrix, provider, STORY, managed_group=group))
                 self.assertEqual([(group, count)], group_invocations(self.matrix, provider, STORY, group))
         self.assertEqual(26, len(self.matrix['managed_application_groups']['Admission']['classes']))
-        self.assertEqual(17, len(self.matrix['managed_application_groups']['Issuance']['classes']))
+        self.assertEqual(18, len(self.matrix['managed_application_groups']['Issuance']['classes']))
         self.assertEqual(4, len(self.matrix['managed_application_groups']['Disclosure']['classes']))
 
     def test_Given_ManifestDrift_When_Grouped_Then_MissingOverlapSubstitutionAndRedistributionFail(self):

@@ -1,14 +1,15 @@
+import { retired } from "./retirement";
 import { assignment } from "./Scopes/observation";
 import type { SessionState } from "../../Session/observation";
 import type { EditorClient } from "./client";
 import { validate, validateClone, type CloneDraft, type Draft, type Errors, type EditDraft, type ReplacementDraft, type LifecycleInput, type LifecycleDraft, validateEdit, validateReplacement, utc } from "./input";
 import { created, cloned, edited, replaced, lifecycleChanged, object, observe, reason, type Observed, type Reason } from "./observation";
-export type EditorAction = "edit" | "replace" | "disable" | "enable" | "clone";
+export type EditorAction = "edit" | "replace" | "disable" | "enable" | "clone" | "retire";
 export type Outcome = "not-sent" | "unknown" | "created" | "updated" | "replaced" | "cloned";
 export type EditorState =
   | { kind: "list" | "form" }
   | { kind: "working"; operation: "read" | "create" | EditorAction }
-  | ({ kind: "details" | "edit-form" | "replacement-form" | "disable-form" | "enable-form" | "updated" } & Observed)
+  | ({ kind: "details" | "edit-form" | "replacement-form" | "disable-form" | "enable-form" | "retire-form" | "updated" } & Observed)
   | ({ kind: "clone-form"; scopes: string[] } & Observed)
   | ({ kind: "created" | "replaced" | "cloned"; secret: string } & Observed)
   | { kind: "problem"; reason: Reason; outcome: Outcome; target?: { id: string; action: EditorAction; clientId?: string } };
@@ -100,7 +101,7 @@ export class EditorController {
     if (this.stopped || !["details", "created", "updated", "replaced", "cloned"].includes(this.state.kind) || !("details" in this.state) || !this.state.details.editable) return;
     const { details, expires, etag } = this.state;
     this.cancel(); this.completed = undefined; this.target = { id: details.id, action };
-    this.emit({ kind: action === "edit" ? "edit-form" : action === "replace" ? "replacement-form" : action === "disable" ? "disable-form" : "enable-form", details: structuredClone(details), expires, etag }); this.arm(expires);
+    this.emit({ kind: action === "edit" ? "edit-form" : action === "replace" ? "replacement-form" : action === "disable" ? "disable-form" : action === "retire" ? "retire-form" : "enable-form", details: structuredClone(details), expires, etag }); this.arm(expires);
   }
   /** Reads assignment names against the same source version before presenting clone confirmation; late responses cannot reopen a cleared editor. */
   async openClone(): Promise<void> {
@@ -135,7 +136,7 @@ export class EditorController {
   /** Cancels a draft without another read or restoring a previously displayed secret. */
   cancelForm(): void {
     this.checkDeadline();
-    if (this.state.kind !== "edit-form" && this.state.kind !== "replacement-form" && this.state.kind !== "disable-form" && this.state.kind !== "enable-form" && this.state.kind !== "clone-form") return;
+    if (this.state.kind !== "edit-form" && this.state.kind !== "replacement-form" && this.state.kind !== "disable-form" && this.state.kind !== "enable-form" && this.state.kind !== "clone-form" && this.state.kind !== "retire-form") return;
     const { details, expires, etag } = this.state;
     this.emit({ kind: "details", details, expires, etag });
   }
@@ -168,6 +169,15 @@ export class EditorController {
       (token, signal) => this.client.lifecycle(base.details.id, base.etag!, frozen, enabled, token, signal),
       result => lifecycleChanged(result, base, enabled, this.now()));
   }
+  /** Confirms permanent retirement once; lost responses are recovered by reading retained details, never automatic resubmission. */
+  async retire(input: LifecycleDraft): Promise<Errors> {
+    if (this.stopped || this.state.kind !== "retire-form") return {};
+    if (input.confirm !== true) return { confirmed: "Confirm permanent retirement before continuing." };
+    if (input.reason !== "maintenance" && input.reason !== "security" && input.reason !== "configuration") return { reason: "Choose a listed reason." };
+    const frozen: LifecycleInput = { reason: input.reason, confirm: true }, base = this.state, key = crypto.randomUUID();
+    return this.mutate(base, "retire", (token, signal) => this.client.retire(base.details.id, base.etag!, key, frozen, token, signal),
+      result => retired(result, base, key, this.now()));
+  }
   /** Owns a single update dispatch, binding every asynchronous boundary to the unchanged base deadline. */
   private async mutate(base: Observed, action: EditorAction,
     send: (token: string, signal: AbortSignal) => Promise<import("./observation").Result>,
@@ -184,7 +194,7 @@ export class EditorController {
       this.dispatched = true;
       const result = await send(proof.value.requestToken, operation.signal);
       if (!this.live(operation.version)) return {};
-      if (result.status !== (action === "clone" ? 201 : 200)) { this.fail(reason(result.status), "unknown"); return {}; }
+      if (result.status !== (action === "clone" ? 201 : action === "retire" ? 202 : 200)) { this.fail(reason(result.status), "unknown"); return {}; }
       const value = await inspect(result);
       if (!this.live(operation.version)) return {};
       if (!value) { this.fail("unavailable", "unknown"); return {}; }

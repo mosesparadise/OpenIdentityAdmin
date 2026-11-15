@@ -1,10 +1,10 @@
 import type { components } from "../../../../IdentityPlatform.Admin.Contracts/generated/bff-v1.browser";
 import { callback, text, utc, type CloneInput, type CreateInput, type EditInput, type ReplacementInput } from "./input";
 export type Details = components["schemas"]["ApplicationDetails"];
-export type Result = { status: number; value?: unknown; etag?: string | null };
+export type Result = { status: number; value?: unknown; etag?: string | null; location?: string | null };
 export type Observed = { details: Details; expires: number; etag: string | null };
 export type Reason = "expired" | "forbidden" | "missing" | "invalid" | "conflict" | "stale" | "unavailable" | "cleared" | "display-expired";
-const fields = ["id", "clientId", "displayName", "redirectUris", "profile", "editable", "credential", "expiresAt", "enabled"];
+const fields = ["id", "clientId", "displayName", "redirectUris", "profile", "editable", "credential", "expiresAt", "enabled", "retired", "retirement"];
 /** Requires exact JSON members before copying a sanitized projection into UI state. */
 export function object(value: unknown, keys: string[]): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
@@ -27,23 +27,24 @@ export async function observe(result: Result, id: string | null, now: number, in
   const dto = result.value;
   if (!object(dto, fields) || !text(dto.id, 400) || id !== null && dto.id !== id || !text(dto.clientId, 100) ||
       !(dto.displayName === null || typeof dto.displayName === "string" && dto.displayName.length <= 200) ||
-      typeof dto.editable !== "boolean" || !Array.isArray(dto.redirectUris)) return null;
+      typeof dto.retired !== "boolean" || typeof dto.editable !== "boolean" || !Array.isArray(dto.redirectUris)) return null;
   const expires = utc(dto.expiresAt);
   if (!(expires > now && expires <= now + 300000)) return null;
   let credential: Details["credential"] = null;
-  if (dto.editable) {
+  if (dto.editable || dto.retired) {
+    if (dto.retired ? dto.editable || dto.enabled !== false || input || !retirementReference(dto.retirement, dto.credential, expires, now) : dto.retirement !== null) return null;
     if (typeof dto.enabled !== "boolean" || !text(dto.displayName, 200) || /[\s\u0085]/u.test(dto.clientId) || dto.profile !== "managed-web-v1" || dto.redirectUris.length < 1 || dto.redirectUris.length > 10 ||
         !dto.redirectUris.every(callback) || new Set(dto.redirectUris).size !== dto.redirectUris.length ||
         !object(dto.credential, ["issuedAt", "expiresAt"]) || !(wholeUtc(dto.credential.issuedAt) < wholeUtc(dto.credential.expiresAt)) ||
-        !await version(result.etag, dto.id, !!input)) return null;
+        !await version(result.etag, dto.id, !!input) || dto.retired && BigInt(result.etag!.slice(66, -1)) < 2n) return null;
     credential = { issuedAt: dto.credential.issuedAt as string, expiresAt: dto.credential.expiresAt as string };
-  } else if (dto.enabled !== null || input || dto.profile !== null || dto.credential !== null || dto.redirectUris.length || result.etag != null) return null;
+  } else if (dto.retirement !== null || dto.enabled !== null || input || dto.profile !== null || dto.credential !== null || dto.redirectUris.length || result.etag != null) return null;
   if (input && (dto.enabled !== true || dto.clientId !== input.clientId || dto.displayName !== input.displayName ||
       JSON.stringify([...dto.redirectUris].sort()) !== JSON.stringify([...input.redirectUris].sort()) || utc(credential!.expiresAt) !== utc(input.credentialExpiresAt, true) ||
       !(utc(credential!.expiresAt) > now))) return null;
   return { details: { id: dto.id, clientId: dto.clientId, displayName: dto.displayName as string | null,
     redirectUris: [...dto.redirectUris] as string[], profile: dto.profile as string | null, editable: dto.editable,
-    credential, enabled: dto.enabled as boolean | null, expiresAt: dto.expiresAt as string }, expires, etag: result.etag ?? null };
+    credential, retired: dto.retired, retirement: dto.retirement === null ? null : { ...(dto.retirement as NonNullable<Details["retirement"]>) }, enabled: dto.enabled as boolean | null, expiresAt: dto.expiresAt as string }, expires, etag: result.etag ?? null };
 }
 /** Accepts only the native one-time secret shape and exact creation response, independently of generated static types. */
 export async function created(result: Result, input: CreateInput, now: number): Promise<(Observed & { secret: string }) | null> {
@@ -111,4 +112,13 @@ export async function cloned(result: Result, base: Observed, input: CloneInput, 
     await version(next.etag, next.details.id, true) && next.details.clientId === input.clientId && next.details.displayName === input.displayName &&
     sameCallbacks(next.details.redirectUris, base.details.redirectUris) && utc(next.details.credential!.expiresAt) === utc(input.credentialExpiresAt, true) &&
     utc(input.credentialExpiresAt, true) > now ? { ...next, secret } : null;
+}
+
+/** Requires an exact immutable job reference and whole-second retirement chronology for retained managed details. */
+function retirementReference(value: unknown, credential: unknown, expires: number, now: number): boolean {
+  if (!object(value, ["jobId", "retiredAt"]) || typeof value.jobId !== "string" ||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value.jobId) ||
+      value.jobId === "00000000-0000-0000-0000-000000000000" || !object(credential, ["issuedAt", "expiresAt"])) return false;
+  const retired = wholeUtc(value.retiredAt);
+  return retired >= wholeUtc(credential.issuedAt) && retired <= now && retired < expires;
 }

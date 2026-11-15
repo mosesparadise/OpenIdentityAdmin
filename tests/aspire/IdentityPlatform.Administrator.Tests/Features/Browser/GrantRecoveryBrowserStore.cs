@@ -68,14 +68,14 @@ internal static class GrantRecoveryBrowserStore
     }
 
     /// <summary>Runs actual hosted Worker composition until the browser observes protected completion; shutdown always joins before test teardown.</summary>
-    internal static async Task CompleteAsync(IPage page, BrowserHttpsFixture environment, string provider)
+    internal static async Task CompleteAsync(IPage page, BrowserHttpsFixture environment, string provider, string completedMessage = GrantRecoveryView.Completed)
     {
         var token = TestContext.Current.CancellationToken;
         await using var worker = GrantWorkerTests.CreateHost(provider, environment.Issuer.Account.Journey.Lease.RuntimeConnection, environment.Issuer.Account.Journey.Clock);
         await worker.StartAsync(token);
         try
         {
-            await Assertions.Expect(page.GetByText(GrantRecoveryView.Completed, new()
+            await Assertions.Expect(page.GetByText(completedMessage, new()
             {
                 Exact = true
             }))

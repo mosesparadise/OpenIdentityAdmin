@@ -199,3 +199,37 @@ test('Given an encoded opaque application When accepted Then transport and obser
   t.after(() => { globalThis.fetch = previousFetch; globalThis.window = previousWindow; });
   assert.equal((await grantClient().recent(id, new AbortController().signal)).status, 403);
 });
+
+test('Given retired details When progress is loaded Then only the receipt linked job is read and fresh submission remains closed',async t=>{
+ let recentReads=0,singleReads=0;
+ const changed={details:{...base.details,editable:false,retired:true,retirement:{jobId,retiredAt:projection.createdAt}}};
+ const item=setup(t,{recent:async()=>{recentReads++;return recent([])},single:async(id,linked)=>{singleReads++;assert.equal(id,target);assert.equal(linked,jobId);return {status:200,value:{...projection,state:'succeeded'},etag:projection.version}}},changed);
+ await item.owner.refresh();assert.equal(item.states.at(-1).kind,'ready');assert.equal(item.states.at(-1).jobs[0].id,jobId);
+ assert.equal(recentReads,0);assert.equal(singleReads,1);assert.equal(await item.owner.submit('security',true),false);assert.equal(item.sends.length,0);
+ assert.equal(await item.owner.submit('security',true,requestKey),false);
+});
+
+test('Given retired stopped work When explicitly continued Then one fresh approval targets the exact retained job and application version',async t=>{
+ const changed={details:{...base.details,editable:false,retired:true,retirement:{jobId,retiredAt:projection.createdAt}}};
+ const stopped={...projection,state:'stopped',failure:'authority',tokenCount:'8',authorizationCount:'8'};
+ const item=setup(t,{single:async()=>({status:200,value:stopped,etag:stopped.version})},changed);
+ await item.owner.refresh();assert.equal(await item.owner.submit('security',true,jobId),true);assert.equal(item.sends.length,1);
+ assert.equal(item.sends[0][0],target);assert.equal(item.sends[0][1],base.etag);assert.equal(item.sends[0][6],jobId);assert.equal(item.sends[0][3].jobVersion,stopped.version);
+});
+
+test('Given corrupt linked job observations When retired recovery loads Then unrelated or mismatched job versions fail closed',async t=>{
+ const changed={details:{...base.details,editable:false,retired:true,retirement:{jobId,retiredAt:projection.createdAt}}};
+ for(const result of [{status:403},{status:200,value:null},{status:200,value:{...projection,id:requestKey},etag:projection.version},{status:200,value:projection,etag:tag(target)}]){
+  const item=setup(t,{single:async()=>result},changed);await item.owner.refresh();assert.equal(item.states.at(-1).kind,'problem');assert.equal(item.sends.length,0);
+ }
+ const failed=setup(t,{single:async()=>{throw Error('unavailable')}},changed);await failed.owner.refresh();assert.equal(failed.states.at(-1).kind,'problem');
+});
+
+test('Given retired job client When reading exact status Then generated GET binds encoded application and canonical job identity without a mutation',async t=>{
+ const oldWindow=globalThis.window,oldFetch=globalThis.fetch;globalThis.window={location:{origin:'https://bff.example.test'}};
+ t.after(()=>{globalThis.window=oldWindow;globalThis.fetch=oldFetch});const requests=[];
+ globalThis.fetch=async request=>{requests.push(request);return new Response(JSON.stringify(projection),{status:200,headers:{'content-type':'application/json','cache-control':'no-store','x-content-type-options':'nosniff',etag:projection.version}})};
+ const client=grantClient(),signal=new AbortController().signal;const result=await client.single(target,jobId,signal);
+ assert.equal(result.etag,projection.version);assert.equal(requests.length,1);assert.equal(requests[0].method,'GET');assert.equal(requests[0].url,`https://bff.example.test/bff/api/v1/applications/${target}/grant-revocations/${jobId}`);
+ await assert.rejects(client.single(target,'invalid',signal));assert.equal(requests.length,1);
+});

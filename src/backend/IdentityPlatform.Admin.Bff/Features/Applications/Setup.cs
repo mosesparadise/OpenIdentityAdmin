@@ -55,6 +55,7 @@ internal static class Setup
             .ProducesProblem(StatusCodes.Status403Forbidden).ProducesProblem(StatusCodes.Status404NotFound).ProducesProblem(StatusCodes.Status503ServiceUnavailable);
         MapUpdates(endpoints);
         ApplicationScopesSetup.Map(endpoints);
+        ApplicationRetirementSetup.Map(endpoints);
         return endpoints;
     }
 

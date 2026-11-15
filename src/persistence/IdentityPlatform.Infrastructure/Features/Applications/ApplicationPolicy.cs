@@ -8,6 +8,10 @@ internal sealed class ApplicationPolicy
     public string ApplicationId { get; set; } = string.Empty;
     public string Profile { get; set; } = ApplicationEditorRules.Profile;
     public bool Enabled { get; set; } = true;
+    public bool Retired
+    {
+        get; set;
+    }
     public long Revision
     {
         get; set;

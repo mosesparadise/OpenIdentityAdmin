@@ -191,6 +191,7 @@ def manifest(root, suite='issuer'):
         'issuer': (7, 'eng/critical-mutations.json', 'src/backend/IdentityPlatform.AuthServer/Features'),
         'administrator': (8, 'eng/administrator-mutations.json', 'src/persistence/IdentityPlatform.Infrastructure/Features/Identity'),
         'administrator-protocol': (3, 'eng/administrator-protocol-mutations.json', None),
+        'application-retirement': (7, 'eng/application-retirement-mutations.json', None),
         'applications': (10, 'eng/application-mutations.json', None),
         'catalogue': (5, 'eng/catalogue-mutations.json', None),
         'application-grants': (6, 'eng/application-grant-mutations.json', None),
@@ -264,6 +265,14 @@ def manifest(root, suite='issuer'):
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantNativeBatch.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantFailure.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/ApplicationGrants/GrantPersistence.cs'},
+                       'application-retirement': {
+                           'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs',
+                           'src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationRetirementOperation.cs',
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs',
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementAdmission.cs',
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementBinding.cs',
+                           'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementState.cs',
+                       },
                        'application-lifecycle': {
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationAudit.cs',
                            'src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ManagedRegistrationState.cs',
@@ -429,7 +438,7 @@ def main():
     global PROJECT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('provider', choices=['PostgreSql', 'SqlServer', 'unit'])
-    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue', 'sample'], default='issuer')
+    parser.add_argument('--suite', choices=['issuer', 'administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-retirement', 'application-grants', 'pilot-replay', 'catalogue', 'sample'], default='issuer')
     parser.add_argument('--disposable-checkout', action='store_true', required=True,
                         help='Acknowledge that this isolated checkout and its builds will be discarded, never published.')
     args = parser.parse_args()
@@ -437,7 +446,7 @@ def main():
         raise MutationError('Sample mutations require the unit profile; database suites retain both native providers')
     if args.suite == 'sample':
         PROJECT = 'tests/backend/IdentityPlatform.Host.Tests/IdentityPlatform.Host.Tests.csproj'
-    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-grants', 'pilot-replay', 'catalogue'):
+    if args.suite in ('administrator', 'governance', 'administrator-protocol', 'browser-session', 'applications', 'managed-applications', 'application-lifecycle', 'application-retirement', 'application-grants', 'pilot-replay', 'catalogue'):
         PROJECT = 'tests/aspire/IdentityPlatform.Administrator.Tests/IdentityPlatform.Administrator.Tests.csproj'
     # Let ordinary SIGTERM cancellation unwind restoration/child-process cleanup.
     signal.signal(signal.SIGTERM, lambda signum, frame: (_ for _ in ()).throw(SystemExit(128 + signum)))

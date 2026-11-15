@@ -1,7 +1,7 @@
 {
   "core": 44,
   "browser": 7,
-  "node": 46,
+  "node": 47,
   "browsers": [
     "chromium",
     "firefox",
@@ -53,6 +53,7 @@
     "Given reviewed upstream bytes When preparation runs Then only the exact idempotent import adaptation is accepted",
     "Given an amplifying header pattern When the fixed parser matches Then bounded execution omits the out-of-limit header",
     "Given scopes token acquisition When local authority shape changes Then the narrow exception rejects it",
-    "Given audiences token acquisition When local authority shape changes Then the narrow exception rejects it"
+    "Given audiences token acquisition When local authority shape changes Then the narrow exception rejects it",
+    "Given permanent retirement When dual authority or replay bindings drift Then compatibility rejects the change"
   ]
 }

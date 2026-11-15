@@ -26,7 +26,7 @@ internal static class ApplicationHttpUpdateEvidence
     private const string Replaced = "ApplicationSecretReplaced";
     private const string Application = "application";
     private const string Credential = "credential";
-    private static readonly string[] Fields = ["clientId", "credential", "displayName", "editable", "enabled", "expiresAt", "id", "profile", "redirectUris"];
+    private static readonly string[] Fields = ["clientId", "credential", "displayName", "editable", "enabled", "expiresAt", "id", "profile", "redirectUris", "retired", "retirement"];
     private static readonly string[] CredentialFields = ["expiresAt", "issuedAt"];
     private const string NoSniff = "nosniff";
     private const string NoSniffHeader = "X-Content-Type-Options";

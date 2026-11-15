@@ -1,6 +1,6 @@
 # Feature025 verification
 
-Status: clone implementation and verification in progress; retirement implementation pending. This is not acceptance or a release claim.
+Status: clone accepted for internal development and squash-merged in PR138; retirement implementation in progress. See clone-acceptance.md for exact evidence and limits. This does not complete feature025 or authorize release.
 
 ## Environment and baseline
 14 November 2026, isolated branch 148-application-clone-delete at base
@@ -219,3 +219,170 @@ logical bindings for all 2,076 prior cases plus 12 clone cases, and zero overlap
 the 15 sample-exclusive / nine telemetry-exclusive cases and any other case.
 The exact local static gate with self-tests also passes after these corrections, including
 unused-import/format verification and all seeded enforcement checks.
+
+### CI611 final clone acceptance and normal squash
+
+All 141 jobs pass at head `2a8f4d2`, tested merge `8198056`, tree `3c8c42e`.
+Independent source, native, browser, contracts/UI/supply, coverage, mutation and holistic
+reviews pass after reconciliation of all 135 original artifacts. Native evidence contains
+117 ordinary reports / 6,466 passes; coverage uses all 114 inputs and 17 unchanged floors;
+mutation evidence contains 147 kills with passing baseline/restored controls. The original
+local source-verification calibration additionally passes baseline 2/2, one demonstrated
+kill per provider and restored 2/2, with clean restored isolated source.
+
+PR138 was normally squash-merged on 15 November as
+`0366f5f1ebdca7797edd6dfd6954715b0545dd63`; its tree exactly matches the tested source.
+[Clone acceptance](clone-acceptance.md) records detailed counts, receipt hashes and limits.
+T013/T015 are complete. Retirement T016–T029 remains separate and unfinished.
+
+### Retirement implementation start
+
+Worktree branch `149-application-retirement` starts at the accepted clone squash.
+Pinned Spec Kit prerequisites resolve to feature025 using explicit feature-directory
+state; the first name-only resolution failed without modifying source and was corrected.
+The requirements-quality checklist remains 10/10; no extension hooks exist. Existing
+approval authorizes this increment. Independent preparation confirms terminal details
+retain their application ETag and exact linked grant-job recovery; ordinary Submit on a
+retired target conflicts, while exact approved continuation remains possible.
+
+Retirement baseline restore/build passes with zero warnings/errors. The first real HTTPS
+retirement test executes both providers and fails specifically at expected 202 versus
+actual 404 (2 failed, no skips/errors/timeouts, native exit 2, 1m30s). This is the intended
+behavioral red before retirement implementation, not a setup failure or passing test.
+
+
+### Retirement implementation checkpoints (15 November 2026, not acceptance)
+
+The selected retirement behavior remains irreversible, with history and client identity retained.
+The working branch now stages terminal policy, a separate immutable retirement receipt and a
+new durable Submit approval/job inside one owned transaction. It requires both lifecycle and
+grant permissions under one fresh-MFA receipt. Normal lists filter terminal policies before
+paging, while `/retired-applications` and terminal details expose the exact linked recovery job.
+The UI confirms permanence, retained history/client ID, offline-token and remote-session limits;
+retired recovery uses the receipt's job identity and cannot submit another ordinary job.
+
+Executed locally on the pinned environment:
+- Build 4 failed on nullable/format diagnostics in new BFF code; corrected before build 5.
+- Builds 5 and 6 passed with zero warnings/errors (76.27s and 55.35s).
+- Genuine HTTPS API/BFF initial retirement and exact replay: **2/2 passed**, one per provider,
+  zero skipped (`retirement-tests/green1/retirement.trx`, 93.660s). This follows the recorded 404 red test.
+- Admission/current dual authority/MFA/rollback/conflicting replay/terminal mutation denial:
+  **20/20 passed**, both providers, zero skipped (`retirement-tests/admission1/retirement.trx`, 123.938s).
+- Contract core: **44/44 passed**, zero skipped (`retirement-tests/contracts1/contracts.trx`, 2.307s).
+  Native production export remains deterministic with zero management operations/network effects;
+  the separate browser contract and generated types include the two implemented retirement paths.
+- Editor behavior initially passed all assertions but missed the unchanged 100% function coverage
+  floor because opaque-ID percent encoding was unexercised. Added a historical punctuation case;
+  the second run passed. New retirement validator measured 100% lines/branches/functions.
+- Expanded grant UI behavior passed unchanged floors; all six UI suites then passed together.
+- UI typecheck passed; asset drift check correctly failed before rebuilding changed assets.
+- Code-quality check initially reported new unnamed literals; named feature/test constants fixed
+  those without changing allowances. The second check passed all controls and source rules.
+
+Independent ownership review found two defensive persisted-corruption gaps: Continue replay
+could follow a substituted older approval job ID, and retired effective-approval binding could
+accept a later approval relabeled Submit. Exact replay job matching and original-Submit versus
+subsequent-Continue/audit checks now reject those cases. Dedicated fault tests and re-review
+remain pending; no ordinary-request exploit was established by that read-only review.
+
+Remaining work includes populated-upgrade witnesses, corruption/atomicity and additional race
+cases, genuine browser reload/re-login/lost-response recovery, exact inventories/mutations,
+full exact-head checks and independent original-artifact acceptance. These checkpoints do not
+complete T016–T029 or authorize an acceptance claim.
+
+### Retirement focused verification expansion — 15 November 2026
+
+These are local checkpoints, not exact-head acceptance. Retirement remains unmerged.
+
+- Build7 passed with zero warnings/errors (54.94s). Recovery1: **10 passed, zero skipped**
+  (115.919s), including real hosted Worker restart, current-permission stop/explicit Continue,
+  immutable original receipt and genuine database-observed independent admission races.
+- Issuer1: **8 passed, zero skipped** (132.166s), PostgreSQL/SQL Server, covering both
+  observed retirement/authorization-code and token-issuance commit orders.
+- Build8 passed (53.62s). Boundary1: **9 passed, 1 failed, zero skipped** (114.913s).
+  The four persisted binding-substitution and four final-save corruption cases passed.
+  SQL Server list failed with 503: the new policy/native ID join needed explicit ordinal
+  collation. PostgreSQL list passed. The comparison now uses the selected provider's
+  ordinal collation before filtering/order/offset/lookahead; subsequent browser1 selection
+  passed **both list cases**.
+- Immediate populated upgrades initially passed **2/2** (32.414s). Independent review
+  strengthened the physical schema oracle with index enable/filter/PK checks, ordinal
+  SQL text collation and an exact receipt-check inventory plus seeded negative controls.
+  Upgrade2 then passed 11 and failed five SQL cases because the new test assumed an
+  incorrect sys.indexes wildcard offset. An isolated pinned SQL Server metadata query
+  demonstrated its undocumented is_ignored_in_optimization column. Corrected offsets
+  are has_filter=19 and filter_definition=20 in the existing full projection.
+  Upgrade3: **16 passed, zero skipped** (73.959s), retaining every affected older
+  populated upgrade and both immediate retirement predecessors.
+- Build9 passed (51.87s). Browser1 selected two PostgreSQL/Chromium retirement journeys
+  plus both list cases: **2 passed, 2 failed**, zero skipped (125.695s). Both browser
+  failures occurred at BrowserSession.CreateAsync before any retirement browser flow:
+  pinned binaries are absent locally. The installer could not acquire root for native
+  dependencies, and a separate binary-only install received HTTP403 Domain forbidden
+  from the official download host. No browser pass or TLS bypass is claimed. Required
+  retained-browser execution remains pending hosted CI.
+- Build10 failed only on new test use of Assert.Empty(StringValues); changed to exact
+  header Count. Build11 passed with zero warnings/errors (8.61s). Unit1: **35 passed,
+  zero skipped** (1.733s), strict retirement API/BFF request and single-send response
+  bindings, original/successor version separation, evolving-job replay and hostile framing.
+- UI second check verified TypeScript and six deterministic assets; all six UI suites
+  passed after the validated retirement-reference copy fix. Existing floors are unchanged.
+- New source-mutation races, retained scope/clone-history, physical terminal/concurrency
+  tests, fresh-login replay-window tests, replacement-approver tests and seven separate
+  retirement causal mutation witnesses are under validation. Build11's first reference
+  test compared a snapshot containing all application audits; the new retirement audit
+  correctly changed that aggregate. The test now checks the clone's exact native/policy
+  state and provenance separately and clears the clone's scope assignment so the retired
+  source is the sole reference blocking catalogue deletion. That correction is pending rerun.
+- Independent ownership follow-up found both original replay/effective-approval findings
+  resolved and no new source blocker. Its review of seven proposed causal witnesses
+  requires successful operations plus fresh persisted violation evidence; actual baseline,
+  mutant and restored executions remain pending. No generic exception is an accepted kill.
+
+Original logs/TRXs and scoped review receipts remain under task work storage. Full native
+inventories, final coverage, browser cells, mutation execution, original hosted artifacts,
+final independent review and normal squash are still required. No existing identity,
+assertion, coverage floor, deadline, legacy allowance or external/manual gate is relaxed.
+
+### Retirement reviewable implementation checkpoint
+
+- Build12 passed (40.58s), then Build13 passed (49.56s), both zero warnings/errors.
+- Race1 completed **20/22 passing**, zero skipped (174.362s): all sixteen actual
+  retirement-versus-edit/clone/replacement/scope commit-order cases and four physical
+  terminal/concurrency cases passed. The two reference snapshot errors described above
+  were corrected. Subsequent baseline1 independently passed **11/12 per provider**
+  (PostgreSQL88.153s, SQL Server111.892s): all seven retirement mutation witness baselines,
+  both physical constraint/concurrency tests, fresh native-login replay deadline and actual
+  replacement-approver/current-authority tests passed. The remaining reference test expected
+  catalogue deletion admission202, but its retained native reference correctly causes409
+  before a job is admitted. It now requires409, null job, no deletion row and unchanged
+  complete retirement state; rerun is tracked separately.
+- Host applications2: **194 passed, zero skipped** (1.974s), preserving all older application
+  cases alongside35 retirement request/transport tests. All2,088 previous Host discovery
+  records retain their exact portable type/traits and display-name multiplicity;35 were added.
+- Portable Administrator inventory preserves all3,027 previous identities and metadata,
+  adding80:34 ordinary application cases and4 managed issuer cases per provider, plus2
+  browser cases per provider. Non-browser totals1,423 PostgreSQL/1,528 SQL Server;
+  Applications174/provider, ManagedApplications149/provider, browser78/provider.
+  Persistence preserves82 old identities plus2 upgrades (42/provider).
+- All346 Python tooling controls pass after exact new count/job obligations were added.
+  The separate seven-decision retirement mutation job is mandatory for both providers in
+  the final acceptance dependency set and source-scope gate; old jobs/deadlines remain.
+- Pinned oasdiff1.33.0 archive was reused and SHA256-verified by the unmodified installer.
+  Allfive documents are compatible against0366f5f1ebdca7797edd6dfd6954715b0545dd63.
+  The initial Node contract run caught the old30-operation count; updated to32 with the
+  exact two added paths, preserving all old assertions. Added a dual-authority/header-drift
+  control; all47 Node cases now pass with zero skips. TypeScript generation check passed.
+- Assurance register check passes its345 controls, all still not_assessed; this is snapshot
+  integrity, not a compliance assessment. Current source-quality check passes without new
+  allowances. Independent upgrade final review corroborates16 original upgrade3 TRX cases
+  and all corrected physical-oracle controls. Ownership follow-up passes source findings.
+
+T016–T021 andT024–T025 record implemented and component-verified work. Browser-dependent
+T022/T026, remaining reference proofT023 and final mutation/evidence/mergeT027–T029 stay open.
+
+Reference3 now passes **2/2**, zero skipped (93.577s), on both providers. The retired
+source is the sole remaining native scope reference, deletion admission returns409 without
+a new job/audit, and clone native/policy/provenance remains unchanged. T023 is complete.
+API/BFF/contract source review passes with no confirmed blocker; full runtime/export/browser
+and exact-head acceptance remain separate obligations.

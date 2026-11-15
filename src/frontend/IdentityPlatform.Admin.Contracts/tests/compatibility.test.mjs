@@ -104,8 +104,8 @@ test('unsupported referenced or path-level preconditions fail closed even unchan
 const browserStatus = JSON.parse(fs.readFileSync(new URL('../generated/bff-v1.browser.json', import.meta.url)));
 const statusChanged = mutate => { const candidate = structuredClone(browserStatus); mutate(candidate.paths['/bff/session'].get, candidate); return candidate; };
 test('Given dormant browser status When inventoried Then only the explicit public local read is admitted', () => {
-  assert.equal(inventory(browserStatus, 'bff').size, 30);
-  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/clone', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/scopes', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/api/v1/audiences', '/bff/api/v1/audiences/antiforgery', '/bff/api/v1/audiences/deletions/{jobId}', '/bff/api/v1/audiences/{id}', '/bff/api/v1/scopes', '/bff/api/v1/scopes/antiforgery', '/bff/api/v1/scopes/deletions/{jobId}', '/bff/api/v1/scopes/{id}', '/bff/session'].sort());
+  assert.equal(inventory(browserStatus, 'bff').size, 32);
+  assert.deepEqual(Object.keys(browserStatus.paths).sort(), ['/bff/api/v1/applications', '/bff/api/v1/applications/antiforgery', '/bff/api/v1/applications/{id}', '/bff/api/v1/applications/{id}/clone', '/bff/api/v1/applications/{id}/disable', '/bff/api/v1/applications/{id}/enable', '/bff/api/v1/applications/{id}/grant-revocations', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}', '/bff/api/v1/applications/{id}/grant-revocations/{jobId}/continue', '/bff/api/v1/applications/{id}/retirement', '/bff/api/v1/applications/{id}/scopes', '/bff/api/v1/applications/{id}/secret-replacements', '/bff/api/v1/audiences', '/bff/api/v1/audiences/antiforgery', '/bff/api/v1/audiences/deletions/{jobId}', '/bff/api/v1/audiences/{id}', '/bff/api/v1/retired-applications', '/bff/api/v1/scopes', '/bff/api/v1/scopes/antiforgery', '/bff/api/v1/scopes/deletions/{jobId}', '/bff/api/v1/scopes/{id}', '/bff/session'].sort());
   const clone = browserStatus.paths['/bff/api/v1/applications/{id}/clone'].post;
   assert.equal(clone.operationId, 'CloneBrowserApplication');
   assert.equal(clone['x-required-permission'], 'applications.write');
@@ -222,4 +222,27 @@ for (const resource of ['scopes', 'audiences']) test(`Given ${resource} token ac
   assert.throws(() => inventory(moved, 'bff'));
   const verb = structuredClone(browserStatus); verb.paths[path].post = verb.paths[path].get; delete verb.paths[path].get;
   assert.throws(() => inventory(verb, 'bff'));
+});
+
+
+test('Given permanent retirement When dual authority or replay bindings drift Then compatibility rejects the change', () => {
+  const path = '/bff/api/v1/applications/{id}/retirement';
+  const operation = browserStatus.paths[path].post;
+  assert.deepEqual(operation['x-required-permissions'], ['applications.disable', 'grants.revoke']);
+  assert.equal(operation['x-persisted-mfa-max-age-exclusive-seconds'], 300);
+  assert.deepEqual(operation.security, [{ BrowserSession: [] }]);
+  for (const name of ['If-Match', 'Idempotency-Key', 'X-CSRF-TOKEN']) {
+    assert.equal(operation.parameters.find(parameter => parameter.name === name).required, true);
+  }
+  for (const name of ['ETag', 'Location']) assert.equal(operation.responses['202'].headers[name].required, true);
+  assert.equal(browserStatus.paths['/bff/api/v1/retired-applications'].get['x-required-permission'], 'applications.read');
+  for (const mutate of [op => { delete op['x-required-permissions']; },
+    op => { op['x-required-permissions'] = ['applications.disable']; },
+    op => { op['x-required-permissions'] = ['grants.revoke']; },
+    op => { op.parameters = op.parameters.filter(parameter => parameter.name !== 'Idempotency-Key'); },
+    op => { op.parameters = op.parameters.filter(parameter => parameter.name !== 'If-Match'); }]) {
+    const candidate = structuredClone(browserStatus);
+    mutate(candidate.paths[path].post);
+    assert.throws(() => securityCompatibility(browserStatus, candidate, 'bff'), ContractViolation);
+  }
 });

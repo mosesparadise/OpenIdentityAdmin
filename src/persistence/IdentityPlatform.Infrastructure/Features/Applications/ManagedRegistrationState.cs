@@ -33,7 +33,7 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
         catch (ApplicationMutationRejected) { return null; }
         var policy = await scope.Owner.RunAsync(current => new ValueTask<ApplicationPolicy?>(scope.Owner.Database.Set<ApplicationPolicy>()
             .AsNoTracking().SingleOrDefaultAsync(row => row.ApplicationId == id, current)), token);
-        if (policy is null || !policy.Enabled || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile ||
+        if (policy is null || policy.Retired || !policy.Enabled || policy.ApplicationId != id || policy.Profile != ApplicationEditorRules.Profile ||
             policy.Revision <= 0 || policy.CredentialRevision <= 0 || policy.CredentialIssuedAt > policy.ObservedAt ||
             policy.CredentialExpiresAt <= ManagedLoginRules.Observe(scope.Owner.Clock, policy.ObservedAt))
         {
@@ -52,7 +52,7 @@ internal sealed record ManagedRegistrationState(ManagedRegistration Registration
     {
         var now = ManagedLoginRules.Observe(scope.Owner.Clock, original.ObservedAt);
         var changed = await scope.Owner.RunAsync(current => new ValueTask<int>(scope.Owner.Database.Set<ApplicationPolicy>()
-            .Where(row => row.ApplicationId == original.ApplicationId && row.Enabled && row.Revision == original.Revision && row.CredentialRevision == original.CredentialRevision &&
+            .Where(row => row.ApplicationId == original.ApplicationId && !row.Retired && row.Enabled && row.Revision == original.Revision && row.CredentialRevision == original.CredentialRevision &&
                 row.ObservedAt == original.ObservedAt && row.CredentialExpiresAt == original.ExpiresAt)
             .ExecuteUpdateAsync(setters => setters.SetProperty(row => row.ObservedAt, now), current)), token, write: true);
         var actual = await ManagedRegistration.ReadAsync(scope, original.ClientId, token);

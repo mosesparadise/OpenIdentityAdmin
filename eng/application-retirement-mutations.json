@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "mutations": [
+    {
+      "id": "retirement-dual-permission",
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApiMutationAuthority.cs",
+      "before": "if (additionalPermission is not null && !grants.Permissions(identity.Subject).Contains(additionalPermission))",
+      "after": "if (additionalPermission is not null && !grants.Permissions(identity.Subject).Contains(permission))",
+      "marker": "retirement-dual-permission-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_CurrentAuthority_When_OnePermissionIsRemoved_Then_InitialAndReplayRequireExactlyBothRetirementPermissions"
+    },
+    {
+      "id": "retirement-current-authority",
+      "path": "src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationRetirementOperation.cs",
+      "before": "        await authority.VerifyAsync(scope, intent, token);",
+      "after": "        _ = authority;",
+      "marker": "retirement-current-authority-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAuthorityTests.Given_StagedRetirement_When_PermissionOrOriginalMfaEnds_Then_PolicyApprovalReceiptAndAuditRollBack"
+    },
+    {
+      "id": "retirement-terminal-write",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationMutationWriter.cs",
+      "before": "        if (policy.Retired)\n        {\n            throw new ApplicationMutationRejected(ApplicationMutationFailure.SameState);\n        }",
+      "after": "        _ = policy.Retired;",
+      "marker": "retirement-terminal-write-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_RetiredApplication_When_CleanupFinishesAndOrdinaryMutationsAreAttempted_Then_AllRemainClosedAndClientIdReserved"
+    },
+    {
+      "id": "retirement-replay-intent",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementAdmission.cs",
+      "before": "        if (receipt.ActorId != actor || receipt.RequestKey != intent.RequestKey || receipt.Reason != intent.Reason ||\n            !ApplicationVersion.Matches(intent.Version, receipt.ApplicationId, receipt.OriginalRevision) ||\n            receipt.ScopedKeyHash != intent.ScopeHash(actor) || receipt.RequestHash != intent.RequestHash())",
+      "after": "        if (receipt.ActorId != actor)",
+      "marker": "retirement-replay-intent-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementTests.Given_ActiveApplication_When_RetiredAndReplayed_Then_OneTerminalReceiptPreservesNativeIdentityAndOriginalApproval"
+    },
+    {
+      "id": "retirement-receipt-persistence",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementState.cs",
+      "before": "        await persistence!.VerifyAsync(scope, token);",
+      "after": "        _ = persistence;",
+      "marker": "retirement-receipt-persistence-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits"
+    },
+    {
+      "id": "retirement-policy-persistence",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementState.cs",
+      "before": "        await application!.VerifyAsync(scope, token);",
+      "after": "        _ = application;",
+      "marker": "retirement-policy-persistence-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementAtomicityTests.Given_PersistedRetirement_When_FinalPolicyOrReceiptIsCorrupted_Then_NoTerminalStateGrantApprovalOrHistoryCommits"
+    },
+    {
+      "id": "retirement-effective-approval",
+      "path": "src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ApplicationRetirementBinding.cs",
+      "before": "        if (approval.Action != GrantApprovalAction.Continue || approval.ApprovedAt < Receipt.RetiredAt ||",
+      "after": "        if (approval.ApprovedAt < Receipt.RetiredAt ||",
+      "marker": "retirement-effective-approval-bypass",
+      "method": "IdentityPlatform.Administrator.Tests.Features.Applications.ApplicationRetirementBindingTests.Given_ContinuedRetirement_When_EffectiveApprovalIsRelabeledSubmit_Then_NativeGrantsRemainUnchangedAndReplayFailsClosed"
+    }
+  ]
+}

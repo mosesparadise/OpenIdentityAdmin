@@ -1566,6 +1566,44 @@
           "value": "SqlServer"
         }
       ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.RetirementUpgradeTests.Given_PopulatedClonePredecessor_When_RetirementMigratesTwice_Then_ExistingPoliciesNativeCredentialsAndAllHistoryRemainExact(provider: \"PostgreSql\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "RetirementUpgradeTests",
+        "methodName": "Given_PopulatedClonePredecessor_When_RetirementMigratesTwice_Then_ExistingPoliciesNativeCredentialsAndAllHistoryRemainExact",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "PostgreSql"
+        }
+      ]
+    },
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.RetirementUpgradeTests.Given_PopulatedClonePredecessor_When_RetirementMigratesTwice_Then_ExistingPoliciesNativeCredentialsAndAllHistoryRemainExact(provider: \"SqlServer\")": {
+      "type": {
+        "assemblyFullName": "IdentityPlatform.Persistence.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "namespace": "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility",
+        "typeName": "RetirementUpgradeTests",
+        "methodName": "Given_PopulatedClonePredecessor_When_RetirementMigratesTwice_Then_ExistingPoliciesNativeCredentialsAndAllHistoryRemainExact",
+        "methodArity": 0,
+        "returnTypeFullName": "System.Threading.Tasks.Task",
+        "parameterTypeFullNames": [
+          "System.String"
+        ]
+      },
+      "traits": [
+        {
+          "key": "Provider",
+          "value": "SqlServer"
+        }
+      ]
     }
   },
   "PostgreSql": [
@@ -1609,7 +1647,8 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueUpgradeTests.Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedScopeSchemaTests.Given_RetainedPolicyReferences_When_ParentsAreDeletedOrPolicyIsPartial_Then_RealConstraintsPreserveBindings(provider: \"PostgreSql\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedScopeUpgradeTests.Given_PopulatedCataloguePredecessor_When_PolicyMigrationRunsTwice_Then_LegacyAndNativeStateRemainExact(provider: \"PostgreSql\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CloneUpgradeTests.Given_PopulatedManagedScopePredecessor_When_CloneMigrationRunsTwice_Then_AllHistoryAndNativeStateRemainExact(provider: \"PostgreSql\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CloneUpgradeTests.Given_PopulatedManagedScopePredecessor_When_CloneMigrationRunsTwice_Then_AllHistoryAndNativeStateRemainExact(provider: \"PostgreSql\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.RetirementUpgradeTests.Given_PopulatedClonePredecessor_When_RetirementMigratesTwice_Then_ExistingPoliciesNativeCredentialsAndAllHistoryRemainExact(provider: \"PostgreSql\")"
   ],
   "SqlServer": [
     "IdentityPlatform.Persistence.Tests.Features.DatabaseFailureTests.Partial_initialization_can_resume_and_outages_fail_safely_within_deadline(provider: SqlServer)",
@@ -1652,6 +1691,7 @@
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CatalogueUpgradeTests.Given_PopulatedPilotGateSchema_When_CatalogueMigratesTwice_Then_HistoryAndNativeStateRemainExact(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedScopeSchemaTests.Given_RetainedPolicyReferences_When_ParentsAreDeletedOrPolicyIsPartial_Then_RealConstraintsPreserveBindings(provider: \"SqlServer\")",
     "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.ManagedScopeUpgradeTests.Given_PopulatedCataloguePredecessor_When_PolicyMigrationRunsTwice_Then_LegacyAndNativeStateRemainExact(provider: \"SqlServer\")",
-    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CloneUpgradeTests.Given_PopulatedManagedScopePredecessor_When_CloneMigrationRunsTwice_Then_AllHistoryAndNativeStateRemainExact(provider: \"SqlServer\")"
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.CloneUpgradeTests.Given_PopulatedManagedScopePredecessor_When_CloneMigrationRunsTwice_Then_AllHistoryAndNativeStateRemainExact(provider: \"SqlServer\")",
+    "IdentityPlatform.Persistence.Tests.Features.ProviderCompatibility.RetirementUpgradeTests.Given_PopulatedClonePredecessor_When_RetirementMigratesTwice_Then_ExistingPoliciesNativeCredentialsAndAllHistoryRemainExact(provider: \"SqlServer\")"
   ]
 }

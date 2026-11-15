@@ -166,10 +166,11 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
         return await (direct ? api : browser).SendAsync(request, TestContext.Current.CancellationToken);
     }
 
-    /// <summary>Sends one explicit catalogue test request with the genuine server bearer or caller-supplied native browser proof.</summary>
+    /// <summary>Sends one closed management test request with genuine bearer or browser proof and optional explicit idempotency binding.</summary>
     internal async Task<HttpResponseMessage> CatalogueAsync(HttpMethod method, string path, string? body = null, string? version = null,
-        bool direct = true, bool authenticated = true, string? csrf = null)
+        bool direct = true, bool authenticated = true, string? csrf = null, string? key = null)
     {
+        const string requestKey = "Idempotency-Key";
         using var request = new HttpRequestMessage(method, path);
         if (body is not null)
         {
@@ -178,6 +179,10 @@ internal sealed class ApplicationHttpFixture(BrowserHttpsFixture environment, Ht
         if (version is not null)
         {
             request.Headers.TryAddWithoutValidation(Microsoft.Net.Http.Headers.HeaderNames.IfMatch, version);
+        }
+        if (key is not null)
+        {
+            request.Headers.TryAddWithoutValidation(requestKey, key);
         }
         if (direct && authenticated)
         {

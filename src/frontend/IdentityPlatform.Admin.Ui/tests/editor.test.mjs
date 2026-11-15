@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { validate, validateClone, validateEdit, validateReplacement, text, callback, utc, addressable } from './input.mjs';
+import { retired } from './retirement.mjs';
 import { observe, created, cloned, edited, replaced, lifecycleChanged, reason } from './observation.mjs';
 import { EditorController } from './controller.mjs';
 import { editorClient } from './client.mjs';
@@ -13,7 +14,7 @@ import { CloneForm, CreateForm, CreateFields, UpdateForm, LifecycleForm, Details
 const now=Date.parse('2026-11-01T12:00:00Z');
 const draft={clientId:'example-web',displayName:'Example',redirectUris:'https://client.example/callback',credentialExpiresAt:'2030-01-01T00:00:00Z'};
 const input=validate(draft,now).input;
-const details={id:'opaque-id',clientId:input.clientId,displayName:input.displayName,redirectUris:input.redirectUris,profile:'managed-web-v1',editable:true,enabled:true,credential:{issuedAt:'2026-11-01T12:00:00Z',expiresAt:input.credentialExpiresAt},expiresAt:'2026-11-01T12:01:00Z'};
+const details={retired:false,retirement:null,id:'opaque-id',clientId:input.clientId,displayName:input.displayName,redirectUris:input.redirectUris,profile:'managed-web-v1',editable:true,enabled:true,credential:{issuedAt:'2026-11-01T12:00:00Z',expiresAt:input.credentialExpiresAt},expiresAt:'2026-11-01T12:01:00Z'};
 const tag=id=>`"${createHash('sha256').update(id).digest('hex')}-1"`;
 const secret=Buffer.alloc(32,91).toString('base64');
 const read={status:200,value:details,etag:tag(details.id)};
@@ -524,4 +525,80 @@ test('Given_clone_views_When_rendered_Then_configuration_confirmation_disabled_s
  const empty=renderToStaticMarkup(createElement(CloneForm,{base:{...cloneBase,scopes:[]},submit:async()=>({}),cancel:()=>{}}));assert.match(empty,/No additional scopes/);
  const problem=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'forbidden',outcome:'unknown',target:{id:details.id,action:'clone',clientId:cloneDraft.clientId}}}));assert.match(problem,/recent MFA/);assert.match(problem,/Check the applications list/);assert.doesNotMatch(problem,/>Reload current details</);
  const known=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'cleared',outcome:'cloned'}}));assert.match(known,/application was cloned/);
+});
+
+const retirementJobId='f27bf8d2-84a7-4fc6-a6ce-309521a0976b';
+const retirementKey='bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+const retiredAt='2026-11-01T12:00:00Z';
+const retiredDetails={...details,editable:false,enabled:false,retired:true,retirement:{jobId:retirementJobId,retiredAt}};
+const retiredVersion=tag(details.id).replace('-1"','-2"');
+const retirementJob={id:retirementJobId,applicationId:details.id,version:tag(retirementJobId),state:'queued',failure:'none',authorizationCount:'0',tokenCount:'0',createdAt:retiredAt,updatedAt:retiredAt,expiresAt:details.expiresAt};
+const retirementResponse={status:202,value:{applicationId:details.id,applicationVersion:retiredVersion,retiredAt,requestKey:retirementKey,job:retirementJob},etag:retirementJob.version,location:`/bff/api/v1/applications/${details.id}/grant-revocations/${retirementJobId}`};
+
+test('Given terminal details When observed Then retirement identity chronology and immutable version remain distinct from protected registrations',async()=>{
+ const good={status:200,value:retiredDetails,etag:retiredVersion};
+ assert.equal((await observe(good,details.id,now)).details.retired,true);
+ for(const patch of [{retired:'true'},{editable:true},{enabled:true},{retirement:null},{retirement:{}},{retirement:{jobId:'bad',retiredAt}},{retirement:{jobId:'00000000-0000-0000-0000-000000000000',retiredAt}},{retirement:{jobId:retirementJobId,retiredAt:'2026-11-01T11:59:59Z'}},{retirement:{jobId:retirementJobId,retiredAt:'2026-11-01T12:00:01Z'}},{retirement:{jobId:retirementJobId,retiredAt:'2026-11-01T12:00:00.001Z'}},{credential:null}])assert.equal(await observe({...good,value:{...retiredDetails,...patch}},details.id,now),null);
+ assert.equal(await observe({...good,etag:tag(details.id)},details.id,now),null);
+ assert.equal(await observe(good,details.id,now,input),null);
+ assert.equal(await observe({...read,value:{...details,retirement:retiredDetails.retirement}},details.id,now),null);
+ const readonly={...details,editable:false,enabled:null,profile:null,credential:null,redirectUris:[],retirement:retiredDetails.retirement};
+ assert.equal(await observe({status:200,value:readonly},details.id,now),null);
+});
+
+test('Given retirement acceptance When observed Then exact key terminal successor job and location are required',async()=>{
+ const base=await observe(read,details.id,now);
+ const result=await retired(retirementResponse,base,retirementKey,now);
+ assert.equal(result.details.retired,true);assert.equal(result.details.editable,false);assert.equal(result.details.enabled,false);
+ assert.deepEqual(result.details.retirement,retiredDetails.retirement);assert.equal(result.etag,retiredVersion);
+ for(const patch of [{status:200},{value:null},{etag:retiredVersion},{location:'/foreign'},...[
+  {applicationId:'foreign'},{requestKey:retirementJobId},{applicationVersion:null},{applicationVersion:tag('foreign')},{applicationVersion:tag(details.id)},{applicationVersion:tag(details.id).replace('-1"','-3"')},
+  {job:null},{job:{...retirementJob,applicationId:'foreign'}},{retiredAt:'2026-11-01T11:59:59Z'},{retiredAt:'2026-11-01T12:00:01Z',job:{...retirementJob,createdAt:'2026-11-01T12:00:01Z',updatedAt:'2026-11-01T12:00:01Z'}}
+ ].map(value=>({value:{...retirementResponse.value,...value}}))])assert.equal(await retired({...retirementResponse,...patch},base,retirementKey,now),null);
+ for(const patch of [{expires:now},{etag:null},{etag:tag('foreign')},{details:{...details,editable:false}},{details:{...details,retired:true}},{details:{...details,credential:{...details.credential,issuedAt:'2026-11-01T12:00:01Z'}}}])assert.equal(await retired(retirementResponse,{...base,...patch},retirementKey,now),null);
+});
+
+test('Given explicit retirement When confirmed cancelled or denied Then one intent and truthful recovery survive without automatic mutation',async t=>{
+ const sends=[];const item=setup(t,{retire:async(...args)=>{sends.push(args);return {...retirementResponse,value:{...retirementResponse.value,requestKey:args[2]}}}});
+ assert.deepEqual(await item.owner.retire({reason:'security',confirm:true}),{});
+ await item.owner.details(details.id);item.owner.open('retire');assert.equal(item.states.at(-1).kind,'retire-form');
+ item.owner.cancelForm();assert.equal(item.states.at(-1).kind,'details');assert.equal(sends.length,0);
+ item.owner.open('retire');assert.ok((await item.owner.retire({reason:'security',confirm:false})).confirmed);
+ assert.ok((await item.owner.retire({reason:'other',confirm:true})).reason);
+ await item.owner.retire({reason:'security',confirm:true});assert.equal(sends.length,1);assert.equal(item.states.at(-1).details.retired,true);
+ item.owner.open('enable');assert.equal(item.states.at(-1).kind,'updated');assert.equal(sends.length,1);
+ for(const status of [400,401,403,409,412,503]){
+  const denied=setup(t,{retire:async()=>({status})});await denied.owner.details(details.id);denied.owner.open('retire');await denied.owner.retire({reason:'configuration',confirm:true});
+  assert.equal(denied.states.at(-1).kind,'problem');assert.equal(denied.states.at(-1).target.action,'retire');
+ }
+ const failed=setup(t,{retire:async()=>{throw Error('lost committed response')}});await failed.owner.details(details.id);failed.owner.open('retire');await failed.owner.retire({reason:'maintenance',confirm:true});
+ assert.equal(failed.states.at(-1).outcome,'unknown');await failed.owner.details(details.id);assert.equal(failed.states.at(-1).kind,'details');
+});
+
+test('Given retirement browser client When invoked Then canonical key precondition CSRF and fixed destination are sent once',async t=>{
+ const oldWindow=globalThis.window,oldFetch=globalThis.fetch;globalThis.window={location:{origin:'https://bff.example.test'}};
+ t.after(()=>{globalThis.window=oldWindow;globalThis.fetch=oldFetch});const requests=[];
+ globalThis.fetch=async request=>{requests.push(request);return new Response(JSON.stringify(retirementResponse.value),{status:202,headers:{...headers,etag:retirementJob.version,location:retirementResponse.location}})};
+ const result=await editorClient().retire(details.id,read.etag,retirementKey,{reason:'security',confirm:true},proof.value.requestToken,new AbortController().signal);
+ assert.equal(requests.length,1);const request=requests[0];assert.equal(request.url,`https://bff.example.test/bff/api/v1/applications/${details.id}/retirement`);
+ assert.equal(request.headers.get('Idempotency-Key'),retirementKey);assert.equal(request.headers.get('If-Match'),read.etag);assert.equal(request.headers.get('X-CSRF-TOKEN'),proof.value.requestToken);
+ assert.deepEqual(await request.json(),{reason:'security',confirm:true});assert.equal(result.location,retirementResponse.location);assert.equal(result.status,202);
+});
+
+test('Given retirement forms and terminal views When rendered Then permanent effects retained navigation and offline limits are explicit',()=>{
+ const form=renderToStaticMarkup(createElement(LifecycleForm,{details,enabled:false,retire:true,submit:async()=>({}),cancel:()=>{}}));
+ for(const text of ['Retirement is permanent','client ID stays reserved','history is retained','cannot re-enable','Tokens validated offline','both application lifecycle','permanently retired with history retained','Permanently retire application'])assert.ok(form.includes(text),text);
+ const view=renderToStaticMarkup(createElement(DetailsView,{details:retiredDetails,dismiss:()=>{}}));
+ assert.ok(view.includes('Permanently retired'));assert.ok(view.includes('cannot be re-enabled'));assert.ok(!view.includes('Edit application'));assert.ok(!view.includes('Clone application'));
+ for(const reason of ['unavailable','forbidden','expired']){
+ const problem=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason,outcome:'unknown',target:{id:details.id,action:'retire'}},reload:()=>{}}));
+ assert.ok(problem.includes('/retired-applications'));assert.ok(problem.includes('permanently retired'));assert.ok(!problem.includes('undisplayed secret'));
+ }
+ const notSent=renderToStaticMarkup(createElement(ProblemView,{state:{kind:'problem',reason:'forbidden',outcome:'not-sent',target:{id:details.id,action:'retire'}}}));assert.ok(notSent.includes('No retirement request'));
+});
+
+test('Given historical punctuation identity When retirement is accepted Then exact encoded job location preserves the opaque application',async()=>{
+ const id="historical'identity",base={details:{...details,id},etag:tag(id),expires:now+60000};
+ const response={...retirementResponse,value:{...retirementResponse.value,applicationId:id,applicationVersion:tag(id).replace('-1"','-2"'),job:{...retirementJob,applicationId:id}},location:`/bff/api/v1/applications/historical%27identity/grant-revocations/${retirementJobId}`};
+ assert.equal((await retired(response,base,retirementKey,now)).details.id,id);
 });

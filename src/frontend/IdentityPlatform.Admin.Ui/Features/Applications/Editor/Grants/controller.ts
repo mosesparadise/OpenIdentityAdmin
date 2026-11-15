@@ -1,6 +1,6 @@
 import { object, reason, type Observed, type Reason } from "../observation";
 import { utc } from "../input";
-import { accepted, page, type Job, type GrantInput } from "./observation";
+import { accepted, job, page, type Job, type GrantInput } from "./observation";
 import type { GrantClient } from "./client";
 export type GrantState =
   | { kind: "loading" | "sending" | "cleared" }
@@ -29,10 +29,12 @@ export class GrantController {
     if (this.disposed || this.state.kind === "sending" || this.intent) return;
     const operation = this.begin(); this.emit({ kind: "loading" });
     try {
-      const result = await this.client.recent(this.base.details.id, operation.signal);
+      const linked = this.base.details.retirement?.jobId;
+      const result = linked ? await this.client.single(this.base.details.id, linked, operation.signal) : await this.client.recent(this.base.details.id, operation.signal);
       if (!this.live(operation.generation)) return;
       if (result.status !== 200) { this.fail(reason(result.status)); return; }
-      const jobs = await page(result, this.base.details.id, this.now());
+      const observed = linked ? await job(result.value, this.base.details.id, this.now(), linked) : null;
+      const jobs = linked ? observed && result.etag === observed.version ? [observed] : null : await page(result, this.base.details.id, this.now());
       if (!this.live(operation.generation)) return;
       if (!jobs) { this.fail("unavailable"); return; }
       this.deadline = Math.min(this.deadline, utc((result.value as { expiresAt: string }).expiresAt));
@@ -42,6 +44,7 @@ export class GrantController {
   }
   /** Creates one new intent only after current read permission and explicit finite confirmation; recovery retains the same scope. */
   async submit(reason: string, confirm: boolean, jobId?: string): Promise<boolean> {
+    if (this.base.details.retired && (!jobId || jobId !== this.base.details.retirement?.jobId)) return false;
     if (!this.permitted || this.state.kind !== "ready" || this.base.details.enabled !== false || !this.base.etag ||
         confirm !== true || !["maintenance", "security", "configuration"].includes(reason)) return false;
     const incomplete = this.state.jobs.find(job => job.state !== "succeeded");

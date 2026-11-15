@@ -19,8 +19,8 @@ ApplicationPolicy gains non-null Retired bool, default false, concurrency token.
 Database invariant: retired implies enabled=false. Existing enabled states/revisions survive.
 ApplicationRetirement is immutable and unique per application: original/retired versions,
 actor, finite reason, accepted time, scoped request/request-content hashes, replay deadline,
-audit ID and grant job ID. Use existing bounded IDs, grant canonical hash encoding/replay
-lifetime. Restrictive policy/audit/job references preserve history; no native delete.
+audit ID, grant job ID and original Submit approval ID. Use existing bounded IDs, grant canonical hash encoding/replay
+lifetime. Restrictive policy/audit/job/original-approval references preserve history; no native delete.
 Atomic transition: supported non-retired app with no incomplete job -> retired=true,
 enabled=false, revision+1, receipt/audit and newly approved queued grant job.
 Exact same-key replay within the established window returns the same receipt; changed
