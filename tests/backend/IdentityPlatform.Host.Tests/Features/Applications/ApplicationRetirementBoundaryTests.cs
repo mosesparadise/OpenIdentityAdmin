@@ -14,7 +14,7 @@ namespace IdentityPlatform.Host.Tests.Features.Applications;
 public sealed class ApplicationRetirementBoundaryTests
 {
     internal const string Source = "retirement-source";
-    internal const string Key = "01234567-89ab-cdef-0123-456789abcdef";
+    internal const string RequestIdentifier = "01234567-89ab-cdef-0123-456789abcdef";
     internal const string KeyHeader = "Idempotency-Key";
     internal const string ApiPath = "/api/v1/applications/" + Source + "/retirement";
     private const string Path = "/bff" + ApiPath;
@@ -71,7 +71,7 @@ public sealed class ApplicationRetirementBoundaryTests
     [Fact]
     public async Task Given_RepeatedKeyOrAliasPath_When_EitherBoundaryReads_Then_BadRequestIsFinite()
     {
-        await RequireAsync(http => http.Request.Headers[KeyHeader] = new[] { Key, Key }, StatusCodes.Status400BadRequest);
+        await RequireAsync(http => http.Request.Headers[KeyHeader] = new[] { RequestIdentifier, RequestIdentifier }, StatusCodes.Status400BadRequest);
         await RequireAsync(http => http.Features.Get<IHttpRequestFeature>()!.RawTarget = http.Request.Path.Value!.ToUpperInvariant(), StatusCodes.Status400BadRequest);
     }
 
@@ -80,9 +80,9 @@ public sealed class ApplicationRetirementBoundaryTests
     public void Given_OriginalIntent_When_ActorOrConfirmedInputChanges_Then_ReplayBindingsRemainDistinct()
     {
         var version = ApplicationVersion.Create(Source, SourceRevision);
-        var intent = ApplicationRetirementIntent.Create(Source, version, Key, new(Reason, true));
+        var intent = ApplicationRetirementIntent.Create(Source, version, RequestIdentifier, new(Reason, true));
         Assert.NotNull(intent);
-        Assert.NotEqual(intent.ScopeHash(Source), intent.ScopeHash(Key));
+        Assert.NotEqual(intent.ScopeHash(Source), intent.ScopeHash(RequestIdentifier));
         Assert.NotEqual(intent.RequestHash(), (intent with
         {
             Version = ApplicationVersion.Create(Source, 1)
@@ -91,9 +91,9 @@ public sealed class ApplicationRetirementBoundaryTests
         {
             Reason = ApplicationLifecycleReason.Maintenance
         }).RequestHash());
-        Assert.Null(ApplicationRetirementIntent.Create(Source, Wildcard, Key, new(Reason, true)));
-        Assert.Null(ApplicationRetirementIntent.Create("", version, Key, new(Reason, true)));
-        Assert.Null(ApplicationRetirementIntent.Create(Source, version, Key, new(Reason, false)));
+        Assert.Null(ApplicationRetirementIntent.Create(Source, Wildcard, RequestIdentifier, new(Reason, true)));
+        Assert.Null(ApplicationRetirementIntent.Create("", version, RequestIdentifier, new(Reason, true)));
+        Assert.Null(ApplicationRetirementIntent.Create(Source, version, RequestIdentifier, new(Reason, false)));
     }
 
     /// <summary>Returns one valid parsed request for independent transport tests without supplying real browser or API authority.</summary>
@@ -123,7 +123,7 @@ public sealed class ApplicationRetirementBoundaryTests
         {
             var request = await ApplicationMutationRequest.ReadAsync(browser, ApplicationProxyAction.Retire, Source, Now);
             Assert.Equal(ApiPath, request.Path);
-            Assert.Equal(Key, request.RequestKey);
+            Assert.Equal(RequestIdentifier, request.RequestKey);
         }
         else
         {
@@ -156,7 +156,7 @@ public sealed class ApplicationRetirementBoundaryTests
         http.Request.Headers[FetchHeader] = SameOrigin;
         http.Request.Headers[Csrf] = SyntheticCsrf;
         http.Request.Headers.IfMatch = ApplicationVersion.Create(Source, SourceRevision);
-        http.Request.Headers[KeyHeader] = Key;
+        http.Request.Headers[KeyHeader] = RequestIdentifier;
         http.Request.ContentType = JsonType;
         var bytes = Encoding.UTF8.GetBytes(body);
         http.Request.ContentLength = bytes.Length;

@@ -66,3 +66,8 @@ FR-010 T024..026; FR-011 T016/019/023; FR-012 T011..013/020/022/025/026;
 FR-013 T004..006/009/013..017/021/023/024/026..028; FR-014 T015/028/029.
 SC-001 T006/013/015; SC-002 T016..023; SC-003 T024..026;
 SC-004 T014/015/027/028; SC-005 T015/028/029.
+
+## Phase 7: Convergence
+
+- [x] T030 Prove genuine pre-retirement UserInfo success followed by current-authority denial before grant cleanup, and deny new authorization after retirement on both providers per FR-011 / US2 AC4 (partial).
+- [x] T031 Prove retirement versus re-enable in both observed provider commit orders, including unchanged native state and terminal history per spec: concurrent retirement/enable edge case / FR-008 (partial).

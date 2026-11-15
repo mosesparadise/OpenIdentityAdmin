@@ -143,7 +143,7 @@ public sealed class ApplicationRetirementTransportTests
     }
 
     /// <summary>Builds independent canonical terminal and initial-job metadata with distinct strong resource versions.</summary>
-    private static ApplicationRetirementAcceptance Acceptance() => new(Source, ApplicationVersion.Create(Source, SourceRevision + 1), Now, Key,
+    private static ApplicationRetirementAcceptance Acceptance() => new(Source, ApplicationVersion.Create(Source, SourceRevision + 1), Now, RequestIdentifier,
         new(Job, Source, ApplicationVersion.Create(Job, 1), Queued, None, Zero, Zero, Now, Now, Now.AddMinutes(1)));
 
     /// <summary>Serializes the real public contract and applies exact job response headers.</summary>
@@ -187,7 +187,7 @@ public sealed class ApplicationRetirementTransportTests
             Assert.Equal(HttpMethod.Post, request.Method);
             Assert.Equal(new Uri(new Uri(Target), ApiPath), request.RequestUri);
             Assert.Equal(new AuthenticationHeaderValue(Bearer, Credential), request.Headers.Authorization);
-            Assert.Equal(Key, Assert.Single(request.Headers.GetValues(KeyHeader)));
+            Assert.Equal(RequestIdentifier, Assert.Single(request.Headers.GetValues(KeyHeader)));
             Assert.Equal(ApplicationVersion.Create(Source, SourceRevision), Assert.Single(request.Headers.GetValues(IfMatch)));
             return Task.FromResult(response);
         }

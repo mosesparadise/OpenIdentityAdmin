@@ -386,3 +386,46 @@ source is the sole remaining native scope reference, deletion admission returns4
 a new job/audit, and clone native/policy/provenance remains unchanged. T023 is complete.
 API/BFF/contract source review passes with no confirmed blocker; full runtime/export/browser
 and exact-head acceptance remain separate obligations.
+
+### Retirement PR139 review and convergence
+
+PR139 opened at `e61c0f280a11b103fd0c2a799cd506a0fc060f8e`; CI614
+(`43668901781`, attempt1) is retained as the initial implementation run, not accepted
+delivery evidence. Its source secret scan flagged the parser test's public, synthetic
+idempotency UUID because its constant was named `Key`. Renaming it `RequestIdentifier`
+preserves exactly the same UUID, requests and assertions. The pinned scanner then found
+zero leaks against the corrected source snapshot; no suppression or scanner change was added.
+
+The independent current-source convergence review checked14 functional requirements,
+5 success criteria,11 acceptance scenarios and all29 original tasks. It found two medium
+verification gaps and no confirmed runtime defect: direct current-authority UserInfo denial
+after retirement, and actual retirement-versus-enable commit orders. The installed
+convergence prerequisites passed with no extension hooks. T030/T031 were appended without
+rewriting the existing tasks; source review accepts the resulting test additions.
+
+Convergence1 now passes **22/22**, zero skipped (164.262s): all20 observed
+retirement-versus-mutation cases, including both enable orders/provider, plus a genuine
+pre-retirement UserInfo positive control followed by retirement, cryptographic validity of
+the already-issued token, UserInfo and new-authorization denial before cleanup, and unchanged
+authority/native state on each provider. The enable-first preserved-native/history assertions
+were then strengthened and have a separately recorded rerun. Host retirement3 passes35/35
+(1.745s). All346 tooling controls pass again (28.000s), and source quality passes without
+new allowances. New native discovery preserves all3,107 prior current-branch identities and
+metadata, adding six cases:3,113 total, ordinary1,426 PostgreSQL/1,531 SQL Server;
+Applications176/provider, ManagedApplications150/provider, Issuance group71/provider.
+
+Build15 passed with zero warnings/errors (18.84s). The final strengthened enable assertions,
+hosted browsers, original mutation receipts, coverage and exact-head acceptance remain
+separate obligations; these local results do not close T022/T026–T029.
+
+Build16 passed (24.91s), and full whitespace/style verification and the staged-source secret
+scan pass. An attempted `FullyQualifiedName` argument filter selected zero cases (exit8),
+so it provides no pass evidence; the complete20-case mutation-race class was selected for
+the strengthened assertion rerun instead. Independent local PostgreSQL causal calibration
+at `e61c0f2` passed all7 baselines (46.449s),7 demonstrated behavioral kills and7 restored
+controls (81.392s), zero skips, with original source hashes restored. SQL Server and final
+hosted exact-head mutation evidence remain required.
+
+Enable3 passes **20/20**, zero skipped (173.188s), including both strengthened enable
+orders on both providers. T030/T031 are complete at the component boundary; full hosted
+verification remains pending.

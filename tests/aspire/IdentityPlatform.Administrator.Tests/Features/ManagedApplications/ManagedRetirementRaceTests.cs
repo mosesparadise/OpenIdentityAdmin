@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using IdentityPlatform.Administrator.Tests.Features.ApplicationGrants;
 using IdentityPlatform.Administrator.Tests.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.ProtocolAdmission;
@@ -24,8 +25,42 @@ public sealed class ManagedRetirementRaceTests(BootstrapFixture fixture)
     private const string Separator = "/";
     private const string Input = "{\"reason\":\"maintenance\",\"confirm\":true}";
     private const string Redeemed = "redeemed";
+    private const string AccessField = "access_token";
     private const int ExchangeTokens = 2;
     private const int CaptureSeconds = 5;
+
+    /// <summary>Separates current issuer authority from offline token validity before the queued worker changes any native grant status.</summary>
+    [Theory]
+    [InlineData("PostgreSql", Traits = ["Provider", "PostgreSql"])]
+    [InlineData("SqlServer", Traits = ["Provider", "SqlServer"])]
+    public async Task Given_UsableManagedAccessToken_When_ApplicationRetiresBeforeCleanup_Then_UserInfoAndNewAuthorizationDenyWithoutNativeChanges(string provider)
+    {
+        await using var test = await ManagedCacheTestContext.CreateAsync(fixture, provider);
+        var flow = new ManagedTokenFlow(test);
+        await flow.ApproveAsync();
+        using var exchange = await flow.ExchangeAsync(await flow.CodeAsync());
+        Assert.Equal(HttpStatusCode.OK, exchange.StatusCode);
+        using var body = JsonDocument.Parse(await exchange.Content.ReadAsByteArrayAsync(TestContext.Current.CancellationToken));
+        var subject = Assert.Single((await test.SnapshotAsync()).Interactions).UserId!;
+        var access = body.RootElement.GetProperty(AccessField).GetString()!;
+        using var control = await ManagedConsentTest.ReadAsync(test, access);
+        await ManagedConsentTest.RequireAsync(control, subject, null, false);
+        var before = await ApplicationHttpUpdateEvidence.SnapshotAsync(test.Http, test.Id);
+        using var retirement = await test.Http.CatalogueAsync(HttpMethod.Post,
+            ApplicationHttpFixture.ApiCollection + Separator + Uri.EscapeDataString(test.Id) + RetirementSuffix, Input,
+            ApplicationVersion.Create(test.Id, before.Policy.Revision), direct: true, key: Guid.NewGuid().ToString(GuidFormat));
+        Assert.Equal(HttpStatusCode.Accepted, retirement.StatusCode);
+        var accepted = (await retirement.Content.ReadFromJsonAsync<ApplicationRetirementAcceptance>(TestContext.Current.CancellationToken))!;
+        await RequireTerminalAsync(test, before, accepted);
+        await ManagedTokenOracle.ValidateAsync(test, flow, body.RootElement, subject);
+        var unchanged = await ManagedUserInfoEvidence.CaptureAsync(test);
+        using var denied = await ManagedConsentTest.ReadAsync(test, access);
+        await ManagedConsentTest.DeniedAsync(denied);
+        using var admission = await test.SendAsync(ManagedCacheTestContext.Initial());
+        await ManagedCacheTestContext.UnavailableAsync(admission);
+        await unchanged.RequireAsync(test, commits: 0);
+        await GrantIssuerRevocation.ReconcileAsync(test, accepted.Job);
+    }
 
     /// <summary>Both commit orders retain early durable redemption; a retirement winner prevents issuance, and a prior issuer winner remains prior issuance.</summary>
     [Theory]
