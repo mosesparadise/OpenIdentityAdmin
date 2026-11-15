@@ -636,3 +636,23 @@ Fresh scoped mutation reconciliation passes all 19 original archives / 25 receip
 causal kills with 161 baseline and 161 restored passes, zero skips and successful owning
 jobs. Exact source/transformed hashes and restored controls remain verified under the
 existing sanitized-producer limitation; no raw mutant TRX retention is claimed.
+
+
+### Accepted retirement delivery — CI618 and PR139
+
+[CI618](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43680949577),
+attempt 1, passes all 149 jobs at head `7608a12b8632d4894540fc927591ea8c3cb7f691` and tested merge
+`1e6a35fa6d20d42a08e6d1d7881724f45745cbf6`. All 143 original archives reconcile; independent reviews verify
+123 native TRXs / 6,599 passes, 149 UI / 47 Node cases, 120 coverage inputs / 17 unchanged
+floors and 161 mutation kills with passing baseline/restored controls. Both providers' six
+publication cases and all eight retirement browser executions pass. Host passes 2,123 cases
+in 153.551567s with peak eight and zero exclusive overlap. Complete source, review hashes,
+coverage rows and limitations are recorded in [retirement-acceptance.md](retirement-acceptance.md).
+
+PR139 was normally squash-merged as `92849d2bb7ec37c13d9e7f6be8f7abf3f23b1466` at 2026-11-15T06:08:06Z.
+The source, tested merge and squash share tree `a27273b247fba10a842de959929ec4c4e5093eb0`; the squash has exactly
+one parent, the recorded clone base. Final premerge checks verified the exact head, all 149
+successful checks, unchanged main, no review submissions/threads and active protection rules.
+This documentation follow-up closes T022/T026–T029/T032–T036 and updates the current roadmap
+and handoff. CI617 remains failed and unexplained; no fix or universal reliability claim is
+inferred from the complete fresh passing run. All manual, historical and external gates remain.

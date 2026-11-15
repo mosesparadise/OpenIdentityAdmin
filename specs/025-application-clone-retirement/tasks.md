@@ -35,7 +35,7 @@ Goal: atomic terminal state, new durable approval/job and retained history/ident
 - [x] T019 [US2] Bind terminal state into issuer/write snapshots and reject ordinary mutations/clone sources in src/persistence/IdentityPlatform.Infrastructure/Features/Applications/ and existing managed registration/login features, preserving GrantTarget cleanup access.
 - [x] T020 [US2] Add dual-permission fresh-MFA API/BFF retirement admission under one authority epoch, bounded receipt/status contract and exact validators in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ and src/backend/IdentityPlatform.Admin.Bff/Features/Applications/.
 - [x] T021 [US2] Filter retired policies before ordering/offset/lookahead in src/backend/IdentityPlatform.Admin.Api/Features/Applications/ApplicationListReader.cs; add the separately navigable bounded retired-app list and retain authorized detail/job access; verify mixed unmanaged/system rows, page boundaries and historical native ID retired (the separate /retired-applications route must not shadow detail IDs).
-- [ ] T022 [US2] Add permanent-retirement confirmation, terminal details/status navigation and offline-token/session explanation in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/; cover stale/denied/cancelled/unknown outcomes and responsive keyboard/focus behavior.
+- [x] T022 [US2] Add permanent-retirement confirmation, terminal details/status navigation and offline-token/session explanation in src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/; cover stale/denied/cancelled/unknown outcomes and responsive keyboard/focus behavior.
 - [x] T023 [US2] Prove retained native/history rows, client-ID reservation, scope-reference semantics and retirement persistence through restart/cleanup in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Applications/.
 
 ## Phase 5 — US3: Recovery (FR-007/009/010/012..014; SC-003/004/005)
@@ -43,12 +43,12 @@ Goal: durable revocation survives browser loss and explicit stopped-job recovery
 ever restoring a retired registration. Depends on US2 admission and terminal read model.
 - [x] T024 [US3] Add worker restart/logout/MFA-age/current-account/permission-loss, exact continuation and retained approval/history tests in tests/aspire/IdentityPlatform.Administrator.Tests/Features/ApplicationGrants/.
 - [x] T025 [US3] Integrate retirement receipt/job observation and existing explicitly approved continuation in src/backend/IdentityPlatform.Admin.Api/Features/ApplicationGrants/, src/backend/IdentityPlatform.Admin.Bff/Features/ApplicationGrants/ and src/frontend/IdentityPlatform.Admin.Ui/Features/Applications/Editor/Grants/.
-- [ ] T026 [US3] Add genuine retirement/pending/stopped/recovered journeys across both providers and retained browsers in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/; assert recovery stays reachable after normal-list exclusion, full reload/re-login and lost admission response.
+- [x] T026 [US3] Add genuine retirement/pending/stopped/recovered journeys across both providers and retained browsers in tests/aspire/IdentityPlatform.Administrator.Tests/Features/Browser/; assert recovery stays reachable after normal-list exclusion, full reload/re-login and lost admission response.
 
 ## Phase 6 — Retirement delivery and cross-cutting verification
-- [ ] T027 Regenerate retirement contracts, inventories and invariant-specific causal witnesses in eng/, scripts/ and tests/; preserve existing exact identities, assertions, deadlines and coverage floors.
-- [ ] T028 Run all required exact-head provider/browser/contract/coverage/mutation/supply checks and independent architecture/security/API/test/UX/Aspire reviews; reconcile original artifacts in specs/025-application-clone-retirement/verification.md.
-- [ ] T029 Record reviewed normal squash and completed/remaining scope in specs/025-application-clone-retirement/tasks.md, docs/roadmap.md and existing handoff documentation; preserve Windows/manual, Firefox/A-009, historical and external gates.
+- [x] T027 Regenerate retirement contracts, inventories and invariant-specific causal witnesses in eng/, scripts/ and tests/; preserve existing exact identities, assertions, deadlines and coverage floors.
+- [x] T028 Run all required exact-head provider/browser/contract/coverage/mutation/supply checks and independent architecture/security/API/test/UX/Aspire reviews; reconcile original artifacts in specs/025-application-clone-retirement/verification.md.
+- [x] T029 Record reviewed normal squash and completed/remaining scope in specs/025-application-clone-retirement/tasks.md, docs/roadmap.md and existing handoff documentation; preserve Windows/manual, Firefox/A-009, historical and external gates.
 
 ## Dependencies and parallel opportunities
 T001..004 precede code. US1 tests/contracts precede implementation; T008/009 share audit/
@@ -74,17 +74,30 @@ SC-004 T014/015/027/028; SC-005 T015/028/029.
 
 ## Phase 8: Convergence
 
-- [ ] T032 Partition the expanded Applications story into independently bounded registration140 and retirement36 cases per provider; require exact disjoint native identities, unchanged660-second deadlines and every coverage input per FR-013 / SC-004 (partial).
+- [x] T032 Partition the expanded Applications story into independently bounded registration140 and retirement36 cases per provider; require exact disjoint native identities, unchanged660-second deadlines and every coverage input per FR-013 / SC-004 (partial).
 
 ## Phase 9: Convergence
 
-- [ ] T033 Bind existing security-focus and fresh-password audit assertions to the actual response document's readiness and native factor phase, preserving exact assertions and deadlines; verify corrected retained-browser cases per FR-013 / SC-005 (partial).
+- [x] T033 Bind existing security-focus and fresh-password audit assertions to the actual response document's readiness and native factor phase, preserving exact assertions and deadlines; verify corrected retained-browser cases per FR-013 / SC-005 (partial).
 
 ## Phase 10: Convergence
 
-- [ ] T034 Preserve the original native retirement baseline through real logout/relogin while independently admitting only the exact new administrator sign-in rows; verify both recovery journeys on both providers/engines per FR-009 / FR-013 / SC-003 (partial).
-- [ ] T035 Partition BrowserProtection into Sessions15, existing Applications21 and Retirement2 per provider/engine; preserve exact native identities, all mandatory cells and unchanged660-second deadlines per FR-013 / SC-004 (partial).
+- [x] T034 Preserve the original native retirement baseline through real logout/relogin while independently admitting only the exact new administrator sign-in rows; verify both recovery journeys on both providers/engines per FR-009 / FR-013 / SC-003 (partial).
+- [x] T035 Partition BrowserProtection into Sessions15, existing Applications21 and Retirement2 per provider/engine; preserve exact native identities, all mandatory cells and unchanged660-second deadlines per FR-013 / SC-004 (partial).
 
 ## Phase 11: Convergence
 
-- [ ] T036 Prove the retirement BFF withholds successful publication after genuine upstream commit when browser generation changes or the original useful lifetime expires; retain the exact committed receipt/job/history, one send and explicit authorized recovery on both providers per FR-012 / FR-013 / Constitution10/13 (partial).
+- [x] T036 Prove the retirement BFF withholds successful publication after genuine upstream commit when browser generation changes or the original useful lifetime expires; retain the exact committed receipt/job/history, one send and explicit authorized recovery on both providers per FR-012 / FR-013 / Constitution10/13 (partial).
+
+
+## Completed delivery — 15 November 2026
+
+All 36 tasks are complete for the selected internal-development scope. Clone is delivered
+through PR138; retirement is delivered through PR139, squash
+`92849d2bb7ec37c13d9e7f6be8f7abf3f23b1466`. This reviewed documentation follow-up completes
+T029. [Retirement acceptance and qualifications](retirement-acceptance.md) binds CI618's
+149 successful jobs and all 143 original archives to the actual squash. T032's original
+140 + 36 split is retained as task history; T036 adds three cases per provider, so the final
+mandatory split is 140 registration + 39 retirement. Existing manual/historical/external
+gates and CI617's unexplained navigation failure remain qualified; no later roadmap slice
+is implemented by this delivery.

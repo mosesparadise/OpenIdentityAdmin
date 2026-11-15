@@ -1,17 +1,28 @@
 # Delivery roadmap and task register
 
-## Active work — permanent application retirement, 15 November 2026
+## Latest completed delivery — application cloning and permanent retirement, 15 November 2026
 
-The requesting user selected the next M04-A increment and chose permanent retirement
-with history retained: stop issuance, revoke grants, hide from normal listings, preserve
-native/audit history and reserve the client ID. [Feature025 specification](../specs/025-application-clone-retirement/spec.md)
-and [task register](../specs/025-application-clone-retirement/tasks.md) separate clone and
-retirement delivery checkpoints. Clone is accepted and merged as recorded below.
-Permanent retirement, durable recovery, exact-head acceptance and its separate reviewed
-squash remain open. [Current evidence and limits](../specs/025-application-clone-retirement/verification.md).
-All existing manual, historical and external gates below remain open.
+Feature025 completes the selected M04-A clone and controlled-delete journeys for the managed
+confidential web profile. The user selected permanent retirement with history retained.
+[PR138](https://github.com/mosesparadise/OpenIdentityAdmin/pull/138) delivers cloning;
+[PR139](https://github.com/mosesparadise/OpenIdentityAdmin/pull/139) delivers retirement,
+squash-merged as `92849d2bb7ec37c13d9e7f6be8f7abf3f23b1466`. Retirement stops new issuance/current UserInfo, hides
+the application from the ordinary list, reserves its client ID and preserves native/audit
+history. Durable grant revocation remains observable through Retired applications after
+reload/re-login or response loss; stopped work requires explicit fresh approval.
 
-## Latest completed delivery — managed application cloning, 15 November 2026
+[CI618](https://github.com/mosesparadise/OpenIdentityAdmin/actions/runs/43680949577) and
+[retirement acceptance](../specs/025-application-clone-retirement/retirement-acceptance.md)
+record the actual reviewed source, original artifacts and qualifications. All 36 feature tasks
+are complete for internal development after this reviewed documentation follow-up. Existing
+offline JWTs can remain valid until expiry, and remote relying-party sessions are not erased.
+
+The current implementation batch is complete. The Windows Docker Desktop walkthrough remains
+a human activity; M05-A general user administration is a later engineering candidate. Broader
+M04-B/C profiles and credentials and protected documentation remain separate work. All existing
+manual, Firefox/A-009, historical, dormant-refresh, vendor and external release gates stay open.
+
+## Previous delivery — managed application cloning, 15 November 2026
 
 [PR138](https://github.com/mosesparadise/OpenIdentityAdmin/pull/138) is squash-merged as
 `0366f5f1ebdca7797edd6dfd6954715b0545dd63`. Administrators can review and clone supported
@@ -52,7 +63,7 @@ The API's offline revocation limit and sample logout's local scope remain explic
 
 **Next practical activity:** perform the actual Windows Docker Desktop
 [walkthrough](../specs/024-aspire-sample-client-api/quickstart.md) and record observed results.
-Feature025 now selects M04-A clone/permanent retirement as described above.
+Feature025 now delivers M04-A clone/permanent retirement as described above.
 M05-A general user administration remains a later candidate slice.
 Keep dormant refresh visible; do not activate it or repeat completed implementation.
 
@@ -790,17 +801,17 @@ Prerequisite: milestone 002. Real UserInfo needed for this milestone's approved 
 | M03-B | Delivered for the approved managed profile in PR128/PR130/PR132/PR134: finite claim policy, explicit assignment, current-policy bindings, requested/allowed/consented scopes and at most one mapped API audience. See [qualified internal acceptance](../specs/023-scope-audience-catalogue/consent-acceptance.md). |
 | M03-C | Delivered in PR134: independently validated native tokens and current-authority scope-filtered UserInfo, exact subject, consented current email, wrong-profile rejection and policy/revocation changes on both providers. Machine activation remains separate. |
 
-## Milestone 004 — Application lifecycle (catalogue, editing, enablement and grant revocation delivered)
+## Milestone 004 — Application lifecycle (selected managed-profile lifecycle delivered)
 
 Prerequisites: milestones 002–003 and the actual protocol capabilities being offered. Do not accept an unimplemented grant merely because it is shown in a client profile.
 
 | Task | Deliverable and acceptance |
 | --- | --- |
-| M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. PR124 delivers durable bulk grant revocation, current batch authority, progress and explicit recovery while the application stays disabled. Clone/delete remain open. |
+| M04-A | Catalogue/search/paging delivered in PR118; sanitized details/create/edit in PR120; managed disable/re-enable in PR122, with current permission/MFA, atomic reason/audit, concurrency and issuer enforcement. PR124 delivers durable bulk grant revocation, current batch authority, progress and explicit recovery while the application stays disabled. PR138 delivers configuration-only cloning with a fresh credential; PR139 delivers user-selected permanent retirement, retained history/client identity and durable cleanup/recovery. The selected managed-profile lifecycle is delivered; broader profiles and manual/external acceptance remain open. |
 | M04-B | PR120 delivers one managed confidential web code/S256 profile with exact HTTPS redirects, native Basic authentication, fresh password/MFA and explicit consent; PR134 adds explicitly assigned requested scopes, finite email policy and UserInfo. Other browser/native/machine/device profiles and actual protocol prerequisites remain open. |
 | M04-C | PR120 delivers manager-hashed one-time shared secrets, enforced expiry, immediate explicit replacement and lost-output recovery with no plaintext reread. Asymmetric public-key registration and remaining credential lifecycle remain open. |
-| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. PR136 adds the ordinary Aspire managed client/API integration example with reviewed CI603 acceptance. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
-| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. Broader client profiles, clone/delete and manual/external acceptance remain open; the separate legacy pilot replay correction is accepted in [feature022](../specs/022-pilot-replay-serialization/acceptance.md) via PR126. |
+| M04-D | PR118/PR120 deliver versioned application list/details/write contracts; PR122 adds finite versioned lifecycle contracts; PR124 adds grant-job admission/status/continuation contracts. PR138/PR139 add clone/retirement and retained-status contracts. Admin API/BFF preconditions/CSRF, generated TypeScript and compatibility checks are delivered. PR136 adds the ordinary Aspire managed client/API integration example with reviewed CI603 acceptance. Broader resources, Scalar/Swagger activation, permission-aware documentation and remaining integration examples remain open. |
+| M04-E | PR120 verifies the same UI-created/edited/replaced registration through genuine password/MFA/consent/code exchange on both providers. PR122 adds disable/denial/re-enable/fresh success. PR124 adds both-provider grant-job, current-authority, race/failure, retained-browser recovery and ordinary Aspire demo evidence. PR138/PR139 add both-provider clone, irreversible retirement, publication/authority/issuance races and retained-browser recovery evidence. Broader client profiles and manual/external acceptance remain open; the separate legacy pilot replay correction is accepted in [feature022](../specs/022-pilot-replay-serialization/acceptance.md) via PR126. |
 
 ## Milestone 005 — Accounts and strong authentication (planned)
 
@@ -867,7 +878,7 @@ This table assigns every FR/NFR to planned work; it does not mark a whole produc
 
 | Requirement | Owning tasks | Current product status |
 | --- | --- | --- |
-| FR-01 applications | M04-A/E | Partial: catalogue/search/paging, managed create/edit, disable/re-enable and durable grant revocation delivered through PR118/PR120/PR122/PR124; clone/delete remain open |
+| FR-01 applications | M04-A/E | Selected managed-profile lifecycle delivered through PR118/PR120/PR122/PR124/PR138/PR139: catalogue, create/edit, enablement, revocation, cloning and user-selected permanent retirement with retained history; broader profiles and manual/external acceptance remain open |
 | FR-02 client profiles | M01-D, M02-B, M04-B/E, M07-A/B/D | Partial: fixed pilot plus managed confidential web code/S256 profile in PR120; other profiles remain planned |
 | FR-03 credentials | M04-C/E, M07-A | Partial: native-hashed expiring one-time shared secrets and explicit replacement in PR120; asymmetric and broader lifecycle remain open |
 | FR-04 scopes/audiences/claims | M01-D, M03-A/B/C, M06-A/B | Approved managed-profile scope delivered in PR128/PR130/PR132/PR134: catalogue, assignment, current policy, explicit consent, finite email claims and UserInfo; broader profile/release gates remain open |
