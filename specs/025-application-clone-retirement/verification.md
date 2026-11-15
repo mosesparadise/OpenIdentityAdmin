@@ -589,3 +589,50 @@ including the retirement audit linkage and all native discovery/selection identi
 inventory preserves prior ordering as well as values and adds only six records. Full whitespace
 and style verification passes. This closes the local finding; historical CI616 remains unchanged
 and complete fresh hosted execution and final delivery review are still required.
+
+### CI617 retained sample navigation failure
+
+CI617, run 43678003809, attempt 1, tests head `1ef268f105a7f9b82fec2ca26b9dafa7a8ae64ad`,
+merge `738061e2aa548f686cd6c8af334ac85d03b85f93`, tree
+`1ba524504113a3030bad7d269fe06c51c7e36b5e`, against the unchanged clone base.
+The PostgreSQL/WebKit sample cell has a complete original TRX with two executed cases:
+one pass and one failure. The clone journey times out at `LocalDemoNavigation.cs:42`,
+awaiting the exact sample destination after explicit consent in `SampleBrowserJourney.cs:74`.
+The original navigation budget remains 20s, armed before one click; the action budget stays 15s.
+The same helper and journey source passed CI616 and is unchanged. No retained timeline
+establishes why this navigation/default-load wait failed. The safe `NotBrowser` category
+classifies the exception type; it does not exclude browser/network involvement. Later
+connection errors in the retained logs do not establish causation. No source correction, retry, deadline
+increase or weaker wait state is justified by these observations.
+
+Independent review verifies the failed original's authenticated digest, size, ZIP integrity,
+native result links and before-build identity. A predeclared single unchanged two-case local
+comparison could not start: pinned WebKit was absent and one installer invocation exhausted
+its five normal official-host attempts with HTTP 403 `Domain forbidden`. No local test ran,
+no TLS/proxy policy was bypassed and no passing comparison is claimed. Preserve both original
+failure and acquisition log. A complete fresh hosted run is required; failed-jobs-only retry
+or combining successes from different runs cannot satisfy final acceptance. Any later clean
+run retains this unknown-cause reliability qualification and does not establish deflaking,
+root-cause closure or general suite stability.
+
+The six publication-boundary cases added for T036 pass in both current 39-case retirement
+reports. Independent review verifies all 78 full-report executions, exact native metadata
+and links, original archive/report/build bindings and executed post-upstream denial line 31
+on both providers. This scoped closure does not override the unrelated failed sample cell;
+all six cases must execute again in the next complete run. Host passes 2,123 cases in
+159.129868s with peak 8 and no exclusive overlap. Fresh scoped contracts/UI/supply checks pass.
+
+The complete run ends with 146 successful jobs, the one failed sample execution and failed
+final acceptance gate, and skipped aggregate coverage. All 142 produced original archives
+are retained and verified; the aggregate coverage archive is absent, not credited. Independent
+native audit reconciles 123 TRXs / 6,599 executions: 6,598 pass and 1 fail, zero skipped or missing
+cases, exact old identities preserved. The failed sample has its single testcase error and
+one matching run-level native-exit-2 error; its after-build identity is absent. All 16 affected
+upgrade cases pass with six source-oracle hashes unchanged. The 14 scoped browser originals
+contain 113 pass / 1 fail, including 8/8 retirement recovery, 7/8 sample and 14/14 retained-regression
+cell executions. CI617 remains failed and no complete coverage or holistic pass is claimed.
+
+Fresh scoped mutation reconciliation passes all 19 original archives / 25 receipts / 161
+causal kills with 161 baseline and 161 restored passes, zero skips and successful owning
+jobs. Exact source/transformed hashes and restored controls remain verified under the
+existing sanitized-producer limitation; no raw mutant TRX retention is claimed.
