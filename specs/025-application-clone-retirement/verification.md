@@ -171,3 +171,51 @@ and complete provider totals 1,787/1,894. All 28 workflow Python control scripts
 against the corrected inventories. CI 609 (`43656525088`, head `7c57b05`) began before
 this addition and cannot establish acceptance of the new head. Full exact-head hosted
 browser/coverage/mutation and final artifact reviews remain required.
+
+### CI 610 evidence review and test corrections
+
+CI 609's SQL persistence job completed 40/41 cases; the remaining existing catalogue-runtime
+case could not start its SQL Server container (`CoInitializeSecurity`, 0x800706b5, exit 255).
+Its original log is retained. The run was superseded by the clock-regression source update;
+no retry or deadline relaxation converts that failed case into acceptance.
+
+CI 610 (`43657036888`, head `7c080a9`, merge `5cab4e`, tree
+`81d6172f113b91ad56560984ca239b6db369c340`) passed all four sample browser cells.
+Independent review reconciled original archive hashes/sizes/CRC, source/build/report bindings,
+and exact TRX identities/execution links: four retained ordinary journeys and four clone
+journeys, eight passes, no skips. This is preliminary browser evidence, not full acceptance.
+
+Its Host project exceeded the unchanged 180-second covered invocation limit. The prior
+accepted CI 603 Host TRX took 176.492s. Diagnostic reconstruction of CI 610's incomplete
+native stream found all 12 clone cases (0.056s combined), with the parallel phase faster
+than CI 603; five existing exclusive sample/telemetry cases remained without final results.
+The partial stream is not a passing Host report. The reviewed correction bounds Host-only
+conservative scheduling at eight collections and retains both exclusive collections.
+MaintenanceTests now joins the existing telemetry isolation because its process-global
+listener otherwise allowed unrelated measurements to satisfy its completion source.
+No test identity/assertion, request timer, invocation bound or coverage policy was removed.
+
+Mutation review found that the new source-verification witness could emit its bypass marker
+for an unrelated exception. It now emits that marker only after a successful 201 result and
+independent persisted proof of the changed source policy, unchanged other source fields,
+distinct destination with valid new credential, and exact linked audit/provenance. The
+interceptor marks itself fired only after exactly one persisted row changes. This stricter
+check exposed two previously vacuous catalogue-fault cases: they queried the unmapped
+CatalogueScope projection. The corrected query targets mapped ScopePolicy by ScopeId.
+Atomicity13 recorded 10 passes/2 failures; corrected Atomicity14 passes all 12 cases on both
+providers (1m52s), with actual catalogue corruption and rollback. Both corrections pass
+independent source review; previous affected claims are not accepted as causal evidence.
+
+Build14 and quality checks pass with zero build warnings/errors and unchanged legacy debt.
+The local covered Host run completes all 2,088 cases in 1m03s, inside the original 180s bound.
+A private post-validator initially rejected 11 theory display-name collisions (ten historical
+and one new clone JSON display truncated by the native formatter);
+correct validation of the same original report confirms 2,088 unique native IDs and exact
+result/definition/execution/entry links, all passing, no skipped cases or run-level errors.
+The original command's post-validation failure is retained; no rerun was used for this
+analysis correction. Fresh exact-head CI remains mandatory for the scheduling/fault changes.
+Independent review of that original Host report confirms peak concurrency eight, preserved
+logical bindings for all 2,076 prior cases plus 12 clone cases, and zero overlap between
+the 15 sample-exclusive / nine telemetry-exclusive cases and any other case.
+The exact local static gate with self-tests also passes after these corrections, including
+unused-import/format verification and all seeded enforcement checks.

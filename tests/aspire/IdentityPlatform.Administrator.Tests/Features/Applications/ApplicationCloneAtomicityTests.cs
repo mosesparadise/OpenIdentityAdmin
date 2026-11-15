@@ -1,4 +1,5 @@
 using System.Globalization;
+using IdentityPlatform.Admin.Api.Features.Applications;
 using IdentityPlatform.Administrator.Tests.Features.Catalogue;
 using IdentityPlatform.Administrator.Tests.Fixtures;
 using IdentityPlatform.Infrastructure.Features.Applications;
@@ -18,6 +19,7 @@ public sealed class ApplicationCloneAtomicityTests(BootstrapFixture fixture)
     private const string Display = "Atomic clone";
     private const string ExpiryFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private const string Destination = "atomic-clone";
+    private const string CloneEvent = "ApplicationCloned";
 
     /// <summary>Persisted corruption cannot commit a clone or mutate its source, even when all manager saves already succeeded.</summary>
     [Theory]
@@ -84,11 +86,49 @@ public sealed class ApplicationCloneAtomicityTests(BootstrapFixture fixture)
         var source = await test.ExecuteAsync(test.Create());
         var before = await ApplicationUpdateSnapshot.ReadAsync(test, source.Application!.Id);
         fault.Armed = true;
-        var error = await Record.ExceptionAsync(() => test.ExecuteAsync(Clone(test, source.Application.Id, source.Version!)));
+        ApplicationMutationResult? result = null;
+        var error = await Record.ExceptionAsync(async () =>
+        {
+            result = await test.ExecuteAsync(Clone(test, source.Application.Id, source.Version!));
+        });
         Assert.True(fault.Fired);
-        Assert.True(error is InvalidOperationException, Witness);
+        if (error is null)
+        {
+            Assert.NotNull(result);
+            Assert.Equal(201, result.Status);
+            await RequireCommittedBypassAsync(test, source, before, result);
+            Assert.Fail(Witness);
+        }
+        Assert.IsType<InvalidOperationException>(error);
         Assert.Equal(before.Digest, (await ApplicationUpdateSnapshot.ReadAsync(test, source.Application.Id)).Digest);
         await RequireAbsentAsync(test);
+    }
+
+    /// <summary>Emits no causal marker until independent reads prove successful clone persistence alongside the exact source-policy corruption.</summary>
+    private static async Task RequireCommittedBypassAsync(ApplicationMutationFixture test, ApplicationMutationResult source,
+        ApplicationUpdateSnapshot before, ApplicationMutationResult result)
+    {
+        Assert.NotNull(result.Application);
+        Assert.NotNull(result.Credential);
+        Assert.NotEqual(source.Application!.Id, result.Application.Id);
+        var after = await ApplicationUpdateSnapshot.ReadAsync(test, source.Application.Id);
+        Assert.True(before.Policy.Enabled);
+        Assert.False(after.Policy.Enabled);
+        after.Policy.Enabled = before.Policy.Enabled;
+        Assert.Equal(ApplicationUpdateSnapshot.Hash(before.Policy), ApplicationUpdateSnapshot.Hash(after.Policy));
+        Assert.Equal(before.NativeDigest, after.NativeDigest);
+        Assert.Equal(before.Audits.Length + 1, after.Audits.Length);
+        await using var scope = test.Scope();
+        var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
+        var destination = await manager.FindByClientIdAsync(Destination, test.Token);
+        Assert.NotNull(destination);
+        Assert.Equal(result.Application.Id, await manager.GetIdAsync(destination, test.Token));
+        Assert.True(await test.AcceptsAsync(result.Application.Id, result.Credential.ClientSecret));
+        var detail = await scope.ServiceProvider.GetRequiredService<PlatformDbContext>().Set<ApplicationCloneAuditDetail>()
+            .AsNoTracking().SingleAsync(test.Token);
+        Assert.Equal(source.Application.Id, detail.SourceApplicationId);
+        Assert.Equal(source.Version, detail.SourceVersion);
+        Assert.Single(after.Audits, row => row.Id == detail.AuditId && row.TargetId == result.Application.Id && row.Event == CloneEvent);
     }
 
     /// <summary>Observes absence independently from discarded command output after the owning transaction has rolled back.</summary>

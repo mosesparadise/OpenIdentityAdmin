@@ -32,26 +32,28 @@ internal sealed class ApplicationCloneSaveFault(ApplicationCloneDefect defect) :
         {
             return result;
         }
-        Fired = true;
+        var affected = 0;
         switch (defect)
         {
             case ApplicationCloneDefect.Provenance:
-                await database.Set<ApplicationCloneAuditDetail>().Where(row => row.AuditId == detail.AuditId)
+                affected = await database.Set<ApplicationCloneAuditDetail>().Where(row => row.AuditId == detail.AuditId)
                     .ExecuteUpdateAsync(update => update.SetProperty(row => row.SourceApplicationId, Substitution), cancellationToken);
                 break;
             case ApplicationCloneDefect.SourcePolicy:
-                await database.Set<ApplicationPolicy>().Where(row => row.ApplicationId == detail.SourceApplicationId)
+                affected = await database.Set<ApplicationPolicy>().Where(row => row.ApplicationId == detail.SourceApplicationId)
                     .ExecuteUpdateAsync(update => update.SetProperty(row => row.Enabled, false), cancellationToken);
                 break;
             case ApplicationCloneDefect.SourceNative:
-                await database.Set<OpenIddictEntityFrameworkCoreApplication>().Where(row => row.Id == detail.SourceApplicationId)
+                affected = await database.Set<OpenIddictEntityFrameworkCoreApplication>().Where(row => row.Id == detail.SourceApplicationId)
                     .ExecuteUpdateAsync(update => update.SetProperty(row => row.DisplayName, Substitution), cancellationToken);
                 break;
             case ApplicationCloneDefect.Catalogue:
-                await database.Set<CatalogueScope>().Where(row => row.Id == ScopeId)
+                affected = await database.Set<ScopePolicy>().Where(row => row.ScopeId == ScopeId)
                     .ExecuteUpdateAsync(update => update.SetProperty(row => row.Revision, row => row.Revision + 1), cancellationToken);
                 break;
         }
+        Assert.Equal(1, affected);
+        Fired = true;
         return result;
     }
 }
