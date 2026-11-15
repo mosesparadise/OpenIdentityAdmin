@@ -74,15 +74,21 @@ internal static class RetirementBrowserView
     }
 
     /// <summary>Destroys transient page state, performs actual issuer logout, then fresh password/MFA before recovering the same retained identity.</summary>
-    internal static async Task ReloginAsync(IPage page, BrowserHttpsFixture environment, ApplicationEditorRegistration registration, Guid job)
+    internal static async Task<ApplicationGrantBrowserEvidence.NativeRow[]> ReloginAsync(IPage page, BrowserHttpsFixture environment, ApplicationEditorRegistration registration, Guid job)
     {
         await page.ReloadAsync();
         await OpenAsync(page, environment, registration, job);
+        var before = await ApplicationGrantBrowserEvidence.SnapshotAsync(environment);
         await BrowserHttpsJourney.LogoutAsync(environment, page, issuer: true);
         await page.GotoAsync((await BrowserLogoutJourney.LinkAsync(environment, page)).AbsoluteUri);
         await BrowserLogoutJourney.ConfirmAsync(environment, page);
+        var signedOut = await ApplicationGrantBrowserEvidence.SnapshotAsync(environment);
+        Assert.Equal(before.Length, signedOut.Length);
+        RetirementBrowserNative.Preserved(before, signedOut);
         await ApplicationAccessFixture.SignInAsync(environment, page);
+        var added = await RetirementBrowserNative.AddedAsync(environment, registration.Id, signedOut);
         await OpenAsync(page, environment, registration, job);
+        return added;
     }
 
     /// <summary>Uses exact accessible button names without injecting request keys or application state.</summary>

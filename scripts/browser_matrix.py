@@ -19,7 +19,7 @@ def select():
                         for browser in ENGINES for provider in PROVIDERS
                         for partition in ('standard', 'administrator')
                         for story in (('Accounts', 'Security', 'BrowserSessions', 'BrowserLogin', 'BrowserProtection', 'ApplicationEditor', 'ApplicationAuthority', 'ApplicationLifecycle', 'ManagedConsent') if partition == 'administrator' else ('',))
-                        for group in (('Sessions', 'Applications') if story == 'BrowserProtection' else ('',))]}
+                        for group in (('Sessions', 'Applications', 'Retirement') if story == 'BrowserProtection' else ('',))]}
 
 
 def main():

@@ -11,7 +11,7 @@ from test_selection import catalogue
 
 ROOT = Path(__file__).resolve().parents[1]
 STORY = 'BrowserProtection'
-GROUPS = ('Sessions', 'Applications')
+GROUPS = ('Sessions', 'Applications', 'Retirement')
 
 
 class BrowserProtectionSelectionTests(unittest.TestCase):
@@ -32,11 +32,11 @@ class BrowserProtectionSelectionTests(unittest.TestCase):
                              self.inventory['metadata'][t[0]]['type']['typeName'] in classes}
         return result
 
-    def test_Given_OriginalStory_When_DefaultOrExplicitExecutionExpands_Then_BothGroupsAreMandatory(self):
+    def test_Given_OriginalStory_When_DefaultOrExplicitExecutionExpands_Then_AllGroupsAreMandatory(self):
         """Preserve all38 cases per provider, their old traits and the complete78-case browser inventory."""
         require_native_inventory(json.dumps(self.raw), self.inventory, complete=True)
         for provider in ('PostgreSql', 'SqlServer'):
-            expected = [(STORY, 'Sessions', 15), (STORY, 'Applications', 23)]
+            expected = [(STORY, 'Sessions', 15), (STORY, 'Applications', 21), (STORY, 'Retirement', 2)]
             self.assertEqual(expected, browser_execution_invocations(self.matrix, provider, STORY))
             all_groups = browser_execution_invocations(self.matrix, provider)
             self.assertEqual(expected, [row for row in all_groups if row[0] == STORY])
@@ -45,7 +45,7 @@ class BrowserProtectionSelectionTests(unittest.TestCase):
             require_group_selections(self.tests, selections, provider, STORY, self.matrix, self.inventory)
             self.assertFalse(selections['Sessions'].keys() & selections['Applications'].keys())
             self.assertEqual(38, sum(map(len, selections.values())))
-            for group, count in [('Sessions',15),('Applications',23)]:
+            for group, count in [('Sessions',15),('Applications',21),('Retirement',2)]:
                 self.assertEqual([(STORY,group,count)], browser_execution_invocations(self.matrix, provider, STORY, group))
                 expression = group_filter(self.matrix, provider, STORY, group)
                 self.assertTrue(expression.startswith(f'Provider={provider}&Category=Browser&BrowserStory=BrowserProtection&('))
@@ -53,10 +53,15 @@ class BrowserProtectionSelectionTests(unittest.TestCase):
 
     def test_Given_GroupReports_When_OmittedOverlappedOrSubstituted_Then_EqualCountsCannotHideDrift(self):
         """Reject missing groups, wrong-provider/story records and equal-count replacements before execution."""
-        for change in ('missing','overlap','drop','substitute','provider','story','tuple'):
+        for change in ('missing','overlap','drop','substitute','provider','story','tuple','missing-retirement','retirement-uid','retirement-overlap'):
             selected = self.selections('PostgreSql')
             a = next(iter(selected['Applications'])); s = next(iter(selected['Sessions']))
-            if change == 'missing': del selected['Applications']
+            if change == 'missing-retirement': del selected['Retirement']
+            elif change == 'retirement-uid':
+                uid = next(iter(selected['Retirement'])); selected['Retirement']['substituted'] = selected['Retirement'].pop(uid)
+            elif change == 'retirement-overlap':
+                uid = next(iter(selected['Retirement'])); selected['Applications'][uid] = selected['Retirement'][uid]
+            elif change == 'missing': del selected['Applications']
             elif change == 'overlap': selected['Sessions'][a] = selected['Applications'][a]
             elif change == 'drop': del selected['Applications'][a]
             elif change == 'substitute':

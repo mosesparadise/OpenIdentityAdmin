@@ -71,3 +71,16 @@ SC-004 T014/015/027/028; SC-005 T015/028/029.
 
 - [x] T030 Prove genuine pre-retirement UserInfo success followed by current-authority denial before grant cleanup, and deny new authorization after retirement on both providers per FR-011 / US2 AC4 (partial).
 - [x] T031 Prove retirement versus re-enable in both observed provider commit orders, including unchanged native state and terminal history per spec: concurrent retirement/enable edge case / FR-008 (partial).
+
+## Phase 8: Convergence
+
+- [ ] T032 Partition the expanded Applications story into independently bounded registration140 and retirement36 cases per provider; require exact disjoint native identities, unchanged660-second deadlines and every coverage input per FR-013 / SC-004 (partial).
+
+## Phase 9: Convergence
+
+- [ ] T033 Bind existing security-focus and fresh-password audit assertions to the actual response document's readiness and native factor phase, preserving exact assertions and deadlines; verify corrected retained-browser cases per FR-013 / SC-005 (partial).
+
+## Phase 10: Convergence
+
+- [ ] T034 Preserve the original native retirement baseline through real logout/relogin while independently admitting only the exact new administrator sign-in rows; verify both recovery journeys on both providers/engines per FR-009 / FR-013 / SC-003 (partial).
+- [ ] T035 Partition BrowserProtection into Sessions15, existing Applications21 and Retirement2 per provider/engine; preserve exact native identities, all mandatory cells and unchanged660-second deadlines per FR-013 / SC-004 (partial).

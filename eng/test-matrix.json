@@ -486,12 +486,84 @@
         "ApplicationPresentationBrowserTests",
         "ApplicationProxyBrowserTests",
         "ApplicationScopeBrowserTests",
-        "CatalogueBrowserTests",
+        "CatalogueBrowserTests"
+      ],
+      "counts": {
+        "PostgreSql": 21,
+        "SqlServer": 21
+      }
+    },
+    "Retirement": {
+      "classes": [
         "ApplicationRetirementBrowserTests"
       ],
       "counts": {
-        "PostgreSql": 23,
-        "SqlServer": 23
+        "PostgreSql": 2,
+        "SqlServer": 2
+      }
+    }
+  },
+  "application_groups": {
+    "Registration": {
+      "classes": [
+        "ApplicationCloneAtomicityTests",
+        "ApplicationCloneDenialTests",
+        "ApplicationCloneHttpAuthorityTests",
+        "ApplicationCloneHttpTests",
+        "ApplicationCloneRaceTests",
+        "ApplicationCloneTests",
+        "ApplicationDetailsHttpTests",
+        "ApplicationHttpFailureTests",
+        "ApplicationHttpTests",
+        "ApplicationHttpUpdateAuthorityTests",
+        "ApplicationHttpUpdateFailureTests",
+        "ApplicationHttpUpdateTests",
+        "ApplicationLifecycleAuthorityTests",
+        "ApplicationLifecycleBoundaryTests",
+        "ApplicationLifecycleFailureTests",
+        "ApplicationLifecycleHttpTests",
+        "ApplicationLifecycleRaceTests",
+        "ApplicationLifecycleTests",
+        "ApplicationMutationFailureTests",
+        "ApplicationMutationPublicationTests",
+        "ApplicationMutationRollbackTests",
+        "ApplicationMutationTests",
+        "ApplicationReadOwnershipTests",
+        "ApplicationReaderTests",
+        "ApplicationScopeAtomicityTests",
+        "ApplicationScopeDeletionWaitTests",
+        "ApplicationScopeDenialTests",
+        "ApplicationScopeHttpTests",
+        "ApplicationScopePublicationTests",
+        "ApplicationScopeRaceTests",
+        "ApplicationScopeTests",
+        "ApplicationTransportTests",
+        "ApplicationUpdateTests",
+        "ApplicationWorkspaceTests"
+      ],
+      "counts": {
+        "PostgreSql": 140,
+        "SqlServer": 140
+      }
+    },
+    "Retirement": {
+      "classes": [
+        "ApplicationRetirementAtomicityTests",
+        "ApplicationRetirementAuthorityTests",
+        "ApplicationRetirementBindingTests",
+        "ApplicationRetirementEffectiveAuthorityTests",
+        "ApplicationRetirementHttpTests",
+        "ApplicationRetirementListTests",
+        "ApplicationRetirementMutationRaceTests",
+        "ApplicationRetirementRaceTests",
+        "ApplicationRetirementRecoveryTests",
+        "ApplicationRetirementReferenceTests",
+        "ApplicationRetirementReplayExpiryTests",
+        "ApplicationRetirementTests"
+      ],
+      "counts": {
+        "PostgreSql": 36,
+        "SqlServer": 36
       }
     }
   }

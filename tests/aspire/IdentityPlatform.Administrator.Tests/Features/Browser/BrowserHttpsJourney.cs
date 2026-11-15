@@ -55,7 +55,7 @@ internal static class BrowserHttpsJourney
         }).ClickAsync();
     }
 
-    /// <summary>Submits the real account password and waits for native factor entry; an issuer cookie never substitutes for this ceremony.</summary>
+    /// <summary>Submits the real account password; callers observe their expected factor or denial response before reading committed effects.</summary>
     internal static async Task PasswordAsync(BrowserHttpsFixture fixture, IPage page)
     {
         await page.Locator(Username).FillAsync(fixture.Issuer.Account.Journey.Lease.Username);

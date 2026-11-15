@@ -181,8 +181,10 @@ jobs:
           - { profile: SqlServer, partition: administrator, story: ApplicationGrants, label: administrator-SqlServer-applicationgrants }
           - { profile: PostgreSql, partition: administrator, story: Catalogue, label: administrator-PostgreSql-catalogue }
           - { profile: SqlServer, partition: administrator, story: Catalogue, label: administrator-SqlServer-catalogue }
-          - { profile: PostgreSql, partition: administrator, story: Applications, label: administrator-PostgreSql-applications }
-          - { profile: SqlServer, partition: administrator, story: Applications, label: administrator-SqlServer-applications }
+          - { profile: PostgreSql, partition: administrator, story: Applications, application_group: Registration, label: administrator-PostgreSql-applications-registration }
+          - { profile: PostgreSql, partition: administrator, story: Applications, application_group: Retirement, label: administrator-PostgreSql-applications-retirement }
+          - { profile: SqlServer, partition: administrator, story: Applications, application_group: Registration, label: administrator-SqlServer-applications-registration }
+          - { profile: SqlServer, partition: administrator, story: Applications, application_group: Retirement, label: administrator-SqlServer-applications-retirement }
           - { profile: PostgreSql, partition: administrator, story: SessionRefresh, label: administrator-PostgreSql-sessionrefresh }
           - { profile: SqlServer, partition: administrator, story: SessionRefresh, label: administrator-SqlServer-sessionrefresh }
           - { profile: PostgreSql, partition: administrator, story: ProtocolAdmission, protocol_admission_group: Admission, label: administrator-PostgreSql-protocoladmission-admission }
@@ -226,6 +228,7 @@ jobs:
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
       - run: python3 scripts/test_managed_application_selection.py
+      - run: python3 scripts/test_application_selection.py
       - run: python3 scripts/test_protocol_admission_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_browser_protection_selection.py
@@ -264,7 +267,7 @@ jobs:
       - name: Bind coverage build before execution
         run: python3 scripts/coverage_identity.py before ${{ matrix.label }}
       - name: Test with child-process coverage
-        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }} ${{ matrix.managed_application_group && format('--managed-application-group {0}', matrix.managed_application_group) || '' }} ${{ matrix.protocol_admission_group && format('--protocol-admission-group {0}', matrix.protocol_admission_group) || '' }}
+        run: dotnet coverage collect -s eng/coverage.xml -o artifacts/coverage/${{ matrix.label }}.cobertura.xml -f cobertura python3 scripts/verify.py ${{ matrix.profile }} --partition ${{ matrix.partition }} ${{ matrix.story && format('--story {0}', matrix.story) || '' }} ${{ matrix.issuer_group && format('--issuer-group {0}', matrix.issuer_group) || '' }} ${{ matrix.apphost_group && format('--apphost-group {0}', matrix.apphost_group) || '' }} ${{ matrix.browser_session_group && format('--browser-session-group {0}', matrix.browser_session_group) || '' }} ${{ matrix.managed_application_group && format('--managed-application-group {0}', matrix.managed_application_group) || '' }} ${{ matrix.protocol_admission_group && format('--protocol-admission-group {0}', matrix.protocol_admission_group) || '' }} ${{ matrix.application_group && format('--application-group {0}', matrix.application_group) || '' }}
       - name: Bind original coverage report after execution
         run: python3 scripts/coverage_identity.py after ${{ matrix.label }}
       - name: Retain synthetic test and coverage evidence
@@ -310,6 +313,7 @@ jobs:
       - run: python3 scripts/test_administrator_selection.py
       - run: python3 scripts/test_browser_session_selection.py
       - run: python3 scripts/test_managed_application_selection.py
+      - run: python3 scripts/test_application_selection.py
       - run: python3 scripts/test_protocol_admission_selection.py
       - run: python3 scripts/test_administrator_browser_stories.py
       - run: python3 scripts/test_browser_protection_selection.py

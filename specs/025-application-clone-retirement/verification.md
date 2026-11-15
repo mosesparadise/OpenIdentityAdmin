@@ -429,3 +429,104 @@ hosted exact-head mutation evidence remain required.
 Enable3 passes **20/20**, zero skipped (173.188s), including both strengthened enable
 orders on both providers. T030/T031 are complete at the component boundary; full hosted
 verification remains pending.
+
+### CI615 deadline findings and bounded Applications groups
+
+CI615 run `43669851039`, attempt 1, tests head `e5af2662e3ff51868c6db257e657a8530dab1653`
+through merge `045d1814c03fc8c698c0894d2805322fa37a3079`, tree
+`a1d706b7c7c70fb0f3e9f01126ff0753ee926e83`, against base `0366f5f1ebdca7797edd6dfd6954715b0545dd63`.
+It is **not accepted**: Host exceeded its unchanged 180-second bound, and the expanded SQL
+Applications story exceeded its unchanged 660-second bound. Preserve original partial
+streams, coverage, logs and authenticated archive metadata; they are diagnostic evidence,
+not complete passing native reports. Remaining cells are recorded separately.
+
+Independent Host analysis found 2,110 completion records, all with the passing outcome byte,
+but no final Host TRX. All 35 new cases completed in 0.225s combined. Existing parallel work
+took 142.764s versus 97.952s in CI611; 13 old exclusive cases lacked completion records.
+The observations establish budget exhaustion, not a specific resource cause or stalled new
+test. One local current-source comparison ran the unmodified full unit verifier under the
+same coverage configuration/deadlines: 94 Core, 2,123 Host, 5 Architecture and 118 AppHost passed.
+Host's original TRX spans 77.027479s, peak concurrency 8, with no overlaps among 15 sample and 9
+telemetry exclusive cases. This local result does not repair CI615, establish root cause,
+attest immutable CI binaries or prove stability. No Host deadline, concurrency or isolation
+setting was changed, and no historical diagnostic approval was renewed.
+
+Applications batch growth has separate direct evidence. CI611's SQL 140-case story took
+590.232s, leaving 69.768s under 660. CI615's partial SQL stream records all 36 new retirement
+completions totaling 121.421s, plus 132 old completions totaling 533.383s; eight old cases remain
+uncompleted. Observed execution is serialized. PostgreSQL's complete 176-case report passes
+in 347.376s (old 140 recorded sum 278.479s; retirement 36 sum 61.740s). The extra bounded work is
+material against the old SQL margin, so T032 records a verification correction.
+
+The existing strict administrator-group mechanism now declares Registration 34 classes / 140
+cases and Retirement 12 classes / 36 cases per provider. Four mandatory workflow cells replace
+the two enlarged cells. Both default and explicit story execution require every group;
+selected execution still discovers and validates all group identities, metadata, counts and
+their disjoint union. Each invocation retains 660 seconds. Coverage requires 116 originals
+instead of 114; 17 module floors/exclusions, all assertions, inventories and browser obligations
+remain unchanged. Expected ordinary reports increase 117→119; total native executions remain
+6,593. Source-derived workflow totals become 145 jobs / 139 artifacts, subject to actual evidence.
+
+All 352 Python controls pass (21.824s), including six new seeded omission/overlap/substitution/
+provider/UID/tuple/redistribution/CLI/workflow controls. Actual native discovery independently
+confirms all 3,113 identities and each 140+36=176 provider union. Independent source/discovery
+review passes without a new deadline or verification exception. Fresh complete exact-head
+CI and original artifact reconciliation are still required.
+
+CI615's scoped contract/UI/supply review passes: 149 UI, 47 Node, 44 native contract and 7 cases
+per retained contract browser; five matching exports, six zero-socket receipts, 32 browser
+operations, unchanged prior security metadata and all UI floors. The pinned source scanner
+reports zero leaks without added exceptions. Both hosted retirement mutation jobs pass their
+seven baseline/kill/restored sequences. Local e61c0f2 calibration separately passes SQL Server
+baseline 7/7 (86.229s), 7 causal kills and restored 7/7 (78.552s); both local providers restore
+original source hashes. Normal harness cleanup removed temporary raw mutant TRXs; retained
+sanitized receipts are producer-validated evidence, not independently replayable raw reports.
+None of these scoped passes closes the two failed CI615 jobs or the final delivery gate.
+
+### CI615 final browser findings and verification corrections
+
+The completed run has 133 successful jobs, eight failed execution jobs, a failed acceptance
+gate and skipped coverage aggregation. All 136 available original archives have authenticated
+size/SHA256 and ZIP-integrity reconciliation. CI615 remains failed; it has no complete merged
+coverage or passing full-run acceptance evidence.
+
+Two retained browser assertions ran without waiting for their required response phase. The
+security-focus check now waits for DOMContentLoaded after the new error becomes visible, which
+includes the page's deferred login script. The fresh replacement-login audit check now waits
+for the new factor form before reading the unchanged exact password/factor counts. The shared
+password helper remains a submission helper; only its documentation changes. Independent
+source review accepts these barriers without retries or deadline changes. The old failures
+do not independently prove a historical timing cause; fresh hosted verification is required.
+
+The three complete Applications browser reports each contain 21 retained passes and two new
+retirement failures: expected 10 native rows, actual 15. SQL/WebKit has both matching failures
+in its authenticated log and 23 partial-stream completion records, but no final TRX. The new
+journeys deliberately perform a real administrator logout/relogin; the old shared grant oracle
+incorrectly expected no new native issuance anywhere. T034 keeps that shared final oracle
+unchanged. Retirement-specific phase snapshots require exact preservation through logout and
+sign-in, and admit exactly five new rows only for the persisted administrator registration:
+one valid authorization, valid access/identity tokens and redeemed request/code tokens. Only
+those validated rows are appended to the original pre-retirement baseline. The final oracle
+still requires exact cardinality, original identities/bindings, target revocations, untouched
+peer statuses and no extra target rows. Hosted execution must validate these expectations.
+
+The SQL/WebKit deadline has separate measured workload evidence: all 23 partial completion
+records span 653.242s of case time (old21 532.869s, new2 120.373s), before process overhead and
+final reporting; the unchanged 660s bound expired after the last completion. CI611's old21
+wall time was 538.127s. SQL/Chromium's expanded complete report took619.102s. T035 therefore
+retains Sessions15 and Applications21 and adds mandatory Retirement2 cells for every active
+provider/engine. This grouping does not fix the assertion failures. With both grouping changes,
+the source-derived obligations are 149 jobs, 143 artifacts, 123 ordinary native reports and
+120 coverage inputs; native executions remain6,593 and all17 coverage floors remain unchanged.
+
+Build17 passes with zero warnings/errors (83.56s). T032–T035 and final acceptance remain pending
+fresh exact-head execution and independent original-artifact reconciliation.
+
+The correction snapshot passes Build18 with zero warnings/errors (46.80s), all352 tooling
+controls (34.436s), whitespace/style verification, source quality and the pinned staged-source
+secret scan without exceptions. Actual native discovery preserves all3,113 identities and
+independently verifies each15+21+2 browser union. Grouping review accepts all48 mandatory browser
+cells and120 coverage obligations. The retirement oracle source review accepts preserved
+original target/peer checks and explicit administrator-only additions, including ordinal client
+identity after database lookup. It proves row population, not an additional token-family linkage
+claim. These local/source checks do not replace corrected hosted browser or full-run evidence.

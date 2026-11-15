@@ -13,6 +13,7 @@ namespace IdentityPlatform.Administrator.Tests.Features.Browser;
 public sealed class SessionLoginBrowserTests(BootstrapFixture fixture)
 {
     private const string Start = "Start sign-in";
+    private const string Code = "#code";
     private const int TwoLogins = 2;
     private static readonly BrowserHttpsCounts ClientCounts = new(3, 4, 5, 6);
     private static readonly BrowserHttpsCounts IssuerCounts = new(4, 2, 4, 6);
@@ -62,6 +63,7 @@ public sealed class SessionLoginBrowserTests(BootstrapFixture fixture)
         Assert.Equal(1, fixture.ParRequests);
         Assert.Equal(1, fixture.TokenRequests);
         await BrowserHttpsJourney.PasswordAsync(fixture, page);
+        await page.Locator(Code).WaitForAsync();
         Assert.Equal((before.Passwords + 1, before.Factors), await BrowserLoginEffects.CeremoniesAsync(fixture));
         Assert.Equal(1, fixture.ParRequests);
         Assert.Equal(1, fixture.TokenRequests);

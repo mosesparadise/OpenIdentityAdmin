@@ -41,7 +41,7 @@ internal static class RetirementBrowserJourney
         GrantRecoveryView.Require(Assert.Single(traffic.Posts), retirement, ApplicationVersion.Create(registration.Id, before.Policy.Revision));
         Assert.Equal(receipt.RequestKey, traffic.Posts[0].Key);
         Assert.Single(accepted.Approvals);
-        await RetirementBrowserView.ReloginAsync(page, environment, registration, receipt.GrantJobId);
+        var signIn = await RetirementBrowserView.ReloginAsync(page, environment, registration, receipt.GrantJobId);
         await GrantRecoveryBrowserStore.UnchangedAsync(environment, registration.Id, accepted);
         var terminal = await GrantRecoveryBrowserStore.ConfigurationAsync(environment, registration.Id);
         await GrantRecoveryBrowserStore.CompleteAsync(page, environment, provider, RetirementBrowserView.Completed);
@@ -51,7 +51,7 @@ internal static class RetirementBrowserJourney
         Assert.True(grants.Reads > 1);
         Assert.Single((await GrantRecoveryBrowserStore.ReadAsync(environment, registration.Id)).Approvals);
         await RetirementBrowserStore.RequireAsync(environment, receipt, before);
-        await GrantRecoveryBrowserStore.RequireNativeAsync(environment, registration.Id, native, terminal);
+        await GrantRecoveryBrowserStore.RequireNativeAsync(environment, registration.Id, [.. native, .. signIn], terminal);
     }
 
     /// <summary>Preserves partial progress through real permission loss and relogin, then rejects a stale form before a fresh explicit same-job continuation.</summary>
@@ -69,7 +69,7 @@ internal static class RetirementBrowserJourney
         var receipt = await RetirementBrowserStore.ReceiptAsync(environment, registration.Id);
         Assert.True(await GrantRecoveryBrowserStore.BatchAsync(environment, receipt.GrantJobId));
         await GrantRecoveryBrowserStore.StopAsync(environment, registration.Id, receipt.GrantJobId);
-        await RetirementBrowserView.ReloginAsync(page, environment, registration, receipt.GrantJobId);
+        var signIn = await RetirementBrowserView.ReloginAsync(page, environment, registration, receipt.GrantJobId);
         await GrantRecoveryView.StoppedAsync(page, receipt.GrantJobId);
         var continuation = Address(environment, registration.Id, Grants) + Separator + receipt.GrantJobId + Continue;
         await StaleAsync(page, environment, registration, continuation, receipt.GrantJobId);
@@ -90,7 +90,7 @@ internal static class RetirementBrowserJourney
         Assert.NotEqual(traffic.Posts[0].Key, traffic.Posts[1].Key);
         Assert.DoesNotContain(completed.Approvals, row => row.RequestKey == traffic.Posts[0].Key);
         await RetirementBrowserStore.RequireAsync(environment, receipt, before);
-        await GrantRecoveryBrowserStore.RequireNativeAsync(environment, registration.Id, native, terminal);
+        await GrantRecoveryBrowserStore.RequireNativeAsync(environment, registration.Id, [.. native, .. signIn], terminal);
     }
 
     /// <summary>Advances and stops the same job through a competing real browser while the original confirmation retains stale versions.</summary>
